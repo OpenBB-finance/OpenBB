@@ -1,0 +1,22 @@
+parent_command:stocks/ta
+usage: atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 14)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Average True Range with the default settings for a stock: stocks/load <SYMBOL>/ta/atr
+- Calculate the Average True Range with a window length of 20 for a specific stock: stocks/load <SYMBOL>/ta/atr -l 20
+- Calculate the Average True Range using a Simple Moving Average for a stock: stocks/load <SYMBOL>/ta/atr -m sma
+- Calculate the Average True Range with a window length of 10 and a Weighted Moving Average for a stock: stocks/load <SYMBOL>/ta/atr -l 10 -m wma
+- Calculate the Average True Range with an offset of 5 for a specific stock: stocks/load <SYMBOL>/ta/atr -o 5
+- Calculate the Average True Range with a window length of 15, using a Hull Moving Average, and an offset of 3 for a stock: stocks/load <SYMBOL>/ta/atr -l 15 -m hma -o 3
+- Calculate the Average True Range using a Zero Lag Moving Average for a specific stock: stocks/load <SYMBOL>/ta/atr -m zlma

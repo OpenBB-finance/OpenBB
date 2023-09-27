@@ -1,0 +1,27 @@
+parent_command:crypto/ov
+usage: ch [-l LIMIT] [--sortby {Platform,Date,Amount [$],Audit,Slug,URL} [{Platform,Date,Amount [$],Audit,Slug,URL} ...]] [-r] [-s SORTBY]
+
+Display list of major crypto-related hacks [Source: https://rekt.news] Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sortby and reverse the display order with --reverse Show only N elements with --limit Accepts
+--slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Display N items (default: 15)
+  --sortby {Platform,Date,Amount [$],Audit,Slug,URL} [{Platform,Date,Amount [$],Audit,Slug,URL} ...]
+                        Sort by given column. Default: Amount [$] (default: Amount [$])
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -s SORTBY, --slug SORTBY
+                        Slug to check crypto hack (e.g., polynetwork-rekt) (default: )
+
+
+Examples:
+- View a list of major crypto-related hacks: crypto/ov/ch
+- Display the top 5 crypto hacks: crypto/ov/ch -l 5
+- Sort crypto hacks by date in ascending order: crypto/ov/ch --sortby Date -r
+- Show only the top 10 crypto hacks, sorted by platform: crypto/ov/ch -l 10 --sortby Platform
+- View details of a specific crypto hack using its slug: crypto/ov/ch -s polynetwork-rekt
+- Display the top 7 crypto hacks, sorted by audit: crypto/ov/ch --limit 7 --sortby Audit
+- Show the 15 most recent crypto hacks: crypto/ov/ch -l 15 --sortby Date
+- List the top 20 crypto hacks, sorted by URL in ascending order: crypto/ov/ch --limit 20 --sortby URL --reverse
+- Explore a specific crypto hack by providing its slug: crypto/ov/ch --slug polynetwork-rekt
+- Display the top 3 crypto hacks, sorted by the amount in descending order: crypto/ov/ch --limit 3 --sortby "Amount [$]"

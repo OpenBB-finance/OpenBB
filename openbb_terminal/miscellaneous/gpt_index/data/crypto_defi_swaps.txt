@@ -1,0 +1,20 @@
+parent_command:crypto/defi
+usage: pairs [-l LIMIT] [-s {Datetime,USD,From,To}] [-r]
+
+Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  -s {Datetime,USD,From,To}, --sort {Datetime,USD,From,To}
+                        Sort by given column. Default: timestamp (default: Datetime)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the last 10 swaps on Uniswap DEX: crypto/defi/pairs
+- Show the last 20 swaps on Uniswap DEX: crypto/defi/pairs -l 20
+- Display the last 15 swaps sorted by the amount in USD: crypto/defi/pairs -l 15 -s USD
+- Show the last swaps sorted by the 'From' currency: crypto/defi/pairs --sort From
+- Display the last 10 swaps sorted by the 'To' currency in ascending order: crypto/defi/pairs -l 10 -s To -r
+- To view the last 5 swaps sorted by Datetime in ascending order: crypto/defi/pairs --limit 5 --reverse

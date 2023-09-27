@@ -1,0 +1,14 @@
+parent_command:crypto/defi
+usage: sratio [-l LIMIT]
+
+Displays terra blockchain staking ratio history. [Source: https://fcd.terra.dev/swagger]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of days to show (default: 90)
+
+
+Examples:
+- To view the staking ratio history of Terra blockchain for the default 90 days: crypto/defi/sratio
+- To display the staking ratio history for Terra blockchain for the last 30 days: crypto/defi/sratio -l 30
+- For a custom number of days, such as 60, to show the Terra blockchain staking ratio history: crypto/defi/sratio --limit 60

@@ -1,0 +1,22 @@
+parent_command:portfolio/brokers/coinbase
+usage: deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [-r]
+
+Display a list of deposits for your account.
+
+optional arguments:
+  -t {internal_deposit,deposit}, --type {internal_deposit,deposit}
+                        Deposit type. Either: internal_deposits (transfer between portfolios) or deposit (default: deposit)
+  -l LIMIT, --limit LIMIT
+                        Limit parameter. (default: 20)
+  -s {created_at,amount}, --sort {created_at,amount}
+                        Sort by given column. Default: created_at (default: created_at)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display a list of deposits for your Coinbase account: portfolio/brokers/coinbase/deposits
+- To display a list of internal deposits between portfolios: portfolio/brokers/coinbase/deposits -t internal_deposit
+- To display a list of deposits with a specific limit: portfolio/brokers/coinbase/deposits -l 10
+- To display a list of deposits sorted by amount: portfolio/brokers/coinbase/deposits -s amount
+- To display a list of deposits sorted by created_at in ascending order: portfolio/brokers/coinbase/deposits -s created_at -r
+- To display a list of internal deposits sorted by amount with a limit of 5: portfolio/brokers/coinbase/deposits -t internal_deposit -s amount -l 5

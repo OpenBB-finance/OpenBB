@@ -1,0 +1,19 @@
+parent_command:alt/realestate
+usage: regionstats -r region [-s startdate] [-e enddate]
+
+Select the region and date range you want see stats for. [Source: UK Land Registry]
+
+optional arguments:
+  -r region, --region region
+                        Region that we want stats for (default: None)
+  -s startdate, --startdate startdate
+                        Start date that we want sales information for (default: 2022-05-03)
+  -e enddate, --enddate enddate
+                        End date that we want sales information for (default: 2023-05-03)
+
+
+Examples:
+- To view statistics for a specific region: alt/realestate/regionstats -r "London"
+- To view statistics for a specific region and start date: alt/realestate/regionstats -r "London" -s 2021-01-01
+- To view statistics for a specific region between a date range: alt/realestate/regionstats -r "London" -s 2021-01-01 -e 2021-12-31
+- To view statistics for a specific region and end date: alt/realestate/regionstats -r "London" -e 2021-12-31

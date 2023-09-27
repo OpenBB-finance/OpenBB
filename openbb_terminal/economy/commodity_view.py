@@ -40,7 +40,7 @@ def display_debt(export: str = "", sheet_name: Optional[str] = None, limit: int 
     debt_df = commodity_model.get_debt()
 
     if not get_current_user().preferences.USE_INTERACTIVE_DF:
-        for col in ["Debt", "Per Capita"]:
+        for col in ["USD Debt", "USD Per Capita"]:
             debt_df[col] = debt_df[col].apply(lambda x: format_large_numbers(x))
 
     print_rich_table(

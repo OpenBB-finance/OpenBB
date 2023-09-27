@@ -1,0 +1,16 @@
+parent_command:stocks/qa
+usage: sh [-r RFR] [-w WINDOW]
+
+Provides the sharpe ratio of the selected stock.
+
+optional arguments:
+  -r RFR, --rfr RFR     Risk free return (default: 0)
+  -w WINDOW, --window WINDOW
+                        Rolling window length (default: 252)
+
+
+Examples:
+- Calculate the Sharpe ratio for <SYMBOL> with default settings: stocks/load <SYMBOL>/qa/sh
+- Calculate the Sharpe ratio for <SYMBOL> using a custom risk-free rate: stocks/load <SYMBOL>/qa/sh -r 0.02
+- Calculate the Sharpe ratio for <SYMBOL> with a different rolling window length: stocks/load <SYMBOL>/qa/sh -w 180
+- Calculate the Sharpe ratio for <SYMBOL> with a custom risk-free rate and a different rolling window length: stocks/load <SYMBOL>/qa/sh -r 0.02 -w 180

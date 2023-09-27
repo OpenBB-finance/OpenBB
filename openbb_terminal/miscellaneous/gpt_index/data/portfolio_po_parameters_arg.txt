@@ -1,0 +1,15 @@
+parent_command:portfolio/po/parameters
+usage: arg [-a ARGUMENT ARGUMENT] [-s]
+
+Set a different value for one of the available arguments.
+
+optional arguments:
+  -a ARGUMENT ARGUMENT, --argument ARGUMENT ARGUMENT
+                        Set a value for an argument (default: None)
+  -s, --show_arguments  Show the available arguments, the options and a description. (default: False)
+
+
+Examples:
+- To set a new value for an argument: portfolio/po/parameters arg -a ARGUMENT VALUE
+- To view the available arguments and their descriptions: portfolio/po/parameters arg -s
+- Set a value for an argument and then show available arguments: portfolio/po/parameters arg -a ARGUMENT VALUE -s

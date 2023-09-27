@@ -1,0 +1,14 @@
+parent_command:forex/oanda
+usage: calendar [-d DAYS]
+
+Show Calendar Data
+
+optional arguments:
+  -d DAYS, --days DAYS  The number of days to search for, up to 30 forward or backward use negative numbers to search back.
+
+
+Examples:
+- To display calendar data for the next 7 days: forex/oanda/calendar -d 7
+- To view calendar data for the past 5 days: forex/oanda/calendar -d -5
+- Show calendar data for the upcoming 30 days: forex/oanda/calendar --days 30
+- Retrieve calendar data for the previous 10 days: forex/oanda/calendar --days -10

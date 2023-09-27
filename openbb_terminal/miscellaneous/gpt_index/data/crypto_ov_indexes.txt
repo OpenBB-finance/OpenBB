@@ -1,0 +1,22 @@
+parent_command:crypto/ov
+usage: indexes [-l LIMIT] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [-r]
+
+Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap. You can display only N number of indexes with --limit parameter. You can
+sort data by Rank, Name, Id, Market, Last, MultiAsset with --sortby and also with --reverse flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 15)
+  -s {Rank,Name,Id,Market,Last,MultiAsset}, --sortby {Rank,Name,Id,Market,Last,MultiAsset}
+                        Sort by given column. Default: Rank (default: Rank)
+  -r, --reverse         Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To view the top 15 crypto indexes: crypto/ov/indexes
+- To display the top 10 crypto indexes: crypto/ov/indexes -l 10
+- To view the top 5 crypto indexes sorted by market cap: crypto/ov/indexes -l 5 -s Market
+- To show the top 20 crypto indexes sorted by name in descending order: crypto/ov/indexes -l 20 -s Name -r
+- To display the top 10 crypto indexes sorted by last price in ascending order: crypto/ov/indexes -l 10 -s Last
+- To view the top 7 crypto indexes sorted by id in descending order: crypto/ov/indexes -l 7 -s Id -r
+- To show the top 15 crypto indexes sorted by multi-asset in ascending order: crypto/ov/indexes -s MultiAsset

@@ -1,0 +1,15 @@
+parent_command:crypto/qa
+usage: skew [-w N_WINDOW]
+
+Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution
+is without any skewness, as it is symmetrical on both sides. Hence, a curve is regarded as skewed if it is shifted towards the right or the left.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate the skewness for a cryptocurrency with the default window length: crypto/load <COIN>/qa/skew
+- To calculate the skewness for a cryptocurrency with a custom window length of 30: crypto/load <COIN>/qa/skew -w 30
+- For a specific cryptocurrency, compute the skewness using a window length of 20: crypto/load <COIN>/qa/skew --window 20

@@ -1,6 +1,7 @@
 """ News View """
 __docformat__ = "numpy"
 
+import datetime as dt
 import logging
 import os
 from typing import Optional
@@ -75,9 +76,29 @@ def display_news(
                 console.print(row["URL"] + "\n")
             console.print("------------------------")
 
+    top_headlines = ultima_newsmonitor_model.get_top_headlines(term)["summary"]
+    if "Ultima Insights was unable to identify" in top_headlines:
+        console.print(
+            f"[red]Most Relevant Articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"
+        )
+    else:
+        split = top_headlines.split("\n")
+        header = split[0]
+        if "Most" not in header:
+            header = f'Most Relevant Articles for {term} - {dt.datetime.now().strftime("%Y-%m-%d")}'
+        console.print(f"[purple][bold]{header}[/bold][/purple]\n")
+        for idx, row in enumerate(split[1:]):
+            if len(row) > 0:
+                inner_split = row.split(" - ")
+                risk = inner_split[0]
+                description = " - ".join(inner_split[1:])
+                console.print(f"[green]{risk}[/green] (\x1B[3m{description}\x1B[0m)")
+            if idx < len(split[1:]) - 1:
+                console.print()
+    console.print("------------------------")
     articles = ultima_newsmonitor_model.get_news(term, sort)
     articles = articles.head(limit).sort_values(by="relevancyScore", ascending=False)
-    # console.print(f"News Powered by [purple]Ultima Insights[/purple].\nFor more info: https://www.ultimainsights.ai\n")
+    console.print(f"\n[purple][bold]News for {company_name}:[/bold][/purple]\n\n")
     for _, row in articles.iterrows():
         console.print(
             f"> {row['articlePublishedDate']} - {row['articleHeadline']}\n"

@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: fipo [-d DAYS] [-s END] [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Future IPOs dates. [Source: https://finnhub.io]  optional arguments:   -d DAYS, --days DAYS  Number of days in the future to look for IPOs.                         (default: 5)   -s END, --end END     The end date (format YYYY-MM-DD) to look for IPOs,                         starting from today. When set, end date will override                         --days argument (default: None)   -l LIMIT, --limit LIMIT                         Limit number of IPOs to display. (default: 20)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about fipo' to access the related guide.
+Summary: Display future IPOs dates within a specified number of days or up to a specific end date. You can limit the number of IPOs shown and export the data in various formats. The source of the data is https://finnhub.io.
+
+Examples:
+- View future IPOs within the next 5 days: stocks/disc/fipo
+- View future IPOs within the next 10 days: stocks/disc/fipo -d 10
+- View future IPOs up to a specific end date: stocks/disc/fipo -s 2022-12-31
+- View only the top 10 future IPOs within the next 5 days: stocks/disc/fipo -l 10
+- View future IPOs within the next 5 days and export the data in csv format: stocks/disc/fipo --export csv
+- View future IPOs within the next 5 days and save the data to a specific excel sheet: stocks/disc/fipo --sheet-name Sheet1

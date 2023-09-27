@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: topt [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top officer purchases of the day. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about topt' to access the related guide.
+Summary: Display the top officer purchases of the day, with options to limit the number of data rows, export the data in various formats, and save the data to a specific Excel sheet. The data source is OpenInsider.
+
+Examples:
+- Show the top 10 officer purchases of the day: stocks/ins/topt
+- Show the top 5 officer purchases of the day: stocks/ins/topt -l 5
+- Show the top 20 officer purchases and export the data in csv format: stocks/ins/topt -l 20 --export csv
+- Show the top 10 officer purchases and save the data to a specific Excel sheet: stocks/ins/topt --sheet-name Sheet1

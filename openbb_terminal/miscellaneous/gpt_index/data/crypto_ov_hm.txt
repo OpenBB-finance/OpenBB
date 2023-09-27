@@ -1,0 +1,19 @@
+parent_command:crypto/ov
+usage: hm [-l LIMIT] [-c CATEGORY]
+
+Display cryptocurrencies heatmap with daily percentage change [Source: https://coingecko.com] Accepts --category or -c to display only coins of a certain category (default no category to display all coins ranked by market cap). You
+can look on only top N number of records with --limit.
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Display N items (default: 10)
+  -c CATEGORY, --category CATEGORY
+                        Category (e.g., stablecoins). Empty for no category (default: )
+
+
+Examples:
+- To display the heatmap for the top 10 cryptocurrencies: crypto/ov/hm
+- To display the heatmap for the top 20 cryptocurrencies: crypto/ov/hm -l 20
+- To show the heatmap for the top 5 stablecoins: crypto/ov/hm -c stablecoins -l 5
+- To display the heatmap for all cryptocurrencies in the DeFi category: crypto/ov/hm --category DeFi
+- To show the heatmap for the top 15 cryptocurrencies in the NFT category: crypto/ov/hm --category NFT --limit 15

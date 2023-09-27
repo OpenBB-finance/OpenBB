@@ -7,8 +7,9 @@ import warnings
 from typing import Optional
 
 from openbb_terminal import OpenBBFigure
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import tradier_model
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,7 @@ warnings.filterwarnings("ignore")
 
 # pylint: disable=too-many-arguments
 @log_start_end(log=logger)
+@check_api_key(["API_TRADIER_TOKEN"])
 def display_historical(
     symbol: str,
     expiry: str,
@@ -57,12 +59,21 @@ def display_historical(
         symbol, expiry, strike, put, chain_id
     )
 
+    if df_hist.empty:
+        if chain_id:
+            console.print(f"No historical data found for {chain_id} ")
+            return None
+        console.print(f"No historical data found for {symbol} {expiry} ")
+        return None
+
     if raw:
         print_rich_table(
             df_hist,
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
             export=bool(export),
+            show_index=True,
+            index_name="Date",
         )
 
     op_type = ["call", "put"][put]
@@ -88,10 +99,9 @@ def display_historical(
         name=f"{symbol} OHLC",
         row=1,
         col=1,
-        secondary_y=True,
+        secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
-    fig.hide_holidays()
 
     if export:
         export_data(

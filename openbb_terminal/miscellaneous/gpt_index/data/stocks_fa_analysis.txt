@@ -1,0 +1,8 @@
+parent_command: stocks/fa/
+usage: analysis [-t TICKER] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about analysis' to access the related guide.
+Summary: Display analysis of SEC filings for a specific stock symbol based on an NLP model. The command allows you to analyze a ticker, export the raw data in various formats, and save the data to a specific excel sheet.
+
+Examples:
+- Analyze SEC filings for a specific stock symbol: stocks/fa/analysis -t <SYMBOL>
+- Display analysis of SEC filings and export the data in csv format: stocks/fa/analysis -t <SYMBOL> --export csv
+- Analyze SEC filings for a specific stock symbol and save the data to an excel sheet: stocks/fa/analysis -t <SYMBOL> --sheet-name Sheet1

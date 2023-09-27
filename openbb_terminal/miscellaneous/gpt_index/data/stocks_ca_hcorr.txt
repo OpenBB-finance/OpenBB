@@ -1,0 +1,13 @@
+parent_command: stocks/ca/
+usage: hcorr [-t {o,h,l,c,a}] [-s START] [-e END] [--display-full-matrix] [-h]              [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]              [--raw]  Correlation heatmap based on historical price comparison between similar companies.  optional arguments:   -t {o,h,l,c,a}, --type {o,h,l,c,a}                         Candle data to use: o-open, h-high, l-low, c-close,                         a-adjusted close, r-returns. (default: a)   -s START, --start START                         The starting date (format YYYY-MM-DD) of the stock                         (default: 2022-04-18)   -e END, --end END     The end date (format YYYY-MM-DD) of the stocks                         (default: 2023-04-19)   --display-full-matrix                         Display all matrix values, rather than masking off                         half. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)  For more information and examples, use 'about hcorr' to access the related guide.
+Summary: Generate a correlation heatmap based on historical price comparison between similar companies. You can choose the type of candle data to use (open, high, low, close, adjusted close, or returns), specify a date range, display the full matrix, and export the data in various formats.
+
+Examples:
+- To generate a heatmap using adjusted close prices: stocks/ca/hcorr -t a
+- To generate a heatmap using high prices between specific dates: stocks/ca/hcorr -t h -s 2022-01-01 -e 2022-12-31
+- To display the full correlation matrix: stocks/ca/hcorr --display-full-matrix
+- To export the heatmap data in CSV format: stocks/ca/hcorr --export csv
+- To save the heatmap data to a specific Excel sheet: stocks/ca/hcorr --sheet-name Sheet1
+- To display raw data of the heatmap: stocks/ca/hcorr --raw
+- To generate a heatmap using returns for a specific stock: stocks/load <SYMBOL>/ca/hcorr -t r
+- To generate a heatmap using low prices for a specific stock between specific dates: stocks/load <SYMBOL>/ca/hcorr -t l -s 2022-01-01 -e 2022-12-31

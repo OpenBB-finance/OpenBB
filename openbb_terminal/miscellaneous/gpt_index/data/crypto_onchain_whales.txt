@@ -1,0 +1,26 @@
+parent_command:crypto/onchain
+usage: whales [-m MIN] [-l LIMIT] [-s {date,symbol,blockchain,amount,amount_usd,from,to}] [-r] [-a]
+
+Display crypto whales transactions. [Source: https://docs.whale-alert.io/]
+
+optional arguments:
+  -m MIN, --min MIN     Minimum value of transactions. (default: 1000000)
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 10)
+  -s {date,symbol,blockchain,amount,amount_usd,from,to}, --sort {date,symbol,blockchain,amount,amount_usd,from,to}
+                        Sort by given column. Default: date (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -a, --address         Flag to show addresses of transaction (default: False)
+
+
+Examples:
+- To display the top 10 whale transactions for a specific crypto coin: crypto/load <COIN>/onchain/whales
+- Show the top 5 whale transactions with a minimum value of 5,000,000: crypto/load <COIN>/onchain/whales -m 5000000 -l 5
+- Display whale transactions sorted by the transaction amount in ascending order: crypto/load <COIN>/onchain/whales -s amount -r
+- Show the top 20 whale transactions including the addresses involved: crypto/load <COIN>/onchain/whales -l 20 -a
+- Display whale transactions for a specific crypto coin, sorted by the transaction amount in USD: crypto/load <COIN>/onchain/whales -s amount_usd
+- To view the top 10 whale transactions sorted by the sender's address: crypto/load <COIN>/onchain/whales -s from
+- Display whale transactions for a specific crypto coin, sorted by the receiver's address: crypto/load <COIN>/onchain/whales -s to
+- Show the top 15 whale transactions sorted by the blockchain they occurred on: crypto/load <COIN>/onchain/whales -l 15 -s blockchain
+- Display the top 10 whale transactions in reverse chronological order: crypto/load <COIN>/onchain/whales -s date -r
+- To show the top 5 whale transactions for a specific crypto coin, sorted by the coin symbol: crypto/load <COIN>/onchain/whales -l 5 -s symbol

@@ -1,0 +1,13 @@
+parent_command: stocks/
+usage: news [-t TICKER] [-d N_START_DATE] [-o] [-s SOURCES] [-h]             [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]             [-l LIMIT] [--source {Feedparser,NewsApi}]  latest news of the company  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to get data for   -d N_START_DATE, --date N_START_DATE                         The starting date (format YYYY-MM-DD) to search                         articles from   -o, --oldest          Show oldest articles first   -s SOURCES, --sources SOURCES                         Show news only from the sources specified (e.g                         bloomberg,reuters)   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   -l LIMIT, --limit LIMIT                         Number of entries to show in data.   --source {Feedparser,NewsApi}                         Data source to select from  For more information and examples, use 'about news' to access the related guide.
+Summary: Display the latest news articles related to a specific stock ticker. You can specify a start date to search articles from, sort the articles by oldest first, filter news by sources, and set a limit on the number of entries shown. You can also export the data and choose a data source.
+
+Examples:
+- Retrieve the latest news for a specific stock ticker: stocks/news -t <SYMBOL>
+- Retrieve news articles for a specific stock ticker starting from a specific date: stocks/news -t <SYMBOL> -d 2022-01-01
+- Retrieve the oldest news articles for a specific stock ticker: stocks/news -t <SYMBOL> -o
+- Retrieve news articles for a specific stock ticker from specified sources: stocks/news -t <SYMBOL> -s bloomberg,reuters
+- Retrieve a limited number of news articles for a specific stock ticker: stocks/news -t <SYMBOL> -l 10
+- Export the retrieved news articles in json format: stocks/news -t <SYMBOL> --export json
+- Save the retrieved news articles to a specific excel sheet: stocks/news -t <SYMBOL> --sheet-name Sheet1
+- Retrieve news articles for a specific stock ticker using a specific data source: stocks/news -t <SYMBOL> --source NewsApi

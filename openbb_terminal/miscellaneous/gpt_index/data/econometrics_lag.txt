@@ -1,0 +1,17 @@
+parent_command:econometrics
+usage: lag -v {} -l LAGS [-f FILL_VALUE]
+
+Add lag to a variable by shifting a column.
+
+optional arguments:
+  -v {}, --values {}    Dataset.column values to add lag to. (default: None)
+  -l LAGS, --lags LAGS  How many periods to lag the selected column. (default: 5)
+  -f FILL_VALUE, --fill-value FILL_VALUE
+                        The value used for filling the newly introduced missing values. (default: None)
+
+
+Examples:
+- Add a lag of 3 periods to a specific column: econometrics/lag -v Dataset.column -l 3
+- Add a lag of 5 periods to a specific column and fill missing values with 0: econometrics/lag -v Dataset.column -l 5 -f 0
+- Add a lag of 10 periods to a specific column and fill missing values with 'NaN': econometrics/lag -v Dataset.column -l 10 -f NaN
+- Apply a 2-period lag to a specific column in the dataset: econometrics/lag -v Dataset.column -l 2

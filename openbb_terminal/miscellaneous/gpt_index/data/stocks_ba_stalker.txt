@@ -1,0 +1,10 @@
+parent_command: stocks/ba/
+usage: stalker [-u S_USER] [-l LIMIT] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to the last 30 messages of a user. [Source: Stocktwits]  optional arguments:   -u S_USER, --user S_USER                         username. (default: Newsfilter)   -l LIMIT, --limit LIMIT                         limit messages shown. (default: 30)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about stalker' to access the related guide.
+Summary: Display up to the last 30 messages of a user from Stocktwits. You can specify a username, limit the number of messages shown, and export the data in various formats. You can also save the data to a specific excel sheet if exporting to an .xlsx file.
+
+Examples:
+- Show the last 30 messages of a user: stocks/ba/stalker -u S_USER
+- Show the last 10 messages of a user: stocks/ba/stalker -u S_USER -l 10
+- Export the last 30 messages of a user to a csv file: stocks/ba/stalker -u S_USER --export csv
+- Export the last 20 messages of a user to an xlsx file: stocks/ba/stalker -u S_USER -l 20 --export xlsx
+- Save the last 15 messages of a user to a specific excel sheet: stocks/ba/stalker -u S_USER -l 15 --export xlsx --sheet-name Sheet1

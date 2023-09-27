@@ -1,0 +1,12 @@
+parent_command:forex/oanda
+usage: trades
+
+Get information about open trades.
+
+trades
+Examples:
+- To view open trades: forex/oanda/trades
+- Retrieve information on current open trades: forex/oanda/trades
+- Access details of open trades: forex/oanda/trades
+- Obtain open trade data: forex/oanda/trades
+- Display open trade information: forex/oanda/trades

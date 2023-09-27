@@ -1,0 +1,24 @@
+parent_command:stocks/qa
+usage: es [-m] [-d {laplace,student_t,logistic,normal}] [-p PERCENTILE]
+
+Provides Expected Shortfall (short: ES) of the selected stock.
+
+optional arguments:
+  -m, --mean            If one should use the mean of the stocks return (default: False)
+  -d {laplace,student_t,logistic,normal}, --dist {laplace,student_t,logistic,normal}
+                        Distribution used for the calculations (default: normal)
+  -p PERCENTILE, --percentile PERCENTILE
+                        Percentile for calculations, i.e. input 99.9 equals a 99.9 Percent Expected Shortfall (default: 99.9)
+
+
+Examples:
+- To calculate the Expected Shortfall for <SYMBOL> using the default settings: stocks/load <SYMBOL>/qa/es
+- To calculate the Expected Shortfall for <SYMBOL> using the mean of the stock's return: stocks/load <SYMBOL>/qa/es -m
+- To calculate the Expected Shortfall for <SYMBOL> with a Laplace distribution: stocks/load <SYMBOL>/qa/es -d laplace
+- To calculate the Expected Shortfall for <SYMBOL> with a Student's t-distribution: stocks/load <SYMBOL>/qa/es -d student_t
+- To calculate the Expected Shortfall for <SYMBOL> with a Logistic distribution: stocks/load <SYMBOL>/qa/es -d logistic
+- To calculate the Expected Shortfall for <SYMBOL> using the mean of the stock's return and a Student's t-distribution: stocks/load <SYMBOL>/qa/es -m -d student_t
+- To calculate the Expected Shortfall for <SYMBOL> at the 95th percentile: stocks/load <SYMBOL>/qa/es -p 95
+- To calculate the Expected Shortfall for <SYMBOL> using the mean of the stock's return and the 95th percentile: stocks/load <SYMBOL>/qa/es -m -p 95
+- To calculate the Expected Shortfall for <SYMBOL> with a Laplace distribution and the 95th percentile: stocks/load <SYMBOL>/qa/es -d laplace -p 95
+- To calculate the Expected Shortfall for <SYMBOL> with a Student's t-distribution and the 95th percentile: stocks/load <SYMBOL>/qa/es -d student_t -p 95

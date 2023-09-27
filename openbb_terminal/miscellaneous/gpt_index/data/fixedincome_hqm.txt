@@ -1,0 +1,16 @@
+parent_command:fixedincome
+usage: hqm [-d DATE] [-p]
+
+The HQM yield curve represents the high quality corporate bond market, i.e., corporate bonds rated AAA, AA, or A. The HQM curve contains two regression terms. These terms are adjustment factors that blend AAA, AA, and A bonds into
+a single HQM yield curve that is the market-weighted average (MWA) quality of high quality bonds.
+
+optional arguments:
+  -d DATE, --date DATE  Define the date of the yield curve. (default: None)
+  -p, --par             Whether to include the Par Yield. (default: False)
+
+
+Examples:
+- To display the HQM yield curve for the current date: fixedincome/hqm
+- To display the HQM yield curve for a specific date: fixedincome/hqm -d 2022-12-31
+- To display the HQM yield curve with Par Yield for the current date: fixedincome/hqm -p
+- To display the HQM yield curve with Par Yield for a specific date: fixedincome/hqm -d 2022-12-31 -p

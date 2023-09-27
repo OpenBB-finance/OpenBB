@@ -16,6 +16,10 @@ whales --address # this is bugged
 whales --min 5000000 --limit 3 --sort amount
 whales --sort amount_usd -r
 
+# topledger
+topledger -o tensor -q daily-transactions
+topledger -o tensor -q weekly-users
+
 baas -c ETH -vs BTC -l 10 -s date -r
 
 

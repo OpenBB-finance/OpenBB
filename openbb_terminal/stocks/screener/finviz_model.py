@@ -108,18 +108,17 @@ def get_screener_data(
     pd.DataFrame
         Dataframe with loaded filtered stocks
     """
-    if data_type == "overview":
-        screen = overview.Overview()
-    elif data_type == "valuation":
-        screen = valuation.Valuation()
-    elif data_type == "financial":
-        screen = financial.Financial()
-    elif data_type == "ownership":
-        screen = ownership.Ownership()
-    elif data_type == "performance":
-        screen = performance.Performance()
-    elif data_type == "technical":
-        screen = technical.Technical()
+    df_screen = pd.DataFrame()
+    screen_type = {
+        "overview": overview.Overview,
+        "valuation": valuation.Valuation,
+        "financial": financial.Financial,
+        "ownership": ownership.Ownership,
+        "performance": performance.Performance,
+        "technical": technical.Technical,
+    }
+    if data_type in screen_type:
+        screen = screen_type[data_type]()
     else:
         console.print("Invalid selected screener type")
         return pd.DataFrame()
@@ -182,15 +181,27 @@ def get_screener_data(
                     order=d_general["Order"], ascend=ascend
                 )
 
+        elif limit > 0:
+            df_screen = screen.screener_view(limit=limit, ascend=ascend)
         else:
-            if limit > 0:
-                df_screen = screen.screener_view(limit=limit, ascend=ascend)
-            else:
-                df_screen = screen.screener_view(ascend=ascend)
+            df_screen = screen.screener_view(ascend=ascend)
 
-    df_screen = df_screen.rename(columns={"\n\nTicker": "Ticker"})
+    df_screen.columns = [val.strip("\n") for val in df_screen.columns]
     if "Company" in df_screen.columns:
         df_screen["Company"] = df_screen["Company"].str.replace(",", "")
+    if data_type == "performance":
+        df_screen = df_screen.rename(
+            columns={
+                "Perf Week": "1W",
+                "Perf Month": "1M",
+                "Perf Quart": "3M",
+                "Perf Half": "6M",
+                "Perf Year": "1Y",
+                "Perf YTD": "YTD",
+                "Volatility W": "1W Volatility",
+                "Volatility M": "1M Volatility",
+            }
+        )
 
     return df_screen
 

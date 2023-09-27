@@ -1,0 +1,10 @@
+parent_command:portfolio/brokers/degiro
+usage: pending
+
+pending
+Examples:
+- To view pending orders for your Degiro account: portfolio/brokers/degiro/pending
+- Check all the pending orders in your Degiro portfolio: portfolio/brokers/degiro/pending
+- Retrieve a list of pending orders from your Degiro broker account: portfolio/brokers/degiro/pending
+- Display the pending orders for your Degiro broker: portfolio/brokers/degiro/pending
+- Get a list of pending orders in your Degiro account: portfolio/brokers/degiro/pending

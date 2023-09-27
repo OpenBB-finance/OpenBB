@@ -1,0 +1,19 @@
+parent_command:crypto/defi
+usage: gacc [-l LIMIT] [--cumulative] [-k {active,total}]
+
+Displays terra blockchain account growth history. [Source: https://fcd.terra.dev/swagger]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of days to show (default: 90)
+  --cumulative          Show cumulative or discrete values. For active accounts only discrete value are available (default: True)
+  -k {active,total}, --kind {active,total}
+                        Total account count or active account count. Default: total (default: total)
+
+
+Examples:
+- To view the total account growth history for the past 30 days on the Terra blockchain: crypto/defi/gacc -l 30
+- Display the active account growth history for the past 60 days: crypto/defi/gacc -l 60 -k active
+- Show the cumulative total account growth history for the past 45 days: crypto/defi/gacc -l 45 --cumulative
+- To see the discrete active account growth history for the past 90 days: crypto/defi/gacc -l 90 -k active --cumulative
+- Display the total account growth history with the default settings: crypto/defi/gacc

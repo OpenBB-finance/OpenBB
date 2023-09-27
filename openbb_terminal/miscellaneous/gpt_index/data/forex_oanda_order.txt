@@ -1,0 +1,17 @@
+parent_command:forex/oanda
+usage: order -u UNITS -p PRICE
+
+Create order
+
+optional arguments:
+  -u UNITS, --unit UNITS
+                        The number of units to place in the order request. Positive for a long position and negative for a short position.
+  -p PRICE, --price PRICE
+                        The price to set for the limit order.
+
+
+Examples:
+- Create a long position order with 100 units at a specific price: forex/oanda/order -u 100 -p 1.25
+- Place a short position order for 50 units at a specific price: forex/oanda/order -u -50 -p 1.15
+- Set up a limit order for a long position of 200 units: forex/oanda/order --unit 200 --price 1.30
+- Initiate a limit order for a short position with 150 units: forex/oanda/order -u -150 -p 1.10

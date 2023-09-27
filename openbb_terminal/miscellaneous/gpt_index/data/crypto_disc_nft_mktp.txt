@@ -1,0 +1,28 @@
+parent_command:crypto/disc
+usage: nft_mktp [-c CHAIN] [-s SORTBY [SORTBY ...]] [-o ORDER] [-l LIMIT]
+
+Shows NFT marketplaces [Source: https://dappradar.com/] Accepts --chain to filter by blockchain --sortby {name, avgPrice, volume, traders...} to sort by column --order {asc, desc} to sort ascending or descending --limit to limit
+number of records
+
+optional arguments:
+  -c CHAIN, --chain CHAIN
+                        Name of the blockchain to filter by. (default: None)
+  -s SORTBY [SORTBY ...], --sortby SORTBY [SORTBY ...]
+                        Sort by given column. (default: None)
+  -o ORDER, --order ORDER
+                        Order of sorting. Default: desc (default: desc)
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+
+
+Examples:
+- View NFT marketplaces for all chains: crypto/disc/nft_mktp
+- View NFT marketplaces for a specific chain: crypto/disc/nft_mktp -c Ethereum
+- View NFT marketplaces sorted by volume: crypto/disc/nft_mktp -s volume
+- View NFT marketplaces sorted by average price in ascending order: crypto/disc/nft_mktp -s avgPrice -o asc
+- View NFT marketplaces sorted by traders and volume: crypto/disc/nft_mktp -s traders volume
+- View top 5 NFT marketplaces: crypto/disc/nft_mktp -l 5
+- View NFT marketplaces for a specific chain and sorted by traders: crypto/disc/nft_mktp -c Binance -s traders
+- View top 3 NFT marketplaces sorted by volume for a specific chain: crypto/disc/nft_mktp -c Ethereum -s volume -l 3
+- View NFT marketplaces sorted by multiple columns and limited number of records: crypto/disc/nft_mktp -s volume traders -o asc -l 7
+- View NFT marketplaces for a specific chain, sorted by average price, and limited number of records: crypto/disc/nft_mktp -c Solana -s avgPrice -o desc -l 5

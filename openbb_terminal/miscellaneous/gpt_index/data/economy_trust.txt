@@ -1,0 +1,21 @@
+parent_command:economy
+usage: trust [-c COUNTRIES] [-s START_DATE] [-e END_DATE]
+
+Trust in government refers to the share of people who report having confidence in the national government.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- To get trust in government data for the United States: economy/trust
+- To get trust in government data for a specific country, such as Germany: economy/trust -c germany
+- To get trust in government data for multiple countries, such as France and Italy: economy/trust -c france,italy
+- To get trust in government data for a specific time range, from 2000-01-01 to 2020-12-31: economy/trust -s 2000-01-01 -e 2020-12-31
+- To get trust in government data for a specific country and time range, such as Japan from 2010-01-01 to 2015-12-31: economy/trust -c japan -s 2010-01-01 -e 2015-12-31
+- To get trust in government data for multiple countries within a specific time range, such as Canada and Australia from 2005-01-01 to 2019-12-31: economy/trust -c canada,australia -s 2005-01-01 -e 2019-12-31

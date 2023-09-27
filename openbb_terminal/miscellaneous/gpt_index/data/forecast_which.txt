@@ -1,0 +1,11 @@
+parent_command:forecast
+usage: which
+
+Show library versions of required packages.
+
+which
+Examples:
+- To display the library versions of required packages: forecast/which
+- Check the library versions of required packages using this command: forecast/which
+- Use forecast/which to view the library versions for required packages.
+- Execute forecast/which to show the library versions for necessary packages.

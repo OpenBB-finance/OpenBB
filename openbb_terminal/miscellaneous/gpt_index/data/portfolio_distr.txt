@@ -1,0 +1,14 @@
+parent_command:portfolio
+usage: distr [-p PERIOD]
+
+Compute distribution of daily returns
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        The file to be loaded (default: all)
+
+
+Examples:
+- Calculate the distribution of daily returns for your entire portfolio: portfolio/distr
+- Compute the distribution of daily returns for your portfolio over the last 30 days: portfolio/distr -p 30
+- Determine the distribution of daily returns for your portfolio during the past 90 days: portfolio/distr --period 90

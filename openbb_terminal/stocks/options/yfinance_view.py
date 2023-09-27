@@ -320,8 +320,8 @@ def display_vol_surface(
     tick_kwargs = dict(tickfont=dict(size=13), titlefont=dict(size=16))
     fig.update_layout(
         scene=dict(
-            xaxis=dict(title="Strike", **tick_kwargs),
-            yaxis=dict(title="DTE", **tick_kwargs),
+            xaxis=dict(title="DTE", **tick_kwargs),
+            yaxis=dict(title="Strike", **tick_kwargs),
             zaxis=dict(title=z, **tick_kwargs),
         )
     )
@@ -387,7 +387,7 @@ def show_greeks(
     chain = get_option_chain(symbol, expiry)
 
     min_strike, max_strike = op_helpers.get_strikes(
-        min_sp=mini, max_sp=maxi, current_price=current_price
+        min_sp=mini, max_sp=maxi, chain=chain.puts
     )
 
     for option in ["calls", "puts"]:

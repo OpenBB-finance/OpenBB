@@ -1,0 +1,26 @@
+parent_command:economy
+usage: fgdp [-c COUNTRIES] [-t {real,nominal}] [-q] [-s START_DATE] [-e END_DATE]
+
+Forecast is based on an assessment of the economic climate in individual countries and the world economy, using a combination of model-based analyses and expert judgement. This indicator is measured in growth rates compared to
+previous year.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -t {real,nominal}, --types {real,nominal}
+                        Use either 'real' or 'nominal' (default: real)
+  -q, --quarterly       Whether to plot quarterly results. (default: False)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 2013-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2033-06-02)
+
+
+Examples:
+- To get the real GDP forecast for the United States: economy/fgdp
+- To obtain the nominal GDP forecast for the United States: economy/fgdp -t nominal
+- To view the real GDP forecast for multiple countries: economy/fgdp -c "united_states, germany, japan"
+- To display the quarterly real GDP forecast for the United States: economy/fgdp -q
+- To retrieve the real GDP forecast for the United States between specific dates: economy/fgdp -s 2015-01-01 -e 2025-12-31
+- To get the nominal GDP forecast for Germany and France from 2015 to 2030: economy/fgdp -c "germany, france" -t nominal -s 2015-01-01 -e 2030-12-31
+- To view the quarterly nominal GDP forecast for the United States and Canada: economy/fgdp -c "united_states, canada" -t nominal -q

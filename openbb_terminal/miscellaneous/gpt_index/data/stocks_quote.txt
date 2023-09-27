@@ -1,0 +1,11 @@
+parent_command: stocks/
+usage: quote [-t S_TICKER] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Current quote for stock ticker  optional arguments:   -t S_TICKER, --ticker S_TICKER                         stocks/QUOTE_ticker (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about quote' to access the related guide.
+Summary: Display the current quote for a stock ticker, with the option to export the raw data in various formats and save the data to a specific excel sheet.
+
+Examples:
+- Retrieve the current quote for a stock: stocks/quote -t <SYMBOL>
+- Export the current quote for a stock in csv format: stocks/quote -t <SYMBOL> --export csv
+- Export the current quote for a stock in json format: stocks/quote -t <SYMBOL> --export json
+- Export the current quote for a stock in xlsx format: stocks/quote -t <SYMBOL> --export xlsx
+- Save the current quote for a stock to a specific excel sheet: stocks/quote -t <SYMBOL> --sheet-name Sheet1
+- What is the last price for a stock: stocks/quote -t <SYMBOL>

@@ -1,0 +1,15 @@
+parent_command: stocks/disc/
+usage: divcal [-d DATE]               [-s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}]               [-r] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT]  Get dividend calendar for selected date  optional arguments:   -d DATE, --date DATE  Date to get format for (default: 2023-04-19                         13:01:08.330831)   -s {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}, --sort {name,symbol,ex-dividend_date,payment_date,record_date,dividend,annual_dividend,announcement_date}                         Column to sort by (default: dividend)   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 10)  For more information and examples, use 'about divcal' to access the related guide.
+Summary: Retrieve the dividend calendar for a selected date, displaying data such as name, symbol, ex-dividend date, payment date, record date, dividend, annual dividend, and announcement date. You can sort the data by a specific column, reverse the sorting order, set a limit on the number of entries shown, and export the data in various formats.
+
+Examples:
+- Get the dividend calendar for a specific date: stocks/disc/divcal -d 2023-05-01
+- Get the dividend calendar sorted by symbol: stocks/disc/divcal -s symbol
+- Get the dividend calendar sorted by payment date in ascending order: stocks/disc/divcal -s payment_date -r
+- Get the dividend calendar and limit the number of entries to 20: stocks/disc/divcal -l 20
+- Get the dividend calendar and export the data in csv format: stocks/disc/divcal --export csv
+- Get the dividend calendar and save the data to a specific excel sheet: stocks/disc/divcal --sheet-name Sheet1
+- Get the dividend calendar sorted by annual dividend and reverse the sorting order: stocks/disc/divcal -s annual_dividend -r
+- Get the dividend calendar for a specific date and sort by ex-dividend date: stocks/disc/divcal -d 2023-05-01 -s ex-dividend_date
+- Get the dividend calendar sorted by record date and limit the number of entries to 15: stocks/disc/divcal -s record_date -l 15
+- Get the dividend calendar for a specific date and export the data in xlsx format: stocks/disc/divcal -d 2023-05-01 --export xlsx

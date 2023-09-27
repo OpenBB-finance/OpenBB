@@ -1,0 +1,19 @@
+parent_command:crypto/ov
+usage: pairs [-l LIMIT] [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}] [-r]
+
+Shows available trading pairs on Coinbase
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number of pairs >=10 (default: 15)
+  -s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}, --sortby {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}
+                        Sort by given column. Default: id (default: id)
+  -r, --reverse         Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Display 10 trading pairs: crypto/ov/pairs -l 10
+- Show 20 trading pairs sorted by base currency: crypto/ov/pairs -l 20 -s base_currency
+- List available trading pairs, sorted by quote currency in descending order: crypto/ov/pairs -s quote_currency -r
+- Show 15 trading pairs sorted by maximum market funds: crypto/ov/pairs -s max_market_funds
+- Display trading pairs with a limit of 25, sorted by display name in reverse order: crypto/ov/pairs -l 25 -s display_name -r

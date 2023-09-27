@@ -1,0 +1,17 @@
+parent_command:economy/qa
+usage: cusum [-t THRESHOLD] [-d DRIFT]
+
+Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
+
+optional arguments:
+  -t THRESHOLD, --threshold THRESHOLD
+                        threshold (default: 1.3851208411170635)
+  -d DRIFT, --drift DRIFT
+                        drift (default: 0.6925604205585317)
+
+
+Examples:
+- To analyze data with the CUSUM algorithm using default threshold and drift values: economy/qa/cusum
+- To apply the CUSUM algorithm with a custom threshold of 2: economy/qa/cusum -t 2
+- To use the CUSUM algorithm with a custom drift of 0.5: economy/qa/cusum -d 0.5
+- To perform CUSUM analysis with both custom threshold and drift values: economy/qa/cusum -t 1.5 -d 0.7

@@ -123,6 +123,9 @@ cn_sse_a                                                                        
 cn_szse_comp                                                                            SZSE Component Index (CNY)      399001.SZ
 cn_szse_a                                                                                SZSE A-Shares Index (CNY)      399107.SZ
 tw_twii                                                                                  TSEC Weighted Index (TWD)          ^TWII
+tw_tcii                                                                    TSEC Cement and Ceramics Subindex (TWD)          ^TCII
+tw_tfii                                                                                  TSEC Foods Subindex (TWD)          ^TFII
+tw_tfni                                                                                TSEC Finance Subindex (TWD)          ^TFNI
 tw_tpai                                                                         TSEC Paper and Pulp Subindex (TWD)          ^TPAI
 hk_hsi                                                                                       Hang Seng Index (HKD)           ^HSI
 hk_utilities                                                                Hang Seng Utilities Sector Index (HKD)          ^HSNU
@@ -130,6 +133,7 @@ hk_china                                                       Hang Seng China-A
 hk_finance                                                                    Hang Seng Finance Sector Index (HKD)          ^HSNF
 hk_properties                                                              Hang Seng Properties Sector Index (HKD)          ^HSNP
 hk_hko                                                                     NYSE ARCA Hong Kong Options Index (USD)           ^HKO
+hk_titans30                                                              Dow Jones Hong Kong Titans 30 Index (HKD)          ^XLHK
 id_jkse                                                                              Jakarta Composite Index (IDR)          ^JKSE
 id_lq45                                                                  Indonesia Stock Exchange LQ45 Index (IDR)        ^JKLQ45
 my_klci                                                                    FTSE Kuala Lumpur Composite Index (MYR)          ^KLSE
@@ -223,6 +227,7 @@ ice_comm                                                           ICE FactSet G
 nyse_nyl                                                                                  NYSE World Leaders Index           ^NYL
 nyse_nyi                                                                              NYSE International 100 Index           ^NYI
 nyse_nyy                                                                                            NYSE TMT Index           ^NYY
+nyse_fang                                                                                       NYSE FANG+TM index        ^NYFANG
 arca_xmi                                                                              NYSE ARCA Major Market Index           ^XMI
 arca_xbd                                                                  NYSE ARCA Securities Broker/Dealer Index           ^XBD
 arca_xii                                                                             NYSE ARCA Institutional Index           ^XII
@@ -249,7 +254,9 @@ reit_wgresi                                                               Wilshi
 reit_wilreit                                                                                Wilshire US REIT Index       ^WILREIT
 reit_wilresi                                                                Wilshire US Real Estate Security Index       ^WILRESI
 cboe_bxm                                                                              CBOE Buy-Write Monthly Index           ^BXM
-cboe_vix                                                                                     CBOE Volatility Index           ^VIX
+cboe_vix                                                                             CBOE S&P 500 Volatility Index           ^VIX
+cboe_vix9d                                                                     CBOE S&P 500 9-Day Volatility Index         ^VIX9D
+cboe_vix3m                                                                   CBOE S&P 500 3-Month Volatility Index         ^VIX3M
 cboe_vin                                                                                  CBOE Near-Term VIX Index           ^VIN
 cboe_vvix                                                                                CBOE VIX Volatility Index          ^VVIX
 cboe_shortvol                                                                         CBOE Short VIX Futures Index      ^SHORTVOL
@@ -260,6 +267,8 @@ cboe_ovx                                                                        
 cboe_tnx                                                                         CBOE Interest Rate 10 Year T-Note           ^TNX
 cboe_tyx                                                                              CBOE 30 year Treasury Yields           ^TYX
 cboe_irx                                                                                CBOE 13 Week Treasury Bill           ^IRX
+cboe_evz                                                                       CBOE Euro Currency Volatility Index           ^EVZ
+cboe_rvx                                                                        CBOE Russell 2000 Volatility Index           ^RVX
 move                                                                                         ICE BofAML Move Index          ^MOVE
 dxy                                                                                                US Dollar Index       DX-Y.NYB
 crypto200                                                                          CMC Crypto 200 Index by Solacti        ^CMC200

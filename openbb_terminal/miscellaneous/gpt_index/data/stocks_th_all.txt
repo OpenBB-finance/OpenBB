@@ -1,0 +1,7 @@
+parent_command: stocks/th/
+usage: exchange [-h]  Show all exchanges  optional arguments:   -h, --help  show this help message (default: False)  For more information and examples, use 'about exchange' to access the related guide.
+Summary: Display a list of all available stock exchanges.
+
+Examples:
+- To view all exchanges: stocks/th/exchange
+- For a list of all stock exchanges: stocks/th/exchange

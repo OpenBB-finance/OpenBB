@@ -1,0 +1,15 @@
+parent_command:etf
+usage: compare -e NAMES
+
+Compare selected ETFs [Source: StockAnalysis]
+
+optional arguments:
+  -e NAMES, --etfs NAMES
+                        Symbols to compare (default: None)
+
+
+Examples:
+- Compare two ETFs: etf/compare -e <SYMBOL1> <SYMBOL2>
+- Analyze and compare a group of ETFs: etf/compare --etfs <SYMBOL1> <SYMBOL2> <SYMBOL3>
+- Compare a list of ETFs by their symbols: etf/compare -e <SYMBOL1> <SYMBOL2> <SYMBOL3> <SYMBOL4>
+- Contrast multiple ETFs to analyze their performance: etf/compare --etfs <SYMBOL1> <SYMBOL2> <SYMBOL3> <SYMBOL4> <SYMBOL5>

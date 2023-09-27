@@ -1,0 +1,16 @@
+parent_command:reports
+usage: run -f {} [-p PARAMETERS [PARAMETERS ...]]
+
+Run a notebook from this folder: '`USER_DATA_DIRECTORY`\reports\custom reports'.
+
+optional arguments:
+  -f {}, --file {}      The file to be loaded (default: None)
+  -p PARAMETERS [PARAMETERS ...], --parameters PARAMETERS [PARAMETERS ...]
+                        Report parameters with format 'name:value'. (default: None)
+
+
+Examples:
+- To run a notebook file for a custom report: reports/run -f <FILE>
+- Run a notebook file with specific parameters: reports/run -f <FILE> -p parameter1:value1 parameter2:value2
+- Execute a custom report with a single parameter: reports/run -f <FILE> -p parameter:value
+- Run a custom report notebook and provide multiple parameters: reports/run -f <FILE> -p param1:value1 param2:value2 param3:value3

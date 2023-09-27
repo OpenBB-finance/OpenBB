@@ -1,0 +1,19 @@
+parent_command:portfolio
+usage: load [-f FILE] [-n NAME] [-r RISK_FREE_RATE] [-e]
+
+Load your portfolio transactions.
+
+optional arguments:
+  -f FILE, --file FILE  The file to be loaded (default: None)
+  -n NAME, --name NAME  The name that you wish to give to your portfolio (default: None)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set the risk free rate. (default: 0)
+  -e, --example         Run an example holdings file to understand how the portfolio menu can be used. (default: False)
+
+
+Examples:
+- Load your portfolio transactions from a file: portfolio/load -f transactions.csv
+- Load your portfolio transactions and assign a name to your portfolio: portfolio/load -f transactions.csv -n MyPortfolio
+- Load your portfolio transactions and set the risk-free rate: portfolio/load -f transactions.csv -r 0.02
+- Load your portfolio transactions with a name and risk-free rate: portfolio/load -f transactions.csv -n MyPortfolio -r 0.02
+- Run an example holdings file to understand how the portfolio menu can be used: portfolio/load -e

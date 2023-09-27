@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: fundrate
+
+Displays funding rate by exchange for a certain asset [Source: https://coinglass.github.io/API-Reference/]
+
+fundrate
+Examples:
+- To view the funding rate for a specific cryptocurrency: crypto/load <COIN>/dd/fundrate
+- Display funding rate for a chosen asset: crypto/load <COIN>/dd/fundrate
+- Show funding rate by exchange for a particular cryptocurrency: crypto/load <COIN>/dd/fundrate
+- Retrieve the funding rate for a selected digital asset: crypto/load <COIN>/dd/fundrate
+- Check the funding rate for a certain crypto asset by exchange: crypto/load <COIN>/dd/fundrate

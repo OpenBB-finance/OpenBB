@@ -1,0 +1,256 @@
+name: Manually Triggered Unit Test
+
+env:
+  OPENBB_ENABLE_QUICK_EXIT: true
+  OPENBB_LOG_COLLECT: false
+  OPENBB_USE_PROMPT_TOOLKIT: false
+  OPENBB_FILE_OVERWRITE: true
+  OPENBB_ENABLE_CHECK_API: false
+  OPENBB_PREVIOUS_USE: true
+  OPENBB_USE_INTERACTIVE_DF: false
+  PIP_DEFAULT_TIMEOUT: 100
+
+on:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests-python:
+    name: Vanilla Python Tests - ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+        os: [ubuntu-latest]
+        exclude:
+          - os: ubuntu-latest
+            python-version: "3.9"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.4.0
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction -E optimization
+
+      - name: List installed packages
+        shell: bash -l {0}
+        run: |
+          source $VENV
+          pip list
+
+      - name: Run tests
+        env:
+          MPLBACKEND: Agg
+        run: |
+          source $VENV
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
+
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
+
+  full-test:
+    name: Full Test Suite - (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    # Run only when a PR is merged or a push to release/* branch
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+        os: [ubuntu-latest, macos-latest]
+        exclude:
+          - os: ubuntu-latest
+            python-version: "3.9"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: x64
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.4.0
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
+
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: |
+          poetry install --no-interaction -E optimization
+
+      - name: List installed packages
+        shell: bash -l {0}
+        run: |
+          source $VENV
+          pip list
+
+      - name: Start Terminal and exit
+        run: |
+          source $VENV
+          python terminal.py
+
+      - name: Run tests
+        env:
+          MPLBACKEND: Agg
+        run: |
+          source $VENV
+          pytest tests/ --optimization --autodoc -n auto --timeout=30
+
+  tests-conda:
+    name: Anaconda Python Tests - (${{ matrix.python-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu", "windows", "macos"]
+        python-version: ["3.9"]
+        dependencies: [""]
+        include:
+          - os: ubuntu
+            python: 3.9
+          - os: windows
+            python: 3.9
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+      PYTHONNOUSERSITE: 1
+
+    steps:
+      - name: Set git to use LF
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - name: Setup sudo apt installs for ubuntu-latest
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+              libgtk-3-dev \
+              libwebkit2gtk-4.0-dev
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v3
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ matrix.python }}
+          miniconda-version: "latest"
+          auto-update-conda: true
+          channels: conda-forge,defaults
+          show-channel-urls: true
+          channel-priority: flexible
+          environment-file: build/conda/conda-3-9-env.yaml
+          activate-environment: testing
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Update Temp permissions on windows
+        if: runner.os == 'Windows'
+        shell: cmd /C CALL {0}
+        run: >-
+          c:\windows\system32\icacls C:\Users\runneradmin\AppData\Local\Temp /grant "everyone":F /t
+
+      - name: Get pip cache dir
+        shell: bash -l {0}
+        id: pip-cache
+        run: |
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: pip cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements-full.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-v1-pip-
+
+      - name: Install dependencies (Bash)
+        shell: bash -l {0}
+        run: |
+          pip install --requirement requirements-full.txt
+          pip uninstall Brotli -y
+
+      - name: List installed packages (Bash)
+        shell: bash -l {0}
+        run: |
+          conda list
+          pip list
+
+      - name: Run tests (Bash)
+        env:
+          MPLBACKEND: Agg
+        shell: bash -l {0}
+        run: pytest tests/ -m "not linux" --optimization -n auto --timeout=30
+      - name: Start Terminal and exit
+        shell: bash -l {0}
+        run: python terminal.py

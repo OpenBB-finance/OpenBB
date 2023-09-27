@@ -1,0 +1,26 @@
+parent_command:crypto/ov
+usage: altindex [-p {30,90,365}] [-s SINCE] [-u UNTIL]
+
+Display altcoin index overtime. If 75% of the Top 50 coins performed better than Bitcoin over periods of time (30, 90 or 365 days) it is Altcoin Season. Excluded from the Top 50 are Stablecoins (Tether, DAI…) and asset backed
+tokens (WBTC, stETH, cLINK,…) [Source: https://blockchaincenter.net]
+
+optional arguments:
+  -p {30,90,365}, --period {30,90,365}
+                        Period of time to check if how altcoins have performed against btc (30, 90, 365) (default: 365)
+  -s SINCE, --since SINCE
+                        Start date (default: 1 year before, e.g., 2021-01-01) (default: 2022-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default is current date (default: 2023-06-02)
+
+
+Examples:
+- Display altcoin index over a 30-day period: crypto/ov/altindex -p 30
+- Show altcoin index over a 90-day period: crypto/ov/altindex -p 90
+- View altcoin index for the past 365 days: crypto/ov/altindex -p 365
+- Display altcoin index from a specific start date: crypto/ov/altindex -s 2022-01-01
+- Show altcoin index between a specific date range: crypto/ov/altindex -s 2022-01-01 -u 2022-06-01
+- View altcoin index for a 90-day period starting from a specific date: crypto/ov/altindex -p 90 -s 2022-01-01
+- Display altcoin index for a 30-day period between specific dates: crypto/ov/altindex -p 30 -s 2022-01-01 -u 2022-02-01
+- Show altcoin index for a 365-day period starting from a specific date: crypto/ov/altindex -p 365 -s 2021-06-01
+- View altcoin index for a 90-day period between specific dates: crypto/ov/altindex -p 90 -s 2022-01-01 -u 2022-04-01
+- Display altcoin index for a 365-day period between specific dates: crypto/ov/altindex -p 365 -s 2021-01-01 -u 2021-12-31

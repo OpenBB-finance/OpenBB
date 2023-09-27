@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: balance [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints either yearly or quarterly balance statement the company, and compares it against similar companies.  optional arguments:   -q, --quarter         Quarter financial data flag. (default: False)   -t S_TIMEFRAME, --timeframe S_TIMEFRAME                         Specify yearly/quarterly timeframe. Default is last.                         (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about balance' to access the related guide.
+Summary: The balance command prints the yearly or quarterly balance statement for a company and compares it against similar companies. You can specify the timeframe and choose whether to display quarterly data. Additionally, you can export the raw data in various formats and save it to a specific excel sheet.
+
+Examples:
+- To compare the yearly balance sheet for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/balance
+- To compare the quarterly balance sheet for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/balance -q
+- To compare the balance sheet for a specific timeframe: stocks/load <SYMBOL>/ca/set <SYMBOL2>/balance -t YEAR
+- To compare the balance sheet for a specific quarter: stocks/load <SYMBOL>/ca/set <SYMBOL2>/balance -q -t Q2

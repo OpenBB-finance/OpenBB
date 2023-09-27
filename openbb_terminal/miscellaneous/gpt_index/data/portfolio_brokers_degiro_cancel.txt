@@ -1,0 +1,13 @@
+parent_command:portfolio/brokers/degiro
+usage: cancel id
+
+positional arguments:
+  id  Order's id.
+
+
+Examples:
+- Cancel an order with a specific order ID: portfolio/brokers/degiro/cancel 12345
+- To cancel an order with ID 67890, use: portfolio/brokers/degiro/cancel 67890
+- Cancel an order by providing its ID like this: portfolio/brokers/degiro/cancel 24680
+- If you want to cancel an order with the ID 13579, enter: portfolio/brokers/degiro/cancel 13579
+- For canceling an order with the given ID 98765, execute: portfolio/brokers/degiro/cancel 98765

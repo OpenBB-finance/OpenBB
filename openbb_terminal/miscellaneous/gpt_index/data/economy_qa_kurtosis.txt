@@ -1,0 +1,15 @@
+parent_command:economy/qa
+usage: kurtosis [-w N_WINDOW]
+
+Kurtosis is a measure of the "tailedness" of the probability distribution of a real-valued random variable. Like skewness, kurtosis describes the shape of a probability distribution and there are different ways of quantifying it
+for a theoretical distribution and corresponding ways of estimating it from a sample from a population. Different measures of kurtosis may have different interpretations.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate kurtosis for the default window length: economy/qa/kurtosis
+- Calculate kurtosis with a custom window length of 30: economy/qa/kurtosis -w 30
+- Compute kurtosis using a window length of 50: economy/qa/kurtosis --window 50

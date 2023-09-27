@@ -1,0 +1,28 @@
+parent_command:forex
+usage: load [-t TICKER] [-r {i,d,w,m}] [-i {1min,5min,15min,30min,60min,90min,1hour,1day,5day,1week,1month,3month}] [-s START_DATE] [-e END]
+
+Load historical currency exchange rate data. Available data sources are Alpha Advantage and YahooFinanceBy default main source used for analysis is YahooFinance (yf). To change it use --source av
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Currency pair to load. (default: None)
+  -r {i,d,w,m}, --resolution {i,d,w,m}
+                        [Alphavantage only] Resolution of data. Can be intraday, daily, weekly or monthly (default: d)
+  -i {1min,5min,15min,30min,60min,90min,1hour,1day,5day,1week,1month,3month}, --interval {1min,5min,15min,30min,60min,90min,1hour,1day,5day,1week,1month,3month}
+                        Interval of intraday data. Options: [YahooFinance] 1min, 2min, 5min, 15min, 30min, 60min, 90min, 1hour, 1day, 5day, 1week, 1month, 3month. [AlphaVantage] 1min, 5min, 15min, 30min, 60min (default: 1day)
+  -s START_DATE, --start START_DATE
+                        The starting date (format YYYY-MM-DD) of the forex pair (default: 2022-06-02 12:53:40.964862)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the forex pair (default: 2023-06-02)
+
+
+Examples:
+- To load historical exchange rate data for a specific currency pair: forex/load -t <PAIR>
+- Load intraday data for a currency pair with 30-minute intervals: forex/load -t <PAIR> -r i -i 30min
+- Load weekly historical exchange rate data for a currency pair: forex/load -t <PAIR> -r w
+- Load historical exchange rate data for a currency pair from a specific start date: forex/load -t <PAIR> -s 2020-01-01
+- Load historical exchange rate data for a currency pair between a specific date range: forex/load -t <PAIR> -s 2020-01-01 -e 2020-12-31
+- Load historical exchange rate data for a currency pair using AlphaVantage as the data source: forex/load -t <PAIR> --source av
+- Load monthly historical exchange rate data for a currency pair using AlphaVantage: forex/load -t <PAIR> -r m --source av
+- Load historical exchange rate data for a currency pair with a specific interval using AlphaVantage: forex/load -t <PAIR> -i 15min --source av
+- Load historical exchange rate data for a currency pair with a custom date range and interval: forex/load -t <PAIR> -s 2020-01-01 -e 2020-12-31 -i 1hour
+- Load currency: forex/load -t <PAIR>

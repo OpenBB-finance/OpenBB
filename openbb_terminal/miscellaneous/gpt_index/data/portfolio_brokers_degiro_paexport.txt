@@ -1,0 +1,16 @@
+parent_command:portfolio/brokers/degiro
+usage: paexport -s START [-e END] [-c CURRENCY]
+
+optional arguments:
+  -s START, --start START
+                        Start date.
+  -e END, --end END     End date.
+  -c CURRENCY, --currency CURRENCY
+                        Used currency.
+
+
+Examples:
+- Export your Degiro portfolio data with a specific start date: portfolio/brokers/degiro/paexport -s 2022-01-01
+- Export Degiro portfolio data between a start and end date: portfolio/brokers/degiro/paexport -s 2022-01-01 -e 2022-12-31
+- Export Degiro portfolio data with a specific currency: portfolio/brokers/degiro/paexport -s 2022-01-01 -c USD
+- Export Degiro portfolio data between a start and end date and with a specific currency: portfolio/brokers/degiro/paexport -s 2022-01-01 -e 2022-12-31 -c USD

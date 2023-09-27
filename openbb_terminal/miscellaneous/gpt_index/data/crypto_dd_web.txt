@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: web
+
+Websites found for given Coin. You can find there urls to homepage, forum, announcement site and others.
+
+web
+Examples:
+- To access websites related to a specific coin: crypto/load <COIN>/dd/web
+- Display websites for a chosen cryptocurrency: crypto/load <COIN>/dd/web
+- Retrieve website information for a particular coin: crypto/load <COIN>/dd/web
+- Obtain website details for a specific cryptocurrency: crypto/load <COIN>/dd/web
+- View websites associated with a certain coin: crypto/load <COIN>/dd/web

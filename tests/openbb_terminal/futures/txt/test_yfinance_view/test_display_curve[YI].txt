@@ -1,3 +1,2 @@
-          Last Price
-Jul-2023   22.577999
+[red]No future data found to generate curve.[/red]
 

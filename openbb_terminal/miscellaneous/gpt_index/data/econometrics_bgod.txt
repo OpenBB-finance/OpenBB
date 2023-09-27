@@ -1,0 +1,14 @@
+parent_command:econometrics
+usage: bgod [-l LAGS]
+
+Show Breusch-Godfrey autocorrelation test results. Needs OLS to be run in advance with independent and dependent variables
+
+optional arguments:
+  -l LAGS, --lags LAGS  The lags for the Breusch-Godfrey test (default: 3)
+
+
+Examples:
+- Run OLS and then perform the Breusch-Godfrey autocorrelation test: econometrics/ols <INDEPENDENT_VARIABLE> <DEPENDENT_VARIABLE>/econometrics/bgod
+- Perform the Breusch-Godfrey test with a specific number of lags after running OLS: econometrics/ols <INDEPENDENT_VARIABLE> <DEPENDENT_VARIABLE>/econometrics/bgod -l 5
+- First, execute OLS and then apply the Breusch-Godfrey autocorrelation test using the default lags: econometrics/ols <INDEPENDENT_VARIABLE> <DEPENDENT_VARIABLE>/econometrics/bgod --lags 3
+- After running OLS, conduct the Breusch-Godfrey test with 7 lags: econometrics/ols <INDEPENDENT_VARIABLE> <DEPENDENT_VARIABLE>/econometrics/bgod --lags 7

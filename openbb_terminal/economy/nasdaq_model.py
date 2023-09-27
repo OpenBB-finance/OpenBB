@@ -192,14 +192,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
         df.columns = response_json["dataset"]["column_names"]
         df["Date"] = pd.to_datetime(df["Date"])
 
-    # Wrong API Key
-    elif r.status_code == 400:
-        console.print(r.text)
-    # Premium Feature
-    elif r.status_code == 403:
-        console.print(r.text)
-    # Catching other exception
-    elif r.status_code != 200:
+    else:
         console.print(r.text)
 
     return df

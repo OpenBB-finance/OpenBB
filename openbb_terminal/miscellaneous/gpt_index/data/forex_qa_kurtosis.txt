@@ -1,0 +1,15 @@
+parent_command:forex/qa
+usage: kurtosis [-w N_WINDOW]
+
+Kurtosis is a measure of the "tailedness" of the probability distribution of a real-valued random variable. Like skewness, kurtosis describes the shape of a probability distribution and there are different ways of quantifying it
+for a theoretical distribution and corresponding ways of estimating it from a sample from a population. Different measures of kurtosis may have different interpretations.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- To calculate kurtosis for a forex pair using the default window length: forex/load <PAIR>/qa/kurtosis
+- Compute kurtosis for a forex pair with a custom window length of 30: forex/load <PAIR>/qa/kurtosis -w 30
+- Analyze the kurtosis of a currency pair with a 50-period window: forex/load <PAIR>/qa/kurtosis --window 50

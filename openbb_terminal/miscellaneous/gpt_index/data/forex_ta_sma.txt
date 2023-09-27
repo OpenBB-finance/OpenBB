@@ -1,0 +1,20 @@
+parent_command:forex/ta
+usage: sma [-l N_LENGTH] [-o N_OFFSET]
+
+Moving Averages are used to smooth the data in an array to help eliminate noise and identify trends. The Simple Moving Average is literally the simplest form of a moving average. Each output value is the average of the previous n
+values. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period are not included in the average. This makes it less responsive to recent changes in the data, which can
+be useful for filtering out those changes.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Simple Moving Average with default window lengths for a specific forex pair: forex/load <PAIR>/ta/sma
+- For a custom window length of 30 days for the Simple Moving Average of a forex pair: forex/load <PAIR>/ta/sma -l 30
+- To calculate the Simple Moving Average with multiple window lengths of 10, 30, and 60 days for a forex pair: forex/load <PAIR>/ta/sma -l 10,30,60
+- For a specific forex pair, calculate the Simple Moving Average with a window length of 20 days and an offset of 5 days: forex/load <PAIR>/ta/sma -l 20 -o 5
+- To calculate the Simple Moving Average with a window length of 50 days and an offset of 10 days for a specific forex pair: forex/load <PAIR>/ta/sma -l 50 -o 10

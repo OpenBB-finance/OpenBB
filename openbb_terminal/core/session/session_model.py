@@ -7,15 +7,9 @@ import matplotlib.pyplot as plt
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal.base_helpers import (
-    remove_log_handlers,
-)
+from openbb_terminal.base_helpers import remove_log_handlers
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
-from openbb_terminal.core.models.user_model import (
-    ProfileModel,
-    SourcesModel,
-    UserModel,
-)
+from openbb_terminal.core.models.user_model import ProfileModel, SourcesModel, UserModel
 from openbb_terminal.core.session.current_user import (
     get_current_user,
     set_current_user,
@@ -99,7 +93,7 @@ def login(session: Dict, remember: bool = False) -> LoginStatus:
         preferences=get_current_user().preferences,
         sources=SourcesModel(),
     )
-    response = Hub.fetch_user_configs(session)
+    response = Hub.fetch_user_configs(session, Hub.BackendEnvironment.BASE_URL)
     if response is not None:
         if response.status_code == 200:
             configs = json.loads(response.content)
@@ -165,6 +159,7 @@ def update_backend_sources(auth_header, configs, silent: bool = True):
                 key="features_sources",
                 value=updated_sources,
                 auth_header=auth_header,
+                base_url=Hub.BackendEnvironment.BASE_URL,
                 silent=silent,
             )
     except Exception:
@@ -195,7 +190,8 @@ def logout(
         return
 
     success = True
-    r = Hub.delete_session(auth_header, token)
+
+    r = Hub.delete_session(auth_header, token, base_url=Hub.BackendEnvironment.BASE_URL)
     if not r or r.status_code != 200:
         success = False
 

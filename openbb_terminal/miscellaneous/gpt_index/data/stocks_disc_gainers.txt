@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: gainers [-l LIMIT] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 top gainers. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about gainers' to access the related guide.
+Summary: Display the top gainers in the stock market, with an optional limit up to 25 stocks. You can also export the raw data into various formats and save the data to a specific excel sheet. [Source: Yahoo Finance]
+
+Examples:
+- View the top 5 gainers: stocks/disc/gainers
+- View the top 10 gainers: stocks/disc/gainers -l 10
+- Display the top 25 gainers: stocks/disc/gainers -l 25
+- Export the top 5 gainers to a CSV file: stocks/disc/gainers --export csv
+- Export the top 10 gainers to an XLSX file: stocks/disc/gainers -l 10 --export xlsx
+- Save the top 5 gainers to a specific excel sheet: stocks/disc/gainers --sheet-name Sheet1

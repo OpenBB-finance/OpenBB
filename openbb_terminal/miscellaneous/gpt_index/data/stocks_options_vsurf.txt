@@ -1,0 +1,9 @@
+parent_command: stocks/options/
+usage: vsurf [-z {IV,OI,LP}] [-h] [--export EXPORT]  Plot 3D volatility surface.  optional arguments:   -z {IV,OI,LP}, --z-axis {IV,OI,LP}                         The data for the Z axis (default: IV)   -h, --help            show this help message (default: False)   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )  For more information and examples, use 'about vsurf' to access the related guide.
+Summary: Generate a 3D volatility surface plot for a specific stock symbol, with options to choose the data for the Z axis (IV, OI, or LP) and export the figure in various formats.
+
+Examples:
+- To plot a 3D volatility surface for <SYMBOL> with implied volatility on the Z axis: stocks/load <SYMBOL>/options/vsurf
+- To plot a 3D volatility surface for <SYMBOL> with open interest on the Z axis: stocks/load <SYMBOL>/options/vsurf -z OI
+- To plot a 3D volatility surface for <SYMBOL> with liquidity premium on the Z axis: stocks/load <SYMBOL>/options/vsurf -z LP
+- To plot a 3D volatility surface for <SYMBOL> and export the figure as a PNG: stocks/load <SYMBOL>/options/vsurf --export png

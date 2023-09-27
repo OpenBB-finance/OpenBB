@@ -82,13 +82,12 @@ def get_government_trading(
 
     else:
         return pd.DataFrame()
-
     headers = {
         "accept": "application/json",
         "X-CSRFToken": "TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu",  # pragma: allowlist secret
         "Authorization": f"Token {API_QUIVERQUANT_KEY}",
     }
-    response = request(url, headers=headers)
+    response = request(url, headers=headers, timeout=10)  # Default timeout causes error
     if response.status_code == 200:
         if gov_type in ["congress", "senate", "house"]:
             return pd.DataFrame(response.json()).rename(
@@ -276,8 +275,8 @@ def get_government_buys(
         else -float(x["min"]),
         axis=1,
     )
-
-    df_gov = df_gov.sort_values("TransactionDate", ascending=True)
+    df_gov = df_gov[df_gov.Transaction == "Purchase"]
+    df_gov = df_gov.sort_values(by="Amount", ascending=False).reset_index(drop=True)
 
     return df_gov
 
@@ -349,7 +348,11 @@ def get_government_sells(
     )
 
     df_gov = df_gov.sort_values("TransactionDate", ascending=True)
-
+    df_gov = (
+        df_gov[df_gov.Transaction == "Sale"]
+        .sort_values(by="Amount", key=lambda x: abs(x), ascending=False)
+        .reset_index(drop=True)
+    )
     return df_gov
 
 

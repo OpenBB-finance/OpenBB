@@ -1,0 +1,22 @@
+parent_command:crypto/onchain
+usage: prices [-l LIMIT] [-s {date,cap,volumeConverted,open,high,close,low}] [-r]
+
+Display token historical prices. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 10)
+  -s {date,cap,volumeConverted,open,high,close,low}, --sort {date,cap,volumeConverted,open,high,close,low}
+                        Sort by given column. Default: date (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the historical prices of a token for a specific <COIN>: crypto/load <COIN>/onchain/prices
+- Display the last 5 historical prices for a <COIN>: crypto/load <COIN>/onchain/prices -l 5
+- Show the historical prices of a <COIN> sorted by market cap: crypto/load <COIN>/onchain/prices -s cap
+- Display historical prices for a <COIN> sorted by volume converted: crypto/load <COIN>/onchain/prices -s volumeConverted
+- Retrieve the historical prices of a <COIN> sorted by opening price: crypto/load <COIN>/onchain/prices -s open
+- Show the historical prices of a <COIN> sorted by closing price: crypto/load <COIN>/onchain/prices -s close
+- Display the historical prices of a <COIN> sorted by low price: crypto/load <COIN>/onchain/prices -s low
+- Retrieve the historical prices of a <COIN> sorted by date in ascending order: crypto/load <COIN>/onchain/prices -s date -r

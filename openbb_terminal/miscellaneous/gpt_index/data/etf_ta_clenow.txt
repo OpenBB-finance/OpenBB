@@ -1,0 +1,14 @@
+parent_command:etf/ta
+usage: clenow [-p PERIOD]
+
+Calculates the Clenow Volatility Adjusted Momentum.
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Lookback period for regression (default: 90)
+
+
+Examples:
+- Calculate Clenow Volatility Adjusted Momentum for an ETF: etf/ta/clenow
+- Calculate Clenow Volatility Adjusted Momentum for an ETF with a custom lookback period: etf/ta/clenow -p 120
+- Find Clenow Volatility Adjusted Momentum for a specific ETF using a 60-day lookback period: etf/load <SYMBOL>/ta/clenow -p 60

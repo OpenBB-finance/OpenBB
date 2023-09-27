@@ -1,0 +1,25 @@
+parent_command:crypto/ov
+usage: stables [-l LIMIT] [-s {Symbol,Name,Price_[$],Market_Cap_[$],Market_Cap_Rank,Change_7d_[%],Change_24h_[%],Volume_[$]}] [-r] [--pie]
+
+Shows stablecoins by market capitalization. Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference like the U.S. dollar or to a commodity's price such as gold. You can display only N
+number of coins with --limit parameter. You can sort data by {} with --sortby
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 15)
+  -s {Symbol,Name,Price_[$],Market_Cap_[$],Market_Cap_Rank,Change_7d_[%],Change_24h_[%],Volume_[$]}, --sortby {Symbol,Name,Price_[$],Market_Cap_[$],Market_Cap_Rank,Change_7d_[%],Change_24h_[%],Volume_[$]}
+                        Sort by given column. Default: market_cap (default: Market_Cap_[$])
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  --pie                 Flag to show pie chart (default: False)
+
+
+Examples:
+- Display the top 15 stablecoins by market capitalization: crypto/ov/stables
+- Show the top 10 stablecoins sorted by market cap: crypto/ov/stables -l 10
+- Display the top 5 stablecoins sorted by 24-hour change percentage: crypto/ov/stables -l 5 -s Change_24h_[%]
+- Show stablecoins sorted by name in ascending order: crypto/ov/stables -s Name -r
+- Display the top 20 stablecoins sorted by 7-day change percentage in ascending order: crypto/ov/stables -l 20 -s Change_7d_[%] -r
+- Show the top 10 stablecoins sorted by volume in descending order: crypto/ov/stables -l 10 -s Volume_[$]
+- Display stablecoins sorted by symbol in ascending order: crypto/ov/stables -s Symbol -r
+- Show the top 15 stablecoins by market capitalization with a pie chart: crypto/ov/stables --pie
+- Display the top 7 stablecoins sorted by price in descending order: crypto/ov/stables -l 7 -s Price_[$]

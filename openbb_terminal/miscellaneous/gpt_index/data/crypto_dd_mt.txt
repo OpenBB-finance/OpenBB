@@ -1,0 +1,30 @@
+parent_command:crypto/dd
+usage: mt [--list] [-t TIMESERIES] [-i {5m,15m,30m,1h,1d,1w}] [-s START] [-end END] [--include-paid] [-q QUERY [QUERY ...]]
+
+Display messari timeseries [Source: https://messari.io]
+
+optional arguments:
+  --list                Flag to show available timeseries (default: False)
+  -t TIMESERIES, --timeseries TIMESERIES
+                        Messari timeseries id (default: )
+  -i {5m,15m,30m,1h,1d,1w}, --interval {5m,15m,30m,1h,1d,1w}
+                        Frequency interval (default: 1d)
+  -s START, --start START
+                        Initial date. Default: A year ago (default: 2022-06-02)
+  -end END, --end END   End date. Default: Today (default: 2023-06-02)
+  --include-paid        Flag to show both paid and free sources (default: False)
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query to search across all messari timeseries (default: )
+
+
+Examples:
+- Display available messari timeseries: crypto/dd/mt --list
+- Load <COIN> and show messari timeseries with a specific id: crypto/load <COIN>/dd/mt -t TIMESERIES
+- Load <COIN> and display messari timeseries with a 1-hour interval: crypto/load <COIN>/dd/mt -i 1h
+- Load <COIN> and show messari timeseries for a specific date range: crypto/load <COIN>/dd/mt -s 2022-01-01 -end 2022-06-01
+- Load <COIN> and display messari timeseries including paid sources: crypto/load <COIN>/dd/mt --include-paid
+- Load <COIN> and search messari timeseries using a query: crypto/load <COIN>/dd/mt -q QUERY
+- Load <COIN> and display messari timeseries with a specific id and a 15-minute interval: crypto/load <COIN>/dd/mt -t TIMESERIES -i 15m
+- Load <COIN> and show messari timeseries for a specific date range and interval: crypto/load <COIN>/dd/mt -s 2022-01-01 -end 2022-06-01 -i 1w
+- Load <COIN> and display messari timeseries with a specific id, interval, and date range: crypto/load <COIN>/dd/mt -t TIMESERIES -i 1d -s 2022-01-01 -end 2022-06-01
+- Load <COIN> and search messari timeseries using multiple queries: crypto/load <COIN>/dd/mt -q QUERY1 QUERY2 QUERY3

@@ -1,0 +1,10 @@
+parent_command: stocks/ba/
+usage: spacc [-l N_LIMIT] [-p] [-h]  Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]  optional arguments:   -l N_LIMIT, --limit N_LIMIT                         limit of posts with SPACs retrieved (default: 10)   -p, --popular         popular flag, if true the posts retrieved are based on                         score rather than time (default: False)   -h, --help            show this help message (default: False)  For more information and examples, use 'about spacc' to access the related guide.
+Summary: Display SPACs announcements from the 'SPACs' subreddit on Reddit. You can set a limit on the number of posts retrieved and choose to display popular posts based on score or recent posts based on time.
+
+Examples:
+- Retrieve the latest 10 SPACs announcements: stocks/ba/spacc
+- Retrieve the top 5 popular SPACs announcements: stocks/ba/spacc -l 5 -p
+- Retrieve the latest 20 SPACs announcements: stocks/ba/spacc -l 20
+- Display the most recent 15 SPACs announcements: stocks/ba/spacc --limit 15
+- Show the top 10 popular SPACs announcements based on score: stocks/ba/spacc -p --limit 10

@@ -1,0 +1,18 @@
+parent_command:account
+usage: list [-t {default,personal}] [-p PAGE] [-s SIZE]
+
+List routines available in the cloud.
+
+optional arguments:
+  -t {default,personal}, --type {default,personal}
+                        The type of routines to list. (default: personal)
+  -p PAGE, --page PAGE  The page number. (default: 1)
+  -s SIZE, --size SIZE  The number of results per page. (default: 10)
+
+
+Examples:
+- To list personal routines available in the cloud: account/list
+- To list default routines available in the cloud: account/list -t default
+- To display the second page of personal routines: account/list -p 2
+- To show 20 results per page for personal routines: account/list -s 20
+- To display the third page of default routines with 15 results per page: account/list -t default -p 3 -s 15

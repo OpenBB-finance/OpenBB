@@ -1,0 +1,16 @@
+parent_command:crypto/onchain
+usage: btcblockdata [--blockhash BLOCKHASH]
+
+Display block data from Blockchain.com, [Source: https://api.blockchain.info/]
+
+optional arguments:
+  --blockhash BLOCKHASH
+                        Flag for block hash of block. (default: False)
+
+
+Examples:
+- Retrieve block data for a specific block hash: crypto/onchain/btcblockdata --blockhash <BLOCKHASH>
+- To obtain block data using a block hash: crypto/onchain/btcblockdata --blockhash <BLOCKHASH>
+- Get block data by providing a block hash: crypto/onchain/btcblockdata --blockhash <BLOCKHASH>
+- Fetch block data for a given block hash: crypto/onchain/btcblockdata --blockhash <BLOCKHASH>
+- Acquire block data using the block hash: crypto/onchain/btcblockdata --blockhash <BLOCKHASH>

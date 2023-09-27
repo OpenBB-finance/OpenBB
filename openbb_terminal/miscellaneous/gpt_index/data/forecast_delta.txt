@@ -1,0 +1,18 @@
+parent_command:forecast
+usage: delta [-d {AAPL}] [-c TARGET_COLUMN]
+
+Add %Change (Delta) to dataset based on specific column.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+
+
+Examples:
+- Calculate the percentage change in the close column for the <SYMBOL> dataset: forecast/load <SYMBOL>/delta -c close
+- Add delta based on the open column for the <SYMBOL> dataset: forecast/load <SYMBOL>/delta -c open
+- Compute the percentage change in the high column for a specific dataset: forecast/load <SYMBOL>/delta -d <SYMBOL> -c high
+- Calculate delta for the low column in the selected dataset: forecast/load <SYMBOL>/delta -d <SYMBOL> -c low
+- Determine the percentage change for the volume column in the <SYMBOL> dataset: forecast/load <SYMBOL>/delta -c volume

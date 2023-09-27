@@ -1,0 +1,15 @@
+parent_command:crypto/defi
+usage: dtvl -d DAPPS
+
+Displays historical TVL of different dApps. [Source: https://docs.llama.fi/api]
+
+optional arguments:
+  -d DAPPS, --dapps DAPPS
+                        dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap (default: None)
+
+
+Examples:
+- To view historical TVL for a single dApp, use: crypto/defi/dtvl -d anchor
+- Retrieve historical TVL for multiple dApps: crypto/defi/dtvl -d sushiswap,pancakeswap
+- Display the historical TVL of various dApps: crypto/defi/dtvl --dapps compound,uniswap,aave
+- Check historical TVL for a combination of dApps: crypto/defi/dtvl -d balancer,curve,yearn

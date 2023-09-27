@@ -237,6 +237,15 @@ class FuturesController(BaseController):
             metavar="TICKER",
             choices=self.all_tickers,
         )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=valid_date,
+            help="Include the curve as of a previous date with format YYYY-MM-DD",
+            metavar="DATE",
+            default=None,
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
@@ -247,11 +256,22 @@ class FuturesController(BaseController):
         )
 
         if ns_parser:
-            yfinance_view.display_curve(
-                symbol=ns_parser.ticker.upper(),
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
+            if ns_parser.date:
+                yfinance_view.display_curve(
+                    symbol=ns_parser.ticker.upper(),
+                    date=ns_parser.date.strftime("%Y-%m-%d"),
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
+            else:
+                yfinance_view.display_curve(
+                    symbol=ns_parser.ticker.upper(),
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )

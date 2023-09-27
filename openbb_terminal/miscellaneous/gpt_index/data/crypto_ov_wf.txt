@@ -1,0 +1,14 @@
+parent_command:crypto/ov
+usage: wf [-l LIMIT]
+
+Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit number of coins to display withdrawal fees. Default 10 (default: 10)
+
+
+Examples:
+- To view the top 10 coins with their withdrawal fees: crypto/ov/wf
+- To display the top 5 coins and their withdrawal fees: crypto/ov/wf -l 5
+- If you want to see the withdrawal fees for the top 20 coins: crypto/ov/wf --limit 20

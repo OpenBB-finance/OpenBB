@@ -1,38 +1,38 @@
-fiscalDateEnding                          2021-12-31 2022-03-31 2022-06-30 2022-09-30 2022-12-31
-Reported Currency                                USD        USD        USD        USD        USD
-Total Assets                                62.131 B   66.038 B   68.513 B   74.426 B   82.338 B
-Total Current Assets                        27.100 B   29.050 B   31.222 B   35.990 B   40.917 B
-Cash And Cash Equivalents                   17.576 B   17.505 B   18.324 B   19.532 B   16.253 B
-Cash And Short Term Investments             17.707 B   18.013 B   18.915 B   21.107 B   22.185 B
-Inventory                                    5.757 B    6.691 B    8.108 B   10.327 B   12.839 B
-Net Receivables                              1.924 B    2.321 B    2.089 B    2.198 B    2.959 B
-Total Non Current Assets                    25.281 B   25.534 B   26.936 B   28.067 B   32.209 B
-Property Plant Equipment                    18.884 B   20.027 B   21.093 B   21.926 B   23.548 B
-Accumulated Depreciation Amortization Ppe    6.731 B    7.266 B    7.787 B    8.321 B    9.041 B
-Intangible Assets                              457 M      454 M      437 M      419 M      409 M
-Intangible Assets Excluding Goodwill           257 M      254 M      241 M      228 M      215 M
-Goodwill                                       200 M      200 M      196 M      191 M      194 M
-Investments                                    131 M   18.521 B   19.506 B   22.682 B   22.185 B
-Long Term Investments                              0          0          0          0          0
-Short Term Investments                         131 M      508 M      591 M    1.575 B    5.932 B
-Other Current Assets                         1.723 B    2.035 B    2.118 B    2.364 B    2.941 B
-Other Non Current Assets                     2.138 B    2.634 B    2.952 B    3.236 B    4.193 B
-Total Liabilities                           30.548 B   30.632 B   30.855 B   33.302 B   36.440 B
-Total Current Liabilities                   19.705 B   21.455 B   21.821 B   24.611 B   26.709 B
-Current Accounts Payable                    10.025 B   11.171 B   11.212 B   13.897 B   15.255 B
-Deferred Revenue                             5.881 B    3.782 B    6.728 B    6.993 B    7.464 B
-Current Debt                                 1.088 B    1.168 B    1.057 B      979 M    1.016 B
-Short Term Debt                                587 M      677 M      582 M      501 M      530 M
-Total Non Current Liabilities                8.260 B    8.738 B    8.761 B    9.168 B   10.866 B
-Capital Lease Obligations                      991 M      900 M      803 M      678 M      568 M
-Long Term Debt                               4.254 B    2.253 B    2.095 B    1.418 B    1.029 B
-Current Long Term Debt                       1.088 B    1.168 B    1.057 B      979 M          0
-Long Term Debt Non Current                         0          0          0          0          0
-Short Long Term Debt Total                   4.841 B    2.930 B    2.677 B    1.919 B    1.559 B
-Other Current Liabilities                      310 M      309 M      337 M      342 M      354 M
-Other Non Current Liabilities                3.546 B    3.839 B    3.926 B    4.330 B    5.330 B
-Total Shareholder Equity                    30.189 B   34.085 B   36.376 B   39.851 B   44.704 B
-Treasury Stock                                     0          0          0          0          0
-Retained Earnings                              329 M    3.649 B    5.908 B    9.198 B   12.885 B
-Common Stock                                     3 M        1 M        1 M        3 M        3 M
-Common Stock Shares Outstanding              1.033 B    1.036 B    1.041 B    3.158 B    3.164 B
+fiscalDateEnding                              2021-12-31     2022-03-31     2022-06-30     2022-09-30     2022-12-31
+Reported Currency                                    USD            USD            USD            USD            USD
+Total Assets                               62131000000.0  66038000000.0  68513000000.0  74426000000.0  82338000000.0
+Total Current Assets                       27100000000.0  29050000000.0  31222000000.0  35990000000.0  40917000000.0
+Cash And Cash Equivalents                  17576000000.0  17505000000.0  18324000000.0  19532000000.0  16253000000.0
+Cash And Short Term Investments            17707000000.0  18013000000.0  18915000000.0  21107000000.0  22185000000.0
+Inventory                                   5757000000.0   6691000000.0   8108000000.0  10327000000.0  12839000000.0
+Net Receivables                             1924000000.0   2321000000.0   2089000000.0   2198000000.0   2959000000.0
+Total Non Current Assets                   25281000000.0  25534000000.0  26936000000.0  28067000000.0  32209000000.0
+Property Plant Equipment                   18884000000.0  20027000000.0  21093000000.0  21926000000.0  23548000000.0
+Accumulated Depreciation Amortization Ppe   6731000000.0   7266000000.0   7787000000.0   8321000000.0   9041000000.0
+Intangible Assets                            457000000.0    454000000.0    437000000.0    419000000.0    409000000.0
+Intangible Assets Excluding Goodwill         257000000.0    254000000.0    241000000.0    228000000.0    215000000.0
+Goodwill                                     200000000.0    200000000.0    196000000.0    191000000.0    194000000.0
+Investments                                  131000000.0  18521000000.0  19506000000.0  22682000000.0  22185000000.0
+Long Term Investments                                0.0            0.0            0.0            0.0            0.0
+Short Term Investments                       131000000.0    508000000.0    591000000.0   1575000000.0   5932000000.0
+Other Current Assets                        1723000000.0   2035000000.0   2118000000.0   2364000000.0   2941000000.0
+Other Non Current Assets                    2138000000.0   2634000000.0   2952000000.0   3236000000.0   4193000000.0
+Total Liabilities                          30548000000.0  30632000000.0  30855000000.0  33302000000.0  36440000000.0
+Total Current Liabilities                  19705000000.0  21455000000.0  21821000000.0  24611000000.0  26709000000.0
+Current Accounts Payable                   10025000000.0  11171000000.0  11212000000.0  13897000000.0  15255000000.0
+Deferred Revenue                            5881000000.0   3781560000.0   6728000000.0   6993000000.0   7464000000.0
+Current Debt                                1088000000.0   1168000000.0   1057000000.0    979000000.0   1016000000.0
+Short Term Debt                              587000000.0    677000000.0    582000000.0    501000000.0    530000000.0
+Total Non Current Liabilities               8260000000.0   8738000000.0   8761000000.0   9168000000.0  10866000000.0
+Capital Lease Obligations                    991000000.0    900000000.0    803000000.0    678000000.0    568000000.0
+Long Term Debt                              4254000000.0   2253000000.0   2095000000.0   1418000000.0   1029000000.0
+Current Long Term Debt                      1088000000.0   1168000000.0   1057000000.0    979000000.0            0.0
+Long Term Debt Non Current                           0.0            0.0            0.0            0.0            0.0
+Short Long Term Debt Total                  4841000000.0   2930000000.0   2677000000.0   1919000000.0   1559000000.0
+Other Current Liabilities                    310000000.0    309000000.0    337000000.0    342000000.0    354000000.0
+Other Non Current Liabilities               3546000000.0   3839000000.0   3926000000.0   4330000000.0   5330000000.0
+Total Shareholder Equity                   30189000000.0  34085000000.0  36376000000.0  39851000000.0  44704000000.0
+Treasury Stock                                       0.0            0.0            0.0            0.0            0.0
+Retained Earnings                            329000000.0   3649000000.0   5908000000.0   9198000000.0  12885000000.0
+Common Stock                                   3000000.0      1000000.0      1000000.0      3000000.0      3000000.0
+Common Stock Shares Outstanding             1033000000.0   1036000000.0   1041000000.0   3158000000.0   3164000000.0

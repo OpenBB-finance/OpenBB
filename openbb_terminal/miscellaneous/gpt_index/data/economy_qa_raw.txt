@@ -1,0 +1,20 @@
+parent_command:economy/qa
+usage: raw [-l LIMIT] [-r] [-s SORTBY]
+
+Print raw data to console
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number to show (default: 20)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -s SORTBY, --sortby SORTBY
+                        The column to sort by (default: None)
+
+
+Examples:
+- To display the top 20 raw data points: economy/qa/raw
+- To display the top 10 raw data points: economy/qa/raw -l 10
+- To display the top 30 raw data points sorted by a specific column: economy/qa/raw -l 30 -s ColumnName
+- To display the top 15 raw data points sorted in ascending order: economy/qa/raw -l 15 -r
+- To display the top 20 raw data points sorted in ascending order by a specific column: economy/qa/raw -r -s ColumnName
+- To display the top 5 raw data points sorted in descending order by a specific column: economy/qa/raw -l 5 -s ColumnName

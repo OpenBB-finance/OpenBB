@@ -1,0 +1,15 @@
+parent_command:portfolio
+usage: alloc [-a AGG] [-t]
+
+Show your allocation to each asset or sector compared to the benchmark.
+
+optional arguments:
+  -a AGG, --agg AGG  The type of allocation aggregation you wish to do (default: assets)
+  -t, --tables       Whether to also include the assets/sectors tables of both the benchmark and the portfolio. (default: False)
+
+
+Examples:
+- Display allocation for each asset compared to the benchmark: portfolio/alloc
+- Show allocation for each sector compared to the benchmark: portfolio/alloc -a sectors
+- Display allocation for each asset with benchmark and portfolio tables: portfolio/alloc -t
+- Show allocation for each sector with benchmark and portfolio tables: portfolio/alloc -a sectors -t

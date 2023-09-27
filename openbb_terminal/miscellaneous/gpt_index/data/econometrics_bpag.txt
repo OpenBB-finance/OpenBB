@@ -1,0 +1,11 @@
+parent_command:econometrics
+usage: bpag
+
+Show Breusch-Pagan heteroscedasticity test results. Needs OLS to be run in advance with independent and dependent variables
+
+bpag
+Examples:
+- After running OLS, display Breusch-Pagan heteroscedasticity test results: econometrics/bpag
+- To see the Breusch-Pagan test results, first run OLS with your chosen variables, then use: econometrics/bpag
+- Perform OLS with your independent and dependent variables, then execute the following command to view the Breusch-Pagan heteroscedasticity test outcome: econometrics/bpag
+- Once you have completed OLS with the necessary variables, utilize this command to reveal the Breusch-Pagan test results: econometrics/bpag

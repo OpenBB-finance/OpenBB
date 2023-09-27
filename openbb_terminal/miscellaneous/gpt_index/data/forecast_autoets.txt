@@ -1,0 +1,37 @@
+parent_command:forecast
+usage: autoets [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform Automatic ETS (Error, Trend, Seasonality) forecast: https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform an automatic ETS forecast for <SYMBOL> using default settings: forecast/autoets -d <SYMBOL>
+- Perform an automatic ETS forecast for <SYMBOL> with a specific target column: forecast/autoets -d <SYMBOL> -c volume
+- Perform an automatic ETS forecast for <SYMBOL> for 10 prediction days: forecast/autoets -d <SYMBOL> -n 10
+- Perform an automatic ETS forecast for <SYMBOL> using multiplicative seasonality: forecast/autoets -d <SYMBOL> -s M
+- Perform an automatic ETS forecast for <SYMBOL> with a seasonal period of 4 (quarterly): forecast/autoets -d <SYMBOL> -p 4
+- Perform an automatic ETS forecast for <SYMBOL> with a specific rolling training window: forecast/autoets -d <SYMBOL> -w 0.9
+- Perform an automatic ETS forecast for <SYMBOL> within a specific date range: forecast/autoets -d <SYMBOL> --start 2020-01-01 --end 2021-12-31
+- Perform an automatic ETS forecast for <SYMBOL> and display residuals: forecast/autoets -d <SYMBOL> --residuals
+- Perform an automatic ETS forecast for <SYMBOL> and show only the forecast without historical data: forecast/autoets -d <SYMBOL> --forecast-only
+- Perform an automatic ETS forecast for <SYMBOL> and export predictions to a CSV file: forecast/autoets -d <SYMBOL> --export-pred-raw

@@ -1,0 +1,19 @@
+parent_command:econometrics
+usage: show [-n {}] [-s SORTBY] [-r]
+
+Show a portion of the DataFrame
+
+optional arguments:
+  -n {}, --name {}      The name of the database you want to show data for (default: None)
+  -s SORTBY, --sortby SORTBY
+                        Sort based on a column in the DataFrame (default: )
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display a portion of the DataFrame for a specific database: econometrics/show -n <DATABASE_NAME>
+- To display a portion of the DataFrame for a specific database and sort by a particular column: econometrics/show -n <DATABASE_NAME> -s <COLUMN_NAME>
+- To display a portion of the DataFrame for a specific database and sort by a particular column in ascending order: econometrics/show -n <DATABASE_NAME> -s <COLUMN_NAME> -r
+- Show data for a specific database and sort it in ascending order: econometrics/show --name <DATABASE_NAME> --reverse
+- Display a portion of the DataFrame and sort it by a specific column: econometrics/show --sortby <COLUMN_NAME>
+- Display a portion of the DataFrame and sort it by a specific column in ascending order: econometrics/show --sortby <COLUMN_NAME> -r

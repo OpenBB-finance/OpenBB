@@ -1,0 +1,11 @@
+parent_command: stocks/options/screen/
+usage: view [-p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}] [-h]  View available presets under presets folder.  optional arguments:   -p {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}, --preset {high_iv,v_below_20day,liquid_otm,spy_30_delta,template}                         View specific custom preset   -h, --help            show this help message  For more information and examples, use 'about view' to access the related guide.
+Summary: View available presets for screening options or view a specific preset. Presets can help filter options based on certain criteria, such as high implied volatility or options with volume below the 20-day moving average.
+
+Examples:
+- View all available presets: stocks/options/screen/view
+- View the high implied volatility preset: stocks/options/screen/view -p high_iv
+- View the options with volume below the 20-day moving average preset: stocks/options/screen/view -p v_below_20day
+- View the liquid out-of-the-money options preset: stocks/options/screen/view -p liquid_otm
+- View the SPY 30 delta options preset: stocks/options/screen/view -p spy_30_delta
+- View a custom template preset: stocks/options/screen/view -p template

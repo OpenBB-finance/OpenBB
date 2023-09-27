@@ -1,0 +1,20 @@
+parent_command:etf/ta
+usage: aroon [-l N_LENGTH] [-s N_SCALAR]
+
+The word aroon is Sanskrit for "dawn's early light." The Aroon indicator attempts to show when a new trend is dawning. The indicator consists of two lines (Up and Down) that measure how long it has been since the highest
+high/lowest low has occurred within an n period range. When the Aroon Up is staying between 70 and 100 then it indicates an upward trend. When the Aroon Down is staying between 70 and 100 then it indicates an downward trend. A
+strong upward trend is indicated when the Aroon Up is above 70 while the Aroon Down is below 30. Likewise, a strong downward trend is indicated when the Aroon Down is above 70 while the Aroon Up is below 30. Also look for
+crossovers. When the Aroon Down crosses above the Aroon Up, it indicates a weakening of the upward trend (and vice versa).
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 25)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 100)
+
+
+Examples:
+- To analyze the Aroon indicator for an ETF with the default settings: etf/ta/aroon
+- To calculate the Aroon indicator for an ETF with a custom length of 30 periods: etf/ta/aroon -l 30
+- To evaluate the Aroon indicator for an ETF with a custom scalar of 50: etf/ta/aroon -s 50
+- To assess the Aroon indicator for an ETF with a custom length of 20 periods and a scalar of 80: etf/ta/aroon -l 20 -s 80

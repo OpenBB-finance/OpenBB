@@ -1,0 +1,15 @@
+parent_command:portfolio
+usage: yret [-p PERIOD]
+
+End of the year returns
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to select start end of the year returns (default: all)
+
+
+Examples:
+- To view end of the year returns for all periods in your portfolio: portfolio/yret
+- To view end of the year returns for a specific period in your portfolio: portfolio/yret -p 2020
+- Display end of the year returns for the last 5 years in your portfolio: portfolio/yret -p 2017-2021
+- Check end of the year returns for the period 2010-2015 in your portfolio: portfolio/yret --period 2010-2015

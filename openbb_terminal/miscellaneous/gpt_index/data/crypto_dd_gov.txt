@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: gov
+
+Display asset's governance [Source: https://messari.io]
+
+gov
+Examples:
+- To view the governance information of a specific cryptocurrency, use: crypto/load <COIN>/dd/gov
+- Display the governance details for a selected coin: crypto/load <COIN>/dd/gov
+- Retrieve governance information for a cryptocurrency: crypto/load <COIN>/dd/gov
+- Access governance data for a particular crypto asset: crypto/load <COIN>/dd/gov
+- Obtain the governance details of a specific crypto asset: crypto/load <COIN>/dd/gov

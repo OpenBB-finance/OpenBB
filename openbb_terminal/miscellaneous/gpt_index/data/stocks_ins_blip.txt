@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: blip [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest insider purchases 25k. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about blip' to access the related guide.
+Summary: Display the latest insider purchases of stocks with a transaction value of at least $25,000. You can limit the number of data rows displayed, and export the data in various formats. The data source is OpenInsider.
+
+Examples:
+- Show the latest 10 insider purchases of stocks with a transaction value of at least $25,000: stocks/ins/blip
+- Display the latest 20 insider purchases of stocks with a transaction value of at least $25,000: stocks/ins/blip -l 20
+- Retrieve the latest insider purchases of stocks with a transaction value of at least $25,000 and export the data to a CSV file: stocks/ins/blip --export csv
+- Show the latest insider purchases of stocks with a transaction value of at least $25,000 and save the data to a specific Excel sheet: stocks/ins/blip --sheet-name Sheet1

@@ -1,0 +1,21 @@
+parent_command:stocks/options/hedge
+usage: add [-p] [-s] -i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46}
+
+Add options to the diagram.
+
+optional arguments:
+  -p, --put             Buy a put instead of a call
+  -s, --short           Short the option instead of buying it
+  -i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46}, --identifier {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46}
+                        The identifier of the option as found in the list command
+
+
+Examples:
+- Add a call option to the diagram using its identifier: stocks/load <SYMBOL>/options/hedge add -i 5
+- Add a put option to the diagram using its identifier: stocks/load <SYMBOL>/options/hedge add -p -i 10
+- Short a call option and add it to the diagram using its identifier: stocks/load <SYMBOL>/options/hedge add -s -i 15
+- Short a put option and add it to the diagram using its identifier: stocks/load <SYMBOL>/options/hedge add -p -s -i 20
+- Add multiple call options to the diagram using their identifiers: stocks/load <SYMBOL>/options/hedge add -i 5 add -i 10 add -i 15
+- Add multiple put options to the diagram using their identifiers: stocks/load <SYMBOL>/options/hedge add -p -i 5 add -p -i 10 add -p -i 15
+- Short multiple call options and add them to the diagram using their identifiers: stocks/load <SYMBOL>/options/hedge add -s -i 5 add -s -i 10 add -s -i 15
+- Short multiple put options and add them to the diagram using their identifiers: stocks/load <SYMBOL>/options/hedge add -p -s -i 5 add -p -s -i 10 add -p -s -i 15

@@ -1,0 +1,13 @@
+parent_command:stocks/qa
+usage: hist [-b N_BINS]
+
+Histogram with density and rug
+
+optional arguments:
+  -b N_BINS, --bins N_BINS
+
+
+Examples:
+- To display a histogram with the default number of bins for a stock: stocks/load <SYMBOL>/qa/hist
+- For a histogram with a specific number of bins, use: stocks/load <SYMBOL>/qa/hist -b 20
+- If you want to visualize a stock's density and rug with 30 bins: stocks/load <SYMBOL>/qa/hist --bins 30

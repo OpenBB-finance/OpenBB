@@ -1,0 +1,14 @@
+parent_command:crypto/qa
+usage: hist [-b N_BINS]
+
+Histogram with density and rug
+
+optional arguments:
+  -b N_BINS, --bins N_BINS
+
+
+Examples:
+- To display a histogram with the default number of bins for a cryptocurrency: crypto/load <COIN>/qa/hist
+- To display a histogram with a specific number of bins for a cryptocurrency: crypto/load <COIN>/qa/hist -b 20
+- For visualizing the distribution of a cryptocurrency with 15 bins: crypto/load <COIN>/qa/hist --bins 15
+- To analyze the distribution of a specific cryptocurrency using a histogram with 10 bins: crypto/load <COIN>/qa/hist -b 10

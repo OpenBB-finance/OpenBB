@@ -1,0 +1,19 @@
+parent_command:forecast
+usage: load [-f {`file_name.csv`}] [-a ALIAS] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+
+Load custom dataset (from previous export, custom imports).
+
+optional arguments:
+  -f {`file_name.csv`}, --file {`file_name.csv`}
+                        File to load data in (can be custom import, may have been exported before.) (default: None)
+  -a ALIAS, --alias ALIAS
+                        Alias name to give to the dataset (default: None)
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+
+
+Examples:
+- To load a custom dataset from a CSV file: forecast/load -f file_name.csv
+- Load a custom dataset from an Excel file with a specific sheet name: forecast/load -f file_name.xlsx --sheet-name Sheet1
+- Load a custom dataset from a CSV file and assign an alias: forecast/load -f file_name.csv -a MyDataset
+- For loading a custom dataset from an Excel file, assigning an alias, and specifying a sheet name: forecast/load -f file_name.xlsx -a MyDataset --sheet-name Sheet1

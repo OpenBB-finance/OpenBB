@@ -44,15 +44,15 @@ def get_debt() -> pd.DataFrame:
             "Date": "As Of",
         }
     )
-    df["USD Debt"] = df["USD Debt"].apply(lambda x: format_number(x)).astype(int)
-    df["USD Per Capita"] = df["USD Per Capita"].astype(int)
-    df["Rank"] = df["USD Debt"].rank(ascending=False).astype(int)
+    df["USD Debt"] = df["USD Debt"].apply(lambda x: format_number(x)).astype("int64")
+    df["USD Per Capita"] = df["USD Per Capita"].astype("int64")
+    df["Rank"] = df["USD Debt"].rank(ascending=False).astype("int64")
     date = df["As Of"].astype(str)
     dates = []
     for i in date.index:
         dates.append(date[i].split("[")[0])
     df["As Of"] = dates
-    df["As Of"] = df["As Of"].str.replace("31 September", "30 September")
+    df["As Of"] = df["As Of"].str.replace("31 September", "30 September").str.strip()
     indexes = ["Rank", "As Of", "Country", "USD Per Capita", "USD Debt", "% of GDP"]
     df = df[indexes]
 

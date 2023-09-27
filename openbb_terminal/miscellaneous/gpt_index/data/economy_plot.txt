@@ -1,0 +1,18 @@
+parent_command:economy
+usage: plot [--y1 YAXIS1] [--y2 YAXIS2]
+
+This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, just load the available series from the previous commands. For example 'macro -p GDP -c Germany
+Netherlands' will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' or
+'plot --y1 Germany_GDP Netherlands_GDP'
+
+optional arguments:
+  --y1 YAXIS1  Select the data you wish to plot on the first y-axis. You can select multiple variables here. (default: )
+  --y2 YAXIS2  Select the data you wish to plot on the second y-axis. You can select multiple variables here. (default: )
+
+
+Examples:
+- Retrieve GDP data for Germany and Netherlands and plot them on the same graph: economy/macro -p GDP -c Germany Netherlands; economy/plot --y1 Germany_GDP Netherlands_GDP
+- Load GDP data for Germany and plot it on the first y-axis: economy/macro -p GDP -c Germany; economy/plot --y1 Germany_GDP
+- Get GDP data for Germany and Unemployment data for the USA, then plot them on separate y-axes: economy/macro -p GDP -c Germany; economy/macro -p Unemployment -c USA; economy/plot --y1 Germany_GDP --y2 USA_Unemployment
+- Load and plot multiple data series on the first y-axis: economy/macro -p GDP -c Germany Netherlands; economy/macro -p Unemployment -c USA; economy/plot --y1 Germany_GDP Netherlands_GDP USA_Unemployment
+- Retrieve and plot data series on both y-axes: economy/macro -p GDP -c Germany Netherlands; economy/macro -p Inflation -c USA UK; economy/plot --y1 Germany_GDP Netherlands_GDP --y2 USA_Inflation UK_Inflation

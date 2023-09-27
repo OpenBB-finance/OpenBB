@@ -1,0 +1,19 @@
+parent_command:stocks/qa
+usage: so [-t TARGET_RETURN] [-a] [-w WINDOW]
+
+Provides the sortino ratio of the selected stock.
+
+optional arguments:
+  -t TARGET_RETURN, --target TARGET_RETURN
+                        Target return (default: 0)
+  -a, --adjusted        If one should adjust the sortino ratio inorder to make it comparable to the sharpe ratio (default: False)
+  -w WINDOW, --window WINDOW
+                        Rolling window length (default: 252)
+
+
+Examples:
+- To calculate the Sortino ratio for <SYMBOL>: stocks/load <SYMBOL>/qa/so
+- To calculate the Sortino ratio with a target return of 5% for <SYMBOL>: stocks/load <SYMBOL>/qa/so -t 0.05
+- To calculate the adjusted Sortino ratio for <SYMBOL>: stocks/load <SYMBOL>/qa/so -a
+- To calculate the Sortino ratio for <SYMBOL> with a rolling window of 180 days: stocks/load <SYMBOL>/qa/so -w 180
+- To calculate the adjusted Sortino ratio for <SYMBOL> with a target return of 5% and a rolling window of 180 days: stocks/load <SYMBOL>/qa/so -t 0.05 -a -w 180

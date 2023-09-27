@@ -23,7 +23,7 @@ def test_send_to_s3_directly(mocker):
     )
 
     aws_access_key_id = "MOCK_ACCESS_KEY_ID"
-    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"
+    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"  # noqa: S105
     bucket = "MOCK_BUCKET"
     file = Path(__file__)
     object_key = "MOCK_S3/OBJECT_KEY"
@@ -47,7 +47,7 @@ def test_send_to_s3_directly_exception(mocker):
     )
 
     aws_access_key_id = "MOCK_ACCESS_KEY_ID"
-    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"
+    aws_secret_access_key = "MOCK_ACCESS_SECRET_KEY"  # noqa: S105
     bucket = "MOCK_BUCKET"
     file = Path(__file__)
     object_key = "MOCK_S3/OBJECT_KEY"
@@ -97,14 +97,14 @@ def test_send_to_s3_using_presigned_url(mocker, tmp_path):
         (
             AWSSettings(
                 aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
-                aws_secret_access_key="MOCK_AWS_ACCESS_KEY",
+                aws_secret_access_key="MOCK_AWS_ACCESS_KEY",  # noqa: S106
             ),
             False,
         ),
         (
             AWSSettings(
                 aws_access_key_id="REPLACE_ME",
-                aws_secret_access_key="REPLACE_ME",
+                aws_secret_access_key="REPLACE_ME",  # noqa: S106
             ),
             True,
         ),
@@ -160,7 +160,7 @@ def test_send_to_s3_exception(mocker, tmp_path):
             archives_file=archives_file,
             aws_settings=AWSSettings(
                 aws_access_key_id="REPLACE_ME",
-                aws_secret_access_key="REPLACE_ME",
+                aws_secret_access_key="REPLACE_ME",  # noqa: S106
             ),
             file=file,
             object_key=object_key,

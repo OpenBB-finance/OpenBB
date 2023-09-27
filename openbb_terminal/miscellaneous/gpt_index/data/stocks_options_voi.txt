@@ -1,0 +1,13 @@
+parent_command: stocks/options/
+usage: voi [-v MIN_VOL] [-m MIN_SP] [-M MAX_SP] [-e {}] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]            [--source {YahooFinance,Tradier,Nasdaq}]  Plots Volume + Open Interest of calls vs puts.  optional arguments:   -v MIN_VOL, --minv MIN_VOL                         minimum volume (considering open interest) threshold                         of the plot. (default: -1)   -m MIN_SP, --min MIN_SP                         minimum strike price to consider in the plot.                         (default: -1)   -M MAX_SP, --max MAX_SP                         maximum strike price to consider in the plot.                         (default: -1)   -e {}, --expiration {}                         Select expiration date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   --source {YahooFinance,Tradier,Nasdaq}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about voi' to access the related guide.
+Summary: The voi command plots the Volume + Open Interest of calls and puts for a specific stock symbol. You can set minimum volume, minimum and maximum strike prices, select an expiration date, and choose the data source. Additionally, you can export the data in various formats and display raw data.
+
+Examples:
+- Plot Volume + Open Interest for all options of <SYMBOL>: stocks/load <SYMBOL>/options/voi
+- Plot Volume + Open Interest for call and put options with a minimum volume of 100: stocks/load <SYMBOL>/options/voi -v 100
+- Plot Volume + Open Interest for options with strike prices between 20 and 60: stocks/load <SYMBOL>/options/voi -m 20 -M 60
+- Plot Volume + Open Interest for options expiring on a specific date: stocks/load <SYMBOL>/options/voi -e 2023-01-20
+- Plot Volume + Open Interest using data from Nasdaq: stocks/load <SYMBOL>/options/voi --source Nasdaq
+- Export Volume + Open Interest data in xlsx format: stocks/load <SYMBOL>/options/voi --export xlsx
+- Save Volume + Open Interest data to a specific excel sheet: stocks/load <SYMBOL>/options/voi --sheet-name Sheet1
+- Display raw data for Volume + Open Interest: stocks/load <SYMBOL>/options/voi --raw

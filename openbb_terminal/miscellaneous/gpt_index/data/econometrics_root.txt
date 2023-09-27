@@ -1,0 +1,18 @@
+parent_command:econometrics
+usage: root -v {} [-r {c,ct,ctt,n}] [-k {c,ct}]
+
+Show unit root tests of a column of a dataset
+
+optional arguments:
+  -v {}, --value {}     The column and name of the database you want test unit root for (default: None)
+  -r {c,ct,ctt,n}, --fuller_reg {c,ct,ctt,n}
+                        Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order (default: c)
+  -k {c,ct}, --kps_reg {c,ct}
+                        Type of regression. Can be 'c', 'ct'. c - Constant and t - trend order (default: c)
+
+
+Examples:
+- To test the unit root of a column in a dataset with default regression types: econometrics/root -v columnName
+- Test the unit root of a column with a specific Fuller regression type: econometrics/root -v columnName -r ct
+- Test the unit root of a column with a specific KPSS regression type: econometrics/root -v columnName -k ct
+- Test the unit root of a column with both Fuller and KPSS regression types specified: econometrics/root -v columnName -r ctt -k c

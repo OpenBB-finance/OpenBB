@@ -1,0 +1,21 @@
+parent_command:fixedincome
+usage: dwpcr [-p {daily_excl_weekend,monthly,weekly,daily,annual}] [-s START_DATE] [-e END_DATE]
+
+Get Discount Window Primary Credit Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United
+States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+
+optional arguments:
+  -p {daily_excl_weekend,monthly,weekly,daily,annual}, --parameter {daily_excl_weekend,monthly,weekly,daily,annual}
+                        Specific Discount Window Primary Credit Rate data to retrieve (default: daily_excl_weekend)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To get daily discount window primary credit rate data: fixedincome/dwpcr -p daily
+- Retrieve weekly discount window primary credit rate data: fixedincome/dwpcr -p weekly
+- Obtain monthly discount window primary credit rate data for a specific date range: fixedincome/dwpcr -p monthly -s 2020-01-01 -e 2022-01-01
+- Fetch annual discount window primary credit rate data: fixedincome/dwpcr -p annual
+- Acquire daily discount window primary credit rate data excluding weekends for a specific date range: fixedincome/dwpcr -p daily_excl_weekend -s 2021-01-01 -e 2021-12-31

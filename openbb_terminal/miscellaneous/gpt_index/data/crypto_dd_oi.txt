@@ -1,0 +1,15 @@
+parent_command:crypto/dd
+usage: oi [-i {0,1,2,4}]
+
+Displays open interest by exchange for a certain asset [Source: https://coinglass.github.io/API-Reference/]
+
+optional arguments:
+  -i {0,1,2,4}, --interval {0,1,2,4}
+                        Frequency interval. Default: 0 (default: 0)
+
+
+Examples:
+- To display open interest by exchange for a specific asset with default interval: crypto/load <COIN>/dd/oi
+- Show open interest for a chosen asset with an interval of 1: crypto/load <COIN>/dd/oi -i 1
+- Display open interest for a certain asset with an interval of 2: crypto/load <COIN>/dd/oi -i 2
+- Present open interest by exchange for a specific asset with an interval of 4: crypto/load <COIN>/dd/oi -i 4

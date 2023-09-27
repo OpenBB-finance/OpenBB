@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: blcs [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest CEO/CFO sales 100k. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about blcs' to access the related guide.
+Summary: Display the latest CEO/CFO sales of 100k or more for a specific stock symbol, with the option to limit the number of rows displayed, and export the data in various formats. Data is sourced from OpenInsider.
+
+Examples:
+- Display the latest CEO/CFO sales for a specific stock symbol: stocks/load <SYMBOL>/ins/blcs
+- Display the latest CEO/CFO sales for a specific stock symbol with a limit of 5 rows: stocks/load <SYMBOL>/ins/blcs -l 5
+- Export the latest CEO/CFO sales for a specific stock symbol in csv format: stocks/load <SYMBOL>/ins/blcs --export csv
+- Export the latest CEO/CFO sales for a specific stock symbol in xlsx format with a custom sheet name: stocks/load <SYMBOL>/ins/blcs --export xlsx --sheet-name CustomSheetName

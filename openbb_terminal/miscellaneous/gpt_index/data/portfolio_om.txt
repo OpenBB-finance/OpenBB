@@ -1,0 +1,16 @@
+parent_command:portfolio
+usage: om [-s START] [-e END]
+
+Provides omega ratio of the selected portfolio.
+
+optional arguments:
+  -s START, --start START
+                        Start of the omega ratio threshold (default: 0)
+  -e END, --end END     End of the omega ratio threshold (default: 1.5)
+
+
+Examples:
+- To calculate the omega ratio of the selected portfolio with default thresholds: portfolio/om
+- To calculate the omega ratio of the selected portfolio with a custom start threshold: portfolio/om -s 0.5
+- To calculate the omega ratio of the selected portfolio with a custom end threshold: portfolio/om -e 2
+- To calculate the omega ratio of the selected portfolio with custom start and end thresholds: portfolio/om -s 0.5 -e 2

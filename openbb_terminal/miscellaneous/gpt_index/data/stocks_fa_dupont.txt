@@ -1,0 +1,9 @@
+parent_command: stocks/fa/
+usage: dupont [-t TICKER] [--raw] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  The extended dupont deconstructs return on equity to allow investors to understand it better  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   --raw                 Print raw data.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for .xlsx files.  For more information and examples, use 'about dupont' to access the related guide.
+Summary: The extended dupont command deconstructs return on equity for a specific stock ticker to provide better understanding for investors. You can print raw data, export the data in various formats, and save the data to a specific excel sheet.
+
+Examples:
+- Analyze return on equity for a specific stock ticker: stocks/load <SYMBOL>/fa/dupont -t <SYMBOL>
+- Analyze return on equity and print raw data for a specific stock ticker: stocks/load <SYMBOL>/fa/dupont -t <SYMBOL> --raw
+- Export return on equity data for a specific stock ticker in csv format: stocks/load <SYMBOL>/fa/dupont -t <SYMBOL> --export csv
+- Save return on equity data for a specific stock ticker to a specific excel sheet: stocks/load <SYMBOL>/fa/dupont -t <SYMBOL> --sheet-name Sheet1

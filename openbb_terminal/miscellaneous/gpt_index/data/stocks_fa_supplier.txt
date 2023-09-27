@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: supplier [-t TICKER] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  List of suppliers from ticker provided. [Source: CSIMarket]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about supplier' to access the related guide.
+Summary: Retrieve a list of suppliers for a specific stock ticker. You can export the raw data into various formats (csv, json, xlsx) and save the data to a specific Excel sheet. The data source for this command is CSIMarket.
+
+Examples:
+- To get the list of suppliers for a specific stock: stocks/fa/supplier -t <SYMBOL>
+- To export the supplier list for a specific stock in csv format: stocks/fa/supplier -t <SYMBOL> --export csv
+- To export the supplier list for a specific stock in json format: stocks/fa/supplier -t <SYMBOL> --export json
+- To export the supplier list for a specific stock in xlsx format: stocks/fa/supplier -t <SYMBOL> --export xlsx
+- To save the supplier list for a specific stock to a named Excel sheet: stocks/fa/supplier -t <SYMBOL> --sheet-name Sheet1

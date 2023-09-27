@@ -1,0 +1,53 @@
+parent_command:portfolio/po
+usage: relriskparity [-ve VERSION] [-rc RISK_CONTRIBUTION] [-pf PENAL_FACTOR] [-tr TARGET_RETURN] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES] [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}]
+                     [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-v LONG_ALLOCATION] [--name NAME]
+
+Build a relaxed risk parity portfolio based on least squares approach
+
+optional arguments:
+  -ve VERSION, --version VERSION
+                        version of relaxed risk parity model: Possible values are: 'A': risk parity without regularization and penalization constraints 'B': with regularization constraint but without penalization constraint 'C':
+                        with regularization and penalization constraints (default: A)
+  -rc RISK_CONTRIBUTION, --risk-cont RISK_CONTRIBUTION
+                        Vector of risk contribution constraints (default: None)
+  -pf PENAL_FACTOR, --penal-factor PENAL_FACTOR
+                        The penalization factor of penalization constraints. Only used with version 'C'. (default: 1)
+  -tr TARGET_RETURN, --target-return TARGET_RETURN
+                        Constraint on minimum level of portfolio's return (default: -1)
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: RRP_0)
+
+
+Examples:
+- To build a relaxed risk parity portfolio using the default settings: portfolio/po relriskparity
+- To create a version 'B' relaxed risk parity portfolio with a target return of 0.05: portfolio/po relriskparity -ve B -tr 0.05
+- To build a version 'C' portfolio with a penalization factor of 2 and risk contribution constraints: portfolio/po relriskparity -ve C -pf 2 -rc 0.1,0.2,0.3,0.4
+- To use weekly returns and a smoothing factor of 0.9 for EWMA estimators: portfolio/po relriskparity --freq w -de 0.9
+- To create a portfolio with a specific start and end date: portfolio/po relriskparity -s 2020-01-01 -e 2021-12-31
+- To use logarithmic returns and a custom allocation value of 5000: portfolio/po relriskparity -lr -v 5000
+- To set a maximum percentage of NaN values at 0.1 and replace outliers with a threshold value of 0.5: portfolio/po relriskparity -mn 0.1 -th 0.5
+- To use a custom period of 2 years and cubic method for filling NaN values: portfolio/po relriskparity -p 2y -mt cubic
+- To save the portfolio with a custom name: portfolio/po relriskparity --name My_Custom_RRP
+- To build a portfolio with selected categories and a specific period: portfolio/po relriskparity -ct Technology,Healthcare -p 1y

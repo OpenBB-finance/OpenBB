@@ -56,11 +56,35 @@
         },
         "hovermode": "x",
         "legend": {
-            "bgcolor": "rgba(0, 0, 0, 0)",
+            "bgcolor": "rgba(0, 0, 0, 0.5)",
             "x": 0.01,
             "xanchor": "left",
             "y": 0.99,
             "yanchor": "top",
+            "font": {
+                "size": 15
+            }
+        },
+        "legend2": {
+            "bgcolor": "rgba(0, 0, 0, 0.5)",
+            "font": {
+                "size": 15
+            }
+        },
+        "legend3": {
+            "bgcolor": "rgba(0, 0, 0, 0.5)",
+            "font": {
+                "size": 15
+            }
+        },
+        "legend4": {
+            "bgcolor": "rgba(0, 0, 0, 0.5)",
+            "font": {
+                "size": 15
+            }
+        },
+        "legend5": {
+            "bgcolor": "rgba(0, 0, 0, 0.5)",
             "font": {
                 "size": 15
             }

@@ -1,0 +1,11 @@
+parent_command: stocks/ca/
+usage: get [-u] [-n] [-l LIMIT] [-h] [--source {Finviz,Polygon,Finnhub}]  Get similar companies from selected data source (default: Finviz) to compare with.  optional arguments:   -u, --us_only         Show only stocks from the US stock exchanges. Works                         only with Polygon (default: False)   -n, --nocountry       Similar stocks from finviz using only Industry and                         Sector. (default: False)   -l LIMIT, --limit LIMIT                         Limit of stocks to retrieve. (default: 10)   -h, --help            show this help message (default: False)   --source {Finviz,Polygon,Finnhub}                         Data source to select from (default: Finviz)  For more information and examples, use 'about get' to access the related guide.
+Summary: Retrieve a list of similar companies for comparison from a selected data source (default: Finviz). You can limit the number of stocks, choose to display only US stocks, or exclude country information. Data sources include Finviz, Polygon, and Finnhub.
+
+Examples:
+- Retrieve a list of similar companies for <SYMBOL>: stocks/load <SYMBOL>/ca/get
+- Retrieve a list of 5 similar companies for <SYMBOL>: stocks/load <SYMBOL>/ca/get -l 5
+- Retrieve a list of similar US companies for <SYMBOL> using Polygon: stocks/load <SYMBOL>/ca/get -u --source Polygon
+- Retrieve a list of similar companies for <SYMBOL> without country information: stocks/load <SYMBOL>/ca/get -n
+- Retrieve a list of similar companies for <SYMBOL> using Finnhub as the data source: stocks/load <SYMBOL>/ca/get --source Finnhub
+- Retrieve a list of 7 similar US companies for <SYMBOL> using Polygon: stocks/load <SYMBOL>/ca/get -u -l 7 --source Polygon

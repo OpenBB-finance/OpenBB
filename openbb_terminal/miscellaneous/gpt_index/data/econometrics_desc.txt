@@ -1,0 +1,15 @@
+parent_command:econometrics
+usage: desc -n {}
+
+Show the descriptive statistics of the dataset
+
+optional arguments:
+  -n {}, --name {}  The name of the dataset.column you want to show the descriptive statistics (default: None)
+
+
+Examples:
+- To display the descriptive statistics of a specific dataset and column: econometrics/desc -n dataset_name.column_name
+- Show descriptive statistics for a particular dataset and column: econometrics/desc --name dataset_name.column_name
+- Obtain the descriptive statistics for a certain dataset and its column: econometrics/desc -n dataset_name.column_name
+- Retrieve the descriptive statistics of the specified dataset and column: econometrics/desc --name dataset_name.column_name
+- Get the descriptive statistics for the chosen dataset and its column: econometrics/desc -n dataset_name.column_name

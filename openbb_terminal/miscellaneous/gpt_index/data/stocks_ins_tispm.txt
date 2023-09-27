@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: tispm [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider sales of the month. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tispm' to access the related guide.
+Summary: Display the top insider sales of the month for stocks with an option to limit the number of rows displayed. You can also export the data in various formats and save it to a specific excel sheet. This command uses data from the OpenInsider source.
+
+Examples:
+- Show the top 10 insider sales of the month: stocks/ins/tispm
+- Show the top 5 insider sales of the month: stocks/ins/tispm -l 5
+- Display the top 20 insider sales of the month: stocks/ins/tispm --limit 20
+- Export the top 10 insider sales of the month to a csv file: stocks/ins/tispm --export csv
+- Save the top 10 insider sales of the month to a specific excel sheet: stocks/ins/tispm --sheet-name Sheet1

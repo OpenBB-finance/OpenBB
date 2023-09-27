@@ -1,0 +1,9 @@
+parent_command:forex/oanda
+usage: pending
+
+Get information about pending orders.
+
+pending
+Examples:
+- Retrieve pending orders for a specific currency pair: forex/load <PAIR>/oanda/pending
+- Access information about pending orders for a forex pair: forex/load <PAIR>/oanda/pending

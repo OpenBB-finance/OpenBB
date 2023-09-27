@@ -1,0 +1,26 @@
+parent_command:fixedincome
+usage: sonia [-p {rate,index,10th_percentile,25th_percentile,75th_percentile,90th_percentile,total_nominal_value}] [-s START_DATE] [-e END_DATE]
+
+SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial
+institutions and other institutional investors.
+
+optional arguments:
+  -p {rate,index,10th_percentile,25th_percentile,75th_percentile,90th_percentile,total_nominal_value}, --parameter {rate,index,10th_percentile,25th_percentile,75th_percentile,90th_percentile,total_nominal_value}
+                        Specific SONIA data to retrieve (default: rate)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To view the average SONIA rate: fixedincome/sonia
+- Retrieve the 25th percentile SONIA rate: fixedincome/sonia -p 25th_percentile
+- Get the SONIA index data: fixedincome/sonia -p index
+- Obtain the SONIA rate for a specific date range: fixedincome/sonia -s 2022-01-01 -e 2022-01-31
+- Check the total nominal value of SONIA for a given period: fixedincome/sonia -p total_nominal_value -s 2022-01-01 -e 2022-01-31
+- Fetch the 90th percentile SONIA rate within a specified date range: fixedincome/sonia -p 90th_percentile -s 2022-01-01 -e 2022-01-31
+- Display the 10th percentile SONIA rate for a specific date: fixedincome/sonia -p 10th_percentile -s 2022-01-01 -e 2022-01-01
+- Find the 75th percentile SONIA rate between two dates: fixedincome/sonia -p 75th_percentile -s 2022-01-01 -e 2022-01-15
+- Access SONIA rate data for a single date: fixedincome/sonia -s 2022-01-01 -e 2022-01-01
+- Query SONIA index data within a date range: fixedincome/sonia -p index -s 2022-01-01 -e 2022-01-31

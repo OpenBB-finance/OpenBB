@@ -1,0 +1,17 @@
+parent_command:forex/oanda
+usage: closetrade [-i ORDERID] [-u UNITS]
+
+Close a trade by id.
+
+optional arguments:
+  -i ORDERID, --id ORDERID
+                        The Trade ID to close.
+  -u UNITS, --units UNITS
+                        The number of units on the trade to close. If not set it defaults to all units.
+
+
+Examples:
+- Close a trade with a specific ID: forex/oanda/closetrade -i 12345
+- Close a trade with a specific ID and a specific number of units: forex/oanda/closetrade -i 12345 -u 100
+- Close all units of a trade with a given ID: forex/oanda/closetrade --id 12345
+- Partially close a trade by specifying the Trade ID and units to close: forex/oanda/closetrade --id 12345 --units 50

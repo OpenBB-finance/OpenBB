@@ -1,0 +1,24 @@
+parent_command:crypto/dd
+usage: events [-l LIMIT] [-s {date,date_to,name,description,is_conference}] [-r] [-u]
+
+Show information about most important coins events. Most of coins doesn't have any events. You can display only top N number of events with --limit parameter. You can sort data by id, date , date_to, name, description,
+is_conference --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each event Displays: date , date_to, name, description, is_conference, link, proof_image_link
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
+  -s {date,date_to,name,description,is_conference}, --sort {date,date_to,name,description,is_conference}
+                        Sort by given column. Default: date (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -u, --urls            Flag to show urls. If you will use that flag you will see only date, name, link columns (default: False)
+
+
+Examples:
+- To display the top 10 important coin events: crypto/dd/events
+- Show the top 5 important coin events: crypto/dd/events -l 5
+- Display important coin events sorted by name: crypto/dd/events -s name
+- View the top 7 important coin events sorted by description in ascending order: crypto/dd/events -l 7 -s description -r
+- Display important coin events with URLs: crypto/dd/events -u
+- Show the top 3 important coin events with URLs: crypto/dd/events -l 3 -u
+- View important coin events sorted by date in ascending order: crypto/dd/events -s date -r
+- Display the top 10 important coin events sorted by is_conference: crypto/dd/events -s is_conference

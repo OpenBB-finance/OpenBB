@@ -1,0 +1,22 @@
+parent_command:forecast
+usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {AAPL}] [-c TARGET_COLUMN]
+
+Add Average True Range to dataset of specific stock ticker.
+
+optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Average True Range. (default: close)
+  --high-col HIGH_COL   High column name to use for Average True Range. (default: high)
+  --low-col LOW_COL     Low column name to use for Average True Range. (default: low)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+
+
+Examples:
+- Add Average True Range to the dataset for a specific stock: forecast/atr -d <SYMBOL>
+- Add Average True Range to the dataset using a custom close column: forecast/atr -d <SYMBOL> --close-col custom_close
+- Add Average True Range to the dataset using custom high and low columns: forecast/atr -d <SYMBOL> --high-col custom_high --low-col custom_low
+- Add Average True Range to the dataset using a custom target column: forecast/atr -d <SYMBOL> -c custom_target
+- Add Average True Range to the dataset using custom close, high, and low columns: forecast/atr -d <SYMBOL> --close-col custom_close --high-col custom_high --low-col custom_low

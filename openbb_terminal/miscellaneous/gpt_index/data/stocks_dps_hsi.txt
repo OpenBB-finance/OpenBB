@@ -1,0 +1,10 @@
+parent_command: stocks/dps/
+usage: hsi [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top stocks being more heavily shorted. HighShortInterest.com provides a convenient sorted database of stocks which have a short interest of over 20 percent. Additional key data such as the float, number of outstanding shares, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, and the American Stock Exchange. [Source: www.highshortinterest.com]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of the top heavily shorted stocks to retrieve.                         (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about hsi' to access the related guide.
+Summary: Display a list of top heavily shorted stocks with a short interest of over 20 percent from HighShortInterest.com. The data includes the float, number of outstanding shares, and company industry for Nasdaq, NYSE, and AMEX. You can set a limit on the number of stocks to retrieve, and export the data in various formats.
+
+Examples:
+- Retrieve the top 10 heavily shorted stocks: stocks/dps/hsi
+- Retrieve the top 5 heavily shorted stocks: stocks/dps/hsi -l 5
+- Export the top 10 heavily shorted stocks to a CSV file: stocks/dps/hsi --export csv
+- Export the top 10 heavily shorted stocks to an Excel file with a specific sheet name: stocks/dps/hsi --export xlsx --sheet-name ShortedStocks
+- Retrieve and display the top 20 heavily shorted stocks: stocks/dps/hsi -l 20

@@ -1,0 +1,21 @@
+parent_command:crypto/ta
+usage: stoch [-k N_FASTKPERIOD] [-d N_SLOWDPERIOD] [--slowkperiod N_SLOWKPERIOD]
+
+The Stochastic Oscillator measures where the close is in relation to the recent trading range. The values range from zero to 100. %D values over 75 indicate an overbought condition; values under 25 indicate an oversold condition.
+When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses below, it is a sell signal. The Raw %K is generally considered too erratic to use for crossover signals.
+
+optional arguments:
+  -k N_FASTKPERIOD, --fastkperiod N_FASTKPERIOD
+                        The time period of the fastk moving average (default: 14)
+  -d N_SLOWDPERIOD, --slowdperiod N_SLOWDPERIOD
+                        The time period of the slowd moving average (default: 3)
+  --slowkperiod N_SLOWKPERIOD
+                        The time period of the slowk moving average (default: 3)
+
+
+Examples:
+- To view the Stochastic Oscillator for a specific cryptocurrency: crypto/load <COIN>/ta/stoch
+- To calculate the Stochastic Oscillator with a custom fastk period: crypto/load <COIN>/ta/stoch -k 20
+- To calculate the Stochastic Oscillator with a custom slowd period: crypto/load <COIN>/ta/stoch -d 5
+- To calculate the Stochastic Oscillator with custom fastk and slowd periods: crypto/load <COIN>/ta/stoch -k 20 -d 5
+- To calculate the Stochastic Oscillator with custom fastk, slowd, and slowk periods: crypto/load <COIN>/ta/stoch -k 20 -d 5 --slowkperiod 5

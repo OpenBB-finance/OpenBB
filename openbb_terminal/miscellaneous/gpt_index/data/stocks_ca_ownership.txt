@@ -1,0 +1,10 @@
+parent_command: stocks/ca/
+usage: ownership [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints screener data of similar companies. [Source: Finviz]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about ownership' to access the related guide.
+Summary: Display screener data of similar companies to a specific stock symbol. The data is sourced from Finviz. You can export the raw data in various formats such as csv, json, and xlsx. Additionally, you can specify the name of the excel sheet when saving data to an xlsx file.
+
+Examples:
+- Retrieve screener data for similar companies to <SYMBOL>: stocks/load <SYMBOL>/ca/ownership
+- Export screener data of similar companies to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/ownership --export csv
+- Export screener data of similar companies to <SYMBOL> in json format: stocks/load <SYMBOL>/ca/ownership --export json
+- Export screener data of similar companies to <SYMBOL> in xlsx format: stocks/load <SYMBOL>/ca/ownership --export xlsx
+- Save screener data of similar companies to <SYMBOL> in a specific excel sheet: stocks/load <SYMBOL>/ca/ownership --sheet-name Sheet1

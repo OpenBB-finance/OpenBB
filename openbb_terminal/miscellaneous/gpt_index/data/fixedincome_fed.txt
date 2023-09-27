@@ -1,0 +1,26 @@
+parent_command:fixedincome
+usage: fed [-p {monthly,daily,weekly,daily_excl_weekend,annual,biweekly,volume}] [-s START_DATE] [-e END_DATE] [-o] [-q] [-t]
+
+Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States,
+the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+
+optional arguments:
+  -p {monthly,daily,weekly,daily_excl_weekend,annual,biweekly,volume}, --parameter {monthly,daily,weekly,daily_excl_weekend,annual,biweekly,volume}
+                        Specific Effective Federal Funds Rate data to retrieve (default: monthly)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1900-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+  -o, --overnight       Gets the Overnight Bank Funding Rate (default: False)
+  -q, --quantiles       Whether to show 1, 25, 75 and 99 percentiles (default: False)
+  -t, --target          Whether to show the target range data (default: False)
+
+
+Examples:
+- Retrieve monthly Effective Federal Funds Rate data: fixedincome/fed
+- Get weekly Effective Federal Funds Rate data between specific dates: fixedincome/fed -p weekly -s 2020-01-01 -e 2021-12-31
+- Obtain daily Effective Federal Funds Rate data with percentiles: fixedincome/fed -p daily -q
+- Show annual Effective Federal Funds Rate data with target range: fixedincome/fed -p annual -t
+- Access biweekly Overnight Bank Funding Rate data: fixedincome/fed -p biweekly -o
+- Fetch daily Effective Federal Funds Rate data excluding weekends: fixedincome/fed -p daily_excl_weekend
+- Display volume-based Effective Federal Funds Rate data: fixedincome/fed -p volume

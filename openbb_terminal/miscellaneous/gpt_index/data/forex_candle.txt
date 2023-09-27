@@ -1,0 +1,25 @@
+parent_command:forex
+usage: candle [--sort {adjclose,open,close,high,low,volume,logret}] [-r] [--raw] [-t] [--ma MOV_AVG] [--log]
+
+Show candle for loaded fx data
+
+optional arguments:
+  --sort {adjclose,open,close,high,low,volume,logret}
+                        Choose a column to sort by. Only works when raw data is displayed. (default: )
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  --raw                 Shows raw data instead of chart. (default: False)
+  -t, --trend           Flag to add high and low trends to candle (default: False)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: None)
+  --log                 Plot with y axis on log scale (default: False)
+
+
+Examples:
+- To display a candle chart for the loaded forex data: forex/load <PAIR>/candle
+- To show raw data sorted by volume in ascending order for the loaded forex pair: forex/load <PAIR>/candle --raw --sort volume -r
+- To display a candle chart with high and low trends for the loaded forex data: forex/load <PAIR>/candle -t
+- To show a candle chart for the loaded forex data with a 10-day moving average: forex/load <PAIR>/candle --ma 10
+- To display a candle chart for the loaded forex data with multiple moving averages (e.g. 10 and 20 days): forex/load <PAIR>/candle --ma 10,20
+- To show a candle chart for the loaded forex data with the y-axis on a log scale: forex/load <PAIR>/candle --log
+- To display raw data for the loaded forex pair sorted by close price in descending order: forex/load <PAIR>/candle --raw --sort close
+- To show a candle chart for the loaded forex data with high and low trends and a 15-day moving average: forex/load <PAIR>/candle -t --ma 15
+- To display a candle chart for the loaded forex data with high and low trends, a 30-day moving average, and the y-axis on a log scale: forex/load <PAIR>/candle -t --ma 30 --log

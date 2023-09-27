@@ -1,0 +1,22 @@
+parent_command:crypto
+usage: headlines
+                 [-c {AAVE,ADA,ADX,AE,ANT,ARDR,ARK,ATOM,BAT,BCCOIN,BCH,BCN,BLOCK,BNB,BNT,BTC,BTCD,BTG,BTM,BTS,CVC,DASH,DCN,DCR,DGB,DGD,DNT,DOGE,DOT,EDG,EOS,ETH,ETP,FAIR,FCT,FUN,GAME,GAS,GBYTE,GNO,GNT,HSR,ICX,IOC,KIN,KMD,KNC,LINK,LKK,LRC,LSK,LTC,MAID,MCAP,MCO,MGO,MKR,MLN,MONA,MTL,NAV,NEBL,NEO,NLC2,NXS,NXT,OMG,PAY,PIVX,PPT,QASH,QRL,QTUM,REP,RLC,SALT,SC,SMART,SNGLS,STEEM,STORJ,SUB,SYS,TAAS,TRX,UBQ,UNI,USDT,VEN,VERI,VTC,WAVES,WINGS,WTC,XCP,XLM,XMR,XRP,XTZ,XVG,YFI,ZEC,ZEN,ZRX}]
+
+Display sentiment analysis from FinBrain for chosen Cryptocurrencies
+
+optional arguments:
+  -c {AAVE,ADA,ADX,AE,ANT,ARDR,ARK,ATOM,BAT,BCCOIN,BCH,BCN,BLOCK,BNB,BNT,BTC,BTCD,BTG,BTM,BTS,CVC,DASH,DCN,DCR,DGB,DGD,DNT,DOGE,DOT,EDG,EOS,ETH,ETP,FAIR,FCT,FUN,GAME,GAS,GBYTE,GNO,GNT,HSR,ICX,IOC,KIN,KMD,KNC,LINK,LKK,LRC,LSK,LTC,MAID,MCAP,MCO,MGO,MKR,MLN,MONA,MTL,NAV,NEBL,NEO,NLC2,NXS,NXT,OMG,PAY,PIVX,PPT,QASH,QRL,QTUM,REP,RLC,SALT,SC,SMART,SNGLS,STEEM,STORJ,SUB,SYS,TAAS,TRX,UBQ,UNI,USDT,VEN,VERI,VTC,WAVES,WINGS,WTC,XCP,XLM,XMR,XRP,XTZ,XVG,YFI,ZEC,ZEN,ZRX}, --coin {AAVE,ADA,ADX,AE,ANT,ARDR,ARK,ATOM,BAT,BCCOIN,BCH,BCN,BLOCK,BNB,BNT,BTC,BTCD,BTG,BTM,BTS,CVC,DASH,DCN,DCR,DGB,DGD,DNT,DOGE,DOT,EDG,EOS,ETH,ETP,FAIR,FCT,FUN,GAME,GAS,GBYTE,GNO,GNT,HSR,ICX,IOC,KIN,KMD,KNC,LINK,LKK,LRC,LSK,LTC,MAID,MCAP,MCO,MGO,MKR,MLN,MONA,MTL,NAV,NEBL,NEO,NLC2,NXS,NXT,OMG,PAY,PIVX,PPT,QASH,QRL,QTUM,REP,RLC,SALT,SC,SMART,SNGLS,STEEM,STORJ,SUB,SYS,TAAS,TRX,UBQ,UNI,USDT,VEN,VERI,VTC,WAVES,WINGS,WTC,XCP,XLM,XMR,XRP,XTZ,XVG,YFI,ZEC,ZEN,ZRX}
+                        Symbol of coin to load data for, ~100 symbols are available (default: BTC)
+
+
+Examples:
+- Display sentiment analysis for Bitcoin: crypto/headlines -c BTC
+- View sentiment analysis for Ethereum: crypto/headlines --coin ETH
+- Check sentiment analysis for Cardano: crypto/headlines -c ADA
+- Show sentiment analysis for Chainlink: crypto/headlines --coin LINK
+- Retrieve sentiment analysis for Polkadot: crypto/headlines -c DOT
+- Get sentiment analysis for Ripple: crypto/headlines --coin XRP
+- Access sentiment analysis for Stellar: crypto/headlines -c XLM
+- Find sentiment analysis for Uniswap: crypto/headlines --coin UNI
+- Examine sentiment analysis for Dogecoin: crypto/headlines -c DOGE
+- Look up sentiment analysis for Binance Coin: crypto/headlines --coin BNB

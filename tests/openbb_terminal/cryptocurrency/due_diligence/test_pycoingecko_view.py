@@ -1,5 +1,4 @@
 import json
-import os
 from unittest import TestCase, mock
 
 import pytest
@@ -27,7 +26,6 @@ def test_display_potential_returns():
 )
 def get_bitcoin(mock_load):
     # pylint: disable=unused-argument
-    print(os.getcwd())
     with open(
         "tests/openbb_terminal/cryptocurrency/due_diligence/json/test_pycoingecko_view/btc_usd_test_data.json",
         encoding="utf8",

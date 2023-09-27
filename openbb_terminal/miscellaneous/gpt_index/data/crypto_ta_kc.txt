@@ -1,0 +1,24 @@
+parent_command:crypto/ta
+usage: kc [-l N_LENGTH] [-s N_SCALAR] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.The Keltner channel uses the average true range (ATR) or volatility, with breaks
+above or below the top and bottom barriers signaling a continuation.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 20)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 2)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To display Keltner Channels with default settings for a cryptocurrency: crypto/load <COIN>/ta/kc
+- To plot Keltner Channels with a window length of 30 for a specific coin: crypto/load <COIN>/ta/kc -l 30
+- To show Keltner Channels with a scalar of 3 for a cryptocurrency: crypto/load <COIN>/ta/kc -s 3
+- To visualize Keltner Channels using simple moving average (SMA) for a crypto: crypto/load <COIN>/ta/kc -m sma
+- To display Keltner Channels with an offset of 5 for a specific coin: crypto/load <COIN>/ta/kc -o 5
+- To plot Keltner Channels with a window length of 40, scalar of 2.5, and using weighted moving average (WMA) for a cryptocurrency: crypto/load <COIN>/ta/kc -l 40 -s 2.5 -m wma

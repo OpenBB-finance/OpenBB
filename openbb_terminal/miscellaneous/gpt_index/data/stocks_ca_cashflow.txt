@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: cashflow [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.  optional arguments:   -q, --quarter         Quarter financial data flag. (default: False)   -t S_TIMEFRAME, --timeframe S_TIMEFRAME                         Specify year/quarter of the cashflow statement to be                         retrieved. The format for year is YYYY and for quarter                         is DD-MMM-YYY (for example, 30-Sep-2021). Default is                         last year/quarter. (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about cashflow' to access the related guide.
+Summary: Retrieve yearly or quarterly cashflow statements for a specific stock symbol and compare it against similar companies. You can choose between yearly or quarterly data, specify a specific timeframe, and export the data in various formats.
+
+Examples:
+- To compare the yearly cash flow statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/cash
+- To compare the quarterly cash flow statement for multiple companies: stocks/load <SYMBOL>/ca/set <SYMBOL2>/cash -q
+- To compare the cash flow statement for a specific timeframe: stocks/load <SYMBOL>/ca/set <SYMBOL2>/cash -t YEAR
+- To compare the cash flow statement for a specific quarter: stocks/load <SYMBOL>/ca/set <SYMBOL2>/cash -q -t Q2

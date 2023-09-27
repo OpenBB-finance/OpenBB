@@ -145,7 +145,7 @@ def plot_vol(
     """
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     title = f"Volume for {symbol.upper()} expiring {expiry}"
 
     if raw:
@@ -238,7 +238,7 @@ def plot_oi(
     """
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     max_pain = get_max_pain(calls, puts)
     title = f"Open Interest for {symbol.upper()} expiring {expiry}"
 
@@ -336,7 +336,7 @@ def plot_voi(
     get_current_user()
     calls, puts = get_calls_and_puts(chain)
 
-    min_strike, max_strike = get_strikes(min_sp, max_sp, current_price)
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
     max_pain = get_max_pain(calls, puts)
     title = f"Volume and Open Interest for {symbol.upper()} expiring {expiry}"
 
@@ -365,29 +365,36 @@ def plot_voi(
     fig = OpenBBFigure(yaxis_title="Volume", xaxis_title="Strike Price")
     fig.set_title(title)
 
+    option_chain = option_chain[
+        (option_chain.strike >= min_strike) & (option_chain.strike <= max_strike)
+    ]
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.openInterest_call,
         name="Calls: Open Interest",
         marker_color="lightgreen",
+        hovertemplate="Calls Open Interest: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.volume_call,
         name="Calls: Volume",
         marker_color="green",
+        hovertemplate="Calls Volume: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.openInterest_put,
         name="Puts: Open Interest",
         marker_color="pink",
+        hovertemplate="Puts Open Interest: %{y}<extra></extra>",
     )
     fig.add_bar(
         x=option_chain.strike,
         y=option_chain.volume_put,
         name="Puts: Volume",
         marker_color="red",
+        hovertemplate="Puts Volume: %{y}<extra></extra>",
     )
     fig.add_vline_legend(
         x=current_price,
@@ -400,9 +407,7 @@ def plot_voi(
         line=dict(dash="dash", width=2, color="red"),
     )
 
-    fig.update_layout(
-        barmode="relative", hovermode="y unified", xaxis_range=[min_strike, max_strike]
-    )
+    fig.update_layout(barmode="relative", hovermode="x unified")
 
     if raw:
         print_raw(calls, puts, title, export=export)
@@ -472,12 +477,11 @@ def display_chains(
     sheet_name: str
         Optionally specify the name of the sheet to export to
     """
-    min_strike, max_strike = get_strikes(
-        min_sp=min_sp, max_sp=max_sp, current_price=current_price
-    )
+    min_strike, max_strike = get_strikes(min_sp, max_sp, chain)
 
     chain = chain[chain["strike"] >= min_strike]
     chain = chain[chain["strike"] <= max_strike]
+
     calls, puts = get_calls_and_puts(chain)
     # Tradier provides the greeks, so calculate them if they are not present
     if "delta" not in chain.columns:

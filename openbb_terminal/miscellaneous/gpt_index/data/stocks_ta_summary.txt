@@ -1,0 +1,10 @@
+parent_command: stocks/ta/
+usage: summary [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Technical summary report provided by FinBrain's API. FinBrain Technologies develops deep learning algorithms for financial analysis and prediction, which currently serves traders from more than 150 countries all around the world. [Source: Finbrain]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about summary' to access the related guide.
+Summary: Generate a technical summary report for a stock symbol using FinBrain's API, which provides deep learning algorithms for financial analysis and prediction. You can export the raw data in various formats and save the data to a specific excel sheet if needed.
+
+Examples:
+- Retrieve a technical summary report for a stock symbol: stocks/load <SYMBOL>/ta/summary
+- Export the technical summary report for a stock symbol in csv format: stocks/load <SYMBOL>/ta/summary --export csv
+- Export the technical summary report for a stock symbol in json format: stocks/load <SYMBOL>/ta/summary --export json
+- Export the technical summary report for a stock symbol in xlsx format: stocks/load <SYMBOL>/ta/summary --export xlsx
+- Save the technical summary report for a stock symbol to a specific excel sheet: stocks/load <SYMBOL>/ta/summary --sheet-name Sheet1

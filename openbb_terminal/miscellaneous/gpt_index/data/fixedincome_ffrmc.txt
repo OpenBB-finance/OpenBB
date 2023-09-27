@@ -1,0 +1,21 @@
+parent_command:fixedincome
+usage: ffrmc [-p {10_year,5_year,1_year,6_month,3_month}] [-s START_DATE] [-e END_DATE]
+
+Get Selected Treasury Constant Maturity Minus Federal Funds Rate. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury
+on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+optional arguments:
+  -p {10_year,5_year,1_year,6_month,3_month}, --parameter {10_year,5_year,1_year,6_month,3_month}
+                        Selected Treasury Constant Maturity (default: 10_year)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve 10-year Treasury Constant Maturity Minus Federal Funds Rate: fixedincome/ffrmc
+- Obtain 5-year Treasury Constant Maturity Minus Federal Funds Rate: fixedincome/ffrmc -p 5_year
+- Get 1-year Treasury Constant Maturity Minus Federal Funds Rate with a specific start date: fixedincome/ffrmc -p 1_year -s 2020-01-01
+- Fetch 6-month Treasury Constant Maturity Minus Federal Funds Rate with a specific end date: fixedincome/ffrmc -p 6_month -e 2021-12-31
+- Display 3-month Treasury Constant Maturity Minus Federal Funds Rate for a specific date range: fixedincome/ffrmc -p 3_month -s 2020-01-01 -e 2021-12-31

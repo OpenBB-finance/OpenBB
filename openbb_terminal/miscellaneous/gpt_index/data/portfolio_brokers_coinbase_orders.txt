@@ -1,0 +1,23 @@
+parent_command:portfolio/brokers/coinbase
+usage: orders [-l LIMIT] [-s {product_id,side,price,size,type,created_at,status}] [-r]
+
+List your current open orders
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit parameter. (default: 20)
+  -s {product_id,side,price,size,type,created_at,status}, --sort {product_id,side,price,size,type,created_at,status}
+                        Sort by given column. Default: created_at (default: created_at)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To view your current open orders on Coinbase: portfolio/brokers/coinbase/orders
+- To display the last 10 open orders: portfolio/brokers/coinbase/orders -l 10
+- To sort open orders by price: portfolio/brokers/coinbase/orders -s price
+- To sort open orders by size in ascending order: portfolio/brokers/coinbase/orders -s size -r
+- To view open orders sorted by order type: portfolio/brokers/coinbase/orders -s type
+- To display open orders sorted by side (buy/sell) in ascending order: portfolio/brokers/coinbase/orders -s side -r
+- To view the last 5 open orders sorted by status: portfolio/brokers/coinbase/orders -l 5 -s status
+- To sort open orders by product ID: portfolio/brokers/coinbase/orders -s product_id
+- To display open orders sorted by creation date in ascending order: portfolio/brokers/coinbase/orders -s created_at -r

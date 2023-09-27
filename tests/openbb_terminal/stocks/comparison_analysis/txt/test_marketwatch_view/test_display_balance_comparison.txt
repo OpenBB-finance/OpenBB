@@ -1,41 +1,40 @@
 Other available quarterly timeframes are: 30-Sep-2021, 31-Dec-2021, 31-Mar-2022, 30-Jun-2022, 30-Sep-2022
 
-                                     31-Dec-2021         
-                                            TSLA       GM
-Item                                                     
-Cash & Short Term Investments             18.05B   31.61B
-Cash & Short Term Investments Growth       9.93%   18.03%
-Cash Only                                 17.92B      23B
-Short-Term Investments                         -        -
-Cash & ST Investments / Total Assets      29.05%   12.92%
-Total Accounts Receivable                  1.91B   34.04B
-Total Accounts Receivable Growth          -2.50%    2.59%
-Accounts Receivables, Net                  1.91B   34.04B
-Accounts Receivables, Gross                1.91B   34.94B
-Bad Debt/Doubtful Accounts                     -   (895M)
-Other Receivable                               -        -
-Accounts Receivable Turnover                9.26     0.99
-Inventories                                5.76B   12.99B
-Finished Goods                             1.28B    4.75B
-Work in Progress                           1.09B        -
-Raw Materials                              3.39B    8.24B
-Progress Payments & Other                      -        -
-Other Current Assets                       1.38B    3.46B
-Miscellaneous Current Assets               1.38B    3.46B
-Total Current Assets                       27.1B    82.1B
-Net Property, Plant & Equipment           31.18B   80.14B
-Property, Plant & Equipment - Gross       39.87B  111.43B
-Buildings                                      -        -
-Land & Improvements                            -        -
-Computer Software and Equipment            1.41B        -
-Other Property, Plant & Equipment              -        -
-Accumulated Depreciation                   8.69B   31.29B
-Total Investments and Advances              223M   10.22B
-Other Long-Term Investments                 223M     540M
-Long-Term Note Receivables                  299M   36.17B
-Intangible Assets                          1.72B    5.09B
-Net Goodwill                                200M    1.91B
-Net Other Intangibles                          -        -
-Other Assets                               1.62B    9.85B
-Total Assets                              62.13B  244.72B
-Total Assets Growth                        7.43%    2.58%
+                                     TSLA (31-Dec-2021) GM (31-Dec-2021)
+Item                                                                    
+Cash & Short Term Investments                    18.05B           31.61B
+Cash & Short Term Investments Growth              9.93%           18.03%
+Cash Only                                        17.92B              23B
+Short-Term Investments                                                  
+Cash & ST Investments / Total Assets             29.05%           12.92%
+Total Accounts Receivable                         1.91B           34.04B
+Total Accounts Receivable Growth                 -2.50%            2.59%
+Accounts Receivables, Net                         1.91B           34.04B
+Accounts Receivables, Gross                       1.91B           34.94B
+Bad Debt/Doubtful Accounts                                        (895M)
+Other Receivable                                                        
+Accounts Receivable Turnover                       9.26             0.99
+Inventories                                       5.76B           12.99B
+Finished Goods                                    1.28B            4.75B
+Work in Progress                                  1.09B                 
+Raw Materials                                     3.39B            8.24B
+Progress Payments & Other                                               
+Other Current Assets                              1.38B            3.46B
+Miscellaneous Current Assets                      1.38B            3.46B
+Total Current Assets                              27.1B            82.1B
+Net Property, Plant & Equipment                  31.18B           80.14B
+Property, Plant & Equipment - Gross              39.87B          111.43B
+Buildings                                                               
+Land & Improvements                                                     
+Computer Software and Equipment                   1.41B                 
+Other Property, Plant & Equipment                                       
+Accumulated Depreciation                          8.69B           31.29B
+Total Investments and Advances                     223M           10.22B
+Other Long-Term Investments                        223M             540M
+Long-Term Note Receivables                         299M           36.17B
+Intangible Assets                                 1.72B            5.09B
+Net Goodwill                                       200M            1.91B
+Net Other Intangibles                                                   
+Other Assets                                      1.62B            9.85B
+Total Assets                                     62.13B          244.72B
+Total Assets Growth                               7.43%            2.58%

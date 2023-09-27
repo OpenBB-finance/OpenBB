@@ -1,0 +1,19 @@
+parent_command:etf/ta
+usage: zlma [-l N_LENGTH] [-o N_OFFSET]
+
+The zero lag exponential moving average (ZLEMA) indicator was created by John Ehlers and Ric Way. The idea is do a regular exponential moving average (EMA) calculation but on a de-lagged data instead of doing it on the regular
+data. Data is de-lagged by removing the data from "lag" days ago thus removing (or attempting to) the cumulative effect of the moving average.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To plot the ZLEMA for an ETF with a window length of 20: etf/ta/zlma
+- Plot the ZLEMA for an ETF with a custom window length of 30: etf/ta/zlma -l 30
+- Display the ZLEMA for an ETF with multiple window lengths, such as 10 and 50: etf/ta/zlma -l 10,50
+- Show the ZLEMA for an ETF with a window length of 20 and an offset of 5: etf/ta/zlma -o 5
+- Visualize the ZLEMA for an ETF with a custom window length of 40 and an offset of 10: etf/ta/zlma -l 40 -o 10

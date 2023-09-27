@@ -1,0 +1,19 @@
+parent_command:crypto/ta
+usage: hma [-l N_LENGTH] [-o N_OFFSET]
+
+The Hull Moving Average solves the age old dilemma of making a moving average more responsive to current price activity whilst maintaining curve smoothness. In fact the HMA almost eliminates lag altogether and manages to improve
+smoothing at the same time.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [10, 20])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Hull Moving Average for a specific cryptocurrency with default length and offset: crypto/load <COIN>/ta/hma
+- To calculate the Hull Moving Average for a specific cryptocurrency with a custom length of 15: crypto/load <COIN>/ta/hma -l 15
+- To calculate the Hull Moving Average for a specific cryptocurrency with custom lengths of 10 and 30: crypto/load <COIN>/ta/hma -l 10,30
+- To calculate the Hull Moving Average for a specific cryptocurrency with a custom offset of 5: crypto/load <COIN>/ta/hma -o 5
+- To calculate the Hull Moving Average for a specific cryptocurrency with custom lengths of 10 and 30, and an offset of 5: crypto/load <COIN>/ta/hma -l 10,30 -o 5

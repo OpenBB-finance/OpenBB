@@ -1,0 +1,14 @@
+parent_command:crypto/qa
+usage: spread [-w N_WINDOW]
+
+Shows rolling spread measurement
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- To display the rolling spread measurement with the default window length for a specific cryptocurrency: crypto/load <COIN>/qa/spread
+- To show the rolling spread measurement for a cryptocurrency with a custom window length of 30: crypto/load <COIN>/qa/spread -w 30
+- For a specific coin, visualize the rolling spread measurement using a window length of 10: crypto/load <COIN>/qa/spread --window 10

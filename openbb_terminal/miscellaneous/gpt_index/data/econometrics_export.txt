@@ -1,0 +1,16 @@
+parent_command:econometrics
+usage: export [-n NAME] [-t {xlsx,csv}]
+
+Export dataset to Excel
+
+optional arguments:
+  -n NAME, --name NAME  The name of the dataset you wish to export (default: None)
+  -t {xlsx,csv}, --type {xlsx,csv}
+                        The file type you wish to export to (default: xlsx)
+
+
+Examples:
+- Export the dataset named 'Dataset1' to an Excel file: econometrics/export -n Dataset1 -t xlsx
+- Export the dataset named 'Dataset2' to a CSV file: econometrics/export -n Dataset2 -t csv
+- Export a dataset named 'Dataset3' in Excel format: econometrics/export --name Dataset3 --type xlsx
+- Export a dataset named 'Dataset4' in CSV format: econometrics/export --name Dataset4 --type csv

@@ -1,0 +1,11 @@
+parent_command:alt/covid
+usage: ov
+
+Show historical cases and deaths by country.
+
+ov
+Examples:
+- Display historical cases and deaths for a specific country: alt/covid/ov
+- To view the historical data of COVID-19 cases and deaths in a country, use: alt/covid/ov
+- Use the following command to see the historical cases and deaths related to COVID-19 by country: alt/covid/ov
+- To get a historical overview of COVID-19 cases and deaths for a country, enter: alt/covid/ov

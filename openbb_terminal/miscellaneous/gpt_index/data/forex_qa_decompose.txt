@@ -1,0 +1,13 @@
+parent_command:forex/qa
+usage: decompose [-m]
+
+Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
+
+optional arguments:
+  -m, --multiplicative  decompose using multiplicative model instead of additive (default: False)
+
+
+Examples:
+- Decompose the time series for a forex pair using the additive model: forex/load <PAIR>/qa/decompose
+- Decompose the time series for a forex pair using the multiplicative model: forex/load <PAIR>/qa/decompose -m
+- Analyze a forex pair's time series with a multiplicative decomposition: forex/load <PAIR>/qa/decompose --multiplicative

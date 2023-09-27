@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: blos [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest officer sales 100k. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about blos' to access the related guide.
+Summary: Display the latest officer sales of 100k or more for stocks with a customizable limit on the number of data rows displayed. You can also export the raw data in various formats and save the data to a specific excel sheet. [Source: OpenInsider]
+
+Examples:
+- Show the latest officer sales for 100k or more: stocks/ins/blos
+- Show the latest officer sales for 100k or more with a limit of 20 data rows: stocks/ins/blos -l 20
+- Export the latest officer sales for 100k or more in csv format: stocks/ins/blos --export csv
+- Save the latest officer sales for 100k or more to a specific excel sheet: stocks/ins/blos --sheet-name Sheet1

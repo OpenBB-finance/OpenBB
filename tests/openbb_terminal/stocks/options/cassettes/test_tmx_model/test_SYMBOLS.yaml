@@ -1,0 +1,1035 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - www.m-x.ca
+      User-Agent:
+      - Python-urllib/3.10
+    method: GET
+    uri: https://www.m-x.ca/en/trading/data/options-list
+  response:
+    body:
+      string: "<!DOCTYPE html>\n<html class=\"no-js\" xmlns=\"http://www.w3.org/1999/xhtml\"
+        lang=\"en\" xmlns:og=\"http://opengraphprotocol.org/schema/\" xmlns:fb=\"http://www.facebook.com/2008/fbml\">\n<head>\n<meta
+        charset=\"utf-8\" />\n<title>TMX - Montr\xE9al Exchange - Options List</title><meta
+        name=\"viewport\" content=\"user-scalable=yes, initial-scale=1, minimum-scale=1,
+        maximum-scale=3, width=device-width\" />\n<meta property=\"og:image\" content=\"https://www.tmx.com/assets/application/img/tmx_logo_highres.jpg\">\n<meta
+        property=\"twitter:image\" content=\"https://www.tmx.com/assets/application/img/tmx_logo_highres.jpg\">\n<meta
+        name=\"revisit-after\" content=\"1 day\" />\n<meta name=\"geo.placename\"
+        content=\"Canada\" />\n<meta name=\"geo.region\" content=\"Montr\xE9al\" />\n<meta
+        name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n<meta name=\"apple-mobile-web-app-status-bar-style\"
+        content=\"black\" />\n<link rel=\"apple-touch-icon\" href=\"/assets/application/img/touch-icon-iphone.png\"
+        />\n<link rel=\"apple-touch-icon\" sizes=\"72x72\" href=\"/assets/application/img/touch-icon-ipad.png\"
+        />\n<link rel=\"apple-touch-icon\" sizes=\"114x114\" href=\"/assets/application/img/touch-icon-iphone4.png\"
+        />\n<link rel=\"apple-touch-icon-precomposed\" href=\"/assets/application/img/touch-icon-android.png\"
+        />\n<link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n<link
+        rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n<link
+        rel=\"profile\" href=\"http://microformats.org/profile/hcalendar\" />\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\nnew
+        Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\nj=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n})(window,document,'script','dataLayer','GTM-KDW587P');</script>\n<link
+        rel=\"stylesheet\" type=\"text/css\" href=\"/assets/application/css/style.1683840901.min.css\"
+        media=\"all\" />\n<link href=\"/assets/application/css/datatables.1643139492.min.css\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\"></head>\n<body class=\"en
+        trading data options-list\" id=\"page-id-62\">\n<noscript><iframe src=\"https://www.googletagmanager.com/ns.html?id=GTM-KDW587P\"
+        height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\" title=\"google
+        manager\"></iframe></noscript>\n<div id=\"container-overall\" class=\"container-overall\">\n<div
+        class=\"mp-pusher\" id=\"mp-pusher\">\n<nav id=\"mp-menu\" class=\"mp-menu\">\n<div
+        class=\"mp-level\">\n<div class=\"menu-close\"><a href=\"#\" id=\"close_button\"><img
+        src=\"/assets/application/img/close-menu.1632866266.png\" alt=\"X\" aria-label=\"Close
+        Menu\" /></a></div>\n<ul>\n<li id=\"mmenu0-home\"><a href=\"/en\" class=\"home_link\">Home</a></li>\n<li
+        id=\"mmenu0-1\" class=\"has-children\">\n<a href=\"#\">About Us</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">About Us</div>\n<ul>\n<li
+        id=\"mmenu1-1\"><a href=\"/en/about-us\">About Us</a></li>\n<li id=\"mmenu1-6\"
+        class=\"has-children\">\n<a href=\"#\">MX</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">MX</div>\n<ul>\n<li id=\"mmenu2-6\"><a href=\"/en/about-us/mx\">MX</a></li>\n<li
+        id=\"mmenu2-10\"><a href=\"/en/about-us/mx/overview\">Overview</a></li>\n<li
+        id=\"mmenu2-11\"><a href=\"/en/about-us/mx/management-team\">Management Team</a></li>\n<li
+        id=\"mmenu2-12\"><a href=\"/en/about-us/mx/historical-highlights\">Historical
+        Highlights</a></li>\n<li id=\"mmenu2-14\"><a href=\"https://www.tmx.com/newsroom/press-releases?lang=en\"
+        class=\"blank&#x20;external\" target=\"_blank\">Press Releases</a></li>\n<li
+        id=\"mmenu2-15\"><a href=\"https://www.tmx.com/careers?lang=en\" class=\"blank&#x20;external\"
+        target=\"_blank\">Careers</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-8\"
+        class=\"has-children\">\n<a href=\"#\">Regulation</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Regulation</div>\n<ul>\n<li id=\"mmenu2-8\"><a
+        href=\"/en/about-us/regulation\">Regulation</a></li>\n<li id=\"mmenu2-18\"><a
+        href=\"https://reg.m-x.ca/en\" class=\"blank&#x20;external\" target=\"_blank\">Regulatory
+        Division</a></li>\n<li id=\"mmenu2-19\"><a href=\"/en/about-us/regulation/rules\">Rules</a></li>\n<li
+        id=\"mmenu2-20\"><a href=\"/en/about-us/regulation/approved-participants-list\">Approved
+        Participants List</a></li>\n<li id=\"mmenu2-21\"><a href=\"https://reg.m-x.ca/en/requirements/margin-rates\"
+        class=\"blank&#x20;external\" target=\"_blank\">Margin Requirements</a></li>\n<li
+        id=\"mmenu2-22\"><a href=\"/en/about-us/regulation/priips-regulation\">PRIIPs
+        Regulation</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-7\" class=\"has-children\">\n<a
+        href=\"#\">University Partnership</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">University Partnership</div>\n<ul>\n<li id=\"mmenu2-7\"><a
+        href=\"/en/about-us/university-partnership\">University Partnership</a></li>\n<li
+        id=\"mmenu2-16\"><a href=\"/optionscontest\">Options Trading Simulation</a></li>\n<li
+        id=\"mmenu2-17\"><a href=\"/en/about-us/university-partnership/canadian-derivatives-scholarship\">Research
+        Scholarship in Derivative Instruments</a></li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu1-9\" class=\"has-children\">\n<a href=\"#\">Post-Trade</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Post-Trade</div>\n<ul>\n<li
+        id=\"mmenu2-9\"><a href=\"/en/about-us/post-trade\">Post-Trade</a></li>\n<li
+        id=\"mmenu2-23\"><a href=\"https://cdcc.ca/index_en\" class=\"blank&#x20;external\"
+        target=\"_blank\">CDCC</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-115\"><a
+        href=\"/en/contact\">Contact Us</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu0-2\"
+        class=\"has-children\">\n<a href=\"#\">Markets</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Markets</div>\n<ul>\n<li id=\"mmenu1-2\"><a
+        href=\"/en/markets\">Markets</a></li>\n<li id=\"mmenu1-24\" class=\"has-children\">\n<a
+        href=\"#\">Interest Rate Derivatives</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">Interest Rate Derivatives</div>\n<ul>\n<li id=\"mmenu2-24\"><a
+        href=\"/en/markets/interest-rate-derivatives\">Interest Rate Derivatives</a></li>\n<li
+        id=\"mmenu2-131\"><a href=\"/en/markets/interest-rate-derivatives/coa\">COA
+        - One-Month CORRA Futures</a></li>\n<li id=\"mmenu2-30\"><a href=\"/en/markets/interest-rate-derivatives/cra\">CRA
+        - Three-Month CORRA Futures</a></li>\n<li id=\"mmenu2-31\"><a href=\"/en/markets/interest-rate-derivatives/bax\">BAX
+        - Three-Month Canadian Bankers&#039; Acceptance Futures</a></li>\n<li id=\"mmenu2-32\"><a
+        href=\"/en/markets/interest-rate-derivatives/cgz\">CGZ - Two-Year Government
+        of Canada Bond Futures</a></li>\n<li id=\"mmenu2-33\"><a href=\"/en/markets/interest-rate-derivatives/cgf\">CGF
+        - Five-Year Government of Canada Bond Futures</a></li>\n<li id=\"mmenu2-34\"><a
+        href=\"/en/markets/interest-rate-derivatives/cgb\">CGB - Ten-Year Government
+        of Canada Bond Futures</a></li>\n<li id=\"mmenu2-35\"><a href=\"/en/markets/interest-rate-derivatives/lgb\">LGB
+        - 30-Year Government of Canada Bond Futures</a></li>\n<li id=\"mmenu2-36\"><a
+        href=\"/en/markets/interest-rate-derivatives/obx\">OBW, OBX, OBY, OBZ - Options
+        on Three-Month Canadian Bankers&#039; Acceptance Futures</a></li>\n<li id=\"mmenu2-37\"><a
+        href=\"/en/markets/interest-rate-derivatives/ogz\">OGZ - Options on Two-Year
+        Government of Canada Bond Futures</a></li>\n<li id=\"mmenu2-38\"><a href=\"/en/markets/interest-rate-derivatives/ogf\">OGF
+        - Options on Five-Year Government of Canada Bond Futures</a></li>\n<li id=\"mmenu2-39\"><a
+        href=\"/en/markets/interest-rate-derivatives/ogb\">OGB - Options on Ten-Year
+        Government of Canada Bond Futures</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-25\"
+        class=\"has-children\">\n<a href=\"#\">Equity Derivatives</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Equity Derivatives</div>\n<ul>\n<li id=\"mmenu2-25\"><a
+        href=\"/en/markets/equity-derivatives\">Equity Derivatives</a></li>\n<li id=\"mmenu2-40\"><a
+        href=\"/en/markets/equity-derivatives/equity-options\">Equity Options</a></li>\n<li
+        id=\"mmenu2-41\"><a href=\"/en/markets/equity-derivatives/weekly-options\">Weekly
+        Options</a></li>\n<li id=\"mmenu2-42\"><a href=\"/en/markets/equity-derivatives/etf-options\">Options
+        on ETF</a></li>\n<li id=\"mmenu2-43\"><a href=\"/en/markets/equity-derivatives/share-futures\">Share
+        Futures</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-27\" class=\"has-children\">\n<a
+        href=\"#\">Currency Derivatives</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">Currency Derivatives</div>\n<ul>\n<li id=\"mmenu2-27\"><a href=\"/en/markets/currency-derivatives\">Currency
+        Derivatives</a></li>\n<li id=\"mmenu2-54\"><a href=\"/en/markets/currency-derivatives/usx\">USX
+        - Options on the US Dollar</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-28\"
+        class=\"has-children\">\n<a href=\"#\">MX Indices</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">MX Indices</div>\n<ul>\n<li id=\"mmenu2-28\"><a
+        href=\"/en/markets/mx-indices\">MX Indices</a></li>\n<li id=\"mmenu2-55\"><a
+        href=\"/en/markets/mx-indices/derivatives-indices\">Derivatives Indices</a></li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu1-29\"><a href=\"/en/markets/btc\">BTC - Basis Trade on Close</a></li>\n<li
+        id=\"mmenu1-26\" class=\"has-children\">\n<a href=\"#\">Index Derivatives</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Index Derivatives</div>\n<ul>\n<li
+        id=\"mmenu2-26\"><a href=\"/en/markets/index-derivatives\">Index Derivatives</a></li>\n<li
+        id=\"mmenu2-44\"><a href=\"/en/markets/index-derivatives/sxf\">SXF - S&amp;P/TSX
+        60 Index Standard Futures</a></li>\n<li id=\"mmenu2-45\"><a href=\"/en/markets/index-derivatives/sxm\">SXM
+        - S&amp;P/TSX 60 Index Mini Futures</a></li>\n<li id=\"mmenu2-46\"><a href=\"/en/markets/index-derivatives/seg\">SEG
+        - S&amp;P/TSX 60 ESG Index Futures</a></li>\n<li id=\"mmenu2-47\"><a href=\"/en/markets/index-derivatives/scg\">SCG
+        - S&amp;P/TSX Composite ESG Index Futures</a></li>\n<li id=\"mmenu2-48\"><a
+        href=\"/en/markets/index-derivatives/sdv\">SDV - S&amp;P/TSX 60 Dividend Index
+        Futures</a></li>\n<li id=\"mmenu2-50\"><a href=\"/en/markets/index-derivatives/scf\">SCF
+        - S&amp;P/TSX Composite Index Mini Futures</a></li>\n<li id=\"mmenu2-51\"><a
+        href=\"/en/markets/index-derivatives/sector-index-futures\">SXA, SXB, SXD,
+        SXG, SXH, SXK, SXR, SXS, SXT, SXU, SXW, SXY - Sector Index Futures</a></li>\n<li
+        id=\"mmenu2-52\"><a href=\"/en/markets/index-derivatives/sxo\">SXO - S&amp;P/TSX
+        60 Index Standard Options</a></li>\n<li id=\"mmenu2-53\"><a href=\"/en/markets/index-derivatives/sector-index-options\">SXJ,
+        SXV - Sector Index Options</a></li>\n</ul>\n</div>\n</li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu0-3\" class=\"has-children\">\n<a href=\"#\">Trading</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Trading</div>\n<ul>\n<li id=\"mmenu1-3\"><a
+        href=\"/en/trading\">Trading</a></li>\n<li id=\"mmenu1-56\" class=\"has-children\">\n<a
+        href=\"#\">Data</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Data</div>\n<ul>\n<li
+        id=\"mmenu2-56\"><a href=\"/en/trading/data\">Data</a></li>\n<li id=\"mmenu2-61\"><a
+        href=\"/en/trading/data/quotes\">Quotes</a></li>\n<li id=\"mmenu2-62\"><a
+        href=\"/en/trading/data/options-list\">Options List</a></li>\n<li id=\"mmenu2-127\"><a
+        href=\"/en/trading/data/monthly-volumes-and-open-interest\">Monthly Volumes
+        and Open Interest</a></li>\n<li id=\"mmenu2-63\"><a href=\"/en/trading/data/daily-special-terms-transactions\">Daily
+        Special Terms Transactions</a></li>\n<li id=\"mmenu2-13\"><a href=\"/en/trading/data/trading-hours-and-holidays\">Trading
+        Hours &amp; Holidays</a></li>\n<li id=\"mmenu2-64\"><a href=\"/en/trading/data/trading-calendar\">Trading
+        Calendar</a></li>\n<li id=\"mmenu2-65\"><a href=\"/en/trading/data/intra-session-summary\">Intra-Session
+        Summary</a></li>\n<li id=\"mmenu2-121\"><a href=\"/files/options-summary-en.xlsx\"
+        target=\"_blank\" class=\"xlsx&#x20;blank&#x20;external\">Options Summary</a></li>\n<li
+        id=\"mmenu2-66\"><a href=\"/en/trading/data/put-call-ratios\">Put/Call Ratios</a></li>\n<li
+        id=\"mmenu2-67\"><a href=\"/en/trading/data/market-records\">Market Records</a></li>\n<li
+        id=\"mmenu2-68\"><a href=\"/en/trading/data/historical\">Historical Data</a></li>\n<li
+        id=\"mmenu2-69\"><a href=\"/en/trading/data/market-data-services\">Market
+        Data Services</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-59\" class=\"has-children\">\n<a
+        href=\"#\">Connectivity</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">Connectivity</div>\n<ul>\n<li id=\"mmenu2-59\"><a href=\"/en/trading/connectivity\">Connectivity</a></li>\n<li
+        id=\"mmenu2-75\"><a href=\"/en/trading/connectivity/sola-overview\">SOLA Overview</a></li>\n<li
+        id=\"mmenu2-76\"><a href=\"/en/trading/connectivity/market-access\">Market
+        Access</a></li>\n<li id=\"mmenu2-77\"><a href=\"/en/trading/connectivity/connection-and-testing\">Connection
+        &amp; Testing</a></li>\n<li id=\"mmenu2-78\"><a href=\"https://www.tmxinfoservices.com/tmx-datalinx/products-and-services/co-location-services?lang=en\"
+        class=\"blank&#x20;external\" target=\"_blank\">Co-Location Services</a></li>\n<li
+        id=\"mmenu2-79\"><a href=\"/en/trading/connectivity/risk-management-tools\">Risk
+        Management Tools</a></li>\n<li id=\"mmenu2-80\"><a href=\"/en/trading/connectivity/isv\">Independent
+        Software Vendors (ISVs)</a></li>\n<li id=\"mmenu2-81\"><a href=\"/en/trading/connectivity/future-vendor-codes\">Future
+        Vendor Codes</a></li>\n<li id=\"mmenu2-82\"><a href=\"/en/trading/connectivity/exchange-market-thresholds-and-controls\">Exchange
+        Market Thresholds and Controls</a></li>\n<li id=\"mmenu2-84\"><a href=\"/en/trading/connectivity/rfq\">RFQ
+        - Request for Quote</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-57\" class=\"has-children\">\n<a
+        href=\"#\">Reports</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Reports</div>\n<ul>\n<li
+        id=\"mmenu2-57\"><a href=\"/en/trading/reports\">Reports</a></li>\n<li id=\"mmenu2-70\"><a
+        href=\"/en/trading/data/monthly-volumes-and-open-interest\">Monthly Statistics
+        (Moved)</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-60\" class=\"has-children\">\n<a
+        href=\"#\">Programs</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">Programs</div>\n<ul>\n<li id=\"mmenu2-60\"><a href=\"/en/trading/programs\">Programs</a></li>\n<li
+        id=\"mmenu2-85\"><a href=\"/en/trading/programs/market-making\">Market Making
+        Programs</a></li>\n<li id=\"mmenu2-86\"><a href=\"/en/trading/programs/fees-and-incentives\">Fees
+        &amp; Incentives Programs</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-58\"
+        class=\"has-children\">\n<a href=\"#\">Tools</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Tools</div>\n<ul>\n<li id=\"mmenu2-58\"><a
+        href=\"/en/trading/tools\">Tools</a></li>\n<li id=\"mmenu2-72\"><a href=\"https://sttrf-frots.m-x.ca/?lang=en\"
+        class=\"blank&#x20;external\" target=\"_blank\">Special Terms Transaction
+        Reporting Form</a></li>\n<li id=\"mmenu2-73\"><a href=\"/en/trading/tools/canadian-interest-rate-expectations\">Canadian
+        Interest Rate Expectations</a></li>\n<li id=\"mmenu2-74\"><a href=\"/en/trading/tools/educational-trading-tools\">Educational
+        Trading Tools</a></li>\n<li id=\"mmenu2-129\"><a href=\"https://www.tmx.com/tmx-axis?lang=en\"
+        class=\"blank&#x20;external\" target=\"_blank\">TMX AXIS</a></li>\n</ul>\n</div>\n</li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu0-4\" class=\"has-children\">\n<a href=\"#\">Resources</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Resources</div>\n<ul>\n<li
+        id=\"mmenu1-4\"><a href=\"/en/resources\">Resources</a></li>\n<li id=\"mmenu1-87\"
+        class=\"has-children\">\n<a href=\"#\">Guides & Strategies</a>\n<div class=\"mp-level\">\n<div
+        class=\"mp-back\" tabindex=\"0\">Guides & Strategies</div>\n<ul>\n<li id=\"mmenu2-87\"><a
+        href=\"/en/resources/guides-and-strategies\">Guides &amp; Strategies</a></li>\n<li
+        id=\"mmenu2-83\"><a href=\"/en/resources/guides-and-strategies/uds\">UDS -
+        User Defined &amp; Inter-Group Strategies</a></li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu1-88\" class=\"has-children\">\n<a href=\"#\">Notices</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Notices</div>\n<ul>\n<li
+        id=\"mmenu2-88\"><a href=\"/en/resources/notices\">Notices</a></li>\n<li id=\"mmenu2-90\"><a
+        href=\"/en/resources/notices/circulars\">Circulars</a></li>\n<li id=\"mmenu2-91\"><a
+        href=\"/en/resources/notices/technical-notices\">Technical Notices</a></li>\n<li
+        id=\"mmenu2-92\"><a href=\"/en/resources/notices/advisory-notices\">Advisory
+        Notices</a></li>\n<li id=\"mmenu2-93\"><a href=\"/en/resources/notices/new-listings-and-series\">New
+        Listings &amp; Series</a></li>\n<li id=\"mmenu2-94\"><a href=\"/en/resources/notices/feeds\">RSS/XML
+        Feeds</a></li>\n</ul>\n</div>\n</li>\n<li id=\"mmenu1-89\" class=\"has-children\">\n<a
+        href=\"#\">Education</a>\n<div class=\"mp-level\">\n<div class=\"mp-back\"
+        tabindex=\"0\">Education</div>\n<ul>\n<li id=\"mmenu2-89\"><a href=\"/en/resources/education\">Education</a></li>\n<li
+        id=\"mmenu2-118\"><a href=\"https://www.optionmatters.ca/\" class=\"blank&#x20;external\"
+        target=\"_blank\">Option Matters Blog</a></li>\n<li id=\"mmenu2-95\"><a href=\"/en/resources/education/covered-call-screener\">Covered
+        Call Screener</a></li>\n<li id=\"mmenu2-96\"><a href=\"https://mx.inovestor.com/VirtualTrader/OptionsCalculator\"
+        class=\"blank&#x20;external\" target=\"_blank\">Options Calculator</a></li>\n<li
+        id=\"mmenu2-98\"><a href=\"https://mx.inovestor.com/\" class=\"blank&#x20;external\"
+        target=\"_blank\">Trading Simulator</a></li>\n</ul>\n</div>\n</li>\n</ul>\n</div>\n</li>\n<li
+        id=\"mmenu0-5\" class=\"has-children\">\n<a href=\"#\">Insights</a>\n<div
+        class=\"mp-level\">\n<div class=\"mp-back\" tabindex=\"0\">Insights</div>\n<ul>\n<li
+        id=\"mmenu1-5\"><a href=\"/en/insights\">Insights</a></li>\n<li id=\"mmenu1-99\"><a
+        href=\"/en/insights/articles-and-newsletters\">Articles &amp; Newsletters</a></li>\n</ul>\n</div>\n</li>\n</ul>\n</div>\n</nav>\n<div
+        class=\"scroller\">\n<div class=\"scroller-inner\">\n<div id=\"page-header\"
+        class=\"header\">\n<div class=\"top_links\">\n<div id=\"topbar\" class=\"wrapper\">\n<ul
+        class=\"navigation\">\n<li class=\"ticker\" id=\"tmx-ticker\"><a class=\"tmxx
+        blank\" href=\"https://money.tmx.com/en/quote/X\">TMX (X):</a></li>\n<li class=\"trading-status\"><a
+        class=\"status-green\" href=\"/en/trading/connectivity/status\">Trading Status<span
+        class=\"sr-only\">: Green</span></a></li>\n<li id=\"identification\" class=\"sign_in
+        quickies\">\n<span tabindex=\"0\"><span class=\"fa fa-user\"></span><span
+        class=\"name\">Login / Register</span></span>\n<ul class=\"list\">\n<li><a
+        href=\"/en/user/login\">Login</a></li>\n<li><a href=\"/en/user/register\">Register</a></li>\n<li><a
+        href=\"/en/subscriptions\">Subscriptions</a></li>\n</ul>\n</li>\n<li class=\"lang
+        current\">\n<a href=\"/fr/trading/data/options-list\" lang=\"fr\" id=\"langswitch\">Fran\xE7ais</a>\n</li>\n</ul>\n<div
+        class=\"clearfixe\"></div>\n</div>\n</div>\n<div class=\"banner\">\n<div class=\"wrapper\">\n<div
+        id=\"mp-trigger\" class=\"trigger-holder\">\n<a href=\"#\" id=\"trigger\"
+        class=\"menu-trigger\"><img src=\"/assets/application/img/bars.1632866266.png\"
+        alt=\"|||\" aria-label=\"Open Menu\" /></a>\n</div>\n<div class=\"logo\">\n<a
+        href=\"https://www.tmx.com/\" title=\"TMX.com\">\n<img src=\"/assets/application/img/tmx_logo_white.1632866266.svg\"
+        height=\"90\" alt=\"TMX\" />\n</a>\n<div class=\"title_website\"><a class=\"title_website_link\"
+        href=\"/en\" title=\"Back to Home Page\">\n<span>Montr\xE9al Exchange</span>\n</a></div>\n</div>\n<div
+        class=\"search_form\">\n<form name=\"quickQuote\" id=\"quickQuote1\" action=\"/en/search\"
+        method=\"get\">\n<div id=\"searchbox\" class=\"searchbox\">\n<fieldset>\n<legend
+        class=\"sr-only\">Search...</legend>\n<label for=\"searchinputtext\" class=\"sr-only\">Search</label>\n<input
+        type=\"text\" name=\"q\" id=\"searchinputtext\" class=\"input-search text
+        ac_input\" autocomplete=\"off\" maxlength=\"30\" placeholder=\"Search for
+        a symbol...\" title=\"Search for a symbol...\">\n<button type=\"submit\" id=\"btn-search\"
+        class=\"btn-search\" title=\"Search\" aria-label=\"Search\"><span class=\"fa
+        fa-search\"></span></button>\n</fieldset>\n</div>\n<div id=\"searchmodes\"
+        class=\"searchmodes\">\n<label><input type=\"radio\" id=\"optQ\" class=\"optQ\"
+        value=\"q\" checked=\"checked\"> Quotes</label>\n<label><input type=\"radio\"
+        id=\"optG\" class=\"optG\" value=\"g\"> m-x.ca</label>\n</div>\n</form>\n</div>\n<div
+        id=\"mobile-search-trigger\">\n<span class=\"fa fa-search\" aria-label=\"Toggle
+        Search\"></span>\n</div>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n</div>\n<div
+        id=\"mobile-search-form\" class=\"mobile-search-form\">\n<div id=\"mobile-search-tabs\">\n<ul
+        class=\"nav nav-tabs\">\n<li class=\"active\"><a href=\"#ms-tab-1\">Find Quote</a></li>\n<li><a
+        href=\"#ms-tab-2\">Search Site</a></li>\n</ul>\n</div>\n<div id=\"mobile-search-tabs-content\"
+        class=\"tab-content\">\n<div id=\"ms-tab-1\" class=\"tab-pane active\">\n<form
+        name=\"quickQuote\" id=\"quickQuote2\" action=\"/en/trading/data/quotes#quotes\"
+        method=\"get\" target=\"_blank\">\n<div id=\"searchbox2\" class=\"searchbox\">\n<fieldset>\n<legend
+        class=\"sr-only\">Search for a symbol</legend>\n<label for=\"searchinputtext2\"
+        class=\"sr-only\">Search</label>\n<input type=\"text\" name=\"symbol\" id=\"searchinputtext2\"
+        class=\"input-search text ac_input\" autocomplete=\"off\" maxlength=\"30\"
+        placeholder=\"Enter a symbol...\" title=\"Search for a symbol\">\n<button
+        type=\"submit\" id=\"btn-search2\" class=\"btn-search\" title=\"Search\" aria-label=\"Search\"><span
+        class=\"fa fa-search\"></span></button>\n</fieldset>\n</div>\n</form>\n</div>\n<div
+        id=\"ms-tab-2\" class=\"tab-pane\">\n<div id=\"tmxes-search-container-mobile\"></div>\n</div>\n</div>\n</div>\n<div
+        id=\"main-nav\" class=\"main_nav\">\n<ul class=\"wrapper\">\n<li class=\"level0
+        first without_sub_nav\">\n<a href=\"/en\" class=\"home_link\">HOME</a>\n</li>\n<li
+        class=\"level0\" id=\"menu0-1\">\n<span class=\"main_category with_sub_nav\"
+        tabindex=\"0\">About Us</span>\n<div class=\"content_big_menu\">\n<div class=\"intro_category\">\n<div
+        class=\"title\"><a href=\"/en/about-us\">About Us</a></div>\n</div>\n<button
+        type=\"button\" class=\"bt_close_menu_pad\" aria-label=\"Close\"></button>\n<div
+        class=\"sub_nav col3\">\n<ul class=\"level1\" id=\"menu1-1\">\n<li id=\"menu1-6\">\n<div
+        class=\"title\"><a href=\"/en/about-us/mx\">MX</a></div>\n<ul class=\"level2\"
+        id=\"menu2-6\">\n<li id=\"menu2-10\"><a href=\"/en/about-us/mx/overview\">Overview</a></li>\n<li
+        id=\"menu2-11\"><a href=\"/en/about-us/mx/management-team\">Management Team</a></li>\n<li
+        id=\"menu2-12\"><a href=\"/en/about-us/mx/historical-highlights\">Historical
+        Highlights</a></li>\n<li id=\"menu2-14\"><a href=\"https://www.tmx.com/newsroom/press-releases?lang=en\"
+        target=\"_blank\" class=\"blank&#x20;external\">Press Releases</a></li>\n<li
+        id=\"menu2-15\"><a href=\"https://www.tmx.com/careers?lang=en\" target=\"_blank\"
+        class=\"blank&#x20;external\">Careers</a></li>\n</ul>\n</li>\n<li id=\"menu1-8\">\n<div
+        class=\"title\"><a href=\"/en/about-us/regulation\">Regulation</a></div>\n<ul
+        class=\"level2\" id=\"menu2-8\">\n<li id=\"menu2-18\"><a href=\"https://reg.m-x.ca/en\"
+        target=\"_blank\" class=\"blank&#x20;external\">Regulatory Division</a></li>\n<li
+        id=\"menu2-19\"><a href=\"/en/about-us/regulation/rules\">Rules</a></li>\n<li
+        id=\"menu2-20\"><a href=\"/en/about-us/regulation/approved-participants-list\">Approved
+        Participants List</a></li>\n<li id=\"menu2-21\"><a href=\"https://reg.m-x.ca/en/requirements/margin-rates\"
+        target=\"_blank\" class=\"blank&#x20;external\">Margin Requirements</a></li>\n<li
+        id=\"menu2-22\"><a href=\"/en/about-us/regulation/priips-regulation\">PRIIPs
+        Regulation</a></li>\n</ul>\n</li>\n<li id=\"menu1-7\">\n<div class=\"title\"><a
+        href=\"/en/about-us/university-partnership\">University Partnership</a></div>\n<ul
+        class=\"level2\" id=\"menu2-7\">\n<li id=\"menu2-16\"><a href=\"/optionscontest\">Options
+        Trading Simulation</a></li>\n<li id=\"menu2-17\"><a href=\"/en/about-us/university-partnership/canadian-derivatives-scholarship\">Research
+        Scholarship in Derivative Instruments</a></li>\n</ul>\n</li>\n<li id=\"menu1-9\">\n<div
+        class=\"title\"><a href=\"/en/about-us/post-trade\">Post-Trade</a></div>\n<ul
+        class=\"level2\" id=\"menu2-9\">\n<li id=\"menu2-23\"><a href=\"https://cdcc.ca/index_en\"
+        target=\"_blank\" class=\"blank&#x20;external\">CDCC</a></li>\n</ul>\n</li>\n</ul>\n<div
+        class=\"clearfixe\"></div>\n<div class=\"contact_area\">\n<a href=\"/en/contact\">Contact
+        Us</a>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n</div>\n</li>\n<li
+        class=\"level0\" id=\"menu0-2\">\n<span class=\"main_category with_sub_nav\"
+        tabindex=\"0\">Markets</span>\n<div class=\"content_big_menu\">\n<div class=\"intro_category\">\n<div
+        class=\"title\"><a href=\"/en/markets\">Markets</a></div>\n</div>\n<button
+        type=\"button\" class=\"bt_close_menu_pad\" aria-label=\"Close\"></button>\n<div
+        class=\"sub_nav col3\">\n<ul class=\"level1\" id=\"menu1-2\">\n<li id=\"menu1-24\">\n<div
+        class=\"title\"><a href=\"/en/markets/interest-rate-derivatives\">Interest
+        Rate Derivatives</a></div>\n<ul class=\"level2\" id=\"menu2-24\">\n<li id=\"menu2-131\"><a
+        href=\"/en/markets/interest-rate-derivatives/coa\">COA - One-Month CORRA Futures</a></li>\n<li
+        id=\"menu2-30\"><a href=\"/en/markets/interest-rate-derivatives/cra\">CRA
+        - Three-Month CORRA Futures</a></li>\n<li id=\"menu2-31\"><a href=\"/en/markets/interest-rate-derivatives/bax\">BAX
+        - Three-Month Canadian Bankers&#039; Acceptance Futures</a></li>\n<li id=\"menu2-32\"><a
+        href=\"/en/markets/interest-rate-derivatives/cgz\">CGZ - Two-Year Government
+        of Canada Bond Futures</a></li>\n<li id=\"menu2-33\"><a href=\"/en/markets/interest-rate-derivatives/cgf\">CGF
+        - Five-Year Government of Canada Bond Futures</a></li>\n<li id=\"menu2-34\"><a
+        href=\"/en/markets/interest-rate-derivatives/cgb\">CGB - Ten-Year Government
+        of Canada Bond Futures</a></li>\n<li id=\"menu2-35\"><a href=\"/en/markets/interest-rate-derivatives/lgb\">LGB
+        - 30-Year Government of Canada Bond Futures</a></li>\n<li id=\"menu2-36\"><a
+        href=\"/en/markets/interest-rate-derivatives/obx\">OBW, OBX, OBY, OBZ - Options
+        on Three-Month Canadian Bankers&#039; Acceptance Futures</a></li>\n<li id=\"menu2-37\"><a
+        href=\"/en/markets/interest-rate-derivatives/ogz\">OGZ - Options on Two-Year
+        Government of Canada Bond Futures</a></li>\n<li id=\"menu2-38\"><a href=\"/en/markets/interest-rate-derivatives/ogf\">OGF
+        - Options on Five-Year Government of Canada Bond Futures</a></li>\n<li id=\"menu2-39\"><a
+        href=\"/en/markets/interest-rate-derivatives/ogb\">OGB - Options on Ten-Year
+        Government of Canada Bond Futures</a></li>\n</ul>\n</li>\n<li id=\"menu1-25\">\n<div
+        class=\"title\"><a href=\"/en/markets/equity-derivatives\">Equity Derivatives</a></div>\n<ul
+        class=\"level2\" id=\"menu2-25\">\n<li id=\"menu2-40\"><a href=\"/en/markets/equity-derivatives/equity-options\">Equity
+        Options</a></li>\n<li id=\"menu2-41\"><a href=\"/en/markets/equity-derivatives/weekly-options\">Weekly
+        Options</a></li>\n<li id=\"menu2-42\"><a href=\"/en/markets/equity-derivatives/etf-options\">Options
+        on ETF</a></li>\n<li id=\"menu2-43\"><a href=\"/en/markets/equity-derivatives/share-futures\">Share
+        Futures</a></li>\n</ul>\n</li>\n<li id=\"menu1-27\">\n<div class=\"title\"><a
+        href=\"/en/markets/currency-derivatives\">Currency Derivatives</a></div>\n<ul
+        class=\"level2\" id=\"menu2-27\">\n<li id=\"menu2-54\"><a href=\"/en/markets/currency-derivatives/usx\">USX
+        - Options on the US Dollar</a></li>\n</ul>\n</li>\n<li id=\"menu1-28\">\n<div
+        class=\"title\"><a href=\"/en/markets/mx-indices\">MX Indices</a></div>\n<ul
+        class=\"level2\" id=\"menu2-28\">\n<li id=\"menu2-55\"><a href=\"/en/markets/mx-indices/derivatives-indices\">Derivatives
+        Indices</a></li>\n</ul>\n</li>\n<li id=\"menu1-29\">\n<div class=\"title\"><a
+        href=\"/en/markets/btc\">BTC - Basis Trade on Close</a></div>\n</li>\n<li
+        id=\"menu1-26\">\n<div class=\"title\"><a href=\"/en/markets/index-derivatives\">Index
+        Derivatives</a></div>\n<ul class=\"level2\" id=\"menu2-26\">\n<li id=\"menu2-44\"><a
+        href=\"/en/markets/index-derivatives/sxf\">SXF - S&amp;P/TSX 60 Index Standard
+        Futures</a></li>\n<li id=\"menu2-45\"><a href=\"/en/markets/index-derivatives/sxm\">SXM
+        - S&amp;P/TSX 60 Index Mini Futures</a></li>\n<li id=\"menu2-46\"><a href=\"/en/markets/index-derivatives/seg\">SEG
+        - S&amp;P/TSX 60 ESG Index Futures</a></li>\n<li id=\"menu2-47\"><a href=\"/en/markets/index-derivatives/scg\">SCG
+        - S&amp;P/TSX Composite ESG Index Futures</a></li>\n<li id=\"menu2-48\"><a
+        href=\"/en/markets/index-derivatives/sdv\">SDV - S&amp;P/TSX 60 Dividend Index
+        Futures</a></li>\n<li id=\"menu2-50\"><a href=\"/en/markets/index-derivatives/scf\">SCF
+        - S&amp;P/TSX Composite Index Mini Futures</a></li>\n<li id=\"menu2-51\"><a
+        href=\"/en/markets/index-derivatives/sector-index-futures\">SXA, SXB, SXD,
+        SXG, SXH, SXK, SXR, SXS, SXT, SXU, SXW, SXY - Sector Index Futures</a></li>\n<li
+        id=\"menu2-52\"><a href=\"/en/markets/index-derivatives/sxo\">SXO - S&amp;P/TSX
+        60 Index Standard Options</a></li>\n<li id=\"menu2-53\"><a href=\"/en/markets/index-derivatives/sector-index-options\">SXJ,
+        SXV - Sector Index Options</a></li>\n</ul>\n</li>\n</ul>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n</li>\n<li
+        class=\"level0\" id=\"menu0-3\">\n<span class=\"main_category with_sub_nav\"
+        tabindex=\"0\">Trading</span>\n<div class=\"content_big_menu\">\n<div class=\"intro_category\">\n<div
+        class=\"title\"><a href=\"/en/trading\">Trading</a></div>\n</div>\n<button
+        type=\"button\" class=\"bt_close_menu_pad\" aria-label=\"Close\"></button>\n<div
+        class=\"sub_nav col3\">\n<ul class=\"level1\" id=\"menu1-3\">\n<li id=\"menu1-56\">\n<div
+        class=\"title\"><a href=\"/en/trading/data\">Data</a></div>\n<ul class=\"level2\"
+        id=\"menu2-56\">\n<li id=\"menu2-61\"><a href=\"/en/trading/data/quotes\">Quotes</a></li>\n<li
+        id=\"menu2-62\"><a href=\"/en/trading/data/options-list\">Options List</a></li>\n<li
+        id=\"menu2-127\"><a href=\"/en/trading/data/monthly-volumes-and-open-interest\">Monthly
+        Volumes and Open Interest</a></li>\n<li id=\"menu2-63\"><a href=\"/en/trading/data/daily-special-terms-transactions\">Daily
+        Special Terms Transactions</a></li>\n<li id=\"menu2-13\"><a href=\"/en/trading/data/trading-hours-and-holidays\">Trading
+        Hours &amp; Holidays</a></li>\n<li id=\"menu2-64\"><a href=\"/en/trading/data/trading-calendar\">Trading
+        Calendar</a></li>\n<li id=\"menu2-65\"><a href=\"/en/trading/data/intra-session-summary\">Intra-Session
+        Summary</a></li>\n<li id=\"menu2-121\"><a href=\"/files/options-summary-en.xlsx\"
+        target=\"_blank\" class=\"xlsx&#x20;blank&#x20;external\">Options Summary</a></li>\n<li
+        id=\"menu2-66\"><a href=\"/en/trading/data/put-call-ratios\">Put/Call Ratios</a></li>\n<li
+        id=\"menu2-67\"><a href=\"/en/trading/data/market-records\">Market Records</a></li>\n<li
+        id=\"menu2-68\"><a href=\"/en/trading/data/historical\">Historical Data</a></li>\n<li
+        id=\"menu2-69\"><a href=\"/en/trading/data/market-data-services\">Market Data
+        Services</a></li>\n</ul>\n</li>\n<li id=\"menu1-59\">\n<div class=\"title\"><a
+        href=\"/en/trading/connectivity\">Connectivity</a></div>\n<ul class=\"level2\"
+        id=\"menu2-59\">\n<li id=\"menu2-75\"><a href=\"/en/trading/connectivity/sola-overview\">SOLA
+        Overview</a></li>\n<li id=\"menu2-76\"><a href=\"/en/trading/connectivity/market-access\">Market
+        Access</a></li>\n<li id=\"menu2-77\"><a href=\"/en/trading/connectivity/connection-and-testing\">Connection
+        &amp; Testing</a></li>\n<li id=\"menu2-78\"><a href=\"https://www.tmxinfoservices.com/tmx-datalinx/products-and-services/co-location-services?lang=en\"
+        target=\"_blank\" class=\"blank&#x20;external\">Co-Location Services</a></li>\n<li
+        id=\"menu2-79\"><a href=\"/en/trading/connectivity/risk-management-tools\">Risk
+        Management Tools</a></li>\n<li id=\"menu2-80\"><a href=\"/en/trading/connectivity/isv\">Independent
+        Software Vendors (ISVs)</a></li>\n<li id=\"menu2-81\"><a href=\"/en/trading/connectivity/future-vendor-codes\">Future
+        Vendor Codes</a></li>\n<li id=\"menu2-82\"><a href=\"/en/trading/connectivity/exchange-market-thresholds-and-controls\">Exchange
+        Market Thresholds and Controls</a></li>\n<li id=\"menu2-84\"><a href=\"/en/trading/connectivity/rfq\">RFQ
+        - Request for Quote</a></li>\n</ul>\n</li>\n<li id=\"menu1-57\">\n<div class=\"title\"><a
+        href=\"/en/trading/reports\">Reports</a></div>\n<ul class=\"level2\" id=\"menu2-57\">\n<li
+        id=\"menu2-70\"><a href=\"/en/trading/data/monthly-volumes-and-open-interest\">Monthly
+        Statistics (Moved)</a></li>\n</ul>\n</li>\n<li id=\"menu1-60\">\n<div class=\"title\"><a
+        href=\"/en/trading/programs\">Programs</a></div>\n<ul class=\"level2\" id=\"menu2-60\">\n<li
+        id=\"menu2-85\"><a href=\"/en/trading/programs/market-making\">Market Making
+        Programs</a></li>\n<li id=\"menu2-86\"><a href=\"/en/trading/programs/fees-and-incentives\">Fees
+        &amp; Incentives Programs</a></li>\n</ul>\n</li>\n<li id=\"menu1-58\">\n<div
+        class=\"title\"><a href=\"/en/trading/tools\">Tools</a></div>\n<ul class=\"level2\"
+        id=\"menu2-58\">\n<li id=\"menu2-72\"><a href=\"https://sttrf-frots.m-x.ca/?lang=en\"
+        target=\"_blank\" class=\"blank&#x20;external\">Special Terms Transaction
+        Reporting Form</a></li>\n<li id=\"menu2-73\"><a href=\"/en/trading/tools/canadian-interest-rate-expectations\">Canadian
+        Interest Rate Expectations</a></li>\n<li id=\"menu2-74\"><a href=\"/en/trading/tools/educational-trading-tools\">Educational
+        Trading Tools</a></li>\n<li id=\"menu2-129\"><a href=\"https://www.tmx.com/tmx-axis?lang=en\"
+        target=\"_blank\" class=\"blank&#x20;external\">TMX AXIS</a></li>\n</ul>\n</li>\n</ul>\n<div
+        class=\"clearfixe\"></div>\n</div>\n</div>\n</li>\n<li class=\"level0\" id=\"menu0-4\">\n<span
+        class=\"main_category with_sub_nav\" tabindex=\"0\">Resources</span>\n<div
+        class=\"content_big_menu\">\n<div class=\"intro_category\">\n<div class=\"title\"><a
+        href=\"/en/resources\">Resources</a></div>\n</div>\n<button type=\"button\"
+        class=\"bt_close_menu_pad\" aria-label=\"Close\"></button>\n<div class=\"sub_nav
+        col3\">\n<ul class=\"level1\" id=\"menu1-4\">\n<li id=\"menu1-87\">\n<div
+        class=\"title\"><a href=\"/en/resources/guides-and-strategies\">Guides &amp;
+        Strategies</a></div>\n<ul class=\"level2\" id=\"menu2-87\">\n<li id=\"menu2-83\"><a
+        href=\"/en/resources/guides-and-strategies/uds\">UDS - User Defined &amp;
+        Inter-Group Strategies</a></li>\n</ul>\n</li>\n<li id=\"menu1-88\">\n<div
+        class=\"title\"><a href=\"/en/resources/notices\">Notices</a></div>\n<ul class=\"level2\"
+        id=\"menu2-88\">\n<li id=\"menu2-90\"><a href=\"/en/resources/notices/circulars\">Circulars</a></li>\n<li
+        id=\"menu2-91\"><a href=\"/en/resources/notices/technical-notices\">Technical
+        Notices</a></li>\n<li id=\"menu2-92\"><a href=\"/en/resources/notices/advisory-notices\">Advisory
+        Notices</a></li>\n<li id=\"menu2-93\"><a href=\"/en/resources/notices/new-listings-and-series\">New
+        Listings &amp; Series</a></li>\n<li id=\"menu2-94\"><a href=\"/en/resources/notices/feeds\">RSS/XML
+        Feeds</a></li>\n</ul>\n</li>\n<li id=\"menu1-89\">\n<div class=\"title\"><a
+        href=\"/en/resources/education\">Education</a></div>\n<ul class=\"level2\"
+        id=\"menu2-89\">\n<li id=\"menu2-118\"><a href=\"https://www.optionmatters.ca/\"
+        target=\"_blank\" class=\"blank&#x20;external\">Option Matters Blog</a></li>\n<li
+        id=\"menu2-95\"><a href=\"/en/resources/education/covered-call-screener\">Covered
+        Call Screener</a></li>\n<li id=\"menu2-96\"><a href=\"https://mx.inovestor.com/VirtualTrader/OptionsCalculator\"
+        target=\"_blank\" class=\"blank&#x20;external\">Options Calculator</a></li>\n<li
+        id=\"menu2-98\"><a href=\"https://mx.inovestor.com/\" target=\"_blank\" class=\"blank&#x20;external\">Trading
+        Simulator</a></li>\n</ul>\n</li>\n</ul>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n</li>\n<li
+        class=\"level0\" id=\"menu0-5\">\n<span class=\"main_category with_sub_nav\"
+        tabindex=\"0\">Insights</span>\n<div class=\"content_big_menu\">\n<div class=\"intro_category\">\n<div
+        class=\"title\"><a href=\"/en/insights\">Insights</a></div>\n</div>\n<button
+        type=\"button\" class=\"bt_close_menu_pad\" aria-label=\"Close\"></button>\n<div
+        class=\"sub_nav col3\">\n<ul class=\"level1\" id=\"menu1-5\">\n<li id=\"menu1-99\">\n<div
+        class=\"title\"><a href=\"/en/insights/articles-and-newsletters\">Articles
+        &amp; Newsletters</a></div>\n</li>\n</ul>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n</li>\n</ul>\n<div
+        class=\"clearfixe\"></div>\n</div>                                <div id=\"page-content\"
+        class=\"content\">\n<ul class=\"breadcrumb\">\n<li><a href=\"/en\" title=\"Home\">Home</a>
+        <span class=\"sep fa fa-chevron-right\"></span></li>\n<li><a href=\"/en/trading\">Trading</a>
+        <span class=\"sep fa fa-chevron-right\"></span></li>\n<li><a href=\"/en/trading/data\">Data</a>
+        <span class=\"sep fa fa-chevron-right\"></span></li>\n<li class=\"current\"
+        id=\"last-breadcrumb\">Options List</li>\n</ul>\n<div class=\"row\">\n<div
+        class=\"col col-12 col-md-8 col-main\">\n<div class=\"main left\">\n<div class=\"title_main_content\">\n<h1
+        class=\"title_main title_id_62\" id=\"title-main\">Options List</h1>\n<div
+        class=\"accessibility_options\">\n<div class=\"text_size\">\n<a href=\"#\"
+        title=\"Decrease Text Size\" class=\"small-text\" id=\"small-text\"><span
+        class=\"fa fa-font\"></span><span class=\"indice\"><span class=\"fa fa-minus\"></span></span></a>\n<a
+        href=\"#\" title=\"Increase Text Size\" class=\"big-text\" id=\"big-text\"><span
+        class=\"fa fa-font\"></span><span class=\"indice\"><span class=\"fa fa-plus\"></span></span></a>\n</div>\n<a
+        href=\"#\" title=\"Print this page\" id=\"aPrint\"><span class=\"fa fa-print\"></span></a>\n<div
+        class=\"clearfixe\"></div>\n</div>\n<div class=\"clearfixe\"></div>\n</div>\n<div
+        class=\"fs-text\">\n<p>For more information on listed options classes, please
+        contact the Customer Relations Center at <span class=\"nowrap\">514 871-7878</span>
+        (toll-free <span class=\"nowrap\">1-866-871-7878</span>) or by email at <a
+        class=\"blank nowrap\" href=\"mailto:info-mx@tmx.com\" target=\"_blank\">info-mx@tmx.com</a>.</p>\n<p><a
+        class=\"xls blank\" href=\"/f_en/listed_long_term_options_en.xlsx\" target=\"_blank\">List
+        of long-term options available for trading</a></p>\n<ul>\n<li>\n<a href=\"#etf\">Options
+        on ETF</a>\n</li>\n<li>\n<a href=\"#index\">Index Options</a>\n</li>\n<li>\n<a
+        href=\"#equity\">Equity Options</a>\n</li>\n<li>\n<a href=\"#currency\">Currency
+        Options</a>\n</li>\n<li>\n<a href=\"#weekly\">Weekly Options</a>\n</li>\n</ul>\n</div>\n</div>\n</div>\n<div
+        class=\"col col-12 col-md-4 col-sidebar\">\n<div class=\"sidebar\">\n<div
+        class=\"widget widget_usefullinks\">\n<h3>Useful Documents</h3>\n<div class=\"content_widget\">\n<p><a
+        href=\"/f_publications_en/cycles_opt_en.pdf\" target=\"_blank\" class=\"pdf
+        blank\">Expiry Cycles</a></p>\n<p><a href=\"/f_publications_en/mainteneurs_marche_en.pdf\"
+        target=\"_blank\" class=\"pdf blank\">Market Makers</a></p>\n<p><a href=\"/f_publications_en/tradinghoursphases_en.pdf\"
+        target=\"_blank\" class=\"pdf blank\">Trading Hours and Stages</a></p>\n<p><a
+        href=\"/f_publications_en/settlement_index_en.pdf\" target=\"_blank\" class=\"pdf
+        blank\">Official Index Opening Levels</a></p>\n<p><a href=\"/files/options-summary-en.xlsx\"
+        target=\"_blank\" class=\"xls blank\">Options Summary</a></p>\n<p><a href=\"/f_publications_en/ranking_cross_optact_en.pdf\"
+        target=\"_blank\" class=\"pdf blank\">Equity Options Crosses and Strategies
+        \u2013 Approved Participant Ranking</a></p>\n<p><a href=\"/f_publications_en/daily_option_listings_en.pdf\"
+        target=\"_blank\" class=\"pdf blank\">Daily Option Listings</a></p>\n<p><a
+        href=\"/f_publications_en/available_weekly_options_en.pdf\" target=\"_blank\"
+        class=\"pdf blank\">Available Weekly Options</a></p>\n<p><a href=\"/f_publications_en/penny_program_en.xlsx\"
+        target=\"_blank\" class=\"xls blank\">Penny Program List</a></p>\n</div>\n<h3>Useful
+        Link</h3>\n<div class=\"content_widget\">\n<p><a href=\"/en/trading/data/implied-volatility\">Implied
+        Volatility Calculation</a></p>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        class=\"main one_column\">\n<div class=\"fs-text\">\n<ul class=\"nav nav-tabs
+        tabled\" role=\"tablist\">\n<li class=\"nav-item\">\n<a class=\"nav-link active\"
+        href=\"#etf\" id=\"tab-etf\" role=\"tab\" aria-controls=\"etf\" aria-selected=\"true\">Options
+        on ETF</a>\n</li>\n<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#index\"
+        id=\"tab-index\" role=\"tab\" aria-controls=\"index\" aria-selected=\"false\">Index
+        Options</a>\n</li>\n<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#equity\"
+        id=\"tab-equity\" role=\"tab\" aria-controls=\"equity\" aria-selected=\"false\">Equity
+        Options</a>\n</li>\n<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#currency\"
+        id=\"tab-currency\" role=\"tab\" aria-controls=\"currency\" aria-selected=\"false\">Currency
+        Options</a>\n</li>\n<li class=\"nav-item\">\n<a class=\"nav-link\" href=\"#weekly\"
+        id=\"tab-weekly\" role=\"tab\" aria-controls=\"weekly\" aria-selected=\"false\">Weekly
+        Options</a>\n</li>\n</ul>\n<div class=\"tab-content tabled\" role=\"presentation\">\n<div
+        class=\"tab-pane active\" id=\"etf\" role=\"tabpanel\" aria-labelledby=\"tab-etf\"
+        aria-hidden=\"false\">\n<div class=\"twrap\">\n<table class=\"data text-left\"
+        id=\"tetf\">\n<thead>\n<tr class=\"nowrap\">\n<th>Name of Underlying Instrument</th>\n<th
+        style=\"width: 20%\">Option Symbol</th>\n<th style=\"width: 20%\">Underlying
+        Symbol</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\n3iQ CoinShares Bitcoin
+        ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTCQ*#quotes\">BTCQ</a></td>\n<td>BTCQ</td>\n</tr>\n<tr>\n<td>\n3iQ
+        Coinshares Ether ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ETHQ*#quotes\">ETHQ</a></td>\n<td>ETHQ</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Canadian Gold Miners -2x Daily Bear ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HGD*#quotes\">HGD</a></td>\n<td>HGD</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Canadian Gold Miners 2x Daily Bull ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HGU*#quotes\">HGU</a></td>\n<td>HGU</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Crude Oil Inverse Leveraged Daily Bear ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HOD*#quotes\">HOD</a></td>\n<td>HOD</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Crude Oil Inverse Leveraged Daily Bear ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HOD1*#quotes\">HOD1</a></td>\n<td>HOD1</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Natural Gas Inverse Leveraged Daily Bear ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HND*#quotes\">HND</a></td>\n<td>HND</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Natural Gas Inverse Leveraged Daily Bear ETF                                <br/><span
+        class=\"arrow\">Please refer to <a href=\"/f_circulaires_en/021-14_en.pdf\"
+        target=\"_blank\" class=\"pdf\">circular no.&nbsp;021-14</a>.</span>\n</td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HND2*#quotes\">HND2</a></td>\n<td>HND2</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Natural Gas Leveraged Daily Bull ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HNU*#quotes\">HNU</a></td>\n<td>HNU</td>\n</tr>\n<tr>\n<td>\nBetaPro
+        Natural Gas Leveraged Daily Bull ETF                                <br/><span
+        class=\"arrow\">Please refer to <a href=\"/f_circulaires_en/145-10_en.pdf\"
+        target=\"_blank\" class=\"pdf\">circular no.&nbsp;145-10</a>.</span>\n</td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HNU1*#quotes\">HNU1</a></td>\n<td>HNU1</td>\n</tr>\n<tr>\n<td>\nBMO
+        Aggregate Bond Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZAG*#quotes\">ZAG</a></td>\n<td>ZAG</td>\n</tr>\n<tr>\n<td>\nBMO
+        Equal Weight Banks Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZEB*#quotes\">ZEB</a></td>\n<td>ZEB</td>\n</tr>\n<tr>\n<td>\nBMO
+        Equal Weight US Banks Hedged to CAD Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZUB*#quotes\">ZUB</a></td>\n<td>ZUB</td>\n</tr>\n<tr>\n<td>\nBMO
+        Equal Weight US Banks Index ETF CAD Units                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZBK*#quotes\">ZBK</a></td>\n<td>ZBK</td>\n</tr>\n<tr>\n<td>\nBMO
+        Equal Weight Utilities Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZUT*#quotes\">ZUT</a></td>\n<td>ZUT</td>\n</tr>\n<tr>\n<td>\nBMO
+        High Yield US Corporate Bond Hedged to CAD Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZHY*#quotes\">ZHY</a></td>\n<td>ZHY</td>\n</tr>\n<tr>\n<td>\nBMO
+        Low Volatility Canadian Equity ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZLB*#quotes\">ZLB</a></td>\n<td>ZLB</td>\n</tr>\n<tr>\n<td>\nBMO
+        MSCI EAFE Hedged to CAD Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZDM*#quotes\">ZDM</a></td>\n<td>ZDM</td>\n</tr>\n<tr>\n<td>\nBMO
+        MSCI USA High Quality Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZUQ*#quotes\">ZUQ</a></td>\n<td>ZUQ</td>\n</tr>\n<tr>\n<td>\nBMO
+        Nasdaq 100 Equity Hedged to CAD Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZQQ*#quotes\">ZQQ</a></td>\n<td>ZQQ</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P 500 Hedged to CAD Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZUE*#quotes\">ZUE</a></td>\n<td>ZUE</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P 500 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZSP*#quotes\">ZSP</a></td>\n<td>ZSP</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P/TSX Capped Composite Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZCN*#quotes\">ZCN</a></td>\n<td>ZCN</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P/TSX Laddered Preferred Share Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZPR*#quotes\">ZPR</a></td>\n<td>ZPR</td>\n</tr>\n<tr>\n<td>\nCI
+        Galaxy Bitcoin ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTCX*#quotes\">BTCX</a></td>\n<td>BTCX.B</td>\n</tr>\n<tr>\n<td>\nCI
+        Galaxy Ethereum ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ETHX*#quotes\">ETHX</a></td>\n<td>ETHX.B</td>\n</tr>\n<tr>\n<td>\nEther
+        ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ETHR*#quotes\">ETHR</a></td>\n<td>ETHR</td>\n</tr>\n<tr>\n<td>\nEvolve
+        Bitcoin ETF Canadian\ndollar denominated units                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=EBIT*#quotes\">EBIT</a></td>\n<td>EBIT</td>\n</tr>\n<tr>\n<td>\nEvolve
+        FANGMA Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TECH*#quotes\">TECH</a></td>\n<td>TECH</td>\n</tr>\n<tr>\n<td>\nHorizons
+        Active Preferred Share ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HPR*#quotes\">HPR</a></td>\n<td>HPR</td>\n</tr>\n<tr>\n<td>\nHorizons
+        Marijuana Life Sciences Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HMMJ*#quotes\">HMMJ</a></td>\n<td>HMMJ</td>\n</tr>\n<tr>\n<td>\nHorizons
+        Marijuana Life Sciences Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HMMJ2*#quotes\">HMMJ2</a></td>\n<td>HMMJ2</td>\n</tr>\n<tr>\n<td>\nHorizons
+        Marijuana Life Sciences Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HMMJ3*#quotes\">HMMJ3</a></td>\n<td>HMMJ3</td>\n</tr>\n<tr>\n<td>\nHorizons
+        NASDAQ 100 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HXQ*#quotes\">HXQ</a></td>\n<td>HXQ</td>\n</tr>\n<tr>\n<td>\nHorizons
+        Pipelines &amp; Energy Services Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=HOG*#quotes\">HOG</a></td>\n<td>HOG</td>\n</tr>\n<tr>\n<td>\nHorizons
+        S&amp;P/TSX 60 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HXT*#quotes\">HXT</a></td>\n<td>HXT</td>\n</tr>\n<tr>\n<td>\niShares
+        Canadian Select Dividend Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XDV*#quotes\">XDV</a></td>\n<td>XDV</td>\n</tr>\n<tr>\n<td>\niShares
+        Core Canadian Corporate Bond Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XCB*#quotes\">XCB</a></td>\n<td>XCB</td>\n</tr>\n<tr>\n<td>\niShares
+        Core Canadian Short Term Bond Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XSB*#quotes\">XSB</a></td>\n<td>XSB</td>\n</tr>\n<tr>\n<td>\niShares
+        Core S&amp;P 500 Index ETF (CAD-Hedged)                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XSP*#quotes\">XSP</a></td>\n<td>XSP</td>\n</tr>\n<tr>\n<td>\niShares
+        Core S&amp;P/TSX Capped Composite Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XIC*#quotes\">XIC</a></td>\n<td>XIC</td>\n</tr>\n<tr>\n<td>\niShares
+        MSCI EAFE Index ETF (CAD-Hedged)                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XIN*#quotes\">XIN</a></td>\n<td>XIN</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX 60 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=XIU*#quotes\">XIU</a></td>\n<td>XIU</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Capped Energy Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XEG*#quotes\">XEG</a></td>\n<td>XEG</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Capped Financials Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XFN*#quotes\">XFN</a></td>\n<td>XFN</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Capped REIT Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XRE*#quotes\">XRE</a></td>\n<td>XRE</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Global Gold Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XGD*#quotes\">XGD</a></td>\n<td>XGD</td>\n</tr>\n<tr>\n<td>\niShares
+        U.S. Small Cap Index ETF (CAD-Hedged)                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XSU*#quotes\">XSU</a></td>\n<td>XSU</td>\n</tr>\n<tr>\n<td>\nPurpose
+        Bitcoin ETF CAD ETF Non-currency Hedged Units                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=BTCC*#quotes\">BTCC</a></td>\n<td>BTCC.B</td>\n</tr>\n<tr>\n<td>\nPurpose
+        Ether ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ETHH*#quotes\">ETHH</a></td>\n<td>ETHH.B</td>\n</tr>\n<tr>\n<td>\nVanguard
+        Canadian Aggregate Bond Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=VAB*#quotes\">VAB</a></td>\n<td>VAB</td>\n</tr>\n<tr>\n<td>\nVanguard
+        Canadian Short-Term Bond Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=VSB*#quotes\">VSB</a></td>\n<td>VSB</td>\n</tr>\n<tr>\n<td>\nVanguard
+        Canadian Short-Term Corporate Bond Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=VSC*#quotes\">VSC</a></td>\n<td>VSC</td>\n</tr>\n<tr>\n<td>\nVanguard
+        S&amp;P 500 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=VFV*#quotes\">VFV</a></td>\n<td>VFV</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n<div
+        class=\"tab-pane active\" id=\"index\" role=\"tabpanel\" aria-labelledby=\"tab-index\"
+        aria-hidden=\"false\">\n<div class=\"twrap\">\n<table class=\"data text-left\"
+        id=\"tindex\">\n<thead>\n<tr class=\"nowrap\">\n<th>Name of Underlying Instrument</th>\n<th
+        style=\"width: 20%\">Option Symbol</th>\n<th style=\"width: 20%\">Underlying
+        Symbol</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\nS&amp;P/TSX 60 Index Standard
+        Options                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SXO*#quotes\">SXO</a></td>\n<td>TX60</td>\n</tr>\n<tr>\n<td>\nS&amp;P/TSX
+        Capped Utilities Index Options                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SXV*#quotes\">SXV</a></td>\n<td>TTUT</td>\n</tr>\n<tr>\n<td>\nS&amp;P/TSX
+        Composite Index Banks (Industry Group) Options                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=SXJ*#quotes\">SXJ</a></td>\n<td>TXBA</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n<div
+        class=\"tab-pane active\" id=\"equity\" role=\"tabpanel\" aria-labelledby=\"tab-equity\"
+        aria-hidden=\"false\">\n<div class=\"twrap\">\n<table class=\"data text-left\"
+        id=\"tequity\">\n<thead>\n<tr class=\"nowrap\">\n<th>Name of Underlying Instrument</th>\n<th
+        style=\"width: 20%\">Option Symbol</th>\n<th style=\"width: 20%\">Underlying
+        Symbol</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\nAecon Group Inc.                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ARE*#quotes\">ARE</a></td>\n<td>ARE</td>\n</tr>\n<tr>\n<td>\nAgnico
+        Eagle Mines Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AEM*#quotes\">AEM</a></td>\n<td>AEM</td>\n</tr>\n<tr>\n<td>\nAir
+        Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AC*#quotes\">AC</a></td>\n<td>AC</td>\n</tr>\n<tr>\n<td>\nAlamos
+        Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AGI*#quotes\">AGI</a></td>\n<td>AGI</td>\n</tr>\n<tr>\n<td>\nAlaris
+        Royalty Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AD*#quotes\">AD</a></td>\n<td>AD
+        u</td>\n</tr>\n<tr>\n<td>\nAlgoma Steel Group Inc.                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ASTL*#quotes\">ASTL</a></td>\n<td>ASTL</td>\n</tr>\n<tr>\n<td>\nAlgonquin
+        Power &amp; Utilities Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AQN*#quotes\">AQN</a></td>\n<td>AQN</td>\n</tr>\n<tr>\n<td>\nAlimentation
+        Couche Tard Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ATD*#quotes\">ATD</a></td>\n<td>ATD</td>\n</tr>\n<tr>\n<td>\nAllied
+        Properties Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=AP*#quotes\">AP</a></td>\n<td>AP u</td>\n</tr>\n<tr>\n<td>\nAltaGas
+        Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ALA*#quotes\">ALA</a></td>\n<td>ALA</td>\n</tr>\n<tr>\n<td>\nAltus
+        Group Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AIF*#quotes\">AIF</a></td>\n<td>AIF</td>\n</tr>\n<tr>\n<td>\nARC
+        Resources Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ARX*#quotes\">ARX</a></td>\n<td>ARX</td>\n</tr>\n<tr>\n<td>\nAritzia
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ATZ*#quotes\">ATZ</a></td>\n<td>ATZ</td>\n</tr>\n<tr>\n<td>\nArtis
+        Real Estate Investment Trust                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AX*#quotes\">AX</a></td>\n<td>AX
+        u</td>\n</tr>\n<tr>\n<td>\nATCO Ltd. Cl. I                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ACO*#quotes\">ACO</a></td>\n<td>ACO.X</td>\n</tr>\n<tr>\n<td>\nATS
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ATS*#quotes\">ATS</a></td>\n<td>ATS</td>\n</tr>\n<tr>\n<td>\nAurora
+        Cannabis Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ACB*#quotes\">ACB</a></td>\n<td>ACB</td>\n</tr>\n<tr>\n<td>\nAutoCanada
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ACQ*#quotes\">ACQ</a></td>\n<td>ACQ</td>\n</tr>\n<tr>\n<td>\nB2Gold
+        Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTO*#quotes\">BTO</a></td>\n<td>BTO</td>\n</tr>\n<tr>\n<td>\nBadger
+        Infrastructure Solutions Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BDGI*#quotes\">BDGI</a></td>\n<td>BDGI</td>\n</tr>\n<tr>\n<td>\nBallard
+        Power Systems Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BLDP*#quotes\">BLDP</a></td>\n<td>BLDP</td>\n</tr>\n<tr>\n<td>\nBank
+        of Montreal                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BMO*#quotes\">BMO</a></td>\n<td>BMO</td>\n</tr>\n<tr>\n<td>\nBank
+        of Nova Scotia (The)                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BNS*#quotes\">BNS</a></td>\n<td>BNS</td>\n</tr>\n<tr>\n<td>\nBarrick
+        Gold Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ABX*#quotes\">ABX</a></td>\n<td>ABX</td>\n</tr>\n<tr>\n<td>\nBausch
+        Health Companies Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BHC*#quotes\">BHC</a></td>\n<td>BHC</td>\n</tr>\n<tr>\n<td>\nBaytex
+        Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTE*#quotes\">BTE</a></td>\n<td>BTE</td>\n</tr>\n<tr>\n<td>\nBCE
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BCE*#quotes\">BCE</a></td>\n<td>BCE</td>\n</tr>\n<tr>\n<td>\nBirchcliff
+        Energy Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BIR*#quotes\">BIR</a></td>\n<td>BIR</td>\n</tr>\n<tr>\n<td>\nBitfarms
+        Ltd                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BITF*#quotes\">BITF</a></td>\n<td>BITF</td>\n</tr>\n<tr>\n<td>\nBlackBerry
+        Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BB*#quotes\">BB</a></td>\n<td>BB</td>\n</tr>\n<tr>\n<td>\nBoardwalk
+        Real Estate Investment Trust                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BEI*#quotes\">BEI</a></td>\n<td>BEIu</td>\n</tr>\n<tr>\n<td>\nBombardier
+        Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BBD*#quotes\">BBD</a></td>\n<td>BBD.B</td>\n</tr>\n<tr>\n<td>\nBombardier
+        Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BBD1*#quotes\">BBD1</a></td>\n<td>BBD1</td>\n</tr>\n<tr>\n<td>\nBoralex
+        Inc. Class A Shares                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BLX*#quotes\">BLX</a></td>\n<td>BLX</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Asset Management Inc., Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BAM*#quotes\">BAM</a></td>\n<td>BAM</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Asset Management Inc., Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BN1*#quotes\">BN1</a></td>\n<td>BN1</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BN*#quotes\">BN</a></td>\n<td>BN</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Infrastructure Partners L.P.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BIP*#quotes\">BIP</a></td>\n<td>BIPu</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Renewable Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BEPC*#quotes\">BEPC</a></td>\n<td>BEPC</td>\n</tr>\n<tr>\n<td>\nBrookfield
+        Renewable Partners L.P.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BEP*#quotes\">BEP</a></td>\n<td>BEPu</td>\n</tr>\n<tr>\n<td>\nBRP
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DOO*#quotes\">DOO</a></td>\n<td>DOO</td>\n</tr>\n<tr>\n<td>\nCAE
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CAE*#quotes\">CAE</a></td>\n<td>CAE</td>\n</tr>\n<tr>\n<td>\nCameco
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CCO*#quotes\">CCO</a></td>\n<td>CCO</td>\n</tr>\n<tr>\n<td>\nCanaccord
+        Genuity Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CF*#quotes\">CF</a></td>\n<td>CF</td>\n</tr>\n<tr>\n<td>\nCanada
+        Goose Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GOOS*#quotes\">GOOS</a></td>\n<td>GOOS</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Apartment Properties Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=CAR*#quotes\">CAR</a></td>\n<td>CARu</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Imperial Bank of Commerce                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CM*#quotes\">CM</a></td>\n<td>CM</td>\n</tr>\n<tr>\n<td>\nCanadian
+        National Railway Company                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CNR*#quotes\">CNR</a></td>\n<td>CNR</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Natural Resources Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CNQ*#quotes\">CNQ</a></td>\n<td>CNQ</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Pacific Railway Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CP*#quotes\">CP</a></td>\n<td>CP</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Tire Corporation Limited, Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CTC*#quotes\">CTC</a></td>\n<td>CTC.A</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Utilities Limited, Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CU*#quotes\">CU</a></td>\n<td>CU</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Western Bank                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CWB*#quotes\">CWB</a></td>\n<td>CWB</td>\n</tr>\n<tr>\n<td>\nCanfor
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CFP*#quotes\">CFP</a></td>\n<td>CFP</td>\n</tr>\n<tr>\n<td>\nCanopy
+        Growth Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WEED*#quotes\">WEED</a></td>\n<td>WEED</td>\n</tr>\n<tr>\n<td>\nCapital
+        Power Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CPX*#quotes\">CPX</a></td>\n<td>CPX</td>\n</tr>\n<tr>\n<td>\nCapstone
+        Mining Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CS*#quotes\">CS</a></td>\n<td>CS</td>\n</tr>\n<tr>\n<td>\nCardinal
+        Energy Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CJ*#quotes\">CJ</a></td>\n<td>CJ</td>\n</tr>\n<tr>\n<td>\nCascades
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CAS*#quotes\">CAS</a></td>\n<td>CAS</td>\n</tr>\n<tr>\n<td>\nCCL
+        Industries Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CCL*#quotes\">CCL</a></td>\n<td>CCL.B</td>\n</tr>\n<tr>\n<td>\nCelestica
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CLS*#quotes\">CLS</a></td>\n<td>CLS</td>\n</tr>\n<tr>\n<td>\nCenovus
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CVE*#quotes\">CVE</a></td>\n<td>CVE</td>\n</tr>\n<tr>\n<td>\nCenterra
+        Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CG*#quotes\">CG</a></td>\n<td>CG</td>\n</tr>\n<tr>\n<td>\nCGI
+        Inc., Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GIB*#quotes\">GIB</a></td>\n<td>GIB.A</td>\n</tr>\n<tr>\n<td>\nChampion
+        Iron Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CIA*#quotes\">CIA</a></td>\n<td>CIA</td>\n</tr>\n<tr>\n<td>\nCharlotte\u2019s
+        Web Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CWEB*#quotes\">CWEB</a></td>\n<td>CWEB</td>\n</tr>\n<tr>\n<td>\nChartwell
+        Retirement Residences                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CSH*#quotes\">CSH</a></td>\n<td>CSHu</td>\n</tr>\n<tr>\n<td>\nChemtrade
+        Logistics Income Fund                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CHE*#quotes\">CHE</a></td>\n<td>CHEu</td>\n</tr>\n<tr>\n<td>\nChoice
+        Properties Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=CHP*#quotes\">CHP</a></td>\n<td>CHPu</td>\n</tr>\n<tr>\n<td>\nCI
+        Financial Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CIX*#quotes\">CIX</a></td>\n<td>CIX</td>\n</tr>\n<tr>\n<td>\nCineplex
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CGX*#quotes\">CGX</a></td>\n<td>CGX</td>\n</tr>\n<tr>\n<td>\nCogeco
+        Communications Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CCA*#quotes\">CCA</a></td>\n<td>CCA</td>\n</tr>\n<tr>\n<td>\nConverge
+        Technology Solutions Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CTS*#quotes\">CTS</a></td>\n<td>CTS</td>\n</tr>\n<tr>\n<td>\nCORUS
+        Entertainment Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CJR*#quotes\">CJR</a></td>\n<td>CJR.B</td>\n</tr>\n<tr>\n<td>\nCrescent
+        Point Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CPG*#quotes\">CPG</a></td>\n<td>CPG</td>\n</tr>\n<tr>\n<td>\nCrombie
+        Real Estate Investment Trust                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CRR*#quotes\">CRR</a></td>\n<td>CRRu</td>\n</tr>\n<tr>\n<td>\nCronos
+        Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CRON*#quotes\">CRON</a></td>\n<td>CRON</td>\n</tr>\n<tr>\n<td>\nDefinity
+        Financial Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DFY*#quotes\">DFY</a></td>\n<td>DFY</td>\n</tr>\n<tr>\n<td>\nDescartes
+        Systems Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DSG*#quotes\">DSG</a></td>\n<td>DSG</td>\n</tr>\n<tr>\n<td>\nDollarama
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DOL*#quotes\">DOL</a></td>\n<td>DOL</td>\n</tr>\n<tr>\n<td>\nDorel
+        Industries Inc. Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DII*#quotes\">DII</a></td>\n<td>DII.B</td>\n</tr>\n<tr>\n<td>\nDream
+        Industrial Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=DIR*#quotes\">DIR</a></td>\n<td>DIRu</td>\n</tr>\n<tr>\n<td>\nDream
+        Office Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=D*#quotes\">D</a></td>\n<td>D  u</td>\n</tr>\n<tr>\n<td>\nDundee
+        Precious Metals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DPM*#quotes\">DPM</a></td>\n<td>DPM</td>\n</tr>\n<tr>\n<td>\nDye
+        &amp; Durham Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=DND*#quotes\">DND</a></td>\n<td>DND</td>\n</tr>\n<tr>\n<td>\nECN
+        Capital Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ECN*#quotes\">ECN</a></td>\n<td>ECN</td>\n</tr>\n<tr>\n<td>\nEldorado
+        Gold Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ELD*#quotes\">ELD</a></td>\n<td>ELD</td>\n</tr>\n<tr>\n<td>\nElement
+        Fleet Management Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EFN*#quotes\">EFN</a></td>\n<td>EFN</td>\n</tr>\n<tr>\n<td>\nEmera
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EMA*#quotes\">EMA</a></td>\n<td>EMA</td>\n</tr>\n<tr>\n<td>\nEmpire
+        Company Limited, Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EMP*#quotes\">EMP</a></td>\n<td>EMP.A</td>\n</tr>\n<tr>\n<td>\nEnbridge
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ENB*#quotes\">ENB</a></td>\n<td>ENB</td>\n</tr>\n<tr>\n<td>\nEndeavour
+        Mining Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EDV*#quotes\">EDV</a></td>\n<td>EDV</td>\n</tr>\n<tr>\n<td>\nEndeavour
+        Silver Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EDR*#quotes\">EDR</a></td>\n<td>EDR</td>\n</tr>\n<tr>\n<td>\nEnergy
+        Fuels Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EFR*#quotes\">EFR</a></td>\n<td>EFR</td>\n</tr>\n<tr>\n<td>\nEnerplus
+        Resources Fund                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ERF*#quotes\">ERF</a></td>\n<td>ERF</td>\n</tr>\n<tr>\n<td>\nEnthusiast
+        Gaming Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EGLX*#quotes\">EGLX</a></td>\n<td>EGLX</td>\n</tr>\n<tr>\n<td>\nEquinox
+        Gold Corp                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EQX*#quotes\">EQX</a></td>\n<td>EQX</td>\n</tr>\n<tr>\n<td>\nEro
+        Copper Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ERO*#quotes\">ERO</a></td>\n<td>ERO</td>\n</tr>\n<tr>\n<td>\nExtendicare
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EXE*#quotes\">EXE</a></td>\n<td>EXE</td>\n</tr>\n<tr>\n<td>\nFilo
+        Mining Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FIL*#quotes\">FIL</a></td>\n<td>FIL</td>\n</tr>\n<tr>\n<td>\nFinning
+        International Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FTT*#quotes\">FTT</a></td>\n<td>FTT</td>\n</tr>\n<tr>\n<td>\nFirst
+        Capital Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=FCR*#quotes\">FCR</a></td>\n<td>FCRu</td>\n</tr>\n<tr>\n<td>\nFirst
+        Majestic Silver Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FR*#quotes\">FR</a></td>\n<td>FR</td>\n</tr>\n<tr>\n<td>\nFirst
+        Quantum Minerals Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FM*#quotes\">FM</a></td>\n<td>FM</td>\n</tr>\n<tr>\n<td>\nFortis
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FTS*#quotes\">FTS</a></td>\n<td>FTS</td>\n</tr>\n<tr>\n<td>\nFortuna
+        Silver Mines Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FVI*#quotes\">FVI</a></td>\n<td>FVI</td>\n</tr>\n<tr>\n<td>\nFranco-Nevada
+        Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FNV*#quotes\">FNV</a></td>\n<td>FNV</td>\n</tr>\n<tr>\n<td>\nFreehold
+        Royalties Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FRU*#quotes\">FRU</a></td>\n<td>FRU</td>\n</tr>\n<tr>\n<td>\nFrontera
+        Energy Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FEC*#quotes\">FEC</a></td>\n<td>FEC</td>\n</tr>\n<tr>\n<td>\nGalaxy
+        Digital Holdings Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GLXY*#quotes\">GLXY</a></td>\n<td>GLXY</td>\n</tr>\n<tr>\n<td>\nGeorge
+        Weston Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WN*#quotes\">WN</a></td>\n<td>WN</td>\n</tr>\n<tr>\n<td>\nGFL
+        Environmental Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GFL*#quotes\">GFL</a></td>\n<td>GFL</td>\n</tr>\n<tr>\n<td>\nGibson
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GEI*#quotes\">GEI</a></td>\n<td>GEI</td>\n</tr>\n<tr>\n<td>\nGildan
+        Activewear Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GIL*#quotes\">GIL</a></td>\n<td>GIL</td>\n</tr>\n<tr>\n<td>\nGlobal
+        Atomic Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GLO*#quotes\">GLO</a></td>\n<td>GLO</td>\n</tr>\n<tr>\n<td>\nGoodFood
+        Market Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FOOD*#quotes\">FOOD</a></td>\n<td>FOOD</td>\n</tr>\n<tr>\n<td>\nGranite
+        Real Estate Investment Trust Inc.                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=GRT*#quotes\">GRT</a></td>\n<td>GRTu</td>\n</tr>\n<tr>\n<td>\nGreat-West
+        Lifeco Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GWO*#quotes\">GWO</a></td>\n<td>GWO</td>\n</tr>\n<tr>\n<td>\nGroupe
+        Aeroplan Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AIM*#quotes\">AIM</a></td>\n<td>AIM</td>\n</tr>\n<tr>\n<td>\nHeadwater
+        Exploration Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HWX*#quotes\">HWX</a></td>\n<td>HWX</td>\n</tr>\n<tr>\n<td>\nHEXO
+        Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HEXO2*#quotes\">HEXO2</a></td>\n<td>HEXO2</td>\n</tr>\n<tr>\n<td>\nHome
+        Capital Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HCG*#quotes\">HCG</a></td>\n<td>HCG</td>\n</tr>\n<tr>\n<td>\nHudbay
+        Minerals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HBM*#quotes\">HBM</a></td>\n<td>HBM</td>\n</tr>\n<tr>\n<td>\nHut
+        8 Mining Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HUT*#quotes\">HUT</a></td>\n<td>HUT</td>\n</tr>\n<tr>\n<td>\nHydro
+        One Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=H*#quotes\">H</a></td>\n<td>H</td>\n</tr>\n<tr>\n<td>\niA
+        Financial Corporation Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IAG*#quotes\">IAG</a></td>\n<td>IAG</td>\n</tr>\n<tr>\n<td>\nIAMGOLD
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IMG*#quotes\">IMG</a></td>\n<td>IMG</td>\n</tr>\n<tr>\n<td>\nIGM
+        Financial Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IGM*#quotes\">IGM</a></td>\n<td>IGM</td>\n</tr>\n<tr>\n<td>\nILLM
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ILLM*#quotes\">ILLM</a></td>\n<td>ILLM</td>\n</tr>\n<tr>\n<td>\nImperial
+        Oil Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IMO*#quotes\">IMO</a></td>\n<td>IMO</td>\n</tr>\n<tr>\n<td>\nInnergex
+        Renewable Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=INE*#quotes\">INE</a></td>\n<td>INE</td>\n</tr>\n<tr>\n<td>\nIntact
+        Financial Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IFC*#quotes\">IFC</a></td>\n<td>IFC</td>\n</tr>\n<tr>\n<td>\nInter
+        Pipeline Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IPL2*#quotes\">IPL2</a></td>\n<td>IPL2</td>\n</tr>\n<tr>\n<td>\nInterfor
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IFP*#quotes\">IFP</a></td>\n<td>IFP</td>\n</tr>\n<tr>\n<td>\nIvanhoe
+        Mines Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IVN*#quotes\">IVN</a></td>\n<td>IVN</td>\n</tr>\n<tr>\n<td>\nK92
+        Mining Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=KNT*#quotes\">KNT</a></td>\n<td>KNT</td>\n</tr>\n<tr>\n<td>\nKarora
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=KRR*#quotes\">KRR</a></td>\n<td>KRR</td>\n</tr>\n<tr>\n<td>\nKeyera
+        Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=KEY*#quotes\">KEY</a></td>\n<td>KEY</td>\n</tr>\n<tr>\n<td>\nKinaxis
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=KXS*#quotes\">KXS</a></td>\n<td>KXS</td>\n</tr>\n<tr>\n<td>\nKinross
+        Gold Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=K*#quotes\">K</a></td>\n<td>K</td>\n</tr>\n<tr>\n<td>\nLabrador
+        Iron Ore Royalty Corporation                                <br/><span class=\"arrow\">Please
+        refer to <a href=\"/f_circulaires_en/040-17_en.pdf\" target=\"_blank\" class=\"pdf\">circular
+        no.&nbsp;040-17</a>.</span>\n</td>\n<td><a href=\"/en/trading/data/quotes?symbol=LIF*#quotes\">LIF</a></td>\n<td>LIF</td>\n</tr>\n<tr>\n<td>\nLaurentian
+        Bank of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LB*#quotes\">LB</a></td>\n<td>LB</td>\n</tr>\n<tr>\n<td>\nLightspeed
+        POS Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LSPD*#quotes\">LSPD</a></td>\n<td>LSPD</td>\n</tr>\n<tr>\n<td>\nLinamar
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LNR*#quotes\">LNR</a></td>\n<td>LNR</td>\n</tr>\n<tr>\n<td>\nLion
+        Electric Company                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LEV*#quotes\">LEV</a></td>\n<td>LEV</td>\n</tr>\n<tr>\n<td>\nLithium
+        Americas                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LAC*#quotes\">LAC</a></td>\n<td>LAC</td>\n</tr>\n<tr>\n<td>\nLoblaw
+        Companies Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=L*#quotes\">L</a></td>\n<td>L</td>\n</tr>\n<tr>\n<td>\nLundin
+        Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LUG*#quotes\">LUG</a></td>\n<td>LUG</td>\n</tr>\n<tr>\n<td>\nLundin
+        Mining Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LUN*#quotes\">LUN</a></td>\n<td>LUN</td>\n</tr>\n<tr>\n<td>\nMAG
+        Silver Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MAG*#quotes\">MAG</a></td>\n<td>MAG</td>\n</tr>\n<tr>\n<td>\nMagna
+        International Inc                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MG*#quotes\">MG</a></td>\n<td>MG</td>\n</tr>\n<tr>\n<td>\nMajor
+        Drilling Group International Inc.                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=MDI*#quotes\">MDI</a></td>\n<td>MDI</td>\n</tr>\n<tr>\n<td>\nManulife
+        Financial Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MFC*#quotes\">MFC</a></td>\n<td>MFC</td>\n</tr>\n<tr>\n<td>\nMaple
+        Leaf Foods Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MFI*#quotes\">MFI</a></td>\n<td>MFI</td>\n</tr>\n<tr>\n<td>\nMartinrea
+        International Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MRE*#quotes\">MRE</a></td>\n<td>MRE</td>\n</tr>\n<tr>\n<td>\nMATR
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MATR*#quotes\">MATR</a></td>\n<td>MATR</td>\n</tr>\n<tr>\n<td>\nMEG
+        Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MEG*#quotes\">MEG</a></td>\n<td>MEG</td>\n</tr>\n<tr>\n<td>\nMethanex
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MX*#quotes\">MX</a></td>\n<td>MX</td>\n</tr>\n<tr>\n<td>\nMetro
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MRU*#quotes\">MRU</a></td>\n<td>MRU</td>\n</tr>\n<tr>\n<td>\nMullen
+        Group Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MTL*#quotes\">MTL</a></td>\n<td>MTL</td>\n</tr>\n<tr>\n<td>\nNational
+        Bank of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NA*#quotes\">NA</a></td>\n<td>NA</td>\n</tr>\n<tr>\n<td>\nNew
+        Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NGD*#quotes\">NGD</a></td>\n<td>NGD</td>\n</tr>\n<tr>\n<td>\nNewmont
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NGT*#quotes\">NGT</a></td>\n<td>NGT</td>\n</tr>\n<tr>\n<td>\nNexGen
+        Energy Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NXE*#quotes\">NXE</a></td>\n<td>NXE</td>\n</tr>\n<tr>\n<td>\nNFI
+        Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NFI*#quotes\">NFI</a></td>\n<td>NFI</td>\n</tr>\n<tr>\n<td>\nNorthland
+        Power Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NPI*#quotes\">NPI</a></td>\n<td>NPI</td>\n</tr>\n<tr>\n<td>\nNorthWest
+        Healthcare Properties Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=NWH*#quotes\">NWH</a></td>\n<td>NWHu</td>\n</tr>\n<tr>\n<td>\nNovaGold
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NG*#quotes\">NG</a></td>\n<td>NG</td>\n</tr>\n<tr>\n<td>\nNutrien
+        Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NTR*#quotes\">NTR</a></td>\n<td>NTR</td>\n</tr>\n<tr>\n<td>\nNuvei
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NVEI*#quotes\">NVEI</a></td>\n<td>NVEI</td>\n</tr>\n<tr>\n<td>\nObsidian
+        Energy Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OBE*#quotes\">OBE</a></td>\n<td>OBE</td>\n</tr>\n<tr>\n<td>\nOceanaGold
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OGC*#quotes\">OGC</a></td>\n<td>OGC</td>\n</tr>\n<tr>\n<td>\nOnex
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ONEX*#quotes\">ONEX</a></td>\n<td>ONEX</td>\n</tr>\n<tr>\n<td>\nOpen
+        Text Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OTEX*#quotes\">OTEX</a></td>\n<td>OTEX</td>\n</tr>\n<tr>\n<td>\nOrganigram
+        Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OGI*#quotes\">OGI</a></td>\n<td>OGI</td>\n</tr>\n<tr>\n<td>\nOrla
+        Mining Ltd                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OLA*#quotes\">OLA</a></td>\n<td>OLA</td>\n</tr>\n<tr>\n<td>\nOsisko
+        Gold Royalties Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OR*#quotes\">OR</a></td>\n<td>OR</td>\n</tr>\n<tr>\n<td>\nOsisko
+        Mining Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OSK*#quotes\">OSK</a></td>\n<td>OSK</td>\n</tr>\n<tr>\n<td>\nOvintiv
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OVV*#quotes\">OVV</a></td>\n<td>OVV</td>\n</tr>\n<tr>\n<td>\nPan
+        American Silver Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PAAS*#quotes\">PAAS</a></td>\n<td>PAAS</td>\n</tr>\n<tr>\n<td>\nParamount
+        Resources Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=POU*#quotes\">POU</a></td>\n<td>POU</td>\n</tr>\n<tr>\n<td>\nParex
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PXT*#quotes\">PXT</a></td>\n<td>PXT</td>\n</tr>\n<tr>\n<td>\nParkland
+        Fuel Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PKI*#quotes\">PKI</a></td>\n<td>PKI</td>\n</tr>\n<tr>\n<td>\nPembina
+        Pipeline Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PPL*#quotes\">PPL</a></td>\n<td>PPL</td>\n</tr>\n<tr>\n<td>\nPeyto
+        Exploration &amp; Development Corp.                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=PEY*#quotes\">PEY</a></td>\n<td>PEY</td>\n</tr>\n<tr>\n<td>\nPower
+        Corporation of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=POW*#quotes\">POW</a></td>\n<td>POW</td>\n</tr>\n<tr>\n<td>\nPrairieSky
+        Royalty Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PSK*#quotes\">PSK</a></td>\n<td>PSK</td>\n</tr>\n<tr>\n<td>\nPrecision
+        Drilling Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PD*#quotes\">PD</a></td>\n<td>PD</td>\n</tr>\n<tr>\n<td>\nPremium
+        Brands Holdings Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PBH*#quotes\">PBH</a></td>\n<td>PBH</td>\n</tr>\n<tr>\n<td>\nPrimaris
+        Retail Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=PMZ*#quotes\">PMZ</a></td>\n<td>PMZu</td>\n</tr>\n<tr>\n<td>\nPrimo
+        Water Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PRMW*#quotes\">PRMW</a></td>\n<td>PRMW</td>\n</tr>\n<tr>\n<td>\nPyrogenesis
+        Canada Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PYR*#quotes\">PYR</a></td>\n<td>PYR</td>\n</tr>\n<tr>\n<td>\nQuebecor
+        Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=QBR*#quotes\">QBR</a></td>\n<td>QBR.B</td>\n</tr>\n<tr>\n<td>\nReal
+        Matters Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=REAL*#quotes\">REAL</a></td>\n<td>REAL</td>\n</tr>\n<tr>\n<td>\nRestaurant
+        Brands International                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=QSR*#quotes\">QSR</a></td>\n<td>QSR</td>\n</tr>\n<tr>\n<td>\nRioCan
+        Real Estate Investment Trust                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=REI*#quotes\">REI</a></td>\n<td>REIu</td>\n</tr>\n<tr>\n<td>\nRitchie
+        Bros. Auctioneers Incorporated                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RBA*#quotes\">RBA</a></td>\n<td>RBA</td>\n</tr>\n<tr>\n<td>\nRitchie
+        Bros. Auctioneers Incorporated                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RBA1*#quotes\">RBA1</a></td>\n<td>RBA1</td>\n</tr>\n<tr>\n<td>\nRogers
+        Communications Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RCI*#quotes\">RCI</a></td>\n<td>RCI.B</td>\n</tr>\n<tr>\n<td>\nRoyal
+        Bank of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RY*#quotes\">RY</a></td>\n<td>RY</td>\n</tr>\n<tr>\n<td>\nRussel
+        Metals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RUS*#quotes\">RUS</a></td>\n<td>RUS</td>\n</tr>\n<tr>\n<td>\nSandstorm
+        Gold Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SSL*#quotes\">SSL</a></td>\n<td>SSL</td>\n</tr>\n<tr>\n<td>\nSaputo
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SAP*#quotes\">SAP</a></td>\n<td>SAP</td>\n</tr>\n<tr>\n<td>\nSavaria
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SIS*#quotes\">SIS</a></td>\n<td>SIS</td>\n</tr>\n<tr>\n<td>\nSeabridge
+        Gold Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SEA*#quotes\">SEA</a></td>\n<td>SEA</td>\n</tr>\n<tr>\n<td>\nSecure
+        Energy Services Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SES*#quotes\">SES</a></td>\n<td>SES</td>\n</tr>\n<tr>\n<td>\nShopify
+        Inc. Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SHOP*#quotes\">SHOP</a></td>\n<td>SHOP</td>\n</tr>\n<tr>\n<td>\nSienna
+        Senior Living Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SIA*#quotes\">SIA</a></td>\n<td>SIA</td>\n</tr>\n<tr>\n<td>\nSilvercorp
+        Metals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SVM*#quotes\">SVM</a></td>\n<td>SVM</td>\n</tr>\n<tr>\n<td>\nSilverCrest
+        Metals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SIL*#quotes\">SIL</a></td>\n<td>SIL</td>\n</tr>\n<tr>\n<td>\nSmartCentres
+        Real Estate Investment Trust                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SRU*#quotes\">SRU</a></td>\n<td>SRUu</td>\n</tr>\n<tr>\n<td>\nSNC-Lavalin
+        Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SNC*#quotes\">SNC</a></td>\n<td>SNC</td>\n</tr>\n<tr>\n<td>\nSpin
+        Master Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TOY*#quotes\">TOY</a></td>\n<td>TOY</td>\n</tr>\n<tr>\n<td>\nSSR
+        Mining Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SSRM*#quotes\">SSRM</a></td>\n<td>SSRM</td>\n</tr>\n<tr>\n<td>\nStantec
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=STN*#quotes\">STN</a></td>\n<td>STN</td>\n</tr>\n<tr>\n<td>\nStelco
+        Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=STLC*#quotes\">STLC</a></td>\n<td>STLC</td>\n</tr>\n<tr>\n<td>\nStella-Jones
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SJ*#quotes\">SJ</a></td>\n<td>SJ</td>\n</tr>\n<tr>\n<td>\nStorageVault
+        Canada Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SVI*#quotes\">SVI</a></td>\n<td>SVI</td>\n</tr>\n<tr>\n<td>\nSun
+        Life Financial                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SLF*#quotes\">SLF</a></td>\n<td>SLF</td>\n</tr>\n<tr>\n<td>\nSuncor
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SU*#quotes\">SU</a></td>\n<td>SU</td>\n</tr>\n<tr>\n<td>\nSunOpta,
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SOY*#quotes\">SOY</a></td>\n<td>SOY</td>\n</tr>\n<tr>\n<td>\nSuperior
+        Plus Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SPB*#quotes\">SPB</a></td>\n<td>SPB</td>\n</tr>\n<tr>\n<td>\nTamarack
+        Valley Energy Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TVE*#quotes\">TVE</a></td>\n<td>TVE</td>\n</tr>\n<tr>\n<td>\nTC
+        Energy Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TRP*#quotes\">TRP</a></td>\n<td>TRP</td>\n</tr>\n<tr>\n<td>\nTeck
+        Resources Limited, Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TECK*#quotes\">TECK</a></td>\n<td>TECK.B</td>\n</tr>\n<tr>\n<td>\nTELUS
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=T*#quotes\">T</a></td>\n<td>T</td>\n</tr>\n<tr>\n<td>\nTelus
+        International Cda Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TIXT*#quotes\">TIXT</a></td>\n<td>TIXT</td>\n</tr>\n<tr>\n<td>\nTFI
+        International Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TFII*#quotes\">TFII</a></td>\n<td>TFII</td>\n</tr>\n<tr>\n<td>\nThomson
+        Reuters Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TRI*#quotes\">TRI</a></td>\n<td>TRI</td>\n</tr>\n<tr>\n<td>\nTilray
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TLRY*#quotes\">TLRY</a></td>\n<td>TLRY</td>\n</tr>\n<tr>\n<td>\nTMX
+        Group Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=X*#quotes\">X</a></td>\n<td>X</td>\n</tr>\n<tr>\n<td>\nTopaz
+        Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TPZ*#quotes\">TPZ</a></td>\n<td>TPZ</td>\n</tr>\n<tr>\n<td>\nTorex
+        Gold Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TXG*#quotes\">TXG</a></td>\n<td>TXG</td>\n</tr>\n<tr>\n<td>\nToromont
+        Industries Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TIH*#quotes\">TIH</a></td>\n<td>TIH</td>\n</tr>\n<tr>\n<td>\nToronto-Dominion
+        Bank (The)                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TD*#quotes\">TD</a></td>\n<td>TD</td>\n</tr>\n<tr>\n<td>\nTourmaline
+        Oil Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TOU*#quotes\">TOU</a></td>\n<td>TOU</td>\n</tr>\n<tr>\n<td>\nTransAlta
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TA*#quotes\">TA</a></td>\n<td>TA</td>\n</tr>\n<tr>\n<td>\nTransAlta
+        Renewable Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RNW*#quotes\">RNW</a></td>\n<td>RNW</td>\n</tr>\n<tr>\n<td>\nTranscontinental
+        Inc., Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TCL*#quotes\">TCL</a></td>\n<td>TCL.A</td>\n</tr>\n<tr>\n<td>\nTricon
+        Capital Group Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TCN*#quotes\">TCN</a></td>\n<td>TCN</td>\n</tr>\n<tr>\n<td>\nTrisura
+        Group Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TSU*#quotes\">TSU</a></td>\n<td>TSU</td>\n</tr>\n<tr>\n<td>\nUni-Select
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=UNS*#quotes\">UNS</a></td>\n<td>UNS</td>\n</tr>\n<tr>\n<td>\nVerde
+        AgriTech Plc                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NPK*#quotes\">NPK</a></td>\n<td>NPK</td>\n</tr>\n<tr>\n<td>\nVermilion
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=VET*#quotes\">VET</a></td>\n<td>VET</td>\n</tr>\n<tr>\n<td>\nVictoria
+        Gold Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=VGCX*#quotes\">VGCX</a></td>\n<td>VGCX</td>\n</tr>\n<tr>\n<td>\nWaste
+        Connections Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCN*#quotes\">WCN</a></td>\n<td>WCN</td>\n</tr>\n<tr>\n<td>\nWELL
+        Health Technologies Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WELL*#quotes\">WELL</a></td>\n<td>WELL</td>\n</tr>\n<tr>\n<td>\nWesdome
+        Gold Mines Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WDO*#quotes\">WDO</a></td>\n<td>WDO</td>\n</tr>\n<tr>\n<td>\nWest
+        Fraser Timber Co. Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WFG*#quotes\">WFG</a></td>\n<td>WFG</td>\n</tr>\n<tr>\n<td>\nWestshore
+        Terminals Investment Corporation                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=WTE*#quotes\">WTE</a></td>\n<td>WTE</td>\n</tr>\n<tr>\n<td>\nWheaton
+        Precious Metals Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WPM*#quotes\">WPM</a></td>\n<td>WPM</td>\n</tr>\n<tr>\n<td>\nWhitecap
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCP*#quotes\">WCP</a></td>\n<td>WCP</td>\n</tr>\n<tr>\n<td>\nWPRT1
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WPRT1*#quotes\">WPRT1</a></td>\n<td>WPRT1</td>\n</tr>\n<tr>\n<td>\nWSP
+        Global Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WSP*#quotes\">WSP</a></td>\n<td>WSP</td>\n</tr>\n<tr>\n<td>\nYamana
+        Gold Inc.                                <br/><span class=\"arrow\">Please
+        refer to <a href=\"/f_circulaires_en/114-12_en.pdf\" target=\"_blank\" class=\"pdf\">circular
+        no.&nbsp;114-12</a>.</span>\n</td>\n<td><a href=\"/en/trading/data/quotes?symbol=YRI1*#quotes\">YRI1</a></td>\n<td>YRI1</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n<div
+        class=\"tab-pane active\" id=\"currency\" role=\"tabpanel\" aria-labelledby=\"tab-currency\"
+        aria-hidden=\"false\">\n<div class=\"twrap\">\n<table class=\"data text-left\"
+        id=\"tcurrency\">\n<thead>\n<tr class=\"nowrap\">\n<th>Name of Underlying
+        Instrument</th>\n<th style=\"width: 20%\">Option Symbol</th>\n<th style=\"width:
+        20%\">Underlying Symbol</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\nOptions
+        on the US Dollar                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=USX*#quotes\">USX</a></td>\n<td>&ndash;&ndash;</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n<div
+        class=\"tab-pane active\" id=\"weekly\" role=\"tabpanel\" aria-labelledby=\"tab-weekly\"
+        aria-hidden=\"false\">\n<div class=\"twrap\">\n<table class=\"data text-left\"
+        id=\"tweekly\">\n<thead>\n<tr class=\"nowrap\">\n<th>Name of Underlying Instrument</th>\n<th
+        style=\"width: 20%\">Option Symbol</th>\n<th style=\"width: 20%\">Underlying
+        Symbol</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>\nAgnico Eagle Mines Limited
+        \                           </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AEM*#quotes\">AEM</a></td>\n<td>AEM</td>\n</tr>\n<tr>\n<td>\nAir
+        Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AC*#quotes\">AC</a></td>\n<td>AC</td>\n</tr>\n<tr>\n<td>\nAlgonquin
+        Power &amp; Utilities Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=AQN*#quotes\">AQN</a></td>\n<td>AQN</td>\n</tr>\n<tr>\n<td>\nAlimentation
+        Couche Tard Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ATD*#quotes\">ATD</a></td>\n<td>ATD</td>\n</tr>\n<tr>\n<td>\nAltaGas
+        Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ALA*#quotes\">ALA</a></td>\n<td>ALA</td>\n</tr>\n<tr>\n<td>\nARC
+        Resources Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ARX*#quotes\">ARX</a></td>\n<td>ARX</td>\n</tr>\n<tr>\n<td>\nB2Gold
+        Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTO*#quotes\">BTO</a></td>\n<td>BTO</td>\n</tr>\n<tr>\n<td>\nBank
+        of Montreal                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BMO*#quotes\">BMO</a></td>\n<td>BMO</td>\n</tr>\n<tr>\n<td>\nBank
+        of Nova Scotia (The)                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BNS*#quotes\">BNS</a></td>\n<td>BNS</td>\n</tr>\n<tr>\n<td>\nBarrick
+        Gold Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ABX*#quotes\">ABX</a></td>\n<td>ABX</td>\n</tr>\n<tr>\n<td>\nBausch
+        Health Companies Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BHC*#quotes\">BHC</a></td>\n<td>BHC</td>\n</tr>\n<tr>\n<td>\nBaytex
+        Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BTE*#quotes\">BTE</a></td>\n<td>BTE</td>\n</tr>\n<tr>\n<td>\nBCE
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BCE*#quotes\">BCE</a></td>\n<td>BCE</td>\n</tr>\n<tr>\n<td>\nBirchcliff
+        Energy Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BIR*#quotes\">BIR</a></td>\n<td>BIR</td>\n</tr>\n<tr>\n<td>\nBlackBerry
+        Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BB*#quotes\">BB</a></td>\n<td>BB</td>\n</tr>\n<tr>\n<td>\nBMO
+        Equal Weight Banks Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZEB*#quotes\">ZEB</a></td>\n<td>ZEB</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P 500 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ZSP*#quotes\">ZSP</a></td>\n<td>ZSP</td>\n</tr>\n<tr>\n<td>\nBMO
+        S&amp;P/TSX Capped Composite Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=ZCN*#quotes\">ZCN</a></td>\n<td>ZCN</td>\n</tr>\n<tr>\n<td>\nBombardier
+        Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=BBD*#quotes\">BBD</a></td>\n<td>BBD.B</td>\n</tr>\n<tr>\n<td>\nCameco
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CCO*#quotes\">CCO</a></td>\n<td>CCO</td>\n</tr>\n<tr>\n<td>\nCanada
+        Goose Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GOOS*#quotes\">GOOS</a></td>\n<td>GOOS</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Imperial Bank of Commerce                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CM*#quotes\">CM</a></td>\n<td>CM</td>\n</tr>\n<tr>\n<td>\nCanadian
+        National Railway Company                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CNR*#quotes\">CNR</a></td>\n<td>CNR</td>\n</tr>\n<tr>\n<td>\nCanadian
+        Natural Resources Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CNQ*#quotes\">CNQ</a></td>\n<td>CNQ</td>\n</tr>\n<tr>\n<td>\nCanopy
+        Growth Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WEED*#quotes\">WEED</a></td>\n<td>WEED</td>\n</tr>\n<tr>\n<td>\nCardinal
+        Energy Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CJ*#quotes\">CJ</a></td>\n<td>CJ</td>\n</tr>\n<tr>\n<td>\nCenovus
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CVE*#quotes\">CVE</a></td>\n<td>CVE</td>\n</tr>\n<tr>\n<td>\nChartwell
+        Retirement Residences                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CSH*#quotes\">CSH</a></td>\n<td>CSHu</td>\n</tr>\n<tr>\n<td>\nCineplex
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CGX*#quotes\">CGX</a></td>\n<td>CGX</td>\n</tr>\n<tr>\n<td>\nCORUS
+        Entertainment Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CJR*#quotes\">CJR</a></td>\n<td>CJR.B</td>\n</tr>\n<tr>\n<td>\nCrescent
+        Point Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=CPG*#quotes\">CPG</a></td>\n<td>CPG</td>\n</tr>\n<tr>\n<td>\nElement
+        Fleet Management Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=EFN*#quotes\">EFN</a></td>\n<td>EFN</td>\n</tr>\n<tr>\n<td>\nEnbridge
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ENB*#quotes\">ENB</a></td>\n<td>ENB</td>\n</tr>\n<tr>\n<td>\nFirst
+        Majestic Silver Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FR*#quotes\">FR</a></td>\n<td>FR</td>\n</tr>\n<tr>\n<td>\nFirst
+        Quantum Minerals Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FM*#quotes\">FM</a></td>\n<td>FM</td>\n</tr>\n<tr>\n<td>\nFortis
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=FTS*#quotes\">FTS</a></td>\n<td>FTS</td>\n</tr>\n<tr>\n<td>\nGreat-West
+        Lifeco Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=GWO*#quotes\">GWO</a></td>\n<td>GWO</td>\n</tr>\n<tr>\n<td>\nHudbay
+        Minerals Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=HBM*#quotes\">HBM</a></td>\n<td>HBM</td>\n</tr>\n<tr>\n<td>\nImperial
+        Oil Limited                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=IMO*#quotes\">IMO</a></td>\n<td>IMO</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX 60 Index ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=XIU*#quotes\">XIU</a></td>\n<td>XIU</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Capped Energy Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XEG*#quotes\">XEG</a></td>\n<td>XEG</td>\n</tr>\n<tr>\n<td>\niShares
+        S&amp;P/TSX Capped REIT Index ETF                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=XRE*#quotes\">XRE</a></td>\n<td>XRE</td>\n</tr>\n<tr>\n<td>\nKinross
+        Gold Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=K*#quotes\">K</a></td>\n<td>K</td>\n</tr>\n<tr>\n<td>\nLightspeed
+        POS Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=LSPD*#quotes\">LSPD</a></td>\n<td>LSPD</td>\n</tr>\n<tr>\n<td>\nManulife
+        Financial Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MFC*#quotes\">MFC</a></td>\n<td>MFC</td>\n</tr>\n<tr>\n<td>\nMEG
+        Energy Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=MEG*#quotes\">MEG</a></td>\n<td>MEG</td>\n</tr>\n<tr>\n<td>\nNational
+        Bank of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NA*#quotes\">NA</a></td>\n<td>NA</td>\n</tr>\n<tr>\n<td>\nNorthWest
+        Healthcare Properties Real Estate Investment Trust                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=NWH*#quotes\">NWH</a></td>\n<td>NWHu</td>\n</tr>\n<tr>\n<td>\nNutrien
+        Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=NTR*#quotes\">NTR</a></td>\n<td>NTR</td>\n</tr>\n<tr>\n<td>\nOvintiv
+        Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=OVV*#quotes\">OVV</a></td>\n<td>OVV</td>\n</tr>\n<tr>\n<td>\nParamount
+        Resources Ltd.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=POU*#quotes\">POU</a></td>\n<td>POU</td>\n</tr>\n<tr>\n<td>\nPembina
+        Pipeline Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=PPL*#quotes\">PPL</a></td>\n<td>PPL</td>\n</tr>\n<tr>\n<td>\nPower
+        Corporation of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=POW*#quotes\">POW</a></td>\n<td>POW</td>\n</tr>\n<tr>\n<td>\nPurpose
+        Bitcoin ETF CAD ETF Non-currency Hedged Units                            </td>\n<td><a
+        href=\"/en/trading/data/quotes?symbol=BTCC*#quotes\">BTCC</a></td>\n<td>BTCC.B</td>\n</tr>\n<tr>\n<td>\nPurpose
+        Ether ETF                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=ETHH*#quotes\">ETHH</a></td>\n<td>ETHH.B</td>\n</tr>\n<tr>\n<td>\nRogers
+        Communications Inc., Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RCI*#quotes\">RCI</a></td>\n<td>RCI.B</td>\n</tr>\n<tr>\n<td>\nRoyal
+        Bank of Canada                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=RY*#quotes\">RY</a></td>\n<td>RY</td>\n</tr>\n<tr>\n<td>\nShopify
+        Inc. Cl. A                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SHOP*#quotes\">SHOP</a></td>\n<td>SHOP</td>\n</tr>\n<tr>\n<td>\nStelco
+        Holdings Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=STLC*#quotes\">STLC</a></td>\n<td>STLC</td>\n</tr>\n<tr>\n<td>\nSun
+        Life Financial                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SLF*#quotes\">SLF</a></td>\n<td>SLF</td>\n</tr>\n<tr>\n<td>\nSuncor
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=SU*#quotes\">SU</a></td>\n<td>SU</td>\n</tr>\n<tr>\n<td>\nTC
+        Energy Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TRP*#quotes\">TRP</a></td>\n<td>TRP</td>\n</tr>\n<tr>\n<td>\nTeck
+        Resources Limited, Cl. B                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TECK*#quotes\">TECK</a></td>\n<td>TECK.B</td>\n</tr>\n<tr>\n<td>\nTELUS
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=T*#quotes\">T</a></td>\n<td>T</td>\n</tr>\n<tr>\n<td>\nToronto-Dominion
+        Bank (The)                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TD*#quotes\">TD</a></td>\n<td>TD</td>\n</tr>\n<tr>\n<td>\nTourmaline
+        Oil Corp.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TOU*#quotes\">TOU</a></td>\n<td>TOU</td>\n</tr>\n<tr>\n<td>\nTransAlta
+        Corporation                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=TA*#quotes\">TA</a></td>\n<td>TA</td>\n</tr>\n<tr>\n<td>\nVermilion
+        Energy Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=VET*#quotes\">VET</a></td>\n<td>VET</td>\n</tr>\n<tr>\n<td>\nWhitecap
+        Resources Inc.                            </td>\n<td><a href=\"/en/trading/data/quotes?symbol=WCP*#quotes\">WCP</a></td>\n<td>WCP</td>\n</tr>\n</tbody>\n</table>\n</div>\n</div>\n</div>\n</div>\n</div>\n<div
+        class=\"clearfixe\"></div>\n</div>\n<a id=\"back_top\" href=\"#top\" class=\"hidden\">Top</a>\n<div
+        id=\"page-footer\" class=\"footer\">\n<div id=\"footer_pillars\" class=\"pillars
+        wrapper\">\n<div class=\"pillar pillar1\">\n<div class=\"caption\">Capital
+        Formation<span></span></div>\n<ul>\n<li><a href=\"https://www.tsx.com/?lang=en\"
+        class=\"blank\">Toronto Stock Exchange</a></li>\n<li><a href=\"https://www.tsx.com/?lang=en\"
+        class=\"blank\">TSX Venture Exchange</a></li>\n<li><a href=\"https://www.tsxtrust.com/?lang=en\"
+        class=\"blank\">TSX Trust</a></li>\n</ul>\n</div>\n<div class=\"pillar pillar2\">\n<div
+        class=\"caption\">Markets<span></span></div>\n<ul>\n<li><a href=\"https://www.m-x.ca/en/\">Montr\xE9al
+        Exchange</a></li>\n<li><a href=\"https://www.tsx.com/?lang=en\" class=\"blank\">Toronto
+        Stock Exchange</a></li>\n<li><a href=\"https://www.tsx.com/?lang=en\" class=\"blank\">TSX
+        Venture Exchange</a></li>\n<li><a href=\"https://www.tsx.com/?lang=en\" class=\"blank\">TSX
+        Alpha Exchange</a></li>\n<li><a href=\"https://www.shorcan.com/\" class=\"blank\">Shorcan</a></li>\n</ul>\n</div>\n<div
+        class=\"pillar pillar3\">\n<div class=\"caption\">Post-Trade<span></span></div>\n<ul>\n<li><a
+        href=\"https://www.cdcc.ca/index_en\" class=\"blank\">CDCC</a></li>\n<li><a
+        href=\"https://www.cds.ca/?lang=en\" class=\"blank\">CDS</a></li>\n</ul>\n</div>\n<div
+        class=\"pillar pillar4\">\n<div class=\"caption\">Insights<span></span></div>\n<ul>\n<li><a
+        href=\"https://www.tmxinfoservices.com/tmx-datalinx/?lang=en\" class=\"blank\">TMX
+        Datalinx</a></li>\n<li><a href=\"https://www.trayport.com/\" class=\"blank\">Trayport</a></li>\n<li><a
+        href=\"https://money.tmx.com/en/\" class=\"blank\">TMX Money</a></li>\n<li><a
+        href=\"https://www.tmx.com/analytics\" class=\"blank\">TMX Analytics</a></li>\n</ul>\n</div>\n<div
+        class=\"clearfixe\"></div>\n</div>\n<div class=\"footer_links\">\n<div class=\"wrapper\">\n<div
+        class=\"logo\">\n<a href=\"https://www.tmx.com/\" title=\"TMX.com\">\n<img
+        src=\"/assets/application/img/tmx_logo_en.1632866266.svg\" height=\"64\" alt=\"TMX\"
+        />\n</a>\n</div>\n<ul class=\"navigation\">\n<li>\n<a href=\"/en/contact\"
+        title=\"Contact Us\">Contact Us</a>\n</li>\n<li>\n<a href=\"/en/terms-of-use\"
+        title=\"Terms of Use\">Terms of Use</a>\n</li>\n<li>\n<a href=\"/en/privacy-policy\"
+        title=\"Privacy Policy\">Privacy Policy</a>\n</li>\n<li>\n<a href=\"/en/fraud\"
+        title=\"Fraud Prevention\">Fraud Prevention</a>\n</li>\n</ul>\n<div class=\"social_sidebar\">\n<a
+        href=\"https://twitter.com/MtlExchange\" title=\"Follow us on Twitter\" class=\"ico-twitter
+        blank\">\n<span class=\"sr-only\">Twitter</span><span class=\"fa fa-twitter\"></span>\n</a>\n<a
+        href=\"https://www.facebook.com/montrealexchange\" title=\"Follow us on Facebook\"
+        class=\"ico-facebook blank\">\n<span class=\"sr-only\">Facebook</span><span
+        class=\"fa fa-facebook-official\"></span>\n</a>\n<a href=\"https://www.linkedin.com/company/montreal-exchange\"
+        title=\"Follow us on LinkedIn\" class=\"ico-linkedin blank\">\n<span class=\"sr-only\">LinkedIn</span><span
+        class=\"fa fa-linkedin\"></span>\n</a>\n<a href=\"https://www.youtube.com/channel/UCBAQxpU1bx64jsVfaKEsDfw\"
+        title=\"Follow us on YouTube\" class=\"ico-youtube blank\">\n<span class=\"sr-only\">YouTube</span><span
+        class=\"fa fa-youtube-play\"></span>\n</a>\n</div>\n<div class=\"clearfixe\"></div>\n</div>\n</div>\n<div
+        class=\"legal wrapper\">\n<div class=\"disclaimer\">\n<p>TMX Group Limited
+        and its affiliates do not endorse or recommend any securities issued by any
+        companies identified on, or linked through, this site. Please seek professional
+        advice to evaluate specific securities or other content on this site. All
+        content (including any links to third party sites) is provided for informational
+        purposes only (and not for trading purposes), and is not intended to provide
+        legal, accounting, tax, investment, financial or other advice and should not
+        be relied upon for such advice. The views, opinions and advice of any third
+        party reflect those of the individual authors and are not endorsed by TMX
+        Group Limited or its affiliates. TMX Group Limited and its affiliates have
+        not prepared, reviewed or updated the content of third parties on this site
+        or the content of any third party sites, and assume no responsibility for
+        such information.</p>\n</div>\n<div class=\"copyright\">\nCopyright &copy;
+        2023 Bourse de Montr\xE9al Inc. All rights reserved.<br>\nCanadian Derivatives
+        Exchange is an official mark of Bourse de Montr\xE9al Inc.    </div>\n</div>\n</div>\n</div>\n</div>\n</div>\n</div>\n<script
+        type=\"text/javascript\" src=\"/assets/application/js/common.1674328269.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"/assets/application/js/datatables.1633646019.min.js\"></script>\n<script
+        type=\"text/javascript\" src=\"https://www.tmx.com/tmxes/tmxes.js?lang=en&amp;nocss&amp;container=tmxes-search-container-mobile&amp;index=mx\"></script><script>\n//<!--\njQuery(function($){\n\"use
+        strict\";\n$('#tetf, #tequity, #tweekly').unwrap('.twrap').DataTable({order:[[0,'asc']],pageLength:25,info:false,fixedHeader:{headerOffset:42},dom:'<\"filters
+        form-inline\"<\"row\"<\"col-12 col-sm-5\"<\"form-group\"l>><\"col-12 col-sm-7\"<\"form-group\"f>>>><\"twrap\"t>p'});\n});\n//-->\n</script></body>\n</html>"
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Sat, 10 Jun 2023 22:49:54 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Set-Cookie:
+      - PHPSESSID=helsalpej6f922b9a7k136udnd; expires=Sun, 11-Jun-2023 02:49:54 GMT;
+        Max-Age=14400; path=/
+      - tmx_locale=en; Expires=Sun, 09-Jun-2024 22:49:54 GMT; Path=/
+      - tmx_locale=en; Expires=Sun, 09-Jun-2024 22:49:54 GMT; Path=/
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via:
+      - 1.1 31dfa94142c6eaf975b0e5454c00340a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - _2JYkkqLjf98IpmH8mrQj6zBsuyU1aTuO1aLLxQD8k91r32eyHjLVA==
+      X-Amz-Cf-Pop:
+      - SEA19-C3
+      X-Cache:
+      - Miss from cloudfront
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,23 @@
+parent_command:fixedincome
+usage: ecb [-s START_DATE] [-e END_DATE] [-t {deposit,lending,refinancing}]
+
+Plot the three interest rates the ECB sets every six weeks as part of its monetary policy, these are the interest rate on the main refinancing operations (MRO), the rate on the deposit facility and the rate on the marginal lending
+facility.
+
+optional arguments:
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+  -t {deposit,lending,refinancing}, --type {deposit,lending,refinancing}
+                        Whether to choose the deposit, marginal lending or main refinancing rate (default: None)
+
+
+Examples:
+- To plot all three ECB interest rates for a specific date range: fixedincome/ecb -s 2020-01-01 -e 2021-12-31
+- To plot the deposit interest rate set by the ECB: fixedincome/ecb -t deposit
+- To plot the lending interest rate set by the ECB: fixedincome/ecb -t lending
+- To plot the refinancing interest rate set by the ECB: fixedincome/ecb -t refinancing
+- To display the deposit interest rate for a specific date range: fixedincome/ecb -t deposit -s 2020-01-01 -e 2021-12-31
+- To display the lending interest rate for a specific date range: fixedincome/ecb -t lending -s 2020-01-01 -e 2021-12-31
+- To display the refinancing interest rate for a specific date range: fixedincome/ecb -t refinancing -s 2020-01-01 -e 2021-12-31

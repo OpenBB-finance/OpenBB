@@ -1,0 +1,21 @@
+parent_command:econometrics
+usage: load [-f FILE] [-a ALIAS] [-e] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+
+Load dataset (from previous export, custom imports or StatsModels).
+
+optional arguments:
+  -f FILE, --file FILE  File to load data in (can be custom import, may have been exported before or can be from Statsmodels) (default: None)
+  -a ALIAS, --alias ALIAS
+                        Alias name to give to the dataset (default: None)
+  -e, --examples        Use this argument to show examples of Statsmodels to load in. See: https://www.statsmodels.org/devel/datasets/index.html (default: False)
+  --sheet-name SHEET_NAME [SHEET_NAME ...]
+                        Name of excel sheet to save data to. Only valid for .xlsx files. (default: None)
+
+
+Examples:
+- To load a dataset from a file: econometrics/load -f FILE
+- To load a dataset from a file and assign an alias: econometrics/load -f FILE -a ALIAS
+- To load a dataset from a specific excel sheet: econometrics/load -f FILE --sheet-name SHEET_NAME
+- To load a dataset from a file and assign an alias and load a specific excel sheet: econometrics/load -f FILE -a ALIAS --sheet-name SHEET_NAME
+- To display examples of Statsmodels datasets: econometrics/load -e
+- To load a dataset from Statsmodels with a specific alias: econometrics/load -f FILE -a ALIAS -e

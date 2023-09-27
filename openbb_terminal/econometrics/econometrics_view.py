@@ -122,9 +122,9 @@ def display_plot(
                     )
 
             except ValueError:
-                print(f"Could not convert column: {dataset_col}")
+                console.print(f"Could not convert column: {dataset_col}")
             except TypeError:
-                print(f"Could not convert column: {dataset_col}")
+                console.print(f"Could not convert column: {dataset_col}")
 
         if fig.is_image_export(export):
             export_data(
@@ -197,63 +197,6 @@ def display_corr(
         sheet_name=sheet_name,
         figure=fig,
     )
-    return fig.show(external=external_axes)
-
-
-@log_start_end(log=logger)
-def display_seasonality(
-    data: pd.DataFrame,
-    column: str = "close",
-    export: str = "",
-    sheet_name: Optional[str] = None,
-    m: Optional[int] = None,
-    max_lag: int = 24,
-    alpha: float = 0.05,
-    external_axes: bool = False,
-) -> Union[OpenBBFigure, None]:
-    """Plot seasonality from a dataset
-
-    Parameters
-    ----------
-    data: pd.DataFrame
-        The dataframe to plot
-    column: str
-        The column of the dataframe to analyze
-    sheet_name: str
-        Optionally specify the name of the sheet the data is exported to.
-    export: str
-        Format to export image
-    m: Optional[int]
-        Optionally, a time lag to highlight on the plot. Default is none.
-    max_lag: int
-        The maximal lag order to consider. Default is 24.
-    alpha: float
-        The confidence interval to display. Default is 0.05.
-    external_axes : bool, optional
-        Whether to return the figure object or not, by default False
-    """
-
-    if data.empty:
-        return console.print("No data to plot")
-
-    series = data[column]
-
-    ending = get_ending(data.name, column)
-
-    fig = OpenBBFigure()
-    fig.set_title(f"Seasonality{ending}", wrap=True, wrap_width=55)
-    fig.add_corr_plot(series, m=m, max_lag=max_lag, alpha=alpha)
-    fig.update_xaxes(autorange=False, range=[-1, max_lag + 1])
-    fig.add_legend_label()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "plot",
-        sheet_name=sheet_name,
-        figure=fig,
-    )
-
     return fig.show(external=external_axes)
 
 
@@ -621,3 +564,47 @@ def display_cointegration_test(
         return fig.show(external=external_axes)
 
     return None
+
+
+@log_start_end(log=logger)
+def display_vif(
+    dataset: pd.DataFrame,
+    columns: Optional[list] = None,
+    export: str = "",
+    sheet_name: Optional[str] = None,
+):
+    """Displays the VIF (variance inflation factor), which tests for collinearity, values for each column.
+
+    Parameters
+    ----------
+    dataset: pd.Series
+        Dataset to calculate VIF on
+    columns: Optional[list]
+        The columns to calculate to test for collinearity
+    sheet_name: Optional[str]
+        Optionally specify the name of the sheet the data is exported to.
+    export: str
+        Format to export data.
+    """
+    columns = dataset.columns if columns is None else columns
+    if any(dataset[column].dtype not in [int, float] for column in columns):
+        console.print(
+            "All column types must be numeric. Consider using the command 'type' to change this.\n"
+        )
+    else:
+        results = econometrics_model.get_vif(dataset, columns)
+
+        print_rich_table(
+            results,
+            headers=list(results.columns),
+            show_index=True,
+            title="Collinearity Test",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{dataset}_{','.join(columns)}_vif",
+            results,
+            sheet_name,
+        )

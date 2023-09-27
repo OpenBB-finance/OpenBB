@@ -1,0 +1,18 @@
+parent_command:portfolio
+usage: metric [-m METRIC] [-r RISK_FREE_RATE]
+
+Display metric of choice for different periods
+
+optional arguments:
+  -m METRIC, --metric METRIC
+                        Set metric of choice (default: True)
+  -r RISK_FREE_RATE, --rfr RISK_FREE_RATE
+                        Set risk free rate for calculations. (default: 0)
+
+
+Examples:
+- To display the chosen metric for different periods in your portfolio: portfolio/metric -m METRIC
+- To display the selected metric with a custom risk-free rate: portfolio/metric -m METRIC -r RISK_FREE_RATE
+- To view the default metric with a specified risk-free rate: portfolio/metric -r RISK_FREE_RATE
+- Show a specific metric for various periods in your portfolio: portfolio/metric --metric METRIC
+- Present the desired metric with a custom risk-free rate for calculations: portfolio/metric --metric METRIC --rfr RISK_FREE_RATE

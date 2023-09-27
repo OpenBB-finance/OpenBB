@@ -15,7 +15,7 @@
                 @@@              @@@   @@@              @@@
                 @@@@@@@@@@@@@@@@@@@@   @@@@@@@@@@@@@@@@@@@@
 
-                Investment research for Everyone, Anywhere.
+                Investment research for everyone, anywhere.
 [/menu]
 
 Register : [cmds]https://my.openbb.co/register[/cmds]

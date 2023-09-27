@@ -1,0 +1,12 @@
+parent_command: stocks/gov/
+usage: qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw] [-h]                     [--export EXPORT]                     [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Look at government contracts [Source: www.quiverquant.com]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of tickers to get (default: 5)   -a {total,upmom,downmom}, --analysis {total,upmom,downmom}                         Analysis to look at contracts. 'Total' shows summed                         contracts. 'Upmom' shows highest sloped contacts while                         'downmom' shows highest decreasing slopes. (default:                         total)   --raw                 Print raw data. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about qtrcontracts' to access the related guide.
+Summary: View government contracts data for stocks with options to limit the number of tickers, analyze contracts based on total, upward momentum, or downward momentum, and export the data in various formats. You can also display the raw data.
+
+Examples:
+- Display top 5 government contracts: stocks/gov/qtrcontracts
+- Display top 10 government contracts: stocks/gov/qtrcontracts -l 10
+- Show government contracts with the highest upward momentum: stocks/gov/qtrcontracts -a upmom
+- Show government contracts with the highest downward momentum: stocks/gov/qtrcontracts -a downmom
+- Display raw data for top 5 government contracts: stocks/gov/qtrcontracts --raw
+- Export government contracts data to a csv file: stocks/gov/qtrcontracts --export csv
+- Save government contracts data to a specified excel sheet: stocks/gov/qtrcontracts --sheet-name Sheet1

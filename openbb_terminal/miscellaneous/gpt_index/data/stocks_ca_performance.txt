@@ -1,0 +1,10 @@
+parent_command: stocks/ca/
+usage: performance [-h] [--export EXPORT]                    [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints screener data of similar companies. [Source: Finviz]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about performance' to access the related guide.
+Summary: Display screener data for companies similar to a specific stock symbol. The data is sourced from Finviz. You can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- To view the performance of companies similar to <SYMBOL>: stocks/load <SYMBOL>/ca/performance
+- To export the performance data of similar companies to <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/performance --export csv
+- To export the performance data of similar companies to <SYMBOL> in json format: stocks/load <SYMBOL>/ca/performance --export json
+- To export the performance data of similar companies to <SYMBOL> in xlsx format: stocks/load <SYMBOL>/ca/performance --export xlsx
+- To save the performance data of similar companies to <SYMBOL> in a specific excel sheet: stocks/load <SYMBOL>/ca/performance --sheet-name Sheet1

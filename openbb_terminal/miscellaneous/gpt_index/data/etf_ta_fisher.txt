@@ -1,0 +1,16 @@
+parent_command:etf/ta
+usage: fisher [-l N_LENGTH]
+
+The Fisher Transform is a technical indicator created by John F. Ehlers that converts prices into a Gaussian normal distribution.1 The indicator highlights when prices have moved to an extreme, based on recent prices. This may help
+in spotting turning points in the price of an asset. It also helps show the trend and isolate the price waves within a trend.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+
+
+Examples:
+- To calculate the Fisher Transform for an ETF with the default length: etf/ta/fisher
+- To calculate the Fisher Transform for an ETF with a custom length of 20: etf/ta/fisher -l 20
+- For a specific ETF, load the symbol and calculate the Fisher Transform: etf/load <SYMBOL>/ta/fisher
+- Load an ETF symbol and calculate the Fisher Transform with a length of 10: etf/load <SYMBOL>/ta/fisher -l 10

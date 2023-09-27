@@ -1,0 +1,8 @@
+parent_command: stocks/ins/
+usage: view [-p Desired preset] [-h]  View available presets under presets folder.  optional arguments:   -p Desired preset, --preset Desired preset                         View specific preset   -h, --help            show this help message  For more information and examples, use 'about view' to access the related guide.
+Summary: Display available presets under the presets folder or view a specific preset. You can choose a desired preset to view using the -p or --preset option.
+
+Examples:
+- View all available presets: stocks/ins/view
+- View a specific preset: stocks/ins/view -p <Desired preset>
+- Display details of a desired preset using the long option: stocks/ins/view --preset <Desired preset>

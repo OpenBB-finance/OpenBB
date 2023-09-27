@@ -1,0 +1,12 @@
+parent_command:forex/oanda
+usage: positions
+
+Get information about open positions.
+
+positions
+Examples:
+- Retrieve open positions for forex trading: forex/oanda/positions
+- To view information about open positions in forex: forex/oanda/positions
+- Access open positions data in forex trading: forex/oanda/positions
+- Obtain details on open positions within forex: forex/oanda/positions
+- Check open positions in forex trading: forex/oanda/positions

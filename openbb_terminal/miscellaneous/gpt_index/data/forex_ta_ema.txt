@@ -1,0 +1,20 @@
+parent_command:forex/ta
+usage: ema [-l N_LENGTH] [-o N_OFFSET]
+
+The Exponential Moving Average is a staple of technical analysis and is used in countless technical indicators. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period
+are not included in the average. However, the Exponential Moving Average is a cumulative calculation, including all data. Past values have a diminishing contribution to the average, while more recent values have a greater
+contribution. This method allows the moving average to be more responsive to changes in the data.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Exponential Moving Average for a forex pair with default window lengths: forex/load <PAIR>/ta/ema
+- For a specific forex pair, calculate the Exponential Moving Average with a custom window length of 30: forex/load <PAIR>/ta/ema -l 30
+- Calculate the Exponential Moving Average for a forex pair using multiple window lengths of 10 and 40: forex/load <PAIR>/ta/ema -l 10,40
+- To obtain the Exponential Moving Average for a forex pair with a custom window length of 25 and an offset of 5: forex/load <PAIR>/ta/ema -l 25 -o 5
+- For a specific forex pair, calculate the Exponential Moving Average with a window length of 15 and an offset of 3: forex/load <PAIR>/ta/ema -l 15 -o 3

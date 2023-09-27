@@ -1,0 +1,8 @@
+parent_command: stocks/ba/
+usage: snews [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]  optional arguments:   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about snews' to access the related guide.
+Summary: Display stock price and headlines sentiment using the VADER model over time for a specific stock symbol. The data source is Finnhub. You can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Display stock price and sentiment for <SYMBOL>: stocks/load <SYMBOL>/ba/snews
+- Export stock price and sentiment data for <SYMBOL> in csv format: stocks/load <SYMBOL>/ba/snews --export csv
+- Save stock price and sentiment data for <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ba/snews --sheet-name Sheet1

@@ -10,7 +10,7 @@ import webbrowser
 
 # IMPORTATION STANDARD
 from contextlib import contextmanager
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import matplotlib.pyplot as plt
 
@@ -23,7 +23,7 @@ from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
-from openbb_terminal.core.session.constants import REGISTER_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -107,7 +107,9 @@ def update_terminal():
 
     poetry_hash = sha256sum("poetry.lock")
 
-    completed_process = subprocess.run("git pull", shell=True, check=False)  # nosec
+    completed_process = subprocess.run(  # nosec
+        "git pull", shell=True, check=False  # noqa: S607,S602
+    )
     if completed_process.returncode != 0:
         return completed_process.returncode
 
@@ -121,7 +123,7 @@ def update_terminal():
     )
 
     completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False
+        "poetry install", shell=True, check=False  # noqa: S607,S602
     )
     if completed_process.returncode != 0:
         return completed_process.returncode
@@ -155,29 +157,28 @@ def open_openbb_documentation(
     elif "account" in path:
         path = "/usage?path=/usage/guides/basics"
         command = ""
-    else:
-        if arg_type == "command":  # user passed a command name
-            if command in ["settings", "featflags"]:
-                path = "/usage?path=/usage/guides/customizing-the-terminal"
-                command = ""
-            else:
-                path = f"/commands?path={path}"
-        elif arg_type == "menu":  # user passed a menu name
-            if command in ["ta", "ba", "qa"]:
-                menu = path.split("/")[-2]
-                path = f"/usage?path=/usage/intros/common/{menu}"
-            elif command == "forecast":
-                command = ""
-                path = "/usage?path=/usage/intros/forecast"
-            else:
-                path = f"/usage?path=/usage/intros/{path}"
-        else:  # user didn't pass argument and is in a menu
+    elif arg_type == "command":  # user passed a command name
+        if command in ["settings", "featflags"]:
+            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            command = ""
+        else:
+            path = f"/commands?path={path}"
+    elif arg_type == "menu":  # user passed a menu name
+        if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = (
-                f"/usage?path=/usage/intros/common/{menu}"
-                if menu in ["ta", "ba", "qa"]
-                else f"/usage?path=/usage/intros/{path}"
-            )
+            path = f"/usage?path=/usage/intros/common/{menu}"
+        elif command == "forecast":
+            command = ""
+            path = "/usage?path=/usage/intros/forecast"
+        else:
+            path = f"/usage?path=/usage/intros/{path}"
+    else:  # user didn't pass argument and is in a menu
+        menu = path.split("/")[-2]
+        path = (
+            f"/usage?path=/usage/intros/common/{menu}"
+            if menu in ["ta", "ba", "qa"]
+            else f"/usage?path=/usage/intros/{path}"
+        )
 
     if command:
         if command == "keys":
@@ -205,7 +206,7 @@ def open_openbb_documentation(
             "news",
             "account",
         ]:
-            path = "/guides"
+            path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
             path = f"/usage?path=/usage/intros/common/{command}"
@@ -257,7 +258,8 @@ def print_guest_block_msg():
         console.print(
             "[info]You are currently logged as a guest.[/info]\n"
             "[info]Login to use this feature.[/info]\n\n"
-            f"[info]If you don't have an account, you can create one here: [/info][cmds]{REGISTER_URL}\n[/cmds]"
+            "[info]If you don't have an account, you can create one here: [/info]"
+            f"[cmds]{BackendEnvironment.HUB_URL + 'register'}\n[/cmds]"
         )
 
 
@@ -269,7 +271,7 @@ def is_installer() -> bool:
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
-        os.system("")  # nosec
+        os.system("")  # nosec # noqa: S605,S607
         # Hide splashscreen loader of the packaged app
         if is_installer():
             hide_splashscreen()
@@ -313,7 +315,7 @@ def check_for_updates() -> None:
                 )
                 if current_version < latest_version:
                     console.print(
-                        "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
+                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:
@@ -366,17 +368,20 @@ def reset(queue: Optional[List[str]] = None):
     console.print("resetting...")
     logger.info("resetting")
     plt.close("all")
-    plots_backend().close()
-    debug = get_current_system().DEBUG_MODE
+    plots_backend().close(reset=True)
     load_env_files()
+    debug = get_current_system().DEBUG_MODE
+    dev = get_current_system().DEV_BACKEND
 
     try:
         # save the current user
         user_profile = get_current_user().profile
-        session: Dict[str, str] = {
+        session: Dict[str, Any] = {
             "access_token": user_profile.token,
             "token_type": user_profile.token_type,
             "uuid": user_profile.uuid,
+            "username": user_profile.username,
+            "remember": user_profile.remember,
         }
 
         # remove the hub routines
@@ -391,16 +396,17 @@ def reset(queue: Optional[List[str]] = None):
             if parts[0] == "openbb_terminal":
                 del sys.modules[module]
 
+        queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if is_local():
             from openbb_terminal.terminal_controller import main
 
-            main(debug, ["/".join(queue) if len(queue) > 0 else ""], module="")  # type: ignore
+            main(debug, dev, queue_list, module="")  # type: ignore
         else:
             from openbb_terminal.core.session import session_controller
 
-            session_controller.main(session)
+            session_controller.main(session, queue=queue_list)
 
     except Exception as e:
         logger.exception("Exception: %s", str(e))
@@ -420,28 +426,6 @@ def suppress_stdout():
         finally:
             sys.stdout = old_stdout
             sys.stderr = old_stderr
-
-
-def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
-
-    Parameters
-    ----------
-    command : str
-        The command to test
-
-    Returns
-    -------
-    answer : bool
-        Whether the command is a reset command
-    """
-    if "reset" in command:
-        return True
-    if command == "r":
-        return True
-    if command == "r\n":
-        return True
-    return False
 
 
 def first_time_user() -> bool:

@@ -1,0 +1,21 @@
+parent_command:forecast
+usage: rename [-d {AAPL}] -o OLDCOL -n NEWCOL
+
+The column you want to rename from a dataset.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        Dataset that will get a column renamed (default: None)
+  -o OLDCOL, --oldcol OLDCOL
+                        Old column from dataset to be renamed (default: None)
+  -n NEWCOL, --newcol NEWCOL
+                        New column from dataset to be renamed (default: None)
+
+
+Examples:
+- Rename a column in the default dataset: forecast/rename -o OLDCOL -n NEWCOL
+- Rename a column in a specific dataset: forecast/rename -d {AAPL} -o OLDCOL -n NEWCOL
+- Load <SYMBOL> and rename a column in its dataset: stocks/load <SYMBOL>/forecast/rename -o OLDCOL -n NEWCOL
+- Load <COIN> and rename a column in its dataset: crypto/load <COIN>/forecast/rename -o OLDCOL -n NEWCOL
+- Load <PAIR> and rename a column in its dataset: forex/load <PAIR>/forecast/rename -o OLDCOL -n NEWCOL
+- Load <FUTURE> and rename a column in its dataset: futures/load <FUTURE>/forecast/rename -o OLDCOL -n NEWCOL

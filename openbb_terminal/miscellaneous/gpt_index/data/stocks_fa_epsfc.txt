@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: epsfc [-t TICKER] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Estimated EPS [Source: Seeking Alpha]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about epsfc' to access the related guide.
+Summary: The epsfc command retrieves the estimated EPS (Earnings Per Share) for a specific stock ticker from Seeking Alpha. You can export the raw data in various formats and save the data to a specific excel sheet if needed.
+
+Examples:
+- To get the estimated EPS for a specific stock: stocks/fa/epsfc -t <SYMBOL>
+- To export the estimated EPS data in csv format: stocks/fa/epsfc -t <SYMBOL> --export csv
+- To export the estimated EPS data in json format: stocks/fa/epsfc -t <SYMBOL> --export json
+- To export the estimated EPS data in xlsx format: stocks/fa/epsfc -t <SYMBOL> --export xlsx
+- To save the estimated EPS data to a specific excel sheet: stocks/fa/epsfc -t <SYMBOL> --sheet-name Sheet1

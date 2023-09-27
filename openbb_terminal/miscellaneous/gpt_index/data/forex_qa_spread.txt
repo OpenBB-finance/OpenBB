@@ -1,0 +1,13 @@
+parent_command:forex/qa
+usage: spread [-w N_WINDOW]
+
+Shows rolling spread measurement
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- To display the rolling spread measurement for a forex pair with the default window length: forex/load <PAIR>/qa/spread
+- To display the rolling spread measurement for a forex pair with a custom window length of 30: forex/load <PAIR>/qa/spread -w 30

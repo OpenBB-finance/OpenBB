@@ -1,0 +1,16 @@
+parent_command:stocks/options/hedge
+usage: rmv [-o OPTION [OPTION ...]] [-a]
+
+Remove one of the options to be shown in the hedge.
+
+optional arguments:
+  -o OPTION [OPTION ...], --option OPTION [OPTION ...]
+                        index of the option to remove
+  -a, --all             remove all of the options
+
+
+Examples:
+- Remove a specific option from the hedge: stocks/load <SYMBOL>/options/hedge/rmv -o 2
+- Remove multiple options from the hedge: stocks/load <SYMBOL>/options/hedge/rmv -o 1 3 5
+- Clear all options from the hedge display: stocks/load <SYMBOL>/options/hedge/rmv -a
+- To remove the first and fourth options from the hedge: stocks/load <SYMBOL>/options/hedge/rmv --option 1 4

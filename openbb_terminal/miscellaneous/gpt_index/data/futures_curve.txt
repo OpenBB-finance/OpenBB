@@ -1,0 +1,17 @@
+parent_command:futures
+usage: curve -t TICKER [-d DATE]
+
+Display futures curve. [Source: YahooFinance]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Future curve to be selected (default: )
+  -d DATE, --date DATE  Include the curve as of a previous date with format YYYY-MM-DD (default: None)
+
+
+Examples:
+- To display the futures curve for a specific ticker: futures/curve -t <FUTURE>
+- To display the futures curve for a specific ticker on a specific date: futures/curve -t <FUTURE> -d 2022-12-31
+- To view the futures curve of a particular future as of a previous date: futures/curve --ticker <FUTURE> --date 2022-11-30
+- Display the futures curve of a selected future: futures/curve --ticker <FUTURE>
+- Show the futures curve for a specific ticker and date: futures/curve -t <FUTURE> --date 2022-10-31

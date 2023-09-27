@@ -1,0 +1,24 @@
+parent_command:fixedincome
+usage: estr [-p {volume_weighted_trimmed_mean_rate,number_of_transactions,number_of_active_banks,total_volume,share_of_volume_of_the_5_largest_active_banks,rate_at_75th_percentile_of_volume,rate_at_25th_percentile_of_volume}]
+            [-s START_DATE] [-e END_DATE]
+
+The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
+the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been executed at arm’s length and thus reflect market rates in an unbiased way.
+
+optional arguments:
+  -p {volume_weighted_trimmed_mean_rate,number_of_transactions,number_of_active_banks,total_volume,share_of_volume_of_the_5_largest_active_banks,rate_at_75th_percentile_of_volume,rate_at_25th_percentile_of_volume}, --parameter {volume_weighted_trimmed_mean_rate,number_of_transactions,number_of_active_banks,total_volume,share_of_volume_of_the_5_largest_active_banks,rate_at_75th_percentile_of_volume,rate_at_25th_percentile_of_volume}
+                        Specific Euro Short-Term Rate data to retrieve (default: volume_weighted_trimmed_mean_rate)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve the volume-weighted trimmed mean rate for the Euro Short-Term Rate: fixedincome/estr
+- Fetch the number of transactions for the Euro Short-Term Rate: fixedincome/estr -p number_of_transactions
+- Get the total volume of the Euro Short-Term Rate for a specific date range: fixedincome/estr -p total_volume -s 2022-01-01 -e 2022-01-31
+- Obtain the rate at the 75th percentile of volume for the Euro Short-Term Rate: fixedincome/estr -p rate_at_75th_percentile_of_volume
+- Access the number of active banks data for the Euro Short-Term Rate between two dates: fixedincome/estr -p number_of_active_banks -s 2022-01-01 -e 2022-01-31
+- View the share of volume of the 5 largest active banks for the Euro Short-Term Rate: fixedincome/estr -p share_of_volume_of_the_5_largest_active_banks
+- Display the rate at the 25th percentile of volume for the Euro Short-Term Rate within a specific date range: fixedincome/estr -p rate_at_25th_percentile_of_volume -s 2022-01-01 -e 2022-01-31

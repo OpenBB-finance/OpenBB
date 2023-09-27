@@ -1,0 +1,9 @@
+parent_command:account
+usage: revoke
+
+Revoke your current OpenBB Personal Access Token.
+
+revoke
+Examples:
+- Revoke your current Personal Access Token: account/revoke
+- To remove your current OpenBB Personal Access Token, use: account/revoke

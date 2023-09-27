@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: add [-s L_SIMILAR] [-h]  Add similar tickers to compare with.  optional arguments:   -s L_SIMILAR, --similar L_SIMILAR                         Tickers to add to similar list (default: [])   -h, --help            show this help message (default: False)  For more information and examples, use 'about add' to access the related guide.
+Summary: Add similar tickers to compare with the current stock symbol. You can provide a list of tickers to be added to the similar list.
+
+Examples:
+- Add similar tickers to compare with the loaded stock: stocks/load <SYMBOL>/ca/add -s Ticker1 Ticker2 Ticker3
+- Add a single similar ticker to compare with the current stock: stocks/load <SYMBOL>/ca/add -s Ticker1
+- To add multiple similar tickers for comparison, separate them with spaces: stocks/load <SYMBOL>/ca/add -s Ticker1 Ticker2 Ticker3 Ticker4
+- After loading a stock, include similar tickers for comparison: stocks/load <SYMBOL>/ca/add --similar Ticker1 Ticker2

@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: est [-t TICKER] [-e {annualrevenue,annualearnings,quarterearnings}]            [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Yearly estimates and quarter earnings/revenues. [Source: Business Insider]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -e {annualrevenue,annualearnings,quarterearnings}, --estimate {annualrevenue,annualearnings,quarterearnings}                         Estimates to get   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about est' to access the related guide.
+Summary: Retrieve yearly estimates and quarter earnings/revenues for a specific stock ticker. You can choose between annual revenue, annual earnings, or quarter earnings as the estimate type. The data source is Business Insider. You can also export the raw data in various formats and save it to a specific Excel sheet.
+
+Examples:
+- Retrieve annual revenue estimates for a stock: stocks/fa/est -t <SYMBOL> -e annualrevenue
+- Retrieve annual earnings estimates for a stock: stocks/fa/est -t <SYMBOL> -e annualearnings
+- Retrieve quarter earnings estimates for a stock: stocks/fa/est -t <SYMBOL> -e quarterearnings
+- Export annual revenue estimates for a stock to a csv file: stocks/fa/est -t <SYMBOL> -e annualrevenue --export csv
+- Save annual earnings estimates for a stock to a specific Excel sheet: stocks/fa/est -t <SYMBOL> -e annualearnings --sheet-name Sheet1

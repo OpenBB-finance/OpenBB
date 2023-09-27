@@ -1,0 +1,9 @@
+parent_command:crypto/qa
+usage: cdf
+
+Cumulative distribution function
+
+cdf
+Examples:
+- Calculate the cumulative distribution function for a cryptocurrency: crypto/load <COIN>/qa/cdf
+- Compute the CDF for a specific crypto coin: crypto/load <COIN>/qa/cdf

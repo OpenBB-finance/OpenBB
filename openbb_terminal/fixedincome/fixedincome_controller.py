@@ -1340,7 +1340,7 @@ class FixedIncomeController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True
         )
         if ns_parser:
-            maturity = list_from_str(ns_parser.maturity)
+            maturity = [m.replace(".0", "") for m in list_from_str(ns_parser.maturity)]
             category = list_from_str(ns_parser.category)
 
             fred_view.plot_spot(

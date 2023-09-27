@@ -1,0 +1,8 @@
+parent_command: stocks/gov/
+usage: lobbying [-l LIMIT] [-h]  Lobbying details [Source: www.quiverquant.com]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of events to show (default: 10)   -h, --help            show this help message (default: False)  For more information and examples, use 'about lobbying' to access the related guide.
+Summary: Retrieve lobbying details for a specific stock symbol, with data sourced from www.quiverquant.com. You can set a limit on the number of events to display.
+
+Examples:
+- To display the top 10 lobbying events for a stock: stocks/load <SYMBOL>/gov/lobbying
+- Show the top 5 lobbying events for a specific stock: stocks/load <SYMBOL>/gov/lobbying -l 5
+- Retrieve lobbying details for a stock with a custom limit of 20 events: stocks/load <SYMBOL>/gov/lobbying --limit 20

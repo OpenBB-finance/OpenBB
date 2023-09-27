@@ -1,0 +1,20 @@
+parent_command:stocks/qa
+usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
+
+Unit root test / stationarity (ADF, KPSS)
+
+optional arguments:
+  -r {c,ct,ctt,nc}, --fuller_reg {c,ct,ctt,nc}
+                        Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order (default: c)
+  -k {c,ct}, --kps_reg {c,ct}
+                        Type of regression. Can be ‘c’,’ct' (default: c)
+
+
+Examples:
+- To perform a unit root test with the default settings: stocks/qa/unitroot
+- To perform a unit root test with a constant and linear trend in the ADF test: stocks/qa/unitroot -r ct
+- To perform a unit root test with a constant and quadratic trend in the ADF test: stocks/qa/unitroot -r ctt
+- To perform a unit root test without a constant or trend in the ADF test: stocks/qa/unitroot -r nc
+- To perform a unit root test with a constant in the KPSS test: stocks/qa/unitroot -k c
+- To perform a unit root test with a constant and linear trend in the KPSS test: stocks/qa/unitroot -k ct
+- To perform a unit root test with a constant and linear trend in both ADF and KPSS tests: stocks/qa/unitroot -r ct -k ct

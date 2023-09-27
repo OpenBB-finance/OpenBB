@@ -1,0 +1,26 @@
+parent_command:stocks/screener
+usage: performance [-p Desired preset.] [-l LIMIT] [-r] [-s SORTBY]
+
+Prints performance data of the companies that meet the pre-set filtering.
+
+optional arguments:
+  -p Desired preset., --preset Desired preset.
+                        Filter presets
+  -l LIMIT, --limit LIMIT
+                        Limit of stocks to print
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed.
+  -s SORTBY, --sort SORTBY
+                        Sort elements of the table.
+
+
+Examples:
+- To display performance data with a specific preset: stocks/screener performance -p <Desired preset>
+- To show performance data for a limited number of stocks: stocks/screener performance -l 10
+- To display performance data sorted in ascending order: stocks/screener performance -r
+- To sort performance data by a specific column: stocks/screener performance -s <SORTBY>
+- To view performance data with a preset and limit the number of stocks displayed: stocks/screener performance -p <Desired preset> -l 20
+- To display performance data using a preset, limited to a specific number of stocks, and sorted in ascending order: stocks/screener performance -p <Desired preset> -l 15 -r
+- To show performance data with a preset, sorted by a specific column: stocks/screener performance -p <Desired preset> -s <SORTBY>
+- To display performance data limited to a specific number of stocks and sorted by a specific column: stocks/screener performance -l 10 -s <SORTBY>
+- To view performance data sorted in ascending order and by a specific column: stocks/screener performance -r -s <SORTBY>
+- To display performance data with a preset, limited to a specific number of stocks, sorted in ascending order, and by a specific column: stocks/screener performance -p <Desired preset> -l 15 -r -s <SORTBY>

@@ -1,0 +1,20 @@
+parent_command:crypto/dd
+usage: change [-e {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}] [-s SINCE] [-u UNTIL]
+
+Display active blockchain addresses over time [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
+
+optional arguments:
+  -e {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}, --exchange {aggregated,binance,bittrex,coinex,gate.io,gemini,huobi,kucoin,poloniex,bibox,bigone,bitfinex,hitbtc,kraken,okex,bithumb,zb.com,cobinhood,bitmex,bitstamp,coinbase,coincheck,luno}
+                        Exchange to check change. Default: aggregated (default: aggregated)
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2 years ago (default: 2021-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 1 year ago (default: 2022-05-31)
+
+
+Examples:
+- To view active blockchain addresses over time for all exchanges: crypto/dd/change
+- Display active blockchain addresses for Binance exchange: crypto/dd/change -e binance
+- Show active addresses for the Bitfinex exchange since a specific date: crypto/dd/change -e bitfinex -s 2021-01-01
+- Examine active blockchain addresses for the Kraken exchange between two dates: crypto/dd/change -e kraken -s 2021-01-01 -u 2021-12-31
+- Check active addresses for the aggregated exchanges from 2 years ago until a specific date: crypto/dd/change -u 2021-12-31

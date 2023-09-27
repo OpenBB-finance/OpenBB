@@ -1,0 +1,29 @@
+parent_command:crypto/ov
+usage: exmarkets [-e EXCHANGE] [-l LIMIT] [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [-r] [-u]
+
+Get all exchange markets found for given exchange You can display only N number of records with --limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share,
+trust_score --sortby parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange_id, pair, base_currency_name, quote_currency_name, market_url,
+category, reported_volume_24h_share, trust_score,
+
+optional arguments:
+  -e EXCHANGE, --exchange EXCHANGE
+                        Identifier of exchange e.g for Binance Exchange -> binance (default: binance)
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 10)
+  -s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}, --sortby {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}
+                        Sort by given column. Default: reported_volume_24h_share (default: reported_volume_24h_share)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -u, --urls            Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default: False)
+
+
+Examples:
+- Retrieve exchange markets for Binance: crypto/ov/exmarkets
+- Display exchange markets for a specific exchange: crypto/ov/exmarkets -e Kraken
+- Show top 20 exchange markets for a given exchange: crypto/ov/exmarkets -l 20
+- Sort exchange markets by base_currency_name: crypto/ov/exmarkets -s base_currency_name
+- Display exchange markets in ascending order: crypto/ov/exmarkets -r
+- Show exchange markets with URLs: crypto/ov/exmarkets -u
+- Retrieve exchange markets for a specific exchange and sort by trust_score: crypto/ov/exmarkets -e Bitfinex -s trust_score
+- Display top 5 exchange markets sorted by quote_currency_name in ascending order: crypto/ov/exmarkets -l 5 -s quote_currency_name -r
+- Retrieve exchange markets for a specific exchange with URLs: crypto/ov/exmarkets -e Coinbase -u
+- Show top 10 exchange markets for a given exchange sorted by category: crypto/ov/exmarkets -l 10 -s category

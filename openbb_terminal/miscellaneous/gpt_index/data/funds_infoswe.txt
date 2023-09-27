@@ -1,0 +1,9 @@
+parent_command:funds
+usage: infoswe
+
+Show fund info of a swedish fund. To get a list of available funds, check the file `avanza_fund_ID.csv`.
+
+infoswe
+Examples:
+- Display information for a Swedish fund by its ID: funds/infoswe <FUND_ID>
+- To find the available Swedish funds and their IDs, refer to the `avanza_fund_ID.csv` file, and then use the fund ID to get its information: funds/infoswe <FUND_ID>

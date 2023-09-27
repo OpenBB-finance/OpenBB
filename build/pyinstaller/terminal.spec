@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+import matplotlib
 
 import scipy
 from dotenv import set_key
@@ -71,6 +72,10 @@ added_files = [
     (str(pathex / "streamlit"), "streamlit"),
     (str(pathex / "altair"), "altair"),
     (str(pathex / "pyarrow"), "pyarrow"),
+    (str(pathex / "langchain"), "langchain"),
+    (str(pathex / "llama_index/VERSION"), "llama_index"),
+    (str(pathex / "tiktoken"), "tiktoken"),
+    (str(pathex / "tiktoken_ext"), "tiktoken_ext"),
 ]
 
 if is_win:
@@ -78,6 +83,10 @@ if is_win:
         [
             (os.path.join(f"{os.path.dirname(scipy.__file__)}.libs"), "scipy.libs/"),
             (str(pathex / "frozendict/version.py"), "frozendict"),
+            (
+                os.path.join(f"{os.path.dirname(matplotlib.__file__)}.libs"),
+                "matplotlib.libs/",
+            ),
         ]
     )
 
@@ -113,6 +122,7 @@ hidden_imports = [
     "pytrends",
     "pytrends.request",
     "pyarrow",
+    "langchain",
 ]
 
 

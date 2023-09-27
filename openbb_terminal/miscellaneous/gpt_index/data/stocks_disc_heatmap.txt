@@ -1,0 +1,18 @@
+parent_command:stocks/disc
+usage: heatmap [-t {day,week,month,3month,6month,year,ytd}]
+
+Get the SP 500 heatmap from finviz and display in interactive treemap
+
+optional arguments:
+  -t {day,week,month,3month,6month,year,ytd}, --timeframe {day,week,month,3month,6month,year,ytd}
+                        Timeframe to get heatmap data for (default: day)
+
+
+Examples:
+- Display the S&P 500 heatmap for the default timeframe (day): stocks/disc/heatmap
+- Show the S&P 500 heatmap for a week timeframe: stocks/disc/heatmap -t week
+- Generate the S&P 500 heatmap for a month timeframe: stocks/disc/heatmap --timeframe month
+- View the S&P 500 heatmap for a 3-month timeframe: stocks/disc/heatmap -t 3month
+- Present the S&P 500 heatmap for a 6-month timeframe: stocks/disc/heatmap --timeframe 6month
+- Create the S&P 500 heatmap for a year timeframe: stocks/disc/heatmap -t year
+- Visualize the S&P 500 heatmap for a year-to-date timeframe: stocks/disc/heatmap --timeframe ytd

@@ -1,0 +1,13 @@
+parent_command:portfolio/po/parameters
+usage: save -f FILE
+
+Save portfolio risk parameters (ini or xlsx)
+
+optional arguments:
+  -f FILE, --file FILE  Filename to be saved (default: None)
+
+
+Examples:
+- Save your portfolio risk parameters as an ini file: portfolio/po/parameters/save -f parameters.ini
+- Export your portfolio risk parameters to an excel file: portfolio/po/parameters/save --file parameters.xlsx
+- Store your portfolio risk parameters in a file named "my_portfolio": portfolio/po/parameters/save -f my_portfolio.ini

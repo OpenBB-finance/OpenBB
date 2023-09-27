@@ -1,0 +1,20 @@
+parent_command:economy
+usage: debt [-c COUNTRIES] [-s START_DATE] [-e END_DATE]
+
+General government debt-to-GDP ratio measures the gross debt of the general government as a percentage of GDP. It is a key indicator for the sustainability of government finance.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- To view the general government debt-to-GDP ratio for the <COUNTRY>: economy/debt -c <COUNTRY>
+- To view the general government debt-to-GDP ratio for a specific country, such as Germany: economy/debt -c germany
+- To view the general government debt-to-GDP ratio for multiple countries, like France and Italy: economy/debt -c <COUNTRY>,<COUNTRY>
+- To get the general government debt-to-GDP ratio data for a specific time range, for example, from 2000-01-01 to 2020-12-31: economy/debt -s 2000-01-01 -e 2020-12-31
+- To retrieve the general government debt-to-GDP ratio data for a specific country and time range, such as <COUNTRY> between 2010-01-01 and 2020-12-31: economy/debt -c <COUNTRY> -s 2010-01-01 -e 2020-12-31

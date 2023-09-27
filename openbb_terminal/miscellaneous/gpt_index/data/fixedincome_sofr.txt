@@ -1,0 +1,25 @@
+parent_command:fixedincome
+usage: sofr [-p {overnight,30_day_average,90_day_average,180_day_average,index}] [-s START_DATE] [-e END_DATE]
+
+The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of borrowing cash overnight collateralized by Treasury securities. The SOFR is calculated as a volume-weighted median of transaction-level tri-party repo
+data.
+
+optional arguments:
+  -p {overnight,30_day_average,90_day_average,180_day_average,index}, --parameter {overnight,30_day_average,90_day_average,180_day_average,index}
+                        Specific SOFR data to retrieve (default: overnight)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve the overnight SOFR: fixedincome/sofr
+- Obtain the 30-day average SOFR: fixedincome/sofr -p 30_day_average
+- Get the 90-day average SOFR: fixedincome/sofr --parameter 90_day_average
+- Fetch the 180-day average SOFR: fixedincome/sofr -p 180_day_average
+- Access the SOFR index: fixedincome/sofr --parameter index
+- Retrieve the overnight SOFR between specific dates: fixedincome/sofr -s 2020-01-01 -e 2020-12-31
+- Obtain the 30-day average SOFR for a specific period: fixedincome/sofr -p 30_day_average -s 2020-01-01 -e 2020-12-31
+- Get the 90-day average SOFR from a particular start date to the present: fixedincome/sofr --parameter 90_day_average --start 2020-01-01
+- Fetch the 180-day average SOFR up to a specific end date: fixedincome/sofr -p 180_day_average -e 2020-12-31

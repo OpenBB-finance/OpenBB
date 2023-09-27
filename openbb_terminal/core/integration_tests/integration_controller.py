@@ -45,12 +45,13 @@ from openbb_terminal.core.session.current_user import get_current_user, set_curr
 from openbb_terminal.core.session.utils import load_dict_to_model
 from openbb_terminal.helper_funcs import check_non_negative
 from openbb_terminal.rich_config import console
+from openbb_terminal.routine_functions import is_reset
 from openbb_terminal.terminal_controller import (
     insert_start_slash,
     replace_dynamic,
     terminal,
 )
-from openbb_terminal.terminal_helper import is_reset, suppress_stdout
+from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 special_arguments_values = [
@@ -471,9 +472,10 @@ def display_failures(fails: Dict[str, Dict[str, Any]]):
             for i, line in enumerate(formatted_tb):
                 if "openbb_terminal" not in line:
                     style = "rgb(128,128,128)"
-                elif i == len(formatted_tb) - 1:
-                    style = "yellow"
-                elif "openbb_terminal" not in formatted_tb[i + 1]:
+                elif (
+                    i == len(formatted_tb) - 1
+                    or "openbb_terminal" not in formatted_tb[i + 1]
+                ):
                     style = "yellow"
 
                 console.print(line, end="", style=style)

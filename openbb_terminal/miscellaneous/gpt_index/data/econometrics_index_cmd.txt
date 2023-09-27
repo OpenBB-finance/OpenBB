@@ -1,0 +1,19 @@
+parent_command:econometrics
+usage: index -n {} [-i INDEX] [-a] [-d]
+
+Set a (multi) index for the dataset
+
+optional arguments:
+  -n {}, --name {}      Name of dataset to select index from (default: None)
+  -i INDEX, --index INDEX
+                        Columns from the dataset the user wishes to set as default (default: )
+  -a, --adjustment      Whether to allow for making adjustments to the dataset to align it with the use case for Timeseries and Panel Data regressions (default: False)
+  -d, --drop            Whether to drop the column(s) the index is set for. (default: False)
+
+
+Examples:
+- Set an index for the dataset with the specified name: econometrics/index -n <DATASET_NAME> -i <COLUMN_NAME>
+- Set a multi-index for the dataset with the specified name: econometrics/index -n <DATASET_NAME> -i <COLUMN_NAME1> -i <COLUMN_NAME2>
+- Adjust the dataset for Timeseries and Panel Data regressions and set an index: econometrics/index -n <DATASET_NAME> -i <COLUMN_NAME> -a
+- Set an index for the dataset and drop the column used for indexing: econometrics/index -n <DATASET_NAME> -i <COLUMN_NAME> -d
+- Set a multi-index for the dataset, adjust it for Timeseries and Panel Data regressions, and drop the columns used for indexing: econometrics/index -n <DATASET_NAME> -i <COLUMN_NAME1> -i <COLUMN_NAME2> -a -d

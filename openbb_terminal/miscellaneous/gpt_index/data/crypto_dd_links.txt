@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: links
+
+Display asset's links [Source: https://messari.io]
+
+links
+Examples:
+- To display the links for a specific cryptocurrency: crypto/load <COIN>/dd/links
+- Show the asset's links for a chosen coin: crypto/load <COIN>/dd/links
+- Retrieve the links related to a particular cryptocurrency: crypto/load <COIN>/dd/links
+- Access the links associated with a specific crypto asset: crypto/load <COIN>/dd/links
+- Obtain the links for a selected digital currency: crypto/load <COIN>/dd/links

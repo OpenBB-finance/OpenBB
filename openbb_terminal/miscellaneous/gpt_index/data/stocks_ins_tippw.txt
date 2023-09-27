@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: tippw [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider purchases of the week. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tippw' to access the related guide.
+Summary: Display the top insider purchases of the week with the option to limit the number of rows displayed. You can also export the data in various formats and save it to a specific excel sheet. This command sources its data from OpenInsider.
+
+Examples:
+1. Show the top 10 insider purchases of the week: stocks/ins/tippw
+2. Show the top 5 insider purchases of the week: stocks/ins/tippw -l 5
+3. Export the top 10 insider purchases of the week to a csv file: stocks/ins/tippw --export csv
+4. Export the top insider purchases of the week to an xlsx file with a specific sheet name: stocks/ins/tippw --export xlsx --sheet-name Purchases
+5. Display the top 20 insider purchases of the week: stocks/ins/tippw -l 20

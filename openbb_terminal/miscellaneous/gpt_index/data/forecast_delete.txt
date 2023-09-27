@@ -1,0 +1,19 @@
+parent_command:forecast
+usage: delete [--delete {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}]
+
+The column you want to delete from a dataset.
+
+optional arguments:
+  --delete {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}
+                        The columns you want to delete from a dataset. Use format: <dataset.column> or multiple with <dataset.column>,<datasetb.column2> (default: None)
+
+
+Examples:
+- To delete the 'open' column of a specific dataset: forecast/delete --delete <SYMBOL>.open
+- Remove the 'high' and 'low' columns from a dataset: forecast/delete --delete <SYMBOL>.high,<SYMBOL>.low
+- Erase the 'close' column for a specified dataset: forecast/delete --delete <SYMBOL>.close
+- Eliminate the 'adj_close' column from a particular dataset: forecast/delete --delete <SYMBOL>.adj_close
+- Get rid of the 'volume' column in a dataset: forecast/delete --delete <SYMBOL>.volume
+- Delete the 'dividends' column from a specific dataset: forecast/delete --delete <SYMBOL>.dividends
+- Remove the 'stock_splits' column for a particular dataset: forecast/delete --delete <SYMBOL>.stock_splits
+- Erase multiple columns like 'date', 'open', and 'high' from a dataset: forecast/delete --delete <SYMBOL>.date,<SYMBOL>.open,<SYMBOL>.high

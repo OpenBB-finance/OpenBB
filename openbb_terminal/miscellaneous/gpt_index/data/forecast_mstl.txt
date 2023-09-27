@@ -1,0 +1,38 @@
+parent_command:forecast
+usage: mstl [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast: https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform MSTL forecast on a specific dataset: forecast/mstl -d {AAPL}
+- Perform MSTL forecast with a specific target column: forecast/mstl -c TARGET_COLUMN
+- Perform MSTL forecast for a specific number of days: forecast/mstl -n N_DAYS
+- Perform MSTL forecast with a specified seasonality: forecast/mstl -s {N}
+- Perform MSTL forecast with a specified seasonal period: forecast/mstl -p SEASONAL_PERIODS
+- Perform MSTL forecast with a specified start window: forecast/mstl -w START_WINDOW
+- Perform MSTL forecast with a specified start and end date: forecast/mstl --start S_START_DATE --end S_END_DATE
+- Show the naive baseline for the MSTL forecast: forecast/mstl --naive
+- Show the residuals for the MSTL forecast: forecast/mstl --residuals
+- Perform MSTL forecast without plotting historical data: forecast/mstl --forecast-only
+- Export MSTL forecast predictions to a csv file: forecast/mstl --export-pred-raw

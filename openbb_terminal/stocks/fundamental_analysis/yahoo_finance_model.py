@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-import re
 import ssl
 from datetime import datetime
 from typing import Optional, Tuple
@@ -15,7 +14,6 @@ from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
-from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -296,7 +294,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     # Making the website believe that you are accessing it using a Mozilla browser
     req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
 
-    webpage = urlopen(req).read()  # pylint: disable= R1732
+    webpage = urlopen(req).read()  # pylint: disable= R1732 # noqa: S310
     soup = BeautifulSoup(webpage, "html.parser")
 
     features = soup.find_all("div", class_="D(tbr)")
@@ -334,15 +332,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         new_headers[:0] = ["Breakdown"]
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
-    elif statement == "financials":
-        for dates in headers[2:]:
-            read = datetime.strptime(dates, "%d/%m/%Y")
-            write = read.strftime("%Y-%m-%d")
-            new_headers.append(write)
-        new_headers[:0] = ["Breakdown", "ttm"]
-        df.columns = new_headers
-        df.set_index("Breakdown", inplace=True)
-    elif statement == "cash-flow":
+    elif statement in ("financials", "cash-flow"):
         for dates in headers[2:]:
             read = datetime.strptime(dates, "%d/%m/%Y")
             write = read.strftime("%Y-%m-%d")
@@ -357,15 +347,13 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     df = df.replace(",", "", regex=True)
     df = df.replace("k", "", regex=True)
     df = df.astype("float")
+    df.index = df.index.str.replace(",", "")
 
-    # Data except EPS is returned in thousands, convert it
-    (df, _) = transform_by_denomination(
-        df,
-        "Thousands",
-        "Units",
-        axis=1,
-        skipPredicate=lambda row: re.search("eps", row.name, re.IGNORECASE) is not None,
-    )
+    not_skipped = ~df.reset_index()["Breakdown"].str.contains("EPS", case=False)
+    skipped = df.reset_index()["Breakdown"].str.contains("EPS", case=False)
+    skipped_df = df.reset_index()[skipped].set_index("Breakdown")
+    transformed = df.reset_index()[not_skipped].set_index("Breakdown") * 1000
+    df = pd.concat([transformed, skipped_df])
 
     if ratios:
         types = df.copy().applymap(lambda x: isinstance(x, (float, int)))

@@ -1,0 +1,13 @@
+parent_command:crypto/dd
+usage: dev
+
+Developers data for loaded coin. If the development data is available you can see how the code development of given coin is going on. There are some statistics that shows number of stars, forks, subscribers, pull requests, commits,
+merges, contributors on github.
+
+dev
+Examples:
+- To view developers data for a specific coin: crypto/load <COIN>/dd/dev
+- Obtain development statistics for a chosen cryptocurrency: crypto/load <COIN>/dd/dev
+- Check code development progress for a particular coin: crypto/load <COIN>/dd/dev
+- Examine the development data of a specific cryptocurrency: crypto/load <COIN>/dd/dev
+- Analyze the development statistics of a selected coin: crypto/load <COIN>/dd/dev

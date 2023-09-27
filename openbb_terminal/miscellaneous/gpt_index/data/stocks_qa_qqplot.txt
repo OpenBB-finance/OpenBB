@@ -1,0 +1,11 @@
+parent_command:stocks/qa
+usage: qqplot
+
+Display QQ plot vs normal quantiles
+
+qqplot
+Examples:
+- To display a QQ plot for a specific stock: stocks/load <SYMBOL>/qa/qqplot
+- Show a QQ plot for the selected stock: stocks/load <SYMBOL>/qa/qqplot
+- Visualize the QQ plot of a stock: stocks/load <SYMBOL>/qa/qqplot
+- Generate a QQ plot for the loaded stock: stocks/load <SYMBOL>/qa/qqplot

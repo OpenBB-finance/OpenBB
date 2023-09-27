@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: sentiment_compare [-r] [-h] [--export EXPORT]                          [--sheet-name SHEET_NAME [SHEET_NAME ...]]  FinBrain's sentiment correlation across similar tickers.  optional arguments:   -r, --raw             Display raw sentiment data (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about sentiment_compare' to access the related guide.
+Summary: Compare sentiment correlation across similar stock tickers using FinBrain's sentiment analysis. You can display raw sentiment data, export the data in various formats, and save data to a specific Excel sheet.
+
+Examples:
+- Compare sentiment correlation for <SYMBOL>: stocks/load <SYMBOL>/ca/sentiment_compare
+- Display raw sentiment data for <SYMBOL>: stocks/load <SYMBOL>/ca/sentiment_compare -r
+- Export sentiment correlation data for <SYMBOL> in csv format: stocks/load <SYMBOL>/ca/sentiment_compare --export csv
+- Save sentiment correlation data for <SYMBOL> to a specific Excel sheet: stocks/load <SYMBOL>/ca/sentiment_compare --sheet-name Sheet1

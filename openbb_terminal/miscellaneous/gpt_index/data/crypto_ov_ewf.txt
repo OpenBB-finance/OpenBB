@@ -1,0 +1,11 @@
+parent_command:crypto/ov
+usage: ewf
+
+Display exchange withdrawal fees [Source: https://withdrawalfees.com/]
+
+ewf
+Examples:
+- To view exchange withdrawal fees for a specific cryptocurrency: crypto/load <COIN>/ov/ewf
+- Display exchange withdrawal fees for a selected coin: crypto/ov/ewf <COIN>
+- Check withdrawal fees for a particular cryptocurrency: crypto/ov/ewf <COIN>
+- Retrieve exchange withdrawal fees for a specific digital currency: crypto/load <COIN>/ov/ewf

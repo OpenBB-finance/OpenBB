@@ -1,0 +1,22 @@
+parent_command:crypto/dd
+usage: twitter [-l LIMIT] [-s {date,user_name,status,retweet_count,like_count}] [-r]
+
+Show last 10 tweets for given coin. You can display only N number of tweets with --limit parameter. You can sort data by date, user_name, status, retweet_count, like_count --sort parameter and also with --reverse flag to sort
+ascending. Displays: date, user_name, status, retweet_count, like_count
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
+  -s {date,user_name,status,retweet_count,like_count}, --sort {date,user_name,status,retweet_count,like_count}
+                        Sort by given column. Default: date (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Show the last 10 tweets for a specific coin: crypto/dd <COIN>/twitter
+- Display the last 5 tweets for a particular coin: crypto/dd <COIN>/twitter -l 5
+- Sort the last 10 tweets for a coin by retweet count: crypto/dd <COIN>/twitter -s retweet_count
+- Show the last 10 tweets for a coin, sorted by like count in ascending order: crypto/dd <COIN>/twitter -s like_count -r
+- Display the last 7 tweets for a coin, sorted by user name: crypto/dd <COIN>/twitter -l 7 -s user_name
+- View the last 15 tweets for a coin, sorted by date in ascending order: crypto/dd <COIN>/twitter -l 15 -s date -r
+- Retrieve the last 3 tweets for a coin, sorted by status: crypto/dd <COIN>/twitter -l 3 -s status

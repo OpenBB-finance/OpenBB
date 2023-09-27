@@ -1,0 +1,21 @@
+parent_command:econometrics
+usage: rename [-d {}] -o OLDCOL -n NEWCOL
+
+The column you want to rename from a dataset.
+
+optional arguments:
+  -d {}, --dataset {}   Dataset that will get a column renamed (default: None)
+  -o OLDCOL, --oldcol OLDCOL
+                        Old column from dataset to be renamed (default: None)
+  -n NEWCOL, --newcol NEWCOL
+                        New column from dataset to be renamed (default: None)
+
+
+Examples:
+- Rename a column in the default dataset: econometrics/rename -o OLDCOL -n NEWCOL
+- Rename a column in a specific dataset: econometrics/rename -d dataset_name -o OLDCOL -n NEWCOL
+- Load a dataset and rename a column: econometrics/load dataset_name/rename -o OLDCOL -n NEWCOL
+- Rename a column in a dataset after loading a specific <SYMBOL>: stocks/load <SYMBOL>/econometrics/rename -o OLDCOL -n NEWCOL
+- Rename a column in a dataset after loading a specific <COIN>: crypto/load <COIN>/econometrics/rename -o OLDCOL -n NEWCOL
+- Rename a column in a dataset after loading a specific <PAIR>: forex/load <PAIR>/econometrics/rename -o OLDCOL -n NEWCOL
+- Rename a column in a dataset after loading a specific <FUTURE>: futures/load <FUTURE>/econometrics/rename -o OLDCOL -n NEWCOL

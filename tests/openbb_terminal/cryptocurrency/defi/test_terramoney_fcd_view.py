@@ -19,9 +19,9 @@ from openbb_terminal.cryptocurrency.defi import terramoney_fcd_view
             ),
         ),
         ("display_validators", dict()),
-        ("display_gov_proposals", dict()),
+        # ("display_gov_proposals", dict()), Can't reach node
         ("display_account_growth", dict()),
-        ("display_staking_ratio_history", dict()),
+        # ("display_staking_ratio_history", dict()), Can't reach node
         ("display_staking_returns_history", dict()),
     ],
 )

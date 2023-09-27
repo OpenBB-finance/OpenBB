@@ -1,0 +1,18 @@
+parent_command:stocks/ta
+usage: fib [-p PERIOD] [--start START] [--end END]
+
+Calculates the fibonacci retracement levels
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Days to look back for retracement (default: 120)
+  --start START         Starting date to select (default: None)
+  --end END             Ending date to select (default: None)
+
+
+Examples:
+- To calculate the fibonacci retracement levels for a stock in the last 120 days: stocks/load <SYMBOL>/ta/fib
+- To calculate the fibonacci retracement levels for a stock in the last 180 days: stocks/load <SYMBOL>/ta/fib -p 180
+- To calculate the fibonacci retracement levels for a stock between specific dates: stocks/load <SYMBOL>/ta/fib --start 2022-01-01 --end 2022-06-30
+- For a stock, calculate the fibonacci retracement levels for the last 90 days: stocks/load <SYMBOL>/ta/fib -p 90
+- To determine the fibonacci retracement levels for a stock from a specific start date to the present: stocks/load <SYMBOL>/ta/fib --start 2022-01-01

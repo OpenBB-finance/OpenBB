@@ -1,0 +1,21 @@
+parent_command:economy
+usage: balance [-c COUNTRIES] [-s START_DATE] [-e END_DATE]
+
+General government balance is defined as the balance of income and expenditure of government, including capital income and capital expenditures. 'Net lending' means that government has a surplus, and is providing financial
+resources to other sectors, while 'net borrowing' means that government has a deficit, and requires financial resources from other sectors. This indicator is measured as a percentage of GDP.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- To get general government balance data for the United States: economy/balance
+- To obtain general government balance data for multiple countries: economy/balance -c "united_states, germany, japan"
+- To retrieve general government balance data for a specific country: economy/balance -c france
+- To fetch general government balance data for a specific date range: economy/balance -s 2000-01-01 -e 2020-12-31
+- To get general government balance data for multiple countries and a specific date range: economy/balance -c "united_kingdom, canada" -s 2010-01-01 -e 2020-12-31

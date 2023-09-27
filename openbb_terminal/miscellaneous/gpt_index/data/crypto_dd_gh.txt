@@ -1,0 +1,25 @@
+parent_command:crypto/dd
+usage: gh [-i INTERVAL] [-d DEV] [-s START] [-end END]
+
+Display github activity over time for a given coin. Github activity includes the following actions: creating a Pull Request, an Issue, commenting on an issue / PR, and many more. See detailed definition at
+https://academy.santiment.net/metrics/development-activity/ [Source: https://santiment.net/]
+
+optional arguments:
+  -i INTERVAL, --interval INTERVAL
+                        Frequency interval. Default: 1d (default: 1d)
+  -d DEV, --dev DEV     Filter only for development activity. Default: False (default: False)
+  -s START, --start START
+                        Initial date. Default: A year ago (default: 2022-06-02)
+  -end END, --end END   End date. Default: Today (default: 2023-06-02)
+
+
+Examples:
+- To view the GitHub activity for a specific coin over the default interval of 1 day: crypto/dd/gh
+- To display the GitHub activity for a coin with a custom interval of 7 days: crypto/dd/gh -i 7d
+- To show the development activity only for a given coin: crypto/dd/gh -d True
+- To see the GitHub activity for a coin starting from a specific date: crypto/dd/gh -s 2022-01-01
+- To display the GitHub activity for a coin between a specific date range: crypto/dd/gh -s 2022-01-01 -end 2022-06-01
+- To view the development activity of a coin with a 7-day interval and a custom start date: crypto/dd/gh -i 7d -d True -s 2022-01-01
+- To display the development activity for a coin between a specific date range: crypto/dd/gh -d True -s 2022-01-01 -end 2022-06-01
+- To show the GitHub activity for a coin with a custom interval and specific date range: crypto/dd/gh -i 7d -s 2022-01-01 -end 2022-06-01
+- To view the development activity of a coin with a custom interval, start date, and end date: crypto/dd/gh -i 7d -d True -s 2022-01-01 -end 2022-06-01

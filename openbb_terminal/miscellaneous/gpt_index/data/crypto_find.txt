@@ -1,0 +1,30 @@
+parent_command:crypto
+usage: find [-c COIN] [-k {id,symbol,name}] [-l LIMIT] [-s SKIP]
+
+Find similar coin by name, symbol, or id. If you don't remember exact name or id of the Coin at CoinGecko, Binance, Coinbase or CoinPaprika you can use this command to display coins with similar name, symbol or id to your search
+query. Example of usage: coin name is something like "polka". So I can try: find -c polka -k name -t 25 It will search for coin that has similar name to polka and display top 25 matches. -c, --coin stands for coin - you provide
+here your search query -k, --key it's a searching key. You can search by symbol, id or name of coin -l, --limit it displays top N number of records. coins: Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you
+provide name of coin then in result you will see ids of coins with best match for all mentioned services. If you provide "ALL" in your coin search query, then all coins will be displayed. To move over coins you can use pagination
+mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins from 100 to 130 will be displayed. By default skip = 0, limit = 10. If you won't provide source of the data everything will be displayed
+(CoinGecko, CoinPaprika, Binance). If you want to search only in given source then use --source flag. E.g. if you want to find coin with name uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
+
+optional arguments:
+  -c COIN, --coin COIN  Symbol Name or Id of Coin (default: None)
+  -k {id,symbol,name}, --key {id,symbol,name}
+                        Specify by which column you would like to search: symbol, name, id (default: symbol)
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 10)
+  -s SKIP, --skip SKIP  Skip n of records (default: 0)
+
+
+Examples:
+- Search for coins with a name similar to "polka": crypto/find -c polka -k name
+- Find coins with a symbol similar to "btc" and display the top 5 results: crypto/find -c btc -k symbol -l 5
+- Search for coins with an id similar to "eth" and display the top 10 results: crypto/find -c eth -k id -l 10
+- Find the top 20 coins with a name similar to "chain": crypto/find -c chain -k name -l 20
+- Display the top 10 coins with a symbol similar to "xrp" and skip the first 5 results: crypto/find -c xrp -k symbol -s 5
+- Search for the top 15 coins with an id similar to "doge" and skip the first 10 results: crypto/find -c doge -k id -s 10 -l 15
+- Find coins with a name similar to "cardano" and display the top 10 results from CoinPaprika: crypto/find -c cardano -k name --source cp -l 10
+- Display the top 5 coins with a symbol similar to "ltc" and skip the first 3 results: crypto/find -c ltc -k symbol -s 3 -l 5
+- Search for the top 7 coins with an id similar to "bnb" and skip the first 2 results: crypto/find -c bnb -k id -s 2 -l 7
+- Find coins with a name similar to "stellar" and display the top 10 results from Binance: crypto/find -c stellar -k name --source binance -l 10

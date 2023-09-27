@@ -56,7 +56,6 @@ class EconometricsController(BaseController):
         "type",
         "desc",
         "corr",
-        "season",
         "index",
         "clean",
         "add",
@@ -77,6 +76,7 @@ class EconometricsController(BaseController):
         "garch",
         "granger",
         "coint",
+        "vif",
     ]
     CHOICES_MENUS: List[str] = [
         "qa",
@@ -164,7 +164,7 @@ class EconometricsController(BaseController):
         }
 
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
+            choices: dict = self.choices_default
             choices["load"] = {
                 "--file": {c: {} for c in self.DATA_FILES},
                 "-f": "--file",
@@ -187,8 +187,9 @@ class EconometricsController(BaseController):
                 "granger",
                 "coint",
                 "corr",
-                "season",
                 "lag",
+                "vif",
+                "panel",
             ]:
                 choices[feature] = dict()
 
@@ -200,6 +201,8 @@ class EconometricsController(BaseController):
             choices["about"] = self.ABOUT_CHOICES
             choices["panel"]["-r"] = {c: {} for c in self.PANEL_CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
+        else:
+            self.choices = {}
 
     def update_runtime_choices(self):
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
@@ -214,7 +217,6 @@ class EconometricsController(BaseController):
                 "norm",
                 "root",
                 "coint",
-                "season",
                 "lag",
                 "regressions",
                 "ols",
@@ -235,12 +237,14 @@ class EconometricsController(BaseController):
             ]:
                 self.choices[feature] = {c: {} for c in self.files}
 
-            self.choices["type"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
-            self.choices["desc"] = {
-                c: {} for c in self.files + list(dataset_columns.keys())
-            }
+            for feature in ["type", "desc", "vif"]:
+                self.choices[feature] = {
+                    c: {} for c in self.files + list(dataset_columns.keys())
+                }
+            self.choices["vif"] = dict(
+                self.choices["vif"],
+                **{"-d": self.choices["vif"], "--data": self.choices["vif"]},
+            )
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -275,7 +279,6 @@ class EconometricsController(BaseController):
         mt.add_cmd("type", self.files)
         mt.add_cmd("desc", self.files)
         mt.add_cmd("corr", self.files)
-        mt.add_cmd("season", self.files)
         mt.add_cmd("index", self.files)
         mt.add_cmd("clean", self.files)
         mt.add_cmd("add", self.files)
@@ -286,20 +289,21 @@ class EconometricsController(BaseController):
         mt.add_cmd("lag", self.files)
         mt.add_cmd("ret", self.files)
         mt.add_cmd("export", self.files)
-        mt.add_info("time_series_")
+        mt.add_info("_assumption_testing_")
         mt.add_cmd("norm", self.files)
-        mt.add_cmd("ols", self.files)
         mt.add_cmd("granger", self.files)
         mt.add_cmd("root", self.files)
         mt.add_cmd("coint", self.files)
+        mt.add_cmd("vif", self.files)
+        mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
+        mt.add_info("_time_series_")
+        mt.add_cmd("ols", self.files)
         mt.add_cmd("garch", self.files)
         mt.add_info("_panel_")
         mt.add_cmd("panel", self.files)
         mt.add_cmd("compare", self.files)
-        mt.add_info("_residuals_")
-        mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
 
         console.print(text=mt.menu_text, menu="Econometrics")
         console.print()
@@ -407,10 +411,11 @@ class EconometricsController(BaseController):
             if ns_parser.alias:
                 alias = ns_parser.alias
             else:
-                if "." in ns_parser.file:
-                    alias = ".".join(ns_parser.file.split(".")[:-1])
-                else:
-                    alias = ns_parser.file
+                alias = (
+                    ".".join(ns_parser.file.split(".")[:-1])
+                    if "." in ns_parser.file
+                    else ns_parser.file
+                )
 
             # check if this dataset has been added already
             if alias in self.files:
@@ -653,7 +658,7 @@ class EconometricsController(BaseController):
             "-n",
             "--name",
             type=str,
-            choices=self.choices["desc"],
+            choices=self.choices.get("desc", []),
             dest="name",
             help="The name of the dataset.column you want to show the descriptive statistics",
             required="-h" not in other_args,
@@ -748,79 +753,6 @@ class EconometricsController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_season(self, other_args: List[str]):
-        """Process season command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="season",
-            description="The seasonality for a given column",
-        )
-        parser.add_argument(
-            "-v",
-            "--values",
-            help="Dataset.column values to be displayed in a plot",
-            dest="values",
-            choices={
-                f"{dataset}.{column}": {column: None, dataset: None}
-                for dataset, dataframe in self.datasets.items()
-                for column in dataframe.columns
-            },
-            type=str,
-        )
-        parser.add_argument(
-            "-m",
-            help="A time lag to highlight on the plot",
-            dest="m",
-            type=int,
-            default=None,
-        )
-        parser.add_argument(
-            "--max_lag",
-            help="The maximal lag order to consider",
-            dest="max_lag",
-            type=int,
-            default=24,
-        )
-        parser.add_argument(
-            "-a",
-            "--alpha",
-            help="The confidence interval to display",
-            dest="alpha",
-            type=float,
-            default=0.05,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-v")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
-        )
-
-        if not ns_parser:
-            return
-
-        if not ns_parser.values:
-            console.print("[red]Please enter valid dataset.\n[/red]")
-            return
-
-        try:
-            dataset, col = ns_parser.values.split(".")
-            data = self.datasets[dataset]
-            data.name = dataset
-        except ValueError:
-            console.print("[red]Please enter 'dataset'.'column'.[/red]\n")
-            return
-
-        econometrics_view.display_seasonality(
-            data=data,
-            column=col,
-            export=ns_parser.export,
-            m=ns_parser.m,
-            max_lag=ns_parser.max_lag,
-            alpha=ns_parser.alpha,
-        )
-
-    @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
         """Process type command"""
         parser = argparse.ArgumentParser(
@@ -835,7 +767,7 @@ class EconometricsController(BaseController):
             type=str,
             dest="name",
             help="Provide dataset.column series to change type or dataset to see types.",
-            choices=self.choices["type"],
+            choices=self.choices.get("type", []),
         )
         parser.add_argument(
             "--format",
@@ -1158,7 +1090,7 @@ class EconometricsController(BaseController):
             else:
                 pd.eval(
                     f"{new_column} = self.datasets[dataset2][existing_column] "
-                    f"{ns_parser.sign} {ns_parser.criteriaordatasetcol}",
+                    f"{ns_parser.sign} {str(ns_parser.criteriaordatasetcol)}",
                     target=self.datasets[dataset],
                     inplace=True,
                 )
@@ -1326,7 +1258,7 @@ class EconometricsController(BaseController):
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
             " multiple with <dataset.column>,<dataset.column2>",
             dest="delete",
-            type=check_list_values(self.choices["delete"]),
+            type=check_list_values(self.choices.get("delete", [])),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
@@ -1367,14 +1299,14 @@ class EconometricsController(BaseController):
             "--dataset",
             help="Dataset to add columns to",
             dest="dataset",
-            choices=self.choices["combine"],
+            choices=self.choices.get("combine", []),
         )
         parser.add_argument(
             "-c",
             "--columns",
             help="The columns we want to add <dataset.column>,<dataset.column2>",
             dest="columns",
-            type=check_list_values(self.choices["delete"]),
+            type=check_list_values(self.choices.get("delete", [])),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
@@ -1424,7 +1356,7 @@ class EconometricsController(BaseController):
             "--dataset",
             help="Dataset that will get a column renamed",
             dest="dataset",
-            choices=self.choices["rename"],
+            choices=self.choices.get("rename", []),
             type=str,
         )
         parser.add_argument(
@@ -1491,7 +1423,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-i",
             "--independent",
-            type=check_list_values(self.choices["regressions"]),
+            type=check_list_values(self.choices.get("regressions", [])),
             dest="independent",
             help=(
                 "The independent variables on the regression you would like to perform. "
@@ -1519,7 +1451,7 @@ class EconometricsController(BaseController):
                     "Please select one.\nDid you intend to include these variables as independent "
                     f"variables? Use -i {ns_parser.dependent} in this case.\n"
                 )
-            elif ns_parser.dependent in self.choices["regressions"]:
+            elif ns_parser.dependent in self.choices.get("regressions", []):
                 (
                     regression_df,
                     dependent_variable,
@@ -1542,7 +1474,7 @@ class EconometricsController(BaseController):
 
             else:
                 console.print(
-                    f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
+                    f"{ns_parser.dependent} not in {','.join(self.choices.get('regressions', []))}\n"
                     f"Please choose a valid dataset and column combination.\n"
                 )
 
@@ -1559,7 +1491,7 @@ class EconometricsController(BaseController):
             "-v",
             "--value",
             type=str,
-            choices=self.choices["norm"],
+            choices=self.choices.get("norm", []),
             dest="column",
             help="The dataset.column you want to test normality for",
             required="-h" not in other_args,
@@ -1617,7 +1549,7 @@ class EconometricsController(BaseController):
             "-v",
             "--value",
             type=str,
-            choices=self.choices["root"],
+            choices=self.choices.get("root", []),
             dest="column",
             help="The column and name of the database you want test unit root for",
             required="-h" not in other_args,
@@ -1701,7 +1633,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-i",
             "--independent",
-            type=check_list_values(self.choices["regressions"]),
+            type=check_list_values(self.choices.get("regressions", [])),
             dest="independent",
             help=(
                 "The independent variables on the regression you would like to perform. "
@@ -1750,7 +1682,7 @@ class EconometricsController(BaseController):
                     "The model only accepts one.\nDid you intend to include these variables as independent "
                     f"variables? Use -i {ns_parser.dependent} in this case.\n"
                 )
-            elif ns_parser.dependent in self.choices["regressions"]:
+            elif ns_parser.dependent in self.choices.get("regressions", []):
                 regression_vars = [ns_parser.dependent] + ns_parser.independent
 
                 if regression_vars and len(regression_vars) > 1:
@@ -1884,7 +1816,7 @@ class EconometricsController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bgod",
             description=(
-                "Show Breusch-Godfrey autocorrelation test results."
+                "Show Breusch-Godfrey autocorrelation test results. "
                 "Needs OLS to be run in advance with independent and dependent variables"
             ),
         )
@@ -1989,7 +1921,7 @@ class EconometricsController(BaseController):
             "-v",
             "--value",
             type=str,
-            choices=self.choices["garch"],
+            choices=self.choices.get("garch", []),
             dest="column",
             help="The column and name of the database you want to estimate volatility for",
             required="-h" not in other_args,
@@ -2182,3 +2114,78 @@ class EconometricsController(BaseController):
                 console.print(
                     "[red]More than one dataset.column must be provided.\n[/red]"
                 )
+
+    @log_start_end(log=logger)
+    def call_vif(self, other_args: List[str]):
+        """Process vif command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vif",
+            description=r"""Calculates VIF (variance inflation factor), which tests collinearity.
+
+            It quantifies the severity of multicollinearity in an ordinary least squares regression analysis. The square
+            root of the variance inflation factor indicates how much larger the standard error increases compared to if
+            that variable had 0 correlation to other predictor variables in the model.
+
+            It is defined as:
+
+            $ VIF_i = 1 / (1 - R_i^2) $
+            where $ R_i $ is the coefficient of determination of the regression equation with the column i being the
+            result from the i:th series being the exogenous variable.
+
+            A VIF over 5 indicates a high collinearity and correlation. Values over 10 indicates causes problems,
+            while a value of 1 indicates no correlation. Thus VIF values between 1 and 5 are most commonly considered
+            acceptable. In order to improve the results one can often remove a column with high VIF.
+
+            For further information see: https://en.wikipedia.org/wiki/Variance_inflation_factor""",
+        )
+        parser.add_argument(
+            "-d",
+            "--data",
+            help="The datasets and columns we want to add <dataset>,<dataset2.column>,<dataset2.column2>",
+            dest="data",
+            type=check_list_values(self.choices["vif"]),
+            default=None,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-d")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
+        data = pd.DataFrame()
+        if ns_parser:
+            if ns_parser.data is None:
+                console.print("[red]Please enter a dataset to calculate vif for.[/red]")
+                return
+            if len(ns_parser.data) == 1 and "." in ns_parser.data[0]:
+                console.print(
+                    "[red]Please enter at least a dataset or two columns to calculate vif for."
+                    "vif can only be calculated for at least two columns.[/red]"
+                )
+            for option in ns_parser.data:
+                if "." in option:
+                    dataset, column = option.split(".")
+                else:
+                    dataset = option
+                    column = None
+
+                if dataset not in self.datasets:
+                    console.print(
+                        f"[red]Not able to find the dataset {dataset}. Please choose one of "
+                        f"the following: {', '.join(self.datasets)}[/red]"
+                    )
+                elif column is not None:
+                    if column not in self.datasets[dataset]:
+                        console.print(
+                            f"[red]Not able to find the column {column}. Please choose one of "
+                            f"the following: {', '.join(self.datasets[dataset].data)}[/red]"
+                        )
+                    else:
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+                else:
+                    for column in list(self.datasets[dataset].columns):
+                        data[f"{dataset}_{column}"] = self.datasets[dataset][column]
+
+            econometrics_view.display_vif(data)

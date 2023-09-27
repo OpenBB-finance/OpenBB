@@ -1,15 +1,16 @@
 """Reddit View."""
 __docformat__ = "numpy"
 
+import io
 import logging
 import os
 import textwrap
 from datetime import datetime
 from typing import Dict, Optional, Union
 
-import finviz
 import pandas as pd
 import praw
+from finvizfinance.screener.ticker import Ticker
 
 from openbb_terminal import OpenBBFigure, rich_config
 from openbb_terminal.common.behavioural_analysis import reddit_model
@@ -172,33 +173,31 @@ def display_spac_community(limit: int = 10, popular: bool = False):
     """
     subs, d_watchlist_tickers = reddit_model.get_spac_community(limit, popular)
     if not subs.empty:
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
-
         if d_watchlist_tickers:
             lt_watchlist_sorted = sorted(
                 d_watchlist_tickers.items(), key=lambda item: item[1], reverse=True
             )
             s_watchlist_tickers = ""
             n_tickers = 0
+            tickers = Ticker()
+            ticker_list = tickers.screener_view()
+            # validate against a list of all tickers
             for t_ticker in lt_watchlist_sorted:
-                try:
-                    # If try doesn't trigger exception, it means that this stock exists on finviz
-                    # thus we can print it.
-                    finviz.get_stock(t_ticker[0])
+                if t_ticker[0] in ticker_list:
                     if int(t_ticker[1]) > 1:
                         s_watchlist_tickers += f"{t_ticker[1]} {t_ticker[0]}, "
                     n_tickers += 1
-                except Exception:  # nosec
-                    # console.print(e, "\n")
-                    pass  # noqa
-
             if n_tickers:
                 console.print(
-                    "The following stock tickers have been mentioned more than once across the previous SPACs:"
+                    "The following stock tickers have been mentioned more than once across the previous posts on "
+                    "r/spaccs: "
                 )
                 console.print(s_watchlist_tickers[:-2])
+        print_rich_table(
+            pd.DataFrame(subs),
+            show_index=False,
+            title="Reddit Submission",
+        )
 
 
 @log_start_end(log=logger)
@@ -214,10 +213,10 @@ def display_wsb_community(limit: int = 10, new: bool = False):
         Flag to sort by new instead of hot, by default False
     """
     subs = reddit_model.get_wsb_community(limit, new)
+    # I am not proud of this, but it works to eliminate the max recursion bug
+    subs = pd.read_csv(io.StringIO(subs.to_csv()), index_col=0).fillna("-")
     if not subs.empty:
-        for sub in subs.iterrows():
-            print_reddit_post(sub)
-            console.print("")
+        print_rich_table(subs)
 
 
 @log_start_end(log=logger)
@@ -284,8 +283,8 @@ def display_redditsent(
         Optionally specify the name of the sheet the data is exported to.
     export: str
         Format to export data
-    external_axes: Optional[List[plt.Axes]]
-        If supplied, expect 1 external axis
+    external_axes : bool, optional
+        Whether to return the figure object or not, by default False
     """
     fig = OpenBBFigure()
 

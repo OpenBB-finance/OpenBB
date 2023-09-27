@@ -1,0 +1,18 @@
+parent_command:portfolio/brokers/degiro
+usage: lookup [-l LIMIT] [-o OFFSET] search_text
+
+positional arguments:
+  search_text           Name of the company or a text.
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of result expected (0 for unlimited).
+  -o OFFSET, --offset OFFSET
+                        To use an offset.
+
+
+Examples:
+- Search for a company using its name: portfolio/brokers/degiro/lookup <search_text>
+- Search for a company with a specific text and limit the results to 5: portfolio/brokers/degiro/lookup -l 5 <search_text>
+- Search for a company using its name and set an offset of 10: portfolio/brokers/degiro/lookup -o 10 <search_text>
+- Search for a company with a specific text, limit the results to 3, and set an offset of 5: portfolio/brokers/degiro/lookup -l 3 -o 5 <search_text>

@@ -1,0 +1,21 @@
+parent_command:futures
+usage: historical -t TICKER [-s START] [-e END] [--expiry EXPIRY]
+
+Display futures historical. [Source: YahooFinance]
+
+optional arguments:
+  -t TICKER, --ticker TICKER
+                        Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,QI (default: )
+  -s START, --start START
+                        Initial date. Default: 2 years ago (default: 2021-06-02 12:53:42.009096)
+  -e END, --end END     Final date. Default: today (default: 2023-06-02 12:53:42.009096)
+  --expiry EXPIRY       Select future expiry date with format YYYY-MM (default: )
+
+
+Examples:
+- To display historical data for a single future: futures/historical -t <FUTURE>
+- To view historical data for multiple futures: futures/historical -t <FUTURE1>,<FUTURE2>
+- To display historical data for a future with a specific start date: futures/historical -t <FUTURE> -s 2022-01-01
+- To show historical data for a future with a specific end date: futures/historical -t <FUTURE> -e 2022-12-31
+- To display historical data for a future within a specific date range: futures/historical -t <FUTURE> -s 2022-01-01 -e 2022-12-31
+- To view historical data for a future with a specific expiry date: futures/historical -t <FUTURE> --expiry 2023-06

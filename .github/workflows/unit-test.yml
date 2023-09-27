@@ -75,7 +75,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.4.0
+          version: 1.5.1
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -116,7 +116,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest]
         exclude:
           - os: ubuntu-latest
@@ -134,7 +134,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.4.0
+          version: 1.5.1
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -161,7 +161,6 @@ jobs:
         run: |
           source $VENV
           pip list
-
       - name: Run tests
         env:
           MPLBACKEND: Agg
@@ -182,7 +181,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest
@@ -200,7 +199,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.4.0
+          version: 1.5.1
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -249,13 +248,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "windows", "macos"]
+        os: ["ubuntu", "macos"]
         python-version: ["3.9"]
         dependencies: [""]
         include:
           - os: ubuntu
-            python: 3.9
-          - os: windows
             python: 3.9
     env:
       OS: ${{ matrix.os }}

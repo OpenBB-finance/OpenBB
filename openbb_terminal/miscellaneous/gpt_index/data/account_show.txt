@@ -1,0 +1,12 @@
+parent_command:account
+usage: show
+
+Show your current OpenBB Personal Access Token.
+
+show
+Examples:
+- Display your OpenBB Personal Access Token: account/show
+- To view your current Personal Access Token for OpenBB: account/show
+- Check your OpenBB Personal Access Token: account/show
+- Retrieve your OpenBB Personal Access Token: account/show
+- View your current OpenBB Personal Access Token: account/show

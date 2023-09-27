@@ -1,0 +1,18 @@
+parent_command:alt/oss
+usage: tr [-s {stars,forks}] [-c CATEGORIES]
+
+Display top repositories [Source: https://api.github.com]
+
+optional arguments:
+  -s {stars,forks}, --sortby {stars,forks}
+                        Sort repos by {stars, forks}. Default: stars (default: stars)
+  -c CATEGORIES, --categories CATEGORIES
+                        Filter by repo categories. If more than one separate with a comma: e.g., finance,investment (default: )
+
+
+Examples:
+- To view top repositories sorted by stars: alt/oss/tr
+- To view top repositories sorted by forks: alt/oss/tr -s forks
+- To display top repositories in the finance category: alt/oss/tr -c finance
+- To show top repositories in both finance and investment categories: alt/oss/tr -c finance,investment
+- To view top repositories sorted by forks in the finance category: alt/oss/tr -s forks -c finance

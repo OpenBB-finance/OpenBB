@@ -1,0 +1,23 @@
+parent_command:portfolio/po/parameters
+usage: set -m {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}
+
+Select one of the portfolio optimization models
+
+optional arguments:
+  -m {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}, --model {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}
+                        Frequency used to calculate returns (default: None)
+
+
+Examples:
+- Set the portfolio optimization model to maximize Sharpe ratio: portfolio/po/parameters set -m maxsharpe
+- Optimize your portfolio with minimum risk: portfolio/po/parameters set --model minrisk
+- Use the maximum utility model for portfolio optimization: portfolio/po/parameters set -m maxutil
+- Choose the maximum return model for portfolio optimization: portfolio/po/parameters set --model maxret
+- Optimize your portfolio using the maximum diversification model: portfolio/po/parameters set -m maxdiv
+- Set the portfolio optimization model to maximize decorrelation: portfolio/po/parameters set --model maxdecorr
+- Use the efficient frontier model for portfolio optimization: portfolio/po/parameters set -m ef
+- Optimize your portfolio with the risk parity model: portfolio/po/parameters set --model riskparity
+- Choose the relative risk parity model for portfolio optimization: portfolio/po/parameters set -m relriskparity
+- Set the hierarchical risk parity model for portfolio optimization: portfolio/po/parameters set --model hrp
+- Use the hierarchical equal risk contribution model for portfolio optimization: portfolio/po/parameters set -m herc
+- Optimize your portfolio using the nested clustered optimization model: portfolio/po/parameters set --model nco

@@ -1,0 +1,17 @@
+parent_command:economy
+usage: eval -q QUERY [QUERY ...]
+
+Create custom data column from loaded datasets. Can be mathematical expressions supported by pandas.eval() function. Example. If I have loaded `fred DGS2,DGS5` and I want to create a new column that is the difference between these
+two, I can create a new column by doing `eval spread = DGS2 - DGS5`. Notice that the command is case sensitive, i.e., `DGS2` is not the same as `dgs2`.
+
+optional arguments:
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query to evaluate on loaded datasets (default: None)
+
+
+Examples:
+- To create a custom data column named 'spread' from loaded datasets 'DGS2' and 'DGS5': economy/eval -q spread=DGS2-DGS5
+- Calculate the sum of two loaded datasets 'GDP' and 'CPI' and store it in a new column called 'Total': economy/eval --query Total=GDP+CPI
+- Compute the difference between 'Unemployment' and 'Inflation' datasets and save it as 'EconomicIndicator': economy/eval -q EconomicIndicator=Unemployment-Inflation
+- Create a new column named 'GrowthRate' by dividing the 'GDP' dataset by the 'Population' dataset: economy/eval --query GrowthRate=GDP/Population
+- Calculate the ratio of 'Exports' to 'Imports' and store the result in a custom column called 'TradeBalance': economy/eval -q TradeBalance=Exports/Imports

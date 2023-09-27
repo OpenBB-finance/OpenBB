@@ -68,13 +68,12 @@ def log_preferences() -> None:
 
 def log_startup() -> None:
     """Combined logging of all settings"""
-    logger.info(
-        "STARTUP: %s ",
-        json.dumps(
-            {
-                "PREFERENCES": get_current_user().preferences.to_dict(),
-                "KEYS": get_credentials(),
-                "SYSTEM": get_system(),
-            }
-        ),
-    )
+    logger.info("STARTUP: %s ", json.dumps(get_startup()))
+
+
+def get_startup():
+    return {
+        "PREFERENCES": get_current_user().preferences.to_dict(),
+        "KEYS": get_credentials(),
+        "SYSTEM": get_system(),
+    }

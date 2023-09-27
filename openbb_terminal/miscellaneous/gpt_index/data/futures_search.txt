@@ -1,0 +1,21 @@
+parent_command:futures
+usage: search [-e {NYB,CMX,CME,CBT,NYM}] [-c {metals,agriculture,index,hydrocarbon,bonds,currency}] [-d DESCRIPTION [DESCRIPTION ...]]
+
+Search futures. [Source: YahooFinance]
+
+optional arguments:
+  -e {NYB,CMX,CME,CBT,NYM}, --exchange {NYB,CMX,CME,CBT,NYM}
+                        Select the exchange where the future exists (default: )
+  -c {metals,agriculture,index,hydrocarbon,bonds,currency}, --category {metals,agriculture,index,hydrocarbon,bonds,currency}
+                        Select the category where the future exists (default: )
+  -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
+                        Select the description future you are interested in (default: )
+
+
+Examples:
+- Search for futures in the metals category: futures/search -c metals
+- Find agriculture futures on the CME exchange: futures/search -e CME -c agriculture
+- Look for index futures with a specific description: futures/search -c index -d "S&P 500"
+- Search for hydrocarbon futures on the NYM exchange: futures/search -e NYM -c hydrocarbon
+- Find currency futures with a specific description on the CBT exchange: futures/search -e CBT -c currency -d "Euro FX"
+- Explore bond futures on the CMX exchange: futures/search -e CMX -c bonds

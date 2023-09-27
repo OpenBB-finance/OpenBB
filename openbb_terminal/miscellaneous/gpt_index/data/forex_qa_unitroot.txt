@@ -1,0 +1,20 @@
+parent_command:forex/qa
+usage: unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
+
+Unit root test / stationarity (ADF, KPSS)
+
+optional arguments:
+  -r {c,ct,ctt,nc}, --fuller_reg {c,ct,ctt,nc}
+                        Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order (default: c)
+  -k {c,ct}, --kps_reg {c,ct}
+                        Type of regression. Can be ‘c’,’ct' (default: c)
+
+
+Examples:
+- To perform a unit root test with constant regression type: forex/qa/unitroot -r c
+- To perform a unit root test with constant and trend regression type: forex/qa/unitroot -r ct
+- To perform a unit root test with constant, trend, and trend order regression type: forex/qa/unitroot -r ctt
+- To perform a unit root test with no constant or trend regression type: forex/qa/unitroot -r nc
+- To perform a KPSS test with constant regression type: forex/qa/unitroot -k c
+- To perform a KPSS test with constant and trend regression type: forex/qa/unitroot -k ct
+- To perform a unit root test with constant regression type and a KPSS test with constant and trend regression type: forex/qa/unitroot -r c -k ct

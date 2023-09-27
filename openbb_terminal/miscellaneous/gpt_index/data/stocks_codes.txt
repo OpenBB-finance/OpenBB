@@ -1,0 +1,8 @@
+parent_command: stocks/
+usage: codes [-t TICKER] [-h]  Show CIK, FIGI and SCI code from polygon for loaded ticker.  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)  For more information and examples, use 'about codes' to access the related guide.
+Summary: Display CIK, FIGI, and SCI codes from Polygon for a specified ticker or the currently loaded ticker. You can choose the ticker to analyze using the optional -t or --ticker argument.
+
+Examples:
+- Show codes for the loaded ticker: stocks/codes
+- Show codes for a specific ticker: stocks/load <SYMBOL>/codes
+- Display CIK, FIGI, and SCI codes for a specified ticker: stocks/codes -t <SYMBOL>

@@ -1,0 +1,22 @@
+parent_command:stocks/qa
+usage: pick [-t {open,high,low,close,adjclose,volume,dividends,stock splits,returns,logret,logprice}]
+
+Change target variable
+
+optional arguments:
+  -t {open,high,low,close,adjclose,volume,dividends,stock splits,returns,logret,logprice}, --target {open,high,low,close,adjclose,volume,dividends,stock splits,returns,logret,logprice}
+                        Select variable to analyze (default: None)
+
+
+Examples:
+- Change the target variable to analyze open prices: stocks/qa/pick -t open
+- To analyze high prices, use the following command: stocks/qa/pick --target high
+- Analyze low prices by executing: stocks/qa/pick -t low
+- To study closing prices, use this command: stocks/qa/pick --target close
+- Analyze adjusted closing prices with this command: stocks/qa/pick -t adjclose
+- Examine volume data with the following command: stocks/qa/pick --target volume
+- To analyze dividend data, execute this command: stocks/qa/pick -t dividends
+- Study stock splits with this command: stocks/qa/pick --target "stock splits"
+- Analyze returns using the following command: stocks/qa/pick -t returns
+- To study log returns, use this command: stocks/qa/pick --target logret
+- Analyze log prices with the following command: stocks/qa/pick -t logprice

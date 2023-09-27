@@ -1,0 +1,17 @@
+parent_command:econometrics
+usage: norm -v {} [-p]
+
+Test whether the used data is normally distributed.
+
+optional arguments:
+  -v {}, --value {}  The dataset.column you want to test normality for (default: None)
+  -p, --plot         Whether you wish to plot a histogram to visually depict normality (default: False)
+
+
+Examples:
+- To test the normality of a specific dataset and column: econometrics/norm -v dataset.column
+- To visualize the normality of a specific dataset and column with a histogram: econometrics/norm -v dataset.column -p
+- Test the normality of <SYMBOL> dataset and column: stocks/load <SYMBOL>/econometrics/norm -v dataset.column
+- Plot a histogram for normality testing of <COIN> dataset and column: crypto/load <COIN>/econometrics/norm -v dataset.column -p
+- Test normality and plot a histogram for <PAIR> dataset and column: forex/load <PAIR>/econometrics/norm -v dataset.column -p
+- Analyze the normality of <FUTURE> dataset and column with a histogram: futures/load <FUTURE>/econometrics/norm -v dataset.column -p

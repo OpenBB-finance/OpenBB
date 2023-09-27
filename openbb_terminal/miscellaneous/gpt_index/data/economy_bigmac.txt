@@ -1,0 +1,16 @@
+parent_command:economy
+usage: bigmac [--codes] [-c COUNTRIES]
+
+Get historical Big Mac Index [Nasdaq Data Link]
+
+optional arguments:
+  --codes               Flag to show all country codes (default: False)
+  -c COUNTRIES, --countries COUNTRIES
+                        Country codes to get data for. (default: USA)
+
+
+Examples:
+- Retrieve historical Big Mac Index for the United States: economy/bigmac
+- Display all country codes for the Big Mac Index: economy/bigmac --codes
+- Obtain historical Big Mac Index for specific countries: economy/bigmac -c UK,GER,IND
+- Fetch historical Big Mac Index data for multiple countries: economy/bigmac --countries CAN,AUS,JP

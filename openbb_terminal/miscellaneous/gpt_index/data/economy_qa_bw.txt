@@ -1,0 +1,12 @@
+parent_command:economy/qa
+usage: bw [-y]
+
+Box and Whisker plot
+
+optional arguments:
+  -y, --yearly  Flag to show yearly bw plot (default: False)
+
+
+Examples:
+- To display a box and whisker plot for the economy: economy/qa/bw
+- To display a yearly box and whisker plot for the economy: economy/qa/bw -y

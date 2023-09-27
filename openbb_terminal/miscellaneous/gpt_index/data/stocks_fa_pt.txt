@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: pt [-t TICKER] [-h] [--export EXPORT]           [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw] [-l LIMIT]           [--source {BusinessInsider,FinancialModelingPrep}]  Prints price target from analysts. [Source: Business Insider and Financial Modeling Prep]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.   --raw                 Flag to display raw data   -l LIMIT, --limit LIMIT                         Number of entries to show in data.   --source {BusinessInsider,FinancialModelingPrep}                         Data source to select from  For more information and examples, use 'about pt' to access the related guide.
+Summary: The pt command prints price targets from analysts for a specific stock ticker. You can choose the data source, either Business Insider or Financial Modeling Prep, set a limit on the number of entries displayed, and export the raw data in various formats. You can also specify the name of the excel sheet for .xlsx files.
+
+Examples:
+- To display price targets for a specific stock: stocks/fa/pt -t <SYMBOL>
+- To display price targets for a specific stock with a limit of 10 entries: stocks/fa/pt -t <SYMBOL> -l 10
+- To display price targets for a specific stock using the Financial Modeling Prep data source: stocks/fa/pt -t <SYMBOL> --source FinancialModelingPrep
+- To export price targets for a specific stock in csv format: stocks/fa/pt -t <SYMBOL> --export csv
+- To export price targets for a specific stock to a specific excel sheet: stocks/fa/pt -t <SYMBOL> --sheet-name Sheet1
+- To display raw data for price targets of a specific stock: stocks/fa/pt -t <SYMBOL> --raw

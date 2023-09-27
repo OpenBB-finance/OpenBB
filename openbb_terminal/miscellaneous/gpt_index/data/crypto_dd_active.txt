@@ -1,0 +1,22 @@
+parent_command:crypto/dd
+usage: active [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
+
+Display active blockchain addresses over time [Source: https://glassnode.org]
+
+optional arguments:
+  -i {24h,1w,1month}, --interval {24h,1w,1month}
+                        Frequency interval. Default: 24h (default: 24h)
+  -s SINCE, --since SINCE
+                        Initial date. Default: 1 year ago (default: 2022-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: Today (default: 2023-06-02)
+
+
+Examples:
+- Display active blockchain addresses over the past 24 hours: crypto/dd/active
+- Show active addresses in the past week with a 1-week interval: crypto/dd/active -i 1w
+- View active blockchain addresses for the past month with a 1-month interval: crypto/dd/active -i 1month
+- Display active addresses since a specific date: crypto/dd/active -s 2022-01-01
+- Show active blockchain addresses between two dates: crypto/dd/active -s 2022-01-01 -u 2022-06-01
+- View active addresses from a specific date until today: crypto/dd/active -s 2022-01-01 -u 2023-06-02
+- Display active blockchain addresses in the last week with a custom date range: crypto/dd/active -i 1w -s 2022-05-01 -u 2022-06-01

@@ -1,0 +1,11 @@
+parent_command: stocks/ba/
+usage: getdd [-l LIMIT] [-d DAYS] [-a] [-h]  Print top stock's due diligence from other users. [Source: Reddit]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of posts to retrieve.   -d DAYS, --days DAYS  number of prior days to look for.   -a, --all             search through all flairs (apart from Yolo and Meme),                         otherwise we focus on specific flairs: DD, technical                         analysis, Catalyst, News, Advice, Chart   -h, --help            show this help message  For more information and examples, use 'about getdd' to access the related guide.
+Summary: Retrieve top stock's due diligence from other users on Reddit. You can set a limit on the number of posts to retrieve, specify the number of prior days to look for, and choose to search through all flairs (excluding Yolo and Meme) or focus on specific flairs such as DD, technical analysis, Catalyst, News, Advice, and Chart.
+
+Examples:
+- Retrieve top due diligence for <SYMBOL>: stocks/load <SYMBOL>/ba/getdd
+- Retrieve top 5 due diligence posts for <SYMBOL>: stocks/load <SYMBOL>/ba/getdd -l 5
+- Retrieve top due diligence posts for <SYMBOL> from the last 7 days: stocks/load <SYMBOL>/ba/getdd -d 7
+- Retrieve top due diligence posts for <SYMBOL> searching through all flairs: stocks/load <SYMBOL>/ba/getdd -a
+- Retrieve top 10 due diligence posts for <SYMBOL> from the last 14 days: stocks/load <SYMBOL>/ba/getdd -l 10 -d 14
+- Retrieve top 5 due diligence posts for <SYMBOL> from the last 30 days, searching through all flairs: stocks/load <SYMBOL>/ba/getdd -l 5 -d 30 -a

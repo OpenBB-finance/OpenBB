@@ -1,0 +1,13 @@
+parent_command:crypto/ov
+usage: defi
+
+Shows global DeFi statistics DeFi or Decentralized Finance refers to financial services that are built on top of distributed networks with no central intermediaries. Displays metrics like: Market Cap, Trading Volume, Defi
+Dominance, Top Coins...
+
+defi
+Examples:
+- To view global DeFi statistics: crypto/ov/defi
+- Display global DeFi metrics: crypto/ov/defi
+- Show decentralized finance statistics: crypto/ov/defi
+- Retrieve global DeFi data: crypto/ov/defi
+- Get an overview of global DeFi metrics: crypto/ov/defi

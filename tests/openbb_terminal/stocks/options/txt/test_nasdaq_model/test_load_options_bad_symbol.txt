@@ -1,0 +1,1 @@
+BAD_SYMBOL was not found in the Nasdaq directory

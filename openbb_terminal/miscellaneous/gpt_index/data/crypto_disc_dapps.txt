@@ -1,0 +1,23 @@
+parent_command:crypto/disc
+usage: dapps [-c CHAIN] [-p PAGE] [-l LIMIT]
+
+Shows available decentralized applications [Source: https://dappradar.com/] Accepts --chain argument to filter by blockchain --page argument to show a specific page. Default: 1 --limit argument to limit the number of records per
+page. Default: 15
+
+optional arguments:
+  -c CHAIN, --chain CHAIN
+                        Filter by blockchain (default: None)
+  -p PAGE, --page PAGE  Page number (default: 1)
+  -l LIMIT, --limit LIMIT
+                        Number of records to display per page (default: 15)
+
+
+Examples:
+- To display all available decentralized applications: crypto/disc/dapps
+- To show decentralized applications on a specific blockchain: crypto/disc/dapps -c <CHAIN>
+- To view a specific page of decentralized applications: crypto/disc/dapps -p 3
+- To limit the number of records displayed per page: crypto/disc/dapps -l 10
+- To filter decentralized applications by blockchain and display a specific page: crypto/disc/dapps -c <CHAIN> -p 2
+- To filter by blockchain and limit the number of records per page: crypto/disc/dapps -c <CHAIN> -l 5
+- To display a specific page and limit the number of records per page: crypto/disc/dapps -p 4 -l 8
+- To filter by blockchain, show a specific page, and limit the number of records per page: crypto/disc/dapps -c <CHAIN> -p 3 -l 6

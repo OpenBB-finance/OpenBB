@@ -82,12 +82,11 @@ def get_quote(to_symbol: str = "USD", from_symbol: str = "EUR") -> Dict[str, Any
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
         logger.error(response_json["Error Message"])
-    else:
         # check if json is empty
-        if not response_json:
-            console.print("No data found.\n")
-        else:
-            result = response_json
+    elif not response_json:
+        console.print("No data found.\n")
+    else:
+        result = response_json
 
     return result
 
@@ -143,39 +142,37 @@ def get_historical(
         console.print(response_json["Error Message"])
     elif "Note" in response_json:
         console.print(response_json["Note"])
+    elif not response_json:
+        console.print("No data found.\n")
     else:
-        # check if json is empty
-        if not response_json:
-            console.print("No data found.\n")
-        else:
-            if "Meta Data" not in response_json and "Information" in response_json:
-                console.print(response_json["Information"])
-                return pd.DataFrame()
+        if "Meta Data" not in response_json and "Information" in response_json:
+            console.print(response_json["Information"])
+            return pd.DataFrame()
 
-            key = list(response_json.keys())[1]
+        key = list(response_json.keys())[1]
 
-            df = pd.DataFrame.from_dict(response_json[key], orient="index")
-            df.index = pd.to_datetime(df.index)
+        df = pd.DataFrame.from_dict(response_json[key], orient="index")
+        df.index = pd.to_datetime(df.index)
 
-            if start_date and resolution != "i":
-                df = df[df.index > start_date]
+        if start_date and resolution != "i":
+            df = df[df.index > start_date]
 
-            if end_date and resolution != "i":
-                df = df[df.index < end_date]
+        if end_date and resolution != "i":
+            df = df[df.index < end_date]
 
-            if (df.index.hour != 0).any():
-                # if intraday data, convert to local timezone
-                df.index = df.index.tz_localize("UTC").tz_convert(get_user_timezone())
+        if (df.index.hour != 0).any():
+            # if intraday data, convert to local timezone
+            df.index = df.index.tz_localize("UTC").tz_convert(get_user_timezone())
 
-            df = df.rename(
-                columns={
-                    "1. open": "Open",
-                    "2. high": "High",
-                    "3. low": "Low",
-                    "4. close": "Close",
-                }
-            )
-            df.index = pd.DatetimeIndex(df.index)
-            df = df[::-1]
+        df = df.rename(
+            columns={
+                "1. open": "Open",
+                "2. high": "High",
+                "3. low": "Low",
+                "4. close": "Close",
+            }
+        )
+        df.index = pd.DatetimeIndex(df.index)
+        df = df[::-1]
 
     return df.astype(float)

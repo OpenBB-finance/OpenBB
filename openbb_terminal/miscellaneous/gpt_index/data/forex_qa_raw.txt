@@ -1,0 +1,24 @@
+parent_command:forex/qa
+usage: raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,returns,logret}]
+
+Print raw data to console
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number to show (default: 20)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -s {open,high,low,close,adjclose,volume,returns,logret}, --sortby {open,high,low,close,adjclose,volume,returns,logret}
+                        The column to sort by (default: None)
+
+
+Examples:
+- To display the last 20 raw data points for a forex pair: forex/load <PAIR>/qa/raw
+- Show the last 30 raw data points for a specific forex pair: forex/load <PAIR>/qa/raw -l 30
+- Display the last 15 raw data points sorted by high values: forex/load <PAIR>/qa/raw -l 15 -s high
+- To view the last 20 raw data points sorted by low values in ascending order: forex/load <PAIR>/qa/raw -r -s low
+- Display the last 10 raw data points sorted by volume: forex/load <PAIR>/qa/raw -l 10 -s volume
+- Show the last 25 raw data points sorted by close values in ascending order: forex/load <PAIR>/qa/raw -l 25 -r -s close
+- To view the last 20 raw data points sorted by open values: forex/load <PAIR>/qa/raw -s open
+- Display the last 15 raw data points sorted by log returns in ascending order: forex/load <PAIR>/qa/raw -l 15 -r -s logret
+- Show the last 30 raw data points sorted by returns: forex/load <PAIR>/qa/raw -l 30 -s returns
+- To view the last 20 raw data points sorted by adjusted close values in ascending order: forex/load <PAIR>/qa/raw -r -s adjclose

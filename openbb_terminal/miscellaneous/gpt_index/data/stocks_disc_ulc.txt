@@ -1,0 +1,10 @@
+parent_command: stocks/disc/
+usage: ulc [-l LIMIT] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about ulc' to access the related guide.
+Summary: Display a list of potentially undervalued large cap stocks, with the option to limit the number of stocks shown and export the data in various formats. The data source is Yahoo Finance.
+
+Examples:
+- Show the top 5 undervalued large cap stocks: stocks/disc/ulc
+- Display the top 10 undervalued large cap stocks: stocks/disc/ulc -l 10
+- View the top 25 undervalued large cap stocks: stocks/disc/ulc -l 25
+- Export the top 5 undervalued large cap stocks to a csv file: stocks/disc/ulc --export csv
+- Save the top 10 undervalued large cap stocks to an excel sheet named "Undervalued": stocks/disc/ulc -l 10 --sheet-name Undervalued

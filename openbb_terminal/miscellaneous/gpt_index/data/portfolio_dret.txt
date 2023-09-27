@@ -1,0 +1,16 @@
+parent_command:portfolio
+usage: dret [-p PERIOD]
+
+Daily returns
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to select start end of the year returns (default: all)
+
+
+Examples:
+- Calculate daily returns for your entire portfolio: portfolio/dret
+- Calculate daily returns for a specific period in your portfolio: portfolio/dret -p 2021-Q1
+- Get daily returns for the last month in your portfolio: portfolio/dret -p last-month
+- View daily returns for the current year in your portfolio: portfolio/dret -p YTD
+- Display daily returns for a given period in your portfolio: portfolio/dret -p 2020-01-01:2020-12-31

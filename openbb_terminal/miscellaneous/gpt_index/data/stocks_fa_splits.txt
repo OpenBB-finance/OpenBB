@@ -1,0 +1,8 @@
+parent_command: stocks/fa/
+usage: splits [-t TICKER] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Stock splits and reverse split events since IPO [Source: Yahoo Finance]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about splits' to access the related guide.
+Summary: Display stock split and reverse split events since IPO for a specified ticker. You can export the raw data into various formats and save the data to a specific excel sheet. The data source is Yahoo Finance.
+
+Examples:
+- Retrieve stock split events for a specific ticker: stocks/fa/splits -t <SYMBOL>
+- Export stock split events for a specific ticker in csv format: stocks/fa/splits -t <SYMBOL> --export csv
+- Save stock split events for a specific ticker to a named excel sheet: stocks/fa/splits -t <SYMBOL> --sheet-name Sheet1

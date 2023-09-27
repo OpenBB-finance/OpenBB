@@ -1,0 +1,80 @@
+parent_command:portfolio/po
+usage: herc [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}] [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}] [-rm RISK-MEASURE] [-as CVAR_SIMULATIONS_LOSSES]
+            [-b CVAR_SIGNIFICANCE] [-bs CVAR_SIMULATIONS_GAINS] [-lk LINKAGE] [-k AMOUNT_CLUSTERS] [-mk MAX_CLUSTERS] [-bi {KN,FD,SC,HGR}] [-at ALPHA_TAIL] [-lo LEAF_ORDER] [-de SMOOTHING_FACTOR_EWMA] [-mt METHOD] [-ct CATEGORIES]
+            [-p PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr] [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE] [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-v LONG_ALLOCATION] [--name NAME]
+
+Builds a hierarchical equal risk contribution portfolio
+
+optional arguments:
+  -cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}, --codependence {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}
+                        The codependence or similarity matrix used to build the distance metric and clusters. Possible values are: 'pearson': pearson correlation matrix 'spearman': spearman correlation matrix 'abs_pearson':
+                        absolute value of pearson correlation matrix 'abs_spearman': absolute value of spearman correlation matrix 'distance': distance correlation matrix 'mutual_info': mutual information codependence matrix
+                        'tail': tail index codependence matrix (default: pearson)
+  -cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}, --covariance {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}
+                        Method used to estimate covariance matrix. Possible values are 'hist': historical method 'ewma1': exponential weighted moving average with adjust=True 'ewma2': exponential weighted moving average with
+                        adjust=False 'ledoit': Ledoit and Wolf shrinkage method 'oas': oracle shrinkage method 'shrunk': scikit-learn shrunk method 'gl': graphical lasso method 'jlogo': j-logo covariance 'fixed': takes average of
+                        eigenvalues above max Marchenko Pastour limit 'spectral': makes zero eigenvalues above max Marchenko Pastour limit 'shrink': Lopez de Prado's book shrinkage method (default: hist)
+  -rm RISK-MEASURE, --risk-measure RISK-MEASURE
+                        Risk measure used to optimize the portfolio. Possible values are: 'MV' : Variance 'MAD' : Mean Absolute Deviation 'GMD' : Gini Mean Difference 'MSV' : Semi Variance (Variance of negative returns) 'FLPM' :
+                        First Lower Partial Moment 'SLPM' : Second Lower Partial Moment 'VaR' : Value at Risk 'CVaR' : Conditional Value at Risk 'TG' : Tail Gini 'EVaR' : Entropic Value at Risk 'WR' : Worst Realization 'RG' : Range
+                        'CVRG' : CVaR Range 'TGRG' : Tail Gini Range 'ADD' : Average Drawdown of uncompounded returns 'UCI' : Ulcer Index of uncompounded returns 'DaR' : Drawdown at Risk of uncompounded returns 'CDaR' : Conditional
+                        Drawdown at Risk of uncompounded returns 'EDaR' : Entropic Drawdown at Risk of uncompounded returns 'MDD' : Maximum Drawdown of uncompounded returns 'ADD_Rel' : Average Drawdown of compounded returns
+                        'UCI_Rel' : Ulcer Index of compounded returns 'DaR_Rel' : Drawdown at Risk of compounded returns 'CDaR_Rel' : Conditional Drawdown at Risk of compounded returns 'EDaR_Rel' : Entropic Drawdown at Risk of
+                        compounded returns 'MDD_Rel' : Maximum Drawdown of compounded returns (default: MV)
+  -as CVAR_SIMULATIONS_LOSSES, --a-sim CVAR_SIMULATIONS_LOSSES
+                        Number of CVaRs used to approximate Tail Gini of losses. The default is 100 (default: 100)
+  -b CVAR_SIGNIFICANCE, --beta CVAR_SIGNIFICANCE
+                        Significance level of CVaR and Tail Gini of gains. If empty it duplicates alpha (default: None)
+  -bs CVAR_SIMULATIONS_GAINS, --b-sim CVAR_SIMULATIONS_GAINS
+                        Number of CVaRs used to approximate Tail Gini of gains. If empty it duplicates a_sim value (default: None)
+  -lk LINKAGE, --linkage LINKAGE
+                        Linkage method of hierarchical clustering (default: single)
+  -k AMOUNT_CLUSTERS    Number of clusters specified in advance (default: None)
+  -mk MAX_CLUSTERS, --max-k MAX_CLUSTERS
+                        Max number of clusters used by the two difference gap statistic to find the optimal number of clusters. If k is empty this value is used (default: 10)
+  -bi {KN,FD,SC,HGR}, --bins-info {KN,FD,SC,HGR}
+                        Number of bins used to calculate the variation of information (default: KN)
+  -at ALPHA_TAIL, --alpha-tail ALPHA_TAIL
+                        Significance level for lower tail dependence index, only used when when codependence value is 'tail' (default: 0.05)
+  -lo LEAF_ORDER, --leaf-order LEAF_ORDER
+                        Indicates if the cluster are ordered so that the distance between successive leaves is minimal (default: True)
+  -de SMOOTHING_FACTOR_EWMA, --d-ewma SMOOTHING_FACTOR_EWMA
+                        Smoothing factor for ewma estimators (default: 0.94)
+  -mt METHOD, --method METHOD
+                        Method used to fill nan values in time series, by default time. Possible values are: 'linear': linear interpolation 'time': linear interpolation based on time index 'nearest': use nearest value to replace
+                        nan values 'zero': spline of zeroth order 'slinear': spline of first order 'quadratic': spline of second order 'cubic': spline of third order 'barycentric': builds a polynomial that pass for all points
+                        (default: time)
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories (default: [])
+  -p PERIOD, --period PERIOD
+                        Period to get yfinance data from. Possible frequency strings are: 'd': means days, for example '252d' means 252 days 'w': means weeks, for example '52w' means 52 weeks 'mo': means months, for example '12mo'
+                        means 12 months 'y': means years, for example '1y' means 1 year 'ytd': downloads data from beginning of year to today 'max': downloads all data available for each asset (default: 3y)
+  -s START_PERIOD, --start START_PERIOD
+                        Start date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -e END_PERIOD, --end END_PERIOD
+                        End date to get yfinance data from. Must be in 'YYYY-MM-DD' format (default: )
+  -lr, --log-returns    If use logarithmic or arithmetic returns to calculate returns (default: False)
+  --freq {d,w,m}        Frequency used to calculate returns. Possible values are: 'd': for daily returns 'w': for weekly returns 'm': for monthly returns (default: d)
+  -mn MAX_NAN, --maxnan MAX_NAN
+                        Max percentage of nan values accepted per asset to be considered in the optimization process (default: 0.05)
+  -th THRESHOLD_VALUE, --threshold THRESHOLD_VALUE
+                        Value used to replace outliers that are higher to threshold in absolute value (default: 0.3)
+  -r RISK_FREE, --risk-free-rate RISK_FREE
+                        Risk-free rate of borrowing/lending. The period of the risk-free rate must be annual (default: 0.04739)
+  -a SIGNIFICANCE_LEVEL, --alpha SIGNIFICANCE_LEVEL
+                        Significance level of CVaR, EVaR, CDaR and EDaR (default: 0.05)
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio (default: 1)
+  --name NAME           Save portfolio with personalized or default name (default: HERC_0)
+
+
+Examples:
+- Build a hierarchical equal risk contribution portfolio using Pearson correlation matrix: portfolio/po -cd pearson
+- Create a portfolio with historical covariance estimation method and single linkage hierarchical clustering: portfolio/po -cv hist -lk single
+- Construct a portfolio using the Mean Absolute Deviation risk measure: portfolio/po -rm MAD
+- Build a hierarchical portfolio with a specified number of clusters and maximum clusters: portfolio/po -k 5 -mk 10
+- Create a portfolio with a specific start and end period for data: portfolio/po -s 2020-01-01 -e 2021-12-31
+- Build a portfolio using logarithmic returns and a risk-free rate of 0.03: portfolio/po -lr -r 0.03
+- Construct a portfolio with a threshold value of 0.4 for replacing outliers: portfolio/po -th 0.4
+- Create a hierarchical equal risk contribution portfolio with a specific significance level and allocation value: portfolio/po -a 0.1 -v 2
+- Build a portfolio with a custom name: portfolio/po --name Custom_HERC_Portfolio

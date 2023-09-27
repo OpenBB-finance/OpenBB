@@ -1,0 +1,22 @@
+parent_command:forecast
+usage: roc [-d {AAPL}] [-c TARGET_COLUMN] [--period PERIOD]
+
+Add rate of change to dataset based on specific column.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  --period PERIOD       The period to use (default: 10)
+
+
+Examples:
+- To add the rate of change based on the close column for the default dataset: forecast/roc
+- To add the rate of change based on the close column for a specific dataset: forecast/roc -d <SYMBOL>
+- To add the rate of change based on a specific column for the default dataset: forecast/roc -c volume
+- To add the rate of change based on a specific column for a specific dataset: forecast/roc -d <SYMBOL> -c volume
+- To add the rate of change with a custom period for the default dataset: forecast/roc --period 20
+- To add the rate of change with a custom period for a specific dataset: forecast/roc -d <SYMBOL> --period 20
+- To add the rate of change based on a specific column and custom period for the default dataset: forecast/roc -c volume --period 20
+- To add the rate of change based on a specific column and custom period for a specific dataset: forecast/roc -d <SYMBOL> -c volume --period 20

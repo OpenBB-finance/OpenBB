@@ -1,0 +1,18 @@
+parent_command:etf/ta
+usage: cci [-l N_LENGTH] [-s N_SCALAR]
+
+The CCI is designed to detect beginning and ending market trends. The range of 100 to -100 is the normal trading range. CCI values outside of this range indicate overbought or oversold conditions. You can also look for price
+divergence in the CCI. If the price is making new highs, and the CCI is not, then a price correction is likely.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 0.015)
+
+
+Examples:
+- To calculate the CCI for an ETF with the default settings, use: etf/ta/cci
+- If you want to specify the length for the CCI calculation, try: etf/ta/cci -l 20
+- To adjust the scalar for the CCI, use the command: etf/ta/cci -s 0.02
+- For a custom CCI calculation with a specific length and scalar, enter: etf/ta/cci -l 30 -s 0.025

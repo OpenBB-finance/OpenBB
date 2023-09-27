@@ -1,0 +1,25 @@
+parent_command:economy
+usage: events [-c COUNTRIES] [-n] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE]
+
+Economic calendar. If no start or end dates, default is the current day high importance events.
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Display calendar for specific country. (default: )
+  -n, --names           Flag to show all available country names (default: False)
+  -s START_DATE, --start START_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: 2023-06-02)
+  -e END_DATE, --end END_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: 2023-06-02)
+  -d SPEC_DATE, --date SPEC_DATE
+                        Get a specific date for events. Overrides start and end dates. (default: None)
+
+
+Examples:
+- View today's high importance economic events: economy/events
+- Display economic events for a specific country: economy/events -c United States
+- Show all available country names: economy/events -n
+- View economic events between two dates: economy/events -s 2022-06-01 -e 2022-06-30
+- Display economic events for a specific date: economy/events -d 2022-06-15
+- Get economic events for multiple countries: economy/events -c "United States, United Kingdom"
+- Retrieve economic events for a specific country and date range: economy/events -c Germany -s 2022-06-01 -e 2022-06-30

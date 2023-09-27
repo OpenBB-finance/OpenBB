@@ -1,0 +1,10 @@
+parent_command: stocks/
+usage: quote [-t S_TICKER] [-e {BZX,EDGX,BYX,EDGA}] [-h]  Get top of book for loaded ticker from selected exchange  optional arguments:   -t S_TICKER, --ticker S_TICKER                         Ticker to get data for (default: None)   -e {BZX,EDGX,BYX,EDGA}, --exchange {BZX,EDGX,BYX,EDGA}   -h, --help            show this help message (default: False)  For more information and examples, use 'about quote' to access the related guide.
+Summary: Get top of book data for a specified stock symbol from a selected exchange. You can choose the ticker symbol and the exchange from which to retrieve the data. The available exchanges are BZX, EDGX, BYX, and EDGA.
+
+Examples:
+- Retrieve top of book data for a specific stock symbol: stocks/load <SYMBOL>/quote -t <SYMBOL>
+- Get top of book data for a specific stock symbol from the BZX exchange: stocks/load <SYMBOL>/quote -t <SYMBOL> -e BZX
+- Obtain top of book data for a specific stock symbol from the EDGX exchange: stocks/load <SYMBOL>/quote -t <SYMBOL> -e EDGX
+- Fetch top of book data for a specific stock symbol from the BYX exchange: stocks/load <SYMBOL>/quote -t <SYMBOL> -e BYX
+- Access top of book data for a specific stock symbol from the EDGA exchange: stocks/load <SYMBOL>/quote -t <SYMBOL> -e EDGA

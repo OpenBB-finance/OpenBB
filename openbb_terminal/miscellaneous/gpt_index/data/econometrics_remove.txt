@@ -1,0 +1,14 @@
+parent_command:econometrics
+usage: remove [-n {}]
+
+Remove a dataset from the loaded dataset list
+
+optional arguments:
+  -n {}, --name {}  The name of the dataset you want to remove (default: None)
+
+
+Examples:
+- Remove a dataset from the loaded list by its name: econometrics/remove -n {}
+- To delete a specific dataset, use: econometrics/remove --name {}
+- Erase a dataset from the list with: econometrics/remove -n {}
+- To get rid of a particular dataset, execute: econometrics/remove --name {}

@@ -1,0 +1,18 @@
+parent_command:stocks/ta
+usage: cci [-l N_LENGTH] [-s N_SCALAR]
+
+The CCI is designed to detect beginning and ending market trends. The range of 100 to -100 is the normal trading range. CCI values outside of this range indicate overbought or oversold conditions. You can also look for price
+divergence in the CCI. If the price is making new highs, and the CCI is not, then a price correction is likely.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 0.015)
+
+
+Examples:
+- To calculate the CCI for a stock with the default settings, use: stocks/load <SYMBOL>/ta/cci
+- To calculate the CCI for a stock with a custom length of 20, use: stocks/load <SYMBOL>/ta/cci -l 20
+- To calculate the CCI for a stock with a custom scalar of 0.02, use: stocks/load <SYMBOL>/ta/cci -s 0.02
+- To calculate the CCI for a stock with a custom length of 20 and a custom scalar of 0.02, use: stocks/load <SYMBOL>/ta/cci -l 20 -s 0.02

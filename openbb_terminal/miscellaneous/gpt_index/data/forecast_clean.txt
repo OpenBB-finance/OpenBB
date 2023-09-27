@@ -1,0 +1,23 @@
+parent_command:forecast
+usage: clean [-f {rfill,cfill,rbfill,cbfill,rffill,bffill}] [--drop {rdrop,cdrop}] [-d {AAPL}]
+
+Clean a dataset by filling and dropping NaN values.
+
+optional arguments:
+  -f {rfill,cfill,rbfill,cbfill,rffill,bffill}, --fill {rfill,cfill,rbfill,cbfill,rffill,bffill}
+                        The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill (up to --limit)
+                        which refer to how many rows/columns can be set equal to the last non-NaN value (default: )
+  --drop {rdrop,cdrop}  The method of dropping NaNs. This either has the option rdrop (drop rows that contain NaNs) or cdrop (drop columns that contain NaNs) (default: )
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+
+
+Examples:
+- To clean the <SYMBOL> dataset by forward filling NaN values in rows: forecast/load <SYMBOL>/clean -f rffill
+- To clean the <SYMBOL> dataset by backward filling NaN values in columns: forecast/load <SYMBOL>/clean -f cbfill
+- To clean the <SYMBOL> dataset by dropping rows with NaN values: forecast/load <SYMBOL>/clean --drop rdrop
+- To clean the <SYMBOL> dataset by dropping columns with NaN values: forecast/load <SYMBOL>/clean --drop cdrop
+- To clean a specific dataset by forward filling NaN values in rows and selecting the dataset: forecast/load <SYMBOL>/clean -f rffill -d <SYMBOL>
+- To clean a specific dataset by backward filling NaN values in columns and selecting the dataset: forecast/load <SYMBOL>/clean -f cbfill -d <SYMBOL>
+- To clean a specific dataset by dropping rows with NaN values and selecting the dataset: forecast/load <SYMBOL>/clean --drop rdrop -d <SYMBOL>
+- To clean a specific dataset by dropping columns with NaN values and selecting the dataset: forecast/load <SYMBOL>/clean --drop cdrop -d <SYMBOL>

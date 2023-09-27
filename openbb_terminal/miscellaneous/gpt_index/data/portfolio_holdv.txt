@@ -1,0 +1,12 @@
+parent_command:portfolio
+usage: holdv [-u]
+
+Display holdings of assets (absolute value)
+
+optional arguments:
+  -u, --unstack  Sum all assets value over time (default: False)
+
+
+Examples:
+- To display the holdings of assets in absolute value: portfolio/holdv
+- To sum all assets value over time: portfolio/holdv -u

@@ -42,22 +42,19 @@ class StocksBehavioralAnalysis(Category):
         `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
         `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
         `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
-        `infer`: Load tweets from twitter API and analyzes using VADER.\n
-        `infer_chart`: Prints Inference sentiment from past n tweets.\n
         `mentions`: Get interest over time from google api [Source: google].\n
         `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
         `messages`: Get last messages for a given ticker [Source: stocktwits].\n
+        `ns`: Getting Onclusive Data. [Source: Invisage Platform]\n
+        `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
         `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
         `queries`: Get related queries from google api [Source: google].\n
         `redditsent`: Find posts related to a specific search term in Reddit.\n
         `regions`: Get interest by region from google api [Source: google].\n
         `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
         `rise`: Get top rising related queries with this stock's query [Source: google].\n
-        `sentiment`: Get sentiments from symbol.\n
-        `sentiment_chart`: Plots sentiments from symbol\n
         `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
         `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-        `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
         `stalker`: Gets messages from given user [Source: stocktwits].\n
         `text_sent`: Find the sentiment of a post and related comments.\n
         `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
@@ -73,24 +70,21 @@ class StocksBehavioralAnalysis(Category):
         self.getdd = lib.stocks_ba_reddit_model.get_due_dilligence
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
         self.headlines_chart = lib.stocks_ba_finbrain_view.display_sentiment_analysis
-        self.infer = lib.stocks_ba_twitter_model.load_analyze_tweets
-        self.infer_chart = lib.stocks_ba_twitter_view.display_inference
         self.mentions = lib.stocks_ba_google_model.get_mentions
         self.mentions_chart = lib.stocks_ba_google_view.display_mentions
         self.messages = lib.stocks_ba_stocktwits_model.get_messages
+        self.ns = lib.stocks_ba_news_sentiment_model.get_data
+        self.ns_chart = lib.stocks_ba_news_sentiment_view.display_articles_data
         self.popular = lib.stocks_ba_reddit_model.get_popular_tickers
         self.queries = lib.stocks_ba_google_model.get_queries
         self.redditsent = lib.stocks_ba_reddit_model.get_posts_about
         self.regions = lib.stocks_ba_google_model.get_regions
         self.regions_chart = lib.stocks_ba_google_view.display_regions
         self.rise = lib.stocks_ba_google_model.get_rise
-        self.sentiment = lib.stocks_ba_twitter_model.get_sentiment
-        self.sentiment_chart = lib.stocks_ba_twitter_view.display_sentiment
         self.snews = lib.stocks_ba_finnhub_model.get_headlines_sentiment
         self.snews_chart = (
             lib.stocks_ba_finnhub_view.display_stock_price_headlines_sentiment
         )
-        self.spacc = lib.stocks_ba_reddit_model.get_spac_community
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
         self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
         self.trending = lib.stocks_ba_stocktwits_model.get_trending
@@ -446,22 +440,21 @@ class StocksInsiders(Category):
 class StocksOptions(Category):
     """Options Module.
 
-        Submodules:
-        `screen`: Screen Module
-
     Attributes:
         `chains`: Get Option Chain For A Stock.  No greek data is returned\n
         `dte`: Returns a new column containing the DTE as an integer, including 0.\n
         `eodchain`: Get full EOD option date across all expirations\n
         `expirations`: Get Option Chain Expirations\n
         `generate_data`: Gets x values, and y values before and after premiums\n
+        `get_strategies`: Gets options strategies for all, or a list of, DTE(s).\n
         `greeks`: Gets the greeks for a given option\n
-        `grhist`: Get histoical option greeks\n
-        `grhist_chart`: Plots historical greeks for a given option. [Source: Syncretism]\n
+        `grhist`: Get historical EOD option prices, with Greeks, for a given OCC chain label.\n
+        `grhist_chart`: Plots historical greeks for a given option.\n
         `hist`: Get historical option pricing.\n
         `info`: Scrape barchart for options info\n
         `info_chart`: Scrapes Barchart.com for the options information\n
         `last_price`: Makes api request for last price\n
+        `load_options_chains`: Loads all options chains from a specific source, fields returned to each attribute will vary.\n
         `oi`: Plot open interest\n
         `pcr`: Gets put call ratio over last time window [Source: AlphaQuery.com]\n
         `pcr_chart`: Display put call ratio [Source: AlphaQuery.com]\n
@@ -483,15 +476,15 @@ class StocksOptions(Category):
         self.eodchain = lib.stocks_options_intrinio_model.get_full_chain_eod
         self.expirations = lib.stocks_options_sdk_helper.get_option_expirations
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
+        self.get_strategies = lib.stocks_options_options_chains_model.get_strategies
         self.greeks = lib.stocks_options_sdk_helper.get_greeks
-        self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
-        self.grhist_chart = (
-            lib.stocks_options_screen_syncretism_view.view_historical_greeks
-        )
+        self.grhist = lib.stocks_options_intrinio_model.get_historical_options
+        self.grhist_chart = lib.stocks_options_intrinio_view.view_historical_greeks
         self.hist = lib.stocks_options_sdk_helper.hist
         self.info = lib.stocks_options_barchart_model.get_options_info
         self.info_chart = lib.stocks_options_barchart_view.print_options_data
         self.last_price = lib.stocks_options_tradier_model.get_last_price
+        self.load_options_chains = lib.stocks_options_sdk_helper.load_options_chains
         self.oi = lib.stocks_options_view.plot_oi
         self.pcr = lib.stocks_options_alphaquery_model.get_put_call_ratio
         self.pcr_chart = lib.stocks_options_alphaquery_view.display_put_call_ratio
@@ -548,8 +541,6 @@ class StocksTechnicalAnalysis(Category):
     Attributes:
         `recom`: Get tradingview recommendation based on technical indicators\n
         `recom_chart`: Print tradingview recommendation based on technical indicators\n
-        `rsp`: Relative strength percentile [Source: https://github.com/skyte/relative-strength]\n
-        `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
     """
@@ -560,8 +551,6 @@ class StocksTechnicalAnalysis(Category):
         super().__init__()
         self.recom = lib.stocks_ta_tradingview_model.get_tradingview_recommendation
         self.recom_chart = lib.stocks_ta_tradingview_view.print_recommendation
-        self.rsp = lib.stocks_ta_rsp_model.get_rsp
-        self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
 

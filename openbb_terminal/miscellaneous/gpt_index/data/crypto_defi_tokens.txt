@@ -1,0 +1,21 @@
+parent_command:crypto/defi
+usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [-r]
+
+Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
+
+optional arguments:
+  --skip SKIP           Number of records to skip (default: 0)
+  --limit LIMIT         Number of records to display (default: 20)
+  -s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}, --sort {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}
+                        Sort by given column. Default: index (default: index)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Display top 20 tokens trade-able on Uniswap DEX: crypto/defi/tokens
+- Display top 10 tokens trade-able on Uniswap DEX: crypto/defi/tokens --limit 10
+- Show tokens trade-able on Uniswap DEX, skipping the first 5 records: crypto/defi/tokens --skip 5
+- Display tokens trade-able on Uniswap DEX, sorted by symbol: crypto/defi/tokens -s symbol
+- Show tokens trade-able on Uniswap DEX, sorted by trade volume in USD: crypto/defi/tokens -s tradeVolumeUSD
+- Display tokens trade-able on Uniswap DEX, sorted by total liquidity in ascending order: crypto/defi/tokens -s totalLiquidity -r
+- Show top 30 tokens trade-able on Uniswap DEX, sorted by transaction count: crypto/defi/tokens --limit 30 -s txCount

@@ -1,0 +1,22 @@
+parent_command:forecast
+usage: rsi [-d {AAPL}] [-c TARGET_COLUMN] [--period PERIOD]
+
+Add rsi to dataset based on specific column.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  --period PERIOD       The period to use (default: 10)
+
+
+Examples:
+- Calculate RSI for the default dataset and column: forecast/rsi
+- Calculate RSI for a specific dataset: forecast/rsi -d {AAPL}
+- Calculate RSI using a specific column in the dataset: forecast/rsi -c high
+- Calculate RSI for a specific dataset and column: forecast/rsi -d {AAPL} -c open
+- Calculate RSI with a custom period: forecast/rsi --period 14
+- Calculate RSI for a specific dataset and custom period: forecast/rsi -d {AAPL} --period 20
+- Calculate RSI using a specific column and custom period: forecast/rsi -c low --period 15
+- Calculate RSI for a specific dataset, column, and custom period: forecast/rsi -d {AAPL} -c volume --period 25

@@ -1,0 +1,15 @@
+parent_command:econometrics
+usage: ret -v {}
+
+Calculate returns for the given column.
+
+optional arguments:
+  -v {}, --values {}  Dataset.column values to calculate returns. (default: None)
+
+
+Examples:
+- Calculate returns for a specific column in the dataset: econometrics/ret -v Dataset.column
+- To compute returns for the 'Close' column of a stock dataset: stocks/load <SYMBOL>/econometrics/ret -v Close
+- Find returns for the 'Open' column in a forex dataset: forex/load <PAIR>/econometrics/ret -v Open
+- Analyze returns for the 'High' column in a crypto dataset: crypto/load <COIN>/econometrics/ret -v High
+- Evaluate returns for the 'Low' column in a futures dataset: futures/load <FUTURE>/econometrics/ret -v Low

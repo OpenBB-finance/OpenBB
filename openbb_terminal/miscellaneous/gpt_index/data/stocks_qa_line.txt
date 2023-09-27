@@ -1,0 +1,17 @@
+parent_command:stocks/qa
+usage: line [--log] [--ml ML] [--ms MS]
+
+Show line plot of selected data or highlight specific datetimes.
+
+optional arguments:
+  --log    Plot with y on log scale (default: False)
+  --ml ML  Draw vertical line markers to highlight certain events (default: )
+  --ms MS  Draw scatter markers to highlight certain events (default: )
+
+
+Examples:
+- To display a line plot of selected data for a specific stock: stocks/load <SYMBOL>/qa/line
+- To show a line plot with the y-axis on a log scale for a specific stock: stocks/load <SYMBOL>/qa/line --log
+- To display a line plot and draw vertical line markers for certain events: stocks/load <SYMBOL>/qa/line --ml "2022-01-01,2022-06-01"
+- To show a line plot and draw scatter markers to highlight specific events: stocks/load <SYMBOL>/qa/line --ms "2022-01-01,2022-06-01"
+- To display a line plot with both vertical line markers and scatter markers for a specific stock: stocks/load <SYMBOL>/qa/line --ml "2022-01-01,2022-06-01" --ms "2022-03-01,2022-09-01"

@@ -1,0 +1,14 @@
+parent_command:stocks/qa
+usage: beta [-r REF]
+
+Displays a scatter plot demonstrating the beta of two stocks or ETFs.
+
+optional arguments:
+  -r REF, --ref REF  Reference ticker used for beta calculation. (default: SPY)
+
+
+Examples:
+- To display the beta scatter plot for a stock compared to the default reference (SPY): stocks/load <SYMBOL>/qa/beta
+- To display the beta scatter plot for a stock compared to a custom reference stock: stocks/load <SYMBOL>/qa/beta -r <REF_SYMBOL>
+- For comparing the beta of an ETF to the default reference (SPY): stocks/load <ETF_SYMBOL>/qa/beta
+- For comparing the beta of an ETF to a custom reference stock: stocks/load <ETF_SYMBOL>/qa/beta -r <REF_SYMBOL>

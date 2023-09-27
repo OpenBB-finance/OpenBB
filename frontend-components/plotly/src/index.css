@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Fira Code";
-  src: url("./fonts/FiraCode-VF.ttf") format("truetype");
+  src: url("../../fonts/FiraCode-VF.ttf") format("truetype");
   /* fix Fire Code font width issue that makes Text get cut off in Plotly.js */
   font-weight: 400 700;
   font-stretch: 50%;

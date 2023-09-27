@@ -1,0 +1,20 @@
+parent_command:etf/ta
+usage: sma [-l N_LENGTH] [-o N_OFFSET]
+
+Moving Averages are used to smooth the data in an array to help eliminate noise and identify trends. The Simple Moving Average is literally the simplest form of a moving average. Each output value is the average of the previous n
+values. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period are not included in the average. This makes it less responsive to recent changes in the data, which can
+be useful for filtering out those changes.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the simple moving average for an ETF with default window lengths of 20 and 50: etf/ta/sma
+- To calculate the simple moving average for an ETF with a custom window length of 30: etf/ta/sma -l 30
+- To calculate the simple moving average for an ETF with multiple custom window lengths of 10, 30, and 60: etf/ta/sma -l 10,30,60
+- To calculate the simple moving average for an ETF with a default window length and an offset of 5: etf/ta/sma -o 5
+- To calculate the simple moving average for an ETF with a custom window length of 40 and an offset of 10: etf/ta/sma -l 40 -o 10

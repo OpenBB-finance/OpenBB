@@ -1,0 +1,24 @@
+parent_command:stocks/ta
+usage: ichimoku [-c N_CONVERSION] [-b N_BASE] [-l N_LAGGING] [-f N_FORWARD]
+
+The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and resistance, identifies trend direction, gauges momentum and provides trading signals. Ichimoku Kinko Hyo translates into "one
+look equilibrium chart". With one look, chartists can identify the trend and look for potential signals within that trend.
+
+optional arguments:
+  -c N_CONVERSION, --conversion N_CONVERSION
+                        conversion line period (default: 9)
+  -b N_BASE, --base N_BASE
+                        base line period (default: 26)
+  -l N_LAGGING, --lagging N_LAGGING
+                        lagging span period (default: 52)
+  -f N_FORWARD, --forward N_FORWARD
+                        forward span period (default: 26)
+
+
+Examples:
+- To display the Ichimoku Cloud for a specific stock with default parameters: stocks/load <SYMBOL>/ta/ichimoku
+- For a custom conversion line period of 12, use: stocks/load <SYMBOL>/ta/ichimoku -c 12
+- To set a custom base line period of 30: stocks/load <SYMBOL>/ta/ichimoku -b 30
+- If you want to adjust the lagging span period to 60: stocks/load <SYMBOL>/ta/ichimoku -l 60
+- To modify the forward span period to 20: stocks/load <SYMBOL>/ta/ichimoku -f 20
+- For a custom configuration with conversion line period 10, base line period 28, lagging span period 50, and forward span period 24: stocks/load <SYMBOL>/ta/ichimoku -c 10 -b 28 -l 50 -f 24

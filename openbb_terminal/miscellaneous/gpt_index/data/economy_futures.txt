@@ -1,0 +1,19 @@
+parent_command:economy
+usage: futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClose}] [-r]
+
+Futures/Commodities from Wall St. Journal and FinViz.
+
+optional arguments:
+  -c {energy,metals,meats,grains,softs}, --commodity {energy,metals,meats,grains,softs}
+                        Obtain commodity futures from FinViz (default: )
+  -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose}
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To view all futures/commodities from Wall St. Journal and FinViz: economy/futures
+- To display commodity futures for the energy sector: economy/futures -c energy
+- To show commodity futures for the metals sector sorted by ticker: economy/futures -c metals -s ticker
+- For a list of softs commodity futures sorted by the last price in ascending order: economy/futures -c softs -s last -r
+- To display grains commodity futures sorted by change in an ascending way: economy/futures -c grains -s change -r
+- To view meats commodity futures sorted by the previous close price: economy/futures -c meats -s prevClose

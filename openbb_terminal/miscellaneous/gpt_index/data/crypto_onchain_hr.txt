@@ -1,0 +1,23 @@
+parent_command:crypto/onchain
+usage: hr [-c {BTC,ETH}] [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
+
+Display mean hashrate for a certain blockchain (ETH or BTC) [Source: https://glassnode.org]
+
+optional arguments:
+  -c {BTC,ETH}, --coin {BTC,ETH}
+                        Coin to check hashrate (BTC or ETH) (default: BTC)
+  -i {24h,1w,1month}, --interval {24h,1w,1month}
+                        Frequency interval. Default: 24h (default: 24h)
+  -s SINCE, --since SINCE
+                        Initial date. Default: 2022-06-02 (default: 2022-06-02)
+  -u UNTIL, --until UNTIL
+                        Final date. Default: 2023-06-02 (default: 2023-06-02)
+
+
+Examples:
+- Display the mean hashrate for Bitcoin over the past 24 hours: crypto/onchain/hr -c BTC -i 24h
+- Show the average Ethereum hashrate for the past week: crypto/onchain/hr -c ETH -i 1w
+- View the mean hashrate for Bitcoin between specific dates: crypto/onchain/hr -c BTC -s 2022-01-01 -u 2022-01-31
+- Check the average hashrate for Ethereum over the past month: crypto/onchain/hr -c ETH -i 1month
+- Retrieve the mean hashrate for Bitcoin with a custom date range: crypto/onchain/hr -c BTC -s 2022-06-01 -u 2022-06-30
+- Examine the average Ethereum hashrate for the last week and a specific date range: crypto/onchain/hr -c ETH -i 1w -s 2022-05-01 -u 2022-05-31

@@ -1,0 +1,16 @@
+parent_command:economy
+usage: overview [-t {indices,usbonds,glbonds,currencies}]
+
+Provide a market overview of a variety of options. This can be a general overview, indices, bonds and currencies. [Source: Wall St. Journal]
+
+optional arguments:
+  -t {indices,usbonds,glbonds,currencies}, --type {indices,usbonds,glbonds,currencies}
+                        Obtain either US indices, US Bonds, Global Bonds or Currencies (default: )
+
+
+Examples:
+- To get a general market overview: economy/overview
+- For an overview of US indices: economy/overview -t indices
+- To view the US bonds market overview: economy/overview -t usbonds
+- Obtain an overview of global bonds: economy/overview -t glbonds
+- To see the currencies market overview: economy/overview -t currencies

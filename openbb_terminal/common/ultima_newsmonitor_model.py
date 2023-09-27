@@ -18,7 +18,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 
-BASE_URL = "https://api.ultimainsights.ai/v1"
+ULTIMA_BASE_URL = "https://api.ultimainsights.ai/v1"
 NO_API_KEY = "REPLACE_ME"
 
 
@@ -69,10 +69,10 @@ def get_news(term: str = "", sort: str = "articlePublishedDate") -> pd.DataFrame
             if term in supported_terms():
                 if auth_header:
                     data = request(
-                        f"{BASE_URL}/getNewsArticles/{term}", headers=auth_header
+                        f"{ULTIMA_BASE_URL}/getNewsArticles/{term}", headers=auth_header
                     )
                 else:
-                    data = request(f"{BASE_URL}/getNewsArticles/{term}")
+                    data = request(f"{ULTIMA_BASE_URL}/getNewsArticles/{term}")
             else:
                 console.print(
                     "[red]Ticker not supported. Unable to retrieve data\n[/red]"
@@ -150,7 +150,7 @@ def supported_terms() -> list:
     # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
     os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
     os.environ["SSL_CERT_FILE"] = certifi.where()
-    data = request(f"{BASE_URL}/supportedTickers")
+    data = request(f"{ULTIMA_BASE_URL}/supportedTickers")
     return list(data.json())
 
 
@@ -176,7 +176,60 @@ def get_company_info(ticker: str) -> dict:
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
     if ticker in supported_terms():
-        data = request(f"{BASE_URL}/getCompanyInfo/{ticker}")
+        data = request(f"{ULTIMA_BASE_URL}/getCompanyInfo/{ticker}")
+        return data.json()
+    console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
+    return {}
+
+
+@log_start_end(log=logger)
+def get_top_headlines(ticker: str) -> dict:
+    """Get top headlines for a given ticker. [Source: Ultima Insights]
+
+    Parameters
+    ----------
+    ticker : str
+        ticker to get top headlines for
+
+    Returns
+    -------
+    top_headlines: dict
+        dictionary of top headlines
+    """
+
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+
+    current_user = get_current_user()
+    if current_user.credentials.API_ULTIMA_KEY == NO_API_KEY:
+        auth_header = None
+    else:
+        auth_header = {
+            "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
+        }
+
+    if ticker in supported_terms():
+        if auth_header:
+            data = request(
+                f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}", headers=auth_header
+            )
+        else:
+            data = request(f"{ULTIMA_BASE_URL}/getTopHeadlines/{ticker}")
+        if (
+            hasattr(data, "status") and data.status_code == 429
+        ):  # If data request failed
+            console.print(
+                "[red]Too many requests. Please get an API Key from https://www.ultimainsights.ai/[/red]"
+            )
+            return {}
+        if (
+            hasattr(data, "status") and data.status_code != 200
+        ):  # If data request failed
+            console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
+            return {}
         return data.json()
     console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
     return {}

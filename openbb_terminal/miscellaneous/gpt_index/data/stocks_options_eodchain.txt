@@ -1,0 +1,7 @@
+parent_command: stocks/options/
+usage: eodchain [-d DATE] [-h]  Get full option chain at a given end of day.  optional arguments:   -d DATE, --date DATE  Date to get option chain for. Format YYYY-MM-DD                         (default: None)   -h, --help            show this help message (default: False)  For more information and examples, use 'about eodchain' to access the related guide.
+Summary: Retrieve the full option chain for a specific stock symbol at the end of a given day. You can specify the date for which you want to get the option chain in the format YYYY-MM-DD.
+
+Examples:
+- To get the full option chain for a stock symbol at the end of the current day: stocks/load <SYMBOL>/options/eodchain
+- To obtain the full option chain for a stock symbol at the end of a specific day: stocks/load <SYMBOL>/options/eodchain -d 2022-12-31

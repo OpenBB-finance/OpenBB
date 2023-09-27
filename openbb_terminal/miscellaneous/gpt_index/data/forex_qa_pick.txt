@@ -1,0 +1,19 @@
+parent_command:forex/qa
+usage: pick [-t {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}]
+
+Change target variable
+
+optional arguments:
+  -t {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}, --target {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}
+                        Select variable to analyze (default: None)
+
+
+Examples:
+- To analyze the opening price of a forex pair: forex/load <PAIR>/qa/pick -t Open
+- To examine the high price of a specific forex pair: forex/load <PAIR>/qa/pick --target High
+- For analyzing the low price of a forex pair: forex/load <PAIR>/qa/pick -t Low
+- To study the closing price of a particular forex pair: forex/load <PAIR>/qa/pick --target Close
+- To investigate the adjusted closing price of a forex pair: forex/load <PAIR>/qa/pick -t Adj Close
+- To explore the volume of a specific forex pair: forex/load <PAIR>/qa/pick --target Volume
+- To analyze the returns of a forex pair: forex/load <PAIR>/qa/pick -t Returns
+- To examine the log returns of a particular forex pair: forex/load <PAIR>/qa/pick --target LogRet

@@ -213,11 +213,16 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         output_path = create_output_path(input_path, parameters_dict)
         parameters_dict["report_name"] = output_path
         if parameters_dict:
-            t = Thread(
-                target=execute_notebook, args=(input_path, parameters_dict, output_path)
-            )
-            t.start()
-            t.join()
+            try:
+                t = Thread(
+                    target=execute_notebook,
+                    args=(input_path, parameters_dict, output_path),
+                    daemon=True,
+                )
+                t.start()
+                t.join()
+            except KeyboardInterrupt:
+                console.print("[red]Execution interrupted by user.[/red]")
     except Exception as e:
         console.print(f"[red]Cannot execute notebook - {e}")
 
@@ -406,7 +411,10 @@ def ipykernel_launcher(module_file: str, module_hist_file: str):
     module_hist_file: str
         History manager file.
     """
+    # pylint: disable=import-outside-toplevel
+    import matplotlib  # noqa
 
+    matplotlib.use("agg")
     IPKernelApp.launch_instance(
         argv=[
             "-f",

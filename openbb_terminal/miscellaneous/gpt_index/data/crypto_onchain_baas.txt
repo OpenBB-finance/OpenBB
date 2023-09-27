@@ -1,0 +1,27 @@
+parent_command:crypto/onchain
+usage: baas [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l LIMIT] [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}] [-r]
+
+Display average bid, ask prices, spread for given crypto pair for chosen time period [Source: https://graphql.bitquery.io/]
+
+optional arguments:
+  -c COIN, --coin COIN  ERC20 token symbol or address. (default: None)
+  -vs {ETH,USD,BTC,USDT}, --vs {ETH,USD,BTC,USDT}
+                        Quote currency (default: USDT)
+  -l LIMIT, --limit LIMIT
+                        Number of days to display data for. (default: 10)
+  -s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}, --sort {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}
+                        Sort by given column. (default: date)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the average bid and ask prices for a specific ERC20 token in the last 10 days: crypto/onchain/baas -c <COIN> -vs USDT
+- Show the average bid and ask prices for a specific ERC20 token in the last 30 days: crypto/onchain/baas -c <COIN> -vs USDT -l 30
+- Display the average bid and ask prices for a specific ERC20 token with a quote currency of BTC: crypto/onchain/baas -c <COIN> -vs BTC
+- View the average bid and ask prices for a specific ERC20 token, sorted by daily spread: crypto/onchain/baas -c <COIN> -vs USDT -s dailySpread
+- Display the average bid and ask prices for a specific ERC20 token, sorted by average bid price in ascending order: crypto/onchain/baas -c <COIN> -vs USDT -s averageBidPrice -r
+- Show the average bid and ask prices for a specific ERC20 token with a quote currency of ETH and sorted by average ask price: crypto/onchain/baas -c <COIN> -vs ETH -s averageAskPrice
+- To display the average bid and ask prices for a specific ERC20 token with a quote currency of BTC and sorted by base currency in ascending order: crypto/onchain/baas -c <COIN> -vs BTC -s baseCurrency -r
+- View the average bid and ask prices for a specific ERC20 token with a quote currency of USDT and sorted by quote currency in ascending order: crypto/onchain/baas -c <COIN> -vs USDT -s quoteCurrency -r
+- Show the average bid and ask prices for a specific ERC20 token with a quote currency of ETH and sorted by date in ascending order: crypto/onchain/baas -c <COIN> -vs ETH -s date -r
+- Display the average bid and ask prices for a specific ERC20 token with a quote currency of BTC, sorted by daily spread in ascending order: crypto/onchain/baas -c <COIN> -vs BTC -s dailySpread -r

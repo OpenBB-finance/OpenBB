@@ -1,0 +1,9 @@
+parent_command:forex/qa
+usage: cdf
+
+Cumulative distribution function
+
+cdf
+Examples:
+- Calculate the cumulative distribution function for a forex pair: forex/load <PAIR>/qa/cdf
+- Obtain the cumulative distribution function for a specific currency pair: forex/load <PAIR>/qa/cdf

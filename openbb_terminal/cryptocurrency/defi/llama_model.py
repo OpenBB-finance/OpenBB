@@ -12,7 +12,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_replace_underscores_in_column_names,
 )
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import lambda_long_number_format, request
+from openbb_terminal.helper_funcs import request
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +28,29 @@ LLAMA_FILTERS = [
     "change_7d",
     "name",
 ]
+
+
+@log_start_end(log=logger)
+def get_chains() -> pd.DataFrame:
+    """Returns information about chains supported by Llama.fi.
+    [Source: https://docs.llama.fi/api]
+
+    Returns
+    -------
+    pd.DataFrame
+        Information about chains
+    """
+    response = request(API_URL + "/chains")
+    if response.status_code != 200:
+        raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
+    try:
+        df = pd.DataFrame(response.json())
+        df.fillna(value=None, inplace=True)
+        df = df.set_index("name")
+    except Exception as e:
+        logger.exception("Wrong response type: %s", str(e))
+        raise ValueError("Wrong response type\n") from e
+    return df
 
 
 @log_start_end(log=logger)
@@ -96,8 +119,6 @@ def get_defi_protocols(
         df = df.sort_values(by=sortby, ascending=ascend)
     if drop_chain:
         df = df.drop(columns="chain")
-
-    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
 
     if description:
         orig = ["name", "symbol", "category", "description", "url"]

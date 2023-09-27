@@ -1,0 +1,15 @@
+parent_command:stocks/qa
+usage: skew [-w N_WINDOW]
+
+Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution
+is without any skewness, as it is symmetrical on both sides. Hence, a curve is regarded as skewed if it is shifted towards the right or the left.
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        window length (default: 14)
+
+
+Examples:
+- Calculate skewness for the default window length of 14 for a stock: stocks/load <SYMBOL>/qa/skew
+- Determine the skewness of a stock using a custom window length of 30: stocks/load <SYMBOL>/qa/skew -w 30
+- Analyze the skewness for a stock with a 50-day window: stocks/load <SYMBOL>/qa/skew --window 50

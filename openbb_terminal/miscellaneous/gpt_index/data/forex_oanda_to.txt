@@ -1,0 +1,16 @@
+parent_command:forex/oanda
+usage: to -n TO_SYMBOL
+
+Select the "to" currency symbol in a forex pair
+
+optional arguments:
+  -n TO_SYMBOL, --name TO_SYMBOL
+                        To currency (default: None)
+
+
+Examples:
+- Change the "to" currency symbol in a forex pair: forex/oanda/to -n <TO_SYMBOL>
+- Set the "to" currency for a forex pair: forex/load <PAIR>/oanda/to --name <TO_SYMBOL>
+- Update the "to" currency in an existing forex pair: forex/oanda/load <PAIR>/to -n <TO_SYMBOL>
+- Modify the "to" currency symbol in a forex pair: forex/load <PAIR>/oanda/to -n <TO_SYMBOL>
+- Choose a different "to" currency for a forex pair: forex/oanda/load <PAIR>/to --name <TO_SYMBOL>

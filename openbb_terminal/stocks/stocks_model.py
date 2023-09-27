@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from typing import List
 from urllib.error import HTTPError
 
 import fundamentalanalysis as fa  # Financial Modeling Prep
@@ -21,18 +22,37 @@ logger = logging.getLogger(__name__)
 
 
 def load_stock_intrinio(
-    symbol: str, start_date: datetime, end_date: datetime
+    symbol: str,
+    start_date: datetime,
+    end_date: datetime,
+    weekly: bool = False,
+    monthly: bool = False,
 ) -> pd.DataFrame:
     intrinio.ApiClient().set_api_key(get_current_user().credentials.API_INTRINIO_KEY)
     api = intrinio.SecurityApi()
+    frequency: str = "daily"
+    if weekly is True:
+        frequency = "weekly"
+    if monthly is True:
+        frequency = "monthly"
     stock = api.get_security_stock_prices(
         symbol.upper(),
         start_date=start_date,
         end_date=end_date,
-        frequency="daily",
+        frequency=frequency,
         page_size=10000,
     )
-    df = pd.DataFrame(stock.to_dict()["stock_prices"])[
+    data = stock
+    while stock.next_page:
+        stock = api.get_security_stock_prices(
+            symbol.upper(),
+            next_page=stock.next_page,
+            page_size=10000,
+        )
+        data.stock_prices.extend(stock.stock_prices)
+    data = data.to_dict()
+    data = pd.DataFrame(data["stock_prices"])
+    df = pd.DataFrame(data)[
         [
             "adj_open",
             "adj_high",
@@ -42,9 +62,15 @@ def load_stock_intrinio(
             "date",
             "adj_volume",
             "dividend",
+            "split_ratio",
+            "change",
+            "percent_change",
+            "fifty_two_week_high",
+            "fifty_two_week_low",
         ]
     ]
     df["date"] = pd.DatetimeIndex(df["date"])
+    df["close"] = df["adj_close"]
     df = df.set_index("date").rename(
         columns={
             "adj_close": "Adj Close",
@@ -53,6 +79,12 @@ def load_stock_intrinio(
             "adj_high": "High",
             "adj_low": "Low",
             "adj_volume": "Volume",
+            "dividend": "Dividend",
+            "split_ratio": "Split Ratio",
+            "change": "Change",
+            "percent_change": "Percent Change",
+            "fifty_two_week_high": "52 Week High",
+            "fifty_two_week_low": "52 Week Low",
         }
     )[::-1]
 
@@ -258,7 +290,7 @@ def load_stock_polygon(
         return pd.DataFrame()
 
     r_json = r.json()
-    if "results" not in r_json.keys():
+    if "results" not in r_json:
         console.print("[red]No results found in polygon reply.[/red]")
         return pd.DataFrame()
 
@@ -286,7 +318,7 @@ def load_stock_polygon(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def get_quote(symbols: list[str]) -> pd.DataFrame:
+def get_quote(symbols: List[str]) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
@@ -318,7 +350,7 @@ def get_quote(symbols: list[str]) -> pd.DataFrame:
     try:
         df_fa = fa.quote(
             symbol, get_current_user().credentials.API_KEY_FINANCIALMODELINGPREP
-        )
+        ).rename({"yearLow": "52 Week Low", "yearHigh": "52 Week High"})
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")

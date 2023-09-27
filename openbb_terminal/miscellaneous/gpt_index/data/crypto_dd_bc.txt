@@ -1,0 +1,10 @@
+parent_command:crypto/dd
+usage: bc
+
+Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
+
+bc
+Examples:
+- To access blockchain explorer URLs for a specific coin: crypto/load <COIN>/dd/bc
+- Retrieve blockchain explorer URLs after loading a coin: crypto/load <COIN>/dd/bc
+- Access blockchain data for a loaded coin using blockchain explorers: crypto/load <COIN>/dd/bc

@@ -1,0 +1,9 @@
+parent_command: stocks/disc/
+usage: losers [-l LIMIT] [-h] [--export EXPORT]               [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print up to 25 top losers. [Source: Yahoo Finance]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of stocks to display. (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about losers' to access the related guide.
+Summary: Display up to 25 top losers in the stock market, with options to set a limit on the number of stocks shown, and export the data in various formats. The data source is Yahoo Finance.
+
+Examples:
+- Show the top 5 losers: stocks/disc/losers
+- Show the top 10 losers: stocks/disc/losers -l 10
+- Show the top 15 losers and export the data as a csv file: stocks/disc/losers -l 15 --export csv
+- Display the top 20 losers and save the data to a specific excel sheet: stocks/disc/losers -l 20 --sheet-name Sheet1

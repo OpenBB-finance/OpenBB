@@ -1,0 +1,10 @@
+parent_command: stocks/options/
+usage: calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX] [-h]  Calculate profit or loss for given option settings.  optional arguments:   --put                 Flag to calculate put option (default: False)   --sell                Flag to get profit chart of selling contract (default:                         False)   -s STRIKE, --strike STRIKE                         Option strike price (default: 10)   -p PREMIUM, --premium PREMIUM                         Premium price (default: 1)   -m MIN, --min MIN     Min price to look at (default: -1)   -M MAX, --max MAX     Max price to look at (default: -1)   -h, --help            show this help message (default: False)  For more information and examples, use 'about calc' to access the related guide.
+Summary: Calculate the profit or loss for specific option settings, including put or call options, buying or selling contracts, and defining strike and premium prices. You can also set a minimum and maximum price range to examine.
+
+Examples:
+- Calculate the profit or loss for a call option with a strike price of 20 and a premium of 2: stocks/load <SYMBOL>/options/calc -s 20 -p 2
+- Calculate the profit or loss for a put option with a strike price of 30 and a premium of 3: stocks/load <SYMBOL>/options/calc --put -s 30 -p 3
+- Calculate the profit or loss for selling a call option with a strike price of 25 and a premium of 1.5: stocks/load <SYMBOL>/options/calc --sell -s 25 -p 1.5
+- Calculate the profit or loss for selling a put option with a strike price of 35 and a premium of 2.5: stocks/load <SYMBOL>/options/calc --put --sell -s 35 -p 2.5
+- Calculate the profit or loss for a call option with a strike price of 20, a premium of 2, and a price range between 10 and 50: stocks/load <SYMBOL>/options/calc -s 20 -p 2 -m 10 -M 50

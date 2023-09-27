@@ -1,0 +1,11 @@
+parent_command: stocks/disc/
+usage: cnews              [-t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}]              [-l LIMIT] [-h] [--export EXPORT]              [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Customized news. [Source: Seeking Alpha]  optional arguments:   -t {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}, --type {top-news,on-the-move,market-pulse,notable-calls,buybacks,commodities,crypto,issuance,global,guidance,ipos,spacs,politics,m-a,consumer,energy,financials,healthcare,mlps,reits,technology}                         number of news to display (default: top-news)   -l LIMIT, --limit LIMIT                         limit of news to display (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about cnews' to access the related guide.
+Summary: Display customized news from Seeking Alpha based on the selected type and limit. You can choose from various news types and set a display limit. Additionally, you can export the data in different formats and save it to a specific excel sheet.
+
+Examples:
+- Show top 5 news from the 'top-news' category: stocks/disc/cnews -t top-news
+- Display 10 news items related to healthcare: stocks/disc/cnews -t healthcare -l 10
+- Show the latest 7 news articles about IPOs: stocks/disc/cnews --type ipos --limit 7
+- Display 15 news items related to technology: stocks/disc/cnews -t technology -l 15
+- Export the top 5 'market-pulse' news items in csv format: stocks/disc/cnews -t market-pulse --export csv
+- Show 8 news items related to M&A and save the data to an excel sheet: stocks/disc/cnews -t m-a -l 8 --sheet-name Sheet1

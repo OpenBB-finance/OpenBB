@@ -1,0 +1,14 @@
+parent_command: stocks/dps/
+usage: prom [-n N_NUM] [-l LIMIT] [-t {T1,T2,OTCE}] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Display dark pool (ATS) data of tickers with growing trades activity using linear regression.  optional arguments:   -n N_NUM, --num N_NUM                         Number of tickers to filter from entire ATS data based                         on the sum of the total weekly shares quantity.                         (default: 1000)   -l LIMIT, --limit LIMIT                         Limit of most promising tickers to display. (default:                         10)   -t {T1,T2,OTCE}, --tier {T1,T2,OTCE}                         Tier to process data from. (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about prom' to access the related guide.
+Summary: Display dark pool (ATS) data of tickers with growing trades activity using linear regression. You can filter the number of tickers based on the sum of total weekly shares quantity, limit the number of most promising tickers to display, and select the tier to process data from. Additionally, you can export the raw data in various formats and save data to a specific excel sheet.
+
+Examples:
+- Show the top 10 most promising tickers with growing trades activity in dark pools: stocks/dps/prom
+- Display the top 20 most promising tickers with growing trades activity in dark pools: stocks/dps/prom -l 20
+- Filter the top 500 tickers based on total weekly shares quantity and show the top 10 most promising ones: stocks/dps/prom -n 500
+- Show the top 10 most promising tickers with growing trades activity in dark pools from Tier 1: stocks/dps/prom -t T1
+- Show the top 10 most promising tickers with growing trades activity in dark pools from Tier 2: stocks/dps/prom -t T2
+- Show the top 10 most promising tickers with growing trades activity in dark pools from OTCE tier: stocks/dps/prom -t OTCE
+- Export the top 10 most promising tickers with growing trades activity in dark pools to a csv file: stocks/dps/prom --export csv
+- Save the top 10 most promising tickers with growing trades activity in dark pools to a specific excel sheet: stocks/dps/prom --sheet-name Sheet1
+- Filter the top 200 tickers based on total weekly shares quantity, show the top 15 most promising ones, and export the data to an xlsx file: stocks/dps/prom -n 200 -l 15 --export xlsx

@@ -1,0 +1,12 @@
+parent_command:account
+usage: logout
+
+Logout from current session.
+
+logout
+Examples:
+- Logout from your current session: account/logout
+- To end the current session, use: account/logout
+- To sign out from the active session: account/logout
+- Terminate the ongoing session with: account/logout
+- Exit the current session by typing: account/logout

@@ -1,0 +1,24 @@
+parent_command:stocks/backtesting
+usage: rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short]
+
+Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
+
+optional arguments:
+  -p PERIODS, --periods PERIODS
+                        Number of periods for RSI calculation (default: 14)
+  -u HIGH, --high HIGH  High (upper) RSI Level (default: 70)
+  -l LOW, --low LOW     Low RSI Level (default: 30)
+  --spy                 Flag to add spy hold comparison (default: False)
+  --no_bench            Flag to not show buy and hold comparison (default: False)
+  --no_short            Flag that disables the short sell (default: True)
+
+
+Examples:
+- To backtest an RSI strategy with default parameters on a stock: stocks/load <SYMBOL>/backtesting/rsi
+- To backtest an RSI strategy with custom periods, high, and low levels: stocks/load <SYMBOL>/backtesting/rsi -p 20 -u 80 -l 20
+- To backtest an RSI strategy and compare with SPY: stocks/load <SYMBOL>/backtesting/rsi --spy
+- To backtest an RSI strategy without buy and hold comparison: stocks/load <SYMBOL>/backtesting/rsi --no_bench
+- To backtest an RSI strategy with short selling enabled: stocks/load <SYMBOL>/backtesting/rsi --no_short False
+- To backtest an RSI strategy with custom periods and short selling enabled: stocks/load <SYMBOL>/backtesting/rsi -p 25 --no_short False
+- To backtest an RSI strategy with custom high and low levels and compare with SPY: stocks/load <SYMBOL>/backtesting/rsi -u 75 -l 25 --spy
+- To backtest an RSI strategy with custom periods and no buy and hold comparison: stocks/load <SYMBOL>/backtesting/rsi -p 18 --no_bench

@@ -76,6 +76,7 @@ def display_mean_std(
         x=plot_data.index,
         y=plot_data[target].values,
         name="Real Values",
+        legend="legend",
         row=1,
         col=1,
     )
@@ -83,6 +84,7 @@ def display_mean_std(
         x=plot_data.index,
         y=plot_data[target + "_mean"].values,
         name="Rolling Mean",
+        legend="legend",
         row=1,
         col=1,
     )
@@ -90,10 +92,20 @@ def display_mean_std(
         x=plot_data.index,
         y=plot_data[target + "_std"].values,
         name="Rolling Std",
+        legend="legend2",
         row=2,
         col=1,
     )
     fig.update_layout(
+        legend=dict(xref="paper", yref="paper"),
+        legend2=dict(
+            xanchor="left",
+            yanchor="top",
+            xref="paper",
+            yref="paper",
+            x=0.01,
+            y=0.44,
+        ),
         yaxis=dict(title="Values"),
         yaxis2=dict(title=f"{target} Std Deviation"),
     )

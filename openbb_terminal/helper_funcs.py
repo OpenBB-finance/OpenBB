@@ -1,7 +1,9 @@
 """Helper functions."""
 __docformat__ = "numpy"
+
 # pylint: disable=too-many-lines
 
+# IMPORTS STANDARD LIBRARY
 # IMPORTS STANDARD
 import argparse
 import inspect
@@ -11,6 +13,7 @@ import logging
 import os
 import random
 import re
+import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -36,6 +39,16 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
+from langchain.chat_models import ChatOpenAI
+from llama_index import (
+    LLMPredictor,
+    PromptHelper,
+    ServiceContext,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    load_index_from_storage,
+)
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
@@ -43,12 +56,16 @@ from rich.table import Table
 from screeninfo import get_monitors
 
 from openbb_terminal import OpenBBFigure, plots_backend
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+)
 from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
 from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -69,8 +86,13 @@ MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2
 
+GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
+GPT_INDEX_VER = 0.4
+
+
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
+
 
 # pylint: disable=R1702,R0912
 
@@ -84,6 +106,8 @@ def set_command_location(cmd_loc: str):
     cmd_loc: str
         Command location called by user
     """
+    if cmd_loc.split("/")[-1] == "hold":
+        return
     global command_location  # noqa
     command_location = cmd_loc
 
@@ -239,7 +263,7 @@ def return_colored_value(value: str):
 
 
 # pylint: disable=too-many-arguments
-def print_rich_table(
+def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
     show_index: bool = False,
     title: str = "",
@@ -254,6 +278,7 @@ def print_rich_table(
     print_to_console: bool = False,
     limit: Optional[int] = 1000,
     source: Optional[str] = None,
+    columns_keep_types: Optional[List[str]] = None,
 ):
     """Prepare a table from df in rich.
 
@@ -289,6 +314,8 @@ def print_rich_table(
         console.
     source: Optional[str]
         Source of the table. If provided, it will be displayed in the header of the table.
+    columns_keep_types: Optional[List[str]]
+        Columns to keep their types, i.e. not convert to numeric
     """
     if export:
         return
@@ -298,14 +325,23 @@ def print_rich_table(
         current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
     )
 
-    show_index = not isinstance(df.index, pd.RangeIndex) and show_index
+    # Make a copy of the dataframe to avoid SettingWithCopyWarning
+    df = df.copy()
 
+    show_index = not isinstance(df.index, pd.RangeIndex) and show_index
+    #  convert non-str that are not timestamp or int into str
+    # eg) praw.models.reddit.subreddit.Subreddit
     for col in df.columns:
+        if columns_keep_types is not None and col in columns_keep_types:
+            continue
         try:
-            if not isinstance(df[col].iloc[0], pd.Timestamp):
-                df[col] = pd.to_numeric(df[col])
+            if not any(
+                isinstance(df[col].iloc[x], pd.Timestamp)
+                for x in range(min(10, len(df)))
+            ):
+                df[col] = pd.to_numeric(df[col], errors="ignore")
         except (ValueError, TypeError):
-            pass
+            df[col] = df[col].astype(str)
 
     def _get_headers(_headers: Union[List[str], pd.Index]) -> List[str]:
         """Check if headers are valid and return them."""
@@ -496,6 +532,20 @@ def check_positive_list(value) -> List[int]:
     list_of_pos = []
     for a_value in list_of_nums:
         new_value = int(a_value)
+        if new_value <= 0:
+            log_and_raise(
+                argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
+            )
+        list_of_pos.append(new_value)
+    return list_of_pos
+
+
+def check_positive_float_list(value) -> List[float]:
+    """Argparse type to return list of positive floats."""
+    list_of_nums = value.split(",")
+    list_of_pos = []
+    for a_value in list_of_nums:
+        new_value = float(a_value)
         if new_value <= 0:
             log_and_raise(
                 argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
@@ -817,6 +867,8 @@ def us_market_holidays(years) -> list:
 
 def lambda_long_number_format(num, round_decimal=3) -> Union[str, int, float]:
     """Format a long number."""
+    if get_current_user().preferences.USE_INTERACTIVE_DF:
+        return num
 
     if num == float("inf"):
         return "inf"
@@ -1082,7 +1134,7 @@ def get_user_agent() -> str:
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
     ]
 
-    return random.choice(user_agent_strings)  # nosec
+    return random.choice(user_agent_strings)  # nosec # noqa: S311
 
 
 def text_adjustment_init(self):
@@ -1490,8 +1542,6 @@ def export_data(
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
-    if not figure:
-        figure = OpenBBFigure()
 
     if export_type:
         saved_path = compose_export_path(func_name, dir_path).resolve()
@@ -1570,6 +1620,9 @@ def export_data(
                             writer, sheet_name=sheet_name, index=True, header=True
                         )
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+                if figure is None:
+                    console.print("No plot to export.")
+                    continue
                 figure.show(export_image=saved_path, margin=margin)
             else:
                 console.print("Wrong export file specified.")
@@ -1577,7 +1630,8 @@ def export_data(
 
             console.print(f"Saved file: {saved_path}")
 
-        figure._exported = True  # pylint: disable=protected-access
+        if figure is not None:
+            figure._exported = True  # pylint: disable=protected-access
 
 
 def get_rf() -> float:
@@ -1601,7 +1655,7 @@ def get_rf() -> float:
 
 def system_clear():
     """Clear screen."""
-    os.system("cls||clear")  # nosec
+    os.system("cls||clear")  # nosec # noqa: S605,S607
 
 
 def excel_columns() -> List[str]:
@@ -2038,7 +2092,7 @@ def check_start_less_than_end(start_date: str, end_date: str) -> bool:
 
 # Write an abstract helper to make requests from a url with potential headers and params
 def request(
-    url: str, method: str = "GET", timeout: int = 0, **kwargs
+    url: str, method: str = "get", timeout: int = 0, **kwargs
 ) -> requests.Response:
     """Abstract helper to make requests from a url with potential headers and params.
 
@@ -2046,8 +2100,11 @@ def request(
     ----------
     url : str
         Url to make the request to
-    method : str, optional
-        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    method : str
+        HTTP method to use.  Choose from:
+        delete, get, head, patch, post, put, by default "get"
+    timeout : int
+        How many seconds to wait for the server to send data
 
     Returns
     -------
@@ -2059,6 +2116,9 @@ def request(
     ValueError
         If invalid method is passed
     """
+    method = method.lower()
+    if method not in ["delete", "get", "head", "patch", "post", "put"]:
+        raise ValueError(f"Invalid method: {method}")
     current_user = get_current_user()
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
@@ -2068,21 +2128,13 @@ def request(
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()
-    if method.upper() == "GET":
-        return requests.get(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    if method.upper() == "POST":
-        return requests.post(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    raise ValueError("Method must be GET or POST")
+    func = getattr(requests, method)
+    return func(
+        url,
+        headers=headers,
+        timeout=timeout,
+        **kwargs,
+    )
 
 
 def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
@@ -2125,3 +2177,133 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         df.index.name = index_name
 
     return df
+
+
+@check_api_key(["API_OPENAI_KEY"])
+def query_LLM_local(query_text, gpt_model):
+    current_user = get_current_user()
+    os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
+
+    # check if index exists
+    index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
+    old_index_paths = [
+        str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
+    ]
+
+    # define LLM
+    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
+    # define prompt helper
+    prompt_helper = PromptHelper(context_window=4096, num_output=256)
+    service_context = ServiceContext.from_defaults(
+        llm_predictor=llm_predictor, prompt_helper=prompt_helper
+    )
+
+    if os.path.exists(index_path):
+        # rebuild storage context
+        storage_context = StorageContext.from_defaults(persist_dir=index_path)
+        index = load_index_from_storage(
+            service_context=service_context, storage_context=storage_context
+        )
+    else:
+        # If the index file doesn't exist or is of incorrect version, generate a new one
+        # First, remove old version(s), if any
+        for path in old_index_paths:
+            if os.path.isfile(path):
+                os.remove(path)
+            elif os.path.isdir(path):
+                shutil.rmtree(path)
+
+        # Then, generate and save new index
+        # import from print console and say generating index, this might take a while
+        console.print("Generating index, this might take a while....\n")
+
+        # read in documents
+        documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
+        index = VectorStoreIndex.from_documents(
+            documents, service_context=service_context
+        )
+
+        # save to disk
+        console.print("Saving index to disk....\n")
+        index.storage_context.persist(index_path)
+
+    current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
+
+    prompt_string = f"""From the cli argparse help text above, provide the terminal
+        command for {query_text}. If relevant, use the examples as guidance.
+        Provide the exact command along with the parent command with a "/" separation to get that information,
+        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
+        or the likes.  If you do not know, reply "I don't know"
+
+        Current date: {current_date.strftime("%Y-%m-%d")}
+        Current day of the week: {current_date.strftime("%A")}
+
+        Remember:
+        1. It is very important to provide the full path of the command including the parent command and loading
+        the particular target before running any subsequent commands
+        2. If you are asked about dates or times, load the target dates, times span during the "load" command
+        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
+        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
+        3. Country names should be snake case and lower case. example: united_states.
+        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
+        5. Always use "load" command first before running any subsequent commands. example:
+        stocks/load <symbol>/ ....
+        crypto/load <symbol>/ .... etc.
+        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
+        7. Do not make up any subcommands or options for the specific command.
+        8. Do not provide anything that could be interpreted as investment advice.
+        9. Any request asking for options refers to stocks/options.
+
+        Only do what is asked and only provide a single command string, never more than one.
+        """
+
+    # try to get the response from the index
+    try:
+        query_engine = index.as_query_engine()
+        response = query_engine.query(prompt_string)
+        return response.response, response.source_nodes
+    except Exception as e:
+        # check if the error has the following "The model: `gpt-4` does not exist"
+        if "The model: `gpt-4` does not exist" in str(e):
+            console.print(
+                "[red]You do not have access to GPT4 model with your API key."
+                " Please try again with valid API Access.[/red]"
+            )
+            return None
+
+        console.print(f"[red]Something went wrong with the query. {e}[/red]")
+        return None, None
+
+
+def query_LLM_remote(query_text: str):
+    """Query askobb on gpt-3.5 turbo hosted model
+
+    Parameters
+    ----------
+    query_text : str
+        Query string for askobb
+    """
+
+    url = "https://api.openbb.co/askobb"
+
+    data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
+
+    ask_obbrequest_data = request(url, method="POST", json=data, timeout=15).json()
+
+    if "error" in ask_obbrequest_data:
+        console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
+        return None, None
+
+    return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
+
+
+def check_valid_date(date_string) -> bool:
+    """ "Helper to see if we can parse the string to a date"""
+    try:
+        # Try to parse the string with strptime()
+        datetime.strptime(
+            date_string, "%Y-%m-%d"
+        )  # Use the format your dates are expected to be in
+        return True  # If it can be parsed, then it is a valid date string
+    except ValueError:  # strptime() throws a ValueError if the string can't be parsed
+        return False

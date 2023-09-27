@@ -1,0 +1,18 @@
+parent_command:funds
+usage: load --fund FUND [-s START] [-e END]
+
+Load the fund to perform analysis on.
+
+optional arguments:
+  --fund FUND           Fund string to search for (default: None)
+  -s START, --start START
+                        The starting date (format YYYY-MM-DD) of the stock (default: 2022-06-02)
+  -e END, --end END     The ending date (format YYYY-MM-DD) of the stock (default: 2023-06-02)
+
+
+Examples:
+- To load a specific fund for analysis, use the command: funds/load --fund <FUND>
+- To load a specific fund with a custom date range, use: funds/load --fund <FUND> -s 2022-01-01 -e 2022-12-31
+- Loading a fund for analysis starting from a specific date: funds/load --fund <FUND> -s 2022-01-01
+- Loading a fund for analysis up to a specific date: funds/load --fund <FUND> -e 2022-12-31
+- Analyzing a fund with a custom start and end date: funds/load --fund <FUND> --start 2021-01-01 --end 2021-12-31

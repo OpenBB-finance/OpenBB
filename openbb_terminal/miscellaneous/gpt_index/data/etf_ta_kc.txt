@@ -1,0 +1,27 @@
+parent_command:etf/ta
+usage: kc [-l N_LENGTH] [-s N_SCALAR] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Keltner Channels are volatility-based bands that are placed on either side of an asset's price and can aid in determining the direction of a trend.The Keltner channel uses the average true range (ATR) or volatility, with breaks
+above or below the top and bottom barriers signaling a continuation.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 20)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 2)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To view Keltner Channels for an ETF with default settings: etf/ta/kc
+- To display Keltner Channels for an ETF with a specific window length: etf/ta/kc -l 30
+- To show Keltner Channels for an ETF using a custom scalar value: etf/ta/kc -s 3
+- To plot Keltner Channels for an ETF with a simple moving average: etf/ta/kc -m sma
+- To visualize Keltner Channels for an ETF with a weighted moving average and an offset: etf/ta/kc -m wma -o 5
+- To see Keltner Channels for an ETF with a hull moving average and a custom window length: etf/ta/kc -m hma -l 25
+- To display Keltner Channels for an ETF with a zero lag moving average and a custom scalar value: etf/ta/kc -m zlma -s 1.5
+- To plot Keltner Channels for an ETF with a custom window length, scalar value, and moving average mode: etf/ta/kc -l 30 -s 3 -m wma
+- To visualize Keltner Channels for an ETF with a specific offset and window length: etf/ta/kc -o 10 -l 35

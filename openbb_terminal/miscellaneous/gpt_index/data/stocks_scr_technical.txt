@@ -1,0 +1,13 @@
+parent_command: stocks/scr/
+usage: technical [-p Desired preset.] [-l LIMIT] [-r]                  [-s {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}]                  [-h] [--export EXPORT]                  [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints technical data of the companies that meet the pre-set filtering.  optional arguments:   -p Desired preset., --preset Desired preset.                         Filter presets   -l LIMIT, --limit LIMIT                         Limit of stocks to print   -r, --reverse         Data is sorted in descending order by default. Reverse                         flag will sort it in an ascending way. Only works when                         raw data is displayed.   -s {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}, --sort {ticker,beta,atr,sma20,sma50,sma200,52whigh,52wlow,rsi,price,change,fromopen,gap,volume}                         Sort elements of the table.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about technical' to access the related guide.
+Summary: Display technical data for companies that meet preset filters. You can choose a preset, set a limit on the number of stocks displayed, sort the data in ascending or descending order, and choose the sorting criteria. Additionally, you can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Show technical data for companies with preset filters: stocks/scr/technical -p Desired preset.
+- Show technical data for a limited number of companies: stocks/scr/technical -l 10
+- Show technical data sorted in ascending order: stocks/scr/technical -r
+- Sort technical data by 52-week high: stocks/scr/technical -s 52whigh
+- Sort technical data by RSI and display in ascending order: stocks/scr/technical -s rsi -r
+- Export technical data to a csv file: stocks/scr/technical --export csv
+- Save technical data to a specific excel sheet: stocks/scr/technical --sheet-name Sheet1
+- Display technical data for companies with a specific preset and sort by price: stocks/scr/technical -p Desired preset. -s price

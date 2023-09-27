@@ -1,0 +1,13 @@
+parent_command:account
+usage: download [-n NAME [NAME ...]]
+
+Download a routine from the cloud.
+
+optional arguments:
+  -n NAME [NAME ...], --name NAME [NAME ...]
+                        The name of the routine. (default: None)
+
+
+Examples:
+- Download a specific routine by name: account/download -n MyRoutine
+- Download multiple routines at once: account/download -n Routine1 Routine2 Routine3

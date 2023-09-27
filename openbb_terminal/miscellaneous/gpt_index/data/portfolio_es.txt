@@ -1,0 +1,18 @@
+parent_command:portfolio
+usage: es [-m] [-d DIST] [-p PERCENTILE]
+
+Provides Expected Shortfall (short: ES) of the selected portfolio.
+
+optional arguments:
+  -m, --mean            If one should use the mean of the portfolios return (default: True)
+  -d DIST, --dist DIST  Distribution used for the calculations (default: normal)
+  -p PERCENTILE, --percentile PERCENTILE
+                        Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall (default: 99.9)
+
+
+Examples:
+- Calculate the Expected Shortfall of the selected portfolio using the mean return and default settings: portfolio/es
+- Calculate the Expected Shortfall of the selected portfolio using a specific distribution: portfolio/es -d t
+- Calculate the Expected Shortfall of the selected portfolio with a custom percentile: portfolio/es -p 95
+- Calculate the Expected Shortfall of the selected portfolio without using the mean return: portfolio/es --mean False
+- Calculate the Expected Shortfall of the selected portfolio using a specific distribution and custom percentile: portfolio/es -d t -p 95

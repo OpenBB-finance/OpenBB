@@ -1,0 +1,20 @@
+parent_command:fixedincome
+usage: tmc [-p {3_month,2_year}] [-s START_DATE] [-e END_DATE]
+
+Get 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity data. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained
+by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+
+optional arguments:
+  -p {3_month,2_year}, --parameter {3_month,2_year}
+                        Selected treasury constant maturity to subtract (default: 3_month)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- Retrieve 10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity data: fixedincome/tmc
+- Retrieve 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity data: fixedincome/tmc -p 2_year
+- Retrieve 10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity data for a specific date range: fixedincome/tmc -s 2022-01-01 -e 2022-12-31
+- Retrieve 10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity data for a specific date range: fixedincome/tmc -p 2_year -s 2022-01-01 -e 2022-12-31

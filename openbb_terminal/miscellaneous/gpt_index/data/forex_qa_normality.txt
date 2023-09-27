@@ -1,0 +1,9 @@
+parent_command:forex/qa
+usage: normality
+
+Normality tests
+
+normality
+Examples:
+- Test normality of a forex pair: forex/load <PAIR>/qa/normality
+- Analyze the normality of a specific currency pair: forex/load <PAIR>/normality

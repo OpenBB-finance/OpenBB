@@ -536,7 +536,9 @@ class BuildCategoryModelClasses:
                     f.write(content.replace(b"\r", b"\n"))
 
         # We run black to make sure the code is formatted correctly
-        subprocess.check_call(["black", "openbb_terminal"])  # nosec: B603, B607
+        subprocess.check_call(  # noqa: S603  # nosec: B603, B607
+            ["black", "openbb_terminal"]  # noqa: S603,S607
+        )
 
 
 def generate_sdk(sort: bool = False) -> bool:
@@ -549,9 +551,9 @@ def generate_sdk(sort: bool = False) -> bool:
     """
     trailmaps = get_trailmaps(sort)
     try:
-        console.print("[yellow]Generating SDK...[/]")
+        console.print("[yellow]Generating SDK...[/yellow]")
         BuildCategoryModelClasses(trailmaps).build()
-        console.print("[green]SDK Generated Successfully.[/]")
+        console.print("[green]SDK Generated Successfully.[/green]")
     except Exception as e:
         console.print(f"[red]Error generating SDK: {e}[/]")
         return False

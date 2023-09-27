@@ -1,0 +1,20 @@
+parent_command:etf/ta
+usage: atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
+
+Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window length (default: 14)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: ema)
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the Average True Range with a window length of 14 and using the EMA method for an ETF: etf/ta/atr
+- If you want to calculate the Average True Range for an ETF with a custom window length of 20: etf/ta/atr -l 20
+- To compute the Average True Range for an ETF using the SMA method: etf/ta/atr -m sma
+- Calculate the Average True Range for an ETF with a window length of 14, using the HMA method and an offset of 5: etf/ta/atr -l 14 -m hma -o 5
+- To display the Average True Range for an ETF using the ZLMA method and an offset of 3: etf/ta/atr -m zlma -o 3

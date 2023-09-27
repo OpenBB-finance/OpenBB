@@ -1,0 +1,9 @@
+parent_command:forex/oanda
+usage: orderbook
+
+Plot an orderbook for an instrument if Oanda provides one.
+
+orderbook
+Examples:
+- To plot an orderbook for a forex pair using Oanda: forex/load <PAIR>/oanda/orderbook
+- Plot an orderbook for a specific forex instrument: forex/oanda/load <PAIR>/orderbook

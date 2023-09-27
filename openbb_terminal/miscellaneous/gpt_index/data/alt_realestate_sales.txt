@@ -1,0 +1,17 @@
+parent_command:alt/realestate
+usage: sales -p postcode [-l limit]
+
+Select the postcode you want to see sold house price data for. [Source: UK Land Registry]
+
+optional arguments:
+  -p postcode, --postcode postcode
+                        Postcode (default: None)
+  -l limit, --limit limit
+                        Number of entries to return (default: 25)
+
+
+Examples:
+- To view sold house price data for a specific postcode: alt/realestate/sales -p <postcode>
+- To see the top 10 sold house prices in a given postcode: alt/realestate/sales -p <postcode> -l 10
+- Retrieve sold house price data for a postcode with a custom limit: alt/realestate/sales --postcode <postcode> --limit 15
+- Display sold house prices for a specific postcode, showing only 5 entries: alt/realestate/sales --postcode <postcode> -l 5

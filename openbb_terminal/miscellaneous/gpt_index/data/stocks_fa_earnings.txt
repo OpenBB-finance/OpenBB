@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: earnings [-t TICKER] [-q] [-l LIMIT] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]                 [--source {AlphaVantage,YahooFinance}]  Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -q, --quarter         Quarter fundamental data flag. (default: False)   -l LIMIT, --limit LIMIT                         Number of latest info (default: 5)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {AlphaVantage,YahooFinance}                         Data source to select from (default: AlphaVantage)  For more information and examples, use 'about earnings' to access the related guide.
+Summary: Display earnings dates and reported EPS for a specific company using the given ticker. You can choose between quarterly or annual data, set a limit on the number of results, and select the data source. Additionally, you can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Retrieve the earnings and reported EPS for a specific company: stocks/fa/earnings -t <SYMBOL>
+- Display quarterly earnings and reported EPS for a specific company: stocks/fa/earnings -t <SYMBOL> -q
+- Show the last 10 earnings dates and reported EPS for a specific company: stocks/fa/earnings -t <SYMBOL> -l 10
+- Retrieve earnings and reported EPS for a specific company using YahooFinance as the data source: stocks/fa/earnings -t <SYMBOL> --source YahooFinance
+- Export earnings and reported EPS data for a specific company to a csv file: stocks/fa/earnings -t <SYMBOL> --export csv
+- Save earnings and reported EPS data for a specific company to a specific excel sheet: stocks/fa/earnings -t <SYMBOL> --sheet-name Sheet1

@@ -14,6 +14,7 @@ import yfinance as yf
 from dateutil.relativedelta import FR, relativedelta
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -191,7 +192,7 @@ def process_stocks(
 
         # Checking if exist
         if os.path.exists(name):
-            stock_closes_0 = pd.read_pickle(name)
+            stock_closes_0 = pd.read_pickle(name)  # noqa: S301
             list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
         else:
             stock_closes_0 = None
@@ -209,79 +210,66 @@ def process_stocks(
                 group_by="ticker",
             )
 
-    else:
-        if interval in period_choices:
-            # Setting temporal file name
-            name = os.path.join(
-                path,
-                "Stocks " + interval + " " + date.today().strftime("%Y-%m-%d") + ".pkl",
-            )
+    elif interval in period_choices:
+        # Setting temporal file name
+        name = os.path.join(
+            path,
+            "Stocks " + interval + " " + date.today().strftime("%Y-%m-%d") + ".pkl",
+        )
 
-            # Creating if exist
-            if os.path.exists(name):
-                stock_closes_0 = pd.read_pickle(name)
-                list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
-            else:
-                stock_closes_0 = None
-                list_of_stocks_0 = symbols
-
-            # Download assets that are not in temporal file
-            if list_of_stocks_0 == []:
-                stock_closes = stock_closes_0.copy()
-            else:
-                stock_prices = yf.download(
-                    list_of_stocks_0, period=interval, progress=False, group_by="ticker"
-                )
-
+        # Creating if exist
+        if os.path.exists(name):
+            stock_closes_0 = pd.read_pickle(name)  # noqa: S301
+            list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
         else:
-            end_ = date.today()
-            if end_.weekday() >= 5:
-                end_ = end_ + relativedelta(weekday=FR(-1))
-            if interval.find("d") >= 1:
-                days = int(interval[:-1])
-                start_ = end_ - relativedelta(days=days)
-            elif interval.find("w") >= 1:
-                weeks = int(interval[:-1])
-                start_ = end_ - relativedelta(weeks=weeks)
-            elif interval.find("mo") >= 1:
-                months = int(interval[:-2])
-                start_ = end_ - relativedelta(months=months)
-            elif interval.find("y") >= 1:
-                years = int(interval[:-1])
-                start_ = end_ - relativedelta(years=years)
-            else:
-                # console.print(
-                #     "Please use an adequate interval."
-                # )
-                return None
+            stock_closes_0 = None
+            list_of_stocks_0 = symbols
 
-            start_date = start_.strftime("%Y-%m-%d")
-            end_date = end_.strftime("%Y-%m-%d")
-
-            # Creating temporal file name
-            name = os.path.join(
-                path, "Stocks " + start_date + " to " + end_date + ".pkl"
+        # Download assets that are not in temporal file
+        if list_of_stocks_0 == []:
+            stock_closes = stock_closes_0.copy()
+        else:
+            stock_prices = yf.download(
+                list_of_stocks_0, period=interval, progress=False, group_by="ticker"
             )
 
-            # Checking if temporal file exists
-            if os.path.exists(name):
-                stock_closes_0 = pd.read_pickle(name)
-                list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
-            else:
-                stock_closes_0 = None
-                list_of_stocks_0 = symbols
+    else:
+        end_ = date.today()
+        if end_.weekday() >= 5:
+            end_ = end_ + relativedelta(weekday=FR(-1))
+        for item in ["d", "w", "mo", "y"]:
+            if interval.find(item) >= 1:
+                n = int(interval[: -len(item)])
+                start_ = end_ - relativedelta(days=n)
+                break
+        else:
+            return None
 
-            # Download assets that are not in temporal file
-            if list_of_stocks_0 == []:
-                stock_closes = stock_closes_0.copy()
-            else:
-                stock_prices = yf.download(
-                    list_of_stocks_0,
-                    start=start_date,
-                    end=end_date,
-                    progress=False,
-                    group_by="ticker",
-                )
+        start_date = start_.strftime("%Y-%m-%d")
+        end_date = end_.strftime("%Y-%m-%d")
+
+        # Creating temporal file name
+        name = os.path.join(path, "Stocks " + start_date + " to " + end_date + ".pkl")
+
+        # Checking if temporal file exists
+        if os.path.exists(name):
+            stock_closes_0 = pd.read_pickle(name)  # noqa: S301
+            list_of_stocks_0 = list(set(symbols) - set(stock_closes_0.columns))
+        else:
+            stock_closes_0 = None
+            list_of_stocks_0 = symbols
+
+        # Download assets that are not in temporal file
+        if list_of_stocks_0 == []:
+            stock_closes = stock_closes_0.copy()
+        else:
+            stock_prices = yf.download(
+                list_of_stocks_0,
+                start=start_date,
+                end=end_date,
+                progress=False,
+                group_by="ticker",
+            )
 
     if stock_closes is None:
         if len(list_of_stocks_0) == 1:
@@ -354,7 +342,7 @@ def process_returns(
         if s not in stock_returns.iloc[:, selected_stocks]
     ]
     if filtered_out:
-        print(
+        console.print(
             "The following stocks were filtered out, due to too many NaNs: "
             + ", ".join(filtered_out)
         )

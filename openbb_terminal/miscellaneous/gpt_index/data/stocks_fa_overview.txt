@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: overview [-t TICKER] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]                 [--source {Finviz,FinancialModelingPrep,AlphaVantage,YahooFinance}]  Prints information about, among other things, the industry, sector exchange and company description.  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --source {Finviz,FinancialModelingPrep,AlphaVantage,YahooFinance}                         Data source to select from (default: Finviz)  For more information and examples, use 'about overview' to access the related guide.
+Summary: The overview command provides information about a stock's industry, sector, exchange, and company description. You can specify the ticker to analyze, choose the data source, and export the raw data into various formats. Additionally, you can save the data to a specific Excel sheet.
+
+Examples:
+- Obtain an overview of a stock using the default data source: stocks/fa/overview -t <SYMBOL>
+- Retrieve an overview of a stock using a specific data source: stocks/fa/overview -t <SYMBOL> --source YahooFinance
+- Export the overview data for a stock in CSV format: stocks/fa/overview -t <SYMBOL> --export csv
+- Save the overview data for a stock to a specific Excel sheet: stocks/fa/overview -t <SYMBOL> --sheet-name Sheet1
+- Get an overview of a stock using FinancialModelingPrep as the data source: stocks/fa/overview -t <SYMBOL> --source FinancialModelingPrep
+- Get the p/e ratio for tesla stock: stocks/fa/overview -t TSLA --source FinancialModelingPrep

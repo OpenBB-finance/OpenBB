@@ -6,7 +6,7 @@
 
 @layer components {
   ._input {
-    @apply w-full text-xs px-2 py-1 bg-grey-50 dark:bg-grey-900 h-[36px] border-[1.5px] border-grey-300 dark:border-grey-700 rounded outline-none dark:outline-1 focus:border-grey-500 active:border-grey-500 dark:text-white dark:focus:text-white dark:focus:border-white dark:active:border-white dark:hover:border-white disabled:border-grey-600 font-normal;
+    @apply w-full text-xs px-2 py-1 bg-grey-50 dark:bg-grey-900 h-[25px] border-[1.5px] border-grey-300 dark:border-grey-700 rounded outline-none dark:outline-1 focus:border-grey-500 active:border-grey-500 dark:text-white dark:focus:text-white dark:focus:border-white dark:active:border-white dark:hover:border-white disabled:border-grey-600 font-normal;
   }
   ._btn-common {
     @apply whitespace-nowrap inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;

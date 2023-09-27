@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+import pandas as pd
 import pytest
 import requests
 
@@ -12,6 +13,10 @@ from openbb_terminal.stocks.options import tradier_model
 def vcr_config():
     return {
         "filter_headers": [("Authorization", "MOCK_TOKEN")],
+        "filter_query_parameters": [
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
+        ],
     }
 
 
@@ -149,3 +154,29 @@ def test_get_historical_greeks_invalid_status(mocker):
     result = tradier_model.get_last_price(symbol="AAPL")
 
     assert result is None
+
+
+@pytest.mark.vcr
+def test_load_options(recorder):
+    results = tradier_model.load_options(symbol="AAPL")
+    results1 = tradier_model.load_options(symbol="AAPL", pydantic=True)
+    assert hasattr(results, "chains")
+    assert hasattr(results1, "chains")
+    assert isinstance(results.chains, pd.DataFrame)
+    assert isinstance(results1.chains, dict)
+    assert isinstance(results.expirations, list)
+    assert isinstance(results1.expirations, list)
+    assert isinstance(results.underlying_price, pd.Series)
+    assert isinstance(results1.underlying_price, dict)
+    assert (
+        results.chains["volume"].sum() == pd.DataFrame(results1.chains)["volume"].sum()
+    )
+    recorder.capture(
+        [
+            results.chains.columns.to_list(),
+            results.underlying_price.index.to_list(),
+            results.SYMBOLS.columns.to_list(),
+            results.underlying_name,
+            results1.underlying_name,
+        ]
+    )

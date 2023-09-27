@@ -1,6 +1,7 @@
 """Obtain the integration test coverage for the OpenBB Terminal."""
 
 # IMPORT STANDARD
+import contextlib
 import importlib
 import json
 import os
@@ -88,12 +89,16 @@ def create_matching_dict() -> dict:
             "screener_controller.py",
         ),
         os.path.join(".", "openbb_terminal", "terminal_controller.py"),
+        os.path.join(
+            ".", "openbb_terminal", "stocks", "comparison_analysis", "ca_controller.py"
+        ),
     ]
     test_paths = [
         os.path.join("mutual_funds", "test_mutual_fund.openbb"),
         os.path.join("stocks", "test_disc.openbb"),
         os.path.join("stocks", "test_options_screen_ca.openbb"),
         os.path.join("terminal", "test_news.openbb"),
+        os.path.join("stocks", "test_ca.openbb"),
     ]
     return dict(zip(controller_paths, test_paths))
 
@@ -115,6 +120,11 @@ def match_controller_with_test(controllers: list, tests: list) -> dict:
             if controller_name == test_name:
                 matched[controller] = test
                 tests.remove(test)
+
+    for i in tests:
+        # Handle edge case as two controllers share the same integration test
+        if re.search(r"test_ca.openbb", i):
+            tests.remove(i)
 
     if len(tests) > 0:
         console.print(f"[red]Unmatched tests: {tests}[/red]")
@@ -161,10 +171,8 @@ def get_commands_and_params(
 
     for command in commands:
         params[command] = []
-        try:
+        with contextlib.suppress(AttributeError):
             params[command] = list(module_data[command].keys())
-        except AttributeError:
-            pass
 
     if get_commands and get_params:
         return commands, params
@@ -268,10 +276,8 @@ def get_missing_params(
         for param in value:
             for param2 in value:
                 if param != param2 and param2.startswith(param):
-                    try:
+                    with contextlib.suppress(ValueError):
                         missing_params[key].remove(param)
-                    except ValueError:
-                        pass
 
     missing_params = {k: v for k, v in missing_params.items() if v}
 

@@ -1,0 +1,13 @@
+parent_command:economy/qa
+usage: rolling [-w N_WINDOW]
+
+Rolling mean and std deviation
+
+optional arguments:
+  -w N_WINDOW, --window N_WINDOW
+                        Window length (default: 14)
+
+
+Examples:
+- Calculate the rolling mean and standard deviation for the economy data with the default window length: economy/qa/rolling
+- Calculate the rolling mean and standard deviation for the economy data with a custom window length of 30: economy/qa/rolling -w 30

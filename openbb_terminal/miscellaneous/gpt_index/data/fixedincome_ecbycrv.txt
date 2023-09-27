@@ -1,0 +1,27 @@
+parent_command:fixedincome
+usage: ecbycrv [-d DATE] [-p {spot_rate,instantaneous_forward,par_yield}] [--detailed] [--any-rating]
+
+Generate euro area yield curve from ECB. The yield curve shows the bond ratesat different maturities. The graphic depiction of the relationship between the yield on bonds of the same credit quality but different maturities is known
+as the yield curve. In the past, most market participants have constructed yield curves from the observations of prices and yields in the Treasury market. Two reasons account for this tendency. First, Treasury securities are viewed
+as free of default risk, and differences in creditworthiness do not affect yield estimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity or infrequent trading. The key
+function of the Treasury yield curve is to serve as a benchmark for pricing bonds and setting yields in other sectors of the debt market. It is clear that the market’s expectations of future rate changes are one important
+determinant of the yield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed tightening or of rising inflation. However, it may be too restrictive to assume that the yield
+differences across bonds with different maturities only reflect the market’s rate expectations. The well-known pure expectations hypothesis has such an extreme implication. The pure expectations hypothesis asserts that all
+government bonds have the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking activity of risk-neutral traders removes all expected return differentials across bonds.
+
+optional arguments:
+  -d DATE, --date DATE  Date to get data from ECB. If not supplied, the most recent entry will be used. (default: None)
+  -p {spot_rate,instantaneous_forward,par_yield}, --parameter {spot_rate,instantaneous_forward,par_yield}
+                        Selected type of yield curve (default: spot_rate)
+  --detailed            If True, returns detailed data. Note that this is very slow. (default: False)
+  --any-rating          If False, it only returns rates for AAA rated bonds. If True, it returns rates for all bonds. (default: False)
+
+
+Examples:
+- To generate the euro area yield curve for the most recent date with spot rates: fixedincome/ecbycrv
+- To generate the euro area yield curve for a specific date with par yields: fixedincome/ecbycrv -d 2022-01-01 -p par_yield
+- To generate the euro area yield curve for instantaneous forward rates: fixedincome/ecbycrv -p instantaneous_forward
+- To generate the euro area yield curve with detailed data: fixedincome/ecbycrv --detailed
+- To generate the euro area yield curve for all bonds, not just AAA-rated bonds: fixedincome/ecbycrv --any-rating
+- To generate the euro area yield curve for a specific date with spot rates and detailed data: fixedincome/ecbycrv -d 2022-01-01 --detailed
+- To generate the euro area yield curve for a specific date, including all bonds and using par yields: fixedincome/ecbycrv -d 2022-01-01 -p par_yield --any-rating

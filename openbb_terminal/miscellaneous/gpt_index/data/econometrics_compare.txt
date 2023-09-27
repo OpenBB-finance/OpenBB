@@ -1,0 +1,9 @@
+parent_command:econometrics
+usage: compare
+
+Compare results between all activated Panel regression models
+
+compare
+Examples:
+- Compare results of all activated panel regression models: econometrics/compare
+- To see a comparison of results for the active panel regression models, use: econometrics/compare

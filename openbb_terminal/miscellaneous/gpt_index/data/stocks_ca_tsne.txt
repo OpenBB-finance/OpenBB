@@ -1,0 +1,8 @@
+parent_command: stocks/ca/
+usage: tsne [-r LR] [-l LIMIT] [-p] [-h]  Get similar companies to compare with using sklearn TSNE.  optional arguments:   -r LR, --learnrate LR                         TSNE Learning rate. Typical values are between 50 and                         200 (default: 200)   -l LIMIT, --limit LIMIT                         Limit of stocks to retrieve. The subsample will occur                         randomly. (default: 10)   -p, --no_plot   -h, --help            show this help message (default: False)  For more information and examples, use 'about tsne' to access the related guide.
+Summary: The tsne command retrieves similar companies for comparison using sklearn TSNE. You can set the learning rate and the limit of stocks to retrieve. The command also allows you to disable plotting.
+
+Examples:
+- Retrieve 10 similar companies for <SYMBOL> with the default learning rate: stocks/load <SYMBOL>/ca/tsne
+- Retrieve 5 similar companies for <SYMBOL> with a learning rate of 100: stocks/load <SYMBOL>/ca/tsne -r 100 -l 5
+- Retrieve 20 similar companies for <SYMBOL> without plotting: stocks/load <SYMBOL>/ca/tsne -l 20 -p

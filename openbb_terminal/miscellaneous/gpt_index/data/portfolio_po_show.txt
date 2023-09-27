@@ -1,0 +1,21 @@
+parent_command:portfolio/po
+usage: show [-pf PORTFOLIOS] [-ct CATEGORIES] [-v LONG_ALLOCATION]
+
+Show selected saved portfolios
+
+optional arguments:
+  -pf PORTFOLIOS, --portfolios PORTFOLIOS
+                        Show selected saved portfolios
+  -ct CATEGORIES, --categories CATEGORIES
+                        Show selected categories
+  -v LONG_ALLOCATION, --value LONG_ALLOCATION
+                        Amount to allocate to portfolio
+
+
+Examples:
+- Display all saved portfolios: portfolio/po show
+- Show specific saved portfolios: portfolio/po show -pf Portfolio1 Portfolio2
+- Display selected categories within saved portfolios: portfolio/po show -ct Category1 Category2
+- Show a specific portfolio and its categories: portfolio/po show -pf Portfolio1 -ct Category1 Category2
+- Allocate a value to a specific portfolio: portfolio/po show -pf Portfolio1 -v 10000
+- Allocate a value to a specific portfolio and display selected categories: portfolio/po show -pf Portfolio1 -ct Category1 -v 10000

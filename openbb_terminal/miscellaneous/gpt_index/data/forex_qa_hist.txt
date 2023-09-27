@@ -1,0 +1,13 @@
+parent_command:forex/qa
+usage: hist [-b BINS]
+
+Histogram with density and rug
+
+optional arguments:
+  -b BINS, --bins BINS
+
+
+Examples:
+- To create a histogram with default bin settings for a forex pair: forex/load <PAIR>/qa/hist
+- To create a histogram with a specific number of bins for a forex pair: forex/load <PAIR>/qa/hist -b 20
+- Generate a histogram for a forex pair using 30 bins: forex/load <PAIR>/qa/hist --bins 30

@@ -1,0 +1,31 @@
+parent_command:economy
+usage: spending [-c COUNTRIES] [-p {TOT,RECULTREL,HOUCOMM,PUBORD,EDU,ENVPROT,GRALPUBSER,SOCPROT,ECOAFF,DEF,HEALTH}] [-u {PC_GDP,THND_USD_CAP}] [-s START_DATE] [-e END_DATE]
+
+General government spending provides an indication of the size of government across countries. The large variation in this indicator highlights the variety of countries' approaches to delivering public goods and services and
+providing social protection, not necessarily differences in resources spent
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        Countries to get data for (default: united_states)
+  -p {TOT,RECULTREL,HOUCOMM,PUBORD,EDU,ENVPROT,GRALPUBSER,SOCPROT,ECOAFF,DEF,HEALTH}, --perspective {TOT,RECULTREL,HOUCOMM,PUBORD,EDU,ENVPROT,GRALPUBSER,SOCPROT,ECOAFF,DEF,HEALTH}
+                        Use either TOT (Total), RECULTREL (Recreation, culture and religion), HOUCOMM (Housing and community amenities), PUBORD (Public order and safety), EDU (Education), ENVPROT (Environmental protection),
+                        GRALPUBSER (General public services), SOCPROT (Social protection), ECOAFF (Economic affairs), DEF (Defence), HEALTH (Health) (default: TOT)
+  -u {PC_GDP,THND_USD_CAP}, --units {PC_GDP,THND_USD_CAP}
+                        Use either THND_USD_CAP (thousands of USD per capity) or PC_GDP (percentage of GDP) (default: PC_GDP)
+  -s START_DATE, --start START_DATE
+                        Start date of data, in YYYY-MM-DD format (default: 1993-06-02)
+  -e END_DATE, --end END_DATE
+                        End date of data, in YYYY-MM-DD format (default: 2023-06-02)
+
+
+Examples:
+- View general government spending for the United States: economy/spending
+- Analyze government spending on education in Germany: economy/spending -c germany -p EDU
+- Compare spending on health between France and the United Kingdom in thousands of USD per capita: economy/spending -c france,united_kingdom -p HEALTH -u THND_USD_CAP
+- Examine social protection spending as a percentage of GDP for Japan from 2000 to 2020: economy/spending -c japan -p SOCPROT -s 2000-01-01 -e 2020-12-31
+- Retrieve defense spending data for Canada and Australia between 2010 and 2015: economy/spending -c canada,australia -p DEF -s 2010-01-01 -e 2015-12-31
+- Investigate spending on environmental protection in Italy in thousands of USD per capita: economy/spending -c italy -p ENVPROT -u THND_USD_CAP
+- Get data on public order and safety spending in Brazil from 2005 to 2010: economy/spending -c brazil -p PUBORD -s 2005-01-01 -e 2010-12-31
+- Analyze housing and community amenities spending in India as a percentage of GDP: economy/spending -c india -p HOUCOMM -u PC_GDP
+- Examine spending on recreation, culture, and religion in Spain from 1995 to 2005: economy/spending -c spain -p RECULTREL -s 1995-01-01 -e 2005-12-31
+- Compare economic affairs spending between China and Russia in thousands of USD per capita: economy/spending -c china,russia -p ECOAFF -u THND_USD_CAP

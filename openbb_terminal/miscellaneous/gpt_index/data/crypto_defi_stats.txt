@@ -1,0 +1,12 @@
+parent_command:crypto/defi
+usage: stats
+
+Display base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
+
+stats
+Examples:
+- To view base statistics about Uniswap DEX: crypto/defi/stats
+- Display Uniswap DEX statistics: crypto/defi/stats
+- Show base statistics for Uniswap DEX: crypto/defi/stats
+- Retrieve Uniswap DEX base statistics: crypto/defi/stats
+- Get base statistics of Uniswap DEX: crypto/defi/stats

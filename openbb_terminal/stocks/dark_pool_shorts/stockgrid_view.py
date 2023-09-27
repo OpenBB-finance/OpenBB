@@ -257,8 +257,6 @@ def short_interest_volume(
         hoverdistance=1,
     )
 
-    fig.hide_holidays()
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -376,8 +374,6 @@ def net_short_position(
         spikedistance=1,
         hoverdistance=1,
     )
-
-    fig.hide_holidays()
 
     export_data(
         export,

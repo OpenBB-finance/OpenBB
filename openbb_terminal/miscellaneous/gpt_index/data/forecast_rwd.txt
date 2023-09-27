@@ -1,0 +1,35 @@
+parent_command:forecast
+usage: rwd [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform a Random Walk with Drift forecast for <SYMBOL>: forecast/rwd -d <SYMBOL>
+- Perform a Random Walk with Drift forecast for <SYMBOL> using the 'open' column: forecast/rwd -d <SYMBOL> -c open
+- Forecast <SYMBOL> for 10 days using Random Walk with Drift: forecast/rwd -d <SYMBOL> -n 10
+- Perform a Random Walk with Drift forecast for <SYMBOL> with Multiplicative seasonality: forecast/rwd -d <SYMBOL> -s M
+- Perform a Random Walk with Drift forecast for <SYMBOL> with a window of 0.9: forecast/rwd -d <SYMBOL> -w 0.9
+- Forecast <SYMBOL> using Random Walk with Drift between specific dates: forecast/rwd -d <SYMBOL> --start 2022-01-01 --end 2022-12-31
+- Show residuals for the Random Walk with Drift forecast of <SYMBOL>: forecast/rwd -d <SYMBOL> --residuals
+- Perform a Random Walk with Drift forecast for <SYMBOL> and show only the forecast: forecast/rwd -d <SYMBOL> --forecast-only
+- Export Random Walk with Drift forecast predictions for <SYMBOL> to a csv file: forecast/rwd -d <SYMBOL> --export-pred-raw
+- Perform a naive baseline Random Walk with Drift forecast for <SYMBOL>: forecast/rwd -d <SYMBOL> --naive

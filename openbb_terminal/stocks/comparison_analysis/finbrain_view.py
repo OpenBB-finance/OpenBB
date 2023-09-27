@@ -93,6 +93,8 @@ def display_sentiment_compare(
         print_rich_table(
             df_sentiment,
             headers=list(df_sentiment.columns),
+            show_index=True,
+            index_name="Date",
             title="Ticker Sentiment",
             export=bool(export),
         )

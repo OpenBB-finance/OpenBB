@@ -1,0 +1,16 @@
+parent_command:portfolio
+usage: bench -b BENCHMARK [-s]
+
+Load in a benchmark from a selected list or set your own based on the ticker.
+
+optional arguments:
+  -b BENCHMARK, --benchmark BENCHMARK
+                        Set the benchmark for the portfolio. By default, this is SPDR S&P 500 ETF Trust (SPY). (default: SPY)
+  -s, --full_shares     Whether to only make a trade with the benchmark when a full share can be bought (no partial shares). (default: False)
+
+
+Examples:
+- Set the benchmark for the portfolio to a specific stock: portfolio/bench -b <SYMBOL>
+- Use the default benchmark and allow partial shares: portfolio/bench
+- Set the benchmark to a specific stock and allow only full shares: portfolio/bench -b <SYMBOL> -s
+- Use the default benchmark and restrict to full shares only: portfolio/bench -s

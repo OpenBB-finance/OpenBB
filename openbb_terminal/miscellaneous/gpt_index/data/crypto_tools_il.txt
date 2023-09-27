@@ -1,0 +1,24 @@
+parent_command:crypto/tools
+usage: il [-a PRICECHANGEA] [-b PRICECHANGEB] [-p PROPORTION] [-v VALUE] [-n]
+
+Tool to calculate Impermanent Loss in a custom liquidity pool. Users can provide percentages increases for two tokens (and their weight in the liquidity pool) and verify the impermanent loss that can occur.
+
+optional arguments:
+  -a PRICECHANGEA, --priceChangeA PRICECHANGEA
+                        Token A price change in percentage (default: 0)
+  -b PRICECHANGEB, --priceChangeB PRICECHANGEB
+                        Token B price change in percentage (default: 100)
+  -p PROPORTION, --proportion PROPORTION
+                        Pool proportion. E.g., 50 means that pool contains 50% of token A and 50% of token B, 30 means that pool contains 30% of token A and 70% of token B (default: 50)
+  -v VALUE, --value VALUE
+                        Initial amount of dollars that user provides to liquidity pool (default: 1000)
+  -n, --narrative       Flag to show narrative instead of dataframe (default: False)
+
+
+Examples:
+- Calculate impermanent loss with default values: crypto/tools/il
+- Calculate impermanent loss with a 20% price change for token A and a 150% price change for token B: crypto/tools/il -a 20 -b 150
+- Calculate impermanent loss with a 30% price change for token A, a 200% price change for token B, and a pool proportion of 40% token A and 60% token B: crypto/tools/il -a 30 -b 200 -p 40
+- Calculate impermanent loss with a 50% price change for token A, a 75% price change for token B, a pool proportion of 25% token A and 75% token B, and an initial investment of $5000: crypto/tools/il -a 50 -b 75 -p 25 -v 5000
+- Calculate impermanent loss with a narrative output instead of a dataframe: crypto/tools/il -n
+- Calculate impermanent loss with a 10% price change for token A, a 120% price change for token B, a pool proportion of 60% token A and 40% token B, and a narrative output: crypto/tools/il -a 10 -b 120 -p 60 -n

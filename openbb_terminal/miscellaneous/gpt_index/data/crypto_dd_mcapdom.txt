@@ -1,0 +1,21 @@
+parent_command:crypto/dd
+usage: mcapdom [-i {5m,15m,30m,1h,1d,1w}] [-s START] [-end END]
+
+Display asset's percentage share of total crypto circulating market cap [Source: https://messari.io]
+
+optional arguments:
+  -i {5m,15m,30m,1h,1d,1w}, --interval {5m,15m,30m,1h,1d,1w}
+                        Frequency interval. Default: 1d (default: 1d)
+  -s START, --start START
+                        Initial date. Default: A year ago (default: 2022-06-02)
+  -end END, --end END   End date. Default: Today (default: 2023-06-02)
+
+
+Examples:
+- View the market cap dominance of a specific crypto asset with daily intervals: crypto/dd/mcapdom
+- Display the market cap dominance of a crypto asset with 1-hour intervals: crypto/dd/mcapdom -i 1h
+- Show the market cap dominance of a crypto asset for a specific date range: crypto/dd/mcapdom -s 2022-01-01 -end 2022-06-01
+- Examine the market cap dominance of a crypto asset with weekly intervals: crypto/dd/mcapdom -i 1w
+- Analyze the market cap dominance of a crypto asset with 30-minute intervals: crypto/dd/mcapdom -i 30m
+- Observe the market cap dominance of a crypto asset for a specific start date and daily intervals: crypto/dd/mcapdom -s 2022-01-01 -i 1d
+- Explore the market cap dominance of a crypto asset with 15-minute intervals and a specific end date: crypto/dd/mcapdom -i 15m -end 2022-12-31

@@ -1,0 +1,10 @@
+parent_command: stocks/ba/
+usage: regions [-l LIMIT] [-h] [--export EXPORT]                [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Plot bars of regions based on stock's interest. [Source: Google]  optional arguments:   -l LIMIT, --limit LIMIT                         limit of regions to plot that show highest interest.                         (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about regions' to access the related guide.
+Summary: Display a bar chart of regions with the highest interest in a specific stock symbol. You can set a limit for the number of regions to plot, and export the data in various formats. The data source for this command is Google.
+
+Examples:
+- To view the top 10 regions with the highest interest in a stock: stocks/load <SYMBOL>/ba/regions
+- To view the top 5 regions with the highest interest in a stock: stocks/load <SYMBOL>/ba/regions -l 5
+- To export the top 10 regions with the highest interest in a stock to a csv file: stocks/load <SYMBOL>/ba/regions --export csv
+- To export the top 10 regions with the highest interest in a stock to a specific excel sheet: stocks/load <SYMBOL>/ba/regions --sheet-name Sheet1
+- To view the top 20 regions with the highest interest in a stock: stocks/load <SYMBOL>/ba/regions -l 20

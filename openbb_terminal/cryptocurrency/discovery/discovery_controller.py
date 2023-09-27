@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, W0622, C0201
 import argparse
 import logging
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
@@ -12,6 +13,7 @@ from openbb_terminal.cryptocurrency.discovery import (
     coinmarketcap_view,
     coinpaprika_model,
     coinpaprika_view,
+    cryptostats_view,
     dappradar_model,
     dappradar_view,
     pycoingecko_model,
@@ -19,7 +21,11 @@ from openbb_terminal.cryptocurrency.discovery import (
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    check_positive,
+    valid_date,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
@@ -40,6 +46,7 @@ class DiscoveryController(BaseController):
         "nft_mktp_chains",
         "nft_mktp",
         "dapps",
+        "fees",
         "dapp_categories",
         "dapp_chains",
         "dapp_metrics",
@@ -88,12 +95,89 @@ class DiscoveryController(BaseController):
         mt.add_cmd("nft_mktp_chains")
         mt.add_cmd("nft_mktp")
         mt.add_cmd("dapps")
+        mt.add_cmd("fees")
         mt.add_cmd("dapp_categories")
         mt.add_cmd("dapp_chains")
         mt.add_cmd("dapp_metrics")
         mt.add_cmd("defi_chains")
         mt.add_cmd("tokens")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
+
+    @log_start_end(log=logger)
+    def call_fees(self, other_args: List[str]):
+        """Process fees command"""
+
+        parser = argparse.ArgumentParser(
+            prog="fees",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""
+            Cryptos where users pay most fees on [Source: CryptoStats]
+            """,
+        )
+
+        parser.add_argument(
+            "--mc",
+            action="store_true",
+            dest="marketcap",
+            default=False,
+            help="Include the market cap rank",
+        )
+        parser.add_argument(
+            "--tvl",
+            action="store_true",
+            dest="tvl",
+            default=False,
+            help="Include the total value locked",
+        )
+
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="date",
+            type=valid_date,
+            help="Initial date. Default: yesterday",
+            default=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d"),
+        )
+
+        parser.add_argument(
+            "-s",
+            "--sort",
+            dest="sortby",
+            nargs="+",
+            help="Sort by given column. Default: One Day Fees",
+            default="One Day Fees",
+            choices=["One Day Fees", "Market Cap Rank"],
+            metavar="SORTBY",
+        )
+
+        parser.add_argument(
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+
+        if ns_parser:
+            cryptostats_view.display_fees(
+                marketcap=ns_parser.marketcap,
+                tvl=ns_parser.tvl,
+                date=ns_parser.date,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.reverse,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_top(self, other_args):

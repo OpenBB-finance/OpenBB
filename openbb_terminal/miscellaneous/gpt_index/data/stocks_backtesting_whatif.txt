@@ -1,0 +1,18 @@
+parent_command:stocks/backtesting
+usage: whatif [-d DATE_SHARES_ACQUIRED] [-n NUM_SHARES_ACQUIRED]
+
+Displays what if scenario of having bought X shares at date Y
+
+optional arguments:
+  -d DATE_SHARES_ACQUIRED, --date DATE_SHARES_ACQUIRED
+                        Date at which the shares were acquired (default: None)
+  -n NUM_SHARES_ACQUIRED, --number NUM_SHARES_ACQUIRED
+                        Number of shares acquired (default: 1.0)
+
+
+Examples:
+- To see the scenario of acquiring 100 shares on a specific date: stocks/load <SYMBOL>/backtesting/whatif -d 2020-01-01 -n 100
+- To view the outcome of buying 50 shares on a given date: stocks/load <SYMBOL>/backtesting/whatif -n 50 -d 2019-07-15
+- Analyze the result of purchasing 25 shares on a particular date: stocks/load <SYMBOL>/backtesting/whatif --number 25 --date 2018-06-30
+- Examine the scenario of acquiring 10 shares at a certain date: stocks/load <SYMBOL>/backtesting/whatif -n 10 -d 2021-03-15
+- Assess the impact of buying 5 shares on a specific date: stocks/load <SYMBOL>/backtesting/whatif --number 5 --date 2020-10-01

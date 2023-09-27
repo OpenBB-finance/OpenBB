@@ -1,0 +1,14 @@
+parent_command:forex/oanda
+usage: cancel -i ORDERID
+
+Cancel a Pending Order.
+
+optional arguments:
+  -i ORDERID, --id ORDERID
+                        The pending order ID to cancel.
+
+
+Examples:
+- Cancel a pending order with its ID: forex/oanda/cancel -i ORDERID
+- To cancel a specific pending order using its ID, enter: forex/oanda/cancel --id ORDERID
+- Canceling a pending order by providing the order ID: forex/oanda/cancel --id ORDERID

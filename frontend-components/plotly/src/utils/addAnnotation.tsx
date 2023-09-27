@@ -28,28 +28,28 @@ export function add_annotation({
   popup_data: PopupData;
   current_text?: string;
 }) {
-  let x = popup_data.x;
+  const x = popup_data.x;
   let y = popup_data.y;
-  let yref = popup_data.yref;
-  let annotations = plotData?.layout?.annotations || [];
+  const yref = popup_data.yref;
+  const annotations = plotData?.layout?.annotations || [];
   let index = -1;
 
   for (let i = 0; i < annotations.length; i++) {
     if (
-      annotations[i].x == x &&
-      annotations[i].y == y &&
-      annotations[i].text == current_text
+      annotations[i].x === x &&
+      annotations[i].y === y &&
+      annotations[i].text === current_text
     ) {
       index = i;
       break;
     }
   }
 
-  if (popup_data.high != undefined) {
-    y = popup_data.yanchor == "above" ? popup_data.high : popup_data.low;
+  if (popup_data.high !== undefined) {
+    y = popup_data.yanchor === "above" ? popup_data.high : popup_data.low;
   }
-  if (index == -1) {
-    let annotation: Annotations = {
+  if (index === -1) {
+    const annotation: Annotations = {
       x: x,
       y: y,
       xref: "x",
@@ -109,19 +109,19 @@ export function plot_text({
 
   console.log("plot_text: current_text", current_text);
   let output = undefined;
-  let yaxis = popup_data.yref.replace("y", "yaxis");
-  let yrange = plotData.layout[yaxis].range;
+  const yaxis = popup_data.yref.replace("y", "yaxis");
+  const yrange = plotData.layout[yaxis].range;
   let yshift = (yrange[1] - yrange[0]) * 0.2;
 
-  if (popup_data.yanchor == "below") {
+  if (popup_data.yanchor === "below") {
     yshift = -yshift;
   }
   popup_data.yshift = yshift;
 
   output = add_annotation({ plotData, popup_data, current_text });
 
-  let to_update = { annotations: output.annotations, dragmode: "pan" };
-  to_update[yaxis + ".type"] = "linear";
+  const to_update = { annotations: output.annotations, dragmode: "pan" };
+  to_update[`${yaxis}.type`] = "linear";
   return { update: to_update, annotation: output.annotation };
 }
 
@@ -150,7 +150,7 @@ export function init_annotation({
   annotations: Annotations[];
   plotDiv: PlotlyHTMLElement;
 }) {
-  if (popupData.text != undefined && popupData.text != "") {
+  if (popupData.text !== undefined && popupData.text !== "") {
     popupData.text = popupData.text.replace(/\n/g, "<br>");
     let popup_data: Partial<PopupData>;
     let inOhlc = false;
@@ -165,11 +165,11 @@ export function init_annotation({
           popupData.annotation.y < popupData.annotation.ay ? "above" : "below",
         ...popupData,
       };
-      if (popupData.annotation.high != undefined) {
+      if (popupData.annotation.high !== undefined) {
         inOhlc = true;
       }
       console.log("popup_data", popup_data);
-      let to_update = plot_text({
+      const to_update = plot_text({
         plotData,
         popup_data: popup_data as PopupData,
         current_text: popupData.annotation.text,
@@ -177,14 +177,14 @@ export function init_annotation({
 
       if (inOhlc) {
         // we update the ohlcAnnotation
-        let ohlcAnnotationIndex = ohlcAnnotation.findIndex(
+        const ohlcAnnotationIndex = ohlcAnnotation.findIndex(
           (a) =>
-            a.x == popupData.annotation.x &&
-            a.y == popupData.annotation.y &&
-            a.yref == popupData.annotation.yref
+            a.x === popupData.annotation.x &&
+            a.y === popupData.annotation.y &&
+            a.yref === popupData.annotation.yref,
         );
         console.log("ohlcAnnotationIndex", ohlcAnnotationIndex);
-        if (ohlcAnnotationIndex == -1) {
+        if (ohlcAnnotationIndex === -1) {
           // we add the annotation to the ohlcAnnotation array
           setOhlcAnnotation([...ohlcAnnotation, to_update.annotation]);
         } else {
@@ -195,7 +195,7 @@ export function init_annotation({
       }
 
       setAnnotations(
-        [...annotations, to_update.annotation].filter((a) => a != undefined)
+        [...annotations, to_update.annotation].filter((a) => a !== undefined),
       );
       plotData.layout.dragmode = "pan";
       setPlotData({ ...plotData, ...to_update.update });
@@ -206,9 +206,9 @@ export function init_annotation({
 
     plotDiv.on("plotly_clickannotation", (eventData) => {
       console.log("plotly_clickannotation", eventData);
-      let annotation = eventData.annotation;
+      const annotation = eventData.annotation;
 
-      if (annotation.text == undefined) {
+      if (annotation.text === undefined) {
         console.log("annotation.text is undefined");
         return;
       }
@@ -216,7 +216,7 @@ export function init_annotation({
       // we replace <br> with \n so that the textarea can display the text properly
       annotation.text = annotation.text.replace(/<br>/g, "\n");
 
-      let popup_data = {
+      const popup_data = {
         x: annotation.x,
         y: annotation.y,
         high: annotation?.high ?? undefined,
@@ -237,19 +237,20 @@ export function init_annotation({
 
     function clickHandler(eventData: PlotMouseEvent) {
       console.log("plotly_click", eventData);
-      let x = eventData.points[0].x;
-      let yaxis = eventData.points[0].fullData.yaxis;
+      const x = eventData.points[0].x;
+      const yaxis = eventData.points[0].fullData.yaxis;
       let y = 0;
-      let high, low;
+      let high;
+      let low;
 
       // We need to check if the trace is a candlestick or not
       // this is because the y value is stored in the high or low
-      if (eventData.points[0].y != undefined) {
+      if (eventData.points[0].y !== undefined) {
         y = eventData.points[0].y;
-      } else if (eventData.points[0].low != undefined) {
+      } else if (eventData.points[0].low !== undefined) {
         high = eventData.points[0].high;
         low = eventData.points[0].low;
-        if (popup_data?.yanchor == "below") {
+        if (popup_data?.yanchor === "below") {
           y = eventData.points[0].low;
         } else {
           y = eventData.points[0].high;
@@ -265,21 +266,21 @@ export function init_annotation({
         ...popupData,
       };
 
-      if (high != undefined) {
+      if (high !== undefined) {
         // save the annotation to use later
         ohlcAnnotation.push(popup_data);
         setOhlcAnnotation(ohlcAnnotation);
         console.log("ohlcAnnotation", ohlcAnnotation);
       }
 
-      let to_update = plot_text({
+      const to_update = plot_text({
         plotData,
         popup_data: popup_data as PopupData,
         current_text: onAnnotationClick?.annotation?.text,
       });
 
       setAnnotations(
-        [...annotations, to_update.annotation].filter((a) => a != undefined)
+        [...annotations, to_update.annotation].filter((a) => a !== undefined),
       );
       plotData.layout.dragmode = "pan";
       setPlotData({ ...plotData, ...to_update.update });

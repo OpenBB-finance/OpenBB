@@ -1,0 +1,14 @@
+parent_command:econometrics
+usage: plot [-v VALUES]
+
+Plot data based on the index
+
+optional arguments:
+  -v VALUES, --values VALUES
+                        Dataset.column values to be displayed in a plot (default: None)
+
+
+Examples:
+- To plot the values of a specific dataset column: econometrics/plot -v Dataset.column
+- Plotting data from a particular column in the dataset: econometrics/plot --values Dataset.column
+- Display values from a specific dataset column in a plot: econometrics/plot -v Dataset.column

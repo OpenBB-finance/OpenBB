@@ -1,0 +1,12 @@
+parent_command:crypto/disc
+usage: dapp_chains
+
+Shows available dapp chains [Source: https://dappradar.com/]
+
+dapp_chains
+Examples:
+- To display the available dapp chains: crypto/disc/dapp_chains
+- View the list of dapp chains from the source: crypto/disc/dapp_chains
+- Show the dapp chains available: crypto/disc/dapp_chains
+- Retrieve the available dapp chains: crypto/disc/dapp_chains
+- Check the dapp chains from the source: crypto/disc/dapp_chains

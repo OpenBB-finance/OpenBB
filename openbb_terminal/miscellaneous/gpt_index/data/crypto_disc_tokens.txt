@@ -1,0 +1,11 @@
+parent_command:crypto/disc
+usage: tokens
+
+Shows chains that support tokens [Source: https://dappradar.com/]
+
+tokens
+Examples:
+- To display chains that support tokens: crypto/disc/tokens
+- Show supported token chains: crypto/disc/tokens
+- Retrieve chains with token support: crypto/disc/tokens
+- List chains that have token support: crypto/disc/tokens

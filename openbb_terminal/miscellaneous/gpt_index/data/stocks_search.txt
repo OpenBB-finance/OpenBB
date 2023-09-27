@@ -1,0 +1,15 @@
+parent_command: stocks/
+usage: search [-q QUERY [QUERY ...]] [-c country] [-s sector]               [-g industry_group] [-i industry] [-e exchange] [-a] [-h]               [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]               [-l LIMIT]  Show companies matching the search query, country, sector, industry and/or exchange. Note that by default only the United States exchanges are searched which tend to contain the most extensive data for each company. To search all exchanges use the --all-exchanges flag.  optional arguments:   -q QUERY [QUERY ...], --query QUERY [QUERY ...]                         The search term used to find company tickers (default:                         )   -c country, --country country                         Search by country to find stocks matching the criteria                         (default: )   -s sector, --sector sector                         Search by sector to find stocks matching the criteria                         (default: )   -g industry_group, --industrygroup industry_group                         Search by industry group to find stocks matching the                         criteria (default: )   -i industry, --industry industry                         Search by industry to find stocks matching the                         criteria (default: )   -e exchange, --exchange exchange                         Search by a specific exchange country to find stocks                         matching the criteria (default: )   -a, --all-exchanges   Whether to search all exchanges, without this option                         only the United States market is searched. (default:                         False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 10)  For more information and examples, use 'about search' to access the related guide.
+Summary: Search for companies based on a query, country, sector, industry, and/or exchange. You can set a limit for the number of results, search all exchanges, and export the data in various formats. By default, only United States exchanges are searched unless the --all-exchanges flag is used.
+
+Examples:
+- Find companies with a specific query: stocks/search -q QUERY
+- Search for companies in a specific country: stocks/search -c country
+- Search for companies in a specific sector: stocks/search -s sector
+- Find companies in a specific industry group: stocks/search -g industry_group
+- Search for companies in a specific industry: stocks/search -i industry
+- Find companies on a specific exchange: stocks/search -e exchange
+- Search for companies across all exchanges: stocks/search -a
+- Limit the number of search results: stocks/search -l LIMIT
+- Export search results in csv format: stocks/search --export csv
+- Save search results to a specific excel sheet: stocks/search --sheet-name Sheet1

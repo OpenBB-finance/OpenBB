@@ -1,0 +1,14 @@
+parent_command:forex/qa
+usage: bw [-y]
+
+Box and Whisker plot
+
+optional arguments:
+  -y, --yearly  Flag to show yearly bw plot (default: False)
+
+
+Examples:
+- To create a Box and Whisker plot for a forex pair: forex/load <PAIR>/qa/bw
+- To generate a yearly Box and Whisker plot for a specific forex pair: forex/load <PAIR>/qa/bw -y
+- For a Box and Whisker plot of a forex pair without loading a specific symbol: forex/qa/bw
+- To display a yearly Box and Whisker plot without specifying a forex pair: forex/qa/bw -y

@@ -51,6 +51,7 @@ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.married,wp.educ,wp.union -r bo
 
 load longley -a ll
 ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
+vif ll.totemp,ll.unemp,ll.armed
 
 ## Regression Tests
 

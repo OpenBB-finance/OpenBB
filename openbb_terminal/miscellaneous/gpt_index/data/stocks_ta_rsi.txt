@@ -1,0 +1,21 @@
+parent_command:stocks/ta
+usage: rsi [-l N_LENGTH] [-s N_SCALAR] [-d N_DRIFT]
+
+The Relative Strength Index (RSI) calculates a ratio of the recent upward price movements to the absolute price movement. The RSI ranges from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when the value is
+over 70/below 30. You can also look for divergence with price. If the price is making new highs/lows, and the RSI is not, it indicates a reversal.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 14)
+  -s N_SCALAR, --scalar N_SCALAR
+                        scalar (default: 100)
+  -d N_DRIFT, --drift N_DRIFT
+                        drift (default: 1)
+
+
+Examples:
+- To calculate the RSI for a stock with the default parameters: stocks/load <SYMBOL>/ta/rsi
+- To compute the RSI for a stock with a custom length of 20 periods: stocks/load <SYMBOL>/ta/rsi -l 20
+- To find the RSI for a stock with a different scalar value of 200: stocks/load <SYMBOL>/ta/rsi -s 200
+- To determine the RSI for a stock with a drift value of 2: stocks/load <SYMBOL>/ta/rsi -d 2
+- To analyze the RSI for a stock using custom length, scalar, and drift values: stocks/load <SYMBOL>/ta/rsi -l 20 -s 200 -d 2

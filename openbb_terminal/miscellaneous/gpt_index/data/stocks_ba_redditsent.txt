@@ -1,0 +1,16 @@
+parent_command: stocks/ba/
+usage: redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY]                   [--subreddits SUBREDDITS] [-l LIMIT]                   [-t {hour,day,week,month,year,all}] [--full] [-g] [-d] [-h]                   [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Determine general Reddit sentiment about a ticker. [Source: Reddit]  optional arguments:   -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments}                         search sorting type   -c COMPANY, --company COMPANY                         explicit name of company to search for, will override                         ticker symbol   --subreddits SUBREDDITS                         comma-separated list of subreddits to search   -l LIMIT, --limit LIMIT                         how many posts to gather from each subreddit   -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all}                         time period to get posts from -- all, year, month,                         week, or day; defaults to week   --full                enable comprehensive search   -g, --graphic         display graphic   -d, --display         Print table of sentiment values   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about redditsent' to access the related guide.
+Summary: Determine general Reddit sentiment about a ticker by searching through relevant posts. You can sort the search results, specify the company name, search within specific subreddits, set a limit on the number of posts to gather, choose a time period for the search, enable comprehensive search, display graphic, display a table of sentiment values, and export the data in various formats.
+
+Examples:
+- Analyze Reddit sentiment for <SYMBOL> with default settings: stocks/load <SYMBOL>/ba/redditsent
+- Analyze Reddit sentiment for <SYMBOL> and sort by top posts: stocks/load <SYMBOL>/ba/redditsent -s top
+- Analyze Reddit sentiment for a specific company: stocks/ba/redditsent -c "Company Name"
+- Search for <SYMBOL> sentiment in specific subreddits: stocks/load <SYMBOL>/ba/redditsent --subreddits investing,stocks
+- Limit the number of posts to gather from each subreddit for <SYMBOL>: stocks/load <SYMBOL>/ba/redditsent -l 10
+- Analyze Reddit sentiment for <SYMBOL> within the past month: stocks/load <SYMBOL>/ba/redditsent -t month
+- Perform a comprehensive search for <SYMBOL> sentiment: stocks/load <SYMBOL>/ba/redditsent --full
+- Display a graphic of Reddit sentiment for <SYMBOL>: stocks/load <SYMBOL>/ba/redditsent -g
+- Display a table of sentiment values for <SYMBOL>: stocks/load <SYMBOL>/ba/redditsent -d
+- Export Reddit sentiment data for <SYMBOL> in csv format: stocks/load <SYMBOL>/ba/redditsent --export csv
+- Save Reddit sentiment data for <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/ba/redditsent --sheet-name Sheet1

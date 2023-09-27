@@ -154,22 +154,44 @@ def display_price_target_from_analysts(
 
     fig.add_scatter(
         x=df_grouped.index,
-        y=df_grouped.values,
+        y=df_grouped["Price Target"].values,
         name="Average Price Target",
+    )
+
+    colors = df_analyst_plot["Rating"].apply(
+        lambda x: theme.up_color
+        if x == "BUY"
+        else theme.down_color
+        if x == "SELL"
+        else "#b3a8a8"
     )
 
     fig.add_scatter(
         x=df_analyst_plot.index,
         y=df_analyst_plot["Price Target"].values,
         name="Price Target",
-        mode="markers+lines",
+        mode="markers",
+        customdata=df_analyst_plot.apply(
+            lambda row: "<br>".join(
+                [
+                    f"<b>${x['Price Target']}</b> - <b>{x['Company']} ({x['Rating']})</b>"
+                    for _, x in df_analyst_plot[df_analyst_plot.index == row.name]
+                    .sort_values(by="Price Target", ascending=False)
+                    .iterrows()
+                ]
+            ),
+            axis=1,
+        ),
+        hovertemplate="<br>%{customdata}",
         marker=dict(
-            color=theme.down_color,
-            line=dict(color=theme.up_color, width=1),
+            color=colors,
+            line=dict(width=1, color="DarkSlateGrey"),
             size=10,
         ),
         line=dict(color=theme.get_colors()[1]),
     )
+
+    fig.update_layout(hovermode="x unified")
 
     export_data(
         export,

@@ -1,0 +1,32 @@
+parent_command:crypto/defi
+usage: vaults [-c {ethereum,polygon,avalanche,bsc,terra,fantom,moonriver,celo,heco,okex,cronos,arbitrum,eth,harmony,fuse,defichain,solana,optimism,kusama,metis,osmosis}]
+              [-p {aave,acryptos,alpaca,anchor,autofarm,balancer,bancor,beefy,belt,compound,convex,cream,curve,defichain,geist,lido,liquity,mirror,pancakeswap,raydium,sushi,tarot,traderjoe,tulip,ubeswap,uniswap,venus,yearn,osmosis,tulip}]
+              [-k {lp,single,noimploss,stable}] [-t TOP] [-s {name,chain,protocol,apy,tvl,link}] [-r] [-l]
+
+Display Top DeFi Vaults. [Source: https://coindix.com/]
+
+optional arguments:
+  -c {ethereum,polygon,avalanche,bsc,terra,fantom,moonriver,celo,heco,okex,cronos,arbitrum,eth,harmony,fuse,defichain,solana,optimism,kusama,metis,osmosis}, --chain {ethereum,polygon,avalanche,bsc,terra,fantom,moonriver,celo,heco,okex,cronos,arbitrum,eth,harmony,fuse,defichain,solana,optimism,kusama,metis,osmosis}
+                        Blockchain name e.g. ethereum, terra (default: None)
+  -p {aave,acryptos,alpaca,anchor,autofarm,balancer,bancor,beefy,belt,compound,convex,cream,curve,defichain,geist,lido,liquity,mirror,pancakeswap,raydium,sushi,tarot,traderjoe,tulip,ubeswap,uniswap,venus,yearn,osmosis,tulip}, --protocol {aave,acryptos,alpaca,anchor,autofarm,balancer,bancor,beefy,belt,compound,convex,cream,curve,defichain,geist,lido,liquity,mirror,pancakeswap,raydium,sushi,tarot,traderjoe,tulip,ubeswap,uniswap,venus,yearn,osmosis,tulip}
+                        DeFi protocol name e.g. aave, uniswap (default: None)
+  -k {lp,single,noimploss,stable}, --kind {lp,single,noimploss,stable}
+                        Kind/type of vault e.g. lp, single, noimploss, stable (default: None)
+  -t TOP, --top TOP     Number of records to display (default: 10)
+  -s {name,chain,protocol,apy,tvl,link}, --sort {name,chain,protocol,apy,tvl,link}
+                        Sort by given column. Default: timestamp (default: apy)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -l, --links           Flag to show vault link (default: True)
+
+
+Examples:
+- Display top 10 DeFi vaults across all chains and protocols: crypto/defi/vaults
+- Show top 5 DeFi vaults on the Ethereum blockchain: crypto/defi/vaults -c ethereum -t 5
+- Display top DeFi vaults for the Aave protocol: crypto/defi/vaults -p aave
+- Show top 10 single asset vaults: crypto/defi/vaults -k single
+- Display top DeFi vaults on the Terra blockchain sorted by total value locked (TVL): crypto/defi/vaults -c terra -s tvl
+- Show top 7 DeFi vaults for the Uniswap protocol, sorted by APY in ascending order: crypto/defi/vaults -p uniswap -t 7 -s apy -r
+- Display top 5 DeFi vaults on the Binance Smart Chain with vault links: crypto/defi/vaults -c bsc -t 5 -l
+- Show top DeFi vaults for the Sushi protocol on the Polygon network: crypto/defi/vaults -c polygon -p sushi
+- Display top 3 no impermanent loss vaults sorted by name: crypto/defi/vaults -k noimploss -t 3 -s name
+- Show top 10 DeFi vaults on the Solana blockchain without vault links: crypto/defi/vaults -c solana -l

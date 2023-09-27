@@ -59,6 +59,12 @@ If Miniconda is installed, a version number will be displayed, for example:
 conda 23.1.0
 ```
 
+There is a good chance the version of Conda is not current. Update it with the command below:
+
+```shell
+conda update -n base -c conda-forge conda
+```
+
 </details>
 
 <details><summary>Git</summary>
@@ -88,6 +94,11 @@ Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started
 <details><summary>Microsoft C++ Build Tools (Windows only)</summary>
 
 Use the instructions [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) to install or update Microsoft C++ Build Tools.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+
 
 </details>
 
@@ -208,6 +219,10 @@ Create the environment by copying the code below into the command line and agree
 ```shell
 conda env create -n obb --file build/conda/conda-3-9-env.yaml
 ```
+
+:::note
+Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+:::
 
 After the obb environment is created, activate it by entering:
 

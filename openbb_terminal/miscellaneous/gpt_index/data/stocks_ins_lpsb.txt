@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: lpsb [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest penny stock buys. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lpsb' to access the related guide.
+Summary: Display the latest penny stock buys from OpenInsider with an option to limit the number of rows displayed and export the data in various formats. You can also specify the sheet name for Excel files.
+
+Examples:
+- Show the 10 latest penny stock buys: stocks/ins/lpsb
+- Display the 5 latest penny stock buys: stocks/ins/lpsb -l 5
+- Show the 20 latest penny stock buys and export the data in CSV format: stocks/ins/lpsb -l 20 --export csv
+- Display the latest penny stock buys with a limit of 15 and save the data to an Excel sheet named "PennyBuys": stocks/ins/lpsb -l 15 --sheet-name PennyBuys

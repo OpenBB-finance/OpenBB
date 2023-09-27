@@ -1,0 +1,9 @@
+parent_command: stocks/fa/
+usage: warnings [-t TICKER] [-d] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Sean Seah warnings. Check: Consistent historical earnings per share; Consistently high return on equity; Consistently high return on assets; 5x Net Income > Long-Term Debt; and Interest coverage ratio more than 3. See https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment- page-1/ [Source: Market Watch]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -d, --debug           print insights into warnings calculation.   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about warnings' to access the related guide.
+Summary: The warnings command is based on Sean Seah's criteria for evaluating stocks. It checks for consistent historical earnings per share, high return on equity, high return on assets, 5x net income greater than long-term debt, and interest coverage ratio more than 3. You can analyze a specific ticker, enable debug mode for insights into warnings calculation, and export raw data into various formats.
+
+Examples:
+- Analyze the warnings for a specific stock: stocks/fa/warnings -t <SYMBOL>
+- Enable debug mode to get insights into warnings calculation for a stock: stocks/fa/warnings -t <SYMBOL> -d
+- Export the warnings data for a stock in csv format: stocks/fa/warnings -t <SYMBOL> --export csv
+- Save the warnings data for a stock to a specific excel sheet: stocks/fa/warnings -t <SYMBOL> --sheet-name Sheet1

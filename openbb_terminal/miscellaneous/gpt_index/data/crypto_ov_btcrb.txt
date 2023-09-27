@@ -1,0 +1,17 @@
+parent_command:crypto/ov
+usage: btcrb [-s SINCE] [-u UNTIL]
+
+Display bitcoin rainbow chart overtime including halvings. [Price data from source: https://glassnode.com] [Inspired by: https://blockchaincenter.net]
+
+optional arguments:
+  -s SINCE, --since SINCE
+                        Initial date. Default is initial BTC date: 2010-01-01 (default: 2010-01-01)
+  -u UNTIL, --until UNTIL
+                        Final date. Default is current date (default: 2023-06-02)
+
+
+Examples:
+- To display the bitcoin rainbow chart for the entire history of BTC: crypto/ov/btcrb
+- To show the bitcoin rainbow chart from a specific start date: crypto/ov/btcrb -s 2015-01-01
+- To display the bitcoin rainbow chart up to a specific end date: crypto/ov/btcrb -u 2022-01-01
+- To view the bitcoin rainbow chart between specific start and end dates: crypto/ov/btcrb -s 2015-01-01 -u 2022-01-01

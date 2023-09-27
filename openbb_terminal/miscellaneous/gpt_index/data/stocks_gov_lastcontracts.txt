@@ -1,0 +1,11 @@
+parent_command: stocks/gov/
+usage: lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s] [-h]                      [--export EXPORT]                      [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Last government contracts. [Source: www.quiverquant.com]  optional arguments:   -p PAST_TRANSACTION_DAYS, --past_transaction_days PAST_TRANSACTION_DAYS                         Past transaction days (default: 2)   -l LIMIT, --limit LIMIT                         Limit of contracts to display (default: 20)   -s, --sum             Flag to show total amount of contracts. (default:                         False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about lastcontracts' to access the related guide.
+Summary: Display the last government contracts for a specific stock symbol, with options to set the number of past transaction days, limit the number of contracts displayed, show the total amount of contracts, and export the data in various formats. You can also save the data to a specific excel sheet.
+
+Examples:
+- To view the last government contracts for <SYMBOL>: stocks/load <SYMBOL>/gov/lastcontracts
+- To view the last government contracts for <SYMBOL> within the past 5 days: stocks/load <SYMBOL>/gov/lastcontracts -p 5
+- To display the last 10 government contracts for <SYMBOL>: stocks/load <SYMBOL>/gov/lastcontracts -l 10
+- To show the total amount of contracts for <SYMBOL>: stocks/load <SYMBOL>/gov/lastcontracts -s
+- To export the last government contracts data for <SYMBOL> in xlsx format: stocks/load <SYMBOL>/gov/lastcontracts --export xlsx
+- To save the last government contracts data for <SYMBOL> to a specific excel sheet: stocks/load <SYMBOL>/gov/lastcontracts --sheet-name Sheet1

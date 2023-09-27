@@ -1,0 +1,22 @@
+parent_command:portfolio
+usage: mret [-p PERIOD] [-i {both,portfolio,benchmark}] [-g] [-s]
+
+Monthly returns
+
+optional arguments:
+  -p PERIOD, --period PERIOD
+                        Period to select start end of the year returns (default: all)
+  -i {both,portfolio,benchmark}, --instrument {both,portfolio,benchmark}
+                        Whether to show portfolio or benchmark monthly returns. By default both are shown in one table. (default: both)
+  -g, --graph           Plot the monthly returns on a heatmap (default: False)
+  -s, --show            Show monthly returns on heatmap (default: False)
+
+
+Examples:
+- To view monthly returns for both your portfolio and benchmark: portfolio/mret
+- To display monthly returns for a specific period: portfolio/mret -p 2021
+- To show only the portfolio's monthly returns: portfolio/mret -i portfolio
+- To show only the benchmark's monthly returns: portfolio/mret -i benchmark
+- To plot the monthly returns on a heatmap: portfolio/mret -g
+- To view and show monthly returns on a heatmap: portfolio/mret -s
+- To display the portfolio's monthly returns for a specific period on a heatmap: portfolio/mret -i portfolio -p 2021 -g

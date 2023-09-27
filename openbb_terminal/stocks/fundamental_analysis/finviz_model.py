@@ -87,7 +87,8 @@ def get_analyst_price_targets_workaround(
             'table[class="js-table-ratings fullview-ratings-outer"]'
         )[0]
 
-        for row in table:
+        # skip first row of table since its the header
+        for row in table[1:]:
             rating = row.xpath("td//text()")
             rating = [
                 val.replace("→", "->").replace("$", "") for val in rating if val != "\n"
@@ -110,7 +111,7 @@ def get_analyst_price_targets_workaround(
                     data["target"] = float(rating[4])
 
             analyst_price_targets.append(data)
-    except Exception:
+    except Exception:  # noqa: S110
         pass  # noqa
 
     return analyst_price_targets[:last_ratings]

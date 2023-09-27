@@ -1,0 +1,20 @@
+parent_command:crypto/ov
+usage: hold [-c {ethereum,bitcoin}] [-l LIMIT] [--bar]
+
+Shows overview of public companies that holds ethereum or bitcoin. You can find there most important metrics like: Total Bitcoin Holdings, Total Value (USD), Public Companies Bitcoin Dominance, Companies
+
+optional arguments:
+  -c {ethereum,bitcoin}, --coin {ethereum,bitcoin}
+                        companies with ethereum or bitcoin (default: bitcoin)
+  -l LIMIT, --limit LIMIT
+                        display N number of records (default: 5)
+  --bar                 Flag to show bar chart (default: False)
+
+
+Examples:
+- To view an overview of public companies holding Bitcoin: crypto/ov/hold
+- To view an overview of public companies holding Ethereum: crypto/ov/hold -c ethereum
+- To display the top 10 public companies holding Bitcoin: crypto/ov/hold -l 10
+- To display the top 3 public companies holding Ethereum: crypto/ov/hold -c ethereum -l 3
+- To show a bar chart of public companies holding Bitcoin: crypto/ov/hold --bar
+- To show a bar chart of public companies holding Ethereum: crypto/ov/hold -c ethereum --bar

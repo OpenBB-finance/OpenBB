@@ -126,6 +126,7 @@ def whoami():
     local_user = is_local()
     if not local_user:
         console_print(f"[info]email:[/info] {current_user.profile.email}")
+        console_print(f"[info]username:[/info] {current_user.profile.username}")
         console_print(f"[info]uuid:[/info] {current_user.profile.uuid}")
     else:
         print_guest_block_msg()

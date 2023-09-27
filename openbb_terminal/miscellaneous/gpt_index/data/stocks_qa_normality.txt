@@ -1,0 +1,9 @@
+parent_command:stocks/qa
+usage: normality
+
+Normality tests
+
+normality
+Examples:
+- Test normality for a loaded stock: stocks/load <SYMBOL>/qa/normality
+- Perform normality tests on a specific stock: stocks/load <SYMBOL>/qa/normality

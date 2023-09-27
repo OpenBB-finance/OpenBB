@@ -1,0 +1,11 @@
+parent_command: stocks/options/
+usage: plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}]             [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}] [-h]             [--export EXPORT]  Shows a plot for the given x and y variables  optional arguments:   -p, --put             Shows puts instead of calls (default: False)   -x {ltd,s,lp,b,a,c,pc,v,oi,iv}, --x_axis {ltd,s,lp,b,a,c,pc,v,oi,iv}                         ltd- last trade date, s- strike, lp- last price, b-                         bid, a- ask,c- change, pc- percent change, v- volume,                         oi- open interest, iv- implied volatility (default: s)   -y {ltd,s,lp,b,a,c,pc,v,oi,iv}, --y_axis {ltd,s,lp,b,a,c,pc,v,oi,iv}                         ltd- last trade date, s- strike, lp- last price, b-                         bid, a- ask,c- change, pc- percent change, v- volume,                         oi- open interest, iv- implied volatility (default:                         iv)   -c {smile}, --custom {smile}                         Choose from already created graphs (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )  For more information and examples, use 'about plot' to access the related guide.
+Summary: Display a customizable plot for various x and y variables related to options data. You can choose between calls and puts, select the x and y axis variables, and pick from pre-created graphs. Additionally, you can export the plot in various formats.
+
+Examples:
+- Display a plot of strike price vs implied volatility for call options of a specific stock: stocks/load <SYMBOL>/options/plot
+- Display a plot of last trade date vs volume for put options of a specific stock: stocks/load <SYMBOL>/options/plot -p -x ltd -y v
+- Display a plot of open interest vs percent change for call options of a specific stock: stocks/load <SYMBOL>/options/plot -x oi -y pc
+- Display a plot of bid price vs ask price for put options of a specific stock: stocks/load <SYMBOL>/options/plot -p -x b -y a
+- Display a pre-created "smile" graph for call options of a specific stock: stocks/load <SYMBOL>/options/plot -c smile
+- Export a plot of strike price vs implied volatility for call options of a specific stock in pdf format: stocks/load <SYMBOL>/options/plot --export pdf

@@ -61,7 +61,7 @@ def test_display_historical(mocker, symbols):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "symbol",
-    ["ES", "YI"],
+    ["ES", "CL"],
 )
 def test_display_curve(mocker, symbol):
     yf_download = yfinance.download

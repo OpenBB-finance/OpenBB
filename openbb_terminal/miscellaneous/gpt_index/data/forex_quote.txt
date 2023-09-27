@@ -1,0 +1,9 @@
+parent_command:forex
+usage: quote
+
+Get current exchange rate quote
+
+quote
+Examples:
+- To obtain the current exchange rate quote for a specific currency pair: forex/load <PAIR>/quote
+- Get the latest exchange rate for a desired currency pair: forex/load <PAIR>/quote

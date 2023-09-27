@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import pandas as pd
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -15,6 +16,8 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("date", "MOCK_DATE"),
+            ("before", "MOCK_BEFORE"),
+            ("after", "MOCK_AFTER"),
         ],
     }
 
@@ -83,3 +86,23 @@ def test_call_func(func, mocker, recorder):
     result = getattr(yfinance_model, func)(symbol="PM")
 
     recorder.capture(result)
+
+
+@pytest.mark.vcr
+def test_load_options(recorder):
+    data = yfinance_model.load_options(symbol="OXY")
+    assert isinstance(data.chains, pd.DataFrame)
+    assert isinstance(data.last_price, float)
+    assert isinstance(data.underlying_price, pd.Series)
+    assert data.hasIV
+    df1 = data.chains
+    data2 = yfinance_model.load_options(symbol="OXY", pydantic=True)
+    assert isinstance(data2.chains, dict)
+    assert isinstance(data2.underlying_price, dict)
+    assert data2.hasIV
+    assert isinstance(data2.expirations, list)
+    assert isinstance(data2.strikes, list)
+    df2 = pd.DataFrame(data2.chains)
+    assert df1.equals(df2)
+    recorder.capture(data.underlying_price.index.to_list())
+    recorder.capture(df2.columns.to_list())

@@ -1,0 +1,14 @@
+parent_command:crypto/onchain
+usage: query [-q QUERY [QUERY ...]]
+
+Make any flipsidecrypto query [Source:https://docs.flipsidecrypto.com/]
+
+optional arguments:
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query to make (default: None)
+
+
+Examples:
+- To make a flipsidecrypto query for a specific coin: crypto/onchain/query -q <COIN>
+- Query multiple coins at once: crypto/onchain/query -q <COIN1> <COIN2> <COIN3>
+- Use the --query option to make a flipsidecrypto query: crypto/onchain/query --query <COIN>

@@ -1,0 +1,37 @@
+parent_command:forecast
+usage: autoarima [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
+
+Perform Automatic ARIMA forecast: https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+
+optional arguments:
+  --naive               Show the naive baseline for a model. (default: False)
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+  -n N_DAYS, --n-days N_DAYS
+                        prediction days. (default: 5)
+  -s {N,A,M}, --seasonal {N,A,M}
+                        Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
+  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
+                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
+  -w START_WINDOW, --window START_WINDOW
+                        Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
+  --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
+  --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
+  --residuals           Show the residuals for the model. (default: False)
+  --forecast-only       Do not plot the historical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
+
+
+Examples:
+- Perform an Automatic ARIMA forecast for the default dataset and column: forecast/autoarima
+- Perform an Automatic ARIMA forecast for a specific dataset and target column: forecast/autoarima -d {AAPL} -c TARGET_COLUMN
+- Perform an Automatic ARIMA forecast for a specific dataset with a 10-day prediction window: forecast/autoarima -d {AAPL} -n 10
+- Perform an Automatic ARIMA forecast for a specific dataset with multiplicative seasonality: forecast/autoarima -d {AAPL} -s M
+- Perform an Automatic ARIMA forecast for a specific dataset with a different seasonal period: forecast/autoarima -d {AAPL} -p 4
+- Perform an Automatic ARIMA forecast for a specific dataset with a custom start window: forecast/autoarima -d {AAPL} -w 0.9
+- Perform an Automatic ARIMA forecast for a specific dataset within a specific date range: forecast/autoarima -d {AAPL} --start 2021-01-01 --end 2021-12-31
+- Perform an Automatic ARIMA forecast for a specific dataset and display the residuals: forecast/autoarima -d {AAPL} --residuals
+- Perform an Automatic ARIMA forecast for a specific dataset and plot only the forecast: forecast/autoarima -d {AAPL} --forecast-only
+- Perform an Automatic ARIMA forecast for a specific dataset and export predictions to a csv file: forecast/autoarima -d {AAPL} --export-pred-raw

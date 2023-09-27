@@ -1,0 +1,16 @@
+parent_command:econometrics
+usage: delete [-d DELETE]
+
+The column you want to delete from a dataset.
+
+optional arguments:
+  -d DELETE, --delete DELETE
+                        The columns you want to delete from a dataset. Use format: <dataset.column> or multiple with <dataset.column>,<dataset.column2> (default: None)
+
+
+Examples:
+- To delete a single column from a dataset: econometrics/delete -d dataset.column
+- To delete multiple columns from a dataset: econometrics/delete -d dataset.column1,dataset.column2
+- Remove a specific column from the dataset: econometrics/delete --delete dataset.column
+- Erase a single column from a dataset using the long form: econometrics/delete --delete dataset.column1
+- Eliminate two columns from a dataset at once: econometrics/delete -d dataset.column1,dataset.column2

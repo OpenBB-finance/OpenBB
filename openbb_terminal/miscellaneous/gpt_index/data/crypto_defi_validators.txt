@@ -1,0 +1,24 @@
+parent_command:crypto/defi
+usage: validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [-r]
+
+Displays information about terra validators. [Source: https://fcd.terra.dev/swagger]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number of validators to show (default: 10)
+  -s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}, --sort {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}
+                        Sort by given column. Default: votingPower (default: votingPower)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Display information about the top 10 terra validators: crypto/defi/validators
+- Show the top 20 terra validators: crypto/defi/validators -l 20
+- Display information about terra validators sorted by commission rate: crypto/defi/validators -s commissionRate
+- Show the top 15 terra validators sorted by uptime: crypto/defi/validators -l 15 -s uptime
+- Display information about terra validators sorted by validator name in ascending order: crypto/defi/validators -s validatorName -r
+- Show the top 5 terra validators sorted by tokens amount in ascending order: crypto/defi/validators -l 5 -s tokensAmount -r
+- Display information about terra validators sorted by status and in ascending order: crypto/defi/validators -s status -r
+- Show the top 10 terra validators sorted by voting power in ascending order: crypto/defi/validators -l 10 -s votingPower -r
+- Display information about the top 25 terra validators sorted by commission rate: crypto/defi/validators -l 25 -s commissionRate
+- Show information about terra validators sorted by uptime in ascending order: crypto/defi/validators -s uptime -r

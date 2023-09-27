@@ -1,0 +1,10 @@
+parent_command:portfolio/brokers/degiro
+usage: topnews
+
+topnews
+Examples:
+- Check the top news for your Degiro portfolio: portfolio/brokers/degiro/topnews
+- Get the latest news related to your Degiro broker account: portfolio/brokers/degiro/topnews
+- Access top news for your investments in Degiro: portfolio/brokers/degiro/topnews
+- View the most recent news for your Degiro portfolio: portfolio/brokers/degiro/topnews
+- Retrieve top news for your Degiro account: portfolio/brokers/degiro/topnews

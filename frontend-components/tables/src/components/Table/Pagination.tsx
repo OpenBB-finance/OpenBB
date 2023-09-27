@@ -27,7 +27,7 @@ export default function Pagination({
   const totalRows = table.getFilteredRowModel().rows.length || 0;
 
   return (
-    <div className="hidden md:flex items-center gap-8">
+    <div className="hidden md:flex items-center gap-3">
       <Select
         value={currentPage}
         onChange={(value) => {
@@ -68,7 +68,7 @@ export default function Pagination({
             className="_input"
           />
           </span>*/}
-      <div className="hidden lg:block">
+      <div className="hidden mdl:block">
         <button
           className={clsx("px-2", {
             "text-grey-400 dark:text-grey-700": !table.getCanPreviousPage(),

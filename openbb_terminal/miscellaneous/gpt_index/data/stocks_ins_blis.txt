@@ -1,0 +1,9 @@
+parent_command: stocks/ins/
+usage: blis [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print latest insider sales 100k. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about blis' to access the related guide.
+Summary: Display the latest insider sales with a value of at least 100k for a specific stock symbol. You can set a limit for the number of data rows to display and export the data in various formats. The source of the information is OpenInsider.
+
+Examples:
+- To view the latest insider sales for <SYMBOL>: stocks/load <SYMBOL>/ins/blis
+- To view the latest insider sales for <SYMBOL> with a limit of 20 data rows: stocks/load <SYMBOL>/ins/blis -l 20
+- To export the latest insider sales for <SYMBOL> in csv format: stocks/load <SYMBOL>/ins/blis --export csv
+- To export the latest insider sales for <SYMBOL> in xlsx format with a specific sheet name: stocks/load <SYMBOL>/ins/blis --export xlsx --sheet-name Sheet1

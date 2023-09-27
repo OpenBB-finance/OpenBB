@@ -1,0 +1,29 @@
+parent_command:crypto/ov
+usage: markets [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}] [-l LIMIT]
+               [-s {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}] [-r]
+
+Show market related (price, supply, volume) coin information for all coins on CoinPaprika. You can display only N number of coins with --limit parameter. You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h,
+pct_change_1h, pct_change_24h, ath_price, pct_from_ath, --sortby parameter and also with --reverse flag to sort ascending. Displays: rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h, ath_price,
+pct_from_ath,
+
+optional arguments:
+  --vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}
+                        Quoted currency. Default USD (default: USD)
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 15)
+  -s {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}, --sortby {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}
+                        Sort by given column. Default: rank (default: rank)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- Display market information for all coins in USD: crypto/ov
+- Show market data for the top 10 coins in EUR: crypto/ov --vs EUR -l 10
+- View market information for the top 5 coins, sorted by 24-hour volume: crypto/ov -l 5 -s volume_24h
+- Display market data for all coins in GBP, sorted by percent change in the last 1 hour: crypto/ov --vs GBP -s pct_change_1h
+- Show the top 20 coins in JPY, sorted by market cap change in the last 24 hours in ascending order: crypto/ov --vs JPY -l 20 -s mcap_change_24h -r
+- View market information for the top 15 coins in CAD, sorted by percent change in the last 24 hours: crypto/ov --vs CAD -l 15 -s pct_change_24h
+- Display market data for all coins in AUD, sorted by all-time high price in ascending order: crypto/ov --vs AUD -s ath_price -r
+- Show market information for the top 10 coins in CHF, sorted by percent from all-time high: crypto/ov --vs CHF -l 10 -s pct_from_ath
+- View market data for the top 25 coins in SGD, sorted by name in ascending order: crypto/ov --vs SGD -l 25 -s name -r
+- Display market information for the top 30 coins in INR, sorted by symbol in ascending order: crypto/ov --vs INR -l 30 -s symbol -r

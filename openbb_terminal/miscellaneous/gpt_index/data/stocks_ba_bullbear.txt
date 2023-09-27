@@ -1,0 +1,7 @@
+parent_command: stocks/ba/
+usage: bullbear [-h]  Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]  optional arguments:   -h, --help  show this help message (default: False)  For more information and examples, use 'about bullbear' to access the related guide.
+Summary: Display the bull and bear sentiment based on the last 30 messages on the board, along with the watchlist_count. The data source for this information is Stocktwits.
+
+Examples:
+- Show bull and bear sentiment for a specific stock: stocks/load <SYMBOL>/ba/bullbear
+- Retrieve bullbear sentiment and watchlist count for a stock: stocks/load <SYMBOL>/ba/bullbear

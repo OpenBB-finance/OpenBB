@@ -1,0 +1,17 @@
+parent_command:economy/qa
+usage: line [--log] [--ml ML] [--ms MS]
+
+Show line plot of selected data or highlight specific datetimes.
+
+optional arguments:
+  --log    Plot with y on log scale (default: False)
+  --ml ML  Draw vertical line markers to highlight certain events (default: )
+  --ms MS  Draw scatter markers to highlight certain events (default: )
+
+
+Examples:
+- To display a line plot of the selected economic data: economy/qa/line
+- To show a line plot of the chosen data with a log scale on the y-axis: economy/qa/line --log
+- To create a line plot highlighting specific events with vertical line markers: economy/qa/line --ml "2022-01-01,2022-06-01"
+- To display a line plot with scatter markers emphasizing particular events: economy/qa/line --ms "2022-03-01,2022-09-01"
+- To present a line plot on a log scale with vertical line markers for specific dates: economy/qa/line --log --ml "2022-02-01,2022-07-01"

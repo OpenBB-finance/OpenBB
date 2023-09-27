@@ -1,0 +1,25 @@
+parent_command:crypto/ta
+usage: bbands [-l N_LENGTH] [-s N_STD] [-m {ema,sma,wma,hma,zlma}]
+
+Bollinger Bands consist of three lines. The middle band is a simple moving average (generally 20 periods) of the typical price (TP). The upper and lower bands are F standard deviations (generally 2) above and below the middle band.
+The bands widen and narrow when the volatility of the price is higher or lower, respectively. Bollinger Bands do not, in themselves, generate buy or sell signals; they are an indicator of overbought or oversold conditions. When the
+price is near the upper or lower band it indicates that a reversal may be imminent. The middle band becomes a support or resistance level. The upper and lower bands can also be interpreted as price targets. When the price bounces
+off of the lower band and crosses the middle band, then the upper band becomes the price target.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        length (default: 15)
+  -s N_STD, --std N_STD
+                        std (default: 2)
+  -m {ema,sma,wma,hma,zlma}, --mamode {ema,sma,wma,hma,zlma}
+                        mamode (default: sma)
+
+
+Examples:
+- To plot Bollinger Bands with default settings for a specific cryptocurrency: crypto/load <COIN>/ta/bbands
+- To display Bollinger Bands with a custom length of 20 for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -l 20
+- To plot Bollinger Bands with a custom standard deviation of 3 for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -s 3
+- To display Bollinger Bands using the Exponential Moving Average (EMA) method for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -m ema
+- To plot Bollinger Bands using the Weighted Moving Average (WMA) method and a custom length of 25 for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -l 25 -m wma
+- To display Bollinger Bands with a custom standard deviation of 1.5 and the Hull Moving Average (HMA) method for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -s 1.5 -m hma
+- To plot Bollinger Bands using the Zero Lag Moving Average (ZLMA) method for a specific cryptocurrency: crypto/load <COIN>/ta/bbands -m zlma

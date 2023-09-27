@@ -1,0 +1,20 @@
+parent_command:crypto/ta
+usage: adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
+
+Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator is essentially a momentum indicator, but of the Accumulation-Distribution line rather than merely price. It looks at both the strength of price moves and
+the underlying buying and selling pressure during a given time period. The oscillator reading above zero indicates net buying pressure, while one below zero registers net selling pressure. Divergence between the indicator and pure
+price moves are the most common signals from the indicator, and often flag market turning points.
+
+optional arguments:
+  --open                uses open value of stock (default: False)
+  --fast N_LENGTH_FAST  fast length (default: 3)
+  --slow N_LENGTH_SLOW  slow length (default: 10)
+
+
+Examples:
+- To calculate the Accumulation/Distribution Oscillator for a cryptocurrency using default settings: crypto/load <COIN>/ta/adosc
+- To calculate the Accumulation/Distribution Oscillator using open values of the cryptocurrency: crypto/load <COIN>/ta/adosc --open
+- To calculate the Accumulation/Distribution Oscillator with a custom fast length of 5: crypto/load <COIN>/ta/adosc --fast 5
+- To calculate the Accumulation/Distribution Oscillator with a custom slow length of 15: crypto/load <COIN>/ta/adosc --slow 15
+- To calculate the Accumulation/Distribution Oscillator with custom fast and slow lengths (7 and 20): crypto/load <COIN>/ta/adosc --fast 7 --slow 20
+- To calculate the Accumulation/Distribution Oscillator using open values and custom fast and slow lengths (4 and 12): crypto/load <COIN>/ta/adosc --open --fast 4 --slow 12

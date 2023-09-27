@@ -1,0 +1,12 @@
+parent_command:crypto/qa
+usage: normality
+
+Normality tests
+
+normality
+Examples:
+- Perform normality tests on the loaded cryptocurrency data: crypto/load <COIN>/qa/normality
+- Test normality for a specific cryptocurrency: crypto/load <COIN>/qa/normality
+- Conduct normality tests for the chosen crypto asset: crypto/load <COIN>/qa/normality
+- Assess normality for the loaded crypto data: crypto/load <COIN>/qa/normality
+- Examine normality of the selected cryptocurrency: crypto/load <COIN>/qa/normality

@@ -52,7 +52,6 @@ The block above loads daily QQQ historical prices and volume, then enters the Te
 | macd         | Momentum   |      Moving Average Convergence/Divergence. |
 | fisher       | Momentum   |                           Fisher Transform. |
 | rsi          | Momentum   |                    Relative Strength Index. |
-| rsp          | Momentum   |               Relative Strength Percentile. |
 | stoch        | Momentum   |                      Stochastic Oscillator. |
 | adx          | Trend      |         Average Directional Movement Index. |
 | aroon        | Trend      |                            Aroon Indicator. |

@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: inv
+
+Display asset's investors [Source: https://messari.io]
+
+inv
+Examples:
+- To display the investors of a specific cryptocurrency: crypto/load <COIN>/dd/inv
+- Show the list of investors for a particular crypto asset: crypto/load <COIN>/dd/inv
+- Retrieve the investors associated with a specific cryptocurrency: crypto/load <COIN>/dd/inv
+- Obtain the list of investors for a given crypto asset: crypto/load <COIN>/dd/inv
+- Access the investors information for a particular cryptocurrency: crypto/load <COIN>/dd/inv

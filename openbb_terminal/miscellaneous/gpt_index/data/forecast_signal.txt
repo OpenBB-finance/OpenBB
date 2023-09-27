@@ -1,0 +1,20 @@
+parent_command:forecast
+usage: signal [-d {AAPL}] [-c TARGET_COLUMN]
+
+Add price signal to dataset based on closing price. 1 if the signal is that short term price will go up as compared to the long term. 0 if the signal is that short term price will go down as compared to the long term.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+  -c TARGET_COLUMN, --target-column TARGET_COLUMN
+                        The name of the specific column you want to use (default: close)
+
+
+Examples:
+- Add a price signal to the default dataset: forecast/signal
+- Add a price signal to a specific dataset: forecast/signal -d <SYMBOL>
+- Add a price signal using a specific column: forecast/signal -c open
+- Add a price signal to a specific dataset and use a specific column: forecast/signal -d <SYMBOL> -c high
+- For a specific crypto dataset, add a price signal: forecast/signal -d <COIN>
+- Add a price signal to a specific forex dataset: forecast/signal -d <PAIR>
+- For a specific futures dataset, add a price signal: forecast/signal -d <FUTURE>

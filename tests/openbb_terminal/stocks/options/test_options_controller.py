@@ -508,7 +508,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--limit=2",
                 "--export=csv",
             ],
-            "syncretism_view.view_historical_greeks",
+            "intrinio_view.view_historical_greeks",
             [],
             dict(
                 symbol="MOCK_TICKER",
@@ -535,7 +535,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--limit=2",
                 "--export=csv",
             ],
-            "syncretism_view.view_historical_greeks",
+            "intrinio_view.view_historical_greeks",
             [],
             dict(
                 symbol="MOCK_TICKER",
@@ -976,6 +976,7 @@ def test_call_func_no_selected_date(func, mocker):
     ns = argparse.Namespace()
     ns.exp = ""  # set the exp attribute
     ns.chain_id = None
+    ns.expiration = None
     mocker.patch(
         "openbb_terminal.stocks.options.options_controller.OptionsController.parse_known_args_and_warn",
         return_value=ns,  # return the Namespace object

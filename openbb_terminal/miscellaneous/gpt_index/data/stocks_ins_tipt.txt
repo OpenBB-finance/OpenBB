@@ -1,0 +1,10 @@
+parent_command: stocks/ins/
+usage: tipt [-l LIMIT] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Print top insider purchases of the day. [Source: OpenInsider]  optional arguments:   -l LIMIT, --limit LIMIT                         Limit of datarows to display (default: 10)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about tipt' to access the related guide.
+Summary: Display the top insider purchases of the day for stocks, with options to limit the number of rows displayed, and export the data in various formats. Data is sourced from OpenInsider. You can also specify the name of an excel sheet to save the data when exporting to an .xlsx file.
+
+Examples:
+- Show the top 10 insider purchases of the day: stocks/ins/tipt
+- Show the top 5 insider purchases of the day: stocks/ins/tipt -l 5
+- Export the top 10 insider purchases of the day to a csv file: stocks/ins/tipt --export csv
+- Export the top 10 insider purchases of the day to an xlsx file with a custom sheet name: stocks/ins/tipt --export xlsx --sheet-name InsiderPurchases
+- Display the top 20 insider purchases of the day: stocks/ins/tipt -l 20

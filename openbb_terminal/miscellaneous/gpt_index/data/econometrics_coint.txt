@@ -1,0 +1,18 @@
+parent_command:econometrics
+usage: coint -t TS [-p] [-s SIGNIFICANT]
+
+Show co-integration between two timeseries
+
+optional arguments:
+  -t TS, --time_series TS
+                        The time series you wish to test co-integration on. E.g. historical.open,historical2.close. (default: None)
+  -p, --plot            Plot Z-Values (default: False)
+  -s SIGNIFICANT, --significant SIGNIFICANT
+                        Show only companies that have p-values lower than this percentage (default: 0)
+
+
+Examples:
+- Analyze co-integration between two time series: econometrics/coint -t historical.open,historical2.close
+- Show co-integration between two time series and plot Z-Values: econometrics/coint -t historical.open,historical2.close -p
+- Analyze co-integration for time series with a specific significance level: econometrics/coint -t historical.open,historical2.close -s 5
+- Display co-integration results and plot Z-Values for a specific significance level: econometrics/coint -t historical.open,historical2.close -p -s 5

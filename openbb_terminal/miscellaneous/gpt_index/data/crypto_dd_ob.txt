@@ -1,0 +1,24 @@
+parent_command:crypto/dd
+usage: ob
+          [-e {ace,alpaca,ascendex,bequant,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitbns,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,blockchaincom,btcalpha,btcbox,btcex,btcmarkets,btctradeua,btcturk,buda,bybit,cex,coinbase,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinmate,coinone,coinspot,cryptocom,currencycom,delta,deribit,digifinex,exmo,flowbtc,fmfwio,gate,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,krakenfutures,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,poloniexfutures,probit,ripio,stex,tidex,timex,tokocrypto,upbit,wavesexchange,wazirx,whitebit,woo,yobit,zaif,zb,zonda}]
+          [--vs VS]
+
+Get the order book for selected coin
+
+optional arguments:
+  -e {ace,alpaca,ascendex,bequant,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitbns,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,blockchaincom,btcalpha,btcbox,btcex,btcmarkets,btctradeua,btcturk,buda,bybit,cex,coinbase,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinmate,coinone,coinspot,cryptocom,currencycom,delta,deribit,digifinex,exmo,flowbtc,fmfwio,gate,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,krakenfutures,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,poloniexfutures,probit,ripio,stex,tidex,timex,tokocrypto,upbit,wavesexchange,wazirx,whitebit,woo,yobit,zaif,zb,zonda}, --exchange {ace,alpaca,ascendex,bequant,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitbns,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,blockchaincom,btcalpha,btcbox,btcex,btcmarkets,btctradeua,btcturk,buda,bybit,cex,coinbase,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinmate,coinone,coinspot,cryptocom,currencycom,delta,deribit,digifinex,exmo,flowbtc,fmfwio,gate,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,krakenfutures,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,poloniexfutures,probit,ripio,stex,tidex,timex,tokocrypto,upbit,wavesexchange,wazirx,whitebit,woo,yobit,zaif,zb,zonda}
+                        Exchange to search for order book (default: binance)
+  --vs VS               Quote currency (what to view coin vs) (default: usdt)
+
+
+Examples:
+- Retrieve the order book for a specific coin from Binance: crypto/dd/ob -e binance --vs usdt
+- View the order book for a coin versus BTC on the Kraken exchange: crypto/dd/ob -e kraken --vs btc
+- Get the order book for a coin using the default exchange (Binance) and quote currency (USDT): crypto/dd/ob
+- Obtain the order book for a coin on the Bitstamp exchange and compare it to EUR: crypto/dd/ob -e bitstamp --vs eur
+- Check the order book for a coin on the KuCoin exchange with a custom quote currency: crypto/dd/ob -e kucoin --vs eth
+- Examine the order book for a coin on the Gemini exchange, comparing it to USD: crypto/dd/ob -e gemini --vs usd
+- Access the order book for a coin on the Bittrex exchange with a specific quote currency: crypto/dd/ob -e bittrex --vs bnb
+- Review the order book for a coin on the Bitfinex exchange, using a custom quote currency: crypto/dd/ob -e bitfinex --vs xrp
+- Fetch the order book for a coin on the Huobi exchange and compare it to a custom quote currency: crypto/dd/ob -e huobi --vs ltc
+- Look up the order book for a coin on the Poloniex exchange, using a specific quote currency: crypto/dd/ob -e poloniex --vs dash

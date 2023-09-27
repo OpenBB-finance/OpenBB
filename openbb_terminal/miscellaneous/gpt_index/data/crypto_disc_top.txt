@@ -1,0 +1,25 @@
+parent_command:crypto/disc
+usage: top [-c CATEGORY] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-r]
+
+Display N coins from the data source, if the data source is CoinGecko it can receive a category as argument (-c decentralized-finance-defi or -c stablecoins) and will show only the top coins in that category. can also receive sort
+arguments (these depend on the source), e.g., --sort Volume [$] You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with CoinGecko Number of coins to show: -l 10
+
+optional arguments:
+  -c CATEGORY, --category CATEGORY
+                        Category (e.g., stablecoins). Empty for no category. Only works for 'CoinGecko' source. (default: )
+  -l LIMIT, --limit LIMIT
+                        Limit of records (default: 10)
+  -s SORTBY [SORTBY ...], --sort SORTBY [SORTBY ...]
+                        Sort by given column. Default: Market Cap Rank (default: ['market_cap_rank'])
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the top 10 coins sorted by market cap rank: crypto/disc/top
+- To display the top 5 coins in the decentralized-finance-defi category: crypto/disc/top -c decentralized-finance-defi -l 5
+- To display the top 20 coins sorted by volume: crypto/disc/top -l 20 -s "Volume [$]"
+- To display the top 10 stablecoins: crypto/disc/top -c stablecoins
+- To display the top 15 coins sorted by price in ascending order: crypto/disc/top -l 15 -s "Price [$]" -r
+- To display the top 10 coins sorted by multiple columns (e.g., market cap rank and volume): crypto/disc/top -s "Market Cap Rank" "Volume [$]"
+- To display the top 25 coins in the decentralized-finance-defi category sorted by market cap: crypto/disc/top -c decentralized-finance-defi -l 25 -s "Market Cap"
+- To display the top 10 coins sorted by name in ascending order: crypto/disc/top -s Name -r

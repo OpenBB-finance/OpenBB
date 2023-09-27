@@ -1,0 +1,14 @@
+parent_command: stocks/options/
+usage: vol [-m MIN] [-M MAX] [-c] [-p] [-e {}] [-h] [--export EXPORT]            [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw]            [--source {YahooFinance,Tradier,Nasdaq}]  Plot volume. Volume refers to the number of contracts traded today.  optional arguments:   -m MIN, --min MIN     Min strike to plot (default: -1)   -M MAX, --max MAX     Max strike to plot (default: -1)   -c, --calls           Flag to plot call options only (default: False)   -p, --puts            Flag to plot put options only (default: False)   -e {}, --expiration {}                         Select expiration date (YYYY-MM-DD) (default: )   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   --source {YahooFinance,Tradier,Nasdaq}                         Data source to select from (default: YahooFinance)  For more information and examples, use 'about vol' to access the related guide.
+Summary: Plot volume for call and/or put options of a specific stock symbol. Volume refers to the number of contracts traded today. You can set a minimum and maximum strike to plot, select a specific expiration date, and choose the data source. You can also export the data in various formats and display raw data.
+
+Examples:
+- To plot volume for all options of a stock symbol: stocks/load <SYMBOL>/options/vol
+- To plot volume for call options only for a stock symbol: stocks/load <SYMBOL>/options/vol -c
+- For put options only of a stock symbol, plot volume: stocks/load <SYMBOL>/options/vol -p
+- Plot volume for strike prices between 10 and 50 for a stock symbol: stocks/load <SYMBOL>/options/vol -m 10 -M 50
+- Plot volume for options expiring on a specific date for a stock symbol: stocks/load <SYMBOL>/options/vol -e 2022-12-31
+- Choose a specific data source and plot volume for a stock symbol: stocks/load <SYMBOL>/options/vol --source Nasdaq
+- Export raw data in csv format for a stock symbol's options volume: stocks/load <SYMBOL>/options/vol --export csv
+- Save data to a specific excel sheet for a stock symbol's options volume: stocks/load <SYMBOL>/options/vol --sheet-name Sheet1
+- Display raw data for a stock symbol's options volume: stocks/load <SYMBOL>/options/vol --raw

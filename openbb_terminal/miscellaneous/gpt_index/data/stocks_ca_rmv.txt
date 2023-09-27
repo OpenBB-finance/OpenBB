@@ -1,0 +1,9 @@
+parent_command: stocks/ca/
+usage: rmv [-s L_SIMILAR] [-h]  Remove similar tickers to compare with.  optional arguments:   -s L_SIMILAR, --similar L_SIMILAR                         Tickers to remove from similar list (default: [])   -h, --help            show this help message (default: False)  For more information and examples, use 'about rmv' to access the related guide.
+Summary: Remove similar tickers from the comparison list using the rmv command. You can specify the tickers to be removed with the -s or --similar option.
+
+Examples:
+- Remove a similar ticker from the comparison list: stocks/ca/rmv -s <SYMBOL>
+- Remove multiple similar tickers from the comparison list: stocks/ca/rmv -s <SYMBOL1> <SYMBOL2> <SYMBOL3>
+- Remove a single similar ticker after loading a specific stock symbol: stocks/load <SYMBOL>/ca/rmv -s <SIMILAR_SYMBOL>
+- Remove several similar tickers after loading a specific stock symbol: stocks/load <SYMBOL>/ca/rmv -s <SIMILAR_SYMBOL1> <SIMILAR_SYMBOL2>

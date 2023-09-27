@@ -1,0 +1,13 @@
+parent_command:crypto/qa
+usage: acf [-l LAGS]
+
+Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff crypto data
+
+optional arguments:
+  -l LAGS, --lags LAGS  maximum lags to display in plots (default: 15)
+
+
+Examples:
+- To display auto-correlation and partial auto-correlation functions for diff and diff diff crypto data with default lags: crypto/load <COIN>/qa/acf
+- Display auto-correlation and partial auto-correlation functions for a specific number of lags: crypto/load <COIN>/qa/acf -l 20
+- Show auto-correlation and partial auto-correlation functions for diff and diff diff crypto data with 10 lags: crypto/load <COIN>/qa/acf --lags 10

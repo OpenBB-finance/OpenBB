@@ -1,0 +1,12 @@
+parent_command:crypto/ov
+usage: global [--pie]
+
+Shows global statistics about Crypto Market
+
+optional arguments:
+  --pie  Flag to show pie chart with market cap distribution. Works only with CoinGecko source (default: False)
+
+
+Examples:
+- To display global statistics about the Crypto Market: crypto/ov global
+- To show a pie chart with market cap distribution for the Crypto Market: crypto/ov global --pie

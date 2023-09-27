@@ -232,6 +232,9 @@ INDICES = {
     "cn_szse_comp": {"name": "SZSE Component Index (CNY)", "ticker": "399001.SZ"},
     "cn_szse_a": {"name": "SZSE A-Shares Index (CNY)", "ticker": "399107.SZ"},
     "tw_twii": {"name": "TSEC Weighted Index (TWD)", "ticker": "^TWII"},
+    "tw_tcii": {"name": "TSEC Cement and Ceramics Subindex (TWD)", "ticker": "^TCII"},
+    "tw_tfii": {"name": "TSEC Foods Subindex (TWD)", "ticker": "^TFII"},
+    "tw_tfni": {"name": "TSEC Finance Subindex (TWD)", "ticker": "^TFNI"},
     "tw_tpai": {"name": "TSEC Paper and Pulp Subindex (TWD)", "ticker": "^TPAI"},
     "hk_hsi": {"name": "Hang Seng Index (HKD)", "ticker": "^HSI"},
     "hk_utilities": {
@@ -248,6 +251,10 @@ INDICES = {
         "ticker": "^HSNP",
     },
     "hk_hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
+    "hk_titans30": {
+        "name": "Dow Jones Hong Kong Titans 30 Index (HKD)",
+        "ticker": "^XLHK",
+    },
     "id_jkse": {"name": "Jakarta Composite Index (IDR)", "ticker": "^JKSE"},
     "id_lq45": {
         "name": "Indonesia Stock Exchange LQ45 Index (IDR)",
@@ -539,6 +546,7 @@ INDICES = {
     "nyse_nyl": {"name": "NYSE World Leaders Index", "ticker": "^NYL"},
     "nyse_nyi": {"name": "NYSE International 100 Index", "ticker": "^NYI"},
     "nyse_nyy": {"name": "NYSE TMT Index", "ticker": "^NYY"},
+    "nyse_fang": {"name": "NYSE FANG+TM index", "ticker": "^NYFANG"},
     "arca_xmi": {"name": "NYSE ARCA Major Market Index", "ticker": "^XMI"},
     "arca_xbd": {"name": "NYSE ARCA Securities Broker/Dealer Index", "ticker": "^XBD"},
     "arca_xii": {"name": "NYSE ARCA Institutional Index", "ticker": "^XII"},
@@ -571,7 +579,9 @@ INDICES = {
         "ticker": "^WILRESI",
     },
     "cboe_bxm": {"name": "CBOE Buy-Write Monthly Index", "ticker": "^BXM"},
-    "cboe_vix": {"name": "CBOE Volatility Index", "ticker": "^VIX"},
+    "cboe_vix": {"name": "CBOE S&P 500 Volatility Index", "ticker": "^VIX"},
+    "cboe_vix9d": {"name": "CBOE S&P 500 9-Day Volatility Index", "ticker": "^VIX9D"},
+    "cboe_vix3m": {"name": "CBOE S&P 500 3-Month Volatility Index", "ticker": "^VIX3M"},
     "cboe_vin": {"name": "CBOE Near-Term VIX Index", "ticker": "^VIN"},
     "cboe_vvix": {"name": "CBOE VIX Volatility Index", "ticker": "^VVIX"},
     "cboe_shortvol": {"name": "CBOE Short VIX Futures Index", "ticker": "^SHORTVOL"},
@@ -582,6 +592,8 @@ INDICES = {
     "cboe_tnx": {"name": "CBOE Interest Rate 10 Year T-Note", "ticker": "^TNX"},
     "cboe_tyx": {"name": "CBOE 30 year Treasury Yields", "ticker": "^TYX"},
     "cboe_irx": {"name": "CBOE 13 Week Treasury Bill", "ticker": "^IRX"},
+    "cboe_evz": {"name": "CBOE Euro Currency Volatility Index", "ticker": "^EVZ"},
+    "cboe_rvx": {"name": "CBOE Russell 2000 Volatility Index", "ticker": "^RVX"},
     "move": {"name": "ICE BofAML Move Index", "ticker": "^MOVE"},
     "dxy": {"name": "US Dollar Index", "ticker": "DX-Y.NYB"},
     "crypto200": {"name": "CMC Crypto 200 Index by Solacti", "ticker": "^CMC200"},
@@ -634,7 +646,6 @@ def get_index(
         end=end_date,
         interval=interval,
         progress=False,
-        show_errors=False,
         ignore_tz=True,
     )
 

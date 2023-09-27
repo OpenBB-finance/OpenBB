@@ -1,53 +1,51 @@
-,31-Dec-2021,31-Dec-2021
-,TSLA,GM
-Item,,
+Item,TSLA (31-Dec-2021),GM (31-Dec-2021)
 Sales/Revenue,17.72B,33.58B
 Sales Growth,28.80%,25.41%
 Cost of Goods Sold (COGS) incl. D&A,12.87B,29.59B
 COGS Growth,27.48%,28.71%
 COGS excluding D&A,12.02B,26.65B
 Depreciation & Amortization Expense,848M,2.94B
-Depreciation,530M,-
-Amortization of Intangibles,318M,-
+Depreciation,530M,
+Amortization of Intangibles,318M,
 Gross Income,4.85B,4B
 Gross Income Growth,32.43%,5.40%
-Gross Profit Margin,-,-
+Gross Profit Margin,,
 SG&A Expense,2.23B,2.48B
 SGA Growth,39.19%,15.36%
-Research & Development,740M,-
-Other SG&A,-,-
-Other Operating Expense,-,-
+Research & Development,740M,
+Other SG&A,,
+Other Operating Expense,,
 Unusual Expense,(1M),17M
 EBIT after Unusual Expense,1M,(17M)
 Non Operating Income/Expense,67M,631M
 Non-Operating Interest Income,25M,44M
-Equity in Affiliates (Pretax),-,286M
+Equity in Affiliates (Pretax),,286M
 Interest Expense,71M,227M
 Interest Expense Growth,-43.65%,-1.30%
 Gross Interest Expense,72M,227M
-Interest Capitalized,1M,-
+Interest Capitalized,1M,
 Pretax Income,2.64B,2.24B
 Pretax Income Growth,40.01%,-11.86%
-Pretax Margin,-,-
+Pretax Margin,,
 Income Tax,292M,471M
-Income Tax - Current Domestic,-,-
-Income Tax - Current Foreign,-,-
-Income Tax - Deferred Domestic,-,-
-Income Tax - Deferred Foreign,-,-
-Income Tax Credits,-,-
-Equity in Affiliates,-,-
-Other After Tax Income (Expense),-,-
+Income Tax - Current Domestic,,
+Income Tax - Current Foreign,,
+Income Tax - Deferred Domestic,,
+Income Tax - Deferred Foreign,,
+Income Tax Credits,,
+Equity in Affiliates,,
+Other After Tax Income (Expense),,
 Consolidated Net Income,2.34B,1.77B
 Minority Interest Expense,22M,25M
 Net Income,2.32B,1.74B
 Net Income Growth,43.45%,-28.06%
-Net Margin Growth,-,-
-Extraordinaries & Discontinued Operations,-,-
-Extra Items & Gain/Loss Sale Of Assets,-,-
-Cumulative Effect - Accounting Chg,-,-
-Discontinued Operations,-,-
+Net Margin Growth,,
+Extraordinaries & Discontinued Operations,,
+Extra Items & Gain/Loss Sale Of Assets,,
+Cumulative Effect - Accounting Chg,,
+Discontinued Operations,,
 Net Income After Extraordinaries,2.32B,1.74B
-Preferred Dividends,-,45M
+Preferred Dividends,,45M
 Net Income Available to Common,2.32B,1.7B
 EPS (Basic),0.76,1.17
 EPS (Basic) Growth,41.04%,-28.64%
@@ -57,4 +55,4 @@ EPS (Diluted) Growth,41.91%,-28.83%
 Diluted Shares Outstanding,3.4B,1.47B
 EBITDA,3.46B,4.46B
 EBITDA Growth,22.90%,-5.69%
-EBITDA Margin,-,-
+EBITDA Margin,,

@@ -1,0 +1,13 @@
+parent_command: stocks/options/hedge/
+usage: hist [-s STRIKE] [-p] [-c CHAIN_ID] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]] [--raw] [-l LIMIT]             [--source {ChartExchange,Tradier,Intrinio}]  Gets historical quotes for given option chain  optional arguments:   -s STRIKE, --strike STRIKE                         Strike price to look at (default: None)   -p, --put             Flag for showing put option (default: False)   -c CHAIN_ID, --chain CHAIN_ID                         Option symbol (default: None)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx and figure into                         png, jpg, pdf, svg (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)   --raw                 Flag to display raw data (default: False)   -l LIMIT, --limit LIMIT                         Number of entries to show in data. (default: 10)   --source {ChartExchange,Tradier,Intrinio}                         Data source to select from (default: ChartExchange)  For more information and examples, use 'about hist' to access the related guide.
+Summary: Retrieve historical quotes for a specific option chain, with options to specify the strike price, put or call option, option symbol, data source, and data limit. You can also export the data in various formats and display raw data.
+
+Examples:
+- To get historical quotes for an option chain with a specific strike price: stocks/load <SYMBOL>/options/hedge/hist -s 100
+- To get historical quotes for a put option: stocks/load <SYMBOL>/options/hedge/hist -p
+- To get historical quotes for an option chain using the option symbol: stocks/load <SYMBOL>/options/hedge/hist -c CHAIN_ID
+- To export historical quotes in csv format: stocks/load <SYMBOL>/options/hedge/hist --export csv
+- To save historical quotes to a specific excel sheet: stocks/load <SYMBOL>/options/hedge/hist --sheet-name Sheet1
+- To display raw data for historical quotes: stocks/load <SYMBOL>/options/hedge/hist --raw
+- To limit the number of entries shown in the historical quotes data: stocks/load <SYMBOL>/options/hedge/hist -l 5
+- To get historical quotes from a specific data source: stocks/load <SYMBOL>/options/hedge/hist --source Tradier

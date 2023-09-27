@@ -1,0 +1,15 @@
+parent_command:forecast
+usage: desc [-d {AAPL}]
+
+Show descriptive statistics of a dataset
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+
+
+Examples:
+- To display descriptive statistics for the dataset of a specific stock: forecast/desc -d {AAPL}
+- Show the dataset's descriptive statistics for the chosen stock: forecast/desc --dataset {AAPL}
+- Obtain the descriptive statistics for a selected stock dataset: forecast/desc -d {AAPL}
+- View the descriptive statistics of the dataset for a particular stock: forecast/desc --dataset {AAPL}

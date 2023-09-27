@@ -145,9 +145,7 @@ def set_preferences_from_hub(configs: dict, fields: Optional[List[str]] = None):
     if configs:
         preferences = configs.get("features_settings", {}) or {}
         for k, v in preferences.items():
-            if not fields:
-                set_preference(k, v)
-            elif k in fields:
+            if not fields or k in fields:
                 set_preference(k, v)
 
 
@@ -198,6 +196,10 @@ def set_chart_style_from_hub(configs: dict):
             chart_style = terminal_style.get("chart", None)
             if chart_style:
                 set_preference("CHART_STYLE", chart_style)
+                # pylint: disable=import-outside-toplevel
+                from openbb_terminal import theme
+
+                theme.apply_style(chart_style)
 
 
 def set_table_style_from_hub(configs: dict):

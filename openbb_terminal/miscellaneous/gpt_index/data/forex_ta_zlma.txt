@@ -1,0 +1,20 @@
+parent_command:forex/ta
+usage: zlma [-l N_LENGTH] [-o N_OFFSET]
+
+The zero lag exponential moving average (ZLEMA) indicator was created by John Ehlers and Ric Way. The idea is do a regular exponential moving average (EMA) calculation but on a de-lagged data instead of doing it on the regular
+data. Data is de-lagged by removing the data from "lag" days ago thus removing (or attempting to) the cumulative effect of the moving average.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To plot the ZLEMA for a forex pair with a window length of 20: forex/load <PAIR>/ta/zlma
+- To plot the ZLEMA for a forex pair with a window length of 30: forex/load <PAIR>/ta/zlma -l 30
+- To plot the ZLEMA for a forex pair with multiple window lengths, such as 20 and 50: forex/load <PAIR>/ta/zlma -l 20,50
+- To plot the ZLEMA for a forex pair with a window length of 20 and an offset of 5: forex/load <PAIR>/ta/zlma -l 20 -o 5
+- To plot the ZLEMA for a forex pair with a window length of 30 and an offset of 10: forex/load <PAIR>/ta/zlma -l 30 -o 10
+- To plot the ZLEMA for a forex pair with multiple window lengths and an offset: forex/load <PAIR>/ta/zlma -l 20,50 -o 5

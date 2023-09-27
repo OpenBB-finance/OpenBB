@@ -1,0 +1,14 @@
+parent_command:crypto/ta
+usage: demark [-m MIN_TO_SHOW]
+
+Calculates the Demark sequential indicator.
+
+optional arguments:
+  -m MIN_TO_SHOW, --min MIN_TO_SHOW
+                        Minimum value of indicator to show (declutters plot). (default: 5)
+
+
+Examples:
+- To calculate the Demark sequential indicator for a cryptocurrency: crypto/load <COIN>/ta/demark
+- To calculate the Demark sequential indicator and display values greater than or equal to 10: crypto/load <COIN>/ta/demark -m 10
+- Display the Demark sequential indicator for a specific coin with a minimum value of 7: crypto/load <COIN>/ta/demark --min 7

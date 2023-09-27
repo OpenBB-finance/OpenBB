@@ -1,0 +1,19 @@
+parent_command:etf/ta
+usage: wma [-l N_LENGTH] [-o N_OFFSET]
+
+A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a
+corresponding Simple Moving Average.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20, 50])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To calculate the weighted moving average for a specific ETF with default window lengths: etf/ta/wma
+- Calculate the weighted moving average for an ETF with a custom window length of 30: etf/ta/wma -l 30
+- Calculate the weighted moving average for an ETF with multiple custom window lengths of 10 and 40: etf/ta/wma -l 10,40
+- To calculate the weighted moving average for an ETF with an offset of 5: etf/ta/wma -o 5
+- Calculate the weighted moving average for an ETF with a custom window length of 25 and an offset of 3: etf/ta/wma -l 25 -o 3

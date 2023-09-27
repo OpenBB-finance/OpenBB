@@ -1,0 +1,29 @@
+parent_command:fixedincome
+usage: icespread [-c {all,duration,eur,usd}] [-a {asia,emea,eu,ex_g10,latin_america,us}] [-g {a,aa,aaa,b,bb,bbb,ccc,crossover,high_grade,high_yield,non_financial,non_sovereign,private_sector,public_sector}] [-o] [-d]
+                 [-s START_DATE] [-e END_DATE]
+
+Plot various rates from the United States. This includes tbill (Treasury Bills), Constant Maturity treasuries (cmn) and Inflation Protected Treasuries (TIPS)
+
+optional arguments:
+  -c {all,duration,eur,usd}, --category {all,duration,eur,usd}
+                        What category you'd like to collect data for (default: all)
+  -a {asia,emea,eu,ex_g10,latin_america,us}, --area {asia,emea,eu,ex_g10,latin_america,us}
+                        What region you'd like to collect data for (default: us)
+  -g {a,aa,aaa,b,bb,bbb,ccc,crossover,high_grade,high_yield,non_financial,non_sovereign,private_sector,public_sector}, --grade {a,aa,aaa,b,bb,bbb,ccc,crossover,high_grade,high_yield,non_financial,non_sovereign,private_sector,public_sector}
+                        What grade you'd like to collect data for (default: non_sovereign)
+  -o, --options         See the available options (default: False)
+  -d, --description     Whether to provide a description of the data. (default: False)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 1980-01-01)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+
+
+Examples:
+- To plot the rates for all categories in the US region with a non-sovereign grade: fixedincome/icespread
+- To plot the rates for duration category in the Asia region with a high_yield grade: fixedincome/icespread -c duration -a asia -g high_yield
+- To plot the rates for EUR category in the EMEA region with a public_sector grade: fixedincome/icespread -c eur -a emea -g public_sector
+- To view the available options for plotting rates: fixedincome/icespread -o
+- To plot the rates for USD category in the Latin America region with a BBB grade and provide a description: fixedincome/icespread -c usd -a latin_america -g bbb -d
+- To plot the rates for all categories in the EU region with a high_grade grade, starting from a specific date: fixedincome/icespread -a eu -g high_grade -s 2000-01-01
+- To plot the rates for duration category in the ex_G10 region with a AA grade, between a specific date range: fixedincome/icespread -c duration -a ex_g10 -g aa -s 1990-01-01 -e 2020-12-31

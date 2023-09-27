@@ -1,0 +1,11 @@
+parent_command:crypto/qa
+usage: qqplot
+
+Display QQ plot vs normal quantiles
+
+qqplot
+Examples:
+- To view the QQ plot for a specific cryptocurrency: crypto/load <COIN>/qa/qqplot
+- Display the QQ plot for the chosen cryptocurrency: crypto/qa/qqplot
+- Visualize the QQ plot against normal quantiles for the selected coin: crypto/load <COIN>/qa/qqplot
+- Generate a QQ plot for the loaded cryptocurrency: crypto/load <COIN>/qa/qqplot

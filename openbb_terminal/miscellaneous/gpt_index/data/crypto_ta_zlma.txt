@@ -1,0 +1,20 @@
+parent_command:crypto/ta
+usage: zlma [-l N_LENGTH] [-o N_OFFSET]
+
+The zero lag exponential moving average (ZLEMA) indicator was created by John Ehlers and Ric Way. The idea is do a regular exponential moving average (EMA) calculation but on a de-lagged data instead of doing it on the regular
+data. Data is de-lagged by removing the data from "lag" days ago thus removing (or attempting to) the cumulative effect of the moving average.
+
+optional arguments:
+  -l N_LENGTH, --length N_LENGTH
+                        Window lengths. Multiple values indicated as comma separated values. (default: [20])
+  -o N_OFFSET, --offset N_OFFSET
+                        offset (default: 0)
+
+
+Examples:
+- To plot the ZLEMA for a specific cryptocurrency with a 20-day window: crypto/load <COIN>/ta/zlma
+- To plot the ZLEMA for a specific cryptocurrency with a 30-day window: crypto/load <COIN>/ta/zlma -l 30
+- To plot the ZLEMA for a specific cryptocurrency with multiple window lengths, such as 10 and 50 days: crypto/load <COIN>/ta/zlma -l 10,50
+- To plot the ZLEMA for a specific cryptocurrency with a 20-day window and an offset of 5: crypto/load <COIN>/ta/zlma -o 5
+- To plot the ZLEMA for a specific cryptocurrency with a 30-day window and an offset of 10: crypto/load <COIN>/ta/zlma -l 30 -o 10
+- To plot the ZLEMA for a specific cryptocurrency with multiple window lengths and an offset of 5: crypto/load <COIN>/ta/zlma -l 10,50 -o 5

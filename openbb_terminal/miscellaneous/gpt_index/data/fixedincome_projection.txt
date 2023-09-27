@@ -1,0 +1,12 @@
+parent_command:fixedincome
+usage: projection [-l]
+
+Get the Federal Reserve's projection of the federal funds rate.
+
+optional arguments:
+  -l, --long-run  Whether to show the long run projection (default: False)
+
+
+Examples:
+- To view the Federal Reserve's projection of the federal funds rate: fixedincome/projection
+- To display the long run projection of the federal funds rate: fixedincome/projection -l

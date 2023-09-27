@@ -1,0 +1,26 @@
+parent_command:crypto/disc
+usage: gainers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-r]
+
+Shows Largest Gainers - coins which gain the most in given period. You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d} You can look on only N number of records with --limit,
+You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
+
+optional arguments:
+  -i {14d,1h,1y,200d,24h,30d,7d}, --interval {14d,1h,1y,200d,24h,30d,7d}
+                        time period, one from {14d,1h,1y,200d,24h,30d,7d} (default: 1h)
+  -l LIMIT, --limit LIMIT
+                        Number of records to display (default: 15)
+  -s SORTBY [SORTBY ...], --sort SORTBY [SORTBY ...]
+                        Sort by given column. Default: Market Cap Rank (default: ['market_cap'])
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To view the top 15 cryptocurrency gainers for the past hour: crypto/disc/gainers
+- To display the top 10 cryptocurrency gainers for the past 24 hours: crypto/disc/gainers -i 24h -l 10
+- To see the 20 largest gainers in the last 7 days, sorted by volume: crypto/disc/gainers -i 7d -l 20 -s Volume
+- To check the top 5 gainers in the past 30 days, sorted by market cap rank in ascending order: crypto/disc/gainers -i 30d -l 5 -s Market Cap Rank -r
+- To list the top cryptocurrency gainers for the past year, sorted by market cap: crypto/disc/gainers -i 1y -s Market Cap
+- To display the top 10 gainers for the past 200 days, sorted by price and name: crypto/disc/gainers -i 200d -l 10 -s Price Name
+- To view the top 15 gainers for the past 14 days, sorted by symbol in ascending order: crypto/disc/gainers -i 14d -s Symbol -r
+- To check the top 20 cryptocurrency gainers for the past hour, sorted by market cap rank and volume: crypto/disc/gainers -i 1h -l 20 -s Market Cap Rank Volume
+- To display the top 5 gainers for the past 1 hour, sorted by name and price in ascending order: crypto/disc/gainers -i 1h -l 5 -s Name Price -r

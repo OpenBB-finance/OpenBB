@@ -1,0 +1,16 @@
+parent_command:forecast
+usage: corr [-d {AAPL}]
+
+Plot correlation coefficients.
+
+optional arguments:
+  -d {AAPL}, --dataset {AAPL}
+                        The name of the dataset you want to select (default: None)
+
+
+Examples:
+- To plot correlation coefficients for a specific stock, use: forecast/corr -d <SYMBOL>
+- For displaying correlation coefficients of a particular dataset, run: forecast/corr --dataset <SYMBOL>
+- To analyze correlation coefficients for a specific cryptocurrency, execute: forecast/corr -d <COIN>
+- To view correlation coefficients for a particular forex pair, input: forecast/corr --dataset <PAIR>
+- To examine correlation coefficients for a specific futures contract, type: forecast/corr -d <FUTURE>

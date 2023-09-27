@@ -1,0 +1,10 @@
+parent_command: stocks/fa/
+usage: customer [-t TICKER] [-h] [--export EXPORT]                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]  List of customers from ticker provided. [Source: CSIMarket]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze   -h, --help            show this help message   --export EXPORT       Export raw data into csv, json, xlsx   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files.  For more information and examples, use 'about customer' to access the related guide.
+Summary: Retrieve a list of customers for a specific stock symbol using the CSIMarket data source. You can export the raw data in csv, json, or xlsx format and save it to a specified excel sheet if needed.
+
+Examples:
+- Retrieve a list of customers for <SYMBOL>: stocks/fa/customer -t <SYMBOL>
+- Export the customer list of <SYMBOL> in csv format: stocks/fa/customer -t <SYMBOL> --export csv
+- Export the customer list of <SYMBOL> in json format: stocks/fa/customer -t <SYMBOL> --export json
+- Export the customer list of <SYMBOL> in xlsx format: stocks/fa/customer -t <SYMBOL> --export xlsx
+- Save the customer list of <SYMBOL> to a specific excel sheet: stocks/fa/customer -t <SYMBOL> --sheet-name Sheet1

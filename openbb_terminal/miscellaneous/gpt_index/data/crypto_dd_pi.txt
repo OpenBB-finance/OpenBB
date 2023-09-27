@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: pi
+
+Display asset's project info [Source: https://messari.io]
+
+pi
+Examples:
+- To display the project information of a cryptocurrency: crypto/load <COIN>/dd/pi
+- Show the project info for a specific crypto asset: crypto/load <COIN>/dd/pi
+- Retrieve project information for a chosen cryptocurrency: crypto/load <COIN>/dd/pi
+- Access the project details for a particular crypto asset: crypto/load <COIN>/dd/pi
+- Obtain the project information of a specific crypto coin: crypto/load <COIN>/dd/pi

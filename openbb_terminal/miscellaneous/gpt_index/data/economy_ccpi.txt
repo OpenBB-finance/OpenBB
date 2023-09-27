@@ -1,0 +1,30 @@
+parent_command:economy
+usage: ccpi [-c COUNTRIES] [-p {ENRG,FOOD,TOT,TOT_FOODENRG}] [--frequency {M,Q,A}] [-u {AGRWTH,IDX2015}] [-s START_DATE] [-e END_DATE]
+
+Inflation is measured in terms of the annual growth rate and in index, 2015 base year with a breakdown for food, energy and total excluding food and energy. Inflation measures the erosion of living standards
+
+optional arguments:
+  -c COUNTRIES, --countries COUNTRIES
+                        What countries you'd like to collect data for (default: united_states)
+  -p {ENRG,FOOD,TOT,TOT_FOODENRG}, --perspective {ENRG,FOOD,TOT,TOT_FOODENRG}
+                        Perspective of CPI you wish to obtain. This can be ENRG (energy), FOOD (food), TOT (total) or TOT_FOODENRG (total excluding food and energy) (default: TOT)
+  --frequency {M,Q,A}   What frequency you'd like to collect data for (default: M)
+  -u {AGRWTH,IDX2015}, --units {AGRWTH,IDX2015}
+                        Units to get data in. Either 'AGRWTH' (annual growth rate) or IDX2015 (base = 2015). Default is Annual Growth Rate (AGRWTH). (default: AGRWTH)
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: 2018-06-02)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: 2023-06-02)
+
+
+Examples:
+- To obtain annual growth rate of total inflation for the <COUNTRY>: economy/ccpi -c <COUNTRY>
+- To get the inflation data for multiple countries, such as <COUNTRY> and <COUNTRY>: economy/ccpi -c <COUNTRY>,<COUNTRY>
+- To retrieve the energy inflation data for <COUNTRY> with quarterly frequency: economy/ccpi -c <COUNTRY> -p ENRG --frequency Q
+- For annual food inflation data in <COUNTRY>: economy/ccpi -c <COUNTRY> -p FOOD --frequency A
+- To get total inflation data excluding food and energy for the <COUNTRY> since 2019: economy/ccpi -c <COUNTRY> -p TOT_FOODENRG -s 2019-01-01
+- To collect data for total inflation in <COUNTRY> between specific dates: economy/ccpi -c <COUNTRY> -s 2020-01-01 -e 2022-12-31
+- To obtain inflation data in index form (base year 2015) for <COUNTRY>: economy/ccpi -c <COUNTRY> -u IDX2015
+- To get monthly food inflation data for <COUNTRY> in index form: economy/ccpi -c china -p FOOD -u IDX2015 --frequency M
+- To retrieve quarterly total inflation data for <COUNTRY> between specific dates: economy/ccpi -c <COUNTRY> --frequency Q -s 2019-01-01 -e 2021-12-31
+- To collect annual growth rate of energy inflation for <COUNTRY> with a custom date range: economy/ccpi -c <COUNTRY> -p ENRG -s 2018-01-01 -e 2022-12-31

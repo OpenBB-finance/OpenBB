@@ -30,6 +30,24 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Developer Issues
 
+<details><summary>How do I launch in debug mode?</summary>
+
+The PyWry window can be run in debug mode for identifying specific issues.  Use the code block below - with the `obb` Python environment active - to import the OpenBB SDK in debug mode.
+
+```python
+import os
+from openbb_terminal.core.plots.backend import plots_backend
+
+os.environ["DEBUG_MODE"] = "True"
+plots_backend().start(True)
+
+from openbb_terminal.sdk import openbb
+```
+
+The charts and tables will now include a developer tools button, located at the top-left of the window.  
+
+</details>
+
 <details><summary>What branch on GitHub should pull requests be submitted to?</summary>
 
 Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.

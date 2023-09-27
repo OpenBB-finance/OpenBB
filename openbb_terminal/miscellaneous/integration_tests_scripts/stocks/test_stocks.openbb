@@ -1,8 +1,13 @@
 stocks
-search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
-search -c united_states -m united_states
-load ${ticker=aapl} -i 5
-load ${ticker=aapl} -s 2022-10-01
+search -c united_states -s consumer_staples
+search --industrygroup banks -e nms --limit 100
+search -q gold --all-exchanges --exchangecountry india --export csv
+search --help
+load --ticker AAPL -i 5 --prepost
+load --ticker AAPL -s 2020-10-01 -e 2022-10-01 --performance
+load --ticker AAPL -s 1980-01-01 --monthly
+load --ticker AAPL -s 1980-01-01 --weekly --export csv
+load --help
 quote
 quote --ticker AAPL,MSFT,GOOG,META,AMZN,NFLX
 tob
@@ -52,4 +57,5 @@ sia
 
 help
 reset
+quit
 exit

@@ -1,0 +1,23 @@
+parent_command:economy
+usage: fred [-p PARAMETER] [-s START_DATE] [-e END_DATE] [-q QUERY [QUERY ...]]
+
+Query the FRED database and plot data based on the Series ID. [Source: FRED]
+
+optional arguments:
+  -p PARAMETER, --parameter PARAMETER
+                        Series ID of the Macro Economic data from FRED (default: )
+  -s START_DATE, --start START_DATE
+                        Starting date (YYYY-MM-DD) of data (default: None)
+  -e END_DATE, --end END_DATE
+                        Ending date (YYYY-MM-DD) of data (default: None)
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Query the FRED database to obtain Series IDs given the query search term. (default: None)
+
+
+Examples:
+- To query and plot macroeconomic data using a specific Series ID: economy/fred -p PARAMETER
+- To query and plot macroeconomic data using a specific Series ID and a custom date range: economy/fred -p PARAMETER -s 2020-01-01 -e 2021-12-31
+- To search for Series IDs in the FRED database using a query term: economy/fred -q QUERY
+- To search for Series IDs in the FRED database using multiple query terms: economy/fred -q QUERY1 QUERY2 QUERY3
+- To plot macroeconomic data for a specific Series ID and a custom start date: economy/fred -p PARAMETER -s 2020-01-01
+- To plot macroeconomic data for a specific Series ID and a custom end date: economy/fred -p PARAMETER -e 2021-12-31

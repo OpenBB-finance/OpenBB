@@ -1,0 +1,17 @@
+parent_command:forex/oanda
+usage: list [-s STATE] [-l LIMIT]
+
+List order history
+
+optional arguments:
+  -s STATE, --state STATE
+                        List orders that have a specific state.
+  -l LIMIT, --limit LIMIT
+                        Limit the number of orders to retrieve.
+
+
+Examples:
+- Retrieve order history for a forex pair: forex/oanda/list
+- Retrieve order history with a specific state: forex/oanda/list -s <STATE>
+- Retrieve a limited number of orders: forex/oanda/list -l 10
+- Retrieve order history with a specific state and limit the number of orders: forex/oanda/list -s <STATE> -l 5

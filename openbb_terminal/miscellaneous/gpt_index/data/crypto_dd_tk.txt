@@ -1,0 +1,12 @@
+parent_command:crypto/dd
+usage: tk
+
+Display asset's tokenomics [Source: https://messari.io]
+
+tk
+Examples:
+- To view the tokenomics of a specific cryptocurrency, use: crypto/load <COIN>/dd/tk
+- Display tokenomics for a selected crypto asset: crypto/load <COIN>/dd/tk
+- Show tokenomics information for a particular cryptocurrency: crypto/load <COIN>/dd/tk
+- Retrieve tokenomics data for a specific crypto asset: crypto/load <COIN>/dd/tk
+- Access tokenomics details for a chosen cryptocurrency: crypto/load <COIN>/dd/tk

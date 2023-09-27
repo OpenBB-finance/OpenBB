@@ -1,0 +1,29 @@
+parent_command:crypto/onchain
+usage: ttcp [-l LIMIT]
+            [-e {1inch,AfroDex,AirSwap,Amplbitcratic,Balancer,BestSwap,Bitox,CellSwap,Cellswap,Cofix,Coinchangex,Curve,DDEX,DUBIex,DecentrEx,DeversiFi,Dodo,ETHERCExchange,EtherBlockchain,EtherDelta,Ethernext,Ethfinex,FEGex,FFFSwap,Fordex,GUDecks,GUDeks,HiSwap,IDEX,LedgerDex,Matcha,Miniswap,Mooniswap,Oasis,OpenRelay,S.Finance,SakeSwap,SeedDex,SingularX,StarBitEx,SushiSwap,SwapX,SwitchDex,TacoSwap,TokenJar,TokenStore,TokenTrove,Tokenlon,TradexOne,Uniswap,ZeusSwap,dYdX,dex.blue}]
+            [-d DAYS] [-s {base,quoted,trades,tradeAmount}] [-r]
+
+Display most traded crypto pairs on given decentralized exchange in chosen time period. [Source: https://graphql.bitquery.io/]
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        display N number records (default: 10)
+  -e {1inch,AfroDex,AirSwap,Amplbitcratic,Balancer,BestSwap,Bitox,CellSwap,Cellswap,Cofix,Coinchangex,Curve,DDEX,DUBIex,DecentrEx,DeversiFi,Dodo,ETHERCExchange,EtherBlockchain,EtherDelta,Ethernext,Ethfinex,FEGex,FFFSwap,Fordex,GUDecks,GUDeks,HiSwap,IDEX,LedgerDex,Matcha,Miniswap,Mooniswap,Oasis,OpenRelay,S.Finance,SakeSwap,SeedDex,SingularX,StarBitEx,SushiSwap,SwapX,SwitchDex,TacoSwap,TokenJar,TokenStore,TokenTrove,Tokenlon,TradexOne,Uniswap,ZeusSwap,dYdX,dex.blue}, --exchange {1inch,AfroDex,AirSwap,Amplbitcratic,Balancer,BestSwap,Bitox,CellSwap,Cellswap,Cofix,Coinchangex,Curve,DDEX,DUBIex,DecentrEx,DeversiFi,Dodo,ETHERCExchange,EtherBlockchain,EtherDelta,Ethernext,Ethfinex,FEGex,FFFSwap,Fordex,GUDecks,GUDeks,HiSwap,IDEX,LedgerDex,Matcha,Miniswap,Mooniswap,Oasis,OpenRelay,S.Finance,SakeSwap,SeedDex,SingularX,StarBitEx,SushiSwap,SwapX,SwitchDex,TacoSwap,TokenJar,TokenStore,TokenTrove,Tokenlon,TradexOne,Uniswap,ZeusSwap,dYdX,dex.blue}
+                        Decentralized exchange name. (default: None)
+  -d DAYS, --days DAYS  Number of days to display data for. (default: 30)
+  -s {base,quoted,trades,tradeAmount}, --sort {base,quoted,trades,tradeAmount}
+                        Sort by given column. (default: tradeAmount)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+
+
+Examples:
+- To display the top 10 most traded crypto pairs on Uniswap for the last 30 days: crypto/onchain/ttcp -e Uniswap
+- To view the top 5 most traded crypto pairs on SushiSwap for the past 7 days: crypto/onchain/ttcp -e SushiSwap -l 5 -d 7
+- To display the top 10 crypto pairs on 1inch with the highest trade amount in the last 14 days: crypto/onchain/ttcp -e 1inch -d 14 -s tradeAmount
+- To show the top 15 most traded crypto pairs on Curve for the past 60 days, sorted by the base currency: crypto/onchain/ttcp -e Curve -l 15 -d 60 -s base
+- To display the least traded crypto pairs on Balancer for the past 30 days, sorted by trade amount in ascending order: crypto/onchain/ttcp -e Balancer -s tradeAmount -r
+- To view the top 20 crypto pairs on IDEX for the last 45 days, sorted by the number of trades: crypto/onchain/ttcp -e IDEX -l 20 -d 45 -s trades
+- To display the top 10 least traded crypto pairs on Dodo for the past 30 days, sorted by quoted currency in ascending order: crypto/onchain/ttcp -e Dodo -s quoted -r
+- To show the top 5 most traded crypto pairs on Oasis for the last 7 days, sorted by base currency: crypto/onchain/ttcp -e Oasis -l 5 -d 7 -s base
+- To view the least traded crypto pairs on Mooniswap for the past 30 days, sorted by the number of trades in ascending order: crypto/onchain/ttcp -e Mooniswap -s trades -r
+- To display the top 15 crypto pairs on Matcha for the last 30 days, sorted by trade amount: crypto/onchain/ttcp -e Matcha -l 15 -s tradeAmount

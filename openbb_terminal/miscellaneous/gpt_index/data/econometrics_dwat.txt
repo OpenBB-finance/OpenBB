@@ -1,0 +1,12 @@
+parent_command:econometrics
+usage: dwat [-p]
+
+Show autocorrelation tests from Durbin-Watson. Needs OLS to be run in advance with independent and dependent variables
+
+optional arguments:
+  -p, --plot  Plot the residuals (default: False)
+
+
+Examples:
+- After running OLS, display Durbin-Watson autocorrelation test results: econometrics/dwat
+- After running OLS, display Durbin-Watson autocorrelation test results and plot the residuals: econometrics/dwat -p

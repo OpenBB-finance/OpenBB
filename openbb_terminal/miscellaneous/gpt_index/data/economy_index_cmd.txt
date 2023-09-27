@@ -1,0 +1,32 @@
+parent_command:economy
+usage: index [-i INDICES] [--show] [--interval {1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo}] [-s START_DATE] [-e END_DATE] [-c COLUMN] [-q QUERY [QUERY ...]] [-r]
+
+Obtain any set of indices and plot them together. With the -si argument the major indices are shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and plot the graphs together. [Source: Yahoo
+finance / FinanceDatabase]
+
+optional arguments:
+  -i INDICES, --indices INDICES
+                        One or multiple indices (default: None)
+  --show                Show the major indices, their arguments and ticker (default: False)
+  --interval {1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo}
+                        The preferred interval data is shown at. This can be 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo or 3mo (default: 1d)
+  -s START_DATE, --start START_DATE
+                        The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) (default: 2000-01-01)
+  -e END_DATE, --end END_DATE
+                        The end date of the data (format: YEAR-MONTH-DAY, i.e. 2021-06-20) (default: None)
+  -c COLUMN, --column COLUMN
+                        The column you wish to load in, by default this is the Adjusted Close column (default: Adj Close)
+  -q QUERY [QUERY ...], --query QUERY [QUERY ...]
+                        Search for indices with given keyword (default: None)
+  -r, --returns         Flag to show compounded returns over interval. (default: False)
+
+
+Examples:
+- To view the major indices, their arguments, and tickers: economy/index --show
+- To plot the Nasdaq and S&P 500 indices together: economy/index -i nasdaq sp500
+- To plot the Nasdaq and S&P 500 indices with a 1-week interval: economy/index -i nasdaq sp500 --interval 1wk
+- To plot the Nasdaq and S&P 500 indices from a specific start date: economy/index -i nasdaq sp500 -s 2020-01-01
+- To plot the Nasdaq and S&P 500 indices between specific start and end dates: economy/index -i nasdaq sp500 -s 2020-01-01 -e 2021-06-20
+- To load the Open column for Nasdaq and S&P 500 indices: economy/index -i nasdaq sp500 -c Open
+- To search for indices with a specific keyword: economy/index -q technology
+- To show compounded returns over the interval for Nasdaq and S&P 500 indices: economy/index -i nasdaq sp500 -r

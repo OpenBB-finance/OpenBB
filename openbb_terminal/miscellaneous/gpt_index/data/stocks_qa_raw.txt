@@ -1,0 +1,25 @@
+parent_command:stocks/qa
+usage: raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,dividends,stock_splits,returns,logret,logprice}]
+
+Print raw data to console
+
+optional arguments:
+  -l LIMIT, --limit LIMIT
+                        Number to show (default: 20)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. (default: False)
+  -s {open,high,low,close,adjclose,volume,dividends,stock_splits,returns,logret,logprice}, --sortby {open,high,low,close,adjclose,volume,dividends,stock_splits,returns,logret,logprice}
+                        The column to sort by (default: None)
+
+
+Examples:
+- Display raw data for a loaded stock symbol, limited to 20 entries: stocks/load <SYMBOL>/qa/raw -l 20
+- Show raw data for a specific stock symbol, sorted by volume in ascending order: stocks/load <SYMBOL>/qa/raw -s volume -r
+- Print raw data for a loaded stock symbol, sorted by closing price: stocks/load <SYMBOL>/qa/raw --sortby close
+- View raw data of a specific stock symbol, limited to 10 entries and sorted by dividends: stocks/load <SYMBOL>/qa/raw -l 10 -s dividends
+- Display raw data for a loaded stock symbol, sorted by log returns: stocks/load <SYMBOL>/qa/raw --sortby logret
+- Show raw data for a specific stock symbol, sorted by adjusted closing price in ascending order: stocks/load <SYMBOL>/qa/raw -s adjclose -r
+- Print raw data for a loaded stock symbol, limited to 5 entries and sorted by stock splits: stocks/load <SYMBOL>/qa/raw -l 5 --sortby stock_splits
+- View raw data of a specific stock symbol, sorted by opening price in ascending order: stocks/load <SYMBOL>/qa/raw -s open -r
+- Display raw data for a loaded stock symbol, limited to 15 entries and sorted by low price: stocks/load <SYMBOL>/qa/raw -l 15 -s low
+- Show raw data for a specific stock symbol, sorted by high price in ascending order: stocks/load <SYMBOL>/qa/raw -s high -r
+- Show a table of most recent stock volume: stocks/load <SYMBOL>/qa/raw -s volume

@@ -1,0 +1,13 @@
+parent_command:alt/oss
+usage: sh -r REPO
+
+Display a repo star history [Source: https://api.github.com]
+
+optional arguments:
+  -r REPO, --repo REPO  Repository to search for star history. Format: org/repo, e.g., openbb-finance/openbbterminal (default: None)
+
+
+Examples:
+- To display the star history of a specific repository: alt/oss sh -r openbb-finance/openbbterminal
+- Show the star history for a given repo using the org/repo format: alt/oss sh --repo openbb-finance/openbbterminal
+- Retrieve the star history for a repository by specifying the organization and repo: alt/oss sh -r org/repo

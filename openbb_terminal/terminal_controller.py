@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
+import json
 import logging
 import os
 import re
@@ -17,16 +18,13 @@ from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
+import requests
 from prompt_toolkit import PromptSession
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.account.account_controller import (
-    get_login_called,
-    set_login_called,
-)
+from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -35,12 +33,10 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.log.generation.custom_logger import log_terminal
-from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    set_preference,
-)
+from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -51,13 +47,13 @@ from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     first_time_user,
     is_auth_enabled,
     is_installer,
-    is_reset,
     print_goodbye,
     reset,
     suppress_stdout,
@@ -67,7 +63,6 @@ from openbb_terminal.terminal_helper import (
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +89,8 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
+        "askobb",
+        "record",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -146,49 +143,66 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
-        self.ROUTINE_FILES = {
-            filepath.name: filepath
-            for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
-                "*.openbb"
-            )
-        }
-        if get_current_user().profile.get_token():
-            self.ROUTINE_DEFAULT_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "default"
-                ).rglob("*.openbb")
-            }
-            self.ROUTINE_PERSONAL_FILES = {
-                filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "personal"
-                ).rglob("*.openbb")
-            }
-
-        self.ROUTINE_CHOICES["--file"] = {
-            filename: None for filename in self.ROUTINE_FILES
-        }
-        self.ROUTINE_CHOICES["--example"] = None
-        self.ROUTINE_CHOICES["-e"] = None
-        self.ROUTINE_CHOICES["--input"] = None
-        self.ROUTINE_CHOICES["-i"] = None
-        self.ROUTINE_CHOICES["--help"] = None
-        self.ROUTINE_CHOICES["--h"] = None
-
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
             choices["news"] = self.NEWS_CHOICES
             choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
-
+            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
+            choices["hold"]["off"] = {"--title": None}
             if biztoc_model.BIZTOC_TAGS:
                 choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
+
+            self.ROUTINE_FILES = {
+                filepath.name: filepath
+                for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
+                    "*.openbb"
+                )
+            }
+            if get_current_user().profile.get_token():
+                self.ROUTINE_DEFAULT_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "default"
+                    ).rglob("*.openbb")
+                }
+                self.ROUTINE_PERSONAL_FILES = {
+                    filepath.name: filepath
+                    for filepath in Path(
+                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                        / "hub"
+                        / "personal"
+                    ).rglob("*.openbb")
+                }
+
+            choices["exe"] = {
+                "--file": {
+                    filename: {} for filename in list(self.ROUTINE_FILES.keys())
+                },
+                "-f": "--file",
+                "--example": None,
+                "-e": "--example",
+                "--input": None,
+                "-i": "--input",
+                "--url": None,
+            }
+
+            choices["record"] = {
+                "--name": None,
+                "-n": "--name",
+                "--description": None,
+                "-d": "--description",
+                "--public": None,
+                "-p": "--public",
+                "--local": None,
+                "-l": "--local",
+                "--tag1": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag2": {c: None for c in constants.SCRIPT_TAGS},
+                "--tag3": {c: None for c in constants.SCRIPT_TAGS},
+            }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -217,6 +231,8 @@ class TerminalController(BaseController):
         mt.add_cmd("record")
         mt.add_cmd("stop")
         mt.add_cmd("exe")
+        mt.add_raw("\n")
+        mt.add_cmd("askobb")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
@@ -332,9 +348,20 @@ class TerminalController(BaseController):
                         sheet_name=news_parser.sheet_name,
                     )
 
+    def parse_input(self, an_input: str) -> List:
+        """Overwrite the BaseController parse_input for `askobb` and 'exe'
+
+        This will allow us to search for something like "P/E" ratio
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
+        # Filter out urls
+        url = r"(exe (--url )?(https?://)?my\.openbb\.(dev|co)/u/.*/routine/.*)"
+        custom_filters = [sort_filter, url]
+        return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
+
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command."""
-        import json
         import random
 
         current_user = get_current_user()
@@ -368,7 +395,7 @@ class TerminalController(BaseController):
                 # Load the file as a JSON document
                 json_doc = json.load(f)
 
-                task = random.choice(list(json_doc.keys()))  # nosec
+                task = random.choice(list(json_doc.keys()))  # nosec # noqa: S311
                 solution = json_doc[task]
 
                 start = time.time()
@@ -398,20 +425,19 @@ class TerminalController(BaseController):
                         )
 
                 # When there is a single path to the solution
+                elif an_input.lower() == solution.lower():
+                    self.queue = an_input.split("/") + ["home"]
+                    console.print(
+                        f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
+                    )
+                    # If we are already counting successes
+                    if self.GUESS_TOTAL_TRIES > 0:
+                        self.GUESS_CORRECTLY += 1
+                        self.GUESS_SUM_SCORE += time_dif
                 else:
-                    if an_input.lower() == solution.lower():
-                        self.queue = an_input.split("/") + ["home"]
-                        console.print(
-                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                        )
-                        # If we are already counting successes
-                        if self.GUESS_TOTAL_TRIES > 0:
-                            self.GUESS_CORRECTLY += 1
-                            self.GUESS_SUM_SCORE += time_dif
-                    else:
-                        console.print(
-                            f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
-                        )
+                    console.print(
+                        f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
+                    )
 
                 # Compute average score and provide a result if it's the last try
                 if self.GUESS_TOTAL_TRIES > 0:
@@ -582,16 +608,6 @@ class TerminalController(BaseController):
     def call_intro(self, _):
         """Process intro command."""
         webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-        # import json
-
-        # intro: dict = json.load((Path(__file__).parent / "intro.json").open())  # type: ignore
-
-        # for prompt in intro.get("prompts", []):
-        #     console.print(panel.Panel(f"[purple]{prompt['header']}[/purple]"))
-        #     console.print("".join(prompt["content"]))
-        #     if input("") == "q":
-        #         break
-        #     console.print("\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -615,12 +631,15 @@ class TerminalController(BaseController):
         )
         parser.add_argument(
             "--file",
+            "-f",
             help="The path or .openbb file to run.",
             dest="file",
             required="-h" not in other_args
             and "--help" not in other_args
             and "-e" not in other_args
-            and "--example" not in other_args,
+            and "--example" not in other_args
+            and "--url" not in other_args
+            and "my.openbb" not in other_args[0],
             type=str,
             nargs="+",
         )
@@ -639,10 +658,15 @@ class TerminalController(BaseController):
             action="store_true",
             default=False,
         )
+        parser.add_argument(
+            "--url", help="URL to run openbb script from.", dest="url", type=str
+        )
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--file")
+            if other_args[0].startswith("my.") or other_args[0].startswith("http"):
+                other_args.insert(0, "--url")
+            else:
+                other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
             if ns_parser.example:
                 routine_path = (
@@ -653,11 +677,36 @@ class TerminalController(BaseController):
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
+            elif ns_parser.url:
+                if not ns_parser.url.startswith(
+                    "https"
+                ) and not ns_parser.url.startswith("http:"):
+                    url = "https://" + ns_parser.url
+                elif ns_parser.url.startswith("http://"):
+                    url = ns_parser.url.replace("http://", "https://")
+                else:
+                    url = ns_parser.url
+                username = url.split("/")[-3]
+                script_name = url.split("/")[-1]
+                file_name = f"{username}_{script_name}.openbb"
+                final_url = f"{url}?raw=true"
+                response = requests.get(final_url, timeout=10)
+                if response.status_code != 200:
+                    console.print("[red]Could not find the requested script.[/red]")
+                    return
+                routine_text = response.json()["script"]
+                file_path = Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY)
+                routine_path = file_path / file_name
+                with open(routine_path, "w") as file:
+                    file.write(routine_text)
+                self.update_runtime_choices()
+
             elif ns_parser.file:
+                file_path = " ".join(ns_parser.file)  # type: ignore
                 # if string is not in this format "default/file.openbb" then check for files in ROUTINE_FILES
-                file_path = " ".join(ns_parser.file)
                 full_path = file_path
-                hub_routine = file_path.split("/")
+                hub_routine = file_path.split("/")  # type: ignore
+                # Change with: my.openbb.co
                 if hub_routine[0] == "default":
                     routine_path = Path(
                         self.ROUTINE_DEFAULT_FILES.get(hub_routine[1], full_path)
@@ -667,62 +716,37 @@ class TerminalController(BaseController):
                         self.ROUTINE_PERSONAL_FILES.get(hub_routine[1], full_path)
                     )
                 else:
-                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))
-
+                    routine_path = Path(self.ROUTINE_FILES.get(file_path, full_path))  # type: ignore
             else:
                 return
 
             with open(routine_path) as fp:
-                raw_lines = [
-                    x for x in fp if (not is_reset(x)) and ("#" not in x) and x
-                ]
-                raw_lines = [
-                    raw_line.strip("\n")
-                    for raw_line in raw_lines
-                    if raw_line.strip("\n")
-                ]
+                raw_lines = list(fp)
 
-                lines = list()
-                for rawline in raw_lines:
-                    templine = rawline
+                # Capture ARGV either as list if args separated by commas or as single value
+                if ns_parser.routine_args:
+                    script_inputs = (
+                        ns_parser.routine_args
+                        if "," not in ns_parser.routine_args
+                        else ns_parser.routine_args.split(",")
+                    )
 
-                    # Check if dynamic parameter exists in script
-                    if "$ARGV" in rawline:
-                        # Check if user has provided inputs through -i or --input
-                        if ns_parser.routine_args:
-                            for i, arg in enumerate(ns_parser.routine_args):
-                                # Check what is the location of the ARGV to be replaced
-                                if f"$ARGV[{i}]" in templine:
-                                    templine = templine.replace(f"$ARGV[{i}]", arg)
+                err, parsed_script = parse_openbb_script(
+                    raw_lines=raw_lines,
+                    script_inputs=script_inputs if ns_parser.routine_args else None,
+                )
 
-                            # Check if all ARGV have been removed, otherwise means that there are less inputs
-                            # when running the script than the script expects
-                            if "$ARGV" in templine:
-                                console.print(
-                                    "[red]Not enough inputs were provided to fill in dynamic variables. "
-                                    "E.g. --input VAR1,VAR2,VAR3[/red]\n"
-                                )
-                                return
+                # If there err output is not an empty string then it means there was an
+                # issue in parsing the routine and therefore we don't want to feed it
+                # to the terminal
+                if err:
+                    console.print(err)
+                    return
 
-                            lines.append(templine)
-                        # The script expects a parameter that the user has not provided
-                        else:
-                            console.print(
-                                "[red]The script expects parameters, "
-                                "run the script again with --input defined.[/red]\n"
-                            )
-                            return
-                    else:
-                        lines.append(templine)
-
-                simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-                file_cmds = simulate_argv.replace("//", "/home/").split()
-                file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-                cmds_with_params = " ".join(file_cmds)
                 self.queue = [
                     val
                     for val in parse_and_split_input(
-                        an_input=cmds_with_params, custom_filters=[]
+                        an_input=parsed_script, custom_filters=[]
                     )
                     if val
                 ]
@@ -753,7 +777,40 @@ class TerminalController(BaseController):
                     self.queue = self.queue[1:]
 
 
-# pylint: disable=global-statement
+def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
+    # If the path selected does not start from the user root,
+    # give relative location from terminal root
+    if jobs_cmds is not None and jobs_cmds:
+        logger.info("INPUT: %s", "/".join(jobs_cmds))
+
+    export_path = ""
+    if jobs_cmds and "export" in jobs_cmds[0]:
+        commands = jobs_cmds[0].split("/")
+        first_split = commands[0].split(" ")
+        if len(first_split) > 1:
+            export_path = first_split[1]
+        jobs_cmds = ["/".join(commands[1:])]
+    if not export_path:
+        return jobs_cmds
+    if export_path[0] == "~":
+        export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+    elif export_path[0] != "/":
+        export_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), export_path
+        )
+
+    # Check if the directory exists
+    if os.path.isdir(export_path):
+        console.print(
+            f"Export data to be saved in the selected folder: '{export_path}'"
+        )
+    else:
+        os.makedirs(export_path)
+        console.print(f"[green]Folder '{export_path}' successfully created.[/green]")
+    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    return jobs_cmds
+
+
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
 
@@ -761,51 +818,20 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     log_terminal(test_mode=test_mode)
 
-    if jobs_cmds is not None and jobs_cmds:
-        logger.info("INPUT: %s", "/".join(jobs_cmds))
-
-    export_path = ""
-    if jobs_cmds and "export" in jobs_cmds[0]:
-        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
-        jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
-
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
 
-    if export_path:
-        # If the path selected does not start from the user root,
-        # give relative location from terminal root
-        if export_path[0] == "~":
-            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
-        elif export_path[0] != "/":
-            export_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), export_path
-            )
-
-        # Check if the directory exists
-        if os.path.isdir(export_path):
-            console.print(
-                f"Export data to be saved in the selected folder: '{export_path}'"
-            )
-        else:
-            os.makedirs(export_path)
-            console.print(
-                f"[green]Folder '{export_path}' successfully created.[/green]"
-            )
-        set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
+    jobs_cmds = handle_job_cmds(jobs_cmds)
 
     bootup()
     if not jobs_cmds:
         welcome_message()
 
         if first_time_user():
-            try:
-                # t_controller.call_intro(None)
+            with contextlib.suppress(EOFError):
                 webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
-                # TDDO: Fix the CI
-            except EOFError:
-                pass
+
         t_controller.print_help()
         check_for_updates()
 
@@ -873,7 +899,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if an_input in "login" and get_login_called() and is_auth_enabled():
+            if (
+                an_input in ("login", "logout")
+                and get_show_prompt()
+                and is_auth_enabled()
+            ):
                 break
 
             # Process the input command
@@ -903,6 +933,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 cutoff=0.7,
             )
             if similar_cmd:
+                an_input = similar_cmd[0]
                 if " " in an_input:
                     candidate_input = (
                         f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
@@ -913,15 +944,13 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                         console.print("\n")
                         continue
                     an_input = candidate_input
-                else:
-                    an_input = similar_cmd[0]
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
-    if an_input in "login" and get_login_called() and is_auth_enabled():
-        set_login_called(False)
-        return session_controller.main()
+    if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
+        set_show_prompt(False)
+        return session_controller.main(welcome=False)
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -964,6 +993,7 @@ def run_scripts(
         if not test_mode:
             terminal()
 
+    # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
         raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
         raw_lines = [
@@ -994,6 +1024,7 @@ def run_scripts(
         if test_mode and "exit" not in lines[-1]:
             lines.append("exit")
 
+        # Deals with the export with a path with "/" in it
         export_folder = ""
         if "export" in lines[0]:
             export_folder = lines[0].split("export ")[1].rstrip()
@@ -1012,7 +1043,7 @@ def run_scripts(
             terminal(file_cmds, test_mode=True)
         else:
             with suppress_stdout():
-                print(f"To ensure: {output}")
+                console.print(f"To ensure: {output}")
                 if output:
                     timestamp = datetime.now().timestamp()
                     stamp_str = str(timestamp).replace(".", "")
@@ -1063,13 +1094,14 @@ def run_routine(file: str, routines_args=Optional[str]):
     elif default_routine_path.exists():
         run_scripts(path=default_routine_path, routines_args=routines_args)
     else:
-        print(
+        console.print(
             f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
         )
 
 
 def main(
     debug: bool,
+    dev: bool,
     path_list: List[str],
     routines_args: Optional[List[str]] = None,
     **kwargs,
@@ -1080,6 +1112,8 @@ def main(
     ----------
     debug : bool
         Whether to run the terminal in debug mode
+    dev:
+        Points backend towards development environment instead of production
     test : bool
         Whether to run the terminal in integrated test mode
     filtert : str
@@ -1094,10 +1128,15 @@ def main(
     """
     if kwargs["module"] == "ipykernel_launcher":
         bootup()
-        ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
+        return ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if debug:
         set_system_variable("DEBUG_MODE", True)
+
+    if dev:
+        set_system_variable("DEV_BACKEND", True)
+        constants.BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
+        constants.BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
 
     cfg.start_plot_backend()
 
@@ -1125,6 +1164,13 @@ def parse_args_and_run():
         action="store_true",
         default=False,
         help="Runs the terminal in debug mode.",
+    )
+    parser.add_argument(
+        "--dev",
+        dest="dev",
+        action="store_true",
+        default=False,
+        help="Points backend towards development environment instead of production",
     )
     parser.add_argument(
         "--file",
@@ -1197,6 +1243,7 @@ def parse_args_and_run():
 
     main(
         ns_parser.debug,
+        ns_parser.dev,
         ns_parser.path,
         ns_parser.routine_args,
         module=ns_parser.module,

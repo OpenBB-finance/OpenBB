@@ -82,7 +82,7 @@ def view_ma(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",  # type: ignore
-        price_df,
+        ta.df_ta,
         sheet_name,
         fig,
     )

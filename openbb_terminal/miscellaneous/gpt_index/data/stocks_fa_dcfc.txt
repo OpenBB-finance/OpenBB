@@ -1,0 +1,11 @@
+parent_command: stocks/fa/
+usage: dcfc [-t TICKER] [-l LIMIT] [-q] [-h] [--export EXPORT]             [--sheet-name SHEET_NAME [SHEET_NAME ...]]  Prints the discounted cash flow of a company over time including the DCF of today. The following fields are expected: DCF, Stock price, and Date. [Source: Financial Modeling Prep]  optional arguments:   -t TICKER, --ticker TICKER                         Ticker to analyze (default: None)   -l LIMIT, --limit LIMIT                         Limit of latest years/quarters. (default: 5)   -q, --quarter         Quarter fundamental data flag. (default: False)   -h, --help            show this help message (default: False)   --export EXPORT       Export raw data into csv, json, xlsx (default: )   --sheet-name SHEET_NAME [SHEET_NAME ...]                         Name of excel sheet to save data to. Only valid for                         .xlsx files. (default: None)  For more information and examples, use 'about dcfc' to access the related guide.
+Summary: The dcfc command displays the discounted cash flow of a company over time, including today's DCF, stock price, and date. You can specify the ticker, limit the number of years or quarters, and choose between annual or quarterly data. Additionally, you can export the data in various formats and save it to a specific excel sheet.
+
+Examples:
+- Display the discounted cash flow for a specific ticker: stocks/fa/dcfc -t <SYMBOL>
+- Show the DCF for a ticker with a limit of 10 years: stocks/fa/dcfc -t <SYMBOL> -l 10
+- Analyze the DCF of a company using quarterly data: stocks/fa/dcfc -t <SYMBOL> -q
+- Export the DCF data of a ticker to a csv file: stocks/fa/dcfc -t <SYMBOL> --export csv
+- Save the DCF data of a company to a specific excel sheet: stocks/fa/dcfc -t <SYMBOL> --sheet-name Sheet1
+- Display the DCF for a ticker with a limit of 3 quarters: stocks/fa/dcfc -t <SYMBOL> -l 3 -q
