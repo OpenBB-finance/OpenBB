@@ -111,8 +111,8 @@ To develop the OpenBB Platform you need to have the following:
 
 - Git
 - Python 3.8 or higher
-- Virtual Environment with `poetry`
-  - To install poetry activate your virtual environment and run `pip install poetry`
+- Virtual Environment with `poetry` and `toml` packages installed
+  - To install these packages activate your virtual environment and run `pip install poetry toml`
 
 How to install the platform in editable mode?
 
