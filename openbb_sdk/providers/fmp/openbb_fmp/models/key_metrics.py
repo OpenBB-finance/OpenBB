@@ -7,6 +7,7 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many, get_data_one
+from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.key_metrics import (
     KeyMetricsData,
@@ -35,6 +36,10 @@ class FMPKeyMetricsData(KeyMetricsData):
         "net_debt_to_ebitda": "netDebtToEBITDA",
         "enterprise_value_over_ebitda": "enterpriseValueOverEBITDA",
     }
+
+    calendar_year: Optional[StrictInt] = Field(
+        default=None, description="Calendar year."
+    )
 
 
 class FMPKeyMetricsFetcher(
@@ -76,6 +81,7 @@ class FMPKeyMetricsFetcher(
                         "symbol": symbol,
                         "period": "TTM",
                         "date": datetime.now().strftime("%Y-%m-%d"),
+                        "calendar_year": datetime.now().year,
                         **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},
                     }
                 )
