@@ -19,12 +19,7 @@ class FREDIORBQueryParams(IORBQueryParams):
 class FREDIORBData(IORBData):
     """IORB data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "rate": "value",
-        }
+    __alias_dict__ = {"rate": "value"}
 
     @validator("rate", pre=True, check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213

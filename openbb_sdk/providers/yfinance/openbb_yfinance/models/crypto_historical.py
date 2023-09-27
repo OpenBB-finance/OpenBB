@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pandas import to_datetime
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
@@ -24,14 +24,22 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 
 
 class YFinanceCryptoHistoricalData(CryptoHistoricalData):
     """YFinance Crypto End of Day Data."""
+
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return datetime object from string."""
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
+        return v
 
 
 class YFinanceCryptoHistoricalFetcher(
@@ -104,4 +112,4 @@ class YFinanceCryptoHistoricalFetcher(
         data: List[Dict],
     ) -> List[YFinanceCryptoHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceCryptoHistoricalData.parse_obj(d) for d in data]
+        return [YFinanceCryptoHistoricalData.model_validate(d) for d in data]

@@ -19,11 +19,11 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
-    class Config:
-        fields = {"symbols": "ticker"}
+    __alias_dict__ = {"symbols": "ticker"}
 
     published_utc: Optional[str] = Field(
-        description="Date query to fetch articles. Supports operators <, <=, >, >="
+        default=None,
+        description="Date query to fetch articles. Supports operators <, <=, >, >=",
     )
     order: Optional[Literal["asc", "desc"]] = Field(
         default="desc", description="Sort order of the articles."
@@ -45,18 +45,19 @@ class PolygonPublisher(BaseModel):
 class PolygonStockNewsData(StockNewsData):
     """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
 
-    class Config:
-        fields = {
-            "url": "article_url",
-            "text": "description",
-            "date": "published_utc",
-        }
+    __alias_dict__ = {
+        "url": "article_url",
+        "text": "description",
+        "date": "published_utc",
+    }
 
-    amp_url: Optional[str] = Field(description="AMP URL.")
-    author: Optional[str] = Field(description="Author of the article.")
+    amp_url: Optional[str] = Field(default=None, description="AMP URL.")
+    author: Optional[str] = Field(default=None, description="Author of the article.")
     id: str = Field(description="Article ID.")
-    image_url: Optional[str] = Field(description="Image URL.")
-    keywords: Optional[List[str]] = Field(description="Keywords in the article")
+    image_url: Optional[str] = Field(default=None, description="Image URL.")
+    keywords: Optional[List[str]] = Field(
+        default=None, description="Keywords in the article"
+    )
     publisher: PolygonPublisher = Field(description="Publisher of the article.")
     tickers: List[str] = Field(description="Tickers covered in the article.")
 
@@ -86,12 +87,12 @@ class PolygonStockNewsFetcher(
 
             if condition != "eq":
                 query_str = get_querystring(
-                    query.dict(by_alias=True), ["published_utc"]
+                    query.model_dump(by_alias=True), ["published_utc"]
                 )
                 query_str += f"&published_utc.{condition}={date}"
 
         else:
-            query_str = get_querystring(query.dict(by_alias=True), [])
+            query_str = get_querystring(query.model_dump(by_alias=True), [])
 
         url = f"{base_url}?{query_str}&apiKey={api_key}"
 
@@ -101,4 +102,4 @@ class PolygonStockNewsFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonStockNewsData]:
-        return [PolygonStockNewsData.parse_obj(d) for d in data]
+        return [PolygonStockNewsData.model_validate(d) for d in data]

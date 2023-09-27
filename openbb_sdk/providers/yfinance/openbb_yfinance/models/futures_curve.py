@@ -20,12 +20,7 @@ class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
 class YFinanceFuturesCurveData(FuturesCurveData):
     """YFinance Futures End of Day Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "price": "Last Price",
-        }
+    __alias_dict__ = {"price": "Last Price"}
 
 
 class YFinanceFuturesCurveFetcher(

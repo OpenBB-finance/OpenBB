@@ -22,12 +22,9 @@ class IntrinioForexPairsQueryParams(ForexPairsQueryParams):
 class IntrinioForexPairsData(ForexPairsData):
     """Intrinio Forex available pairs Data."""
 
-    class Config:
-        fields = {
-            "name": "code",
-        }
+    __alias_dict__ = {"name": "code"}
 
-    code: str = Field(description="Code of the currency pair.")
+    code: str = Field(description="Code of the currency pair.", alias="name")
     base_currency: str = Field(
         description="ISO 4217 currency code of the base currency."
     )
@@ -69,4 +66,4 @@ class IntrinioForexPairsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioForexPairsData]:
         """Return the transformed data."""
 
-        return [IntrinioForexPairsData.parse_obj(d) for d in data]
+        return [IntrinioForexPairsData.model_validate(d) for d in data]

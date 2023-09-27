@@ -10,7 +10,7 @@ from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 from yfinance import Ticker
 
 
@@ -26,9 +26,13 @@ class YFinanceCashFlowStatementData(CashFlowStatementData):
 
     # TODO: Standardize the fields
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        """Return datetime object from string."""
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+        return v
 
 
 class YFinanceCashFlowStatementFetcher(
@@ -47,9 +51,9 @@ class YFinanceCashFlowStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
-        query.period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
+        period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
-            as_dict=True, pretty=False, freq=query.period
+            as_dict=True, pretty=False, freq=period
         )
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
@@ -63,4 +67,4 @@ class YFinanceCashFlowStatementFetcher(
     def transform_data(
         data: List[Dict],
     ) -> List[YFinanceCashFlowStatementData]:
-        return [YFinanceCashFlowStatementData.parse_obj(d) for d in data]
+        return [YFinanceCashFlowStatementData.model_validate(d) for d in data]

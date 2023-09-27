@@ -1,7 +1,7 @@
 """Price target consensus data model."""
 
 
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 
@@ -27,13 +27,17 @@ class PriceTargetConsensusData(Data):
     """Price target consensus Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    target_high: float = Field(description="High target of the price target consensus.")
-    target_low: float = Field(description="Low target of the price target consensus.")
-    target_consensus: float = Field(
-        description="Consensus target of the price target consensus."
+    target_high: Optional[float] = Field(
+        default=None, description="High target of the price target consensus."
     )
-    target_median: float = Field(
-        description="Median target of the price target consensus."
+    target_low: Optional[float] = Field(
+        default=None, description="Low target of the price target consensus."
+    )
+    target_consensus: Optional[float] = Field(
+        default=None, description="Consensus target of the price target consensus."
+    )
+    target_median: Optional[float] = Field(
+        default=None, description="Median target of the price target consensus."
     )
 
     @validator("symbol", pre=True, check_fields=False, always=True)

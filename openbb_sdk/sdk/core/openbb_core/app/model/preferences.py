@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, ConfigDict, PositiveInt
 
 
 class Preferences(BaseModel):
@@ -20,8 +20,7 @@ class Preferences(BaseModel):
     request_timeout: PositiveInt = 15
     metadata: bool = True
 
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(

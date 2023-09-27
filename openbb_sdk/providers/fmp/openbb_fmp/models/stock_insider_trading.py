@@ -21,6 +21,11 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
 class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading Data."""
 
+    __alias_dict__ = {
+        "acquisition_or_disposition": "acquistionOrDisposition",
+        "last_number_of_13f_shares": "lastNumberOf13FShares",
+    }
+
 
 class FMPStockInsiderTradingFetcher(
     Fetcher[
@@ -44,8 +49,6 @@ class FMPStockInsiderTradingFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        # This changes the actual type of a pydantic class, but its a quick and clean way to format properly
-        query.transactionType = ",".join(query.transactionType)  # type: ignore
         url = create_url(4, "insider-trading", api_key, query)
 
         return get_data_many(url, **kwargs)
@@ -53,4 +56,4 @@ class FMPStockInsiderTradingFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
-        return [FMPStockInsiderTradingData.parse_obj(d) for d in data]
+        return [FMPStockInsiderTradingData.model_validate(d) for d in data]

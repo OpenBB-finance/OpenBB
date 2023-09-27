@@ -19,12 +19,15 @@ class CotSearchData(Data):
 
     code: str = Field(description="CFTC Code of the report.")
     name: str = Field(description="Name of the underlying asset.")
-    category: Optional[str] = Field(description="Category of the underlying asset.")
-    subcategory: Optional[str] = Field(
-        description="Subcategory of the underlying asset."
+    category: Optional[str] = Field(
+        default=None, description="Category of the underlying asset."
     )
-    units: Optional[str] = Field(description="The units for one contract.")
-    code: str = Field(description="CFTC Code of the report.")
+    subcategory: Optional[str] = Field(
+        default=None, description="Subcategory of the underlying asset."
+    )
+    units: Optional[str] = Field(
+        default=None, description="The units for one contract."
+    )
     symbol: Optional[str] = Field(
-        description="Trading symbol representing the underlying asset."
+        default=None, description="Trading symbol representing the underlying asset."
     )

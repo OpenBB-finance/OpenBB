@@ -22,9 +22,14 @@ class CboeStockSearchQueryParams(StockSearchQueryParams):
 class CboeStockSearchData(StockSearchData):
     """CBOE Company Search Data."""
 
-    dpm_name: Optional[str] = Field(description="Name of the primary market maker.")
+    __alias_dict__ = {"name": "Company Name"}
+
+    dpm_name: Optional[str] = Field(
+        description="Name of the primary market maker.",
+        alias="DPM Name",
+    )
     post_station: Optional[str] = Field(
-        description="Post and station location on the CBOE trading floor."
+        default=None, description="Post and station location on the CBOE trading floor."
     )
 
 
@@ -61,4 +66,4 @@ class CboeStockSearchFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[CboeStockSearchData]:
         """Transform the data to the standard format."""
-        return [CboeStockSearchData.parse_obj(d) for d in data["results"]]
+        return [CboeStockSearchData.model_validate(d) for d in data["results"]]

@@ -1,10 +1,18 @@
 """The OBBject."""
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
+from re import sub
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    List,
+    Literal,
+    Optional,
+    TypeVar,
+)
 
 import pandas as pd
 from numpy import ndarray
 from pydantic import BaseModel, Field
-from pydantic.generics import GenericModel
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -16,7 +24,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
 
 try:
-    from polars import DataFrame as PolarsDataFrame
+    from polars import DataFrame as PolarsDataFrame  # type: ignore
 except ImportError:
     PolarsDataFrame = Any
 
@@ -24,7 +32,7 @@ T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
 
 
-class OBBject(GenericModel, Generic[T], Tagged):
+class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
 
     results: Optional[T] = Field(
@@ -50,17 +58,31 @@ class OBBject(GenericModel, Generic[T], Tagged):
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
-        return (
-            self.__class__.__name__
-            + "\n\n"
-            + "\n".join(
-                [
-                    f"{k}: {v}"[:83]
-                    + ("..." if len(f"{k}: {v}") > len(f"{k}: {v}"[:83]) else "")
-                    for k, v in self.dict().items()
-                ]
+        items = [
+            f"{k}: {v}"[:83] + "..." if len(f"{k}: {v}") > 83 else ""
+            for k, v in self.model_dump().items()
+        ]
+        return f"{self.__class__.__name__}\n\n" + "\n".join(items)
+
+    @classmethod
+    def results_type_repr(cls, params: Optional[Any] = None) -> str:
+        """Return the results type name."""
+        type_ = params[0] if params else cls.model_fields["results"].annotation
+        name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
+        if "typing." in str(type_):
+            unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
+            name = sub(
+                r"(\w+\.)*(\w+)?(\, NoneType)?",
+                r"\2",
+                unpack_optional,
             )
-        )
+
+        return name
+
+    @classmethod
+    def model_parametrized_name(cls, params: Any) -> str:
+        """Return the model name with the parameters."""
+        return f"OBBject[{cls.results_type_repr(params)}]"
 
     def to_df(self) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
@@ -154,7 +176,7 @@ class OBBject(GenericModel, Generic[T], Tagged):
     def to_polars(self) -> PolarsDataFrame:
         """Convert results field to polars dataframe."""
         try:
-            from polars import from_pandas
+            from polars import from_pandas  # type: ignore
         except ImportError:
             raise ImportError(
                 "Please install polars: `pip install polars`  to use this function."

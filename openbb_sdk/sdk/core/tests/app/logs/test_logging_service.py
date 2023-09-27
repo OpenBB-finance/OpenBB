@@ -17,8 +17,8 @@ class MockLoggingSettings:
 
 
 class MockOBBject(BaseModel):
-    output: Optional[str]
-    error: Optional[str]
+    output: Optional[str] = None
+    error: Optional[str] = None
 
 
 @pytest.fixture(scope="function")

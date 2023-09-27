@@ -10,7 +10,7 @@ from openbb_provider.standard_models.institutional_ownership import (
     InstitutionalOwnershipData,
     InstitutionalOwnershipQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
@@ -23,16 +23,14 @@ class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
 class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):
     """FMP Institutional Ownership Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {
+        "number_of_13f_shares": "numberOf13Fshares",
+        "last_number_of_13f_shares": "lastNumberOf13Fshares",
+        "number_of_13f_shares_change": "numberOf13FsharesChange",
+    }
 
-        fields = {
-            "number_of_13f_shares": "numberOf13Fshares",
-            "last_number_of_13f_shares": "lastNumberOf13Fshares",
-            "number_of_13f_shares_change": "numberOf13FsharesChange",
-        }
-
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def time_validate(cls, v):  # pylint: disable=no-self-argument
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
@@ -67,4 +65,4 @@ class FMPInstitutionalOwnershipFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPInstitutionalOwnershipData]:
         """Return the transformed data."""
-        return [FMPInstitutionalOwnershipData.parse_obj(d) for d in data]
+        return [FMPInstitutionalOwnershipData.model_validate(d) for d in data]

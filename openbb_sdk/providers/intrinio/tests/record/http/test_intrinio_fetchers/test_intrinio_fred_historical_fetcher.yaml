@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/indices/economic/$GDP/historical_data/level?api_key=MOCK_API_KEY&end_date=2023-09-20&page_size=100&start_date=2022-09-20
+  response:
+    body:
+      string: !!binary |
+        H4sIABosE2UAA1yRX2vCMBTFv0oJe7QlSVtr++YQfBPZ9rKNUWITXUaaaP6IRfrdd6tTZt9yT345
+        nHtyRt/SeWNlw1TNmWeo+jwjOAhUIYppGuMsxgRN0JGpACKdFuUsmeK8n4w4MuJyWiZFkT1yNCZ4
+        xJG0SMqSjjlcPHJ5QdOkzEj/NUFSc3FC1RlJDjhM9Wr3TlY7wF3XbowC9Wm5WMOsWTtYLq1xLlqY
+        Vjgvm2htDQ+Nh/vGaC+10B5VOig1CEF7293GsB9C1VsrDkHoBnR0CMx6YVUHzxVzvr4y/JKc5DGh
+        MaVvJK1yUpFZgjH+ANJsnLBH5qXRtfPgADgps+Je3H9A6LvbrQcnmDMafonxn+B8e4mMXv9U1UXz
+        iy54NNc6MBW9DGXCAlp6B+SzVAqsXWS20INSzDrUQz/i5Os924nrwv0vAAAA//8DAGqXbKQRAgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:08:10 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

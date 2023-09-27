@@ -10,7 +10,7 @@ from openbb_provider.standard_models.cash_flow_growth import (
     CashFlowStatementGrowthData,
     CashFlowStatementGrowthQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPCashFlowStatementGrowthQueryParams(CashFlowStatementGrowthQueryParams):
@@ -23,17 +23,15 @@ class FMPCashFlowStatementGrowthQueryParams(CashFlowStatementGrowthQueryParams):
 class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
     """FMP Cash Flow Statement Growth Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
+    __alias_dict__ = {
+        "growth_net_cash_provided_by_operating_activities": "growthNetCashProvidedByOperatingActivites",
+        "growth_other_investing_activities": "growthOtherInvestingActivites",
+        "growth_net_cash_used_for_investing_activities": "growthNetCashUsedForInvestingActivites",
+        "growth_other_financing_activities": "growthOtherFinancingActivites",
+    }
 
-        fields = {
-            "growth_net_cash_provided_by_operating_activities": "growthNetCashProvidedByOperatingActivites",
-            "growth_other_investing_activities": "growthOtherInvestingActivites",
-            "growth_net_cash_used_for_investing_activities": "growthNetCashUsedForInvestingActivites",
-            "growth_other_financing_activities": "growthOtherFinancingActivites",
-        }
-
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
@@ -72,4 +70,4 @@ class FMPCashFlowStatementGrowthFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPCashFlowStatementGrowthData]:
         """Return the transformed data."""
-        return [FMPCashFlowStatementGrowthData.parse_obj(d) for d in data]
+        return [FMPCashFlowStatementGrowthData.model_validate(d) for d in data]

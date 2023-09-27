@@ -1,13 +1,12 @@
 from typing import Dict, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Defaults(BaseModel):
     """Defaults."""
 
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     routes: Dict[str, Dict[str, Optional[str]]] = Field(default_factory=dict)
 

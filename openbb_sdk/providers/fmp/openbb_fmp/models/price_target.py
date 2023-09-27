@@ -1,6 +1,7 @@
 """FMP Stock Ownership fetcher."""
 
 
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -9,7 +10,7 @@ from openbb_provider.standard_models.price_target import (
     PriceTargetData,
     PriceTargetQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPPriceTargetQueryParams(PriceTargetQueryParams):
@@ -27,14 +28,17 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
 class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
+    __alias_dict__ = {"news_url": "newsURL", "news_base_url": "newsBaseURL"}
 
-        fields = {"news_url": "newsURL", "news_base_url": "newsBaseURL"}
+    new_grade: Optional[str] = Field(description="New grade", default=None)
+    previous_grade: Optional[str] = Field(description="Previous grade", default=None)
+    grading_company: Optional[str] = Field(description="Grading company", default=None)
 
-    new_grade: Optional[str]
-    previous_grade: Optional[str]
-    grading_company: Optional[str]
+    @field_validator("published_date", mode="before", check_fields=False)
+    def fiscal_date_ending_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the fiscal date ending as a datetime object."""
+        v = v.replace("\n", "")
+        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")  # type: ignore
 
 
 class FMPPriceTargetFetcher(
@@ -67,4 +71,4 @@ class FMPPriceTargetFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPPriceTargetData]:
         """Return the transformed data."""
-        return [FMPPriceTargetData.parse_obj(d) for d in data]
+        return [FMPPriceTargetData.model_validate(d) for d in data]

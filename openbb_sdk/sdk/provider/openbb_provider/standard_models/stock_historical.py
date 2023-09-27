@@ -8,7 +8,7 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, NonNegativeInt, PositiveFloat, validator
+from pydantic import Field, PositiveFloat, validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -42,8 +42,10 @@ class StockHistoricalData(Data):
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: NonNegativeInt = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
-    vwap: Optional[PositiveFloat] = Field(description=DATA_DESCRIPTIONS.get("vwap", ""))
+    volume: Union[float, int] = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    vwap: Optional[PositiveFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
+    )
 
     @validator("date", pre=True, check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

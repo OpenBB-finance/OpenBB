@@ -3,7 +3,7 @@
 from datetime import date, datetime
 from typing import List, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -15,7 +15,7 @@ class HistoricalEmployeesQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -46,22 +46,25 @@ class HistoricalEmployeesData(Data):
         description="Source URL which retrieves this data for the company."
     )
 
-    @validator("acceptance_time", pre=True, check_fields=False)
+    @field_validator("acceptance_time", mode="before", check_fields=False)
+    @classmethod
     def acceptance_time_validate(cls, v):  # pylint: disable=E0213
         """Validate acceptance time."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
-    @validator("period_of_report", pre=True, check_fields=False)
+    @field_validator("period_of_report", mode="before", check_fields=False)
+    @classmethod
     def period_of_report_validate(cls, v):  # pylint: disable=E0213
         """Validate period of report."""
         return datetime.strptime(v, "%Y-%m-%d")
 
-    @validator("filing_date", pre=True, check_fields=False)
+    @field_validator("filing_date", mode="before", check_fields=False)
+    @classmethod
     def filing_date_validate(cls, v):  # pylint: disable=E0213
         """Validate filing date."""
         return datetime.strptime(v, "%Y-%m-%d")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

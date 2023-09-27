@@ -2,7 +2,7 @@
 
 
 from datetime import date as dateType
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, validator
 
@@ -28,17 +28,23 @@ class ShareStatisticsData(Data):
     """Return Share Statistics Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
-    free_float: float = Field(
-        description="Percentage of unrestricted shares of a publicly-traded company."
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
-    float_shares: float = Field(
-        description="Number of shares available for trading by the general public."
+    free_float: Optional[float] = Field(
+        default=None,
+        description="Percentage of unrestricted shares of a publicly-traded company.",
     )
-    outstanding_shares: float = Field(
-        description="Total number of shares of a publicly-traded company."
+    float_shares: Optional[float] = Field(
+        default=None,
+        description="Number of shares available for trading by the general public.",
     )
-    source: str = Field(description="Source of the received data.")
+    outstanding_shares: Optional[float] = Field(
+        default=None, description="Total number of shares of a publicly-traded company."
+    )
+    source: Optional[str] = Field(
+        default=None, description="Source of the received data."
+    )
 
     @validator("symbol", pre=True, check_fields=False, always=True)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):

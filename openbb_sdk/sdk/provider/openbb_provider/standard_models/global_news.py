@@ -23,6 +23,6 @@ class GlobalNewsData(Data):
 
     date: datetime = Field(description="Published date of the news.")
     title: str = Field(description="Title of the news.")
-    image: Optional[str] = Field(description="Image URL of the news.")
-    text: Optional[str] = Field(description="Text/body of the news.")
-    url: str = Field(description="URL of the news.")
+    image: Optional[str] = Field(default=None, description="Image URL of the news.")
+    text: Optional[str] = Field(default=None, description="Text/body of the news.")
+    url: Optional[str] = Field(default=None, description="URL of the news.")

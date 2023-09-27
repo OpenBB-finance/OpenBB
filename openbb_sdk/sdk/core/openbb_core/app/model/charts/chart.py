@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ChartFormat(str, Enum):
@@ -20,11 +20,9 @@ class Chart(BaseModel):
     fig: Optional[Any] = Field(
         default=None,
         description="The figure object.",
-        exclude_from_api=True,
+        json_schema_extra={"exclude_from_api": True},
     )
-
-    class Config:
-        validate_assignment = True
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(

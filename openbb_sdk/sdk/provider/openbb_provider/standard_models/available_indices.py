@@ -19,5 +19,7 @@ class AvailableIndicesData(Data):
     Returns the list of available indices from a provider.
     """
 
-    name: Optional[str] = Field(description="Name of the index.")
-    currency: Optional[str] = Field(description="Currency the index is traded in.")
+    name: Optional[str] = Field(default=None, description="Name of the index.")
+    currency: Optional[str] = Field(
+        default=None, description="Currency the index is traded in."
+    )
