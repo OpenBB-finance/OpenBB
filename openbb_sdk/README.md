@@ -117,8 +117,5 @@ To develop the OpenBB Platform you need to have the following:
 How to install the platform in editable mode?
 
   1. Activate your virtual environment
-  2.  Navigate into the `openbb_sdk` folder
-  3. Run `python dev_install.py` to install the packages in editable mode
-
-`Note`
-To install all packages in editable mode use `python dev_install.py -e`
+  1. Navigate into the `openbb_sdk` folder
+  1. Run `python dev_install.py` to install the packages in editable mode
