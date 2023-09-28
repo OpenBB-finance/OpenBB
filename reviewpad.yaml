@@ -1,17 +1,12 @@
 groups:
   - name: ignored-patterns
     spec: '["*.lock","*.csv","*.yaml","*.txt"]'
-  - name: ignored-prs
-    description: |
-      List of PRs numbers that should be ignored by Reviewpad
-      Reviewpad will not run on these PRs
-    spec: '["5225"]'
 
 rules:
   - name: changes-requirements
     spec: $containsFileName("requirements.txt") && $containsFileName("requirements-full.txt")
   - name: should-run-reviewpad
-    spec: $isElementOf($selectFromContext("$.number"), $group("ignored-prs")) == false
+    spec: '!$isElementOf("reviewpad-ignore", $getLabels())'
 
 workflows:
   - name: label-pull-request-with-size
