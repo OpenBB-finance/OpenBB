@@ -70,7 +70,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         raise RuntimeError("FMP Error Message -> " + data["Error Message"])
 
     if len(data) == 0:
-        raise RuntimeError("No results found. Try adjusting the query parameters.")
+        raise EmptyDataError()
 
     return data
 
