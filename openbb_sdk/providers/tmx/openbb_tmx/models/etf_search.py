@@ -66,28 +66,36 @@ class TmxEtfSearchQueryParams(EtfSearchQueryParams):
 class TmxEtfSearchData(EtfSearchData):
     """TMX ETF Search Data."""
 
-    nav: Optional[int | None] = Field(
-        description="The value of the assets under management."
+    nav: Optional[int] = Field(
+        description="The value of the assets under management.", default=None
     )
-    investment_style: Optional[str | None] = Field(
-        description="The investment style of the ETF."
+    investment_style: Optional[str] = Field(
+        description="The investment style of the ETF.", default=None
     )
-    return_1m: Optional[float | None] = Field(description="The one-month return.")
-    return_3m: Optional[float | None] = Field(description="The three-month return.")
-    return_ytd: Optional[float | None] = Field(description="The year-to-date return.")
-    close: Optional[float | None] = Field(description="The closing price.")
-    prev_close: Optional[float | None] = Field(
-        description="The previous closing price."
+    return_1m: Optional[float] = Field(
+        description="The one-month return.", default=None
     )
-    volume_avg_daily: Optional[int | None] = Field(
-        description="The average daily volume."
+    return_3m: Optional[float] = Field(
+        description="The three-month return.", default=None
     )
-    management_fee: Optional[float | None] = Field(description="The management fee.")
-    distribution_yield: Optional[float | None] = Field(
-        description="The distribution yield."
+    return_ytd: Optional[float] = Field(
+        description="The year-to-date return.", default=None
     )
-    dividend_frequency: Optional[str | None] = Field(
-        description="The dividend payment frequency."
+    close: Optional[float] = Field(description="The closing price.", default=None)
+    prev_close: Optional[float] = Field(
+        description="The previous closing price.", default=None
+    )
+    volume_avg_daily: Optional[int] = Field(
+        description="The average daily volume.", default=None
+    )
+    management_fee: Optional[float] = Field(
+        description="The management fee.", default=None
+    )
+    distribution_yield: Optional[float] = Field(
+        description="The distribution yield.", default=None
+    )
+    dividend_frequency: Optional[str] = Field(
+        description="The dividend payment frequency.", default=None
     )
 
 

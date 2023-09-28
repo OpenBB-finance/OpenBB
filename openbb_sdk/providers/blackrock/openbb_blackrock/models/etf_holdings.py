@@ -2,7 +2,7 @@
 
 from datetime import date as dateType
 from io import StringIO
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
@@ -29,8 +29,8 @@ class BlackrockEtfHoldingsQueryParams(EtfHoldingsQueryParams):
     Source: https://www.blackrock.com/
     """
 
-    date: Optional[str | dateType] = Field(
-        description="The as-of date for historical daily holdings.", default=""
+    date: Optional[Union[str, dateType]] = Field(
+        description="The as-of date for historical daily holdings.", default=None
     )
     country: Optional[COUNTRIES] = Field(
         description="The country the ETF is registered in.", default="america"
@@ -40,94 +40,111 @@ class BlackrockEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class BlackrockEtfHoldingsData(EtfHoldingsData):
     """Blackrock ETF Holdings Data."""
 
-    symbol: Optional[str | None] = Field(
-        description="The asset's ticker symbol.", alias="Ticker"
+    symbol: Optional[str] = Field(
+        description="The asset's ticker symbol.", alias="Ticker", default=None
     )
-    name: Optional[str | None] = Field(
-        description="The name of the asset.", alias="Name"
+    name: Optional[str] = Field(
+        description="The name of the asset.", alias="Name", default=None
     )
-    weight: Optional[float | str | None] = Field(
-        description="The weight of the holding.", alias="Weight (%)"
+    weight: Optional[Union[float, str]] = Field(
+        description="The weight of the holding.", alias="Weight (%)", default=None
     )
-    price: Optional[float | str | None] = Field(
-        description="The price-per-share of the asset.", alias="Price"
+    price: Optional[Union[float, str]] = Field(
+        description="The price-per-share of the asset.", alias="Price", default=None
     )
-    shares: Optional[int | str | None] = Field(
-        description="The number of shares held.", alias="Shares"
+    shares: Optional[Union[float, str]] = Field(
+        description="The number of shares held.", alias="Shares", default=None
     )
-    market_value: Optional[float | str | None] = Field(
-        description="The market value of the holding.", alias="Market Value"
+    market_value: Optional[Union[float, str]] = Field(
+        description="The market value of the holding.",
+        alias="Market Value",
+        default=None,
     )
-    notional_value: Optional[float | str | None] = Field(
-        description="The notional value of the holding.", alias="Notional Value"
+    notional_value: Optional[Union[float, str]] = Field(
+        description="The notional value of the holding.",
+        alias="Notional Value",
+        default=None,
     )
     asset_class: Optional[str] = Field(description="The asset class of the asset.")
-    sector: Optional[str | None] = Field(
-        description="The sector the asset belongs to.", alias="Sector"
+    sector: Optional[str] = Field(
+        description="The sector the asset belongs to.", alias="Sector", default=None
     )
-    isin: Optional[str | None] = Field(
-        description="The ISIN of the asset.", alias="ISIN"
+    isin: Optional[str] = Field(
+        description="The ISIN of the asset.", alias="ISIN", default=None
     )
-    sedol: Optional[str | None] = Field(
-        description="The SEDOL of the asset.", alias="SEDOL"
+    sedol: Optional[str] = Field(
+        description="The SEDOL of the asset.", alias="SEDOL", default=None
     )
-    cusip: Optional[str | None] = Field(
-        description="The CUSIP of the asset.", alias="CUSIP"
+    cusip: Optional[str] = Field(
+        description="The CUSIP of the asset.", alias="CUSIP", default=None
     )
-    exchange: Optional[str | None] = Field(
-        description="The exchange the asset is traded on.", alias="Exchange"
+    exchange: Optional[str] = Field(
+        description="The exchange the asset is traded on.",
+        alias="Exchange",
+        default=None,
     )
-    country: Optional[str | None] = Field(
-        description="The location of the risk exposure is.", alias="Location of Risk"
+    country: Optional[str] = Field(
+        description="The location of the risk exposure is.",
+        alias="Location of Risk",
+        default=None,
     )
-    currency: Optional[str | None] = Field(
-        description="The currency of the asset.", alias="Currency"
+    currency: Optional[str] = Field(
+        description="The currency of the asset.", alias="Currency", default=None
     )
-    market_currency: Optional[str | None] = Field(
+    market_currency: Optional[str] = Field(
         description="The currency for the market the asset trades in.",
         alias="Market Currency",
+        default=None,
     )
-    fx_rate: Optional[float | None] = Field(
+    fx_rate: Optional[float] = Field(
         description="The exchange rate of the asset against the fund's base currency.",
+        default=None,
     )
-    coupon: Optional[float | str | None] = Field(
-        description="The coupon rate of the asset.", alias="Coupon (%)"
+    coupon: Optional[Union[float, str]] = Field(
+        description="The coupon rate of the asset.", alias="Coupon (%)", default=None
     )
-    par_value: Optional[float | str | None] = Field(
-        description="The par value of the asset.", alias="Par Value"
+    par_value: Optional[Union[float, str]] = Field(
+        description="The par value of the asset.", alias="Par Value", default=None
     )
-    ytm: Optional[float | str | None] = Field(
-        description="The yield-to-maturity of the asset.", alias="YTM (%)"
+    ytm: Optional[Union[float, str]] = Field(
+        description="The yield-to-maturity of the asset.", alias="YTM (%)", default=None
     )
-    real_ytm: Optional[float | str | None] = Field(
+    real_ytm: Optional[Union[float, str]] = Field(
         description="The real yield-to-maturity of the asset.",
         alias="Real YTM (%)",
+        default=None,
     )
-    yield_to_worst: Optional[float | str | None] = Field(
-        description="The yield-to-worst of the asset.", alias="Yield to Worst (%)"
+    yield_to_worst: Optional[Union[float, str]] = Field(
+        description="The yield-to-worst of the asset.",
+        alias="Yield to Worst (%)",
+        default=None,
     )
-    duration: Optional[float | str | None] = Field(
-        description="The duration of the asset.", alias="Duration"
+    duration: Optional[Union[float, str]] = Field(
+        description="The duration of the asset.", alias="Duration", default=None
     )
-    real_duration: Optional[float | str | None] = Field(
-        description="The real duration of the asset.", alias="Real Duration"
+    real_duration: Optional[Union[float, str]] = Field(
+        description="The real duration of the asset.",
+        alias="Real Duration",
+        default=None,
     )
-    yield_to_call: Optional[float | str | None] = Field(
+    yield_to_call: Optional[Union[float, str]] = Field(
         description="The yield-to-call of the asset.",
         alias="Yield to Call (%)",
+        default=None,
     )
-    mod_duration: Optional[float | str | None] = Field(
+    mod_duration: Optional[Union[float, str]] = Field(
         description="The modified duration of the asset.",
         alias="Mod. Duration",
+        default=None,
     )
-    maturity: Optional[float | str | None] = Field(
-        description="The maturity date of the asset.", alias="Maturity"
+    maturity: Optional[Union[float, str]] = Field(
+        description="The maturity date of the asset.", alias="Maturity", default=None
     )
-    accrual_date: Optional[str | dateType | None] = Field(
-        description="The accrual date of the asset.",
+    accrual_date: Optional[Union[str, dateType]] = Field(
+        description="The accrual date of the asset.", default=None
     )
-    effective_date: Optional[str | dateType | None] = Field(
-        description="The effective date of the asset.",
+    effective_date: Optional[Union[str, dateType]] = Field(
+        description="The effective date of the asset.", default=None
     )
 
 

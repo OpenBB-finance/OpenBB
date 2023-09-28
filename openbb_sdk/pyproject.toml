@@ -9,17 +9,17 @@ packages = [{ include = "openbb" }]
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
 openbb-core = "^0.1.0a2"
-openbb-provider = { path = "./sdk/provider"}
+openbb-provider = "^0.1.0a2"
 
 openbb-benzinga = "^0.1.0a2"
-openbb-fmp = { path = "./providers/fmp"}
+openbb-fmp = "^0.1.0a2"
 openbb-fred = "^0.1.0a2"
 openbb-intrinio = "^0.1.0a2"
 openbb-polygon = "^0.1.0a2"
 
 openbb-crypto = "^0.1.0a2"
 openbb-economy = "^0.1.0a2"
-openbb-etf = { path = "./extensions/etf"}
+openbb-etf = "^0.1.0a2"
 openbb-forex = "^0.1.0a2"
 openbb-fixedincome = "^0.1.0a2"
 openbb-news = "^0.1.0a2"
@@ -27,10 +27,10 @@ openbb-stocks = "^0.1.0a2"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a2", optional = true }
-openbb-blackrock = { path = "./providers/blackrock", optional = true }
+openbb-blackrock = { version = "^0.1.0a2", optional = true }
 openbb-cboe = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
-openbb-tmx = { path = "./providers/tmx", optional = true }
+openbb-tmx = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
 
 openbb-charting = { version = "^0.1.0a2", optional = true }

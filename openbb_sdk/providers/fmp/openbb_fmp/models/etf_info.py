@@ -19,10 +19,9 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Countries Data."""
 
-    class Config:
-        fields = {
-            "inception_date": "inceptionDate",
-        }
+    __alias_dict__ = {
+        "inception_date": "inceptionDate",
+    }
 
     issuer: Optional[str] = Field(
         description="The issuer of the ETF.", alias="etfCompany"

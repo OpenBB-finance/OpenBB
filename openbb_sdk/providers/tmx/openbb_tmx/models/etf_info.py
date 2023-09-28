@@ -21,62 +21,80 @@ class TmxEtfInfoData(EtfInfoData):
     """TMX ETF Info Data."""
 
     issuer: Optional[str] = Field(
-        description="The issuer of the ETF.", alias="fund_family"
+        description="The issuer of the ETF.", alias="fund_family", default=None
     )
     investment_style: Optional[str] = Field(
-        description="The investment style of the ETF.",
+        description="The investment style of the ETF.", default=None
     )
     esg: Optional[str] = Field(
-        description="Whether the ETF qualifies as an ESG fund.",
+        description="Whether the ETF qualifies as an ESG fund.", default=None
     )
     currency: Optional[str] = Field(description="The currency of the ETF.")
     unit_price: Optional[float] = Field(
-        description="The unit price of the ETF.",
+        description="The unit price of the ETF.", default=None
     )
     close: Optional[float] = Field(description="The closing price of the ETF.")
     prev_close: Optional[float] = Field(
-        description="The previous closing price of the ETF."
+        description="The previous closing price of the ETF.", default=None
     )
-    return_1m: Optional[float] = Field(description="The one-month return of the ETF.")
-    return_3m: Optional[float] = Field(description="The three-month return of the ETF.")
-    return_6m: Optional[float] = Field(description="The six-month return of the ETF.")
+    return_1m: Optional[float] = Field(
+        description="The one-month return of the ETF.", default=None
+    )
+    return_3m: Optional[float] = Field(
+        description="The three-month return of the ETF.", default=None
+    )
+    return_6m: Optional[float] = Field(
+        description="The six-month return of the ETF.", default=None
+    )
     return_ytd: Optional[float] = Field(
-        description="The year-to-date return of the ETF."
+        description="The year-to-date return of the ETF.", default=None
     )
-    return_1y: Optional[float] = Field(description="The one-year return of the ETF.")
+    return_1y: Optional[float] = Field(
+        description="The one-year return of the ETF.", default=None
+    )
     avg_volume: Optional[int] = Field(
-        description="The average daily volume of the ETF.", alias="volume_avg_daily"
+        description="The average daily volume of the ETF.",
+        alias="volume_avg_daily",
+        default=None,
     )
     avg_volume_30d: Optional[int] = Field(
-        description="The 30-day average volume of the ETF.", alias="volume_avg_30d"
+        description="The 30-day average volume of the ETF.",
+        alias="volume_avg_30d",
+        default=None,
     )
-    aum: Optional[float] = Field(description="The AUM of the ETF.")
+    aum: Optional[float] = Field(description="The AUM of the ETF.", default=None)
     pe_ratio: Optional[float] = Field(
-        description="The price-to-earnings ratio of the ETF."
+        description="The price-to-earnings ratio of the ETF.", default=None
     )
-    pb_ratio: Optional[float] = Field(description="The price-to-book ratio of the ETF.")
+    pb_ratio: Optional[float] = Field(
+        description="The price-to-book ratio of the ETF.", default=None
+    )
     management_fee: Optional[float] = Field(
-        description="The management fee of the ETF."
+        description="The management fee of the ETF.", default=None
     )
-    mer: Optional[float] = Field(description="The management expense ratio of the ETF.")
+    mer: Optional[float] = Field(
+        description="The management expense ratio of the ETF.", default=None
+    )
     distribution_yield: Optional[float] = Field(
-        description="The distribution yield of the ETF."
+        description="The distribution yield of the ETF.", default=None
     )
     dividend_frequency: Optional[str] = Field(
-        description="The dividend payment frequency of the ETF."
+        description="The dividend payment frequency of the ETF.", default=None
     )
     sectors: Optional[List[Dict]] = Field(
-        description="The sector weightings of the ETF holdings."
+        description="The sector weightings of the ETF holdings.", default=None
     )
     regions: Optional[List[Dict]] = Field(
-        description="The region weightings of the ETF holdings."
+        description="The region weightings of the ETF holdings.", default=None
     )
     holdings_top10: Optional[List[Dict]] = Field(
-        description="The top 10 holdings of the ETF."
+        description="The top 10 holdings of the ETF.", default=None
     )
-    website: Optional[str] = Field(description="The website of the ETF.")
+    website: Optional[str] = Field(description="The website of the ETF.", default=None)
     description: Optional[str] = Field(
-        description="The description of the ETF.", alias="investment_objectives"
+        description="The description of the ETF.",
+        alias="investment_objectives",
+        default=None,
     )
 
 

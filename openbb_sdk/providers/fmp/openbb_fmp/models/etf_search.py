@@ -30,12 +30,9 @@ class FMPEtfSearchQueryParams(EtfSearchQueryParams):
 class FMPEtfSearchData(EtfSearchData):
     """FMP ETF Search Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
-        fields = {
-            "name": "companyName",
-        }
+    __alias_dict__ = {
+        "name": "companyName",
+    }
 
     market_cap: Optional[float] = Field(
         description="The market cap of the ETF.", alias="marketCap"

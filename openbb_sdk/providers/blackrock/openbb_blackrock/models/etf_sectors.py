@@ -27,20 +27,19 @@ class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):
 class BlackrockEtfSectorsData(EtfSectorsData):
     """Blackrock ETF Sectors Data."""
 
-    class Config:
-        fields = {
-            "energy": "Energy",
-            "materials": "Basic Materials",
-            "industrials": "Industrials",
-            "consumer_cyclical": "Consumer Discretionary",
-            "consumer_defensive": "Consumer Staples",
-            "financial_services": "Financials",
-            "technology": "Information Technology",
-            "health_care": "Healthcare",
-            "communication_services": "Communication",
-            "utilities": "Utilities",
-            "real_estate": "Real Estate",
-        }
+    __alias_dict__ = {
+        "energy": "Energy",
+        "materials": "Basic Materials",
+        "industrials": "Industrials",
+        "consumer_cyclical": "Consumer Discretionary",
+        "consumer_defensive": "Consumer Staples",
+        "financial_services": "Financials",
+        "technology": "Information Technology",
+        "health_care": "Healthcare",
+        "communication_services": "Communication",
+        "utilities": "Utilities",
+        "real_estate": "Real Estate",
+    }
 
     cash_or_derivatives: Optional[float] = Field(
         description="Cash and/or derivatives.", alias="Cash and/or Derivatives"

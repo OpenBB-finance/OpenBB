@@ -19,20 +19,19 @@ class FMPEtfSectorsQueryParams(EtfSectorsQueryParams):
 class FMPEtfSectorsData(EtfSectorsData):
     """FMP ETF Sectors Data."""
 
-    class Config:
-        fields = {
-            "energy": "Energy",
-            "materials": "Basic Materials",
-            "industrials": "Industrials",
-            "consumer_cyclical": "Consumer Cyclical",
-            "consumer_defensive": "Consumer Defensive",
-            "financial_services": "Financial Services",
-            "technology": "Technology",
-            "health_care": "Healthcare",
-            "communication_services": "Communication Services",
-            "utilities": "Utilities",
-            "real_estate": "Real Estate",
-        }
+    __alias_dict__ = {
+        "energy": "Energy",
+        "materials": "Basic Materials",
+        "industrials": "Industrials",
+        "consumer_cyclical": "Consumer Cyclical",
+        "consumer_defensive": "Consumer Defensive",
+        "financial_services": "Financial Services",
+        "technology": "Technology",
+        "health_care": "Healthcare",
+        "communication_services": "Communication Services",
+        "utilities": "Utilities",
+        "real_estate": "Real Estate",
+    }
 
     other: Optional[float] = Field(description="Other Sector Weight.", alias="Other")
 

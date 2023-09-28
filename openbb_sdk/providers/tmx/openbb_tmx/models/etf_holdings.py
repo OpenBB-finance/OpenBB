@@ -1,6 +1,6 @@
 """TMX ETF Holdings fetcher."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
@@ -23,33 +23,40 @@ class TmxEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class TmxEtfHoldingsData(EtfHoldingsData):
     """TMX ETF Holdings Data."""
 
-    symbol: Optional[str | None] = Field(description="The ticker symbol of the asset.")
-    name: Optional[str | None] = Field(description="The name of the asset.")
-    weight: Optional[float | None] = Field(
-        description="The weight of the asset in the portfolio."
+    symbol: Optional[str] = Field(
+        description="The ticker symbol of the asset.", default=None
     )
-    shares: Optional[int | str | None] = Field(
+    name: Optional[str] = Field(description="The name of the asset.", default=None)
+    weight: Optional[float] = Field(
+        description="The weight of the asset in the portfolio.", default=None
+    )
+    shares: Optional[Union[int, str]] = Field(
         description="The value of the assets under management.",
         alias="number_of_shares",
+        default=None,
     )
-    market_value: Optional[float | str | None] = Field(
-        description="The market value of the holding."
+    market_value: Optional[Union[float, str]] = Field(
+        description="The market value of the holding.", default=None
     )
-    currency: Optional[str | None] = Field(description="The currency of the holding.")
-    share_percentage: Optional[float | None] = Field(
-        description="The share percentage of the holding."
+    currency: Optional[str] = Field(description="The currency of the holding.")
+    share_percentage: Optional[float] = Field(
+        description="The share percentage of the holding.", default=None
     )
-    share_change: Optional[float | str | None] = Field(
-        description="The change in shares of the holding.",
+    share_change: Optional[Union[float, str]] = Field(
+        description="The change in shares of the holding.", default=None
     )
-    country: Optional[str | None] = Field(description="The country of the holding.")
-    exchange: Optional[str | None] = Field(
-        description="The exchange code of the holding."
+    country: Optional[str] = Field(
+        description="The country of the holding.", default=None
     )
-    type_id: Optional[str | None] = Field(
-        description="The holding type ID of the asset."
+    exchange: Optional[str] = Field(
+        description="The exchange code of the holding.", default=None
     )
-    fund_id: Optional[str | None] = Field(description="The fund ID of the asset.")
+    type_id: Optional[str] = Field(
+        description="The holding type ID of the asset.", default=None
+    )
+    fund_id: Optional[str] = Field(
+        description="The fund ID of the asset.", default=None
+    )
 
 
 class TmxEtfHoldingsFetcher(

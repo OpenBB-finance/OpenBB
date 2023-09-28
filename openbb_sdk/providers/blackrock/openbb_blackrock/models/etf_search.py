@@ -26,30 +26,43 @@ class BlackrockEtfSearchData(EtfSearchData):
 
     name: Optional[str] = Field(description="The name of the ETF.", alias="fund_name")
 
-    asset_class: Optional[str | None] = Field(
-        description="The asset class of the ETF.", alias="aladdin_asset_class"
+    asset_class: Optional[str] = Field(
+        description="The asset class of the ETF.",
+        alias="aladdin_asset_class",
+        defalt=None,
     )
-    sub_asset_class: Optional[str | None] = Field(
-        description="The sub-asset class of the ETF.", alias="aladdin_sub_asset_class"
+    sub_asset_class: Optional[str] = Field(
+        description="The sub-asset class of the ETF.",
+        alias="aladdin_sub_asset_class",
+        default=None,
     )
-    region: Optional[str | None] = Field(
-        description="The region of the ETF.", alias="aladdin_region"
+    region: Optional[str] = Field(
+        description="The region of the ETF.", alias="aladdin_region", default=None
     )
     country: Optional[str] = Field(
-        description="The country the ETF is registered in.", alias="aladdin_country"
+        description="The country the ETF is registered in.",
+        alias="aladdin_country",
+        default=None,
     )
-    market_type: Optional[str | None] = Field(
-        description="The market type of the ETF.", alias="aladdin_market_type"
+    market_type: Optional[str] = Field(
+        description="The market type of the ETF.",
+        alias="aladdin_market_type",
+        default=None,
     )
-    investment_style: Optional[str | None] = Field(
-        description="The investment style of the ETF.", alias="investment_style"
+    investment_style: Optional[str] = Field(
+        description="The investment style of the ETF.",
+        alias="investment_style",
+        default=None,
     )
-    investment_strategy: Optional[str | None] = Field(
-        description="The investment strategy of the ETF.", alias="aladdin_strategy"
+    investment_strategy: Optional[str] = Field(
+        description="The investment strategy of the ETF.",
+        alias="aladdin_strategy",
+        default=None,
     )
-    nav: Optional[float | None] = Field(
+    nav: Optional[float] = Field(
         description="The value of the assets under management.",
         alias="total_net_assets",
+        default=None,
     )
 
 

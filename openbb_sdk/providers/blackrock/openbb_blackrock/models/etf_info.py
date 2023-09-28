@@ -27,19 +27,28 @@ class BlackrockEtfInfoData(EtfInfoData):
 
     name: str = Field(description="The name of the ETF.")
 
-    asset_class: Optional[str | None] = Field(description="The asset class of the ETF.")
-    sub_asset_class: Optional[str | None] = Field(
-        description="The sub-asset class of the ETF."
+    asset_class: Optional[str] = Field(
+        description="The asset class of the ETF.", default=None
     )
-    country: Optional[str] = Field(description="The country the ETF is registered in.")
-    region: Optional[str | None] = Field(description="The region of the ETF.")
-    investment_style: Optional[str | None] = Field(
-        description="The investment style of the ETF.", alias="investment_style"
+    sub_asset_class: Optional[str] = Field(
+        description="The sub-asset class of the ETF.", default=None
     )
-    yield_ttm: Optional[float | None] = Field(description="The TTM yield of the ETF.")
-    aum: Optional[float | None] = Field(
+    country: Optional[str] = Field(
+        description="The country the ETF is registered in.", default=None
+    )
+    region: Optional[str] = Field(description="The region of the ETF.", default=None)
+    investment_style: Optional[str] = Field(
+        description="The investment style of the ETF.",
+        alias="investment_style",
+        default=None,
+    )
+    yield_ttm: Optional[float] = Field(
+        description="The TTM yield of the ETF.", default=None
+    )
+    aum: Optional[float] = Field(
         description="The value of the assets under management.",
         alias="aum",
+        default=None,
     )
 
 

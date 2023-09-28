@@ -18,10 +18,9 @@ class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
 class FMPEtfCountriesData(EtfCountriesData):
     """FMP ETF Countries Data."""
 
-    class Config:
-        fields = {
-            "weight": "weightPercentage",
-        }
+    __alias_dict__ = {
+        "weight": "weightPercentage",
+    }
 
 
 class FMPEtfCountriesFetcher(
