@@ -13,10 +13,10 @@ class Container:
     def __init__(self, command_runner: CommandRunner) -> None:
         self._command_runner = command_runner
 
-    def run(self, *args, **kwargs) -> Union[OBBject, pd.DataFrame, dict]:
+    def _run(self, *args, **kwargs) -> Union[OBBject, pd.DataFrame, dict]:
         """Run a command in the container."""
         obbject = self._command_runner.run(*args, **kwargs)
-        obbject_method = self._command_runner.user_settings.preferences.obbject_method
-        if obbject_method:
-            return getattr(obbject, obbject_method)()
-        return obbject
+        output_type = self._command_runner.user_settings.preferences.output_type
+        if output_type == "OBBject":
+            return obbject
+        return getattr(obbject, "to_" + output_type)()

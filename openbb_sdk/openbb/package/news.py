@@ -124,7 +124,7 @@ class ROUTER_news(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/news/globalnews",
             **inputs,
         )

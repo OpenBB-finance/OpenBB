@@ -128,7 +128,7 @@ class ROUTER_forex(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/forex/load",
             **inputs,
         )
@@ -219,7 +219,7 @@ class ROUTER_forex(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/forex/pairs",
             **inputs,
         )

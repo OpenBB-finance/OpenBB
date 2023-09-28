@@ -164,7 +164,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/load",
             **inputs,
         )
@@ -344,7 +344,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/multiples",
             **inputs,
         )
@@ -473,7 +473,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/news",
             **inputs,
         )
@@ -622,7 +622,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/quote",
             **inputs,
         )

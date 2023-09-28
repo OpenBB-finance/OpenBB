@@ -121,7 +121,7 @@ class ROUTER_stocks_options(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/options/chains",
             **inputs,
         )

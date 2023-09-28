@@ -10,6 +10,7 @@ from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_provider.utils.errors import EmptyDataError
 from pydantic import field_validator
 from yfinance import Ticker
 
@@ -55,6 +56,10 @@ class YFinanceCashFlowStatementFetcher(
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=True, pretty=False, freq=period
         )
+
+        if not data:
+            raise EmptyDataError()
+
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
         for d in data:

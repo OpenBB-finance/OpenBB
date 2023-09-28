@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
+from requests.exceptions import HTTPError
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
@@ -172,7 +173,7 @@ def query_graph(url: str, query: str) -> dict:
 
     session = requests.Session()
     session.mount("https://", HTTPAdapter(max_retries=5))
-    headers = {"x-api-key": get_current_user().credentials.API_BITQUERY_KEY}
+    headers = {"x-api-key": get_current_user().credentials.API_BITQUERY_KEY}  # type: ignore
     timeout = 30
 
     try:
@@ -186,7 +187,7 @@ def query_graph(url: str, query: str) -> dict:
         ) from e
 
     if response.status_code == 500:
-        raise Exception(f"Internal sever error {response.reason}")
+        raise HTTPError(f"Internal sever error {response.reason}")  # type: ignore
 
     if not 200 <= response.status_code < 300:
         raise BitQueryApiKeyException(
@@ -815,4 +816,7 @@ def get_spread_for_crypto_pair(
     return df
 
 
-POSSIBLE_CRYPTOS = list(get_erc20_tokens()["symbol"].unique())
+@log_start_end(log=logger)
+def get_possible_crypto_symbols():
+    """Get possible crypto symbols."""
+    return list(get_erc20_tokens()["symbol"].unique())

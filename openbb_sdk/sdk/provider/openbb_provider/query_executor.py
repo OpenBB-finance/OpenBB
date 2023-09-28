@@ -4,10 +4,7 @@ from typing import Any, Dict, Optional, Type
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
-
-
-class ProviderError(Exception):
-    """Exception raised for errors in the provider."""
+from openbb_provider.utils.errors import ProviderError
 
 
 class QueryExecutor:

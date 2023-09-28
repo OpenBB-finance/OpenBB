@@ -129,7 +129,7 @@ class ROUTER_crypto(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/crypto/load",
             **inputs,
         )

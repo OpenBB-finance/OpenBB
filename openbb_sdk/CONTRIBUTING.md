@@ -474,7 +474,7 @@ For development purposes, one can install every available extension by running a
 
 Navigate to `/OpenBBTerminal/openbb_sdk`
 
-Run `./install_all.sh` for Linux/mac or `install_all.bat` for Windows.
+Run `python dev_install.py`.
 </details>
 
 > In order to install any other custom extension or provider, you'd follow the exact same steps as above.
@@ -488,7 +488,7 @@ One of the interfaces we provide to users is the `openbb` python package.
 The code you will find in this package is generated from a script and it is just a
 wrapper around the `openbb-core` and any installed extensions.
 
-When the user runs `import openbb`, `from openbb import sdk` or other variants, the
+When the user runs `import openbb`, `from openbb import obb` or other variants, the
 script that generates the package code is triggered. It detects if there are new openbb
 extensions installed in the environment and rebuilds the package code accordingly. If
 new extensions are not found it just uses the current package version.

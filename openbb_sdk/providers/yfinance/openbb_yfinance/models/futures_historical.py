@@ -12,6 +12,7 @@ from openbb_provider.standard_models.futures_historical import (
     FuturesHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import get_futures_data
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 from pandas import Timestamp, to_datetime
@@ -113,6 +114,9 @@ class YFinanceFuturesHistoricalFetcher(
                 actions=False,
                 raise_errors=True,
             )
+
+        if data.empty:
+            raise EmptyDataError()
 
         query.end_date = (
             datetime.now().date() if query.end_date is None else query.end_date

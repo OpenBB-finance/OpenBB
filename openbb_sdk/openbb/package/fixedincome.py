@@ -96,7 +96,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/ameribor",
             **inputs,
         )
@@ -170,7 +170,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/estr",
             **inputs,
         )
@@ -244,7 +244,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/fed",
             **inputs,
         )
@@ -316,7 +316,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/iorb",
             **inputs,
         )
@@ -381,7 +381,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/projections",
             **inputs,
         )
@@ -451,7 +451,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/sofr",
             **inputs,
         )
@@ -524,7 +524,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/sonia",
             **inputs,
         )
@@ -614,7 +614,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/treasury",
             **inputs,
         )
@@ -680,7 +680,7 @@ class ROUTER_fixedincome(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/fixedincome/ycrv",
             **inputs,
         )

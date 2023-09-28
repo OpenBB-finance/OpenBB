@@ -261,7 +261,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/balance",
             **inputs,
         )
@@ -405,7 +405,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/balance_growth",
             **inputs,
         )
@@ -485,7 +485,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/cal",
             **inputs,
         )
@@ -684,7 +684,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/cash",
             **inputs,
         )
@@ -810,7 +810,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/cash_growth",
             **inputs,
         )
@@ -889,7 +889,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/comp",
             **inputs,
         )
@@ -963,7 +963,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/comsplit",
             **inputs,
         )
@@ -1030,7 +1030,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/divs",
             **inputs,
         )
@@ -1108,7 +1108,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/earning",
             **inputs,
         )
@@ -1179,7 +1179,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/emp",
             **inputs,
         )
@@ -1290,7 +1290,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/est",
             **inputs,
         )
@@ -1489,7 +1489,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/income",
             **inputs,
         )
@@ -1614,7 +1614,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/income_growth",
             **inputs,
         )
@@ -1736,7 +1736,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/ins",
             **inputs,
         )
@@ -1876,7 +1876,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/ins_own",
             **inputs,
         )
@@ -2051,7 +2051,9 @@ class ROUTER_stocks_fa(Container):
         roe : Optional[Union[float]]
             Return on equity
         capex_per_share : Optional[Union[float]]
-            Capital expenditures per share"""  # noqa: E501
+            Capital expenditures per share
+        calendar_year : Optional[int]
+            Calendar year. (provider: fmp)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2065,7 +2067,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/metrics",
             **inputs,
         )
@@ -2132,7 +2134,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/mgmt",
             **inputs,
         )
@@ -2257,7 +2259,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/overview",
             **inputs,
         )
@@ -2402,7 +2404,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/own",
             **inputs,
         )
@@ -2465,7 +2467,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/pt",
             **inputs,
         )
@@ -2548,7 +2550,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/pta",
             **inputs,
         )
@@ -2731,7 +2733,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/ratios",
             **inputs,
         )
@@ -2812,7 +2814,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/revgeo",
             **inputs,
         )
@@ -2883,7 +2885,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/revseg",
             **inputs,
         )
@@ -3075,7 +3077,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/sec",
             **inputs,
         )
@@ -3140,7 +3142,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/shrs",
             **inputs,
         )
@@ -3201,7 +3203,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/split",
             **inputs,
         )
@@ -3280,7 +3282,7 @@ class ROUTER_stocks_fa(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/fa/transcript",
             **inputs,
         )

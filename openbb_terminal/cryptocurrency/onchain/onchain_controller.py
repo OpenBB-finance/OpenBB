@@ -1395,7 +1395,7 @@ class OnchainController(BaseController):
             dest="coin",
             type=str,
             help="ERC20 token symbol or address.",
-            choices=bitquery_model.POSSIBLE_CRYPTOS,
+            choices=bitquery_model.get_possible_crypto_symbols(),
             metavar="COIN",
         )
         parser.add_argument(
@@ -1444,7 +1444,8 @@ class OnchainController(BaseController):
         )
         if ns_parser:
             if ns_parser.coin:
-                if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
+                possible_cryptos = bitquery_model.get_possible_crypto_symbols()
+                if ns_parser.coin in possible_cryptos:
                     bitquery_view.display_spread_for_crypto_pair(
                         symbol=ns_parser.coin,
                         to_symbol=ns_parser.vs,
@@ -1464,7 +1465,7 @@ class OnchainController(BaseController):
                     else:
                         similar_cmd = difflib.get_close_matches(
                             ns_parser.coin,
-                            bitquery_model.POSSIBLE_CRYPTOS,
+                            possible_cryptos,
                             n=1,
                             cutoff=0.75,
                         )
@@ -1486,7 +1487,7 @@ class OnchainController(BaseController):
                         except Exception:
                             similar_cmd = difflib.get_close_matches(
                                 ns_parser.coin,
-                                bitquery_model.POSSIBLE_CRYPTOS,
+                                possible_cryptos,
                                 n=1,
                                 cutoff=0.5,
                             )
