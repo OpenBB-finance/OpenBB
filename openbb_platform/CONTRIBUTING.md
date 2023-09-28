@@ -143,7 +143,7 @@ Each data model should inherit from a [standard data](openbb_platform\platform\p
 - Can expect consistent data types and validation.
 - Will work seamlessly with other providers that implement the same standard model.
 
-The standard models are defined under the `./sdk/core/provider/openbb_provider/standard_models/` directory.
+The standard models are defined under the `./platform/core/provider/openbb_provider/standard_models/` directory.
 
 They implement the [`QueryParams`](openbb_platform\platform\provider\openbb_provider\abstract\query_params.py) and [`Data`](openbb_platform\platform\provider\openbb_provider\abstract\data.py) models, which are the models that are used to query and output data, respectively. They are pydantic models under the hood, so you can leverage all the pydantic features such as validators.
 
@@ -195,7 +195,7 @@ The `Data` class is an abstract class that tells us the expected output data. He
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `StockEOD` which can be found inside the `./sdk/core/provider/openbb_provider/standard_models/` directory.
+In this case, it's `StockEOD` which can be found inside the `./platform/core/provider/openbb_provider/standard_models/` directory.
 
 If the standard model doesn't exist:
 

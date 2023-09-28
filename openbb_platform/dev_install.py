@@ -13,8 +13,8 @@ PYPROJECT = SDK_PATH / "pyproject.toml"
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-provider = { path = "./sdk/provider", develop = true }
-openbb-core = { path = "./sdk/core", develop = true }
+openbb-provider = { path = "./platform/provider", develop = true }
+openbb-core = { path = "./platform/core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
