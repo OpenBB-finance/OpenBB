@@ -4,8 +4,10 @@ from typing import Any, Dict, List, Literal, get_origin
 
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
-from sdk.core.openbb_core.app.provider_interface import ProviderInterface
-from sdk.core.openbb_core.app.router import CommandMap
+from openbb_platform.platform.core.openbb_core.app.provider_interface import (
+    ProviderInterface,
+)
+from openbb_platform.platform.core.openbb_core.app.router import CommandMap
 
 cm = CommandMap(coverage_sep=".")
 

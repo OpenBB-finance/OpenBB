@@ -8,7 +8,9 @@ from openbb_provider.registry import RegistryLoader
 from openbb_provider.utils.helpers import to_snake_case
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
-from sdk.core.openbb_core.app.provider_interface import ProviderInterface
+from openbb_platform.platform.core.openbb_core.app.provider_interface import (
+    ProviderInterface,
+)
 
 from providers.tests.utils.credentials_schema import test_credentials
 
