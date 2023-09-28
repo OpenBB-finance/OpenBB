@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
+from requests.exceptions import HTTPError
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.dataframe_helpers import prettify_column_names
@@ -172,7 +173,7 @@ def query_graph(url: str, query: str) -> dict:
 
     session = requests.Session()
     session.mount("https://", HTTPAdapter(max_retries=5))
-    headers = {"x-api-key": get_current_user().credentials.API_BITQUERY_KEY}
+    headers = {"x-api-key": get_current_user().credentials.API_BITQUERY_KEY}  # type: ignore
     timeout = 30
 
     try:
