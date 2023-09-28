@@ -7,7 +7,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import BaseModel, validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 
 
 class ROUTER_stocks_ca(Container):
@@ -18,7 +19,7 @@ class ROUTER_stocks_ca(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def peers(
         self,
         symbol: typing_extensions.Annotated[
@@ -27,12 +28,12 @@ class ROUTER_stocks_ca(Container):
         ],
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
-    ) -> OBBject[BaseModel]:
+    ) -> OBBject[Data]:
         """Company peers.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
         provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
@@ -42,7 +43,7 @@ class ROUTER_stocks_ca(Container):
         Returns
         -------
         OBBject
-            results : List[StockPeers]
+            results : Union[StockPeers]
                 Serializable results.
             provider : Union[Literal['fmp'], None]
                 Provider name.
@@ -50,14 +51,14 @@ class ROUTER_stocks_ca(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         StockPeers
         ----------
-        symbol : Optional[str]
+        symbol : str
             Symbol representing the entity requested in the data.
-        peers_list : Optional[List[str]]
+        peers_list : List[str]
             A list of stock peers based on sector, exchange and market cap."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -70,7 +71,7 @@ class ROUTER_stocks_ca(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/stocks/ca/peers",
             **inputs,
         )

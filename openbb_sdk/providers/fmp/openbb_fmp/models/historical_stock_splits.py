@@ -10,7 +10,7 @@ from openbb_provider.standard_models.historical_stock_splits import (
     HistoricalStockSplitsData,
     HistoricalStockSplitsQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPHistoricalStockSplitsQueryParams(HistoricalStockSplitsQueryParams):
@@ -23,7 +23,8 @@ class FMPHistoricalStockSplitsQueryParams(HistoricalStockSplitsQueryParams):
 class FMPHistoricalStockSplitsData(HistoricalStockSplitsData):
     """FMP Historical Stock Splits Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
@@ -60,4 +61,4 @@ class FMPHistoricalStockSplitsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalStockSplitsData]:
         """Return the transformed data."""
-        return [FMPHistoricalStockSplitsData.parse_obj(d) for d in data]
+        return [FMPHistoricalStockSplitsData.model_validate(d) for d in data]

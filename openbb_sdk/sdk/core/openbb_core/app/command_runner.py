@@ -7,7 +7,7 @@ from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
-from pydantic import BaseConfig, Extra, create_model
+from pydantic import ConfigDict, Extra, create_model
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
@@ -176,9 +176,7 @@ class ParametersBuilder:
     ) -> Dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type"""
 
-        class Config(BaseConfig):
-            arbitrary_types_allowed = True
-            extra = Extra.allow
+        config = ConfigDict(extra=Extra.allow, arbitrary_types_allowed=True)
 
         sig = signature(func)
         fields = {
@@ -188,7 +186,7 @@ class ParametersBuilder:
             )
             for n, p in sig.parameters.items()
         }
-        ValidationModel = create_model(func.__name__, __config__=Config, **fields)  # type: ignore
+        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
         model = ValidationModel(**kwargs)
         result = dict(model)
 
@@ -368,7 +366,7 @@ class StaticCommandRunner:
 
         if execution_context.user_settings.preferences.metadata:
             try:
-                obbject.metadata = Metadata(
+                obbject.extra["metadata"] = Metadata(
                     arguments=kwargs,
                     duration=duration,
                     route=route,

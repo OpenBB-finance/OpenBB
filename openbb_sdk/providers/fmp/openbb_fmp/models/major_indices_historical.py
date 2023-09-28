@@ -45,14 +45,14 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
         default=None,
     )
     change_percent: Optional[float] = Field(
-        description=r"Change % in the price of the symbol.",
+        description="Change % in the price of the symbol.",
         default=None,
     )
     label: Optional[str] = Field(
         description="Human readable format of the date.", default=None
     )
     change_over_time: Optional[float] = Field(
-        description=r"Change % in the price of the symbol over a period of time.",
+        description="Change % in the price of the symbol over a period of time.",
         default=None,
     )
 
@@ -90,7 +90,7 @@ class FMPMajorIndicesHistoricalFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = (
-            get_querystring(query.dict(), ["symbol"])
+            get_querystring(query.model_dump(), ["symbol"])
             .replace("start_date", "from")
             .replace("end_date", "to")
         )
@@ -106,4 +106,4 @@ class FMPMajorIndicesHistoricalFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMajorIndicesHistoricalData]:
         """Return the transformed data."""
-        return [FMPMajorIndicesHistoricalData.parse_obj(d) for d in data]
+        return [FMPMajorIndicesHistoricalData.model_validate(d) for d in data]

@@ -12,10 +12,10 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/ES=F?interval=1d&range=1d
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1695311200,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":4401.5,"chartPreviousClose":4447.0,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1695268800,"end":1695268800,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1695268800,"end":1695355140,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1695355140,"end":1695355140,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1695311200],"indicators":{"quote":[{"low":[4395.0],"close":[4401.5],"volume":[993779],"open":[4445.0],"high":[4447.0]}],"adjclose":[{"adjclose":[4401.5]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1695754713,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":4312.0,"chartPreviousClose":4378.75,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","end":1695700800,"start":1695700800,"gmtoffset":-14400},"regular":{"timezone":"EDT","end":1695787140,"start":1695700800,"gmtoffset":-14400},"post":{"timezone":"EDT","end":1695787140,"start":1695787140,"gmtoffset":-14400}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1695754713],"indicators":{"quote":[{"open":[4382.0],"close":[4312.0],"high":[4382.0],"low":[4310.0],"volume":[1322108]}],"adjclose":[{"adjclose":[4312.0]}]}}],"error":null}}'
     headers:
       Age:
-      - '1'
+      - '2'
       Connection:
       - keep-alive
       Expect-CT:
@@ -33,25 +33,25 @@ interactions:
       cache-control:
       - public, max-age=10, stale-while-revalidate=20
       content-length:
-      - '884'
+      - '886'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 21 Sep 2023 15:56:39 GMT
+      - Tue, 26 Sep 2023 19:08:33 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-sg3.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-canary-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '3'
+      - '2'
       x-request-id:
-      - f2c31509-0b1d-46ea-ada0-f23aa55a3a6d
+      - 1dd0973f-da74-4168-b2e1-a5115ac6b8f6
       x-yahoo-request-id:
-      - 45o2061igopto
+      - 3n1slqhih6b1i
       y-rid:
-      - 45o2061igopto
+      - 3n1slqhih6b1i
     status:
       code: 200
       message: OK
@@ -68,7 +68,7 @@ interactions:
     uri: https://query2.finance.yahoo.com/v8/finance/chart/ES=F?events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
   response:
     body:
-      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1695311200,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":4401.5,"chartPreviousClose":3846.0,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1695268800,"end":1695268800,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1695268800,"end":1695355140,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1695355140,"end":1695355140,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1672722000,1672808400,1672894800,1672981200,1673240400,1673326800],"indicators":{"quote":[{"low":[3814.5,3836.5,3822.5,3819.0,3909.75,3891.5],"high":[3906.75,3896.25,3885.5,3928.75,3973.25,3943.75],"close":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75],"volume":[1782473,1912155,1679973,2026154,1697887,1520955],"open":[3895.0,3842.75,3871.0,3833.0,3918.5,3914.5]}],"adjclose":[{"adjclose":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75]}]}}],"error":null}}'
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1695754713,"gmtoffset":-14400,"timezone":"EDT","exchangeTimezoneName":"America/New_York","regularMarketPrice":4312.0,"chartPreviousClose":3846.0,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EDT","start":1695700800,"end":1695700800,"gmtoffset":-14400},"regular":{"timezone":"EDT","start":1695700800,"end":1695787140,"gmtoffset":-14400},"post":{"timezone":"EDT","start":1695787140,"end":1695787140,"gmtoffset":-14400}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1672722000,1672808400,1672894800,1672981200,1673240400,1673326800],"indicators":{"quote":[{"low":[3814.5,3836.5,3822.5,3819.0,3909.75,3891.5],"close":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75],"volume":[1782473,1912155,1679973,2026154,1697887,1520955],"high":[3906.75,3896.25,3885.5,3928.75,3973.25,3943.75],"open":[3895.0,3842.75,3871.0,3833.0,3918.5,3914.5]}],"adjclose":[{"adjclose":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75]}]}}],"error":null}}'
     headers:
       Age:
       - '0'
@@ -93,21 +93,21 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Thu, 21 Sep 2023 15:56:40 GMT
+      - Tue, 26 Sep 2023 19:08:34 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-chart-api--mtls-production-sg3.finance-k8s.svc.yahoo.local:4080/*
+      - finance-chart-api--mtls-production-bf1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '5'
+      - '3'
       x-request-id:
-      - 3ec9768d-f778-4c28-93d2-a4b5e4a44c4b
+      - ce9dec85-a039-43c2-961f-fcfc950f6b47
       x-yahoo-request-id:
-      - 3uh35g9igopto
+      - 3t8ililih6b1i
       y-rid:
-      - 3uh35g9igopto
+      - 3t8ililih6b1i
     status:
       code: 200
       message: OK

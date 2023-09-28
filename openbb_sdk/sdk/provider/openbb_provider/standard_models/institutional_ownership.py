@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -15,12 +15,14 @@ class InstitutionalOwnershipQueryParams(QueryParams):
     """Institutional Ownership Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    include_current_quarter: bool = Field(
+    include_current_quarter: Optional[bool] = Field(
         default=False, description="Include current quarter data."
     )
-    date: Optional[dateType] = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -32,7 +34,7 @@ class InstitutionalOwnershipData(Data):
     """Institutional Ownership Data."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(description="CIK of the company.")
+    cik: Optional[str] = Field(default=None, description="CIK of the company.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     investors_holding: int = Field(description="Number of investors holding the stock.")
     last_investors_holding: int = Field(
@@ -41,12 +43,12 @@ class InstitutionalOwnershipData(Data):
     investors_holding_change: int = Field(
         description="Change in the number of investors holding the stock."
     )
-    number_of_13f_shares: Optional[int] = Field(description="Number of 13F shares.")
-    last_number_of_13f_shares: Optional[int] = Field(
-        description="Number of 13F shares in the last quarter."
+    number_of_13f_shares: int = Field(default=None, description="Number of 13F shares.")
+    last_number_of_13f_shares: int = Field(
+        default=None, description="Number of 13F shares in the last quarter."
     )
-    number_of_13f_shares_change: Optional[int] = Field(
-        description="Change in the number of 13F shares."
+    number_of_13f_shares_change: int = Field(
+        default=None, description="Change in the number of 13F shares."
     )
     total_invested: float = Field(description="Total amount invested.")
     last_total_invested: float = Field(
@@ -121,7 +123,7 @@ class InstitutionalOwnershipData(Data):
         description="Change in the put-call ratio between the current and previous reporting dates."
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

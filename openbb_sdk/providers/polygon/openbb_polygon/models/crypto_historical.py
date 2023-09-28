@@ -39,19 +39,20 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
 class PolygonCryptoHistoricalData(CryptoHistoricalData):
     """Polygon crypto end of day Data."""
 
-    class Config:
-        fields = {
-            "date": "t",
-            "open": "o",
-            "high": "h",
-            "low": "l",
-            "close": "c",
-            "volume": "v",
-            "vwap": "vw",
-        }
+    __alias_dict__ = {
+        "date": "t",
+        "open": "o",
+        "high": "h",
+        "low": "l",
+        "close": "c",
+        "volume": "v",
+        "vwap": "vw",
+    }
 
-    n: PositiveInt = Field(
-        description="Number of transactions for the symbol in the time period."
+    transactions: Optional[PositiveInt] = Field(
+        default=None,
+        description="Number of transactions for the symbol in the time period.",
+        alias="n",
     )
 
 
@@ -101,4 +102,4 @@ class PolygonCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_data(data: dict) -> List[PolygonCryptoHistoricalData]:
-        return [PolygonCryptoHistoricalData.parse_obj(d) for d in data]
+        return [PolygonCryptoHistoricalData.model_validate(d) for d in data]

@@ -22,9 +22,6 @@ class FMPAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class FMPAvailableIndicesData(AvailableIndicesData):
     """FMP Available Indices Data."""
 
-    class Config:
-        """Pydantic alias config using fields Dict."""
-
     stock_exchange: str = Field(
         description="Stock exchange where the index is listed.", alias="stockExchange"
     )
@@ -64,4 +61,4 @@ class FMPAvailableIndicesFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPAvailableIndicesData]:
         """Return the transformed data."""
-        return [FMPAvailableIndicesData.parse_obj(d) for d in data]
+        return [FMPAvailableIndicesData.model_validate(d) for d in data]

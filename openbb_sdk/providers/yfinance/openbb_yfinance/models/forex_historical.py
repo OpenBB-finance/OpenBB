@@ -24,8 +24,8 @@ class YFinanceForexHistoricalQueryParams(ForexHistoricalQueryParams):
     Source: https://finance.yahoo.com/currencies/
     """
 
-    interval: INTERVALS = Field(default="1d", description="Data granularity.")
-    period: PERIODS = Field(
+    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
+    period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
     )
 
@@ -105,4 +105,4 @@ class YFinanceForexHistoricalFetcher(
         data: List[Dict],
     ) -> List[YFinanceForexHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceForexHistoricalData.parse_obj(d) for d in data]
+        return [YFinanceForexHistoricalData.model_validate(d) for d in data]

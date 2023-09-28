@@ -8,7 +8,8 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 
 
 class ROUTER_forex(Container):
@@ -20,7 +21,7 @@ class ROUTER_forex(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -41,16 +42,16 @@ class ROUTER_forex(Container):
         ] = None,
         provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Forex Intraday Price.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None, str]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
         provider : Union[Literal['fmp', 'polygon'], None]
             The provider to use for the query, by default None.
@@ -58,13 +59,13 @@ class ROUTER_forex(Container):
             no default.
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
-        multiplier : PositiveInt
+        multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
             Timespan of the data. (provider: polygon)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        limit : PositiveInt
+        limit : int
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
@@ -72,7 +73,7 @@ class ROUTER_forex(Container):
         Returns
         -------
         OBBject
-            results : List[ForexHistorical]
+            results : Union[List[ForexHistorical]]
                 Serializable results.
             provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
@@ -80,38 +81,38 @@ class ROUTER_forex(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ForexHistorical
         ---------------
-        date : Optional[datetime]
+        date : datetime
             The date of the data.
-        open : Optional[PositiveFloat]
+        open : float
             The open price of the symbol.
-        high : Optional[PositiveFloat]
+        high : float
             The high price of the symbol.
-        low : Optional[PositiveFloat]
+        low : float
             The low price of the symbol.
-        close : Optional[PositiveFloat]
+        close : float
             The close price of the symbol.
-        volume : Optional[NonNegativeFloat]
+        volume : float
             The volume of the symbol.
-        vwap : Optional[PositiveFloat]
+        vwap : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
             Volume Weighted Average Price of the symbol.
-        adj_close : Optional[float]
+        adj_close : Optional[Union[float]]
             Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[float]
+        unadjusted_volume : Optional[Union[float]]
             Unadjusted volume of the symbol. (provider: fmp)
-        change : Optional[float]
+        change : Optional[Union[float]]
             Change in the price of the symbol from the previous day. (provider: fmp)
-        change_percent : Optional[float]
+        change_percent : Optional[Union[float]]
             Change % in the price of the symbol. (provider: fmp)
-        label : Optional[str]
+        label : Optional[Union[str]]
             Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[float]
+        change_over_time : Optional[Union[float]]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[PositiveInt]
+        transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -127,17 +128,17 @@ class ROUTER_forex(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/forex/load",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def pairs(
         self,
         provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Forex Available Pairs.
 
         Parameters
@@ -146,25 +147,25 @@ class ROUTER_forex(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        symbol : Union[str, None]
+        symbol : Optional[Union[str]]
             Symbol of the pair to search. (provider: polygon)
-        date : Union[datetime.date, None]
+        date : Optional[Union[datetime.date]]
             A specific date to get data for. (provider: polygon)
-        search : Union[str, None]
+        search : Optional[Union[str]]
             Search for terms within the ticker and/or company name. (provider: polygon)
-        active : Union[Literal[True, False], None]
+        active : Optional[Union[bool]]
             Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)
-        order : Union[Literal['asc', 'desc'], None]
+        order : Optional[Union[Literal['asc', 'desc']]]
             Order data by ascending or descending. (provider: polygon)
-        sort : Union[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc'], None]
+        sort : Optional[Union[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]]
             Sort field used for ordering. (provider: polygon)
-        limit : Union[pydantic.types.PositiveInt, None]
+        limit : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             The number of data entries to return. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : List[ForexPairs]
+            results : Union[List[ForexPairs]]
                 Serializable results.
             provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
@@ -172,42 +173,42 @@ class ROUTER_forex(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         ForexPairs
         ----------
-        name : Optional[str]
+        name : str
             Name of the currency pair.
-        symbol : Optional[str]
+        symbol : Optional[Union[str]]
             Symbol of the currency pair. (provider: fmp)
-        currency : Optional[str]
+        currency : Optional[Union[str]]
             Base currency of the currency pair. (provider: fmp)
-        stock_exchange : Optional[str]
+        stock_exchange : Optional[Union[str]]
             Stock exchange of the currency pair. (provider: fmp)
-        exchange_short_name : Optional[str]
+        exchange_short_name : Optional[Union[str]]
             Short name of the stock exchange of the currency pair. (provider: fmp)
-        code : Optional[str]
+        code : Optional[Union[str]]
             Code of the currency pair. (provider: intrinio)
-        base_currency : Optional[str]
+        base_currency : Optional[Union[str]]
             ISO 4217 currency code of the base currency. (provider: intrinio)
-        quote_currency : Optional[str]
+        quote_currency : Optional[Union[str]]
             ISO 4217 currency code of the quote currency. (provider: intrinio)
-        market : Optional[str]
-            The name of the trading market. Always 'fx'. (provider: polygon)
-        locale : Optional[str]
-            The locale of the currency pair. (provider: polygon)
-        currency_symbol : Optional[str]
+        market : Optional[Union[str]]
+            Name of the trading market. Always 'fx'. (provider: polygon)
+        locale : Optional[Union[str]]
+            Locale of the currency pair. (provider: polygon)
+        currency_symbol : Optional[Union[str]]
             The symbol of the quote currency. (provider: polygon)
-        currency_name : Optional[str]
-            The name of the quote currency. (provider: polygon)
-        base_currency_symbol : Optional[str]
+        currency_name : Optional[Union[str]]
+            Name of the quote currency. (provider: polygon)
+        base_currency_symbol : Optional[Union[str]]
             The symbol of the base currency. (provider: polygon)
-        base_currency_name : Optional[str]
-            The name of the base currency. (provider: polygon)
-        last_updated_utc : Optional[datetime]
+        base_currency_name : Optional[Union[str]]
+            Name of the base currency. (provider: polygon)
+        last_updated_utc : Optional[Union[datetime]]
             The last updated timestamp in UTC. (provider: polygon)
-        delisted_utc : Optional[datetime]
+        delisted_utc : Optional[Union[datetime]]
             The delisted timestamp in UTC. (provider: polygon)"""  # noqa: E501
 
         inputs = filter_inputs(
@@ -218,7 +219,7 @@ class ROUTER_forex(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self.run(
             "/forex/pairs",
             **inputs,
         )

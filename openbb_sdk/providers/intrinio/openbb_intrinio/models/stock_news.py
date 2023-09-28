@@ -20,12 +20,7 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "limit": "page_size",
-        }
+    __alias_dict__ = {"page": "next_page", "limit": "page_size"}
 
     symbols: str = Field(
         description="A Company identifier (Ticker, CIK, LEI, Intrinio ID)."
@@ -35,13 +30,7 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
 class IntrinioStockNewsData(StockNewsData):
     """Intrinio Stock News data."""
 
-    class Config:
-        """Pydantic alias config using fields dict."""
-
-        fields = {
-            "date": "publication_date",
-            "text": "summary",
-        }
+    __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
     id: str = Field(description="Intrinio ID for the article.")
 
@@ -76,7 +65,7 @@ class IntrinioStockNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbols"])
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
         url = f"{base_url}/{query.symbols}/news?{query_str}&api_key={api_key}"
 
         return get_data_many(url, "news", **kwargs)
@@ -85,4 +74,4 @@ class IntrinioStockNewsFetcher(
     def transform_data(data: List[Dict]) -> List[IntrinioStockNewsData]:
         """Return the transformed data."""
 
-        return [IntrinioStockNewsData.parse_obj(d) for d in data]
+        return [IntrinioStockNewsData.model_validate(d) for d in data]

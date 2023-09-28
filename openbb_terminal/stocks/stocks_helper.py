@@ -411,6 +411,7 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("[red]No results found in yahoo finance reply.[/red]")
                 return pd.DataFrame()
 
             df_stock_candidate.index = pd.to_datetime(
@@ -678,9 +679,6 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
 
     df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
     df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
-    df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
 
     return df_data
 

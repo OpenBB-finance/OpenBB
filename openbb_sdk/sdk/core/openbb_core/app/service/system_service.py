@@ -66,9 +66,9 @@ class SystemService(metaclass=SingletonMeta):
                         del system_settings_dict[field]
 
             system_settings_dict.update(kwargs)
-            system_settings = SystemSettings.parse_obj(system_settings_dict)
+            system_settings = SystemSettings.model_validate(system_settings_dict)
         else:
-            system_settings = SystemSettings.parse_obj(kwargs)
+            system_settings = SystemSettings.model_validate(kwargs)
 
         return system_settings
 
@@ -81,10 +81,8 @@ class SystemService(metaclass=SingletonMeta):
         """Write default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
-        system_settings_json = system_settings.json(
-            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET,
-            indent=4,
-            sort_keys=True,
+        system_settings_json = system_settings.model_dump_json(
+            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET, indent=4
         )
         with path.open(mode="w") as file:
             file.write(system_settings_json)

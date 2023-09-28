@@ -389,7 +389,7 @@ results: ...            # Serializable results.
 provider: ...           # Provider name.
 warnings: ...           # List of warnings.
 chart: ...              # Chart object.
-metadata: ...           # Metadata.
+extra: ...              # Extra info.
 ```
 
 ## 5. REST API

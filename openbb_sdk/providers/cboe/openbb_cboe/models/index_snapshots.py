@@ -31,10 +31,11 @@ class CboeIndexSnapshotsData(IndexSnapshotsData):
     """CBOE Company Search Data."""
 
     isin: Optional[str] = Field(
-        description="ISIN code for the index. Valid only for European indices."
+        default=None,
+        description="ISIN code for the index. Valid only for European indices.",
     )
     last_trade_timestamp: Optional[datetime] = Field(
-        description="Last trade timestamp for the index."
+        default=None, description="Last trade timestamp for the index."
     )
 
 
@@ -132,4 +133,4 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     def transform_data(data: dict) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
-        return [CboeIndexSnapshotsData.parse_obj(d) for d in data]
+        return [CboeIndexSnapshotsData.model_validate(d) for d in data]

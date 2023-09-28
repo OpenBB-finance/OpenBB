@@ -6,6 +6,7 @@
     "economy_available_indices": "/economy/available_indices",
     "economy_const": "/economy/const",
     "economy_cpi": "/economy/cpi",
+    "economy_fred_index": "/economy/fred_index",
     "economy_index": "/economy/index",
     "economy_risk": "/economy/risk",
     "fixedincome": "/fixedincome",

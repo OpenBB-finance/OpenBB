@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_yfinance.utils.helpers import get_futures_data
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 from pandas import Timestamp, to_datetime
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 
@@ -41,9 +41,10 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     """YFinance Futures End of Day Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
+        """Return datetime object from string."""
         if isinstance(v, Timestamp):
             return v.to_pydatetime()
         return v
@@ -122,8 +123,7 @@ class YFinanceFuturesHistoricalFetcher(
             else 0
         )
         if query.start_date:
-            data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index)
+            data.index = to_datetime(data.index).tz_convert(None)
 
             start_date_dt = datetime.combine(query.start_date, datetime.min.time())
             end_date_dt = datetime.combine(query.end_date, datetime.min.time())
@@ -133,9 +133,10 @@ class YFinanceFuturesHistoricalFetcher(
                 & (data.index <= end_date_dt)
             ]
 
-        data.reset_index(inplace=True)
-        data.rename(columns={"index": "date"}, inplace=True)
-
+        data = data.reset_index().rename(
+            columns={"index": "Date", "Datetime": "Date"}, errors="ignore"
+        )
+        data.columns = data.columns.str.lower()
         return data.to_dict("records")
 
     @staticmethod
@@ -143,4 +144,4 @@ class YFinanceFuturesHistoricalFetcher(
         data: dict,
     ) -> List[YFinanceFuturesHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceFuturesHistoricalData.parse_obj(d) for d in data]
+        return [YFinanceFuturesHistoricalData.model_validate(d) for d in data]

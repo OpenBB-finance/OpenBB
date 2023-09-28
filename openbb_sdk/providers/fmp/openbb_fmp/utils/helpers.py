@@ -105,7 +105,7 @@ def create_url(
     str
         The querystring.
     """
-    the_dict = {} if not query else query.dict(by_alias=True)
+    the_dict = {} if not query else query.model_dump()
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
@@ -133,6 +133,9 @@ def get_data_many(
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
         raise ValueError("Expected list of dicts, got dict")
+    if len(data) == 0:
+        raise ValueError("No results found. Try adjusting the query parameters.")
+
     return data
 
 

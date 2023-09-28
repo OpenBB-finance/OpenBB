@@ -283,6 +283,12 @@ def setup_handlers(settings: Settings):
     handler_list = logging_settings.handler_list
     verbosity = logging_settings.verbosity
 
+    # Remove any existing log handlers
+    # Notebooks have a root logging handler by default, see https://github.com/ipython/ipython/issues/8282
+    root_logger = logging.getLogger()
+    if root_logger.hasHandlers():
+        root_logger.handlers.clear()
+
     logging.basicConfig(
         level=verbosity,
         format=FormatterWithExceptions.LOGFORMAT,

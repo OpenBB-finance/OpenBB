@@ -188,4 +188,4 @@ class QuandlCotFetcher(Fetcher[QuandlCotQueryParams, List[QuandlCotData]]):
     def transform_data(
         data: List[Dict],
     ) -> List[QuandlCotData]:
-        return [QuandlCotData.parse_obj(d) for d in data]
+        return [QuandlCotData.model_validate(d) for d in data]

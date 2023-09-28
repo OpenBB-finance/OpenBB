@@ -20,7 +20,13 @@ from openbb_core.app.router import (
     RouterLoader,
     SignatureInspector,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+
+
+class MockBaseModel(BaseModel):
+    """Mock BaseModel class."""
+
+    model_config = ConfigDict(extra="allow", populate_by_name=True)
 
 
 @pytest.fixture(scope="module")
@@ -42,7 +48,7 @@ def test_command_validator_init(command_validator):
         (float, True),
         (bool, True),
         (list, True),
-        (BaseModel, False),
+        (MockBaseModel, False),
     ],
 )
 def test_is_standard_pydantic_type(command_validator, type_, expected):
@@ -53,7 +59,7 @@ def test_is_standard_pydantic_type(command_validator, type_, expected):
 
 def test_is_valid_pydantic_model_type(command_validator):
     """Test is_valid_pydantic_model_type."""
-    assert command_validator.is_valid_pydantic_model_type(BaseModel)
+    assert command_validator.is_valid_pydantic_model_type(MockBaseModel)
     assert not command_validator.is_valid_pydantic_model_type(str)
 
 
@@ -65,7 +71,7 @@ def test_is_valid_pydantic_model_type(command_validator):
         (float, True),
         (bool, True),
         (list, True),
-        (BaseModel, True),
+        (MockBaseModel, True),
     ],
 )
 def test_is_serializable_value_type(command_validator, type_, expected):
@@ -91,7 +97,8 @@ def test_check_parameters(command_validator):
         pass
 
     assert command_validator.check_parameters(func) is None
-    assert not command_validator.check_parameters(BaseModel)
+    with pytest.raises(TypeError):
+        command_validator.check_parameters(MockBaseModel)
 
 
 def test_check_return_error(command_validator):
