@@ -40,4 +40,10 @@ def check_columns(
             " are in the dataframe."
         )
 
-    return [col for col in close_col if col in data.columns][-1]
+    close_col = [col for col in close_col if col in data.columns]
+
+    # giving priority to the standard close column
+    if "close" in close_col:
+        return "close"
+
+    return close_col[-1]
