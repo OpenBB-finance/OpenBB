@@ -2,10 +2,10 @@
 from pathlib import Path, PosixPath
 from typing import Any, Dict, List, Literal, get_origin
 
-from pydantic.fields import FieldInfo
-from pydantic_core import PydanticUndefined
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 
 cm = CommandMap(coverage_sep=".")
 
