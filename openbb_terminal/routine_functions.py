@@ -411,7 +411,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     for line in lines_with_vars_replaced:
         # Found 'foreach' header associated with loop
         match = re.search(
-            r"foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-]+)", line, re.IGNORECASE
+            r"foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-.]+)", line, re.IGNORECASE
         )
         if match:
             varname = match.group(1)

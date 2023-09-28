@@ -6,6 +6,7 @@ from typing import Any, List, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
+from openbb_provider.utils.errors import EmptyDataError
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
@@ -71,7 +72,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         raise RuntimeError("Intrinio Error Message -> " + data["Error Message"])
 
     if len(data) == 0:
-        raise RuntimeError("No results found. Try adjusting the query parameters.")
+        raise EmptyDataError()
 
     return data
 

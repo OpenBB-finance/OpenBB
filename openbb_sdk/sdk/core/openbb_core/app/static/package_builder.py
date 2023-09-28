@@ -781,7 +781,7 @@ class MethodDefinition:
             else:
                 code += f"            {name}={name},\n"
         code += "        )\n\n"
-        code += "        return self.run(\n"
+        code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **inputs,\n"
         code += "        )\n"
