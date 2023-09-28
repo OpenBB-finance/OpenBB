@@ -187,7 +187,7 @@ def query_graph(url: str, query: str) -> dict:
         ) from e
 
     if response.status_code == 500:
-        raise HTTPError(f"Internal sever error {response.reason}")
+        raise HTTPError(f"Internal sever error {response.reason}")  # type: ignore
 
     if not 200 <= response.status_code < 300:
         raise BitQueryApiKeyException(
