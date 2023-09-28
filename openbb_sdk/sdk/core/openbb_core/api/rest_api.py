@@ -51,16 +51,16 @@ async def startup():
     dev = "enabled" if Env().DEV_MODE else "disabled"
     banner = rf"""
 
-                  ███╗
- █████████████████╔══█████████████████╗       OpenBB Platform {version}
- ███╔══════════███║  ███╔══════════███║
- █████████████████║  █████████████████║       Authentication: {auth}
- ╚═════════════███║  ███╔═════════════╝       Debug mode: {debug}
-    ██████████████║  ██████████████╗          Dev mode: {dev}
-    ███╔═══════███║  ███╔═══════███║
-    ██████████████║  ██████████████║
-    ╚═════════════╝  ╚═════════════╝
- Investment research for everyone, anywhere.
+                   ███╗
+  █████████████████╔══█████████████████╗       OpenBB Platform {version}
+  ███╔══════════███║  ███╔══════════███║
+  █████████████████║  █████████████████║       Authentication: {auth}
+  ╚═════════════███║  ███╔═════════════╝       Debug mode: {debug}
+     ██████████████║  ██████████████╗          Dev mode: {dev}
+     ███╔═══════███║  ███╔═══════███║
+     ██████████████║  ██████████████║
+     ╚═════════════╝  ╚═════════════╝
+Investment research for everyone, anywhere.
 
        https://my.openbb.co/app/sdk
 
