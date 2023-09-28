@@ -6,7 +6,9 @@ from openbb_core.app.router import RouterLoader
 
 # refers to the root of the repo, not the root of the extension
 # this script should be run from the root of the repo
-CHARTING_ROUTER = "openbb_sdk/extensions/charting/openbb_charting/charting_router.py"
+CHARTING_ROUTER = (
+    "openbb_platform/extensions/charting/openbb_charting/charting_router.py"
+)
 
 
 def get_routes() -> List[str]:

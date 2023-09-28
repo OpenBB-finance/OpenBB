@@ -13,7 +13,7 @@ cm = CommandMap(coverage_sep=".")
 def find_extensions():
     """Find extensions."""
     filter_ext = ["tests", "ta", "qa", "econometrics", "charting"]
-    extensions = [x for x in Path("openbb_sdk/extensions").iterdir() if x.is_dir()]
+    extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
 

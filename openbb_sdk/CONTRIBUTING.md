@@ -58,8 +58,8 @@ Saying that, we recommend following the standardization framework, as it will ma
 
 When standardizing, all data is defined using two different pydantic models:
 
-1. Define the [query parameters](openbb_sdk\sdk\provider\openbb_provider\abstract\query_params.py) model.
-2. Define the resulting [data schema](openbb_sdk\sdk\provider\openbb_provider\abstract\data.py) model.
+1. Define the [query parameters](openbb_platform\platform\provider\openbb_provider\abstract\query_params.py) model.
+2. Define the resulting [data schema](openbb_platform\platform\provider\openbb_provider\abstract\data.py) model.
 
 > The models can be entirely custom, or inherit from the OpenBB standardized models.
 > They enforce a safe and consistent data structure, validation and type checking.
@@ -72,9 +72,9 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 2. `extract_data` - makes the request to the API endpoint and returns the raw data.
 3. `transform_data` - transforms the raw data into the defined data model.
 
-> Note that the `Fetcher` should inherit from the [`Fetcher`](openbb_sdk\sdk\provider\openbb_provider\abstract\`Fetcher`.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+> Note that the `Fetcher` should inherit from the [`Fetcher`](openbb_platform\platform\provider\openbb_provider\abstract\`Fetcher`.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models you need to make them visible to the SDK. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](openbb_sdk\sdk\provider\openbb_provider\abstract\provider.py).
+After finalizing your models you need to make them visible to the SDK. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](openbb_platform\platform\provider\openbb_provider\abstract\provider.py).
 
 Any command using the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
@@ -122,7 +122,7 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 In the above section, we've seen how to get started with a template.
 
-In this section, we'll be adding a new data point to the SDK. We will add a new provider with an existing [standard data](openbb_sdk\sdk\provider\openbb_provider\standard_models) model.
+In this section, we'll be adding a new data point to the SDK. We will add a new provider with an existing [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) model.
 
 ### Identify which type of data you want to add
 
@@ -135,7 +135,7 @@ Each router is categorized into different extensions (stocks, forex, crypto, etc
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across several providers.
 
-Each data model should inherit from a [standard data](openbb_sdk\sdk\provider\openbb_provider\standard_models) that is already defined in the SDK. This will unlock a set of perks that are only available to standardized data, namely:
+Each data model should inherit from a [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) that is already defined in the SDK. This will unlock a set of perks that are only available to standardized data, namely:
 
 - Can query and output data in a standardized way.
 - Can expect extensions that follow standardization to work out-of-the-box.
@@ -145,7 +145,7 @@ Each data model should inherit from a [standard data](openbb_sdk\sdk\provider\op
 
 The standard models are defined under the `./sdk/core/provider/openbb_provider/standard_models/` directory.
 
-They implement the [`QueryParams`](openbb_sdk\sdk\provider\openbb_provider\abstract\query_params.py) and [`Data`](openbb_sdk\sdk\provider\openbb_provider\abstract\data.py) models, which are the models that are used to query and output data, respectively. They are pydantic models under the hood, so you can leverage all the pydantic features such as validators.
+They implement the [`QueryParams`](openbb_platform\platform\provider\openbb_provider\abstract\query_params.py) and [`Data`](openbb_platform\platform\provider\openbb_provider\abstract\data.py) models, which are the models that are used to query and output data, respectively. They are pydantic models under the hood, so you can leverage all the pydantic features such as validators.
 
 #### Standardization Caveats
 
@@ -321,7 +321,7 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockEODFetche
 
 If the provider does not require any credentials, you can simply omit it. On the other hand if it requires more than 2 items to authenticate, you can simply add a list of all the required items to the `required_credentials` list.
 
-After running `pip install .` on `openbb_sdk/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
+After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
 
 ## Using other extension as a dependency
 
@@ -378,12 +378,12 @@ Then execute the command `poetry install` in the root of your extension to insta
 
 #### Add a visualization to an existing SDK command
 
-One should first ensure that the already implemented endpoint is available in the [charting router](openbb_sdk/extensions/charting/openbb_charting/charting_router.py).
+One should first ensure that the already implemented endpoint is available in the [charting router](openbb_platform/extensions/charting/openbb_charting/charting_router.py).
 
 To do so, you can run:
- `python openbb_sdk/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
+ `python openbb_platform/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
 
-Afterwards, you'll need to add the visualization to the [charting router](openbb_sdk/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
+Afterwards, you'll need to add the visualization to the [charting router](openbb_platform/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
 
 - `stocks/load` -> `stocks_load`
 - `ta/ema` -> `ta_ema`
@@ -402,7 +402,7 @@ The returned tuple contains a `OpenBBFigure` that is an interactive plotly figur
 
 After you're done implementing the charting function, you can simply use either the Python interface or the API to get the chart. To do so, you'll only need to set the already available `chart` argument to `True`.
 
-Refer to the charting extension [documentation](openbb_sdk/extensions/charting/README.md) for more information on usage.
+Refer to the charting extension [documentation](openbb_platform/extensions/charting/README.md) for more information on usage.
 
 #### Using the `to_chart` OBBject method
 
@@ -413,7 +413,7 @@ The `to_chart` function should be taken as an advanced feature, as it requires t
 
 The user can use any number of `**kwargs` that will be passed to the `PlotlyTA` class in order to build custom visualizations with custom indicators and similar.
 
-Refer to the [`to_chart` implementation](openbb_sdk/extensions/charting/openbb_charting/core/to_chart.py) for further details.
+Refer to the [`to_chart` implementation](openbb_platform/extensions/charting/openbb_charting/core/to_chart.py) for further details.
 
 > Note that, this method will only work to some limited extent with data that is not standardized.
 > Also, it is designed only to handle time series data.
@@ -461,7 +461,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 5. Install dependencies:
 
     ```bash
-    cd OpenBBTerminal/openbb_sdk/extensions/stocks/ # or any other extension
+    cd OpenBBTerminal/openbb_platform/extensions/stocks/ # or any other extension
     poetry install
     ```
 
@@ -472,7 +472,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 
 For development purposes, one can install every available extension by running a custom shell script:
 
-Navigate to `/OpenBBTerminal/openbb_sdk`
+Navigate to `/OpenBBTerminal/openbb_platform`
 
 Run `python dev_install.py`.
 </details>
@@ -507,7 +507,7 @@ We aim to have a short import time for the package. To measure that we use `tuna
 - https://pypi.org/project/tuna/
 
 To visualize the import time breakdown by module and find potential bottlenecks, run the
-following commands from `openbb_sdk` directory:
+following commands from `openbb_platform` directory:
 
 ```bash
 pip install tuna

@@ -16,7 +16,7 @@ class UserSettingsRepository(
     def __init__(
         self,
         collection_name: str = "user_settings",
-        database_name: str = "openbb_sdk",
+        database_name: str = "openbb_platform",
         database_map: Optional[Dict[str, Any]] = None,
     ):
         super().__init__(

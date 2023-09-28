@@ -45,10 +45,10 @@ git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
 
 ### Install
 
-Go to `openbb_sdk` folder and install the package.
+Go to `openbb_platform` folder and install the package.
 
 ```bash
-cd openbb_sdk
+cd openbb_platform
 poetry install
 ```
 
@@ -64,7 +64,7 @@ poetry new openbb-sdk-my_extension
 
 ### Command
 
-Add a router and a command in the `openbb_sdk/extensions/<my_extension_folder>/<openbb_my_extension>/<my_extension>_router.py`
+Add a router and a command in the `openbb_platform/extensions/<my_extension_folder>/<openbb_my_extension>/<my_extension>_router.py`
 
 ```python
 from openbb_core.app.router import Router
@@ -99,7 +99,7 @@ def load(
 Add an entrypoint for the extension inside your `pyproject.toml` file.
 
 ```toml
-packages = [{include = "openbb_sdk_my_extension"}]
+packages = [{include = "openbb_platform_my_extension"}]
 ...
 [tool.poetry.extensions."openbb_extensions"]
 extension_name_space = "my_extension.extension_router:router"
@@ -110,13 +110,13 @@ extension_name_space = "my_extension.extension_router:router"
 Install your extension.
 
 ```bash
-cd openbb_sdk_my_extension
+cd openbb_platform_my_extension
 poetry install
 ```
 
 ## 4. Usage
 
-Update your credentials and default providers by modifying the `.openbb_sdk/user_settings.json` inside your home directory:
+Update your credentials and default providers by modifying the `.openbb_platform/user_settings.json` inside your home directory:
 
 ```{json}
 {
@@ -142,7 +142,7 @@ Update your credentials and default providers by modifying the `.openbb_sdk/user
 }
 ```
 
-Update your system settings by modifying the `.openbb_sdk/system_settings.json` file inside your home directory:
+Update your system settings by modifying the `.openbb_platform/system_settings.json` file inside your home directory:
 
 
 ```{json}
@@ -345,7 +345,7 @@ To apply an environment variable use one of the following:
     from openbb import sdk
     ```
 
-2. Persistent: create a `.env` file in `/.openbb_sdk` folder inside your home directory with
+2. Persistent: create a `.env` file in `/.openbb_platform` folder inside your home directory with
 
     ```text
     OPENBB_DEBUG_MODE="False"
@@ -454,10 +454,10 @@ docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
 To run this newly-built image:
 
 ```bash
-docker run --rm -p 8000:8000 -v ~/.openbb_sdk:/root/.openbb_sdk openbb-sdk:latest
+docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-sdk:latest
 ```
 
-This will mount the local `~/.openbb_sdk` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
+This will mount the local `~/.openbb_platform` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
 
 ### 5.3 Test users
 

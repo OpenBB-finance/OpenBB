@@ -87,7 +87,7 @@ def write_integration_tests(
 
         menu = route.split("/")[1]
         path = os.path.join(
-            "openbb_sdk", "extensions", menu, "integration", f"test_{menu}_api.py"
+            "openbb_platform", "extensions", menu, "integration", f"test_{menu}_api.py"
         )
         if not os.path.exists(path):
             write_init_test_template(path=path)

@@ -74,13 +74,13 @@ Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get you
 >>> obb.user.credentials.fmp_api_key = "REPLACE_ME"
 >>> obb.user.credentials.polygon_api_key = "REPLACE_ME"
 
->>> # Persist changes in ~/.openbb_sdk/user_settings.json
+>>> # Persist changes in ~/.openbb_platform/user_settings.json
 >>> obb.account.save()
 ```
 
 ### 3. Local file
 
-You can specify the keys directly in the `~/.openbb_sdk/user_settings.json` file.
+You can specify the keys directly in the `~/.openbb_platform/user_settings.json` file.
 
 Populate this file with the following template and replace the values with your keys:
 
@@ -117,5 +117,5 @@ To develop the OpenBB Platform you need to have the following:
 How to install the platform in editable mode?
 
   1. Activate your virtual environment
-  1. Navigate into the `openbb_sdk` folder
+  1. Navigate into the `openbb_platform` folder
   1. Run `python dev_install.py` to install the packages in editable mode

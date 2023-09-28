@@ -13,7 +13,7 @@ All currently supported providers are listed below.
 
 ## Default Provider Configuration
 
-To configure the default providers for each route, edit the `.openbb_sdk/user_settings.json` file in your home directory using the following template:
+To configure the default providers for each route, edit the `.openbb_platform/user_settings.json` file in your home directory using the following template:
 
 ```json
 {
@@ -36,7 +36,7 @@ To configure the default providers for each route, edit the `.openbb_sdk/user_se
 Every provider is located within a directory, with the following structure:
 
 ```{.bash}
-openbb_sdk
+openbb_platform
 └───providers
     └───<provider_name>
         |   README.md
