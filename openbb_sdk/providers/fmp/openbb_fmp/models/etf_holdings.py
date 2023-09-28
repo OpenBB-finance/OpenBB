@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
@@ -22,7 +22,7 @@ class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#Historical-ETF-Holdings
     """
 
-    date: Optional[str | dateType] = Field(
+    date: Optional[Union[str, dateType]] = Field(
         description="The as-of date for historical daily holdings.", default=""
     )
 
@@ -30,50 +30,69 @@ class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class FMPEtfHoldingsData(EtfHoldingsData):
     """FMP ETF Holdings Data."""
 
-    symbol: Optional[str] = Field(description="The ticker symbol of the holding.")
-    name: Optional[str] = Field(description="The name of the holding.")
-    lei: Optional[str] = Field(description="The LEI of the company.")
-    title: Optional[str] = Field(description="The title of the holding.")
-    cusip: Optional[str] = Field(description="The CUSIP of the holding.")
-    isin: Optional[str] = Field(description="The ISIN of the holding.")
-    balance: Optional[float] = Field(description="The balance of the holding.")
-    units: Optional[float | str] = Field(description="The units of the holding.")
+    symbol: Optional[str] = Field(
+        description="The ticker symbol of the holding.", default=None
+    )
+    name: Optional[str] = Field(description="The name of the holding.", default=None)
+    lei: Optional[str] = Field(description="The LEI of the company.", default=None)
+    title: Optional[str] = Field(description="The title of the holding.", default=None)
+    cusip: Optional[str] = Field(description="The CUSIP of the holding.", default=None)
+    isin: Optional[str] = Field(description="The ISIN of the holding.", default=None)
+    balance: Optional[float] = Field(
+        description="The balance of the holding.", default=None
+    )
+    units: Optional[Union[float, str]] = Field(
+        description="The units of the holding.", default=None
+    )
     currency: Optional[str] = Field(
-        description="The currency of the holding.", alias="cur_cd"
+        description="The currency of the holding.", alias="cur_cd", default=None
     )
     value: Optional[float] = Field(
-        description="The value of the holding in USD.", alias="valUsd"
+        description="The value of the holding in USD.", alias="valUsd", default=None
     )
     weight: Optional[float] = Field(
-        description="The weight of the holding in ETF.", alias="pctVal"
+        description="The weight of the holding in ETF.", alias="pctVal", default=None
     )
     payoffProfile: Optional[str] = Field(
-        description="The payoff profile of the holding.", alias="payoffProfile"
+        description="The payoff profile of the holding.",
+        alias="payoffProfile",
+        default=None,
     )
     asset_category: Optional[str] = Field(
-        description="The asset category of the holding.", alias="assetCat"
+        description="The asset category of the holding.", alias="assetCat", default=None
     )
     issuer_category: Optional[str] = Field(
-        description="The issuer category of the holding.", alias="issuerCat"
+        description="The issuer category of the holding.",
+        alias="issuerCat",
+        default=None,
     )
     country: Optional[str] = Field(
-        description="The country of the holding.", alias="invCountry"
+        description="The country of the holding.", alias="invCountry", default=None
     )
     is_restricted: Optional[str] = Field(
-        description="Whether the holding is restricted.", alias="isRestrictedSec"
+        description="Whether the holding is restricted.",
+        alias="isRestrictedSec",
+        default=None,
     )
     fair_value_level: Optional[int] = Field(
-        description="The fair value level of the holding.", alias="fairValLevel"
+        description="The fair value level of the holding.",
+        alias="fairValLevel",
+        default=None,
     )
     is_cash_collateral: Optional[str] = Field(
-        description="Whether the holding is cash collateral.", alias="isCashCollateral"
+        description="Whether the holding is cash collateral.",
+        alias="isCashCollateral",
+        default=None,
     )
     is_non_cash_collateral: Optional[str] = Field(
         description="Whether the holding is non-cash collateral.",
         alias="isNonCashCollateral",
+        default=None,
     )
     is_loan_by_fund: Optional[str] = Field(
-        description="Whether the holding is loan by fund.", alias="isLoanByFund"
+        description="Whether the holding is loan by fund.",
+        alias="isLoanByFund",
+        default=None,
     )
 
 

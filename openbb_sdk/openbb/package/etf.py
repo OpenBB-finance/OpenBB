@@ -6,11 +6,12 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
-from pydantic import validate_arguments
+from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 from typing_extensions import Annotated
 
 
-class CLASS_etf(Container):
+class ROUTER_etf(Container):
     """/etf
     countries
     holdings
@@ -22,7 +23,7 @@ class CLASS_etf(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_arguments
+    @validate_call
     def countries(
         self,
         symbol: Annotated[
@@ -33,12 +34,12 @@ class CLASS_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """ETF Country weighting.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             The exchange ticker symbol for the ETF.
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
@@ -60,12 +61,12 @@ class CLASS_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EtfCountries
         ------------
-        symbol : Optional[str]
+        symbol : str
             The exchange ticker symbol for the ETF."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -78,12 +79,12 @@ class CLASS_etf(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self._run(
             "/etf/countries",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def holdings(
         self,
         symbol: Annotated[
@@ -94,18 +95,18 @@ class CLASS_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Get the holdings for an individual ETF.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             The exchange ticker symbol for the ETF.
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
-        date : Union[str, datetime.date, None]
+        date : Optional[Union[str, datetime.date]]
             The as-of date for historical daily holdings. (provider: blackrock, fmp)
         country : Optional[Literal['america', 'canada']]
             The country the ETF is registered in. (provider: blackrock)
@@ -121,8 +122,8 @@ class CLASS_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EtfHoldings
         -----------
@@ -130,15 +131,15 @@ class CLASS_etf(Container):
             The asset's ticker symbol. (provider: blackrock); The ticker symbol of the holding. (provider: fmp); The ticker symbol of the asset. (provider: tmx)
         name : Optional[str]
             The name of the asset. (provider: blackrock, fmp, tmx)
-        weight : Union[float, str, NoneType]
+        weight : Optional[Union[float, str]]
             The weight of the holding. (provider: blackrock, fmp); The weight of the asset in the portfolio. (provider: tmx)
-        price : Union[float, str, NoneType]
+        price : Optional[Union[float, str]]
             The price-per-share of the asset. (provider: blackrock)
-        shares : Union[int, str, NoneType]
+        shares : Optional[Union[float, str, int]]
             The number of shares held. (provider: blackrock); The value of the assets under management. (provider: tmx)
-        market_value : Union[float, str, NoneType]
+        market_value : Optional[Union[float, str]]
             The market value of the holding. (provider: blackrock, tmx)
-        notional_value : Union[float, str, NoneType]
+        notional_value : Optional[Union[float, str]]
             The notional value of the holding. (provider: blackrock)
         asset_class : Optional[str]
             The asset class of the asset. (provider: blackrock)
@@ -160,29 +161,29 @@ class CLASS_etf(Container):
             The currency for the market the asset trades in. (provider: blackrock)
         fx_rate : Optional[float]
             The exchange rate of the asset against the fund's base currency. (provider: blackrock)
-        coupon : Union[float, str, NoneType]
+        coupon : Optional[Union[float, str]]
             The coupon rate of the asset. (provider: blackrock)
-        par_value : Union[float, str, NoneType]
+        par_value : Optional[Union[float, str]]
             The par value of the asset. (provider: blackrock)
-        ytm : Union[float, str, NoneType]
+        ytm : Optional[Union[float, str]]
             The yield-to-maturity of the asset. (provider: blackrock)
-        real_ytm : Union[float, str, NoneType]
+        real_ytm : Optional[Union[float, str]]
             The real yield-to-maturity of the asset. (provider: blackrock)
-        yield_to_worst : Union[float, str, NoneType]
+        yield_to_worst : Optional[Union[float, str]]
             The yield-to-worst of the asset. (provider: blackrock)
-        duration : Union[float, str, NoneType]
+        duration : Optional[Union[float, str]]
             The duration of the asset. (provider: blackrock)
-        real_duration : Union[float, str, NoneType]
+        real_duration : Optional[Union[float, str]]
             The real duration of the asset. (provider: blackrock)
-        yield_to_call : Union[float, str, NoneType]
+        yield_to_call : Optional[Union[float, str]]
             The yield-to-call of the asset. (provider: blackrock)
-        mod_duration : Union[float, str, NoneType]
+        mod_duration : Optional[Union[float, str]]
             The modified duration of the asset. (provider: blackrock)
-        maturity : Union[float, str, NoneType]
+        maturity : Optional[Union[float, str]]
             The maturity date of the asset. (provider: blackrock)
-        accrual_date : Union[str, date, NoneType]
+        accrual_date : Optional[Union[str, date]]
             The accrual date of the asset. (provider: blackrock)
-        effective_date : Union[str, date, NoneType]
+        effective_date : Optional[Union[str, date]]
             The effective date of the asset. (provider: blackrock)
         lei : Optional[str]
             The LEI of the company. (provider: fmp)
@@ -190,7 +191,7 @@ class CLASS_etf(Container):
             The title of the holding. (provider: fmp)
         balance : Optional[float]
             The balance of the holding. (provider: fmp)
-        units : Union[float, str, NoneType]
+        units : Optional[Union[float, str]]
             The units of the holding. (provider: fmp)
         value : Optional[float]
             The value of the holding in USD. (provider: fmp)
@@ -212,7 +213,7 @@ class CLASS_etf(Container):
             Whether the holding is loan by fund. (provider: fmp)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
-        share_change : Union[float, str, NoneType]
+        share_change : Optional[Union[float, str]]
             The change in shares of the holding. (provider: tmx)
         type_id : Optional[str]
             The holding type ID of the asset. (provider: tmx)
@@ -229,12 +230,12 @@ class CLASS_etf(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self._run(
             "/etf/holdings",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def info(
         self,
         symbol: Annotated[
@@ -245,12 +246,12 @@ class CLASS_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """ETF Info.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             The exchange ticker symbol for the ETF.
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
@@ -270,12 +271,12 @@ class CLASS_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EtfInfo
         -------
-        symbol : Optional[str]
+        symbol : str
             The exchange ticker symbol for the ETF.
         inception_date : Optional[str]
             Inception date of the ETF.
@@ -293,7 +294,7 @@ class CLASS_etf(Container):
             The investment style of the ETF. (provider: blackrock, tmx)
         yield_ttm : Optional[float]
             The TTM yield of the ETF. (provider: blackrock)
-        aum : Union[float, NoneType, int]
+        aum : Optional[Union[float, int]]
             The value of the assets under management. (provider: blackrock); The AUM of the ETF. (provider: fmp); The AUM of the ETF. (provider: tmx)
         issuer : Optional[str]
             The issuer of the ETF. (provider: fmp, tmx)
@@ -309,7 +310,7 @@ class CLASS_etf(Container):
             The NAV of the ETF. (provider: fmp)
         expense_ratio : Optional[float]
             The expense ratio of the ETF. (provider: fmp)
-        avg_volume : Union[float, NoneType, int]
+        avg_volume : Optional[Union[float, int]]
             The average daily volume of the ETF. (provider: fmp, tmx)
         sectors : Optional[List[Dict]]
             The sector weightings of the ETF holdings. (provider: fmp, tmx)
@@ -364,12 +365,12 @@ class CLASS_etf(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self._run(
             "/etf/info",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def search(
         self,
         query: Annotated[
@@ -377,7 +378,7 @@ class CLASS_etf(Container):
         ] = "",
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """Fuzzy search for ETFs. An empty query returns the full list of ETFs from the provider.
 
         Parameters
@@ -410,12 +411,12 @@ class CLASS_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EtfSearch
         ---------
-        symbol : Optional[str]
+        symbol : str
             The exchange ticker symbol for the ETF.
         name : Optional[str]
             Name of the ETF.
@@ -433,7 +434,7 @@ class CLASS_etf(Container):
             The investment style of the ETF. (provider: blackrock, tmx)
         investment_strategy : Optional[str]
             The investment strategy of the ETF. (provider: blackrock)
-        nav : Union[float, NoneType, int]
+        nav : Optional[Union[float, int]]
             The value of the assets under management. (provider: blackrock, tmx)
         market_cap : Optional[float]
             The market cap of the ETF. (provider: fmp)
@@ -484,12 +485,12 @@ class CLASS_etf(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self._run(
             "/etf/search",
             **inputs,
         )
 
-    @validate_arguments
+    @validate_call
     def sectors(
         self,
         symbol: Annotated[
@@ -500,12 +501,12 @@ class CLASS_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List]:
+    ) -> OBBject[List[Data]]:
         """ETF Sector weighting.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
+        symbol : str
             The exchange ticker symbol for the ETF.
         provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
@@ -527,12 +528,12 @@ class CLASS_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            metadata: Optional[Metadata]
-                Metadata info about the command execution.
+            extra: Dict[str, Any]
+                Extra info.
 
         EtfSectors
         ----------
-        symbol : Optional[str]
+        symbol : str
             The exchange ticker symbol for the ETF.
         energy : Optional[float]
             Energy Sector Weight
@@ -571,7 +572,7 @@ class CLASS_etf(Container):
             extra_params=kwargs,
         )
 
-        return self._command_runner.run(
+        return self._run(
             "/etf/sectors",
             **inputs,
         )

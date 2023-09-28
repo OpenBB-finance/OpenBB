@@ -157,6 +157,9 @@ class BlackrockEtfInfoFetcher(
                 data.rename(columns=COLS_DICT, inplace=True)
 
                 data = data.transpose().iloc[:, 0].rename(symbol)
+                data["inception_date"] = pd.to_datetime(
+                    data["inception_date"], format="%Y%m%d"
+                ).strftime("%Y-%m-%d")
 
             return data
 

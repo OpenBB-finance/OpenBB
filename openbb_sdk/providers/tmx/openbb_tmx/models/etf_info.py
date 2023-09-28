@@ -26,7 +26,7 @@ class TmxEtfInfoData(EtfInfoData):
     investment_style: Optional[str] = Field(
         description="The investment style of the ETF.", default=None
     )
-    esg: Optional[str] = Field(
+    esg: Optional[bool] = Field(
         description="Whether the ETF qualifies as an ESG fund.", default=None
     )
     currency: Optional[str] = Field(description="The currency of the ETF.")

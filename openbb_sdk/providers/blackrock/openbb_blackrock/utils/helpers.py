@@ -89,7 +89,6 @@ AMERICA_COLUMNS = [
     "aladdinCountry",
     "aladdinMarketType",
     "investmentStyle",
-    "investorClassName",
     "productType",
     "productRange",
     "fees",

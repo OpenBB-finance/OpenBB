@@ -44,7 +44,7 @@ class BlackrockEtfHoldingsData(EtfHoldingsData):
         description="The asset's ticker symbol.", alias="Ticker", default=None
     )
     name: Optional[str] = Field(
-        description="The name of the asset.", alias="Name", default=None
+        description="The name of the holding.", alias="Name", default=None
     )
     weight: Optional[Union[float, str]] = Field(
         description="The weight of the holding.", alias="Weight (%)", default=None
@@ -65,7 +65,9 @@ class BlackrockEtfHoldingsData(EtfHoldingsData):
         alias="Notional Value",
         default=None,
     )
-    asset_class: Optional[str] = Field(description="The asset class of the asset.")
+    asset_class: Optional[str] = Field(
+        description="The asset class of the holding.", alias="Asset Class", default=None
+    )
     sector: Optional[str] = Field(
         description="The sector the asset belongs to.", alias="Sector", default=None
     )
@@ -98,6 +100,7 @@ class BlackrockEtfHoldingsData(EtfHoldingsData):
     )
     fx_rate: Optional[float] = Field(
         description="The exchange rate of the asset against the fund's base currency.",
+        alias="FX Rate",
         default=None,
     )
     coupon: Optional[Union[float, str]] = Field(
@@ -141,10 +144,12 @@ class BlackrockEtfHoldingsData(EtfHoldingsData):
         description="The maturity date of the asset.", alias="Maturity", default=None
     )
     accrual_date: Optional[Union[str, dateType]] = Field(
-        description="The accrual date of the asset.", default=None
+        description="The accrual date of the asset.", default=None, alias="Accrual Date"
     )
     effective_date: Optional[Union[str, dateType]] = Field(
-        description="The effective date of the asset.", default=None
+        description="The effective date of the asset.",
+        default=None,
+        alias="Effective Date",
     )
 
 
@@ -222,7 +227,7 @@ class BlackrockEtfHoldingsFetcher(
         )
         holdings = holdings.convert_dtypes().fillna("0")
         try:
-            metadata = pd.read_csv(StringIO(r.text), nrows=3).iloc[:, 0]  # type: ignore
+            metadata = pd.read_csv(StringIO(r.text), nrows=4).iloc[:, 0]  # type: ignore
         except Exception:
             _metadata = pd.read_csv(
                 StringIO(r.text), nrows=1, header=0  # type: ignore
@@ -248,7 +253,7 @@ class BlackrockEtfHoldingsFetcher(
             columns={"Location": "country"}
         )
 
-        data = (holdings, metadata.to_dict())
+        data = (holdings, metadata.dropna().to_dict())
 
         return data
 
@@ -258,7 +263,7 @@ class BlackrockEtfHoldingsFetcher(
     ) -> Tuple[List[BlackrockEtfHoldingsData], Dict]:
         """Transform the data to the standard format."""
         holdings: List[Dict] = data[0].to_dict("records")
-        results = [BlackrockEtfHoldingsData.parse_obj(d) for d in holdings]
+        results = [BlackrockEtfHoldingsData.model_validate(d) for d in holdings]
         metadata = data[1]
 
         return results, metadata

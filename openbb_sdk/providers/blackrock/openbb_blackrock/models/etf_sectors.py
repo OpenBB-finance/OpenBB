@@ -21,7 +21,9 @@ class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):
         description="The country the ETF is registered in.  Symbol suffix with `.TO` can be used as a proxy for Canada.",
         default="america",
     )
-    date: Optional[str] = Field(description="The as-of date for the data.")
+    date: Optional[str] = Field(
+        description="The as-of date for the data.", default=None
+    )
 
 
 class BlackrockEtfSectorsData(EtfSectorsData):
@@ -42,7 +44,9 @@ class BlackrockEtfSectorsData(EtfSectorsData):
     }
 
     cash_or_derivatives: Optional[float] = Field(
-        description="Cash and/or derivatives.", alias="Cash and/or Derivatives"
+        description="Cash and/or derivatives.",
+        alias="Cash and/or Derivatives",
+        default=None,
     )
 
 

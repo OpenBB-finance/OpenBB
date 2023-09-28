@@ -33,9 +33,10 @@ def search(
     """Fuzzy search for ETFs. An empty query returns the full list of ETFs from the provider."""
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfSearch")
-    results = EtfSearch.parse_obj(data.__dict__)
-    results.results = data.results  # type: ignore
-    return results
+    results = EtfSearch()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    return EtfSearch.model_validate(results)
 
 
 @router.command(model="EtfHoldings")
@@ -48,10 +49,11 @@ def holdings(
     """Get the holdings for an individual ETF."""
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfHoldings")
-    results = EtfHoldings.parse_obj(data.__dict__)
-    results.results = data.results  # type: ignore
-    results.fields = sorted(results.to_dataframe().columns.to_list())
-    return results
+    results = EtfHoldings()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    results.fields = list(results.to_df().columns)
+    return EtfHoldings.model_validate(results)
 
 
 @router.command(model="EtfSectors")
@@ -64,10 +66,10 @@ def sectors(
     """ETF Sector weighting."""
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfSectors")
-    results = EtfSectors.parse_obj(data.__dict__)
-    results.results = data.results  # type: ignore
-
-    return results
+    results = EtfSectors()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    return EtfSectors.model_validate(results)
 
 
 @router.command(model="EtfCountries")
@@ -80,10 +82,10 @@ def countries(
     """ETF Country weighting."""
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfCountries")
-    results = EtfCountries.parse_obj(data.__dict__)
-    results.results = data.results  # type: ignore
-
-    return results
+    results = EtfCountries()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    return EtfCountries.model_validate(results)
 
 
 @router.command(model="EtfInfo")
@@ -96,7 +98,7 @@ def info(
     """ETF Info."""
 
     data = Results(OBBject(results=Query(**locals()).execute()), "EtfInfo")
-    results = EtfInfo.parse_obj(data.__dict__)
-    results.results = data.results  # type: ignore
-
-    return results
+    results = EtfInfo()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    return EtfInfo.model_validate(results)

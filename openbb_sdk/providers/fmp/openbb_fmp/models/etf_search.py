@@ -35,27 +35,41 @@ class FMPEtfSearchData(EtfSearchData):
     }
 
     market_cap: Optional[float] = Field(
-        description="The market cap of the ETF.", alias="marketCap"
+        description="The market cap of the ETF.", alias="marketCap", default=None
     )
-    sector: Optional[str] = Field(description="The sector of the ETF.")
-    industry: Optional[str] = Field(description="The industry of the ETF.")
-    beta: Optional[float] = Field(description="The beta of the ETF.")
-    price: Optional[float] = Field(description="The current price of the ETF.")
+    sector: Optional[str] = Field(description="The sector of the ETF.", default=None)
+    industry: Optional[str] = Field(
+        description="The industry of the ETF.", default=None
+    )
+    beta: Optional[float] = Field(description="The beta of the ETF.", default=None)
+    price: Optional[float] = Field(
+        description="The current price of the ETF.", default=None
+    )
     last_annual_dividend: Optional[float] = Field(
-        description="The last annual dividend paid.", alias="lastAnnualDividend"
+        description="The last annual dividend paid.",
+        alias="lastAnnualDividend",
+        default=None,
     )
     volume: Optional[float] = Field(
-        description="The current trading volume of the ETF."
+        description="The current trading volume of the ETF.", default=None
     )
     exchange: Optional[str] = Field(
-        description="The exchange code the ETF trades on.", alias="exchangeShortName"
+        description="The exchange code the ETF trades on.",
+        alias="exchangeShortName",
+        default=None,
     )
     exchange_name: Optional[str] = Field(
-        description="The full name of the exchange the ETF trades on.", alias="exchange"
+        description="The full name of the exchange the ETF trades on.",
+        alias="exchange",
+        default=None,
     )
-    country: Optional[str] = Field(description="The country the ETF is registered in.")
+    country: Optional[str] = Field(
+        description="The country the ETF is registered in.", default=None
+    )
     actively_trading: Optional[Literal[True, False]] = Field(
-        description="Whether the ETF is actively trading.", alias="isActivelyTrading"
+        description="Whether the ETF is actively trading.",
+        alias="isActivelyTrading",
+        default=None,
     )
 
 
@@ -104,8 +118,10 @@ class FMPEtfSearchFetcher(
                 | etfs["sector"].str.contains(query.query, case=False)
                 | etfs["industry"].str.contains(query.query, case=False)
             ]
-
-        return etfs.fillna(value=0).to_dict("records")
+        for col in etfs:
+            if etfs[col].dtype in ("int", "float"):
+                etfs[col] = etfs[col].fillna(0)
+        return etfs.to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPEtfSearchData]:
