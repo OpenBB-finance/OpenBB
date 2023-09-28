@@ -34,6 +34,8 @@ workflows:
               - $removeLabels(["feat XS", "feat S", "feat M", "feat L"])
               - $addLabel("feat XL")
   - name: sanity
+    # TODO: this needs to include a condition to ignore a specific file or PR from the check
+    # Use case - adding installer icons to the repo
     description: Verify pull request sanity
     always-run: true
     if:
@@ -44,6 +46,8 @@ workflows:
         extra-actions:
           - $fail("Images are not allowed in the repository, please remove images from the PR")
   - name: dependencies
+    # TODO: this needs to include a condition to ignore a specific file or PR from the check
+    # The use case is when we change a version number or change a linter rule
     description: Verify pull request dependency changes
     always-run: true
     if:
@@ -57,7 +61,7 @@ workflows:
     description: Verify files EOF
     always-run: true
     if:
-      # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF). 
+      # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF).
       # This means that if a file has a carriage return character (\r) at the end, it indicates that the file has CRLF line endings instead.
       - rule: $hasCodePattern("\r$$")
         extra-actions:
