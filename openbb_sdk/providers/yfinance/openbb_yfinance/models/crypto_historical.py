@@ -12,6 +12,7 @@ from openbb_provider.standard_models.crypto_historical import (
     CryptoHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pandas import to_datetime
@@ -86,7 +87,7 @@ class YFinanceCryptoHistoricalFetcher(
         )
 
         if data.empty:
-            raise ValueError("No results found. Try adjusting the query parameters.")
+            raise EmptyDataError()
 
         days = (
             1

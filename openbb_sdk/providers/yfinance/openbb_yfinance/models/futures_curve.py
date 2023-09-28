@@ -1,7 +1,6 @@
 """yfinance Futures End of Day fetcher."""
 # ruff: noqa: SIM105
 
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -10,6 +9,7 @@ from openbb_provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
+from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import get_futures_curve
 
 
@@ -50,8 +50,9 @@ class YFinanceFuturesCurveFetcher(
     ) -> List[dict]:
         """Return the raw data from the yfinance endpoint."""
         data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
-        if len(data) == 0:
-            warnings.warn(f"Symbol {query.symbol} not found in yfinance")
+
+        if not data:
+            raise EmptyDataError()
 
         return data
 
