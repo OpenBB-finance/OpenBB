@@ -405,7 +405,7 @@ uvicorn openbb_core.api.rest_api:app --reload
 If you want to run your FastAPI app over HTTPS locally you can use [mkcert](https://github.com/FiloSottile/mkcert) and pass the certificate and key to `uvicorn`.
 
 0. Install `mkcert` (see instructions [here](https://github.com/FiloSottile/mkcert))
-1. cd into "openbb_sdk/sdk/core/openbb_core/api"
+1. cd into "openbb_platform/platform/core/openbb_core/api"
 2. Run the following commands:
 
     ```shell

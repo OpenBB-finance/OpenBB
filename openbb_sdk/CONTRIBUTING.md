@@ -454,7 +454,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 4. Install the `openbb-core`:
 
     ```bash
-    cd OpenBBTerminal/openbb_sdk/sdk/core/
+    cd OpenBBTerminal/openbb_platform/platform/core/
     poetry install
     ```
 

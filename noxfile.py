@@ -2,7 +2,7 @@ import nox
 
 test_locations = [
     "openbb_sdk/tests",
-    "openbb_sdk/sdk",
+    "openbb_platform/platform",
     "openbb_sdk/providers",
 ]
 
