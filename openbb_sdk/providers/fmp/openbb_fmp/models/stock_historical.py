@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import get_data_many, get_intervals
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -20,17 +20,23 @@ class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
     """
 
-    timeseries: Optional[NonNegativeInt] = Field(
-        default=None, description="Number of days to look back."
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+
+    limit: Optional[NonNegativeInt] = Field(
+        default=None, description="Number of days to look back (Only for interval 1d).",
+        alias="timeseries",
     )
     interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+        "1m", "5m", "15m", "30m", "1h", "4h", "1d"
+    ] = Field(default="1d", description="Time granularity to fetch data for.")
 
 
 class FMPStockHistoricalData(StockHistoricalData):
     """FMP Stock end of day Data."""
 
+    label: Optional[str] = Field(
+        default=None, description="Human readable format of the date."
+    )
     adj_close: Optional[float] = Field(
         default=None, description="Adjusted Close Price of the symbol."
     )
@@ -43,12 +49,6 @@ class FMPStockHistoricalData(StockHistoricalData):
     )
     change_percent: Optional[float] = Field(
         default=None, description="Change % in the price of the symbol."
-    )
-    vwap: Optional[float] = Field(
-        default=None, description="Volume Weighted Average Price of the symbol."
-    )
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
     )
     change_over_time: Optional[float] = Field(
         default=None,
@@ -87,17 +87,15 @@ class FMPStockHistoricalFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
+        interval = get_intervals(query.interval)
+
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = (
-            get_querystring(query.model_dump(), ["symbol"])
-            .replace("start_date", "from")
-            .replace("end_date", "to")
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
+        url = f"{base_url}/historical-chart/{interval}/{url_params}"
 
-        if query.interval == "1day":
+        if interval == "1day":
             url = f"{base_url}/historical-price-full/{url_params}"
 
         return get_data_many(url, "historical", **kwargs)

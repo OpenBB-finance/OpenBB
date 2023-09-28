@@ -19,11 +19,17 @@ class StockHistoricalQueryParams(QueryParams):
     """Stock end of day Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    interval: Optional[str] = Field(
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
+    )
     start_date: Optional[dateType] = Field(
-        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
     end_date: Optional[dateType] = Field(
-        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
     @validator("symbol", pre=True, check_fields=False, always=True)

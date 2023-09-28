@@ -30,8 +30,10 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/
     """
 
+    # Remove this
     __alias_dict__ = {"function_": "function"}
 
+    # Set as private attribute
     function_: Literal[
         "TIME_SERIES_INTRADAY",
         "TIME_SERIES_DAILY",
@@ -44,6 +46,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         description="The time series of your choice. ",
         default="TIME_SERIES_DAILY",
     )
+    # Convert to interval automatically
     period: Optional[Literal["intraday", "daily", "weekly", "monthly"]] = Field(
         default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
     )
