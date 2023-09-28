@@ -85,14 +85,18 @@ class YFinanceCryptoHistoricalFetcher(
             actions=False,
         )
 
+        if data.empty:
+            raise ValueError("No results found. Try adjusting the query parameters.")
+
         days = (
             1
             if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
             else 0
         )
         if query.start_date:
-            data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index)
+            if "date" in data.columns:
+                data.set_index("date", inplace=True)
+                data.index = to_datetime(data.index)
 
             start_date_dt = datetime.combine(query.start_date, datetime.min.time())
             end_date_dt = datetime.combine(query.end_date, datetime.min.time())
