@@ -11,6 +11,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pandas import Timestamp, to_datetime
@@ -111,6 +112,9 @@ class YFinanceStockHistoricalFetcher(
             group_by=query.group_by,
         )
 
+        if data.empty:
+            raise EmptyDataError()
+
         query.end_date = (
             datetime.now().date() if query.end_date is None else query.end_date
         )
@@ -120,8 +124,9 @@ class YFinanceStockHistoricalFetcher(
             else 0
         )
         if query.start_date:
-            data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index)
+            if "date" in data.columns:
+                data.set_index("date", inplace=True)
+                data.index = to_datetime(data.index)
 
             start_date_dt = datetime.combine(query.start_date, datetime.min.time())
             end_date_dt = datetime.combine(query.end_date, datetime.min.time())
