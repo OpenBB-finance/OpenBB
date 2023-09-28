@@ -18,8 +18,10 @@ def get_post_flat_params(hints: Dict[str, Type]):
     return list(hints.keys())
 
 
-def write_init_test_template(path: str):
-    template = """
+def write_init_test_template(http_method: str, path: str):
+    http_template_imports = {"get": "", "post": "import json"}
+    template = http_template_imports[http_method]
+    template += """
 import pytest
 import requests
 from openbb_provider.utils.helpers import get_querystring
@@ -43,8 +45,17 @@ def headers():
         f.write(template)
 
 
-def write_test_w_template(params_list: List[Dict[str, str]], route: str, path: str):
+def write_test_w_template(
+    http_method: str, params_list: List[Dict[str, str]], route: str, path: str
+):
     params_str = ",\n".join([f"({params})" for params in params_list])
+
+    http_template_request = {
+        "get": "requests.get(url, headers=headers, timeout=5)",
+        "post": "requests.post(url, headers=headers, timeout=5, data=data)",
+    }
+
+    http_template_params = {"get": "", "post": "data = json.dumps(params.pop('data'))"}
 
     template = f"""
 @pytest.mark.parametrize(
@@ -54,10 +65,11 @@ def write_test_w_template(params_list: List[Dict[str, str]], route: str, path: s
 @pytest.mark.integration
 def test_{route.replace("/", "_")[1:]}(params, headers):
     params = {{p: v for p, v in params.items() if v}}
+    {http_template_params[http_method]}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1{route}?{{query_str}}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = {http_template_request[http_method]}
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 """
@@ -90,7 +102,7 @@ def write_integration_tests(
             "openbb_sdk", "extensions", menu, "integration", f"test_{menu}_api.py"
         )
         if not os.path.exists(path):
-            write_init_test_template(path=path)
+            write_init_test_template(http_method=http_method, path=path)
 
         if not http_method:
             commands_not_found.append(route)
@@ -109,7 +121,12 @@ def write_integration_tests(
             )
 
             if not test_exists(route=route, path=path):
-                write_test_w_template(params_list=params_list, route=route, path=path)
+                write_test_w_template(
+                    http_method=http_method,
+                    params_list=params_list,
+                    route=route,
+                    path=path,
+                )
 
     return commands_not_found
 
