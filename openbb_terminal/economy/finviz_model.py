@@ -8,6 +8,8 @@ from typing import List
 
 import pandas as pd
 from finvizfinance.group import performance, spectrum, valuation
+from finvizfinance.group.overview import Overview
+from finvizfinance.util import web_scrap
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
@@ -36,6 +38,40 @@ GROUPS = {
     "country": "Country (U.S. listed stocks only)",
     "capitalization": "Capitalization",
 }
+
+
+# It works but it's not pretty
+def screener_view(self, group="Sector", order="Name"):
+    """Get screener table.
+
+    Args:
+        group(str): choice of group option.
+        order(str): sort the table by the choice of order.
+
+    Returns:
+        df(pandas.DataFrame): group information table.
+    """
+    if group not in self.group_dict:
+        group_keys = list(self.group_dict.keys())
+        raise ValueError(
+            f"Invalid group parameter '{group}'. Possible parameter input: {group_keys}"
+        )
+    if order not in self.order_dict:
+        order_keys = list(self.order_dict.keys())
+        raise ValueError(
+            f"Invalid order parameter '{order}'. Possible parameter input: {order_keys}"
+        )
+    self.url = (
+        self.BASE_URL.format(group=self.group_dict[group], v_page=self.v_page)
+        + "&"
+        + self.order_dict[order]
+    )
+
+    soup = web_scrap(self.url)
+    return pd.read_html(str(soup))[-2]
+
+
+Overview.screener_view = screener_view
 
 
 @log_start_end(log=logger)
@@ -104,8 +140,8 @@ def get_valuation_data(
             if x.endswith("B")
             else float(x.strip("M")) / 1000
         )
-        df_group["Volume"] = df_group["Volume"] / 1_000_000
-        df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
+        # df_group["Volume"] = df_group["Volume"] / 1_000_000
+        # df_group = df_group.rename(columns={"Volume": "Volume [1M]"})
         return df_group
 
     except IndexError:
@@ -163,8 +199,8 @@ def get_performance_data(
         if get_current_user().preferences.USE_INTERACTIVE_DF:
             return df_group
 
-        df_group["Volume"] = df_group["Volume"] / 1_000_000
-        df_group["Avg Volume"] = df_group["Avg Volume"] / 1_000_000
+        # df_group["Volume"] = df_group["Volume"].astype(int) / 1_000_000
+        # df_group["Avg Volume"] = df_group["Avg Volume"].astype(int) / 1_000_000
         df_group = df_group.rename(
             columns={"Volume": "Volume [1M]", "Avg Volume": "Avg Volume [1M]"}
         )
