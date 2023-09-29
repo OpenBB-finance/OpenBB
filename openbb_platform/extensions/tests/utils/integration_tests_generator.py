@@ -1,9 +1,9 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
+from platform.core.openbb_core.app.provider_interface import ProviderInterface
+from platform.core.openbb_core.app.router import CommandMap
 from typing import Any, Dict, List, Literal, get_origin
 
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
@@ -181,4 +181,5 @@ def write_integration_test() -> None:
     add_test_commands_to_file(extensions)
 
 
-write_integration_test()
+if __name__ == "__main__":
+    write_integration_test()
