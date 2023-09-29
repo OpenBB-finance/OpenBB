@@ -86,6 +86,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     df_target = df_target.set_index("date")
     df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
+    df_target.index = pd.to_datetime(df_target.index)
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")
     df_fama = get_fama_raw(start_date, end_date)
