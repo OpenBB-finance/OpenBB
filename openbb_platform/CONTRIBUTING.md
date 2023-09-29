@@ -40,7 +40,7 @@ The OpenBB Platform is built by the Open-Source community and is characterized b
 The REST API is built on top of FastAPI and can be started by running the following command from the root:
 
 ```bash
-uvicorn openbb_terminal.terminal.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.platform.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 The Python interfaces we provide to users is the `openbb` python package.
