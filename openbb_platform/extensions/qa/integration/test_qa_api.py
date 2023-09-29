@@ -51,7 +51,10 @@ crypto_data = get_data(
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": ""})],
+    [
+        ({"data": stocks_data, "target": "close"}),
+        ({"data": crypto_data, "target": "high"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_normality(params, headers):
@@ -67,7 +70,10 @@ def test_qa_normality(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": ""})],
+    [
+        ({"data": stocks_data, "target": "close"}),
+        ({"data": crypto_data, "target": "high"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_capm(params, headers):
@@ -83,7 +89,24 @@ def test_qa_capm(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "threshold_start": "", "threshold_end": ""})],
+    [
+        (
+            {
+                "data": stocks_data,
+                "target": "close",
+                "threshold_start": "",
+                "threshold_end": "",
+            }
+        ),
+        (
+            {
+                "data": crypto_data,
+                "target": "high",
+                "threshold_start": "0.1",
+                "threshold_end": "1.6",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_qa_om(params, headers):
@@ -99,7 +122,10 @@ def test_qa_om(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "window": ""})],
+    [
+        ({"data": stocks_data, "target": "close", "window": "5"}),
+        ({"data": crypto_data, "target": "high", "window": "10"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_kurtosis(params, headers):
@@ -115,7 +141,10 @@ def test_qa_kurtosis(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "fuller_reg": "", "kpss_reg": ""})],
+    [
+        ({"data": stocks_data, "target": "close", "fuller_reg": "c", "kpss_reg": "ct"}),
+        ({"data": stocks_data, "target": "high", "fuller_reg": "ct", "kpss_reg": "c"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_unitroot(params, headers):
@@ -131,7 +160,10 @@ def test_qa_unitroot(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "rfr": "", "window": ""})],
+    [
+        ({"data": stocks_data, "target": "close", "rfr": "", "window": ""}),
+        ({"data": crypto_data, "target": "high", "rfr": "0.5", "window": "250"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_sh(params, headers):
@@ -147,7 +179,26 @@ def test_qa_sh(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "target_return": "", "window": "", "adjusted": ""})],
+    [
+        (
+            {
+                "data": stocks_data,
+                "target": "close",
+                "target_return": "",
+                "window": "",
+                "adjusted": "",
+            }
+        ),
+        (
+            {
+                "data": crypto_data,
+                "target": "close",
+                "target_return": "0.5",
+                "window": "275",
+                "adjusted": "true",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_qa_so(params, headers):
@@ -163,7 +214,9 @@ def test_qa_so(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "window": ""})],
+    [
+        ({"data": stocks_data, "target": "close", "window": "220"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_skew(params, headers):
@@ -172,14 +225,24 @@ def test_qa_skew(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/skew?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": "", "window": "", "quantile_pct": ""})],
+    [
+        ({"data": stocks_data, "target": "close", "window": "10", "quantile_pct": ""}),
+        (
+            {
+                "data": crypto_data,
+                "target": "high",
+                "window": "50",
+                "quantile_pct": "0.6",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_qa_quantile(params, headers):
@@ -195,7 +258,10 @@ def test_qa_quantile(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"data": "", "target": ""})],
+    [
+        ({"data": stocks_data, "target": "close"}),
+        ({"data": crypto_data, "target": "high"}),
+    ],
 )
 @pytest.mark.integration
 def test_qa_summary(params, headers):
