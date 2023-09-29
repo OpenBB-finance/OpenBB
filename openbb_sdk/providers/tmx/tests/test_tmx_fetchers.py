@@ -12,11 +12,14 @@ test_credentials = UserService().default_user_settings.credentials.dict()
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent"), None],
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            None,
+        ],
     }
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_tmx_etf_countries_fetcher(credentials=test_credentials):
     params = {"symbol": "BKCC,ENCC"}
 
@@ -25,7 +28,7 @@ def test_tmx_etf_countries_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_tmx_etf_holdings_fetcher(credentials=test_credentials):
     params = {"symbol": "VDY"}
 
@@ -34,7 +37,7 @@ def test_tmx_etf_holdings_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_tmx_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "VAB,VCB,VEF,VEQT"}
 
@@ -43,7 +46,7 @@ def test_tmx_etf_info_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_tmx_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "Vanguard"}
 
@@ -52,7 +55,7 @@ def test_tmx_etf_search_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_tmx_etf_sectors_fetcher(credentials=test_credentials):
     params = {"symbol": "XIU,XIC,VCN,VCNS"}
 

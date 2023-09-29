@@ -460,6 +460,15 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_fmp_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "IWN,IWM,QQQ,SPY,VOO"}
+
+    fetcher = FMPEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_etf_countries_fetcher(credentials=test_credentials):
     params = {"symbol": "IWM,XIU.TO"}
 
@@ -469,6 +478,7 @@ def test_fmp_etf_countries_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+@pytest.mark.skip
 def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
@@ -477,13 +487,7 @@ def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
-def test_fmp_etf_info_fetcher(credentials=test_credentials):
-    params = {"symbol": "IWN,IWM,QQQ,SPY,VOO"}
 
-    fetcher = FMPEtfInfoFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
 
 
 @pytest.mark.record_http

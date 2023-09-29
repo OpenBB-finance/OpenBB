@@ -1,0 +1,208 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Cookie:
+      - ts-us-ishares-locale=en_US; StatisticalAnalyticsEnabled=true; us-ishares-recent-funds=239468;
+        SSESSIONID_blk-one01=Zjc1MDZhMGQtZDIxYi00NTdkLWJiY2MtZTUwMjQwNTk3MjU4; STICKY_SESSION_COOKIE_BLK_ONE01_LIVE="53ef385f3007c3d0"
+    method: GET
+    uri: https://www.ishares.com/us/products/315911/ishares-25+-year-treasury-strips-bond-etf/1467271812596.ajax?dataType=fund&fileName=govz_holdings&fileType=csv
+  response:
+    body:
+      string: "\uFEFFiShares 25+ Year Treasury STRIPS Bond ETF\nFund Holdings as of,\"Sep
+        28, 2023\"\nInception Date,\"Sep 22, 2020\"\nShares Outstanding,\"11,200,000.00\"\nStock,\"-\"\nBond,\"-\"\nCash,\"-\"\nOther,\"-\"\n\_\nName,Sector,Asset
+        Class,Market Value,Weight (%),Notional Value,Par Value,CUSIP,ISIN,SEDOL,Price,Location,Exchange,Currency,Duration,YTM
+        (%),FX Rate,Maturity,Coupon (%),Mod. Duration,Yield to Call (%),Yield to Worst
+        (%),Real Duration,Real YTM (%),Market Currency,Accrual Date,Effective Date\n\"TREASURY
+        STRIP (PRIN)\",\"Treasury\",\"Fixed Income\",\"16,099,477.42\",\"13.81\",\"16,099,477.42\",\"57,094,500.00\",\"912803FT5\",\"US912803FT56\",\"-\",\"28.20\",\"United
+        States\",\"-\",\"USD\",\"26.51\",\"4.72\",\"1.00\",\"Nov 15, 2050\",\"0.00\",\"25.89\",\"-\",\"4.72\",\"25.89\",\"4.72\",\"USD\",\"Nov
+        16, 2020\",\"Nov 16, 2020\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"15,600,547.76\",\"13.38\",\"15,600,547.76\",\"55,776,000.00\",\"912803FV0\",\"US912803FV03\",\"-\",\"27.97\",\"United
+        States\",\"-\",\"USD\",\"26.76\",\"4.71\",\"1.00\",\"Feb 15, 2051\",\"0.00\",\"26.14\",\"-\",\"4.71\",\"26.14\",\"4.71\",\"USD\",\"Feb
+        16, 2021\",\"Feb 16, 2021\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"15,321,354.52\",\"13.14\",\"15,321,354.52\",\"51,834,600.00\",\"912803FK4\",\"US912803FK48\",\"BJTH941\",\"29.56\",\"United
+        States\",\"-\",\"USD\",\"25.28\",\"4.77\",\"1.00\",\"Aug 15, 2049\",\"0.00\",\"24.69\",\"-\",\"4.77\",\"24.69\",\"4.77\",\"USD\",\"Aug
+        15, 2019\",\"Aug 15, 2019\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"10,350,404.70\",\"8.88\",\"10,350,404.70\",\"38,152,500.00\",\"912803GE7\",\"US912803GE78\",\"-\",\"27.13\",\"United
+        States\",\"-\",\"USD\",\"27.75\",\"4.65\",\"1.00\",\"Feb 15, 2052\",\"0.00\",\"27.11\",\"-\",\"4.65\",\"27.11\",\"4.65\",\"USD\",\"Feb
+        15, 2022\",\"Feb 15, 2022\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"7,603,679.55\",\"6.52\",\"7,603,679.55\",\"27,628,500.00\",\"912803GA5\",\"US912803GA56\",\"-\",\"27.52\",\"United
+        States\",\"-\",\"USD\",\"27.25\",\"4.68\",\"1.00\",\"Aug 15, 2051\",\"0.00\",\"26.62\",\"-\",\"4.68\",\"26.62\",\"4.68\",\"USD\",\"Aug
+        16, 2021\",\"Aug 16, 2021\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"7,248,844.37\",\"6.22\",\"7,248,844.37\",\"25,473,500.00\",\"912803FR9\",\"US912803FR90\",\"BJL9M35\",\"28.46\",\"United
+        States\",\"-\",\"USD\",\"26.26\",\"4.73\",\"1.00\",\"Aug 15, 2050\",\"0.00\",\"25.65\",\"-\",\"4.73\",\"25.65\",\"4.73\",\"USD\",\"Aug
+        17, 2020\",\"Aug 17, 2020\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"6,166,978.78\",\"5.29\",\"6,166,978.78\",\"20,589,500.00\",\"912803FG3\",\"US912803FG36\",\"-\",\"29.95\",\"United
+        States\",\"-\",\"USD\",\"24.79\",\"4.81\",\"1.00\",\"Feb 15, 2049\",\"0.00\",\"24.20\",\"-\",\"4.81\",\"24.20\",\"4.81\",\"USD\",\"Feb
+        15, 2019\",\"Feb 15, 2019\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"5,885,095.58\",\"5.05\",\"5,885,095.58\",\"21,553,000.00\",\"912803GC1\",\"US912803GC13\",\"-\",\"27.31\",\"United
+        States\",\"-\",\"USD\",\"27.50\",\"4.67\",\"1.00\",\"Nov 15, 2051\",\"0.00\",\"26.86\",\"-\",\"4.67\",\"26.86\",\"4.67\",\"USD\",\"Nov
+        15, 2021\",\"Nov 15, 2021\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"4,742,758.09\",\"4.07\",\"4,742,758.09\",\"17,668,600.00\",\"912803GK3\",\"US912803GK39\",\"-\",\"26.84\",\"United
+        States\",\"-\",\"USD\",\"28.24\",\"4.61\",\"1.00\",\"Aug 15, 2052\",\"0.00\",\"27.59\",\"-\",\"4.61\",\"27.59\",\"4.61\",\"USD\",\"Aug
+        15, 2022\",\"Aug 15, 2022\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"4,504,326.54\",\"3.86\",\"4,504,326.54\",\"16,914,400.00\",\"912803GP2\",\"US912803GP26\",\"-\",\"26.63\",\"United
+        States\",\"-\",\"USD\",\"28.74\",\"4.55\",\"1.00\",\"Feb 15, 2053\",\"0.00\",\"28.09\",\"-\",\"4.55\",\"28.09\",\"4.55\",\"USD\",\"Feb
+        15, 2023\",\"Feb 15, 2023\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"4,503,244.50\",\"3.86\",\"4,503,244.50\",\"15,528,500.00\",\"912803FM0\",\"US912803FM04\",\"BKPNTX9\",\"29.00\",\"United
+        States\",\"-\",\"USD\",\"25.78\",\"4.75\",\"1.00\",\"Feb 15, 2050\",\"0.00\",\"25.17\",\"-\",\"4.75\",\"25.17\",\"4.75\",\"USD\",\"Feb
+        18, 2020\",\"Feb 18, 2020\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"2,889,130.56\",\"2.48\",\"2,889,130.56\",\"10,712,700.00\",\"912803GH0\",\"US912803GH00\",\"-\",\"26.97\",\"United
+        States\",\"-\",\"USD\",\"27.99\",\"4.63\",\"1.00\",\"May 15, 2052\",\"0.00\",\"27.35\",\"-\",\"4.63\",\"27.35\",\"4.63\",\"USD\",\"May
+        16, 2022\",\"May 16, 2022\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"2,735,970.73\",\"2.35\",\"2,735,970.73\",\"9,001,500.00\",\"912803FE8\",\"US912803FE87\",\"BFCBRB5\",\"30.39\",\"United
+        States\",\"-\",\"USD\",\"24.30\",\"4.84\",\"1.00\",\"Aug 15, 2048\",\"0.00\",\"23.72\",\"-\",\"4.84\",\"23.72\",\"4.84\",\"USD\",\"Aug
+        15, 2018\",\"Aug 15, 2018\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"2,540,672.71\",\"2.18\",\"2,540,672.71\",\"9,410,000.00\",\"912803GM9\",\"US912803GM94\",\"-\",\"27.00\",\"United
+        States\",\"-\",\"USD\",\"28.49\",\"4.55\",\"1.00\",\"Nov 15, 2052\",\"0.00\",\"27.85\",\"-\",\"4.55\",\"27.85\",\"4.55\",\"USD\",\"Nov
+        15, 2022\",\"Nov 15, 2022\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,841,957.64\",\"1.58\",\"1,841,957.64\",\"6,638,000.00\",\"912803FY4\",\"US912803FY42\",\"-\",\"27.75\",\"United
+        States\",\"-\",\"USD\",\"27.00\",\"4.69\",\"1.00\",\"May 15, 2051\",\"0.00\",\"26.38\",\"-\",\"4.69\",\"26.38\",\"4.69\",\"USD\",\"May
+        17, 2021\",\"May 17, 2021\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,745,925.18\",\"1.50\",\"1,745,925.18\",\"6,600,100.00\",\"912803GS6\",\"US912803GS64\",\"BQRHD39\",\"26.45\",\"United
+        States\",\"-\",\"USD\",\"28.98\",\"4.54\",\"1.00\",\"May 15, 2053\",\"0.00\",\"28.33\",\"-\",\"4.54\",\"28.33\",\"4.54\",\"USD\",\"May
+        15, 2023\",\"May 15, 2023\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,697,081.13\",\"1.46\",\"1,697,081.13\",\"5,631,500.00\",\"912803FF5\",\"US912803FF52\",\"BG47HY1\",\"30.14\",\"United
+        States\",\"-\",\"USD\",\"24.55\",\"4.83\",\"1.00\",\"Nov 15, 2048\",\"0.00\",\"23.96\",\"-\",\"4.83\",\"23.96\",\"4.83\",\"USD\",\"Nov
+        15, 2018\",\"Nov 15, 2018\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,623,856.54\",\"1.39\",\"1,623,856.54\",\"5,648,000.00\",\"912803FP3\",\"US912803FP35\",\"BMFV0N4\",\"28.75\",\"United
+        States\",\"-\",\"USD\",\"26.02\",\"4.74\",\"1.00\",\"May 15, 2050\",\"0.00\",\"25.41\",\"-\",\"4.74\",\"25.41\",\"4.74\",\"USD\",\"May
+        15, 2020\",\"May 15, 2020\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,431,053.30\",\"1.23\",\"1,431,053.30\",\"4,872,500.00\",\"912803FL2\",\"US912803FL21\",\"BKRQWR1\",\"29.37\",\"United
+        States\",\"-\",\"USD\",\"25.53\",\"4.74\",\"1.00\",\"Nov 15, 2049\",\"0.00\",\"24.93\",\"-\",\"4.74\",\"24.93\",\"4.74\",\"USD\",\"Nov
+        15, 2019\",\"Nov 15, 2019\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"1,075,438.20\",\"0.92\",\"1,075,438.20\",\"3,614,500.00\",\"912803FJ7\",\"US912803FJ74\",\"-\",\"29.75\",\"United
+        States\",\"-\",\"USD\",\"25.04\",\"4.79\",\"1.00\",\"May 15, 2049\",\"0.00\",\"24.45\",\"-\",\"4.79\",\"24.45\",\"4.79\",\"USD\",\"May
+        15, 2019\",\"May 15, 2019\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"852,891.61\",\"0.73\",\"852,891.61\",\"2,733,300.00\",\"912803FA6\",\"US912803FA65\",\"BF5FZ32\",\"31.20\",\"United
+        States\",\"-\",\"USD\",\"23.56\",\"4.89\",\"1.00\",\"Nov 15, 2047\",\"0.00\",\"22.99\",\"-\",\"4.89\",\"22.99\",\"4.89\",\"USD\",\"Nov
+        15, 2017\",\"Nov 15, 2017\"\n\"BLK CSH FND TREASURY SL AGENCY\",\"Cash and/or
+        Derivatives\",\"Money Market\",\"80,000.00\",\"0.07\",\"80,000.00\",\"80,000.00\",\"066922477\",\"US0669224778\",\"6922477\",\"1.00\",\"United
+        States\",\"-\",\"USD\",\"0.03\",\"5.11\",\"1.00\",\"-\",\"5.34\",\"0.04\",\"-\",\"5.11\",\"0.04\",\"5.11\",\"USD\",\"-\",\"Feb
+        04, 2009\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed Income\",\"22,879.12\",\"0.02\",\"22,879.12\",\"72,700.00\",\"912803EZ2\",\"US912803EZ26\",\"BD2BTM6\",\"31.47\",\"United
+        States\",\"-\",\"USD\",\"23.31\",\"4.90\",\"1.00\",\"Aug 15, 2047\",\"0.00\",\"22.75\",\"-\",\"4.90\",\"22.75\",\"4.90\",\"USD\",\"Aug
+        15, 2017\",\"Aug 15, 2017\"\n\"TREASURY STRIP (PRIN)\",\"Treasury\",\"Fixed
+        Income\",\"17,304.93\",\"0.01\",\"17,304.93\",\"56,500.00\",\"912803FD0\",\"US912803FD05\",\"BG0GXM2\",\"30.63\",\"United
+        States\",\"-\",\"USD\",\"24.05\",\"4.86\",\"1.00\",\"May 15, 2048\",\"0.00\",\"23.48\",\"-\",\"4.86\",\"23.48\",\"4.86\",\"USD\",\"May
+        15, 2018\",\"May 15, 2018\"\n\"USD CASH\",\"Cash and/or Derivatives\",\"Cash\",\"5,381.96\",\"0.00\",\"5,381.96\",\"5,382.00\",\"-\",\"-\",\"-\",\"100.00\",\"United
+        States\",\"-\",\"USD\",\"0.00\",\"5.34\",\"1.00\",\"-\",\"0.00\",\"0.00\",\"-\",\"5.34\",\"0.00\",\"5.34\",\"USD\",\"-\",\"Jan
+        01, 1989\"\n\"TREASURY STRIP (INT)\",\"Treasury\",\"Fixed Income\",\"265.40\",\"0.00\",\"265.40\",\"1,000.00\",\"912834C55\",\"US912834C556\",\"-\",\"26.54\",\"United
+        States\",\"-\",\"USD\",\"27.99\",\"4.69\",\"1.00\",\"May 15, 2052\",\"0.00\",\"27.33\",\"-\",\"4.69\",\"27.33\",\"4.69\",\"USD\",\"May
+        16, 2022\",\"May 16, 2022\"\n\_\n\"The content contained herein is owned or
+        licensed by BlackRock and/or its third-party information providers and is
+        protected by applicable copyrights, trademarks, service marks, and/or other
+        intellectual property rights. Such content is solely for your personal, non-commercial
+        use. Accordingly, you may not copy, distribute, modify, post, frame or deep
+        link this content. You may download material displayed on this Website for
+        your personal use provided you also retain all copyright and other proprietary
+        notices contained on the materials. Modification or use of the materials for
+        any other purpose violates BlackRock's intellectual property rights.\nHoldings
+        subject to change. See www.iShares.com for the most recent funds holdings.\nThe
+        values for \u201Cprice\u201D shown herein generally represent a price provided
+        by a third-party pricing vendor for the portfolio holding and do not reflect
+        the impact of systematic fair valuation (\u201Cthe vendor price\u201D). The
+        vendor price is not necessarily the price at which the Fund values the portfolio
+        holding for the purposes of determining its net asset value (the \u201Cvaluation
+        price\u201D). Additionally, where applicable, foreign currency exchange rates
+        with respect to the portfolio holdings denominated in non-U.S. currencies
+        for the valuation price will be generally determined as of the close of business
+        on the New York Stock Exchange, whereas for the vendor price will be generally
+        determined as of 4 p.m. London. The values shown herein for \u201Cmarket value,\u201D
+        \u201Cweight,\u201D and \u201Cnotional value\u201D (the \u201Ccalculated values\u201D)
+        are based off of the vendor price and may have been different if the valuation
+        price were to have been used to calculate such values. The vendor price is
+        as of the most recent practicable date and may not necessarily be as of the
+        date shown above.\nPlease see the \u201CDetermination of Net Asset Value\u201D
+        section of each Fund\u2019s prospectus for additional information on the Fund\u2019s
+        valuation policies and procedures.\nCAREFULLY CONSIDER THE FUNDS' INVESTMENT
+        OBJECTIVES, RISK FACTORS, AND CHARGES AND EXPENSES BEFORE INVESTING. THIS
+        AND OTHER INFORMATION CAN BE FOUND IN THE FUNDS' PROSPECTUSES OR, IF AVAILABLE,
+        THE SUMMARY PROSPECTUSES WHICH MAY BE OBTAINED BY VISITING WWW.ISHARES.COM
+        OR WWW.BLACKROCK.COM. READ THE PROSPECTUS CAREFULLY BEFORE INVESTING. INVESTING
+        INVOLVES RISK, INCLUDING POSSIBLE LOSS OF PRINCIPAL.\nThis information should
+        not be relied upon as research, investment advice, or a recommendation regarding
+        any products, strategies, or any security in particular.\nThis material is
+        strictly for illustrative, educational, or informational purposes and is subject
+        to change.\nThe Funds are distributed by BlackRock Investments, LLC (together
+        with its affiliates, \u201CBlackRock\u201D).\nThe iShares Funds are not sponsored,
+        endorsed, issued, sold or promoted by Bloomberg, BlackRock Index Services,
+        LLC, Cboe Global Indices, LLC, Cohen & Steers, European Public Real Estate
+        Association (\u201CEPRA\xAE \u201D), FTSE International Limited (\u201CFTSE\u201D),
+        ICE Data Indices, LLC, NSE Indices Ltd, JPMorgan, JPX Group, London Stock
+        Exchange Group (\u201CLSEG\u201D), MSCI Inc., Markit Indices Limited, Morningstar,
+        Inc., Nasdaq, Inc., National Association of Real Estate Investment Trusts
+        (\u201CNAREIT\u201D), Nikkei, Inc., Russell, S&P Dow Jones Indices LLC or
+        STOXX Ltd. None of these companies make any representation regarding the advisability
+        of investing in the Funds. With the exception of BlackRock Index Services,
+        LLC, who is an affiliate, BlackRock Investments, LLC is not affiliated with
+        the companies listed above. Neither FTSE, LSEG, nor NAREIT makes any warranty
+        regarding the FTSE Nareit Equity REITS Index, FTSE Nareit All Residential
+        Capped Index or FTSE Nareit All Mortgage Capped Index. Neither FTSE, EPRA,
+        LSEG, nor NAREIT makes any warranty regarding the FTSE EPRA Nareit Developed
+        ex-U.S. Index, FTSE EPRA Nareit Developed Green Target Index or FTSE EPRA
+        Nareit Global REITs Index. \u201CFTSE\xAE\u201D is a trademark of London Stock
+        Exchange Group companies and is used by FTSE under license.\n\xA92023 BlackRock,
+        Inc or its affiliates. All rights reserved. iSHARES, iBONDS and BLACKROCK
+        are trademarks of BlackRock, Inc. or its affiliates. All other trademarks
+        are those of their respective owners.\niCRMH0323U/S-2742939\""
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '12065'
+      Content-Security-Policy:
+      - 'default-src https: ''unsafe-inline'' ''unsafe-eval''; img-src https: data:;
+        frame-ancestors ''self'' https://*.blackrock.com https://*.ishares.com;'
+      Content-Type:
+      - text/csv;charset=UTF-8
+      Date:
+      - Fri, 29 Sep 2023 16:22:14 GMT
+      Expires:
+      - Fri, 29 Sep 2023 16:22:14 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - envoy
+      Set-Cookie:
+      - us-ishares-recent-funds=315911+239468; Expires=Wed, 27 Sep 2028 16:22:14 GMT;
+        Path=/; Secure; HttpOnly; SameSite=Lax
+      content-disposition:
+      - attachment; filename=govz_holdings.csv
+      referrer-policy:
+      - no-referrer-when-downgrade
+      strict-transport-security:
+      - max-age=31536000;preload
+      x-content-type-options:
+      - nosniff
+      x-envoy-upstream-service-time:
+      - '119'
+      x-frame-options:
+      - SAMEORIGIN
+      x-host-ref:
+      - cwp-blk-one01-live-794bc8dfcb-c6btp/orca
+      x-locale:
+      - en_US
+      x-page-name:
+      - products/overview-v3
+      x-region-ref:
+      - muse2
+      x-request-id:
+      - 9e7f5738-18ae0d16916
+      x-robots-tag:
+      - noindex
+      x-site-name:
+      - us-ishares
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

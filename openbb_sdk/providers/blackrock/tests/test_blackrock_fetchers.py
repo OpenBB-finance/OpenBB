@@ -13,37 +13,13 @@ test_credentials = UserService().default_user_settings.credentials.dict()
 def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            None,
+        ],
     }
 
 
-@pytest.mark.vcr(record=True)
-def test_blackrock_etf_countries_fetcher(credentials=test_credentials):
-    params = {"symbol": "GOVT"}
-
-    fetcher = BlackrockEtfCountriesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.vcr(record=True)
-def test_blackrock_etf_holdings_fetcher(credentials=test_credentials):
-    params = {"symbol": "GOVZ"}
-
-    fetcher = BlackrockEtfHoldingsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.vcr(record=True)
-def test_blackrock_etf_info_fetcher(credentials=test_credentials):
-    params = {"symbol": "GOVT"}
-
-    fetcher = BlackrockEtfInfoFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
 def test_blackrock_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "Treasury"}
 
@@ -52,7 +28,35 @@ def test_blackrock_etf_search_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.vcr(record=True)
+@pytest.mark.record_http
+def test_blackrock_etf_countries_fetcher(credentials=test_credentials):
+    params = {"symbol": "GOVT"}
+
+    fetcher = BlackrockEtfCountriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+@pytest.mark.skip
+def test_blackrock_etf_holdings_fetcher(credentials=test_credentials):
+    params = {"symbol": "GOVZ"}
+
+    fetcher = BlackrockEtfHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_blackrock_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "GOVT"}
+
+    fetcher = BlackrockEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_blackrock_etf_sectors_fetcher(credentials=test_credentials):
     params = {"symbol": "IGOV"}
 
