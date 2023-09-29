@@ -5,9 +5,9 @@ from pathlib import Path
 
 import toml
 
-SDK_PATH = Path(__file__).parent.resolve()
-LOCK = SDK_PATH / "poetry.lock"
-PYPROJECT = SDK_PATH / "pyproject.toml"
+PLATFORM_PATH = Path(__file__).parent.resolve()
+LOCK = PLATFORM_PATH / "poetry.lock"
+PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
 
 LOCAL_DEPS = """
@@ -51,16 +51,16 @@ TEMP_PYPROJECT = toml.dumps(pyproject_toml)
 
 
 def install_local(extras: bool = False):
-    """Install the SDK locally for development purposes.
+    """Install the Platform locally for development purposes.
 
-    Installs the SDK in editable mode, instead of copying the source code to
+    Installs the Platform in editable mode, instead of copying the source code to
     the site-packages directory. This makes any changes immediately available
     to the interpreter.
 
     Parameters
     ----------
     extras : bool, optional
-        Whether to install the SDK with the extra dependencies, by default False
+        Whether to install the Platform with the extra dependencies, by default False
     """
     orginal_lock = LOCK.read_text()
     orginal_pyproject = PYPROJECT.read_text()
@@ -72,10 +72,10 @@ def install_local(extras: bool = False):
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(  # noqa: PLW1510
-            CMD + ["lock", "--no-update"], cwd=SDK_PATH  # noqa: S603
+            CMD + ["lock", "--no-update"], cwd=PLATFORM_PATH  # noqa: S603
         )
         subprocess.run(  # noqa: PLW1510
-            CMD + ["install"] + extras_args, cwd=SDK_PATH  # noqa: S603
+            CMD + ["install"] + extras_args, cwd=PLATFORM_PATH  # noqa: S603
         )
 
     except (Exception, KeyboardInterrupt) as e:

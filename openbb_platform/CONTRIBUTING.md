@@ -4,7 +4,7 @@
   - [Get started contributing with a template](#get-started-contributing-with-a-template)
   - [Cookiecuter, a closer look](#cookiecuter-a-closer-look)
     - [Get your data](#get-your-data)
-    - [SDK commands: query and output your data](#sdk-commands-query-and-output-your-data)
+    - [Platform commands: query and output your data](#platform-commands-query-and-output-your-data)
   - [Adding a new data point](#adding-a-new-data-point)
     - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
     - [What is the Standardization Framework?](#what-is-the-standardization-framework)
@@ -17,12 +17,12 @@
       - [Query Parameters](#query-parameters)
       - [Data Output](#data-output)
       - [Build the Fetcher](#build-the-fetcher)
-    - [Make the new provider visible to the SDK](#make-the-new-provider-visible-to-the-sdk)
+    - [Make the new provider visible to the Platform](#make-the-new-provider-visible-to-the-platform)
   - [Using other extension as a dependency](#using-other-extension-as-a-dependency)
     - [Using our internal extension](#using-our-internal-extension)
     - [Adding an external extension](#adding-an-external-extension)
     - [The charting extension](#the-charting-extension)
-      - [Add a visualization to an existing SDK command](#add-a-visualization-to-an-existing-sdk-command)
+      - [Add a visualization to an existing Platform command](#add-a-visualization-to-an-existing-platform-command)
       - [Using the `to_chart` OBBject method](#using-the-to_chart-obbject-method)
   - [Environment and dependencies](#environment-and-dependencies)
   - [Python package](#python-package)
@@ -35,7 +35,7 @@ In order to get started contributing we have setup a Cookiecutter template that 
 
 Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
 
-This document will walk you through the steps of adding a new custom extension to the SDK. The high level steps are:
+This document will walk you through the steps of adding a new custom extension to the Platform. The high level steps are:
 
 - Generate the extension structure
 - Install your dependencies
@@ -74,19 +74,19 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 
 > Note that the `Fetcher` should inherit from the [`Fetcher`](openbb_platform\platform\provider\openbb_provider\abstract\`Fetcher`.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models you need to make them visible to the SDK. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](openbb_platform\platform\provider\openbb_provider\abstract\provider.py).
+After finalizing your models you need to make them visible to the Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](openbb_platform\platform\provider\openbb_provider\abstract\provider.py).
 
 Any command using the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
 If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
 
-### SDK commands: query and output your data
+### Platform commands: query and output your data
 
-The SDK will enable you to query and output your data in a very simple way.
+The Platform will enable you to query and output your data in a very simple way.
 
-> Any SDK endpoint will be available both from a Python interface and the API.
+> Any Platform endpoint will be available both from a Python interface and the API.
 
-The command definition on the SDK follows [FastAPI](https://fastapi.tiangolo.com/) conventions, meaning that you'll be defining **endpoints** similar to like FastAPI.
+The command definition on the Platform follows [FastAPI](https://fastapi.tiangolo.com/) conventions, meaning that you'll be defining **endpoints** similar to like FastAPI.
 
 The Cookiecutter template generates for you a `router.py` file with a set of examples that you can follow, namely:
 
@@ -109,7 +109,7 @@ def model_example(
 
 Let's break it down:
 
-- `@router.command(...)` - this tells the SDK that this is a command that can be called.
+- `@router.command(...)` - this tells the Platform that this is a command that can be called.
 - `model="Example"` - this is the name of the data model that will be used to validate the data.
 - `cc: CommandContext` - this is a parameter that is passed to the command. It contains a set of user and system settings that maybe useful during the execution of the command - eg. api keys.
 - `provider_choices: ProviderChoices` - all the providers that implement the `Example` `Fetcher`.
@@ -122,7 +122,7 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 In the above section, we've seen how to get started with a template.
 
-In this section, we'll be adding a new data point to the SDK. We will add a new provider with an existing [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) model.
+In this section, we'll be adding a new data point to the Platform. We will add a new provider with an existing [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) model.
 
 ### Identify which type of data you want to add
 
@@ -135,7 +135,7 @@ Each router is categorized into different extensions (stocks, forex, crypto, etc
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across several providers.
 
-Each data model should inherit from a [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) that is already defined in the SDK. This will unlock a set of perks that are only available to standardized data, namely:
+Each data model should inherit from a [standard data](openbb_platform\platform\provider\openbb_provider\standard_models) that is already defined in the Platform. This will unlock a set of perks that are only available to standardized data, namely:
 
 - Can query and output data in a standardized way.
 - Can expect extensions that follow standardization to work out-of-the-box.
@@ -153,7 +153,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 
 - We standardize fields that are shared between two or more providers. If there is a third provider that doesn't share the same fields, we will declare it as an `Optional` field.
 - When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them. (e.g. `o` -> `open`)
-- The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the SDK.
+- The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the Platform.
 
 ### Standard QueryParams Example
 
@@ -172,7 +172,7 @@ class StockEODQueryParams(QueryParams, BaseSymbol):
 The `QueryParams` is an abstract class that just tells us that we are dealing with query parameters. The `BaseSymbol` is a helper class that contains the `symbol` field and an
 upper case validator.
 
-The SDK dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
+The Platform dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
 
 ### Standard Data Example
 
@@ -296,9 +296,9 @@ class <ProviderName>StockEODFetcher(
 
 > Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**.
 
-### Make the new provider visible to the SDK
+### Make the new provider visible to the Platform
 
-In order to make the new provider visible to the SDK, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
+In order to make the new provider visible to the Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
 
 ```python
 
@@ -376,7 +376,7 @@ Then execute the command `poetry install` in the root of your extension to insta
 
 > In theory the same principles apply to any other extension.
 
-#### Add a visualization to an existing SDK command
+#### Add a visualization to an existing Platform command
 
 One should first ensure that the already implemented endpoint is available in the [charting router](openbb_platform/extensions/charting/openbb_charting/charting_router.py).
 
@@ -406,7 +406,7 @@ Refer to the charting extension [documentation](openbb_platform/extensions/chart
 
 #### Using the `to_chart` OBBject method
 
-The `OBBject` is the custom OpenBB object that is returned by the SDK commands.
+The `OBBject` is the custom OpenBB object that is returned by the Platform commands.
 It implements a set of `to_<something>` functions that enable the user to easily transform the data into a different format.
 
 The `to_chart` function should be taken as an advanced feature, as it requires the user to have a good understanding of the charting extension and the `OpenBBFigure` class.
@@ -420,7 +420,7 @@ Refer to the [`to_chart` implementation](openbb_platform/extensions/charting/ope
 
 ## Environment and dependencies
 
-In order to contribute to the SDK you need to setup your environment in order to ensure a smooth development experience.
+In order to contribute to the Platform you need to setup your environment in order to ensure a smooth development experience.
 
 <details>
 <summary>Need help setting up Miniconda or Git?</summary>
@@ -441,8 +441,8 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
     > Supported python versions: python = ">=3.8,<3.12"
 
     ```bash
-    conda create -n "obb-sdk" python=3.9.13
-    conda activate obb-sdk
+    conda create -n "obb-dev" python=3.9.13
+    conda activate obb-dev
     ```
 
 3. Manage your environment with [Poetry](https://python-poetry.org/):
@@ -465,7 +465,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
     poetry install
     ```
 
-> When installing the dependencies using poetry we ensure that dependencies are being installed in editable mode, which is the most straightforward way to develop on top of the SDK.
+> When installing the dependencies using poetry we ensure that dependencies are being installed in editable mode, which is the most straightforward way to develop on top of the Platform.
 
 <details>
 <summary>Install all dependencies in editable mode at once</summary>
