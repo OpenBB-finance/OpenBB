@@ -29,7 +29,7 @@ class BlackrockEtfSearchData(EtfSearchData):
     asset_class: Optional[str] = Field(
         description="The asset class of the ETF.",
         alias="aladdin_asset_class",
-        defalt=None,
+        default=None,
     )
     sub_asset_class: Optional[str] = Field(
         description="The sub-asset class of the ETF.",
