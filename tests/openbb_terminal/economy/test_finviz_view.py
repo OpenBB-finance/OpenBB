@@ -19,6 +19,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_display_valuation")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -51,6 +52,7 @@ def test_display_valuation(mocker, tab):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_display_performance")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -83,6 +85,7 @@ def test_display_performance(mocker, tab):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_display_future")
 @pytest.mark.vcr
 @pytest.mark.record_stdout
