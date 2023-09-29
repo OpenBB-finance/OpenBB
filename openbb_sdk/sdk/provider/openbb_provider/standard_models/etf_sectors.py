@@ -26,23 +26,35 @@ class EtfSectorsData(Data):
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
     energy: Optional[float] = Field(description="Energy Sector Weight", default=None)
-    materials: Optional[float] = Field(description="Materials Sector Weight.", default=None)
-    industrials: Optional[float] = Field(description="Industrials Sector Weight.", default=None)
+    materials: Optional[float] = Field(
+        description="Materials Sector Weight.", default=None
+    )
+    industrials: Optional[float] = Field(
+        description="Industrials Sector Weight.", default=None
+    )
     consumer_cyclical: Optional[float] = Field(
         description="Consumer Cyclical Sector Weight.", default=None
     )
     consumer_defensive: Optional[float] = Field(
-        description="Consumer Defensive Sector Weight.",default=None
+        description="Consumer Defensive Sector Weight.", default=None
     )
     financial_services: Optional[float] = Field(
         description="Financial Services Sector Weight.", default=None
     )
-    technology: Optional[float] = Field(description="Technology Sector Weight.", default=None)
-    health_care: Optional[float] = Field(description="Health Care Sector Weight.", default=None)
+    technology: Optional[float] = Field(
+        description="Technology Sector Weight.", default=None
+    )
+    health_care: Optional[float] = Field(
+        description="Health Care Sector Weight.", default=None
+    )
     communication_services: Optional[float] = Field(
         description="Communication Services Sector Weight.",
         alias="Communication Services",
-        default=None
+        default=None,
     )
-    utilities: Optional[float] = Field(description="Utilities Sector Weight.", default=None)
-    real_estate: Optional[float] = Field(description="Real Estate Sector Weight.", default=None)
+    utilities: Optional[float] = Field(
+        description="Utilities Sector Weight.", default=None
+    )
+    real_estate: Optional[float] = Field(
+        description="Real Estate Sector Weight.", default=None
+    )
