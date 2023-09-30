@@ -44,6 +44,8 @@ def corr(data: List[Data]) -> OBBject[List[Data]]:
         Correlation matrix.
     """
     df = basemodel_to_df(data)
+    # remove non float columns from the dataframe to perform the correlation
+    df = df.select_dtypes(include=["float64"])
     corr = df.corr()
     ret = []
     for k, v in corr.items():
