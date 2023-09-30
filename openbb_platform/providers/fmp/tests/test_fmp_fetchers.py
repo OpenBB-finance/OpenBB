@@ -8,6 +8,7 @@ from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
+from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
@@ -35,7 +36,6 @@ from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetc
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
-from openbb_fmp.models.sec_filings import FMPSECFilingsFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
@@ -347,10 +347,10 @@ def test_fmp_key_metrics_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmpsec_filings_fetcher(credentials=test_credentials):
+def test_fmp_company_filings_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPSECFilingsFetcher()
+    fetcher = FMPCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
