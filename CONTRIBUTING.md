@@ -511,7 +511,7 @@ In order to add a command to the SDK, follow these steps:
 
 ### Add SDK endpoint (V4)
 
-Refer to the documentation [here](openbb_sdk\CONTRIBUTING.md).
+Refer to the documentation [here](openbb_platform\CONTRIBUTING.md).
 
 ### Add Unit Tests
 

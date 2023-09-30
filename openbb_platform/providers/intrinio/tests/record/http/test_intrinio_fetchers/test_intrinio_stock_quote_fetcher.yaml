@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/prices/realtime?api_key=MOCK_API_KEY&source=iex
+  response:
+    body:
+      string: !!binary |
+        H4sIAP0rE2UAA2ySzU7rMBCFX8XyOkSO25AmO7pBSCwQAl1+LopMPE2HunaInUIv4t3vWG1FG7E9
+        5zsznhl/8TV4r1rwvHrma9WvINQN2AB9wgz6gLatN2AHSJhXBnzdOKsxoLM+Ycpq9j64AEcqUz0w
+        Z82WqY1Co14NsA8MS+aGnmkwaguaeezYAkCn/CXhRvlQdz02wKuskGkm91rANUlcCjk5E+WZPL/L
+        ykoUlZRpMZs88T3m8V9MCpHwV9QnlXbKDsgjoPxq3CpKO2ISCdeB/UHydJonvDHOwzi3xHZ5As7o
+        Pe7jGBOUhc9mqWwL9caZIc5Tnk+zWZkcln2Q7WBMwodOqwC6dva3wSdFKvNZHNzTNmMXjvAZ93B8
+        qUOt8b2I/jsIkRWMMcqMD3eInXwC8nVsc0UB9LUmr3PO8GqhjAfqAc3QY9jy6oujJpCEWrVvfftG
+        iYDNCnpSLy5urvnRLk6M6v4PeQtskYT5/FIIMS8f8wdJauPWnfNIDx35D7ePU/79/R8AAP//AwA8
+        qxWPwAIAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:07:41 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
