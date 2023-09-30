@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/insider-trading?apikey=MOCK_API_KEY&page=0&symbol=AAPL&transactionType=P-Purchase
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+3ZT1PbOBQA8Hs/hSbnWtGTrH++pSHbzUyADKH00OnBmxjwlNhZ25TNdPrdKzk4
+        BOymJbs2JGsGDlGeZUnvN8+S+fQGoW/mD6FOupz/Fd90PNTp9cajzttV62V4E0ZXR34W2G8oAe4Q
+        6VCFQHkMPCKKwCzxo9SfZmEclaLdIigJFnGSmQ774RcbQQgBwjVlvKKb8+Ui72bsjG+T6bWfBkVQ
+        GkxvkzALg/T0LgpmJogJV9x/OY3nCz9aPtyBMDMQzUpjOPHnef8fe+9PBmdo8mHSO1kPw9z79NL2
+        ntiQWZgE0yxOiq/96d+3YWoHeZochekiTkP7IV+89crFybyYglse+fn9RPPhUzPK+4hFEk7tNUAp
+        1o+vWhYj7sfzeRyhSRZPvxQ9mzTlE77OskXqdbt3d3fYXIev4q/dnlm+8GuQdoPZlZ90Z37md1eL
+        0rXro7SmLgNukqEI2WhybP7yRieMZsE/+Dqbd8ztvr89EDZ2znvMZmP4D2xcDLR1U7Ob/WZTqYax
+        w1FDHQCHklwN93hVup9Gg96mhhLJtFvRzXPUuIbermyG7w2as9N3g7NztE56027UUzdccEwUbabe
+        AFApCDW5YCA532hyTApXjYcqx13X9L2UI0oVhwsXU/H4qtbNf+2Gqf1241a4YZhwyls5Ncs5wIpD
+        MTSzx2nEDVgJzLjRHlEel9vd5NG0fjdUyJ23xq/BDbASHCY5ZnS9dauDzsPirKwoMDtkMGcVRRjf
+        aLJJXDUeKB9g+85Hlvm42FW8zr1O83zMMRuIQwUiwgPqueusVPIhwjGlj6ptfEDZn3/Jh+rdD+b9
+        3vH43WA0Qh+Ho9Gwd4wuXsgQKz+7JGDeeP0hkgimXLUJyOR91dgwIHNbU3/Wb39aQNsAbUyiAKQ4
+        1nW+TX71gEwF0mbz1QL6LUAVFYhiqQ4LUE6CSHvwMoB+8Wr5PpqXkre5A3KpK6ocPgcQABewq6BJ
+        /8/j4dE5GpwN+2jwUnpISY/QWMjG9QjCQT7eANk05o2tnleqh1XqkXUe3Fs9B6MHqvU0fvhq9eyj
+        nuonl2yfXK2e3fRIgkmd/6p4MT1gZutR8Nj294Y22vzKUuI29DBOOdEV3TxHD5XFMj/bzh/+LLi5
+        Qb0ou46j5U/sxJeXJqOJhyZBFMYJujCf0DgJ0nAWRFldokCXypEBRV8CFNESSqBsY/OglANby1EL
+        6uegikmtPQkM8Pia/52ntkDt7Ek/9cQ1Vq/a05vPPwC7Xhcf8ywAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 26 Sep 2023 19:07:05 GMT
+      ETag:
+      - W/"2cf3-POGuhFFFDsLUP2Mt0xcWd1R6lJk"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
