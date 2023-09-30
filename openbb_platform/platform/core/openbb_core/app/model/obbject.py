@@ -1,14 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import (
-    Any,
-    Dict,
-    Generic,
-    List,
-    Literal,
-    Optional,
-    TypeVar,
-)
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from numpy import ndarray
@@ -147,7 +139,11 @@ class OBBject(Tagged, Generic[T]):
                 sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
-                df = pd.DataFrame(res)
+                try:
+                    df = pd.DataFrame(res)
+                except ValueError:
+                    if isinstance(res, dict):
+                        df = pd.DataFrame([res])
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")
