@@ -127,10 +127,15 @@ class ChartingService(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-
-        for entry_point in entry_points(group=plugin):
-            if entry_point.name == extension_name:
-                return import_module(entry_point.module)
+        entry_points_ = entry_points(group=plugin)
+        entry_point = next(
+            (ep for ep in entry_points_ if ep.name == extension_name), None
+        )
+        if entry_point is None:
+            raise ChartingServiceError(
+                f"Extension '{extension_name}' is not installed."
+            )
+        return import_module(entry_point.module)
 
     @staticmethod
     def _handle_backend(charting_extension: str, charting_settings: ChartingSettings):
@@ -184,6 +189,7 @@ class ChartingService(metaclass=SingletonMeta):
         """
 
         module = cls._get_extension_router(extension_name)
+
         if not module:
             return []
 
@@ -251,7 +257,7 @@ class ChartingService(metaclass=SingletonMeta):
         route: str,
         obbject_item: T,
         **kwargs,
-    ):
+    ) -> Chart:
         """
         If the charting extension is not installed, an error is raised.
         Otherwise, a charting function will be retrieved and executed from the user's preferred charting extension.
