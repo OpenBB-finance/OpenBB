@@ -19,6 +19,7 @@
       - [Release](#release)
       - [Publish](#publish)
 - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
+  - [Manage environment and dependencies](#manage-environment-and-dependencies)
   - [Add a new data point](#add-a-new-data-point)
     - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
       - [Check if the standard model exists](#check-if-the-standard-model-exists)
@@ -28,7 +29,6 @@
     - [Make the provider visible](#make-the-provider-visible)
   - [Manage extensions](#manage-extensions)
     - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
-  - [Manage environment and dependencies](#manage-environment-and-dependencies)
   - [How to create a PR?](#how-to-create-a-pr)
     - [Install pre-commit hooks](#install-pre-commit-hooks)
     - [Branch Naming Conventions](#branch-naming-conventions)
@@ -40,7 +40,7 @@ The OpenBB Platform is built by the Open-Source community and is characterized b
 The REST API is built on top of FastAPI and can be started by running the following command from the root:
 
 ```bash
-uvicorn openbb_platform.platform.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 The Python interfaces we provide to users is the `openbb` python package.
@@ -97,9 +97,9 @@ The standardization framework is a very powerful tool, but it has some caveats t
 ### Standard QueryParams Example
 
 ```python
-class StockHistoricalQueryParams(QueryParams, BaseSymbol):
+class StockHistoricalQueryParams(QueryParams):
     """Stock end of day Query."""
-
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[date] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
@@ -108,7 +108,7 @@ class StockHistoricalQueryParams(QueryParams, BaseSymbol):
     )
 ```
 
-The `QueryParams` is an abstract class that just tells us that we are dealing with query parameters. The `BaseSymbol` is a helper class that contains the `symbol` field and an upper case validator.
+The `QueryParams` is an abstract class that just tells us that we are dealing with query parameters
 
 The OpenBB Platform dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
 
@@ -166,9 +166,9 @@ The high level steps are:
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
-If you don't want to partake in the data standardization framework, you can simply write all the logic straight inside the router file. This is usually the case when you are adding alternative data that isn't easily standardizable.
+If you don't want or don't need to partake in the data standardization framework, you have the option to add all the logic straight inside the router file. This is usually the case when you are returning custom data from your local CSV file, or similar. Keep in mind that we also serve the REST API and that you shouldn't send non-serializable objects as a response (e.g. a pandas dataframe).
 
-Saying that, we recommend following the standardization framework, as it will make your life easier in the long run and unlock a set of features that are only available to standardized data.
+Saying that, we highly recommend following the standardization framework, as it will make your life easier in the long run and unlock a set of features that are only available to standardized data.
 
 When standardizing, all data is defined using two different pydantic models:
 
@@ -190,7 +190,7 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 
 After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_provider/abstract/provider.py).
 
-Any command, using the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
+Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
 If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
 
@@ -348,6 +348,47 @@ There are many ways to contribute to the OpenBB Platform. You can add a new data
 
 In this document, we'll be focusing on adding a new data point to the OpenBB Platform.
 
+## Manage environment and dependencies
+
+In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
+
+<details>
+<summary>Need help setting up Miniconda or Git?</summary>
+
+Sometimes, installing Miniconda or Git can be a bit tricky, so we've prepared a set of instructions to help you get started.
+
+Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installation/source) for more information.
+</details>
+
+1. Clone the repository:
+
+    ```bash
+    git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
+    ```
+
+2. Create and activate a virtual environment:
+
+    > Supported python versions: python = ">=3.8,<3.12"
+
+    ```bash
+    conda create -n "obb-dev" python=3.9.13
+    conda activate obb-dev
+    ```
+
+3. Manage your environment with [Poetry](https://python-poetry.org/):
+
+    ```bash
+    pip install poetry
+    ```
+
+4. Install the packages using the `dev_install.py` script located in the `openbb_platform` folder:
+
+    ```bash
+    python dev_install.py
+    ```
+
+   > To install all the packages, including extras, use the `-e` argument with the above script.
+
 ## Add a new data point
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_provider/standard_models) model.
@@ -406,7 +447,7 @@ class <ProviderName>StockHistoricalData(StockHistoricalData):
 
 ```
 
-> Note that, since `StockHistoricalData` inherits from pydantic's `BaseModel`, so we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
+> Note that, since `StockHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
 
 #### Build the Fetcher
 
@@ -483,13 +524,19 @@ After running `pip install .` on `openbb_platform/providers/<provider_name>` you
 
 To install an extension hosted on PyPI, use the `pip install <extension>` command.
 
-> To install this in editable mode, add the `-e` argument.
+To install an extension that is developed locally, ensure that it contains a `pyproject.toml` file and then use the `pip install <extension>` command.
 
-To install an extension that is developed locally, ensure that it contains a `pyproject.toml` file. Then use the command `poetry lock` to create a `.lock` file.
+> To install the extension in editable mode using pip, add the `-e` argument.
 
-Now, you can use the command `poetry install <extension>` to install the extension.
+Alternatively, for local extensions, you can add this line in the `LOCAL_DEPS` variable in `dev_install.py` file:
 
-> To install it in editable mode use the `-C` argument.
+```toml
+# If this is a community dependency, add this under "Community dependencies",
+# with additional argument optional = true
+openbb-extension = { path = "<relative-path-to-the-extension>", develop = true }
+```
+
+Now you can use the `python dev_install.py [-e]` command to install the local extension.
 
 ### Add an extension as a dependency
 
@@ -500,46 +547,7 @@ To add the `openbb-qa` extension as a dependency, you'll need to add it to the `
 openbb-qa = "^0.0.0a2"
 ```
 
-## Manage environment and dependencies
-
-In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
-
-<details>
-<summary>Need help setting up Miniconda or Git?</summary>
-
-Sometimes, installing Miniconda or Git can be a bit tricky, so we've prepared a set of instructions to help you get started.
-
-Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installation/pypi) for more information.
-</details>
-
-1. Clone the repository:
-
-    ```bash
-    git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
-    ```
-
-2. Create and activate a virtual environment:
-
-    > Supported python versions: python = ">=3.8,<3.12"
-
-    ```bash
-    conda create -n "obb-dev" python=3.9.13
-    conda activate obb-dev
-    ```
-
-3. Manage your environment with [Poetry](https://python-poetry.org/):
-
-    ```bash
-    pip install poetry
-    ```
-
-4. Install the packages using the `dev_install.py` script located in the `openbb_platform` folder:
-
-    ```bash
-    python dev_install.py
-    ```
-
-   > To install all the packages, including extras, use the `-e` argument with the above script.
+Then you can follow the same process as above to install the extension.
 
 ## How to create a PR?
 
@@ -567,4 +575,4 @@ The accepted branch naming conventions are:
 - `hotfix/hotfix-name`
 - `release/2.1.0` or `release/2.1.0rc0`.
 
-All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
+All `feature/feature-name` and `hotfix/hotfix-name` related branches can only have PRs pointing to `develop` branch.
