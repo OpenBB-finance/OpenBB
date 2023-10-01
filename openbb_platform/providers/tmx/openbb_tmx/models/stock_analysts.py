@@ -1,22 +1,14 @@
 """TMX Stock Analysts Model"""
 
 import json
-from datetime import date as dateType
-from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
 import requests
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
-from pydantic import Field, NonNegativeInt, validator
 
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
 
 
 def get_company_analysts(symbol: str):
-
     payload = GQL.get_company_analysts_payload.copy()
     payload["variables"]["symbol"] = symbol.upper()
     payload["variables"]["datatype"] = "equity"
@@ -41,19 +33,20 @@ def get_company_analysts(symbol: str):
             raise RuntimeError(f"HTTP error - > {r.text}")
         else:
             r_data = r.json()["data"]["analysts"]
-            data.update({
-                "symbol": symbol.upper(),
-                "total_analysts": r_data["totalAnalysts"],
-                "consensus": r_data["consensusAnalysts"]["consensus"],
-                "buy_ratings": r_data["consensusAnalysts"]["buy"],
-                "sell_ratings": r_data["consensusAnalysts"]["sell"],
-                "hold_ratings": r_data["consensusAnalysts"]["hold"],
-                "price_target": r_data["priceTarget"]["priceTarget"],
-                "price_target_high": r_data["priceTarget"]["highPriceTarget"],
-                "price_target_low": r_data["priceTarget"]["lowPriceTarget"],
-                "price_target_upside": r_data["priceTarget"]["priceTargetUpside"],
-            })
+            data.update(
+                {
+                    "symbol": symbol.upper(),
+                    "total_analysts": r_data["totalAnalysts"],
+                    "consensus": r_data["consensusAnalysts"]["consensus"],
+                    "buy_ratings": r_data["consensusAnalysts"]["buy"],
+                    "sell_ratings": r_data["consensusAnalysts"]["sell"],
+                    "hold_ratings": r_data["consensusAnalysts"]["hold"],
+                    "price_target": r_data["priceTarget"]["priceTarget"],
+                    "price_target_high": r_data["priceTarget"]["highPriceTarget"],
+                    "price_target_low": r_data["priceTarget"]["lowPriceTarget"],
+                    "price_target_upside": r_data["priceTarget"]["priceTargetUpside"],
+                }
+            )
             return data
     except Exception as e:
         raise (e)
-

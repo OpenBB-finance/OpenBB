@@ -14,9 +14,9 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
 from pydantic import Field, NonNegativeInt, validator
-from random_user_agent.user_agent import UserAgent
 
 from openbb_tmx.utils.gql import GQL
+from openbb_tmx.utils.helpers import get_random_agent
 
 
 class TmxCompanyFilingsQueryParams(QueryParams):
@@ -72,11 +72,6 @@ class TmxCompanyFilingsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
 
-        def _get_random_agent() -> str:
-            user_agent_rotator = UserAgent(limit=100)
-            user_agent = user_agent_rotator.get_random_user_agent()
-            return user_agent
-
         results = []
 
         payload = GQL.get_company_filings_payload
@@ -93,7 +88,7 @@ class TmxCompanyFilingsFetcher(
                 "referer": f"https://money.tmx.com/en/quote/{query.symbol.upper()}",
                 "locale": "en",
                 "Content-Type": "application/json",
-                "User-Agent": _get_random_agent(),
+                "User-Agent": get_random_agent(),
                 "Accept": "*/*",
             },
             timeout=10,

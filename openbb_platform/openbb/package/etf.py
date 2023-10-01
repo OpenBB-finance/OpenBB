@@ -130,7 +130,7 @@ class ROUTER_etf(Container):
         symbol : Optional[str]
             The asset's ticker symbol. (provider: blackrock); The ticker symbol of the holding. (provider: fmp); The ticker symbol of the asset. (provider: tmx)
         name : Optional[str]
-            The name of the asset. (provider: blackrock, fmp, tmx)
+            The name of the holding. (provider: blackrock, fmp); The name of the asset. (provider: tmx)
         weight : Optional[Union[float, str]]
             The weight of the holding. (provider: blackrock, fmp); The weight of the asset in the portfolio. (provider: tmx)
         price : Optional[Union[float, str]]
@@ -142,7 +142,7 @@ class ROUTER_etf(Container):
         notional_value : Optional[Union[float, str]]
             The notional value of the holding. (provider: blackrock)
         asset_class : Optional[str]
-            The asset class of the asset. (provider: blackrock)
+            The asset class of the holding. (provider: blackrock)
         sector : Optional[str]
             The sector the asset belongs to. (provider: blackrock)
         isin : Optional[str]
@@ -318,7 +318,7 @@ class ROUTER_etf(Container):
             The website of the ETF. (provider: fmp, tmx)
         description : Optional[str]
             The description of the ETF. (provider: fmp, tmx)
-        esg : Optional[str]
+        esg : Optional[bool]
             Whether the ETF qualifies as an ESG fund. (provider: tmx)
         unit_price : Optional[float]
             The unit price of the ETF. (provider: tmx)

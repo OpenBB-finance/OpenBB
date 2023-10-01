@@ -1,27 +1,19 @@
 """TMX Stock Dividends Model"""
 
 import json
-from datetime import date as dateType
-from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 import requests
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
-from pydantic import Field, NonNegativeInt, validator
 
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
 
 
 def get_dividends(symbol: str, batch: int = 200, page: int = 1):
-
     payload = GQL.get_dividend_history_payload.copy()
     payload["variables"]["symbol"] = symbol.upper()
     payload["variables"]["batch"] = batch
     payload["variables"]["page"] = page
-
 
     url = "https://app-money.tmx.com/graphql"
     r = requests.post(
@@ -47,4 +39,3 @@ def get_dividends(symbol: str, batch: int = 200, page: int = 1):
             return r_data
     except Exception as e:
         raise (e)
-
