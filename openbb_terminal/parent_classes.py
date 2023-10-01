@@ -249,13 +249,6 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
-        # An exception is made for forecasting because it is built to handle multiple loaded
-        # tickers.
-        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
-            old_class = controllers[class_ins.PATH]
-            old_class.queue = self.queue
-            old_class.load(*args[:-1], **kwargs)
-            return old_class.menu()
         if (
             class_ins.PATH in controllers
             and arguments == 1

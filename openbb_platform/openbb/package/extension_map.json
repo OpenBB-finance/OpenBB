@@ -1,0 +1,17 @@
+{
+    "openbb_core_extension": [
+        "crypto@0.1.0a2",
+        "economy@0.1.0a2",
+        "fixedincome@0.1.0a2",
+        "forex@0.1.0a2",
+        "news@0.1.0a2",
+        "stocks@0.1.0a2"
+    ],
+    "openbb_provider_extension": [
+        "benzinga@0.1.0a2",
+        "fmp@0.1.0a2",
+        "fred@0.1.0a2",
+        "intrinio@0.1.0a2",
+        "polygon@0.1.0a2"
+    ]
+}

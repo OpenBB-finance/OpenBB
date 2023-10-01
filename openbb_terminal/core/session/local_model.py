@@ -128,6 +128,7 @@ def set_credentials_from_hub(configs: dict):
     """
     if configs:
         credentials = configs.get("features_keys", {}) or {}
+        credentials = {k: v for k, v in credentials.items() if v}
         for k, v in credentials.items():
             set_credential(k, v)
 
