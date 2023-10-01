@@ -8,6 +8,7 @@ from openbb_provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
+from pydantic import Field
 
 
 class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
@@ -19,6 +20,17 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends data."""
+
+    __alias_dict__ = {
+        "ex_date": "date",
+    }
+
+    label: Optional[str] = Field(
+        description="Label of the historical dividends.", default=None
+    )
+    adj_dividend: Optional[float] = Field(
+        description="Adjusted dividend of the historical dividends.", default=None
+    )
 
 
 class FMPHistoricalDividendsFetcher(
@@ -46,7 +58,9 @@ class FMPHistoricalDividendsFetcher(
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )
-        return get_data_many(url, "historical", **kwargs)
+        data = get_data_many(url, "historical", **kwargs)
+
+        return sorted(data, key=lambda x: x["date"])
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPHistoricalDividendsData]:

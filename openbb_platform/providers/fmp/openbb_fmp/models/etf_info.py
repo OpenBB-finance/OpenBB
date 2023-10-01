@@ -24,33 +24,43 @@ class FMPEtfInfoData(EtfInfoData):
     }
 
     issuer: Optional[str] = Field(
-        description="The issuer of the ETF.", alias="etfCompany"
+        description="The issuer of the ETF.", alias="etfCompany", default=None
     )
     asset_class: Optional[str] = Field(
-        description="The asset class of the ETF.", alias="assetClass"
+        description="The asset class of the ETF.", alias="assetClass", default=None
     )
     currency: Optional[str] = Field(
-        description="The currency of the ETF.", alias="navCurrency"
+        description="The currency of the ETF.", alias="navCurrency", default=None
     )
     country: Optional[str] = Field(
-        description="The country where the ETF is domiciled.", alias="domicile"
+        description="The country where the ETF is domiciled.",
+        alias="domicile",
+        default=None,
     )
-    cusip: Optional[str] = Field(description="The CUSIP number of the ETF.")
-    isin: Optional[str] = Field(description="The ISIN number of the ETF.")
+    cusip: Optional[str] = Field(
+        description="The CUSIP number of the ETF.", default=None
+    )
+    isin: Optional[str] = Field(description="The ISIN number of the ETF.", default=None)
     holdings_count: Optional[int] = Field(
-        description="The number of holdings of the ETF."
+        description="The number of holdings of the ETF.", default=None
     )
-    nav: Optional[float] = Field(description="The NAV of the ETF.")
-    aum: Optional[int] = Field(description="The AUM of the ETF.")
-    expense_ratio: Optional[float] = Field(description="The expense ratio of the ETF.")
+    nav: Optional[float] = Field(description="The NAV of the ETF.", default=None)
+    aum: Optional[int] = Field(description="The AUM of the ETF.", default=None)
+    expense_ratio: Optional[float] = Field(
+        description="The expense ratio of the ETF.", default=None
+    )
     avg_volume: Optional[float] = Field(
-        description="The average daily volume of the ETF."
+        description="The average daily volume of the ETF.", defaul=None
     )
     sectors: Optional[List[Dict]] = Field(
-        description="The sector weightings of the ETF holdings.", alias="sectorsList"
+        description="The sector weightings of the ETF holdings.",
+        alias="sectorsList",
+        default=None,
     )
-    website: Optional[str] = Field(description="The website of the ETF.")
-    description: Optional[str] = Field(description="The description of the ETF.")
+    website: Optional[str] = Field(description="The website of the ETF.", default=None)
+    description: Optional[str] = Field(
+        description="The description of the ETF.", default=None
+    )
 
 
 class FMPEtfInfoFetcher(

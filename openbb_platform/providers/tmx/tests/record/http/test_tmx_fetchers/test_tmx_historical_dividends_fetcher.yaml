@@ -1,0 +1,111 @@
+interactions:
+- request:
+    body: '{"operationName": "getDividendsForSymbol", "variables": {"batch": 300,
+      "page": 1, "symbol": "RY"}, "query": "query getDividendsForSymbol(\n      $symbol:
+      String!\n      $page: Int,\n      $batch: Int\n    ) {\n      dividends: getDividendsForSymbol(\n        symbol:
+      $symbol\n        page: $page\n        batch: $batch\n      ) {\n        pageNumber\n        hasNextPage\n        dividends\n          {\n           exDate\n           amount\n           currency\n           payableDate\n           declarationDate\n           recordDate\n        }\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '565'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/RY
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        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
+        bY+fi4bDerJt/3x6evrlP89DtXJ5TwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 01 Oct 2023 21:10:36 GMT
+      ETag:
+      - W/"4f79-zIutXxPJnuh9C1yW8TZ/W42/HBs"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-WebKit-CSP:
+      - frame-ancestors 'none'; default-src 'self'
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

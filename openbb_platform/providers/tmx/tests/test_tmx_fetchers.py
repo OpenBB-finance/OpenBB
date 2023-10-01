@@ -5,6 +5,7 @@ from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
 from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
 from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
+from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -60,5 +61,14 @@ def test_tmx_etf_sectors_fetcher(credentials=test_credentials):
     params = {"symbol": "XIU,XIC,VCN,VCNS"}
 
     fetcher = TmxEtfSectorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_historical_dividends_fetcher(credentials=test_credentials):
+    params = {"symbol": "RY"}
+
+    fetcher = TmxHistoricalDividendsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

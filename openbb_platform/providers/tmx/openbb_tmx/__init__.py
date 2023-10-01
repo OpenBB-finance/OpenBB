@@ -8,6 +8,7 @@ from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
 from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
 from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
+from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 
 tmx_provider = Provider(
     name="tmx",
@@ -32,5 +33,6 @@ tmx_provider = Provider(
         "EtfSectors": TmxEtfSectorsFetcher,
         "EtfCountries": TmxEtfCountriesFetcher,
         "EtfInfo": TmxEtfInfoFetcher,
+        "HistoricalDividends": TmxHistoricalDividendsFetcher,
     },
 )
