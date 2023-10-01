@@ -3,7 +3,6 @@
 import json
 
 import requests
-
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
 

@@ -8,9 +8,8 @@ from openbb_provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
-from pydantic import Field
-
 from openbb_tmx.utils.helpers import get_all_etfs
+from pydantic import Field
 
 
 class TmxEtfInfoQueryParams(EtfInfoQueryParams):

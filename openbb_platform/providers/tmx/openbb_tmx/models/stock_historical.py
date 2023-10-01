@@ -9,7 +9,6 @@ from datetime import (
 from typing import Any, Dict, Literal, Optional, Union
 
 import requests
-
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
 

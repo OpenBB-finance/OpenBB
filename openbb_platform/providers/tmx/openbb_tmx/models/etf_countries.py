@@ -8,7 +8,6 @@ from openbb_provider.standard_models.etf_countries import (
     EtfCountriesData,
     EtfCountriesQueryParams,
 )
-
 from openbb_tmx.utils.helpers import get_all_etfs
 
 

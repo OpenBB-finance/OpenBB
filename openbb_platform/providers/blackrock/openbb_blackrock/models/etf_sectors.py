@@ -4,14 +4,13 @@ import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_blackrock.utils.helpers import COUNTRIES, extract_from_holdings
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_sectors import (
     EtfSectorsData,
     EtfSectorsQueryParams,
 )
 from pydantic import Field
-
-from openbb_blackrock.utils.helpers import COUNTRIES, extract_from_holdings
 
 
 class BlackrockEtfSectorsQueryParams(EtfSectorsQueryParams):

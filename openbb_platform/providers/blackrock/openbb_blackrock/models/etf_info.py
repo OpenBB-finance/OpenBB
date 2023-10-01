@@ -3,14 +3,13 @@
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
+from openbb_blackrock.utils.helpers import COUNTRIES, America, Canada
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
 from pydantic import Field
-
-from openbb_blackrock.utils.helpers import COUNTRIES, America, Canada
 
 
 class BlackrockEtfInfoQueryParams(EtfInfoQueryParams):

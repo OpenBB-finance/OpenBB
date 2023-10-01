@@ -5,13 +5,6 @@ from io import StringIO
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.etf_holdings import (
-    EtfHoldingsData,
-    EtfHoldingsQueryParams,
-)
-from pydantic import Field
-
 from openbb_blackrock.utils.helpers import (
     COUNTRIES,
     America,
@@ -21,6 +14,12 @@ from openbb_blackrock.utils.helpers import (
     blackrock_canada_historical_holdings,
     blackrock_canada_holdings,
 )
+from openbb_provider.abstract.fetcher import Fetcher
+from openbb_provider.standard_models.etf_holdings import (
+    EtfHoldingsData,
+    EtfHoldingsQueryParams,
+)
+from pydantic import Field
 
 
 class BlackrockEtfHoldingsQueryParams(EtfHoldingsQueryParams):

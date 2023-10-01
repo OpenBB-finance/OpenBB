@@ -13,10 +13,9 @@ import requests
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
-from pydantic import Field, NonNegativeInt, validator
-
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
+from pydantic import Field, NonNegativeInt, validator
 
 
 class TmxCompanyFilingsQueryParams(QueryParams):

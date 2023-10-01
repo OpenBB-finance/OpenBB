@@ -9,10 +9,9 @@ from openbb_provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
-from pydantic import Field
-
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
+from pydantic import Field
 
 
 class TmxHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):

@@ -8,9 +8,8 @@ from openbb_provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
-from pydantic import Field
-
 from openbb_tmx.utils.helpers import get_all_etfs
+from pydantic import Field
 
 
 def search(query: str = "", **kwargs) -> pd.DataFrame:

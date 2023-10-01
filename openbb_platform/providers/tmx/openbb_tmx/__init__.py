@@ -2,7 +2,6 @@
 
 
 from openbb_provider.abstract.provider import Provider
-
 from openbb_tmx.models.etf_countries import TmxEtfCountriesFetcher
 from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher

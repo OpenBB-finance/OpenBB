@@ -8,9 +8,8 @@ from openbb_provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
-from pydantic import Field
-
 from openbb_tmx.utils.helpers import get_all_etfs
+from pydantic import Field
 
 
 class TmxEtfHoldingsQueryParams(EtfHoldingsQueryParams):
