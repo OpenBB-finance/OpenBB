@@ -487,9 +487,6 @@ def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
     assert result is None
 
 
-
-
-
 @pytest.mark.record_http
 def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "Vanguard"}

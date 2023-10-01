@@ -9,7 +9,7 @@ from pydantic import ConfigDict, Field
 
 
 class EtfBase(OBBject):
-    __pydantic_config__ = ConfigDict(extra="allow", from_attributes=True) # type: ignore
+    __pydantic_config__ = ConfigDict(extra="allow", from_attributes=True)  # type: ignore
 
     model: Optional[str] = Field(description="The OpenBB data model.", default=None)
     provider: Optional[str] = Field(description="The data source.", default=None)

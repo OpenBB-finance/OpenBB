@@ -1,5 +1,6 @@
 """GraphQL query definitions."""
 
+
 class GQL:
     """
     quote_by_symbol_query:
@@ -134,7 +135,6 @@ class GQL:
         "query": quote_by_symbol_query,
     }
 
-
     get_timeseries_query = """query getTimeSeriesData(
       $symbol: String!,
       $freq: String,
@@ -163,8 +163,6 @@ class GQL:
       }
     }"""
 
-
-
     get_timeseries_payload = {
         "operationName": "getTimeSeriesData",
         "variables": {
@@ -178,7 +176,6 @@ class GQL:
         },
         "query": get_timeseries_query,
     }
-
 
     get_company_price_history_query = """query getCompanyPriceHistoryForDownload(
       $symbol: String!,
@@ -224,7 +221,6 @@ class GQL:
         "query": get_company_price_history_query,
     }
 
-
     get_company_most_recent_trades_query = """query getCompanyMostRecentTrades(
       $symbol: String!
       $limit: Int
@@ -254,7 +250,6 @@ class GQL:
         },
         "query": get_company_most_recent_trades_query,
     }
-
 
     get_company_news_events_query = """query getNewsAndEvents(
       $symbol: String!,
@@ -287,15 +282,9 @@ class GQL:
 
     get_company_news_events_payload = {
         "operationName": "getNewsAndEvents",
-        "variables": {
-            "symbol": "ART",
-            "page": 1,
-            "limit": 100,
-            "locale": "en"
-        },
+        "variables": {"symbol": "ART", "page": 1, "limit": 100, "locale": "en"},
         "query": get_company_news_events_query,
     }
-
 
     get_company_filings_query = """query getCompanyFilings(
       $symbol: String!
@@ -328,7 +317,6 @@ class GQL:
         },
         "query": get_company_filings_query,
     }
-
 
     get_dividend_history_query = """query getDividendsForSymbol(
       $symbol: String!
@@ -363,7 +351,6 @@ class GQL:
         },
         "query": get_dividend_history_query,
     }
-
 
     get_company_analysts_query = """query getCompanyAnalysts(
       $symbol: String!
