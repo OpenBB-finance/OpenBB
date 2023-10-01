@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_sdk/poetry.lock') }}
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 

@@ -80,7 +80,7 @@ future==0.18.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.
 gitdb==4.0.10 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 gitpython==3.1.32 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 graphlib-backport==1.0.3 ; python_full_version >= "3.8.1" and python_version < "3.9"
-greenlet==2.0.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (platform_machine == "aarch64" or platform_machine == "ppc64le" or platform_machine == "x86_64" or platform_machine == "amd64" or platform_machine == "AMD64" or platform_machine == "win32" or platform_machine == "WIN32")
+greenlet==2.0.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11" and (platform_machine == "win32" or platform_machine == "WIN32" or platform_machine == "AMD64" or platform_machine == "amd64" or platform_machine == "x86_64" or platform_machine == "ppc64le" or platform_machine == "aarch64")
 grpcio==1.56.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 h11==0.14.0 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7"
 hijri-converter==2.3.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
