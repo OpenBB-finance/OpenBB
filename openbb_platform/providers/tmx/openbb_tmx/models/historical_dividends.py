@@ -57,7 +57,7 @@ class TmxHistoricalDividendsFetcher(
             .replace(".TSX", "")
         )
         data = []
-        payload = GQL.get_dividend_history_payload.copy()
+        payload = GQL.historical_dividends_payload.copy()
         payload["variables"]["symbol"] = symbol
         payload["variables"]["batch"] = 300
         payload["variables"]["page"] = 1

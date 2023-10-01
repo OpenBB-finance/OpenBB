@@ -2,72 +2,12 @@
 
 
 class GQL:
-    """
-    quote_by_symbol_query:
+    """Class for generating GraphQL queries."""
 
-    .. _quote_by_symbol_query:
-
-    graphql properties for `getQuoteBySymbol` are
-      * symbol
-      *  name
-      *  price
-      *  priceChange
-      *  percentChange
-      *  exchangeName
-      *  exShortName
-      *  exchangeCode
-      *  marketPlace
-      *  sector
-      *  industry
-      *  volume
-      *  openPrice
-      *  dayHigh
-      *  dayLow
-      *  MarketCap
-      *  MarketCapAllClasses
-      *  peRatio
-      *  prevClose
-      *  dividendFrequency
-      *  dividendYield
-      *  dividendAmount
-      *  dividendCurrency
-      *  beta
-      *  eps
-      *  exDividendDate
-      *  shortDescription
-      *  longDescription
-      *  website
-      *  email
-      *  phoneNumber
-      *  fullAddress
-      *  employees
-      *  shareOutStanding
-      *  totalDebtToEquity
-      *  totalSharesOutStanding
-      *  sharesESCROW
-      *  vwap
-      *  dividendPayDate
-      *  weeks52high
-      *  weeks52low
-      *  alpha
-      *  averageVolume10D
-      *  averageVolume30D
-      *  averageVolume50D
-      *  priceToBook
-      *  priceToCashFlow
-      *  returnOnEquity
-      *  returnOnAssets
-      *  day21MovingAvg
-      *  day50MovingAvg
-      *  day200MovingAvg
-      *  dividend3Years
-      *  dividend5Years
-      *  datatype
-      *  __typename
-    """
-
-    quote_by_symbol_query = """
-    query getQuoteBySymbol($symbol: String, $locale: String) {
+    stock_info_query = """ query getQuoteBySymbol(
+      $symbol: String,
+      $locale: String
+    ) {
       getQuoteBySymbol(symbol: $symbol, locale: $locale) {
         symbol
         name
@@ -124,15 +64,16 @@ class GQL:
         dividend3Years
         dividend5Years
         datatype
-        __typename
+        issueType
+        qmdescription
       }
     }
   """
 
-    quote_by_symbol_payload = {
+    stock_info_payload = {
         "operationName": "getQuoteBySymbol",
         "variables": {"locale": "en"},
-        "query": quote_by_symbol_query,
+        "query": stock_info_query,
     }
 
     get_timeseries_query = """query getTimeSeriesData(
@@ -318,7 +259,7 @@ class GQL:
         "query": get_company_filings_query,
     }
 
-    get_dividend_history_query = """query getDividendsForSymbol(
+    historical_dividends_query = """query getDividendsForSymbol(
       $symbol: String!
       $page: Int,
       $batch: Int
@@ -342,14 +283,14 @@ class GQL:
       }
     }"""
 
-    get_dividend_history_payload = {
+    historical_dividends_payload = {
         "operationName": "getDividendsForSymbol",
         "variables": {
             "batch": 10,
             "page": 1,
             "symbol": "BNS",
         },
-        "query": get_dividend_history_query,
+        "query": historical_dividends_query,
     }
 
     get_company_analysts_query = """query getCompanyAnalysts(
