@@ -50,7 +50,7 @@ class FMPEtfInfoData(EtfInfoData):
         description="The expense ratio of the ETF.", default=None
     )
     avg_volume: Optional[float] = Field(
-        description="The average daily volume of the ETF.", defaul=None
+        description="The average daily volume of the ETF.", default=None
     )
     sectors: Optional[List[Dict]] = Field(
         description="The sector weightings of the ETF holdings.",

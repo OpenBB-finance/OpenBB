@@ -20,7 +20,7 @@ from openbb_tmx.utils.helpers import get_random_agent
 
 
 class TmxCompanyFilingsQueryParams(QueryParams):
-    """TMX Company Filings Query Parameteres."""
+    """TMX Company Filings Query Parameters."""
 
     symbol: str = Field(description="The ticker symbol to fetch.")
     start_date: Optional[Union[str, dateType]] = Field(
