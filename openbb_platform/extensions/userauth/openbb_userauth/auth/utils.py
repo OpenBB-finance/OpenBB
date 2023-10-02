@@ -12,9 +12,10 @@ from passlib.context import CryptContext
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
+TOKEN_URL = "/api/v1/user/token"
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/user/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=TOKEN_URL)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
