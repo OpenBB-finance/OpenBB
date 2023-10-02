@@ -25,9 +25,9 @@ def run_async(func: Callable):
 
 def setup_default_users():
     """Setup default users."""
-    user_service = run_async(get_userdb_service)
-    user_settings_repository = user_service.user_settings_repository
-    default_user_settings = user_service.default_user_settings
+    userdb_service = run_async(get_userdb_service)
+    user_settings_repository = userdb_service.user_settings_repository
+    default_user_settings = userdb_service.default_user_settings
     default_profile_list = [
         Profile(
             active=True,

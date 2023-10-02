@@ -5,8 +5,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from openbb_core.api.model.access_token import AccessToken
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.service.user_service import UserDBService
 from passlib.context import CryptContext
+
+from openbb_userauth.user.userdb_service import UserDBService
 
 # ruff: noqa: S105
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret

@@ -3,7 +3,6 @@ from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
-from openbb_core.app.service.user_service import UserDBService
 from typing_extensions import Annotated
 
 from openbb_userauth.auth.utils import (
@@ -12,6 +11,7 @@ from openbb_userauth.auth.utils import (
     get_userdb_service,
     oauth2_scheme,
 )
+from openbb_userauth.user.userdb_service import UserDBService
 
 
 async def get_user_settings(
