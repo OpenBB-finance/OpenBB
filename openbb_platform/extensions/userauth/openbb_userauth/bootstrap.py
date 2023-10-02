@@ -8,6 +8,7 @@ from openbb_core.app.model.user_settings import UserSettings
 
 from openbb_userauth.auth_hook import get_user_service
 
+
 def run_async(func: Callable):
     try:
         asyncio.get_running_loop()
@@ -19,6 +20,7 @@ def run_async(func: Callable):
         result = asyncio.run(func())
 
     return result
+
 
 def setup_default_users():
     """Setup default users."""
@@ -58,5 +60,3 @@ def setup_default_users():
                 defaults=default_user_settings.defaults,
             )
             user_settings_repository.create(model=default_user_settings)
-
-    print(user_settings_repository.read_all())
