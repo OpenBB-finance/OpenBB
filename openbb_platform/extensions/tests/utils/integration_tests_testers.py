@@ -2,11 +2,11 @@
 import importlib.util
 import inspect
 import os
+from platform.core.openbb_core.app.provider_interface import ProviderInterface
+from platform.core.openbb_core.app.router import CommandMap
 from typing import Any, Callable, Dict, List
 
 from extensions.tests.utils.integration_tests_generator import find_extensions
-from sdk.core.openbb_core.app.provider_interface import ProviderInterface
-from sdk.core.openbb_core.app.router import CommandMap
 
 
 def get_python_integration_tests() -> List[Any]:
