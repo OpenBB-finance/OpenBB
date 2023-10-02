@@ -42,7 +42,7 @@ class LoggingSettings:
         self.verbosity: int = system_settings.logging_verbosity
         self.platform: str = system_settings.platform
         self.python_version: str = system_settings.python_version
-        self.terminal_version: str = system_settings.version
+        self.platform_version: str = system_settings.version
         # User
         self.user_id: Optional[str] = user_id
         self.user_logs_directory: Path = get_log_dir(user_data_directory)
