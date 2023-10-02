@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 from openbb_core.app.service.user_service import UserService
-from openbb_userauth.auth_utils import (
+from openbb_userauth.auth.utils import (
     ALGORITHM,
     SECRET_KEY,
     get_user_service,
