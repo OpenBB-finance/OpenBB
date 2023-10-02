@@ -1,7 +1,16 @@
 """Test fixedincome extension."""
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -11,7 +20,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_treasury(params):
+def test_fixedincome_treasury(params, obb):
     result = obb.fixedincome.treasury(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -25,7 +34,7 @@ def test_fixedincome_treasury(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_ycrv(params):
+def test_fixedincome_ycrv(params, obb):
     result = obb.fixedincome.ycrv(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -47,7 +56,7 @@ def test_fixedincome_ycrv(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_sofr(params):
+def test_fixedincome_sofr(params, obb):
     result = obb.fixedincome.sofr(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -69,7 +78,7 @@ def test_fixedincome_sofr(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_estr(params):
+def test_fixedincome_estr(params, obb):
     result = obb.fixedincome.estr(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -91,7 +100,7 @@ def test_fixedincome_estr(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_sonia(params):
+def test_fixedincome_sonia(params, obb):
     result = obb.fixedincome.sonia(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -113,7 +122,7 @@ def test_fixedincome_sonia(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_ameribor(params):
+def test_fixedincome_ameribor(params, obb):
     result = obb.fixedincome.ameribor(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -135,7 +144,7 @@ def test_fixedincome_ameribor(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_fed(params):
+def test_fixedincome_fed(params, obb):
     result = obb.fixedincome.fed(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -150,7 +159,7 @@ def test_fixedincome_fed(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_projections(params):
+def test_fixedincome_projections(params, obb):
     result = obb.fixedincome.projections(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -164,7 +173,7 @@ def test_fixedincome_projections(params):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_iorb(params):
+def test_fixedincome_iorb(params, obb):
     result = obb.fixedincome.iorb(**params)
     assert result
     assert isinstance(result, OBBject)
