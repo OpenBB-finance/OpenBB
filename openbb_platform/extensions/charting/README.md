@@ -55,7 +55,7 @@ stock_data.show()
 
 ## Add a visualization to an existing Platform command
 
-One should first ensure that the already implemented endpoint is available in the [charting router](extensions/charting/openbb_charting/charting_router.py).
+One should first ensure that the already implemented endpoint is available in the [charting router](/openbb_platform/extensions/charting/openbb_charting/charting_router.py).
 
 To do so, you can run:
  `python openbb_platform/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
