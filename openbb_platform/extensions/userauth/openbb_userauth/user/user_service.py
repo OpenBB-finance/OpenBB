@@ -43,6 +43,9 @@ class CustomUserService:
         valid_client = self.valid_client(client=mongodb_client)
 
         self._mongodb_client = mongodb_client
+        self._default_user_settings = (
+            default_user_settings or self.read_default_user_settings()
+        )
         self._token_repository = self.build_token_repository(
             mongodb_client=mongodb_client,
             access_token_repository=access_token_repository,
@@ -53,9 +56,31 @@ class CustomUserService:
             user_settings_repository=user_settings_repository,
             valid_client=valid_client,
         )
-        self._default_user_settings = (
-            default_user_settings or self.read_default_user_settings()
-        )
+
+    @property
+    def mongodb_client(self) -> Optional[MongoClient]:
+        """Return MongoDB client."""
+        return self._mongodb_client
+
+    @property
+    def default_user_settings(self) -> UserSettings:
+        """Return default user settings."""
+        return self._default_user_settings
+
+    @default_user_settings.setter
+    def default_user_settings(self, default_user_settings: UserSettings) -> None:
+        """Set default user settings."""
+        self._default_user_settings = default_user_settings
+
+    @property
+    def access_token_repository(self) -> AbstractAccessTokenRepository:
+        """Access token repository."""
+        return self._token_repository
+
+    @property
+    def user_settings_repository(self) -> AbstractUserSettingsRepository:
+        """User settings repository."""
+        return self._user_settings_repository
 
     @staticmethod
     def build_token_repository(
@@ -119,31 +144,6 @@ class CustomUserService:
             server_info = None
 
         return bool(server_info)
-
-    @property
-    def mongodb_client(self) -> Optional[MongoClient]:
-        """Return MongoDB client."""
-        return self._mongodb_client
-
-    @property
-    def default_user_settings(self) -> UserSettings:
-        """Return default user settings."""
-        return self._default_user_settings
-
-    @default_user_settings.setter
-    def default_user_settings(self, default_user_settings: UserSettings) -> None:
-        """Set default user settings."""
-        self._default_user_settings = default_user_settings
-
-    @property
-    def access_token_repository(self) -> AbstractAccessTokenRepository:
-        """Access token repository."""
-        return self._token_repository
-
-    @property
-    def user_settings_repository(self) -> AbstractUserSettingsRepository:
-        """User settings repository."""
-        return self._user_settings_repository
 
 
 async def get_user_service() -> CustomUserService:
