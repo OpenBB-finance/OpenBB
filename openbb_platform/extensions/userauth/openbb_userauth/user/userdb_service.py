@@ -146,7 +146,7 @@ class UserDBService:
         return bool(server_info)
 
 
-async def get_user_service() -> UserDBService:
+async def get_userdb_service() -> UserDBService:
     """Get user service."""
     system_settings = SystemSettings()
     dbms_uri = system_settings.dbms_uri

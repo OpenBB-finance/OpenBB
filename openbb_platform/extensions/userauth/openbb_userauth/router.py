@@ -20,7 +20,7 @@ from openbb_userauth.auth.utils import (
     create_access_token,
     create_jwt_token,
     get_password_hash,
-    get_user_service,
+    get_userdb_service,
 )
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -40,7 +40,7 @@ def bootstrap() -> None:
 @router.post("/token")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_userdb_service)],
 ) -> TokenResponse:
     """Login for access token."""
     user_settings = authenticate_user(
@@ -83,7 +83,7 @@ async def read_users_settings(
 async def patch_user_credentials(
     credentials: Credentials,
     user_settings: Annotated[UserSettings, Depends(get_user_settings)],
-    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_userdb_service)],
 ) -> UserSettings:
     """Patch user credentials."""
     current = user_settings.credentials.model_dump()
@@ -114,7 +114,7 @@ if Env().API_HUB_CONNECTION:
     @router.post("/pull")
     def pull_user_settings_from_hub(
         user_settings: Annotated[UserSettings, Depends(get_user_settings)],
-        userdb_service: Annotated[UserDBService, Depends(get_user_service)],
+        userdb_service: Annotated[UserDBService, Depends(get_userdb_service)],
     ) -> UserSettings:
         """Pull user settings from hub."""
         if user_settings.profile.hub_session:

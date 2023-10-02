@@ -9,14 +9,14 @@ from typing_extensions import Annotated
 from openbb_userauth.auth.utils import (
     ALGORITHM,
     SECRET_KEY,
-    get_user_service,
+    get_userdb_service,
     oauth2_scheme,
 )
 
 
 async def get_user_settings(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],
-    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_userdb_service)],
 ):
     """Get user."""
     credentials_exception = HTTPException(

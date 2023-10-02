@@ -7,7 +7,7 @@ from typing import Callable
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 
-from openbb_userauth.auth_hook import get_user_service
+from openbb_userauth.auth_hook import get_userdb_service
 
 
 def run_async(func: Callable):
@@ -25,7 +25,7 @@ def run_async(func: Callable):
 
 def setup_default_users():
     """Setup default users."""
-    user_service = run_async(get_user_service)
+    user_service = run_async(get_userdb_service)
     user_settings_repository = user_service.user_settings_repository
     default_user_settings = user_service.default_user_settings
     default_profile_list = [
