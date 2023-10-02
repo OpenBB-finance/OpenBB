@@ -471,7 +471,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=NO_EXPORT
+            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
@@ -479,7 +479,7 @@ class EconometricsController(BaseController):
                 console.print("Please enter a valid dataset.")
             else:
                 export_data(
-                    ns_parser.type,
+                    ns_parser.export if ns_parser.export != "" else ns_parser.type,
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
