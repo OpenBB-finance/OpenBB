@@ -3,14 +3,13 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from openbb_core.api.router.account import router as router_account
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
-from openbb_core.api.router.user import router as router_user
+from openbb_core.app.app_loader import AppLoader
 from openbb_core.app.constants import VERSION
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.env import Env
+from openbb_core.app.service.userauth_service import UserAuthService
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -29,16 +28,21 @@ app = FastAPI(
         "url": "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE",
     },
 )
-app.include_router(router=router_account, prefix="/api/v1")
-app.include_router(router=router_user, prefix="/api/v1")
-app.include_router(router=router_system, prefix="/api/v1")
-app.include_router(router=router_coverage, prefix="/api/v1")
-app.include_router(router=router_commands, prefix="/api/v1")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
+)
+AppLoader.from_routers(
+    app=app,
+    routers=[
+        UserAuthService().router,
+        router_system,
+        router_coverage,
+        router_commands,
+    ],
+    prefix="/api/v1",
 )
 
 
@@ -46,17 +50,17 @@ app.add_middleware(
 async def startup():
     """Startup event."""
     version = VERSION
-    auth = "enabled" if Env().API_AUTH else "disabled"
-    debug = "enabled" if Env().DEBUG_MODE else "disabled"
-    dev = "enabled" if Env().DEV_MODE else "disabled"
+    ON = "ENABLED"
+    OFF = "DISABLED"
+    auth = ON if UserAuthService().is_installed else OFF
     banner = rf"""
 
                    ███╗
   █████████████████╔══█████████████████╗       OpenBB Platform {version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
-  ╚═════════════███║  ███╔═════════════╝       Debug mode: {debug}
-     ██████████████║  ██████████████╗          Dev mode: {dev}
+  ╚═════════════███║  ███╔═════════════╝
+     ██████████████║  ██████████████╗
      ███╔═══════███║  ███╔═══════███║
      ██████████████║  ██████████████║
      ╚═════════════╝  ╚═════════════╝

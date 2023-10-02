@@ -17,7 +17,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/account/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/user/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -77,13 +77,12 @@ def create_jwt_token(
     return encoded_jwt
 
 
-async def get_user_service() -> UserService:
+def get_user_service() -> UserService:
     """Get user service."""
-
     return UserService()
 
 
-async def get_user(
+async def get_user_settings(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ):
