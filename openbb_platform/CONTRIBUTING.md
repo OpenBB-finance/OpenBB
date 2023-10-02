@@ -47,7 +47,7 @@ The Python interfaces we provide to users is the `openbb` python package.
 
 The code you will find in this package is generated from a script and it is just a wrapper around the `openbb-core` and any installed extensions.
 
-When the user runs `import openbb`, `from openbb import obb` or other variants, the script that generates the package code is triggered. It detects if there are new openbb extensions installed in the environment and rebuilds the package code accordingly. If new extensions are not found, it just uses the current package version.
+When the user runs `import openbb`, `from openbb import obb` or other variants, the script that generates the packaged code is triggered. It detects if there are new extensions installed in the environment and rebuilds the packaged code accordingly. If new extensions are not found, it just uses the current packaged version.
 
 When you are developing chances are you want to manually trigger the package rebuild.
 
