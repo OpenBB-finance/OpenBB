@@ -3,9 +3,9 @@
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable
+
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
-
 from openbb_userauth.auth_hook import get_user_service
 
 

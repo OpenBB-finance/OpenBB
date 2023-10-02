@@ -1,7 +1,7 @@
 """OpenBB API Account Router."""
 from typing import Callable
 
-from extensions.userauth.openbb_userauth.bootstrap import setup_default_users
+from extensions.userauth.openbb_userauth.user.bootstrap import setup_default_users
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.model.token_response import TokenResponse
@@ -11,10 +11,10 @@ from openbb_core.app.service.hub_service import HubService
 from openbb_core.env import Env
 from typing_extensions import Annotated
 
-from openbb_userauth.auth_hook import (
+from openbb_userauth.auth.hook import (
     get_user_settings,
 )
-from openbb_userauth.utils import (
+from openbb_userauth.auth.utils import (
     UserService,
     authenticate_user,
     create_access_token,

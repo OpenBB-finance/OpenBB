@@ -4,11 +4,9 @@ from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from openbb_core.api.model.access_token import AccessToken
-from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 from passlib.context import CryptContext
-from pymongo import MongoClient
 
 # ruff: noqa: S105
 SECRET_KEY = "a0657288545d1d2e991195841782ae2a22574a22954081db0c2888c5f5ddbecc"  # nosec # pragma: allowlist secret
@@ -74,13 +72,3 @@ def create_jwt_token(
     claims = access_token.model_dump()
     encoded_jwt = jwt.encode(claims=claims, key=key, algorithm=algorithm)
     return encoded_jwt
-
-
-async def get_user_service() -> UserService:
-    """Get user service."""
-    system_settings = SystemSettings()
-    dbms_uri = system_settings.dbms_uri
-    if dbms_uri and dbms_uri.startswith("mongodb://"):
-        mongodb_client: MongoClient = MongoClient(dbms_uri)
-        return UserService(mongodb_client=mongodb_client)
-    return UserService()
