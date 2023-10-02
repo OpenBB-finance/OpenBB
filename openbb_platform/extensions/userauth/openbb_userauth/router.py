@@ -2,7 +2,7 @@
 from typing import Callable
 
 from extensions.userauth.openbb_userauth.bootstrap import setup_default_users
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.model.token_response import TokenResponse
 from openbb_core.app.model.credentials import Credentials
@@ -38,6 +38,7 @@ def bootstrap() -> None:
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     user_service: Annotated[UserService, Depends(get_user_service)],
+    openbb_hub: bool = Form(True),
 ) -> TokenResponse:
     """Login for access token."""
     user_settings = authenticate_user(
@@ -45,7 +46,7 @@ async def login_for_access_token(
         user_service=user_service,
         username=form_data.username,
     )
-    if not user_settings and Env().API_HUB_CONNECTION:
+    if not user_settings and openbb_hub and Env().API_HUB_CONNECTION:
         hub_service = HubService()
         hub_service.connect(email=form_data.username, password=form_data.password)
         user_settings = hub_service.pull()
