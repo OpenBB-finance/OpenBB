@@ -12,13 +12,15 @@ from openbb_core.env import Env
 from typing_extensions import Annotated
 
 from openbb_userauth.auth_hook import (
+    get_user_settings,
+)
+from openbb_userauth.utils import (
     UserService,
     authenticate_user,
     create_access_token,
     create_jwt_token,
     get_password_hash,
     get_user_service,
-    get_user_settings,
 )
 
 router = APIRouter(prefix="/user", tags=["User"])
@@ -29,6 +31,7 @@ def get_auth_hook() -> Callable:
     return get_user_settings
 
 
+# Check if we want to remove this
 def bootstrap() -> None:
     """Bootstrap extension."""
     setup_default_users()
