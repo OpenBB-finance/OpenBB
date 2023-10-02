@@ -1,8 +1,17 @@
 """Test news extension."""
 
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -32,7 +41,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_news_globalnews(params):
+def test_news_globalnews(params, obb):
     result = obb.news.globalnews(**params)
     assert result
     assert isinstance(result, OBBject)

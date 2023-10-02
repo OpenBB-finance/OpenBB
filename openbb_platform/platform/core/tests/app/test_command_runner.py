@@ -253,12 +253,15 @@ def test_parameters_builder_build(mock_func, execution_context):
         }
 
 
-def test_command_runner():
+@patch("openbb_core.app.command_runner.LoggingService")
+def test_command_runner(_):
     """Test command runner."""
+
     assert CommandRunner()
 
 
-def test_command_runner_properties():
+@patch("openbb_core.app.command_runner.LoggingService")
+def test_command_runner_properties(mock_logging_service):
     """Test properties."""
 
     sys = SystemSettings()
@@ -270,9 +273,11 @@ def test_command_runner_properties():
     assert runner.system_settings == sys
     assert runner.user_settings == user
     assert runner.command_map == cmd_map
+    assert mock_logging_service.called_once()
 
 
-def test_command_runner_build():
+@patch("openbb_core.app.command_runner.LoggingService")
+def test_command_runner_run(_):
     runner = CommandRunner()
 
     with patch(
