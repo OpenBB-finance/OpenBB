@@ -29,8 +29,16 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
                 f.write(
                     f'''"""Test {extension_name} extension."""
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
     '''
                 )
 
@@ -110,7 +118,7 @@ def add_test_commands_to_file(  # pylint: disable=W0102
     ],
 )
 @pytest.mark.integration
-def test_{test_name}(**params):
+def test_{test_name}(**params, obb):
     result = obb.{command_name}(**params)
     assert result
     assert isinstance(result, OBBject)
