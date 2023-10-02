@@ -1602,36 +1602,50 @@ def export_data(
                     )
 
                 elif saved_path.exists():
-                    # Load the Excel file to get the existing data
-                    existing_df = pd.read_excel(saved_path, sheet_name=sheet_name)
-                    # Get the number of rows in the existing data
-                    start_row = (
-                        existing_df.shape[0] + 1
-                    )  # Add 1 to start writing after the last row
+                    # check if the sheet already exists
+                    with pd.ExcelFile(saved_path) as reader:
+                        if sheet_name in reader.sheet_names:
+                            # Load the Excel file to get the existing data
+                            existing_df = pd.read_excel(
+                                saved_path, sheet_name=sheet_name
+                            )
+                            # Get the number of rows in the existing data
+                            start_row = existing_df.shape[0] + 1
+                            # Append data to the existing sheet
+                            with pd.ExcelWriter(
+                                saved_path,
+                                mode="a",
+                                if_sheet_exists="overlay",
+                                engine="openpyxl",
+                            ) as writer:
+                                df.to_excel(
+                                    writer,
+                                    sheet_name=sheet_name,
+                                    startrow=start_row,
+                                    index=True,
+                                    header=False,
+                                )
 
-                    # Append data to the existing sheet
-                    with pd.ExcelWriter(
-                        saved_path,
-                        mode="a",
-                        if_sheet_exists="overlay",
-                        engine="openpyxl",
-                    ) as writer:
-                        df.to_excel(
-                            writer,
-                            sheet_name=sheet_name,
-                            startrow=start_row,
-                            index=True,
-                            header=False,
-                        )
+                        else:
+                            with pd.ExcelWriter(
+                                saved_path,
+                                mode="a",
+                                if_sheet_exists="new",
+                                engine="openpyxl",
+                            ) as writer:
+                                df.to_excel(
+                                    writer,
+                                    sheet_name=sheet_name,
+                                    index=True,
+                                    header=True,
+                                )
 
                 else:
-                    with pd.ExcelWriter(
-                        saved_path,
-                        engine="openpyxl",
-                    ) as writer:
+                    with pd.ExcelWriter(saved_path, engine="openpyxl") as writer:
                         df.to_excel(
                             writer, sheet_name=sheet_name, index=True, header=True
                         )
+
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 if figure is None:
                     console.print("No plot to export.")
