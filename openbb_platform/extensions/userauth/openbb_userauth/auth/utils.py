@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from openbb_core.api.model.access_token import AccessToken
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.service.user_service import UserService
+from openbb_core.app.service.user_service import UserDBService
 from passlib.context import CryptContext
 
 # ruff: noqa: S105
@@ -32,10 +32,10 @@ def get_password_hash(password):
 def authenticate_user(
     password: str,
     username: str,
-    user_service: UserService,
+    userdb_service: UserDBService,
 ) -> Optional[UserSettings]:
     """Authenticate user."""
-    user = user_service.user_settings_repository.read_by_profile(
+    user = userdb_service.user_settings_repository.read_by_profile(
         filter_list=[("username", username)],
     )
     if (

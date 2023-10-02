@@ -15,7 +15,7 @@ from openbb_userauth.auth.hook import (
     get_user_settings,
 )
 from openbb_userauth.auth.utils import (
-    UserService,
+    UserDBService,
     authenticate_user,
     create_access_token,
     create_jwt_token,
@@ -40,12 +40,12 @@ def bootstrap() -> None:
 @router.post("/token")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    user_service: Annotated[UserService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
 ) -> TokenResponse:
     """Login for access token."""
     user_settings = authenticate_user(
         password=form_data.password,
-        user_service=user_service,
+        userdb_service=userdb_service,
         username=form_data.username,
     )
     if not user_settings and Env().API_HUB_CONNECTION:
@@ -55,7 +55,7 @@ async def login_for_access_token(
         if user_settings:
             user_settings.profile.username = form_data.username
             user_settings.profile.password_hash = get_password_hash(form_data.password)
-            user_service.user_settings_repository.create(user_settings)
+            userdb_service.user_settings_repository.create(user_settings)
 
     if not user_settings:
         raise HTTPException(
@@ -83,14 +83,14 @@ async def read_users_settings(
 async def patch_user_credentials(
     credentials: Credentials,
     user_settings: Annotated[UserSettings, Depends(get_user_settings)],
-    user_service: Annotated[UserService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
 ) -> UserSettings:
     """Patch user credentials."""
     current = user_settings.credentials.model_dump()
     incoming = credentials.model_dump(exclude_none=True)
     current.update(incoming)
     user_settings.credentials = Credentials.model_validate(current)
-    user_service.user_settings_repository.update(user_settings)
+    userdb_service.user_settings_repository.update(user_settings)
     return user_settings
 
 
@@ -114,7 +114,7 @@ if Env().API_HUB_CONNECTION:
     @router.post("/pull")
     def pull_user_settings_from_hub(
         user_settings: Annotated[UserSettings, Depends(get_user_settings)],
-        user_service: Annotated[UserService, Depends(get_user_service)],
+        userdb_service: Annotated[UserDBService, Depends(get_user_service)],
     ) -> UserSettings:
         """Pull user settings from hub."""
         if user_settings.profile.hub_session:
@@ -123,7 +123,7 @@ if Env().API_HUB_CONNECTION:
             incoming.id = user_settings.id
             incoming_dict = incoming.model_dump(exclude_none=True)
             filtered_incoming = UserSettings.model_validate(incoming_dict)
-            user_service.user_settings_repository.update(filtered_incoming)
+            userdb_service.user_settings_repository.update(filtered_incoming)
             return incoming
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

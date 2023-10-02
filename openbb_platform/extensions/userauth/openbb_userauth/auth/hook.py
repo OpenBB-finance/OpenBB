@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
-from openbb_core.app.service.user_service import UserService
+from openbb_core.app.service.user_service import UserDBService
 from typing_extensions import Annotated
 
 from openbb_userauth.auth.utils import (
@@ -16,7 +16,7 @@ from openbb_userauth.auth.utils import (
 
 async def get_user_settings(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],
-    user_service: Annotated[UserService, Depends(get_user_service)],
+    userdb_service: Annotated[UserDBService, Depends(get_user_service)],
 ):
     """Get user."""
     credentials_exception = HTTPException(
@@ -32,7 +32,7 @@ async def get_user_settings(
     except JWTError as e:
         raise credentials_exception from e
 
-    user_settings = user_service.user_settings_repository.read(
+    user_settings = userdb_service.user_settings_repository.read(
         filter_list=[("id", user_settings_id)]
     )
     if (

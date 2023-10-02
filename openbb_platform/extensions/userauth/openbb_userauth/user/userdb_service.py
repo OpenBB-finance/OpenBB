@@ -26,8 +26,8 @@ from openbb_core.app.repository.mongodb.user_settings_repository import (
 from pymongo.mongo_client import MongoClient
 
 
-class UserService:
-    """User service."""
+class UserDBService:
+    """Auth user service."""
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
 
@@ -146,11 +146,11 @@ class UserService:
         return bool(server_info)
 
 
-async def get_user_service() -> UserService:
+async def get_user_service() -> UserDBService:
     """Get user service."""
     system_settings = SystemSettings()
     dbms_uri = system_settings.dbms_uri
     if dbms_uri and dbms_uri.startswith("mongodb://"):
         mongodb_client: MongoClient = MongoClient(dbms_uri)
-        return UserService(mongodb_client=mongodb_client)
-    return UserService()
+        return UserDBService(mongodb_client=mongodb_client)
+    return UserDBService()
