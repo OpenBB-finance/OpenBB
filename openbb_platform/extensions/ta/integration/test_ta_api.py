@@ -1,5 +1,6 @@
 import json
 import random
+from typing import List
 
 import pytest
 import requests
@@ -27,7 +28,10 @@ def headers():
     return h
 
 
-def get_data(menu: str, symbol: str, provider: str):
+def get_random_data(menu: str, symbols: List[str], providers: List[str]):
+    symbol = random.choice(symbols)  # noqa: S311
+    provider = random.choice(providers)  # noqa: S311
+
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
     result = requests.get(url, headers=auth_header(), timeout=5)
     return result.json()["results"]
@@ -35,17 +39,13 @@ def get_data(menu: str, symbol: str, provider: str):
 
 symbols = ["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "GOOG", "FB", "BABA", "TSM", "V"]
 providers = ["fmp", "intrinio", "polygon", "yfinance"]
-stocks_data = get_data(
-    menu="stocks", symbol=random.choice(symbols), provider=random.choice(providers)
-)
+stocks_data = get_random_data("stocks", symbols=symbols, providers=providers)
 
 # TODO : add more crypto providers and symbols
 symbols_crypto = ["BTC"]
 providers_crypto = ["fmp"]
-crypto_data = get_data(
-    menu="crypto",
-    symbol=random.choice(symbols_crypto),
-    provider=random.choice(providers_crypto),
+crypto_data = get_random_data(
+    menu="crypto", symbols=symbols_crypto, providers=providers_crypto
 )
 
 
