@@ -467,14 +467,14 @@ def test_stocks_fa_revseg(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100})],
+    [({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"})],
 )
 @pytest.mark.integration
-def test_stocks_fa_sec(params, headers):
+def test_stocks_fa_filings(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/fa/sec?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/fa/filings?{query_str}"
     result = requests.get(url, headers=headers, timeout=5)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

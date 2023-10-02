@@ -449,12 +449,12 @@ def test_stocks_fa_revseg(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100}),
+        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_sec(params, obb):
-    result = obb.stocks.fa.sec(**params)
+def test_stocks_fa_filings(params, obb):
+    result = obb.stocks.fa.filings(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
