@@ -282,10 +282,23 @@ These automated tests are a great way to reduce the amount of code you need to w
 
 To run the tests we can do:
 
-Unit tests only:
+- Unit tests only:
 
 ```bash
 pytest openbb_platform -m "not integration"
+```
+
+- Integration tests only:
+
+```bash
+pytest openbb_platform -m integration
+```
+
+- Both integration and unit tests:
+
+```bash
+pytest openbb_platform
+```
 
 ### Import time
 
