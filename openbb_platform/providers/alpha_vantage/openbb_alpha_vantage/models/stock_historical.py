@@ -2,12 +2,10 @@
 
 
 from datetime import datetime
-from io import StringIO
-from typing import Any, Dict, List, Literal, Optional, get_args
+from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
-import requests
 from dateutil.relativedelta import relativedelta
+from openbb_alpha_vantage.utils.helpers import extract_key_name, get_data, get_interval
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -19,6 +17,7 @@ from pydantic import (
     Field,
     NonNegativeFloat,
     PositiveFloat,
+    PrivateAttr,
     field_validator,
     model_validator,
 )
@@ -27,14 +26,36 @@ from pydantic import (
 class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     """Alpha Vantage Stock End of Day Query.
 
-    Source: https://www.alphavantage.co/documentation/
+    Source: https://www.alphavantage.co/documentation/#time-series-data
     """
 
-    # Remove this
-    __alias_dict__ = {"function_": "function"}
+    interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
+    )
+    adjusted: Optional[bool] = Field(
+        description="Output time series is adjusted by historical split and dividend events."
+        "Only available for intraday data.",
+        default=False,
+    )
+    extended_hours: Optional[bool] = Field(
+        description="Extended trading hours during pre-market and after-hours."
+        "Only available for intraday data.",
+        default=False,
+    )
+    month: Optional[str] = Field(
+        description="Query a specific month in history (in YYYY-MM format).",
+        default=None,
+    )
+    outputsize: Optional[Literal["compact", "full"]] = Field(
+        description="Compact returns only the latest 100 data points in the intraday "
+        "time series; full returns trailing 30 days of the most recent intraday data "
+        "if the month parameter is not specified, or the full intraday data for a"
+        "specific month in history if the month parameter is specified.",
+        default="full",
+    )
 
-    # Set as private attribute
-    function_: Literal[
+    _function: Literal[
         "TIME_SERIES_INTRADAY",
         "TIME_SERIES_DAILY",
         "TIME_SERIES_WEEKLY",
@@ -42,152 +63,36 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         "TIME_SERIES_DAILY_ADJUSTED",
         "TIME_SERIES_WEEKLY_ADJUSTED",
         "TIME_SERIES_MONTHLY_ADJUSTED",
-    ] = Field(
-        description="The time series of your choice. ",
+    ] = PrivateAttr(
         default="TIME_SERIES_DAILY",
     )
-    # Convert to interval automatically
-    period: Optional[Literal["intraday", "daily", "weekly", "monthly"]] = Field(
-        default="daily", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
-    interval: Optional[Literal["1min", "5min", "15min", "30min", "60min"]] = Field(
-        description="Data granularity.",
-        default="60min",
-        json_schema_extra=dict(
-            available_on_functions=["TIME_SERIES_INTRADAY"],
-            required_on_functions=["TIME_SERIES_INTRADAY"],
-        ),
-    )
-    adjusted: Optional[bool] = Field(
-        description="Output time series is adjusted by historical split and dividend events.",
-        default=False,
-        json_schema_extra=dict(
-            available_on_functions=["TIME_SERIES_INTRADAY"],
-        ),
-    )
-    extended_hours: Optional[bool] = Field(
-        description="Extended trading hours during pre-market and after-hours.",
-        default=False,
-        json_schema_extra=dict(
-            available_on_functions=["TIME_SERIES_INTRADAY"],
-        ),
-    )
-    month: Optional[str] = Field(
-        description="Query a specific month in history (in YYYY-MM format).",
-        default=None,
-        json_schema_extra=dict(
-            available_on_functions=["TIME_SERIES_INTRADAY"],
-        ),
-    )
-    outputsize: Optional[Literal["compact", "full"]] = Field(
-        description="Compact returns only the latest 100 data points in the intraday "
-        "time series; full returns trailing 30 days of the most recent intraday data "
-        "if the month parameter (see above) is not specified, or the full intraday "
-        "data for a specific month in history if the month parameter is specified.",
-        default="full",
-        json_schema_extra=dict(
-            available_on_functions=[
-                "TIME_SERIES_INTRADAY",
-                "TIME_SERIES_DAILY",
-                "TIME_SERIES_DAILY_ADJUSTED",
-            ],
-        ),
-    )
+
+    _datatype: Literal["json", "csv"] = PrivateAttr(default="json")
 
     @model_validator(mode="after")
     @classmethod
-    def setup_function(
-        cls, values: "AVStockHistoricalQueryParams"
-    ):  # pylint: disable=E0213
-        """Set the function based on the period."""
-        functions_based_on_period = {
-            "intraday": "TIME_SERIES_INTRADAY",
-            "daily": "TIME_SERIES_DAILY",
-            "weekly": "TIME_SERIES_WEEKLY",
-            "monthly": "TIME_SERIES_MONTHLY",
+    def get_function_value(cls, values: "AVStockHistoricalQueryParams") -> str:
+        """Get the function from the provided interval for the Alpha Vantage API."""
+
+        functions = {
+            "d": "TIME_SERIES_DAILY",
+            "W": "TIME_SERIES_WEEKLY",
+            "M": "TIME_SERIES_MONTHLY",
         }
-        values.function_ = functions_based_on_period[values.period]
-        return values
 
-    @model_validator(mode="after")
-    @classmethod
-    def adjusted_function_validate(
-        cls, values: "AVStockHistoricalQueryParams"
-    ):  # pylint: disable=E0213
-        """
-        Validate that the function is adjusted if the `adjusted` parameter is set to True.
-        """
+        adjusted_value = {
+            False: "",
+            True: "_ADJUSTED",
+        }
 
-        if values.function_ != "TIME_SERIES_INTRADAY" and values.adjusted:
-            values.function_ = f"{values.function_}_ADJUSTED"
-
-        return values
-
-    @model_validator(mode="after")
-    @classmethod
-    def on_functions_validate(
-        cls, values: "AVStockHistoricalQueryParams"
-    ):  # pylint: disable=E0213
-        """
-        Validate that the functions used on custom extra Field attributes
-        `available_on_functions` and `required_on_functions` are valid functions.
-        """
-        custom_attributes = ["available_on_functions", "required_on_functions"]
-
-        available_functions = get_args(cls.__annotations__["function_"])
-
-        if values.function_ not in available_functions:
-            raise ValueError(
-                f"Function {values.function_} must be on of the following: {available_functions}"
+        if values.interval[-1] != "m":
+            values._function = (
+                f"{functions[values.interval[-1]]}{adjusted_value[values.adjusted]}"
             )
 
-        def validate_functions(functions: List[str]):
-            for f in functions:
-                if f not in available_functions:
-                    raise ValueError(
-                        f"Function {f} must be on of the following: {available_functions}"
-                    )
-
-        for field in cls.__fields__.values():
-            if (extra := field.json_schema_extra) is None:
-                continue
-            for attr in custom_attributes:
-                if functions := extra.get(attr, None):
-                    validate_functions(functions)
-
         return values
 
-    @model_validator(mode="after")
-    @classmethod
-    def on_functions_criteria_validate(
-        cls, values: "AVStockHistoricalQueryParams"
-    ):  # pylint: disable=E0213
-        """
-        Validate that the fields are set to None if the function is not available
-        and that the required fields are not None if the function is required.
-        """
-
-        timeseries = values.function_
-
-        for name, field in cls.__fields__.items():
-            if (extra := field.json_schema_extra) is None:
-                continue
-
-            field_value = getattr(values, name)
-            if (
-                available_on_functions := extra.get("available_on_functions", None)
-            ) and timeseries not in available_on_functions:
-                setattr(values, name, None)
-            if (
-                (required_on_functions := extra.get("required_on_functions", None))
-                and timeseries in required_on_functions
-                and field_value is None
-            ):
-                raise ValueError(f"Field {name} is required on function {timeseries}")
-
-        return values
-
-    @field_validator("month")
+    @field_validator("month", mode="before")
     def month_validate(cls, v):  # pylint: disable=E0213
         """Validate month, check if the month is in YYYY-MM format."""
         if v is not None:
@@ -243,38 +148,30 @@ class AVStockHistoricalFetcher(
         query: AVStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
         """Return the raw data from the Alpha Vantage endpoint."""
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
 
+        interval = get_interval(query.interval)
         query_str = get_querystring(
-            query.model_dump(by_alias=True), ["start_date", "end_date"]
+            query.model_dump(by_alias=True), ["start_date", "end_date", "interval"]
         )
+        query_str += f"&function={query._function}&interval={interval}"
+        url = f"https://www.alphavantage.co/query?{query_str}&apikey={api_key}"
 
-        url = f"https://www.alphavantage.co/query?{query_str}&datatype=csv&apikey={api_key}"
-        get_data = requests.get(url, timeout=10)
+        data = get_data(url, **kwargs)
+        dynamic_key = (set(data.keys()) - {"Meta Data"}).pop()
 
-        if "Information" in get_data.text:
-            info = get_data.json()["Information"]
-            raise ValueError(f"Alpha Vantage API Error: {info}")
-
-        data = pd.read_csv(
-            StringIO(get_data.text),
-            parse_dates=["timestamp"],
-        )
-
-        data["timestamp"] = pd.to_datetime(data["timestamp"])
-
-        data = data[
-            (data["timestamp"] >= pd.to_datetime(query.start_date))
-            & (data["timestamp"] <= pd.to_datetime(query.end_date))
-        ]
-
-        return data.to_dict("records")
+        return data[dynamic_key]
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: Dict,
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
+        data = [
+            {"date": date, **{extract_key_name(k): v for k, v in values.items()}}
+            for date, values in data.items()
+        ]
+
         return [AVStockHistoricalData.model_validate(d) for d in data]
