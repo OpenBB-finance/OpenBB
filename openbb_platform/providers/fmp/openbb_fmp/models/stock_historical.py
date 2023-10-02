@@ -87,7 +87,7 @@ class FMPStockHistoricalFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        interval = get_intervals(query.interval)
+        interval = get_interval(query.interval)
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
