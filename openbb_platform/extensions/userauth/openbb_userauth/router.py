@@ -121,7 +121,7 @@ if Env().API_HUB_CONNECTION:
             hub_service = HubService(user_settings.profile.hub_session)
             incoming = hub_service.pull()
             incoming.id = user_settings.id
-            incoming_dict = incoming.dict(exclude_none=True)
+            incoming_dict = incoming.model_dump(exclude_none=True)
             filtered_incoming = UserSettings.model_validate(incoming_dict)
             user_service.user_settings_repository.update(filtered_incoming)
             return incoming
