@@ -25,8 +25,8 @@ repos:
         entry: pydocstyle
         language: python
         types: [python]
-        files: '^openbb_sdk/.*\.py$'
-        exclude: 'tests/.*\.py|openbb_sdk/test_.*\.py'
+        files: '^openbb_platform/.*\.py$'
+        exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
         args: ["--config=pyproject.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
@@ -72,7 +72,7 @@ repos:
             "--baseline",
             ".secrets.baseline",
             "--exclude-files",
-            "cassettes/.*|record/.*|website/content/api/.*|openbb_sdk/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_sdk/extensions/charting/openbb_charting/infrastructure/.*\\.html",
+            "cassettes/.*|record/.*|website/content/api/.*|openbb_platform/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_platform/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
     exclude: package.lock.json
   - repo: local
