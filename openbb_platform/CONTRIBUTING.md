@@ -412,7 +412,7 @@ Each router is categorized under different extensions (stocks, forex, crypto, et
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `StockHistorical` which can be found inside the `./platform/core/provider/openbb_provider/standard_models/` directory.
+In this case, it's `StockHistorical` which can be found inside the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
 
 If the standard model doesn't exist:
 
