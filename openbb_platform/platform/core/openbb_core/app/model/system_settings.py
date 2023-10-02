@@ -46,6 +46,7 @@ class SystemSettings(Tagged):
     # Others
     test_mode: bool = FrozenField(default=False)
     headless: bool = FrozenField(default=False)
+    dbms_uri: Optional[str] = FrozenField(default=None)
 
     model_config = ConfigDict(validate_assignment=True)
 

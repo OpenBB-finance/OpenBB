@@ -1,14 +1,28 @@
 """Bootstrap extension."""
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from typing import Callable
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 
 from openbb_userauth.auth_hook import get_user_service
 
+def run_async(func: Callable):
+    try:
+        asyncio.get_running_loop()
+        # we need to create a separate thread so we can block before returning
+        with ThreadPoolExecutor(1) as pool:
+            result = pool.submit(lambda: asyncio.run(func())).result()
+    except RuntimeError:
+        # no event loop running
+        result = asyncio.run(func())
+
+    return result
 
 def setup_default_users():
     """Setup default users."""
-    user_service = get_user_service()
+    user_service = run_async(get_user_service)
     user_settings_repository = user_service.user_settings_repository
     default_user_settings = user_service.default_user_settings
     default_profile_list = [
@@ -44,3 +58,5 @@ def setup_default_users():
                 defaults=default_user_settings.defaults,
             )
             user_settings_repository.create(model=default_user_settings)
+
+    print(user_settings_repository.read_all())
