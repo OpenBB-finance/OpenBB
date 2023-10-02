@@ -167,7 +167,7 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
     return dateType(base.year, 9, 30)
 
 
-def get_intervals(value: str) -> str:
+def get_interval(value: str) -> str:
     """Get the intervals for the FMP API."""
 
     intervals = {
@@ -176,4 +176,4 @@ def get_intervals(value: str) -> str:
         "d": "day",
     }
 
-    return f"{value[0]}{intervals[value[1]]}"
+    return f"{value[:-1]}{intervals[value[-1]]}"
