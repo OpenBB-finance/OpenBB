@@ -1,6 +1,7 @@
 from itertools import combinations
 from typing import Dict, List, Literal
 
+import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 from linearmodels.panel import (
@@ -46,7 +47,12 @@ def corr(data: List[Data]) -> OBBject[List[Data]]:
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
     df = df.select_dtypes(include=["float64"])
+
     corr = df.corr()
+
+    # replace nan values with None to allow for json serialization
+    corr = corr.replace(np.NaN, None)
+
     ret = []
     for k, v in corr.items():
         v["comp_to"] = k
