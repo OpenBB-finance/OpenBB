@@ -82,7 +82,9 @@ class Repository(AbstractRepository[T]):
         projection = {field: 1 for field in field_list} if field_list else {}
         document = collection.find_one(pattern, projection)
 
-        model = model_type.model_validate(document) if isinstance(document, dict) else None
+        model = (
+            model_type.model_validate(document) if isinstance(document, dict) else None
+        )
 
         return model
 

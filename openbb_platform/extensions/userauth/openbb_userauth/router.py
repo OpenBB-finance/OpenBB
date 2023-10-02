@@ -8,9 +8,8 @@ from openbb_core.api.model.token_response import TokenResponse
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.hub_service import HubService
-from typing_extensions import Annotated
-
 from openbb_core.env import Env
+from typing_extensions import Annotated
 
 from openbb_userauth.auth_hook import (
     UserService,
@@ -93,6 +92,7 @@ async def patch_user_credentials(
 
 
 if Env().API_HUB_CONNECTION:
+
     @router.put("/push")
     def push_user_settings_to_hub(
         user_settings: Annotated[UserSettings, Depends(get_user_settings)]
@@ -107,7 +107,6 @@ if Env().API_HUB_CONNECTION:
             detail="Not connected to hub.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
 
     @router.post("/pull")
     def pull_user_settings_from_hub(
@@ -128,7 +127,6 @@ if Env().API_HUB_CONNECTION:
             detail="Not connected to hub.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-
 
     @router.post("/disconnect")
     def disconnect_from_hub(

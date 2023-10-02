@@ -81,6 +81,7 @@ def get_user_service() -> UserService:
     """Get user service."""
     return UserService()
 
+
 # async def get_user_service(
 #     system_settings: Annotated[SystemSettings, Depends(get_system_settings)]
 # ) -> UserService:
@@ -96,6 +97,7 @@ def get_user_service() -> UserService:
 #             __user_service = UserService()
 
 #     return __user_service
+
 
 async def get_user_settings(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],
