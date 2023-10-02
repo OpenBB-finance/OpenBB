@@ -2,7 +2,7 @@
 title: Create a Pull Request
 sidebar_position: 5
 description: How to create a Pull Request
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, introduction, pull request, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

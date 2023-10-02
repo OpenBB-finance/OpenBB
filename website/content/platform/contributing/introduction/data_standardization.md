@@ -2,7 +2,7 @@
 title: Data Standardization
 sidebar_position: 1
 description: What is data standardization and how does it work inside the OpenBB Platform
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, introduction, data, standardization, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

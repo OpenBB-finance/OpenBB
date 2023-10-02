@@ -2,7 +2,8 @@
 title: Manage Extensions
 sidebar_position: 4
 description: How to manage extensions in the OpenBB Platform
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, introduction, manage, extension, contributing,
+ documentation, pypi]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

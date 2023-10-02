@@ -2,7 +2,8 @@
 title: Share your extension
 sidebar_position: 4
 description: How to share your extension with the community
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, introduction, share, extension, contributing,
+ documentation, pypi]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

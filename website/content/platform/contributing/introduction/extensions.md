@@ -2,7 +2,7 @@
 title: Extensions in the OpenBB Platform
 sidebar_position: 2
 description: Introduction to the Extensions inside OpenBB Platform
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, introduction, extension, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

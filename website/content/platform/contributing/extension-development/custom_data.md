@@ -2,7 +2,7 @@
 title: Add a custom data source
 sidebar_position: 2
 description: How to add a custom data source to the OpenBB Platform
-keywords: [openbb, platform, introduction]
+keywords: [openbb, platform, extension, custom, data, source, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

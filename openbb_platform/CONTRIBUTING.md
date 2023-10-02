@@ -280,6 +280,14 @@ uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.
 
 These automated tests are a great way to reduce the amount of code you need to write, but they are not a replacement for manual testing and might require tweaking. That's why we have unit tests that test the generated integration tests to ensure they cover all providers and parameters.
 
+To run the tests we can do:
+
+```bash
+pytest openbb_platform -m "not integration" --> only unit tests
+pytest openbb_platform -m "integration" --> only integration tests
+pytest openbb_platform --> everything
+```
+
 ### Import time
 
 We aim to have a short import time for the package. To measure that we use `tuna`.
