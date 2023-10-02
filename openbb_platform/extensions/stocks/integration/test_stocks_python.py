@@ -1,7 +1,16 @@
 """Test stocks extension."""
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -35,7 +44,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_balance(params):
+def test_stocks_fa_balance(params, obb):
     result = obb.stocks.fa.balance(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -49,7 +58,7 @@ def test_stocks_fa_balance(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_balance_growth(params):
+def test_stocks_fa_balance_growth(params, obb):
     result = obb.stocks.fa.balance_growth(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -68,7 +77,7 @@ def test_stocks_fa_balance_growth(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_cal(params):
+def test_stocks_fa_cal(params, obb):
     result = obb.stocks.fa.cal(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -106,7 +115,7 @@ def test_stocks_fa_cal(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_cash(params):
+def test_stocks_fa_cash(params, obb):
     result = obb.stocks.fa.cash(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -120,7 +129,7 @@ def test_stocks_fa_cash(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_cash_growth(params):
+def test_stocks_fa_cash_growth(params, obb):
     result = obb.stocks.fa.cash_growth(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -134,7 +143,7 @@ def test_stocks_fa_cash_growth(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_comp(params):
+def test_stocks_fa_comp(params, obb):
     result = obb.stocks.fa.comp(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -153,7 +162,7 @@ def test_stocks_fa_comp(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_comsplit(params):
+def test_stocks_fa_comsplit(params, obb):
     result = obb.stocks.fa.comsplit(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -167,7 +176,7 @@ def test_stocks_fa_comsplit(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_divs(params):
+def test_stocks_fa_divs(params, obb):
     result = obb.stocks.fa.divs(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -181,7 +190,7 @@ def test_stocks_fa_divs(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_earning(params):
+def test_stocks_fa_earning(params, obb):
     result = obb.stocks.fa.earning(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -195,7 +204,7 @@ def test_stocks_fa_earning(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_emp(params):
+def test_stocks_fa_emp(params, obb):
     result = obb.stocks.fa.emp(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -209,7 +218,7 @@ def test_stocks_fa_emp(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_est(params):
+def test_stocks_fa_est(params, obb):
     result = obb.stocks.fa.est(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -247,7 +256,7 @@ def test_stocks_fa_est(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_income(params):
+def test_stocks_fa_income(params, obb):
     result = obb.stocks.fa.income(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -261,7 +270,7 @@ def test_stocks_fa_income(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_income_growth(params):
+def test_stocks_fa_income_growth(params, obb):
     result = obb.stocks.fa.income_growth(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -283,7 +292,7 @@ def test_stocks_fa_income_growth(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_ins(params):
+def test_stocks_fa_ins(params, obb):
     result = obb.stocks.fa.ins(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -303,7 +312,7 @@ def test_stocks_fa_ins(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_ins_own(params):
+def test_stocks_fa_ins_own(params, obb):
     result = obb.stocks.fa.ins_own(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -317,7 +326,7 @@ def test_stocks_fa_ins_own(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_metrics(params):
+def test_stocks_fa_metrics(params, obb):
     result = obb.stocks.fa.metrics(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -331,7 +340,7 @@ def test_stocks_fa_metrics(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_mgmt(params):
+def test_stocks_fa_mgmt(params, obb):
     result = obb.stocks.fa.mgmt(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -345,7 +354,7 @@ def test_stocks_fa_mgmt(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_overview(params):
+def test_stocks_fa_overview(params, obb):
     result = obb.stocks.fa.overview(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -359,7 +368,7 @@ def test_stocks_fa_overview(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_own(params):
+def test_stocks_fa_own(params, obb):
     result = obb.stocks.fa.own(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -373,7 +382,7 @@ def test_stocks_fa_own(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_pt(params):
+def test_stocks_fa_pt(params, obb):
     result = obb.stocks.fa.pt(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -388,7 +397,7 @@ def test_stocks_fa_pt(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_pta(params):
+def test_stocks_fa_pta(params, obb):
     result = obb.stocks.fa.pta(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -402,7 +411,7 @@ def test_stocks_fa_pta(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_ratios(params):
+def test_stocks_fa_ratios(params, obb):
     result = obb.stocks.fa.ratios(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -416,7 +425,7 @@ def test_stocks_fa_ratios(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_revgeo(params):
+def test_stocks_fa_revgeo(params, obb):
     result = obb.stocks.fa.revgeo(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -430,7 +439,7 @@ def test_stocks_fa_revgeo(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_revseg(params):
+def test_stocks_fa_revseg(params, obb):
     result = obb.stocks.fa.revseg(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -440,12 +449,12 @@ def test_stocks_fa_revseg(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100}),
+        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_sec(params):
-    result = obb.stocks.fa.sec(**params)
+def test_stocks_fa_filings(params, obb):
+    result = obb.stocks.fa.filings(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -458,7 +467,7 @@ def test_stocks_fa_sec(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_shrs(params):
+def test_stocks_fa_shrs(params, obb):
     result = obb.stocks.fa.shrs(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -472,7 +481,7 @@ def test_stocks_fa_shrs(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_split(params):
+def test_stocks_fa_split(params, obb):
     result = obb.stocks.fa.split(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -486,7 +495,7 @@ def test_stocks_fa_split(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_transcript(params):
+def test_stocks_fa_transcript(params, obb):
     result = obb.stocks.fa.transcript(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -500,7 +509,7 @@ def test_stocks_fa_transcript(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_ca_peers(params):
+def test_stocks_ca_peers(params, obb):
     result = obb.stocks.ca.peers(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -515,7 +524,7 @@ def test_stocks_ca_peers(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_options_chains(params):
+def test_stocks_options_chains(params, obb):
     result = obb.stocks.options.chains(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -672,7 +681,7 @@ def test_stocks_options_chains(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_load(params):
+def test_stocks_load(params, obb):
     result = obb.stocks.load(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -716,7 +725,7 @@ def test_stocks_load(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_news(params):
+def test_stocks_news(params, obb):
     result = obb.stocks.news(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -729,7 +738,7 @@ def test_stocks_news(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_multiples(params):
+def test_stocks_multiples(params, obb):
     result = obb.stocks.multiples(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -743,7 +752,7 @@ def test_stocks_multiples(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_search(params):
+def test_stocks_search(params, obb):
     result = obb.stocks.search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -758,7 +767,7 @@ def test_stocks_search(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_quote(params):
+def test_stocks_quote(params, obb):
     result = obb.stocks.quote(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -772,7 +781,7 @@ def test_stocks_quote(params):
     ],
 )
 @pytest.mark.integration
-def test_stocks_info(params):
+def test_stocks_info(params, obb):
     result = obb.stocks.info(**params)
     assert result
     assert isinstance(result, OBBject)

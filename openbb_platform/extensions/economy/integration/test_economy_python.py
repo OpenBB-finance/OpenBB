@@ -1,8 +1,17 @@
 """Test economy extension."""
 
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -343,7 +352,7 @@ def test_economy_sp500_multiples(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_fred_index(**params):
+def test_economy_fred_index(params):
     result = obb.economy.fred_index(**params)
     assert result
     assert isinstance(result, OBBject)

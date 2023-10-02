@@ -2,17 +2,16 @@
 import json
 import logging
 import re
+import warnings
 from copy import deepcopy
 from enum import Enum
 from typing import Any, Dict
 
-# IMPORT INTERNAL
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
-
-# IMPORT THIRD-PARTY
+from openbb_core.env import Env
 from posthog import Posthog
 
 openbb_posthog = Posthog(
@@ -95,11 +94,13 @@ class PosthogHandler(logging.Handler):
             )
             openbb_posthog.alias(self._settings.user_id, self._settings.app_id)
 
-        openbb_posthog.capture(
+        result = openbb_posthog.capture(
             self._settings.app_id,
             event_name,
             properties=log_extra,
         )
+        if Env().DEBUG_MODE:
+            warnings.warn(result)
 
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record"""
@@ -111,7 +112,7 @@ class PosthogHandler(logging.Handler):
             "sessionId": self._settings.session_id,
             "platform": self._settings.platform,
             "pythonVersion": self._settings.python_version,
-            "obbPlatformVersion": self._settings.terminal_version,
+            "obbPlatformVersion": self._settings.platform_version,
         }
 
         if self._settings.user_id:
