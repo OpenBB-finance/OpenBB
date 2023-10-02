@@ -2,21 +2,26 @@
 import importlib.util
 import inspect
 import os
-from platform.core.openbb_core.app.provider_interface import ProviderInterface
-from platform.core.openbb_core.app.router import CommandMap
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Literal
 
 from extensions.tests.utils.integration_tests_generator import find_extensions
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.router import CommandMap
 
 
-def get_python_integration_tests() -> List[Any]:
+def get_integration_tests(test_type: Literal["integration", "unit"]) -> List[Any]:
     """Get integration tests for the python interface."""
     integration_tests: List[Any] = []
+
+    if test_type == "unit":
+        file_end = "_python.py"
+    elif test_type == "integration":
+        file_end = "_api.py"
 
     for extension in find_extensions():
         integration_folder = os.path.join(extension, "integration")
         for file in os.listdir(integration_folder):
-            if file.endswith("_python.py"):
+            if file.endswith(file_end):
                 file_path = os.path.join(integration_folder, file)
                 module_name = file[:-3]  # Remove .py from file name
 
