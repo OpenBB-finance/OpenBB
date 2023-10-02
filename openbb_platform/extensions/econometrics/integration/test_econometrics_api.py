@@ -29,6 +29,8 @@ def headers():
 
 
 def get_random_data(menu: str, symbols: List[str], providers: List[str]):
+    """Randomly pick a symbol and a provider and get data from the selected menu."""
+
     symbol = random.choice(symbols)  # noqa: S311
     provider = random.choice(providers)  # noqa: S311
 
