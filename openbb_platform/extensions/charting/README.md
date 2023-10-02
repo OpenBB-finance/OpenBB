@@ -60,10 +60,10 @@ One should first ensure that the already implemented endpoint is available in th
 To do so, you can run:
  `python openbb_platform/extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
 
-Afterwards, you'll need to add the visualization to the [charting router](extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
+Afterwards, you'll need to add the visualization to the [charting router](/openbb_platform/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
 
-- `stocks/load` -> `stocks_load`
-- `ta/ema` -> `ta_ema`
+- `/stocks/load` -> `stocks_load`
+- `/ta/ema` -> `ta_ema`
 
 When you spot the charting function on the charting router file, you can add the visualization to it.
 
