@@ -1,7 +1,7 @@
-"""SEC Filings data model."""
+"""Company Filings data model."""
 
 
-from datetime import datetime
+from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
 from pydantic import Field, validator
@@ -10,7 +10,7 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
-FORM_TYPES = Literal[
+SEC_FORM_TYPES = Literal[
     "1",
     "1-A",
     "1-E",
@@ -114,14 +114,10 @@ FORM_TYPES = Literal[
 ]
 
 
-class SECFilingsQueryParams(QueryParams):
-    """SEC Filings Query."""
+class CompanyFilingsQueryParams(QueryParams):
+    """Company Filings Query Params."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    type: Optional[FORM_TYPES] = Field(
-        default=None, description="Type of the SEC filing form."
-    )
-    page: Optional[int] = Field(default=0, description="Page number of the results.")
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
@@ -134,20 +130,9 @@ class SECFilingsQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class SECFilingsData(Data):
-    """SEC Filings Data."""
+class CompanyFilingsData(Data):
+    """Company Filings Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    filling_date: datetime = Field(description="Filling date of the SEC filing.")
-    accepted_date: datetime = Field(description="Accepted date of the SEC filing.")
-    cik: str = Field(description="CIK of the SEC filing.")
-    type: str = Field(description="Type of the SEC filing.")
-    link: str = Field(description="Link of the SEC filing.")
-    final_link: str = Field(description="Final link of the SEC filing.")
-
-    @validator("symbol", pre=True, check_fields=False, always=True)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    date: dateType = Field(description="The date of the filing.")
+    type: str = Field(description="Type of document.")
+    link: str = Field(description="URL to the document.")

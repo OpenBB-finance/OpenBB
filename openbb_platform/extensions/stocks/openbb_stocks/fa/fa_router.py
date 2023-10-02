@@ -279,14 +279,14 @@ def revseg(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="SECFilings")
-def sec(
+@router.command(model="CompanyFilings")
+def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """SEC Filings."""
+    """Company Filings."""
     return OBBject(results=Query(**locals()).execute())
 
 
