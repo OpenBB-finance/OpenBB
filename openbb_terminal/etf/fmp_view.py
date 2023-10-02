@@ -134,21 +134,21 @@ def view_etf_holdings_performance(
     Parameters
     ----------
     ticker: str
-        ETF ticker
+        ETF ticker.
     start_date: str
-        Date from which data is fetched in format YYYY-MM-DD
+        Date from which data is fetched in format YYYY-MM-DD.
     end: str
-        Date from which data is fetched in format YYYY-MM-DD
+        Date from which data is fetched in format YYYY-MM-DD.
     limit: int
-        Limit number of holdings to view. Sorted by descending percent change.
+        Limit number of holdings to view. Sorted by holding percentage (desc).
     raw: bool
         Display holding performance
     sheet_name: str
         Optionally specify the name of the sheet the data is exported to.
     export: str
-        Type of format to export data
+        Type of format to export data.
     """
-    data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date).head(limit)
+    data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date, limit)
 
     if raw:
         print_rich_table(
