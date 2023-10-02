@@ -17,7 +17,6 @@ class GQL:
         exchangeName
         exShortName
         exchangeCode
-        marketPlace
         sector
         industry
         volume

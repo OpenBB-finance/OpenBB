@@ -1,6 +1,7 @@
 """TMX Helpers Module."""
 
 from datetime import timedelta
+from typing import Dict, Literal
 
 import pandas as pd
 import requests_cache
@@ -13,11 +14,19 @@ def get_random_agent() -> str:
     return user_agent
 
 
+# Only used for obtaining the directory of all valid company tickers.
+tmx_companies_session = requests_cache.CachedSession(
+    "OpenBB_TMX_Companies", expire_after=timedelta(days=9), use_cache_dir=True
+)
+
+
 # Only used for obtaining all ETFs.
 tmx_etfs_session = requests_cache.CachedSession(
     "OpenBB_TMX_ETFs", expire_after=timedelta(hours=4), use_cache_dir=True
 )
 
+
+# Column map for ETFs.
 COLUMNS_DICT = {
     "symbol": "symbol",
     "shortname": "short_name",
@@ -125,3 +134,28 @@ def get_all_etfs() -> pd.DataFrame:
         etfs.loc[i, "mer"] = etfs.loc[i, "additional_data"]["mer"]
 
     return etfs.replace("-", None).convert_dtypes()
+
+
+def get_tmx_tickers(exchange: Literal["tsx", "tsxv"] = "tsx") -> Dict:
+    """Gets a dictionary of either TSX or TSX-V symbols and names."""
+
+    tsx_json_url = "https://www.tsx.com/json/company-directory/search"
+    url = f"{tsx_json_url}/{exchange}/*"
+    r = tmx_companies_session.get(url, timeout=5)
+    data = (
+        pd.DataFrame.from_records(r.json()["results"])[["symbol", "name"]]
+        .set_index("symbol")
+        .sort_index()
+    )
+    results = data.to_dict()["name"]
+    return results
+
+
+def get_all_tmx_companies() -> Dict:
+    """Merges TSX and TSX-V listings into a single dictionary."""
+    all_tmx = {}
+    tsx_tickers = get_tmx_tickers()
+    tsxv_tickers = get_tmx_tickers("tsxv")
+    all_tmx.update(tsxv_tickers)
+    all_tmx.update(tsx_tickers)
+    return all_tmx
