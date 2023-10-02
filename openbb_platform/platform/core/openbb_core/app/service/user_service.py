@@ -107,29 +107,3 @@ class UserService(metaclass=SingletonMeta):
         for d in list_of_dicts:
             result = reduce(recursive_merge, (result, d))
         return result
-
-    @property
-    def default_user_settings(self) -> UserSettings:
-        """Return default user settings."""
-        return self._default_user_settings
-
-    @default_user_settings.setter
-    def default_user_settings(self, default_user_settings: UserSettings) -> None:
-        """Set default user settings."""
-        self._default_user_settings = default_user_settings
-
-    @property
-    def access_token_repository(self) -> AbstractAccessTokenRepository:
-        """Access token repository."""
-        return self._token_repository
-
-    @property
-    def user_settings_repository(self) -> AbstractUserSettingsRepository:
-        """User settings repository."""
-        return self._user_settings_repository
-
-    def refresh_default_default_user_settings(self) -> UserSettings:
-        """Refresh default default user settings."""
-        self._default_user_settings = self.read_default_user_settings()
-
-        return self._default_user_settings
