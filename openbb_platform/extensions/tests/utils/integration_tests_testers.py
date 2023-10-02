@@ -10,7 +10,7 @@ from openbb_core.app.router import CommandMap
 
 
 def get_integration_tests(test_type: Literal["integration", "unit"]) -> List[Any]:
-    """Get integration tests for the python interface."""
+    """Get integration tests for the OpenBB Platform."""
     integration_tests: List[Any] = []
 
     if test_type == "unit":
