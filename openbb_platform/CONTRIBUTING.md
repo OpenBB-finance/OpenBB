@@ -82,7 +82,7 @@ Usage of these models will unlock a set of perks that are only available to stan
 - Can expect consistent data types and validation.
 - Will work seamlessly with other providers that use the same standard model.
 
-The standard models are defined under the `./platform/core/provider/openbb_provider/standard_models/` directory.
+The standard models are defined under the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
 
 They define the [`QueryParams`](platform/provider/openbb_provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
