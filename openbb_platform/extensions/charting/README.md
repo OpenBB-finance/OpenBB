@@ -1,12 +1,12 @@
 # OpenBB Charting extension
 
-This extension provides a charting library for OpenBB SDK.
+This extension provides a charting library for OpenBB Platform.
 
 The library includes:
 
 - a charting infrastructure based on Plotly
 - a set of charting components
-- prebuilt charts for a set of commands that are built-in OpenBB SDK extensions
+- prebuilt charts for a set of commands that are built-in OpenBB extensions
 
 ## Installation
 
@@ -34,7 +34,7 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 ## Usage
 
-To use the extension, run any of the OpenBB SDK endpoints with the `chart` argument set to `True`.
+To use the extension, run any of the OpenBB Platform endpoints with the `chart` argument set to `True`.
 
 Here's an example how it would look like in a python interface:
 
