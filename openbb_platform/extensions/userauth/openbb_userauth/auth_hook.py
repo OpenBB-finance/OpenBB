@@ -81,6 +81,21 @@ def get_user_service() -> UserService:
     """Get user service."""
     return UserService()
 
+# async def get_user_service(
+#     system_settings: Annotated[SystemSettings, Depends(get_system_settings)]
+# ) -> UserService:
+#     """Get user service."""
+#     global __user_service  # pylint: disable=global-statement
+
+#     if __user_service is None:
+#         dbms_uri = system_settings.dbms_uri
+#         if dbms_uri and dbms_uri.startswith("mongodb://"):
+#             mongodb_client: MongoClient = MongoClient(dbms_uri)
+#             __user_service = UserService(mongodb_client=mongodb_client)
+#         else:
+#             __user_service = UserService()
+
+#     return __user_service
 
 async def get_user_settings(
     jwt_token: Annotated[str, Depends(oauth2_scheme)],

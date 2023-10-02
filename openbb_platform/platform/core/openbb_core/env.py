@@ -35,6 +35,11 @@ class Env(metaclass=SingletonMeta):
         """Charting extension: enables charting extension"""
         return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
 
+    @property
+    def API_HUB_CONNECTION(self) -> str:
+        """User auth extension: enables user auth extension"""
+        return self._environ.get("OPENBB_API_HUB_CONNECTION", True)
+
     @staticmethod
     def str2bool(value) -> bool:
         """Match a value to its boolean correspondent."""

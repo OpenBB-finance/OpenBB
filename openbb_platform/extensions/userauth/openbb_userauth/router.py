@@ -2,7 +2,7 @@
 from typing import Callable
 
 from extensions.userauth.openbb_userauth.bootstrap import setup_default_users
-from fastapi import APIRouter, Depends, Form, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from openbb_core.api.model.token_response import TokenResponse
 from openbb_core.app.model.credentials import Credentials
