@@ -390,21 +390,25 @@ def calculate_cones(
     top_q = []
     bottom_q = []
     realized = []
+    allowed_windows = []
     data = data.sort_index(ascending=False)
 
-    for window in windows:
-        model_functions = {
-            "STD": standard_deviation,
-            "Parkinson": parkinson,
-            "Garman-Klass": garman_klass,
-            "Hodges-Tompkins": hodges_tompkins,
-            "Rogers-Satchell": rogers_satchell,
-            "Yang-Zhang": yang_zhang,
-        }
+    model_functions = {
+        "STD": standard_deviation,
+        "Parkinson": parkinson,
+        "Garman-Klass": garman_klass,
+        "Hodges-Tompkins": hodges_tompkins,
+        "Rogers-Satchell": rogers_satchell,
+        "Yang-Zhang": yang_zhang,
+    }
 
+    for window in windows:
         estimator = model_functions[model](
             window=window, data=data, is_crypto=is_crypto
         )
+
+        if estimator.empty:
+            continue
 
         min_.append(estimator.min())
         max_.append(estimator.max())
@@ -413,8 +417,10 @@ def calculate_cones(
         bottom_q.append(estimator.quantile(quantiles[0]))
         realized.append(estimator[-1])
 
+        allowed_windows.append(window)
+
     df_ = [realized, min_, bottom_q, median, top_q, max_]
-    df_windows = windows
+    df_windows = allowed_windows
     df = pd.DataFrame(df_, columns=df_windows)
     df = df.rename(
         index={
