@@ -47,6 +47,7 @@ jobs:
 
     - name: Populate Setting Files
       run: |
+        pwd
         touch ~/openbb_platform/user_settings.json
         echo '{"log_collect":false}' > ~/openbb_platform/user_settings.json
 
