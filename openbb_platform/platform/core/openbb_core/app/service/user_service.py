@@ -45,12 +45,12 @@ class UserService(metaclass=SingletonMeta):
         """Merge user settings with default user settings."""
         d1 = cls.read_default().model_dump()
         d2 = user_settings.model_dump() if user_settings else {}
-        updated = cls.merge_dicts([d1, d2])
+        updated = cls._merge_dicts([d1, d2])
 
         return UserSettings.model_validate(updated)
 
     @staticmethod
-    def merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _merge_dicts(list_of_dicts: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Merge a list of dictionaries."""
 
         def recursive_merge(d1: Dict, d2: Dict) -> Dict:
