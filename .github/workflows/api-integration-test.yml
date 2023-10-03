@@ -22,7 +22,7 @@ jobs:
       with:
         status: starting
         channel: '#workflows'
-        message: Starting Integration Test...
+        message: Starting API Integration Test...
       if: always()
 
     - name: Checkout code
