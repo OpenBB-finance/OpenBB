@@ -65,7 +65,7 @@ def test_get_etf_holdings(recorder, ticker):
 def test_get_holdings_pct_change(recorder, ticker: str, start_date: str, end_date: str):
     result = fmp_model.get_holdings_pct_change(ticker, start_date, end_date)
 
-    assert result.empty
+    assert not result.empty
     recorder.capture(result)
 
 
