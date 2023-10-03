@@ -26,12 +26,12 @@ class UserAuthService(metaclass=SingletonMeta):
         return self._is_installed("userauth")
 
     @property
-    def router(self) -> APIRouter:
+    def router(self) -> Optional[APIRouter]:
         """Gets router."""
         return self._router
 
     @property
-    def auth_hook(self) -> Callable:
+    def auth_hook(self) -> Optional[Callable]:
         """Gets authentication hook."""
         return self._auth_hook
 
