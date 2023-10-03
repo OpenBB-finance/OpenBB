@@ -47,7 +47,7 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
-          pip install toml pytest uvicorn importlib-metadata
+          pip install toml pytest uvicorn
 
       # - name: Load cached venv
       #   id: cached-poetry-dependencies
@@ -90,7 +90,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-          pytest -m integration
+          pytest ${{ github.workspace }}/openbb_platform/ -m integration
 
     # - name: Upload summary to Slack
     #   uses: adrey/slack-file-upload-action@master
