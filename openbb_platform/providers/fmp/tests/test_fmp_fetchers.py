@@ -461,7 +461,7 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_info_fetcher(credentials=test_credentials):
-    params = {"symbol": "IWN,IWM,QQQ,SPY,VOO"}
+    params = {"symbol": "QQQ"}
 
     fetcher = FMPEtfInfoFetcher()
     result = fetcher.test(params, credentials)
