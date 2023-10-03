@@ -653,7 +653,7 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--start",
+            "--start-date",
             type=valid_date,
             default=(datetime.now().date() - timedelta(days=366)),
             dest="start",
@@ -661,7 +661,7 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "-e",
-            "--end",
+            "--end-date",
             type=valid_date,
             default=datetime.now().date(),
             dest="end",

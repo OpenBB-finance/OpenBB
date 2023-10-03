@@ -148,7 +148,7 @@ def view_etf_holdings_performance(
     export: str
         Type of format to export data.
     """
-    data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date, limit)
+    data = fmp_model.get_holdings_pct_change(ticker, start_date, end_date, limit)[::-1]
 
     if raw:
         print_rich_table(
