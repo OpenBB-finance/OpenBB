@@ -32,14 +32,29 @@ jobs:
       if: github.event_name == 'pull_request'
       run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
       
-    - name: Setup Python 3.8 with venv
-      run: |
-        python -m venv obb-38
-        source obb-38/bin/activate
+    - name: Setup Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.8"
+        architecture: x64
 
     - name: Install Poetry and TOML
       run: |
-        pip install poetry toml
+        pip install toml
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.4.0
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
     - name: Install obb Dependencies
       run: |
@@ -47,9 +62,8 @@ jobs:
 
     - name: Populate Setting Files
       run: |
-        pwd
-        touch ~/openbb_platform/user_settings.json
-        echo '{"log_collect":false}' > ~/openbb_platform/user_settings.json
+        touch $HOME/openbb_platform/user_settings.json
+        echo '{"log_collect":false}' > $HOME/openbb_platform/user_settings.json
 
     - name: Launch the Uvicorn Process
       run: |
