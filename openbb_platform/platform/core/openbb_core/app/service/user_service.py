@@ -25,11 +25,6 @@ class UserService:
         """Return default user settings."""
         return self._default_user_settings
 
-    @default_user_settings.setter
-    def default_user_settings(self, default_user_settings: UserSettings) -> None:
-        """Set default user settings."""
-        self._default_user_settings = default_user_settings
-
     @classmethod
     def read_default(cls, path: Optional[Path] = None) -> UserSettings:
         """Read default user settings."""
