@@ -3,7 +3,7 @@ from typing import Optional
 
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
-from openbb_core.api.model.access_token import AccessToken
+from openbb_userauth.auth.model.access_token import AccessToken
 from openbb_core.app.model.user_settings import UserSettings
 from passlib.context import CryptContext
 

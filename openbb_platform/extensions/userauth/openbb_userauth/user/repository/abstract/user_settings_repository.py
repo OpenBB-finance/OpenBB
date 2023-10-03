@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import Any, List, Optional, Tuple
 
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.repository.abstract.repository import Repository
+from openbb_userauth.user.repository.abstract.repository import Repository
 
 
 class UserSettingsRepository(Repository[UserSettings]):

@@ -1,7 +1,7 @@
 from typing import Any, List, Optional, Tuple, Type, TypeVar
 
 from fastapi.encoders import jsonable_encoder
-from openbb_core.app.repository.abstract.repository import (
+from openbb_userauth.user.repository.abstract.repository import (
     Repository as AbstractRepository,
 )
 from pydantic import BaseModel

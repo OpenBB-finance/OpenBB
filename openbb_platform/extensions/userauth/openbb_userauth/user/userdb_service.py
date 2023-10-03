@@ -7,10 +7,10 @@ from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.repository.abstract.access_token_repository import (
+from openbb_userauth.user.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
 )
-from openbb_core.app.repository.abstract.user_settings_repository import (
+from openbb_userauth.user.repository.abstract.user_settings_repository import (
     UserSettingsRepository as AbstractUserSettingsRepository,
 )
 from pymongo.mongo_client import MongoClient

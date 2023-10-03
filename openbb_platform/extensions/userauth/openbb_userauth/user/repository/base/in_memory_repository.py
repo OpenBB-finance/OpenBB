@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional, Tuple, TypeVar
 
-from openbb_core.app.repository.abstract.repository import (
+from openbb_userauth.user.repository.abstract.repository import (
     Repository as AbstractRepository,
 )
 from pydantic import BaseModel

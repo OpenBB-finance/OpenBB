@@ -1,5 +1,5 @@
-from openbb_core.api.model.access_token import AccessToken
-from openbb_core.app.repository.abstract.access_token_repository import (
+from openbb_userauth.auth.model.access_token import AccessToken
+from openbb_userauth.user.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
 )
 from openbb_userauth.user.repository.base.mongodb_repository import (
