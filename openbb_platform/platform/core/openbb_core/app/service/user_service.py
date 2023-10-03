@@ -5,11 +5,10 @@ from pathlib import Path
 from typing import Any, Dict, List, MutableMapping, Optional
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
-from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings
 
 
-class UserService(metaclass=SingletonMeta):
+class UserService:
     """User service."""
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
