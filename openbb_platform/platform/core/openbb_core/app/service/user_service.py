@@ -41,8 +41,8 @@ class UserService(metaclass=SingletonMeta):
         path.write_text(user_settings_json, encoding="utf-8")
 
     @classmethod
-    def update_default(cls, user_settings: UserSettings) -> UserSettings:
-        """Update default user settings."""
+    def merge_with_default(cls, user_settings: UserSettings) -> UserSettings:
+        """Merge user settings with default user settings."""
         d1 = cls.read_default().model_dump()
         d2 = user_settings.model_dump() if user_settings else {}
         updated = cls.merge_dicts([d1, d2])
