@@ -32,15 +32,11 @@ jobs:
       if: github.event_name == 'pull_request'
       run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
       
-    - name: Setup Python 3.8
+    - name: Setup Python 3.9
       uses: actions/setup-python@v4
       with:
-        python-version: "3.8"
+        python-version: "3.9"
         architecture: x64
-
-    - name: Install Poetry and TOML
-      run: |
-        pip install toml
 
     - name: Install Poetry
       uses: snok/install-poetry@v1
@@ -49,14 +45,19 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
 
+    - name: Install Python Dependencies
+      run: |
+        pip install toml pytest uvicorn
+
     - name: Load cached venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
     - name: Install obb Dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: |
         python openbb_platform/dev_install.py -e
 
