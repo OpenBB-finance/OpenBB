@@ -61,11 +61,24 @@ jobs:
       run: |
         python openbb_platform/dev_install.py -e
 
-    - name: Populate Setting Files
+    - name: Populate System Setting Files
+      run: |
+        touch ${{ github.workspace }}/openbb_platform/system_settings.json
+        echo '{"log_collect":false}' > ${{ github.workspace }}/openbb_platform/system_settings.json
+
+    - name: Create and Populate user_settings.json from GitHub Secrets
       run: |
         touch ${{ github.workspace }}/openbb_platform/user_settings.json
-        echo '{"log_collect":false}' > ${{ github.workspace }}/openbb_platform/user_settings.json
-
+        echo '{
+          "credentials": {
+            "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
+            "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
+            "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
+            "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
+            "fred_api_key": "${{ secrets.FRED_API_KEY }}"
+          }
+        }' > ${{ github.workspace }}/openbb_platform/user_settings.json
+      
     - name: Launch the Uvicorn Process
       run: |
         uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
