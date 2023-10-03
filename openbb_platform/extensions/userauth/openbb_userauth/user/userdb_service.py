@@ -1,12 +1,11 @@
 """User service."""
-import json
-from pathlib import Path
 from typing import Optional
 
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.service.user_service import UserService
 from pymongo.mongo_client import MongoClient
 
 from openbb_userauth.user.repository.abstract.access_token_repository import (
@@ -29,7 +28,7 @@ from openbb_userauth.user.repository.mongodb.user_settings_repository import (
 )
 
 
-class UserDBService(metaclass=SingletonMeta):
+class UserDBService(UserService, metaclass=SingletonMeta):
     """Auth user service."""
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
@@ -46,9 +45,7 @@ class UserDBService(metaclass=SingletonMeta):
         valid_client = self.valid_client(client=mongodb_client)
 
         self._mongodb_client = mongodb_client
-        self._default_user_settings = (
-            default_user_settings or self.read_default()
-        )
+        self._default_user_settings = default_user_settings or self.read_default()
         self._token_repository = self.build_token_repository(
             mongodb_client=mongodb_client,
             access_token_repository=access_token_repository,
@@ -118,17 +115,6 @@ class UserDBService(metaclass=SingletonMeta):
         else:
             user_settings_repository = InMemoryUserSettingsRepository()
         return user_settings_repository
-
-    @classmethod
-    def read_default(cls, path: Optional[Path] = None) -> UserSettings:
-        """Read default user settings."""
-        path = path or cls.USER_SETTINGS_PATH
-
-        return (
-            UserSettings.model_validate(json.loads(path.read_text(encoding="utf-8")))
-            if path.exists()
-            else UserSettings()
-        )
 
     @staticmethod
     def valid_client(client: Optional[MongoClient] = None) -> bool:
