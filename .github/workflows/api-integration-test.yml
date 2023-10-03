@@ -45,7 +45,11 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
+      # - name: Configure Poetry
+      #   run: poetry config virtualenvs.in-project true
+
       - name: Install Python Dependencies
+        # source $(poetry env info --path)/bin/activate
         run: |
           pip install toml pytest uvicorn importlib-metadata requests
 
@@ -85,8 +89,7 @@ jobs:
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
-        run: |
-          sleep 60
+        run: sleep 60
 
       - name: Run Integration Tests
         run: |
