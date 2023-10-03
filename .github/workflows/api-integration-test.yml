@@ -48,6 +48,9 @@ jobs:
       - name: Configure Poetry
         run: poetry config virtualenvs.in-project true
 
+      - name: Install Dependencies with Poetry
+        run: poetry install -C ${{ github.workspace }}/openbb_platform -E all
+
       - name: Install Python Dependencies
         run: |
           source $(poetry env info --path)/bin/activate
