@@ -47,6 +47,7 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
+          source .venv/bin/activate
           pip install toml pytest uvicorn importlib-metadata requests
 
       # - name: Load cached venv
@@ -59,6 +60,7 @@ jobs:
       - name: Install obb Dependencies
         # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
+          source .venv/bin/activate
           python ${{ github.workspace }}/openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
@@ -82,14 +84,15 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
+          source .venv/bin/activate
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
-        run: |
-          sleep 60
+        run: sleep 60
 
       - name: Run Integration Tests
         run: |
+          source .venv/bin/activate
           pytest ${{ github.workspace }}/openbb_platform -m integration
 
     # - name: Upload summary to Slack
