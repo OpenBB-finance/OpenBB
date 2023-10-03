@@ -1,5 +1,5 @@
-from importlib import import_module
 import logging
+from importlib import import_module
 from types import ModuleType
 from typing import Callable
 
@@ -16,6 +16,7 @@ EXT_GROUP = "openbb_core_extension"
 EXT_NAME = Env().AUTH_EXTENSION
 
 logger = logging.getLogger("uvicorn.error")
+
 
 class UserAuthService(metaclass=SingletonMeta):
     def __init__(self) -> None:
