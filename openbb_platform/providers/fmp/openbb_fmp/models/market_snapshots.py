@@ -1,8 +1,7 @@
 """FMP Market Snapshots fetcher."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
 from openbb_fmp.utils.helpers import MARKETS
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.market_snapshots import (
@@ -35,32 +34,48 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     }
 
     name: Optional[str] = Field(
-        description="The name associated with the stock symbol."
+        description="The name associated with the stock symbol.", default=None
     )
-    price: Optional[float] = Field(description="The last price of the stock.")
+    price: Optional[float] = Field(
+        description="The last price of the stock.", default=None
+    )
 
     avg_volume: Optional[int] = Field(
-        description="Average volume of the stock.", alias="avgVolume"
+        description="Average volume of the stock.", alias="avgVolume", default=None
     )
     ma50: Optional[float] = Field(
-        description="The 50-day moving average.", alias="priceAvg50"
+        description="The 50-day moving average.", alias="priceAvg50", default=None
     )
     ma200: Optional[float] = Field(
-        description="The 200-day moving average.", alias="priceAvg200"
+        description="The 200-day moving average.", alias="priceAvg200", default=None
     )
     year_high: Optional[float] = Field(
-        description="The 52-week high.", alias="yearHigh"
+        description="The 52-week high.", alias="yearHigh", default=None
     )
-    year_low: Optional[float] = Field(description="The 52-week low.", alias="yearLow")
+    year_low: Optional[float] = Field(
+        description="The 52-week low.", alias="yearLow", default=None
+    )
     market_cap: Optional[float] = Field(
-        description="Market cap of the stock.", alias="marketCap"
+        description="Market cap of the stock.", alias="marketCap", default=None
     )
     shares_outstanding: Optional[float] = Field(
-        description="Number of shares outstanding.", alias="sharesOutstanding"
+        description="Number of shares outstanding.",
+        alias="sharesOutstanding",
+        default=None,
     )
-    eps: Optional[float] = Field(description="Earnings per share.")
-    pe: Optional[float] = Field(description="Price to earnings ratio.")
-    exchange: Optional[str] = Field(description="The exchange of the stock.")
+    eps: Optional[float] = Field(description="Earnings per share.", default=None)
+    pe: Optional[float] = Field(description="Price to earnings ratio.", default=None)
+    exchange: Optional[str] = Field(
+        description="The exchange of the stock.", default=None
+    )
+    timestamp: Optional[Union[int, float]] = Field(
+        description="The timestamp of the data.", default=None
+    )
+    earnings_announcement: Optional[str] = Field(
+        description="The earnings announcement of the stock.",
+        alias="earningsAnnouncement",
+        default=None,
+    )
 
 
 class FMPMarketSnapshotsFetcher(
@@ -92,13 +107,8 @@ class FMPMarketSnapshotsFetcher(
             raise RuntimeError(
                 f"Error fetching data from FMP  -> {response.status_code}"
             )
-        data = pd.DataFrame(response.json())
-        data = data.drop(columns=["timestamp", "earningsAnnouncement"]).fillna(0)
-        data = data[data["price"] > 0.01]
-        data["name"] = data["name"].replace(0, "")
-        return data.sort_values(by="changesPercentage", ascending=False).to_dict(
-            orient="records"
-        )
+        data = response.json()
+        return data
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPMarketSnapshotsData]:

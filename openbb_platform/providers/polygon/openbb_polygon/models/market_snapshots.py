@@ -24,41 +24,48 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
     """Polygon Market Snapshots Data."""
 
     vwap: Optional[float] = Field(
-        description="The volume weighted average price of the stock on the current trading day."
+        description="The volume weighted average price of the stock on the current trading day.",
+        default=None,
     )
     prev_open: Optional[float] = Field(
-        description="The previous trading session opening price."
+        description="The previous trading session opening price.", default=None
     )
     prev_high: Optional[float] = Field(
-        description="The previous trading session high price."
+        description="The previous trading session high price.", default=None
     )
     prev_low: Optional[float] = Field(
-        description="The previous trading session low price."
+        description="The previous trading session low price.", default=None
     )
     prev_volume: Optional[float] = Field(
-        description="The previous trading session volume."
+        description="The previous trading session volume.", default=None
     )
-    prev_vwap: Optional[float] = Field(description="The previous trading session VWAP.")
+    prev_vwap: Optional[float] = Field(
+        description="The previous trading session VWAP.", default=None
+    )
     last_updated: Optional[datetime] = Field(
         description="The last time the data was updated."
     )
-    bid: Optional[float] = Field(description="The current bid price.")
-    bid_size: Optional[int] = Field(description="The current bid size.")
-    ask_size: Optional[int] = Field(description="The current ask size.")
-    ask: Optional[float] = Field(description="The current ask price.")
+    bid: Optional[float] = Field(description="The current bid price.", default=None)
+    bid_size: Optional[int] = Field(description="The current bid size.", default=None)
+    ask_size: Optional[int] = Field(description="The current ask size.", default=None)
+    ask: Optional[float] = Field(description="The current ask price.", default=None)
     quote_timestamp: Optional[datetime] = Field(
-        description="The timestamp of the last quote."
+        description="The timestamp of the last quote.", default=None
     )
-    last_trade_price: Optional[float] = Field(description="The last trade price.")
-    last_trade_size: Optional[int] = Field(description="The last trade size.")
+    last_trade_price: Optional[float] = Field(
+        description="The last trade price.", default=None
+    )
+    last_trade_size: Optional[int] = Field(
+        description="The last trade size.", default=None
+    )
     last_trade_conditions: Optional[List[int]] = Field(
-        description="The last trade condition codes."
+        description="The last trade condition codes.", default=None
     )
     last_trade_exchange: Optional[int] = Field(
-        description="The last trade exchange ID code."
+        description="The last trade exchange ID code.", default=None
     )
     last_trade_timestamp: Optional[datetime] = Field(
-        description="The last trade timestamp."
+        description="The last trade timestamp.", default=None
     )
 
 
