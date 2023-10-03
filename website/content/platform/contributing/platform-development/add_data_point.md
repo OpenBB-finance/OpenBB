@@ -1,8 +1,9 @@
 ---
 title: Add a new data point
 sidebar_position: 3
-description: How to add a new data point to the OpenBB Platform
-keywords: [openbb, platform, introduction, data, contributing, documentation]
+description: Learn how to add a new data point to the OpenBB Platform.
+keywords: [openbb platform, introduction, data point, contributing, documentation,
+provider, QueryParams, Data, Fetcher, transform, extract]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

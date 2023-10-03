@@ -1,8 +1,8 @@
 ---
-title: Introduction to the OpenBB Platform
+title: OpenBB Platform - An Introduction
 sidebar_position: 1
-description: Introduction to the OpenBB Platform
-keywords: [openbb, platform, introduction, contributing, documentation]
+description: Learn how to contribute to the OpenBB Platform.
+keywords: [openbb platform, introduction, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -1,15 +1,15 @@
 ---
 title: Extensions in the OpenBB Platform
 sidebar_position: 2
-description: Introduction to the Extensions inside OpenBB Platform
-keywords: [openbb, platform, introduction, extension, contributing, documentation]
+description: Learn about the Extensions inside the OpenBB Platform.
+keywords: [openbb platform, introduction, extensions, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Extensions - Platform | OpenBB Docs" />
 
-An extension adds functionality to the OpenBB Platform. It can be a new data source, a new command, a new visualization, etc.
+Extensions add functionality to the OpenBB Platform. They can be a new data source, a new command, a new visualization, etc.
 
 ## Types of extensions
 

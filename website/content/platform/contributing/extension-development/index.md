@@ -1,15 +1,15 @@
 ---
 title: Extension Development
 sidebar_position: 1
-description: Introduction to the Extensions inside OpenBB Platform
-keywords: [openbb, platform, introduction, extension, contributing, documentation]
+description: Learn how to develop Extensions inside the OpenBB Platform.
+keywords: [openbb platform, introduction, extensions, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Extension Development - Platform | OpenBB Docs" />
 
-We have a Cookiecutter template that will help you get started. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
+We have a Cookiecutter template that will help you get started. It serves as a jumpstart for your extensions development, so you can focus on the data and not on the boilerplate.
 
 Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
 

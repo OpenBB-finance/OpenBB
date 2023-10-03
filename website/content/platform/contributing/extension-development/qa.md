@@ -1,8 +1,8 @@
 ---
 title: Extension QA
 sidebar_position: 3
-description: How to QA your extension
-keywords: [openbb, platform, introduction, qa, contributing, extension, documentation]
+description: Learn how to QA your extension.
+keywords: [openbb platform, introduction, qa, contributing, extension, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

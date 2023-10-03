@@ -1,8 +1,8 @@
 ---
 title: Setup your development environment
 sidebar_position: 2
-description: How to setup your development environment
-keywords: [openbb, platform, introduction, environment, setup, contributing, documentation]
+description: Learn how to setup your development environment for the OpenBB Platform.
+keywords: [openbb platform, introduction, environment, setup, contributing, documentation]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
