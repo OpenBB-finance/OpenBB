@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
 from openbb_core.app.model.user_settings import UserSettings
+
 from openbb_userauth.user.repository.abstract.user_settings_repository import (
     UserSettingsRepository as AbstractUserSettingsRepository,
 )

@@ -4,7 +4,6 @@ from typing import Callable
 from extensions.userauth.openbb_userauth.user.bootstrap import setup_default_users
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from openbb_userauth.auth.model.token_response import TokenResponse
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.hub_service import HubService
@@ -14,6 +13,7 @@ from typing_extensions import Annotated
 from openbb_userauth.auth.hook import (
     get_user_settings,
 )
+from openbb_userauth.auth.model.token_response import TokenResponse
 from openbb_userauth.auth.utils import (
     UserDBService,
     authenticate_user,

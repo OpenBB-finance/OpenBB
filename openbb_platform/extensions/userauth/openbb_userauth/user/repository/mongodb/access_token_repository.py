@@ -1,3 +1,5 @@
+from pymongo.mongo_client import MongoClient
+
 from openbb_userauth.auth.model.access_token import AccessToken
 from openbb_userauth.user.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
@@ -5,7 +7,6 @@ from openbb_userauth.user.repository.abstract.access_token_repository import (
 from openbb_userauth.user.repository.base.mongodb_repository import (
     Repository as BaseRepository,
 )
-from pymongo.mongo_client import MongoClient
 
 
 class AccessTokenRepository(BaseRepository[AccessToken], AbstractAccessTokenRepository):
