@@ -64,16 +64,6 @@ class UserDBService(UserService, metaclass=SingletonMeta):
         return self._mongodb_client
 
     @property
-    def default_user_settings(self) -> UserSettings:
-        """Return default user settings."""
-        return self._default_user_settings
-
-    @default_user_settings.setter
-    def default_user_settings(self, default_user_settings: UserSettings) -> None:
-        """Set default user settings."""
-        self._default_user_settings = default_user_settings
-
-    @property
     def access_token_repository(self) -> AbstractAccessTokenRepository:
         """Access token repository."""
         return self._token_repository
