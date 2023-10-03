@@ -1,15 +1,8 @@
 # Providers
 
-## Supported Providers
+## Available Providers
 
-All currently supported providers are listed below.
-
-| Provider | URL |
-| --- | --- |
-| [FMP](./fmp/README.md) | https://financialmodelingprep.com/ |
-| [Polygon](./polygon/README.md) | https://polygon.io/ |
-| [Benzinga](./benzinga/README.md) | https://www.benzinga.com/ |
-| [FRED](./fred/README.md) | https://fred.stlouisfed.org/ |
+See full list of available providers in the [EXTENSIONS file](../EXTENSIONS.md)
 
 ## Default Provider Configuration
 
@@ -54,3 +47,5 @@ openbb_platform
 ```
 
 The models define the data structures that are used to query the provider endpoints and store the response data.
+
+See [CONTRIBUTING file](../CONTRIBUTING.md) for more details
