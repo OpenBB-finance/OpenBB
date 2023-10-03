@@ -47,7 +47,8 @@ jobs:
 
     - name: Populate Setting Files
       run: |
-        echo '{"log_collect":false}' > ~/.openbb_platform/user_settings.json
+        touch ~/openbb_platform/user_settings.json
+        echo '{"log_collect":false}' > ~/openbb_platform/user_settings.json
 
     - name: Launch the Uvicorn Process
       run: |
