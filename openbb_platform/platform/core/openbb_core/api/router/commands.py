@@ -154,7 +154,7 @@ def build_api_wrapper(
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
-                UserService.read_default_user_settings(),
+                UserService.read_default(),
             )
         )
         execute = partial(command_runner.run, path, user_settings)

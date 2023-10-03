@@ -16,7 +16,7 @@ class UserService(metaclass=SingletonMeta):
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
     @classmethod
-    def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:
+    def read_default(cls, path: Optional[Path] = None) -> UserSettings:
         """Read default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
@@ -27,7 +27,7 @@ class UserService(metaclass=SingletonMeta):
         )
 
     @classmethod
-    def write_default_user_settings(
+    def write_default(
         cls,
         user_settings: UserSettings,
         path: Optional[Path] = None,
@@ -43,7 +43,7 @@ class UserService(metaclass=SingletonMeta):
     @classmethod
     def update_default(cls, user_settings: UserSettings) -> UserSettings:
         """Update default user settings."""
-        d1 = cls.read_default_user_settings().model_dump()
+        d1 = cls.read_default().model_dump()
         d2 = user_settings.model_dump() if user_settings else {}
         updated = cls.merge_dicts([d1, d2])
 

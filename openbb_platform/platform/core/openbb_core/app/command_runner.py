@@ -388,7 +388,7 @@ class CommandRunner:
     ) -> None:
         self._command_map = command_map or CommandMap()
         self._system_settings = system_settings or SystemService().system_settings
-        self._user_settings = user_settings or UserService.read_default_user_settings()
+        self._user_settings = user_settings or UserService.read_default()
 
         self._logging_service = LoggingService(
             system_settings=self._system_settings, user_settings=self._user_settings

@@ -47,7 +47,7 @@ class UserDBService(metaclass=SingletonMeta):
 
         self._mongodb_client = mongodb_client
         self._default_user_settings = (
-            default_user_settings or self.read_default_user_settings()
+            default_user_settings or self.read_default()
         )
         self._token_repository = self.build_token_repository(
             mongodb_client=mongodb_client,
@@ -120,7 +120,7 @@ class UserDBService(metaclass=SingletonMeta):
         return user_settings_repository
 
     @classmethod
-    def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:
+    def read_default(cls, path: Optional[Path] = None) -> UserSettings:
         """Read default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
