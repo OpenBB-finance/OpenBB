@@ -1,6 +1,7 @@
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
 import pandas as pd
+import pandas_ta as ta
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -10,12 +11,7 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_provider.abstract.data import Data
-from pydantic import (
-    NonNegativeFloat,
-    NonNegativeInt,
-    PositiveFloat,
-    PositiveInt,
-)
+from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
 from . import ta_helpers
 
@@ -525,6 +521,7 @@ def demark(
     show_all: bool = False,
     asint: bool = False,
     offset: int = 0,
+    # fillna: Optional[Union[float, int]] = None,
 ) -> OBBject[List[Data]]:
     """
     Demark sequential indicator
@@ -555,18 +552,10 @@ def demark(
     >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> demark_data = obb.ta.demark(data=stock_data.results,offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    demark_df = pd.DataFrame(
-        df_target.ta.td_seq(
-            offset=offset,
-            show_all=show_all,
-            asint=asint,
-            close=target,
-            prefix=target,
-        ).dropna()
-    )
+    demark = ta.td_seq(df_target[target], asint=True, show_all=True, offset=offset)
+    demark_df = pd.DataFrame(demark).set_index(df_target.index).dropna()
 
     results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
 
