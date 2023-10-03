@@ -1,4 +1,5 @@
 from importlib import import_module
+import logging
 from types import ModuleType
 from typing import Callable
 
@@ -14,16 +15,13 @@ from openbb_core.env import Env
 EXT_GROUP = "openbb_core_extension"
 EXT_NAME = Env().AUTH_EXTENSION
 
+logger = logging.getLogger("uvicorn.error")
 
 class UserAuthService(metaclass=SingletonMeta):
     def __init__(self) -> None:
         """Initializes UserAuthService."""
-        auth_extension = EXT_NAME
-        if auth_extension and self._is_installed(auth_extension):
-            entry_mod = self._get_entry_mod(auth_extension)
-            self._router = getattr(entry_mod, "router", None)
-            self._auth_hook = getattr(entry_mod, "auth_hook", None)
-        else:
+        ext_name = EXT_NAME
+        if not self.load_extension(ext_name):
             self._router = default_router
             self._auth_hook = default_hook
 
@@ -46,3 +44,12 @@ class UserAuthService(metaclass=SingletonMeta):
     def _get_entry_mod(ext_name: str, group: str = EXT_GROUP) -> ModuleType:
         """Get the module of the given auth_extension."""
         return import_module(entry_points(group=group)[ext_name].module)
+
+    def load_extension(self, ext_name: str) -> bool:
+        if ext_name and self._is_installed(ext_name):
+            entry_mod = self._get_entry_mod(ext_name)
+            self._router = getattr(entry_mod, "router")
+            self._auth_hook = getattr(entry_mod, "auth_hook")
+            logger.info("Loaded auth_extension: %s", ext_name)
+            return True
+        return False
