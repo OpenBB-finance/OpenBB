@@ -1,6 +1,5 @@
 """Test the commodity view."""
 
-import pytest
 
 from openbb_terminal.economy import commodity_view
 
