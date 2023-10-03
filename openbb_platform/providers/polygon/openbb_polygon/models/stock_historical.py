@@ -26,7 +26,9 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
-    interval: str = Field(default="1d", description="Data granularity.")
+    interval: str = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
+    )
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -82,7 +84,7 @@ class PolygonStockHistoricalFetcher(
         query: PolygonStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         multiplier, timespan = get_timespan_and_multiplier(query.interval)
@@ -127,7 +129,5 @@ class PolygonStockHistoricalFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        transformed_data = [PolygonStockHistoricalData.model_validate(d) for d in data]
-        transformed_data.sort(key=lambda x: x.date)
-        return transformed_data
+    def transform_data(data: List[Dict]) -> List[PolygonStockHistoricalData]:
+        return [PolygonStockHistoricalData.model_validate(d) for d in data]
