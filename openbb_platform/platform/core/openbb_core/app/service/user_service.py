@@ -7,18 +7,6 @@ from typing import Any, Dict, List, MutableMapping, Optional
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.repository.abstract.access_token_repository import (
-    AccessTokenRepository as AbstractAccessTokenRepository,
-)
-from openbb_core.app.repository.abstract.user_settings_repository import (
-    UserSettingsRepository as AbstractUserSettingsRepository,
-)
-from openbb_core.app.repository.in_memory.access_token_repository import (
-    AccessTokenRepository as InMemoryAccessTokenRepository,
-)
-from openbb_core.app.repository.in_memory.user_settings_repository import (
-    UserSettingsRepository as InMemoryUserSettingsRepository,
-)
 
 
 class UserService(metaclass=SingletonMeta):
@@ -26,34 +14,6 @@ class UserService(metaclass=SingletonMeta):
 
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
-
-    def __init__(
-        self,
-        access_token_repository: Optional[AbstractAccessTokenRepository] = None,
-        user_settings_repository: Optional[AbstractUserSettingsRepository] = None,
-        default_user_settings: Optional[UserSettings] = None,
-    ):
-        self._token_repository = self.build_token_repository(access_token_repository)
-        self._user_settings_repository = self.build_user_settings_repository(
-            user_settings_repository
-        )
-        self._default_user_settings = (
-            default_user_settings or self.read_default_user_settings()
-        )
-
-    @staticmethod
-    def build_token_repository(
-        access_token_repository: Optional[AbstractAccessTokenRepository] = None,
-    ) -> AbstractAccessTokenRepository:
-        """Build token repository."""
-        return access_token_repository or InMemoryAccessTokenRepository()
-
-    @staticmethod
-    def build_user_settings_repository(
-        user_settings_repository: Optional[AbstractUserSettingsRepository] = None,
-    ) -> AbstractUserSettingsRepository:
-        """Build user settings repository."""
-        return user_settings_repository or InMemoryUserSettingsRepository()
 
     @classmethod
     def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:

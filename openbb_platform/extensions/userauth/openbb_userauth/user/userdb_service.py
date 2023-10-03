@@ -13,19 +13,20 @@ from openbb_core.app.repository.abstract.access_token_repository import (
 from openbb_core.app.repository.abstract.user_settings_repository import (
     UserSettingsRepository as AbstractUserSettingsRepository,
 )
-from openbb_core.app.repository.in_memory.access_token_repository import (
+from pymongo.mongo_client import MongoClient
+
+from openbb_userauth.user.repository.in_memory.access_token_repository import (
     AccessTokenRepository as InMemoryAccessTokenRepository,
 )
-from openbb_core.app.repository.in_memory.user_settings_repository import (
+from openbb_userauth.user.repository.in_memory.user_settings_repository import (
     UserSettingsRepository as InMemoryUserSettingsRepository,
 )
-from openbb_core.app.repository.mongodb.access_token_repository import (
+from openbb_userauth.user.repository.mongodb.access_token_repository import (
     AccessTokenRepository as MongoDBAccessTokenRepository,
 )
-from openbb_core.app.repository.mongodb.user_settings_repository import (
+from openbb_userauth.user.repository.mongodb.user_settings_repository import (
     UserSettingsRepository as MongoDBUserSettingsRepository,
 )
-from pymongo.mongo_client import MongoClient
 
 
 class UserDBService(metaclass=SingletonMeta):

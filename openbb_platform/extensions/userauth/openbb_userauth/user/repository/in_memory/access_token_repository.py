@@ -4,7 +4,7 @@ from openbb_core.api.model.access_token import AccessToken
 from openbb_core.app.repository.abstract.access_token_repository import (
     AccessTokenRepository as AbstractAccessTokenRepository,
 )
-from openbb_core.app.repository.base.in_memory_repository import (
+from openbb_userauth.user.repository.base.in_memory_repository import (
     Repository as BaseRepository,
 )
 

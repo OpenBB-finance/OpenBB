@@ -1,14 +1,13 @@
 from typing import Any, List, Optional, Tuple, Type, TypeVar
 
 from fastapi.encoders import jsonable_encoder
+from openbb_core.app.repository.abstract.repository import (
+    Repository as AbstractRepository,
+)
 from pydantic import BaseModel
 from pymongo.collection import Collection
 from pymongo.database import Database
 from pymongo.mongo_client import MongoClient
-
-from openbb_core.app.repository.abstract.repository import (
-    Repository as AbstractRepository,
-)
 
 T = TypeVar("T", bound=BaseModel)
 

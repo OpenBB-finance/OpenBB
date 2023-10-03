@@ -1,14 +1,13 @@
 from typing import Any, List, Optional, Tuple
 
-from pymongo.mongo_client import MongoClient
-
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.repository.abstract.user_settings_repository import (
     UserSettingsRepository as AbstractUserSettingsRepository,
 )
-from openbb_core.app.repository.base.mongodb_repository import (
+from openbb_userauth.user.repository.base.mongodb_repository import (
     Repository as BaseRepository,
 )
+from pymongo.mongo_client import MongoClient
 
 
 class UserSettingsRepository(

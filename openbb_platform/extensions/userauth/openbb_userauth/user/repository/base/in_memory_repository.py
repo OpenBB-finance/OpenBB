@@ -1,10 +1,9 @@
 from typing import Any, Dict, List, Optional, Tuple, TypeVar
 
-from pydantic import BaseModel
-
 from openbb_core.app.repository.abstract.repository import (
     Repository as AbstractRepository,
 )
+from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
 
