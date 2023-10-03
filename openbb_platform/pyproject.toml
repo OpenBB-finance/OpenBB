@@ -34,7 +34,6 @@ openbb-futures = { version = "^0.1.0a2", optional = true }
 openbb-qa = { version = "^0.1.0a2", optional = true }
 openbb-ta = { version = "^0.1.0a2", optional = true }
 openbb-econometrics = { version = "^0.1.0a2", optional = true }
-openbb-userauth = { version = "^0.1.0a2", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
@@ -46,7 +45,6 @@ futures = ["openbb-futures"]
 qa = ["openbb-qa"]
 ta = ["openbb-ta"]
 econometrics = ["openbb-econometrics"]
-userauth = ["openbb-userauth"]
 
 all = [
     "openbb-alpha-vantage",
@@ -58,7 +56,6 @@ all = [
     "openbb-qa",
     "openbb-ta",
     "openbb-econometrics",
-    "openbb-userauth"
 ]
 
 [tool.poetry.group.dev.dependencies]
