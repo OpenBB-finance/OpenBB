@@ -64,7 +64,7 @@ jobs:
         # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         # python ${{ github.workspace }}/openbb_platform/dev_install.py -e
         run: |
-          poetry install ${{ github.workspace }}/openbb_platform/.
+          poetry install ${{ github.workspace }}/openbb_platform/
 
       - name: Populate System Setting Files
         run: |
