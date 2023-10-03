@@ -45,12 +45,13 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Configure Poetry
-        run: poetry config virtualenvs.in-project true
+      # - name: Configure Poetry
+      #   run: poetry config virtualenvs.in-project true
 
       - name: Install Python Dependencies
         # source $(poetry env info --path)/bin/activate
         run: |
+          poetry shell
           pip install toml pytest uvicorn importlib-metadata requests
 
       # - name: Load cached venv
@@ -62,9 +63,9 @@ jobs:
 
       - name: Install obb Dependencies
         # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        # python ${{ github.workspace }}/openbb_platform/dev_install.py -e
         run: |
-          poetry install ${{ github.workspace }}/openbb_platform/
+          poetry shell
+          python ${{ github.workspace }}/openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
         run: |
@@ -87,13 +88,15 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
-          poetry run uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
+          poetry shell
+          uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
         run: sleep 60
 
       - name: Run Integration Tests
         run: |
+          poetry shell
           pytest ${{ github.workspace }}/openbb_platform -m integration
 
     # - name: Upload summary to Slack
