@@ -49,26 +49,26 @@ jobs:
       run: |
         pip install toml pytest uvicorn
 
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v3
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+    # - name: Load cached venv
+    #   id: cached-poetry-dependencies
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: .venv
+    #     key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
     - name: Install obb Dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: |
         python openbb_platform/dev_install.py -e
 
     - name: Populate System Setting Files
       run: |
-        touch ${{ github.workspace }}/openbb_platform/system_settings.json
-        echo '{"log_collect":false}' > ${{ github.workspace }}/openbb_platform/system_settings.json
+        touch ${{ github.workspace }}/.openbb_platform/system_settings.json
+        echo '{"log_collect":false}' > ${{ github.workspace }}/.openbb_platform/system_settings.json
 
     - name: Create and Populate user_settings.json from GitHub Secrets
       run: |
-        touch ${{ github.workspace }}/openbb_platform/user_settings.json
+        touch ${{ github.workspace }}/.openbb_platform/user_settings.json
         echo '{
           "credentials": {
             "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
@@ -77,7 +77,7 @@ jobs:
             "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
             "fred_api_key": "${{ secrets.FRED_API_KEY }}"
           }
-        }' > ${{ github.workspace }}/openbb_platform/user_settings.json
+        }' > ${{ github.workspace }}/.openbb_platform/user_settings.json
       
     - name: Launch the Uvicorn Process
       run: |
