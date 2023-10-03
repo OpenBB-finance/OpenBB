@@ -59,7 +59,7 @@ jobs:
       - name: Install obb Dependencies
         # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          python openbb_platform/dev_install.py -e
+          python ${{ github.workspace }}/.openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
         run: |
