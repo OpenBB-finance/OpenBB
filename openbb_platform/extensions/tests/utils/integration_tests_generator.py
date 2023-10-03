@@ -1,6 +1,6 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
-from typing import Any, Dict, List, Literal, get_origin, Tuple, Type, get_type_hints
+from typing import Any, Dict, List, Literal, Tuple, Type, get_origin, get_type_hints
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap

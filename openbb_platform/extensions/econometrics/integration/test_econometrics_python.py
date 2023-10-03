@@ -2,6 +2,7 @@
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
@@ -10,13 +11,12 @@ def obb(pytestconfig):
         import openbb
 
         return openbb.obb
-    
+
 
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'return': ''}),
-
+        ({"data": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -30,8 +30,7 @@ def test_econometrics_corr(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -45,8 +44,7 @@ def test_econometrics_ols(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -60,8 +58,7 @@ def test_econometrics_ols_summary(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -75,8 +72,7 @@ def test_econometrics_dwat(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'lags': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "lags": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -90,8 +86,7 @@ def test_econometrics_bgot(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'columns': '', 'return': ''}),
-
+        ({"data": "", "columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -105,8 +100,7 @@ def test_econometrics_coint(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_column': '', 'lag': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_column": "", "lag": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -120,8 +114,7 @@ def test_econometrics_granger(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'column': '', 'regression': '', 'return': ''}),
-
+        ({"data": "", "column": "", "regression": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -135,8 +128,7 @@ def test_econometrics_unitroot(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -150,8 +142,7 @@ def test_econometrics_panelre(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -165,8 +156,7 @@ def test_econometrics_panelbols(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -180,8 +170,7 @@ def test_econometrics_panelpols(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -195,8 +184,7 @@ def test_econometrics_panelols(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -210,8 +198,7 @@ def test_econometrics_panelfd(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'y_column': '', 'x_columns': '', 'return': ''}),
-
+        ({"data": "", "y_column": "", "x_columns": "", "return": ""}),
     ],
 )
 @pytest.mark.integration

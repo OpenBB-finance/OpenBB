@@ -2,6 +2,7 @@
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
@@ -10,13 +11,12 @@ def obb(pytestconfig):
         import openbb
 
         return openbb.obb
-    
+
 
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'return': ''}),
-
+        ({"data": "", "target": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -30,8 +30,7 @@ def test_qa_normality(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'return': ''}),
-
+        ({"data": "", "target": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -45,8 +44,15 @@ def test_qa_capm(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'threshold_start': '', 'threshold_end': '', 'return': ''}),
-
+        (
+            {
+                "data": "",
+                "target": "",
+                "threshold_start": "",
+                "threshold_end": "",
+                "return": "",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -60,8 +66,7 @@ def test_qa_om(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'window': '', 'return': ''}),
-
+        ({"data": "", "target": "", "window": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -75,8 +80,7 @@ def test_qa_kurtosis(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'fuller_reg': '', 'kpss_reg': '', 'return': ''}),
-
+        ({"data": "", "target": "", "fuller_reg": "", "kpss_reg": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -90,8 +94,7 @@ def test_qa_unitroot(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'rfr': '', 'window': '', 'return': ''}),
-
+        ({"data": "", "target": "", "rfr": "", "window": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -105,8 +108,16 @@ def test_qa_sh(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'target_return': '', 'window': '', 'adjusted': '', 'return': ''}),
-
+        (
+            {
+                "data": "",
+                "target": "",
+                "target_return": "",
+                "window": "",
+                "adjusted": "",
+                "return": "",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -120,8 +131,7 @@ def test_qa_so(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'window': '', 'return': ''}),
-
+        ({"data": "", "target": "", "window": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -135,8 +145,7 @@ def test_qa_skew(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'window': '', 'quantile_pct': '', 'return': ''}),
-
+        ({"data": "", "target": "", "window": "", "quantile_pct": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
@@ -150,8 +159,7 @@ def test_qa_quantile(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'data': '', 'target': '', 'return': ''}),
-
+        ({"data": "", "target": "", "return": ""}),
     ],
 )
 @pytest.mark.integration
