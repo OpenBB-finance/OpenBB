@@ -1,18 +1,30 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
-from typing import Any, Dict, List, Literal, get_origin
+from typing import Any, Dict, List, Literal, Tuple, Type, get_origin, get_type_hints
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
-cm = CommandMap(coverage_sep=".")
+TEST_TEMPLATE = """\n\n@pytest.mark.parametrize(
+    "params",
+    [
+        {params}
+    ],
+)
+@pytest.mark.integration
+def test_{test_name}(params, obb):
+    result = obb.{command_name}(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+"""
 
 
 def find_extensions():
     """Find extensions."""
-    filter_ext = ["tests", "ta", "qa", "econometrics", "charting"]
+    filter_ext = ["tests", "charting"]
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
@@ -103,83 +115,131 @@ def get_test_params(
     return test_params_list
 
 
+def get_test_params_data_processing(hints: Dict[str, Type]):
+    return list(hints.keys())
+
+
+def get_full_command_name_and_test_name(route: str) -> Tuple[str, str]:
+    """Get the full command name and test name."""
+
+    cmd_parts = route.split("/")
+    del cmd_parts[0]
+
+    menu = cmd_parts[0]
+    command = cmd_parts[-1]
+    sub_menus = cmd_parts[1:-1]
+
+    sub_menus_str_test_name = f"_{'_'.join(sub_menus)}" if sub_menus else ""
+    sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
+
+    full_command = f"{menu}{sub_menu_str_cmd}.{command}"
+    test_name = f"{menu}{sub_menus_str_test_name}_{command}"
+
+    return test_name, full_command
+
+
+def test_exists(command_name: str, path: str):
+    with open(path) as f:
+        return command_name in f.read()
+
+
+def write_to_file_w_template(test_file, params_list, full_command, test_name):
+    params = ""
+    for test_params in params_list:
+        params += f"({test_params}),\n"
+
+    if not test_exists(command_name=full_command, path=test_file):
+        with open(test_file, "a", encoding="utf-8", newline="\n") as f:
+            f.write(
+                TEST_TEMPLATE.format(
+                    test_name=test_name,
+                    command_name=full_command,
+                    params=params,
+                )
+            )
+
+
+def write_test(
+    test_file: PosixPath,
+    commands_model: Dict[str, str],
+    extension_name: str,
+    provider_interface_map: Dict[str, Any],
+):
+    """Write test."""
+
+    for route, model in commands_model.items():
+        if extension_name in route and route.startswith(f"/{extension_name}/"):
+            test_name, full_command = get_full_command_name_and_test_name(route=route)
+
+            test_params_list = get_test_params(
+                model_name=model,
+                provider_interface_map=provider_interface_map,
+            )
+
+            write_to_file_w_template(
+                test_file=test_file,
+                params_list=test_params_list,
+                full_command=full_command,
+                test_name=test_name,
+            )
+
+
+def write_test_data_processing(
+    test_file: PosixPath, commands_map: Dict[str, str], extension_name: str
+):
+    """Write test for data processing commands."""
+
+    for route, _ in commands_map.items():
+        if extension_name in route and route.startswith(f"/{extension_name}/"):
+            test_name, full_command = get_full_command_name_and_test_name(route=route)
+
+            hints = get_type_hints(commands_map[route])
+            test_params_list = [{k: "" for k in get_test_params_data_processing(hints)}]
+
+            write_to_file_w_template(
+                test_file=test_file,
+                params_list=test_params_list,
+                full_command=full_command,
+                test_name=test_name,
+            )
+
+
 def add_test_commands_to_file(  # pylint: disable=W0102
     extensions: List[PosixPath],
-    commands_model: Dict[str, str] = cm.commands_model,
 ) -> None:
     """Add test commands to file."""
+
     provider_interface = ProviderInterface()
     provider_interface_map = provider_interface.map
 
-    template = """\n\n@pytest.mark.parametrize(
-    "params",
-    [
-        {params}
-    ],
-)
-@pytest.mark.integration
-def test_{test_name}(**params, obb):
-    result = obb.{command_name}(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-"""
+    cm = CommandMap()
+    commands_model = cm.commands_model
+    commands_map = cm.map
+
+    extensions_names = [path.name for path in extensions]
+    extensions_w_models = list({route.split("/")[1] for route in commands_model})
+    extensions_data_processing = [
+        ext for ext in extensions_names if ext not in extensions_w_models
+    ]
+
     for extension in extensions:
         extension_name = extension.name
         test_file_name = f"test_{extension_name}_python.py"
         test_file = extension / "integration" / test_file_name
-        with open(test_file, "a", encoding="utf-8", newline="\n") as f:
-            for command in commands_model:
-                if extension_name in command and command.startswith(
-                    f".{extension_name}."
-                ):
-                    extension_name = command.split(".")[1]
 
-                    if len(command.split(".")) > 3:
-                        test_name = (
-                            extension_name
-                            + "_"
-                            + command.split(".")[2]
-                            + "_"
-                            + command.split(".")[3]
-                        )
-                    elif len(command.split(".")) == 3:
-                        test_name = extension_name + "_" + command.split(".")[2]
-
-                    command_name = command.split(".")[-1]
-                    if "_" in command_name:
-                        full_command_name = test_name.replace("_", ".", 2)
-                        # The code below double checks if the full command name is correct.
-                        # This eliminates edge cases.
-                        fix_full_command_name = full_command_name.split(".")
-                        for i, part in enumerate(fix_full_command_name):
-                            if part == command_name.split("_")[0]:
-                                fix_full_command_name[i] = command_name
-                                fix_full_command_name.pop()
-
-                        full_command_name = ".".join(fix_full_command_name)
-
-                    else:
-                        full_command_name = test_name.replace("_", ".")
-
-                    test_params_list = get_test_params(
-                        model_name=commands_model[command],
-                        provider_interface_map=provider_interface_map,
-                    )
-
-                    params = ""
-                    for test_params in test_params_list:
-                        params += f"({test_params}),\n"
-
-                    read_file = open(test_file)  # noqa
-                    if full_command_name not in read_file.read():
-                        f.write(
-                            template.format(
-                                test_name=test_name,
-                                command_name=full_command_name,
-                                params=params,
-                            )
-                        )
+        if extension_name in extensions_data_processing:
+            write_test_data_processing(
+                test_file=test_file,
+                commands_map=commands_map,
+                extension_name=extension_name,
+            )
+        else:
+            write_test(
+                test_file=test_file,
+                commands_model=commands_model,
+                extension_name=extension_name,
+                provider_interface_map=provider_interface_map,
+            )
 
 
 def write_integration_test() -> None:
