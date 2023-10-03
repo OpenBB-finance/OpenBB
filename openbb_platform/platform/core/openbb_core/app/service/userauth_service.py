@@ -4,7 +4,10 @@ from typing import Callable
 
 from fastapi import APIRouter
 from importlib_metadata import entry_points
-from openbb_core.api.router.user import router as DefaultRouter
+from openbb_core.api.router.user import (
+    auth_hook as default_hook,
+    router as default_router,
+)
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.env import Env
 
@@ -12,16 +15,8 @@ EXT_GROUP = "openbb_core_extension"
 EXT_NAME = Env().AUTH_EXTENSION
 
 
-def get_user_settings():
-    pass
-
-
 class UserAuthService(metaclass=SingletonMeta):
-    def __init__(
-        self,
-        default_router: APIRouter = DefaultRouter,
-        default_auth_hook: Callable = get_user_settings,
-    ) -> None:
+    def __init__(self) -> None:
         """Initializes UserAuthService."""
         auth_extension = EXT_NAME
         if auth_extension and self._is_installed(auth_extension):
@@ -30,7 +25,7 @@ class UserAuthService(metaclass=SingletonMeta):
             self._auth_hook = getattr(entry_mod, "auth_hook", None)
         else:
             self._router = default_router
-            self._auth_hook = default_auth_hook
+            self._auth_hook = default_hook
 
     @property
     def router(self) -> APIRouter:

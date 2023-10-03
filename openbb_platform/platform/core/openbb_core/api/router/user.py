@@ -1,14 +1,16 @@
 """OpenBB API Account Router."""
+
 from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi.security import HTTPBasic
+from openbb_core.api.dependency.user import get_current_username
 from typing_extensions import Annotated
 
 security = HTTPBasic()
 
 router = APIRouter(prefix="/user", tags=["User"])
-auth_hook = lambda: None
+auth_hook = get_current_username
 
 
 @router.get("/me")
-def read_current_user(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
-    return {"username": credentials.username, "password": credentials.password}
+def read_current_user(username: Annotated[str, Depends(get_current_username)]):
+    return {"username": username}
