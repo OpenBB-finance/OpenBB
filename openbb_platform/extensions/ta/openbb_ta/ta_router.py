@@ -518,8 +518,8 @@ def demark(
     data: List[Data],
     index: str = "date",
     target: str = "close",
-    show_all: bool = False,
-    asint: bool = False,
+    show_all: bool = True,
+    asint: bool = True,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
     """
@@ -536,7 +536,7 @@ def demark(
     show_all : bool, optional
         Show 1 - 13. If set to False, show 6 - 9
     asint : bool, optional
-        If True, fill NAs with 0 and change type to int, by default False
+        If True, fill NAs with 0 and change type to int, by default True.
     offset : int, optional
         How many periods to offset the result
 
@@ -554,9 +554,8 @@ def demark(
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     demark = ta.td_seq(df_target[target], asint=asint, show_all=show_all, offset=offset)
-    demark_df = pd.DataFrame(demark).set_index(df_target.index).dropna()
-
-    results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
+    demark_df = df[[target]].reset_index().join(demark)
+    results = df_to_basemodel(demark_df, index="date")
 
     return OBBject(results=results)
 
