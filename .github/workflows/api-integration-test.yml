@@ -63,6 +63,7 @@ jobs:
 
     - name: Populate System Setting Files
       run: |
+        mkdir -p ${{ github.workspace }}/.openbb_platform
         touch ${{ github.workspace }}/.openbb_platform/system_settings.json
         echo '{"log_collect":false}' > ${{ github.workspace }}/.openbb_platform/system_settings.json
 
