@@ -47,7 +47,7 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
-          pip install toml pytest uvicorn importlib-metadata
+          pip install toml pytest uvicorn importlib-metadata requests
 
       # - name: Load cached venv
       #   id: cached-poetry-dependencies
