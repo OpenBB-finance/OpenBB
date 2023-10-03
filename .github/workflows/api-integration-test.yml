@@ -90,7 +90,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-          pytest -m integration
+          pytest ${{ github.workspace }}/openbb_platform -m integration
 
     # - name: Upload summary to Slack
     #   uses: adrey/slack-file-upload-action@master
