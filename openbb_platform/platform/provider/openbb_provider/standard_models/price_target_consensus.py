@@ -26,7 +26,9 @@ class PriceTargetConsensusQueryParams(QueryParams):
 class PriceTargetConsensusData(Data):
     """Price target consensus Data."""
 
-    symbol: Optional[str] = Field(default=None, description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     target_high: Optional[float] = Field(
         default=None, description="High target of the price target consensus."
     )
