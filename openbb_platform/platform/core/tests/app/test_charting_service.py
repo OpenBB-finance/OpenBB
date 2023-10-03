@@ -272,17 +272,18 @@ def test_get_implemented_charting_functions(
 
 
 @pytest.mark.parametrize(
-    "charting_extension_installed, expected_result",
-    [(True, ...), (False, ChartingServiceError)],
+    "charting_extension_installed",
+    [(True), (False)],
 )
 @patch("openbb_core.app.charting_service.ChartingService._handle_backend")
 @patch("openbb_core.app.charting_service.import_module")
+@patch("openbb_core.app.charting_service.ChartingService._get_chart_format")
 def test_to_chart(
+    mock_get_chart_format,
     mock_import_module,
     mock_handle_backend,
     charting_service,
     charting_extension_installed,
-    expected_result,
 ):
     charting_service._charting_extension_installed = charting_extension_installed
 
@@ -294,8 +295,9 @@ def test_to_chart(
             return ("mock_fig", {"content": "mock_content"})
 
     mock_import_module.return_value = MockBackendModule()
+    mock_get_chart_format.return_value = "plotly"
 
-    if expected_result != ChartingServiceError:
+    if charting_extension_installed:
         result = charting_service.to_chart()
 
         assert isinstance(result, Chart)
