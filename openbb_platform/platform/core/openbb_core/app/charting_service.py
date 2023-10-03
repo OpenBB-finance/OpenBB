@@ -188,9 +188,9 @@ class ChartingService(metaclass=SingletonMeta):
         Given an extension name, it returns the implemented charting functions from its router.
         """
 
-        module = cls._get_extension_router(extension_name)
-
-        if not module:
+        try:
+            module = cls._get_extension_router(extension_name)
+        except ChartingServiceError:
             return []
 
         implemented_functions = []
