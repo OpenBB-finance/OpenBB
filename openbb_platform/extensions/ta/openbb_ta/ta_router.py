@@ -555,7 +555,7 @@ def demark(
     df_target = get_target_column(df, target).to_frame()
     demark = ta.td_seq(df_target[target], asint=asint, show_all=show_all, offset=offset)
     demark_df = df[[target]].reset_index().join(demark)
-    results = df_to_basemodel(demark_df, index="date")
+    results = df_to_basemodel(demark_df)
 
     return OBBject(results=results)
 
@@ -1357,7 +1357,7 @@ def cones(
         data=df, lower_q=lower_q, upper_q=upper_q, model=model, is_crypto=is_crypto
     )
 
-    results = df_to_basemodel(df_cones, index=True)
+    results = df_to_basemodel(df_cones)
 
     return OBBject(results=results)
 
