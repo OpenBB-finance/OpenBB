@@ -1,10 +1,10 @@
-import React from "react";
-import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
+import clsx from "clsx";
+import React from "react";
 import ChevronRightIcon from "../components/Icons/ChevronRight";
-import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
 import DarkBlueRadialGradient from "../components/Icons/RadialGradients/DarkBlue";
+import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
 
 export default function Home(): JSX.Element {
   return (
@@ -39,7 +39,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
@@ -50,18 +50,18 @@ export default function Home(): JSX.Element {
               style={{
                 backgroundSize: "100% 130%",
               }}
-              to="/sdk"
+              to="/platform"
               className="bg-[url(/img/sdk_bg_light.png)] dark:bg-[url('/img/sdk_bg.png')] bg-no-repeat shadow-sm group !no-underline text-grey-900 dark:text-white hover:text-grey-900 dark:hover:border-white hover:border-grey-600/80 dark:hover:!text-white relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 bg-white dark:bg-grey-900"
             >
               <h3 className="uppercase tracking-widest font-bold mb-3 mt-0">
-                OpenBB SDK
+                OpenBB Platform
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
                 Python library that allows access to investment research data.
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
@@ -84,7 +84,7 @@ export default function Home(): JSX.Element {
               </p>
               <p
                 className={clsx(
-                  "mt-auto inline-flex items-center gap-2 font-normal text-sm"
+                  "mt-auto inline-flex items-center gap-2 font-normal text-sm",
                 )}
               >
                 See more
