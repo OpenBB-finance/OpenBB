@@ -23,12 +23,13 @@ class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
 
     limit: Optional[NonNegativeInt] = Field(
-        default=None, description="Number of days to look back (Only for interval 1d).",
+        default=None,
+        description="Number of days to look back (Only for interval 1d).",
         alias="timeseries",
     )
-    interval: Literal[
-        "1m", "5m", "15m", "30m", "1h", "4h", "1d"
-    ] = Field(default="1d", description="Time granularity to fetch data for.")
+    interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
+        default="1d", description="Time granularity to fetch data for."
+    )
 
 
 class FMPStockHistoricalData(StockHistoricalData):
