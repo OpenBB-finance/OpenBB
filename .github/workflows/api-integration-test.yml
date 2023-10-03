@@ -45,6 +45,9 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
+      - name: Configure Poetry
+        run: poetry config virtualenvs.in-project true
+
       - name: Install Python Dependencies
         run: |
           source .venv/bin/activate
