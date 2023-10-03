@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyAnalysts", "variables": {"symbol": "RY", "datatype":
+      "equity"}, "query": "query getCompanyAnalysts(\n      $symbol: String!\n      $dataType:
+      String,\n    ) {\n      analysts: getCompanyAnalysts(\n        datatype: $dataType,\n        symbol:
+      $symbol\n      ) {\n        totalAnalysts\n        priceTarget\n          {\n           highPriceTarget\n           lowPriceTarget\n           priceTarget\n           priceTargetUpside\n        }\n        consensusAnalysts\n          {\n          consensus\n          buy\n          sell\n          hold\n        }\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '604'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/RY
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"analysts":{"totalAnalysts":9,"priceTarget":{"highPriceTarget":180.73638,"lowPriceTarget":127.070978159097,"priceTarget":140.8100706,"priceTargetUpside":21.44},"consensusAnalysts":{"consensus":"Buy","buy":4,"sell":1,"hold":4}}}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '238'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 03 Oct 2023 05:44:04 GMT
+      ETag:
+      - W/"ee-Rd6ny7WV1reSl0jtFSeDCvF3+so"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

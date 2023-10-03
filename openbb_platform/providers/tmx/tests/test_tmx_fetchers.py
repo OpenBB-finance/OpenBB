@@ -7,6 +7,7 @@ from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
 from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
 from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
+from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -80,5 +81,14 @@ def test_tmx_company_filings_fetcher(credentials=test_credentials):
     params = {"symbol": "CNQ"}
 
     fetcher = TmxCompanyFilingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_price_target_consensus_fetcher(credentials=test_credentials):
+    params = {"symbol": "RY"}
+
+    fetcher = TmxPriceTargetConsensusFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
