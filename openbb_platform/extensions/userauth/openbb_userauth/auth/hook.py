@@ -8,10 +8,9 @@ from typing_extensions import Annotated
 from openbb_userauth.auth.utils import (
     ALGORITHM,
     SECRET_KEY,
-    get_userdb_service,
     oauth2_scheme,
 )
-from openbb_userauth.user.userdb_service import UserDBService
+from openbb_userauth.user.userdb_service import UserDBService, get_userdb_service
 
 
 async def get_user_settings(

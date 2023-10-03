@@ -20,8 +20,8 @@ from openbb_userauth.auth.utils import (
     create_access_token,
     create_jwt_token,
     get_password_hash,
-    get_userdb_service,
 )
+from openbb_userauth.user.userdb_service import get_userdb_service
 
 router = APIRouter(prefix="/user", tags=["User"])
 
