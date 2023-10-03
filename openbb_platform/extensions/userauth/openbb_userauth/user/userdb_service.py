@@ -42,10 +42,11 @@ class UserDBService(UserService, metaclass=SingletonMeta):
     ):
         """Initialize user service."""
 
+        super().__init__(default_user_settings)
+
         valid_client = self.valid_client(client=mongodb_client)
 
         self._mongodb_client = mongodb_client
-        self._default_user_settings = default_user_settings or self.read_default()
         self._token_repository = self.build_token_repository(
             mongodb_client=mongodb_client,
             access_token_repository=access_token_repository,

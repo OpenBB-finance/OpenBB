@@ -14,6 +14,12 @@ class UserService:
     USER_SETTINGS_PATH = USER_SETTINGS_PATH
     USER_SETTINGS_ALLOWED_FIELD_SET = {"credentials", "preferences", "defaults"}
 
+    def __init__(
+        self,
+        default_user_settings: Optional[UserSettings] = None,
+    ):
+        self._default_user_settings = default_user_settings or self.read_default()
+
     @classmethod
     def read_default(cls, path: Optional[Path] = None) -> UserSettings:
         """Read default user settings."""
