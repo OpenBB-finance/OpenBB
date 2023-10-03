@@ -16,9 +16,9 @@ class UserAuthService(metaclass=SingletonMeta):
         self._auth_hook: Optional[Callable] = None
         if self.is_installed:
             entry_mod = self._get_entry_mod("userauth")
-            self._router = self._get_router(entry_mod)
-            self._auth_hook = self._get_auth_hook(entry_mod)
-            self._bootstrap(entry_mod)
+            self._router = getattr(entry_mod, "router", None)
+            self._auth_hook = getattr(entry_mod, "get_auth_hook", lambda: None)()
+            getattr(entry_mod, "bootstrap", lambda: None)()
 
     @property
     def is_installed(self) -> bool:
@@ -34,25 +34,6 @@ class UserAuthService(metaclass=SingletonMeta):
     def auth_hook(self) -> Callable:
         """Gets authentication hook."""
         return self._auth_hook
-
-    @staticmethod
-    def _get_router(entry_mod: ModuleType) -> APIRouter:
-        """Get router."""
-        return getattr(entry_mod, "router", None)
-
-    @staticmethod
-    def _get_auth_hook(entry_mod: ModuleType) -> Callable:
-        """Get authentication hook."""
-        func = getattr(entry_mod, "get_auth_hook", None)
-        if func:
-            func()
-
-    @staticmethod
-    def _bootstrap(entry_mod: ModuleType) -> None:
-        """Bootstrap the extension with the given actions."""
-        func = getattr(entry_mod, "bootstrap", None)
-        if func:
-            func()
 
     @staticmethod
     def _is_installed(ext_name: str, group: str = EXT_GROUP) -> bool:
