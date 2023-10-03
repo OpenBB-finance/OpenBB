@@ -36,6 +36,16 @@ class Env(metaclass=SingletonMeta):
         return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
 
     @property
+    def AUTH_EXTENSION(self) -> str:
+        """Auth extension: specify auth extension"""
+        return self._environ.get("OPENBB_AUTH_EXTENSION", "openbb_userauth")
+
+    @property
+    def API_AUTH(self) -> bool:
+        """API authentication: enables commands authentication in FastAPI"""
+        return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))
+
+    @property
     def API_HUB_CONNECTION(self) -> str:
         """User auth extension: enables user auth extension"""
         return self.str2bool(self._environ.get("OPENBB_API_HUB_CONNECTION", True))

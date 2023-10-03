@@ -10,6 +10,7 @@ from openbb_core.app.app_loader import AppLoader
 from openbb_core.app.constants import VERSION
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.userauth_service import UserAuthService
+from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -52,7 +53,7 @@ async def startup():
     version = VERSION
     ON = "ENABLED"
     OFF = "DISABLED"
-    auth = ON if UserAuthService().is_installed else OFF
+    auth = ON if Env().API_AUTH else OFF
     banner = rf"""
 
                    ███╗

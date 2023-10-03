@@ -1,6 +1,4 @@
 """OpenBB API Account Router."""
-from typing import Callable
-
 from extensions.userauth.openbb_userauth.user.bootstrap import setup_default_users
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -24,11 +22,7 @@ from openbb_userauth.auth.utils import (
 from openbb_userauth.user.userdb_service import get_userdb_service
 
 router = APIRouter(prefix="/user", tags=["User"])
-
-
-def get_auth_hook() -> Callable:
-    """Get auth hook."""
-    return get_user_settings
+auth_hook = get_user_settings
 
 
 # Check if we want to remove this

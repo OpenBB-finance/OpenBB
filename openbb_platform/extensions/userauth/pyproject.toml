@@ -18,4 +18,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-userauth = "openbb_userauth.router:router"
+openbb_userauth = "openbb_userauth.router:router"
