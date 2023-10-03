@@ -243,7 +243,6 @@ class GQL:
         description
         name
         urlToPdf
-        __typename
       }
     }"""
 
@@ -325,4 +324,93 @@ class GQL:
             "datatype": "equity",
         },
         "query": get_company_analysts_query,
+    }
+
+    get_earnings_date_query = """query getEnhancedEarningsForDate(
+      $date: String!
+      ) {
+      getEnhancedEarningsForDate(
+        date: $date
+    ) {
+          symbol
+          companyName
+          announceTime
+          estimatedEps
+          actualEps
+          epsSurprisePercent
+          epsSurpriseDollar
+      }
+    }"""
+
+    get_earnings_date_payload = {
+        "operationName": "getEnhancedEarningsForDate",
+        "variables": {
+            "date": "2023-10-04",
+        },
+        "query": get_earnings_date_query,
+    }
+
+    get_index_overview_query = """query getIndexBySymbol(
+      $symbol: String!,
+      $locale: String
+      ) {
+      getIndexBySymbol(
+        symbol: $symbol,
+        locale: $locale
+    ) {
+          name
+          intro
+          overview
+      }
+    }"""
+
+    get_index_overview_payload = {
+        "operationName": "getIndexBySymbol",
+        "variables": {
+            "symbol": "^TSX",
+        },
+        "query": get_index_overview_query,
+    }
+
+    get_index_constituents_query = """query getIndexConstituents(
+      $symbol: String!
+    ) {
+        constituents: getIndexConstituents(
+          symbol: $symbol
+      ) {
+         symbol
+          quotedMarketValue
+          longName
+          shortName
+          weight
+          exShortName
+          exchange
+          exLongName
+      }
+        keyData: getIndexKeyData(
+          symbol: $symbol
+      ) {
+          adjMarketCap
+          avgConstituentMarketCap
+          numConstituents
+          top10HoldingsAdjMarketCap
+          ytdPriceReturn
+          prevDayPriceReturn
+          prevMonthPriceReturn
+          prevQuarterPriceReturn
+          percentWeightLargestConstituent
+          peRatio
+          pbRatio
+          priceToSales
+          divYield
+          pcfRatio
+        }
+      }"""
+
+    get_index_constituents_payload = {
+        "operationName": "getIndexConstituents",
+        "variables": {
+            "symbol": "^TSX",
+        },
+        "query": get_index_constituents_query,
     }

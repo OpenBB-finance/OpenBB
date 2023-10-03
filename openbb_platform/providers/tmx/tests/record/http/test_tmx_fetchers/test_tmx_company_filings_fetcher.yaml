@@ -1,0 +1,92 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyFilings", "variables": {"symbol": "CNQ", "fromDate":
+      "2023-06-12", "toDate": "2023-10-02", "limit": 100}, "query": "query getCompanyFilings(\n      $symbol:
+      String!\n      $fromDate: String\n      $toDate: String\n      $limit: Int\n    )
+      {\n      filings: getCompanyFilings(\n        symbol: $symbol\n        fromDate:
+      $fromDate\n        toDate: $toDate\n        limit: $limit\n      ) {\n        size\n        filingDate\n        description\n        name\n        urlToPdf\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '522'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Origin:
+      - https://money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-site
+      TE:
+      - trailers
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9VYy27bOBTd9ysILaYpUNN8k8ouUydAUfSBeawGs9DItMNCFg2SqtsG+fdeGW0n
+        dGrPVJFRFzDgB0X5HOncc8/VTTGvUlWc3xQL17h2GYvzv26K6D7a4rxgusRaoRe/Fk8/L8+qtF0g
+        jE+ImRAOK3Mb6+DWyfkWlp75Nrm2811EcxfrxscuWDiqrVb9TskmlJRXDE3QMxuSW7i66nciv0Cu
+        TTa4FfqMpD/k6jU6u3wC27vQ/OHfzBdwiuuU1ufT6Wazwa59Z2Py4T2uq+nM11PGiaGSKKmFJoap
+        4vbpv2wMxUT+SDaXw9kIwaS8ywZ+wJKOyuYCMF62y8bF6wEYFVNUK3oXI2cMl2JUjM+/XtW2amtX
+        NSgmOOfKtilOg137kB7IggvNRKYbDropR2Xxym4iCraxVbQPhEuMLsu7cKkpsRpXGOPBpbI0JtOI
+        oKARtheunjB9D+7vtu6CS85GKLQF6KH3ra9ogUwEOaDGJtDKWXzSV6NP1zYg+34NZQo/fTd2wTTV
+        Qmq2i93sV8YpYZfCmEwmssScjwn9ops7+PP4GNUZiUFw+yLk2aVWApP9VnJKl7p/ywyESoqFHhP7
+        GyhGtwILDB9QvO49b+HDCq2Dj2tbpy4+oEqBAimlUjqjwDkeVeivfDtxMXY2PI4odv+s4EvfOJNH
+        b2FbnLt620irdo6q9dpDN+09vr9H1RI+DKKltZEkp6Ux2R9wfhZe0HhlFnUohAN1RFPd5psvLBu7
+        hDZc+w6OaAbhF7vGqjVmo5rTFdRKg36ztYUNgzAyIWjuSJJjdQSQx6hnAlk4B085FgfBm9OwUyVl
+        KfU97PygGZ0MdkGUyrquIodGkAHQR+y6SjLwkWzI4CX5j5TwvXj/bOc2bPr1dol82Jpe/QHegt2G
+        +CG4RWl4Lm/Fy0ODxwlJRGiQd54WCJTmqBq5793dl7tge+U81MCVULSkMo888tDMNIDEcSOPEoLv
+        zlFcYDGqhn5ANlDwAiL3Ms/BNPpT8CJ9nMszj8DGHLduRss8ihsjtNnJPGLUipnZ2m3vA/xzt73g
+        Z9uEMcinOMw1PKsPyBVYj1ofx8o/iotdk5VaYbb/Icno4K8CtLlh2JlmjObYJTb7m7L6VvC884Bn
+        9o0HPC9nv1wMQ6lg4CWcSRisRNaCOaQ0tr+NDUH5/579DSZBGUy9fRv7+/b20ScB7+OPGBcAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 03 Oct 2023 02:54:34 GMT
+      ETag:
+      - W/"1718-FRDx6v40hBzmJPCHzflemYV1V+w"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

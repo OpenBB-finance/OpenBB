@@ -8,48 +8,40 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
 import requests
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.standard_models.company_filings import (
+    CompanyFilingsData,
+    CompanyFilingsQueryParams,
+)
 from openbb_tmx.utils.gql import GQL
 from openbb_tmx.utils.helpers import get_random_agent
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field
 
 
-class TmxCompanyFilingsQueryParams(QueryParams):
+class TmxCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """TMX Company Filings Query Parameters."""
 
-    symbol: str = Field(description="The ticker symbol to fetch.")
     start_date: Optional[Union[str, dateType]] = Field(
         description="The start date to fetch.",
-        default=(datetime.today() - timedelta(weeks=52)).strftime("%Y-%m-%d"),
+        default=(datetime.today() - timedelta(weeks=16)).strftime("%Y-%m-%d"),
     )
     end_date: Optional[Union[str, dateType]] = Field(
         description="The end date to fetch.",
         default=datetime.today().strftime("%Y-%m-%d"),
     )
-    limit: Optional[NonNegativeInt] = Field(
-        description="Limit the number of results to fetch.", default=100
-    )
-
-    @validator("symbol", pre=True, check_fields=False, always=True)
-    def upper_symbol(cls, v: str):
-        """Convert symbol to uppercase."""
-        v = v.upper()
-        if ".TO" in v or ".TSX" in v:
-            v = v.replace(".TO", "").replace(".TSX", "")
-        return v
 
 
-class TmxCompanyFilingsData(Data):
+class TmxCompanyFilingsData(CompanyFilingsData):
     """TMX Sedar Filings Data."""
 
-    date: dateType = Field(description="The date of the filing.", alias="filingDate")
-    form: str = Field(description="The name of the filing type.", alias="name")
+    __alias_dict__ = {
+        "date": "filingDate",
+        "type": "name",
+        "link": "urlToPdf",
+    }
+
     description: str = Field(description="The description of the filing.")
-    url: str = Field(description="The url to the PDF filing.", alias="urlToPdf")
     size: str = Field(description="The file size of the PDF document.")
 
 
@@ -71,38 +63,61 @@ class TmxCompanyFilingsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
 
-        results = []
+        results: List[Dict] = []
+
+        symbol = (
+            query.symbol.upper()
+            .replace("-", ".")
+            .replace(".TO", "")
+            .replace(".TSX", "")
+        )
 
         payload = GQL.get_company_filings_payload
-        payload["variables"]["symbol"] = query.symbol.upper()
+        payload["variables"]["symbol"] = symbol
         payload["variables"]["fromDate"] = query.start_date
         payload["variables"]["toDate"] = query.end_date
         payload["variables"]["limit"] = query.limit
         url = "https://app-money.tmx.com/graphql"
-        r = requests.post(
-            url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": f"https://money.tmx.com/en/quote/{query.symbol.upper()}",
-                "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": get_random_agent(),
-                "Accept": "*/*",
-            },
-            timeout=10,
-        )
+        try:
+            r = requests.post(
+                url,
+                data=json.dumps(payload),
+                headers={
+                    "Accept": "*/*",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
+                    "Connection": "keep-alive",
+                    "Content-Type": "application/json",
+                    "Host": "app-money.tmx.com",
+                    "Origin": "https://money.tmx.com",
+                    "Referer": "https://money.tmx.com/",
+                    "locale": "en",
+                    "Sec-Fetch-Dest": "empty",
+                    "Sec-Fetch-Mode": "cors",
+                    "Sec-Fetch-Site": "same-site",
+                    "TE": "trailers",
+                    "User-Agent": get_random_agent(),
+                },
+                timeout=20,
+            )
+        except requests.exceptions.Timeout as _e:
+            raise RuntimeError(
+                f"Timeout error - > {_e} - This can be due to a rate limit, or the request being too large. "
+                "Please try narrowing the search and try again."
+            )
         try:
             if r.status_code == 403:
                 raise RuntimeError(f"HTTP error - > {r.text}")
             else:
-                r_data = r.json()
+                try:
+                    r_data = r.json()
+                except json.decoder.JSONDecodeError as _e:
+                    raise RuntimeError(f"JSON decode error - > {_e}")
                 if len(r_data["data"]["filings"]) == 0:
                     return results
-                data = r_data["data"]["filings"]
-                results = pd.DataFrame.from_records(data).drop(columns=["__typename"])
+                results = r_data["data"]["filings"]
 
-                return results.to_dict("records")
+                return results
 
         except KeyError as _e:
             raise RuntimeError(_e, query.symbol.upper())

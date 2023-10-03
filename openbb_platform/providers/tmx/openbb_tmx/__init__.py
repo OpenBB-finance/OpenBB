@@ -2,6 +2,7 @@
 
 
 from openbb_provider.abstract.provider import Provider
+from openbb_tmx.models.company_filings import TmxCompanyFilingsFetcher
 from openbb_tmx.models.etf_countries import TmxEtfCountriesFetcher
 from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
@@ -27,6 +28,7 @@ tmx_provider = Provider(
     """,
     required_credentials=None,
     fetcher_dict={
+        "CompanyFilings": TmxCompanyFilingsFetcher,
         "EtfSearch": TmxEtfSearchFetcher,
         "EtfHoldings": TmxEtfHoldingsFetcher,
         "EtfSectors": TmxEtfSectorsFetcher,

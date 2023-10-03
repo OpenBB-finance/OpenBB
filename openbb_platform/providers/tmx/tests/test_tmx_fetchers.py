@@ -1,5 +1,6 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_tmx.models.company_filings import TmxCompanyFilingsFetcher
 from openbb_tmx.models.etf_countries import TmxEtfCountriesFetcher
 from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
@@ -70,5 +71,14 @@ def test_tmx_historical_dividends_fetcher(credentials=test_credentials):
     params = {"symbol": "RY"}
 
     fetcher = TmxHistoricalDividendsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_company_filings_fetcher(credentials=test_credentials):
+    params = {"symbol": "CNQ"}
+
+    fetcher = TmxCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -1,7 +1,8 @@
 """TMX Helpers Module."""
 
 from datetime import timedelta
-from typing import Dict, Literal
+from io import BytesIO
+from typing import Dict, List, Literal
 
 import pandas as pd
 import requests_cache
@@ -19,6 +20,10 @@ tmx_companies_session = requests_cache.CachedSession(
     "OpenBB_TMX_Companies", expire_after=timedelta(days=9), use_cache_dir=True
 )
 
+# Only used for obtaining the directory of all valid indices.
+tmx_indices_session = requests_cache.CachedSession(
+    "OpenBB_TMX_Indices", expire_after=timedelta(days=21), use_cache_dir=True
+)
 
 # Only used for obtaining all ETFs.
 tmx_etfs_session = requests_cache.CachedSession(
@@ -159,3 +164,23 @@ def get_all_tmx_companies() -> Dict:
     all_tmx.update(tsxv_tickers)
     all_tmx.update(tsx_tickers)
     return all_tmx
+
+
+def get_available_tmx_indices() -> Dict:
+    """Gets a dictionary of available TMX indices."""
+
+    r = tmx_indices_session.get(
+        "https://tmxinfoservices.com/resource/en/449", timeout=5
+    )
+
+    if r.status_code != 200:
+        raise RuntimeError(r.status_code)
+
+    with BytesIO(r.content) as fh:
+        data = pd.io.excel.read_excel(fh, sheet_name=0).iloc[:, 0:2]
+    data.columns = ["symbol", "name"]
+    data["symbol"] = data["symbol"].replace(0, "TSX")
+    for i in data.index:
+        data["symbol"].iloc[i] = f"^{data['symbol'].iloc[i]}"
+
+    return data.set_index("symbol").sort_index().to_dict()["name"]
