@@ -76,7 +76,7 @@ jupyter lab
 
 Or
 
-```cosole
+```console
 conda activate obb
 jupyter notebook
 ```
@@ -152,7 +152,7 @@ Call signature: openbb.stocks.gov.contracts(*args: Any, **kwargs: Any) -> Any
 Type:           get_contracts
 String form:    <openbb_terminal.stocks.government.quiverquant_model.Operation object at 0x2b57d0700>
 File:           ~/GitHub/OpenBBTerminal/openbb_terminal/stocks/government/quiverquant_model.py
-Docstring:     
+Docstring:
 Get government contracts for ticker [Source: quiverquant.com]
 
 Parameters

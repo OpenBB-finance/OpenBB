@@ -47,3 +47,18 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
     ```
 
    > To install all the packages, including extras, use the `-e` argument with the above script.
+
+5. Setup your API keys locally by adding them to the `~/.openbb_platform/user_settings.json` file. Populate this file with the following template and replace the values with your keys:
+
+  ```json
+  {
+    "credentials": {
+      "fmp_api_key": "REPLACE_ME",
+      "polygon_api_key": "REPLACE_ME",
+      "benzinga_api_key": "REPLACE_ME",
+      "fred_api_key": "REPLACE_ME"
+    }
+  }
+  ```
+
+  > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
