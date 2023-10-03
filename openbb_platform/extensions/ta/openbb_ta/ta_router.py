@@ -521,7 +521,6 @@ def demark(
     show_all: bool = False,
     asint: bool = False,
     offset: int = 0,
-    # fillna: Optional[Union[float, int]] = None,
 ) -> OBBject[List[Data]]:
     """
     Demark sequential indicator
@@ -554,7 +553,7 @@ def demark(
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    demark = ta.td_seq(df_target[target], asint=True, show_all=True, offset=offset)
+    demark = ta.td_seq(df_target[target], asint=asint, show_all=show_all, offset=offset)
     demark_df = pd.DataFrame(demark).set_index(df_target.index).dropna()
 
     results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
