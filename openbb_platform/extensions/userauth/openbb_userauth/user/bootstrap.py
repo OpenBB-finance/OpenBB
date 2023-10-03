@@ -7,7 +7,7 @@ from typing import Callable
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 
-from openbb_userauth.auth_hook import get_userdb_service
+from openbb_userauth.auth.hook import get_userdb_service
 
 
 def run_async(func: Callable):
