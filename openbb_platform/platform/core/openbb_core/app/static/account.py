@@ -108,7 +108,7 @@ class Account:
         """
         hs = self._create_hub_service(email, password, pat)
         incoming = hs.pull()
-        updated: UserSettings = UserService.merge_with_default(incoming)
+        updated: UserSettings = UserService.update_default(incoming)
         self._base_app._command_runner.user_settings = updated
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
@@ -153,7 +153,7 @@ class Account:
         else:
             hs = HubService(hub_session)
             incoming = hs.pull()
-            updated: UserSettings = UserService.merge_with_default(incoming)
+            updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
         return self._base_app._command_runner.user_settings
