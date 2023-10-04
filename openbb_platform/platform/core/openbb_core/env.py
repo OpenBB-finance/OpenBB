@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import dotenv
 
@@ -36,14 +36,24 @@ class Env(metaclass=SingletonMeta):
         return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
 
     @property
+    def API_AUTH(self) -> bool:
+        """API authentication: enables commands authentication in FastAPI"""
+        return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))
+
+    @property
     def AUTH_EXTENSION(self) -> str:
         """Auth extension: specify auth extension"""
         return self._environ.get("OPENBB_AUTH_EXTENSION", "openbb_userauth")
 
     @property
-    def API_AUTH(self) -> bool:
-        """API authentication: enables commands authentication in FastAPI"""
-        return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))
+    def ADMIN_USERNAME(self) -> Optional[str]:
+        """Admin username: specify admin email"""
+        return self._environ.get("OPENBB_ADMIN_USERNAME", None)
+
+    @property
+    def ADMIN_PASSWORD(self) -> Optional[str]:
+        """Admin password: specify admin password"""
+        return self._environ.get("OPENBB_ADMIN_PASSWORD", None)
 
     @staticmethod
     def str2bool(value) -> bool:
