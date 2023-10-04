@@ -4,7 +4,6 @@ test_locations = [
     "openbb_platform/tests",
     "openbb_platform/platform",
     "openbb_platform/providers",
-    "openbb_platform/extensions",
 ]
 
 
