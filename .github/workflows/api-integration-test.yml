@@ -32,22 +32,37 @@ jobs:
         if: github.event_name == 'pull_request'
         run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
 
-      - name: Setup Python 3.9
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          architecture: x64
+      # - name: Setup Python 3.9
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: "3.9"
+      #     architecture: x64
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: 1.4.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+      # - name: Install Poetry
+      #   uses: snok/install-poetry@v1
+      #   with:
+      #     version: 1.4.0
+      #     virtualenvs-create: true
+      #     virtualenvs-in-project: true
+
+      - name: Setup Conda
+        run: |
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+          bash miniconda.sh -b -p $HOME/miniconda
+          echo "$HOME/miniconda/bin" >> $GITHUB_PATH
+  
+      - name: Create and Activate Conda Environment
+        run: |
+          conda create -n obb-38 python=3.8 -y
+          echo "conda activate obb-38" >> ~/.bashrc
+          source ~/.bashrc
+
+      # - name: Configure Poetry
+      #   run: poetry config virtualenvs.in-project true
 
       - name: Install Python Dependencies
         run: |
-          pip install toml pytest uvicorn importlib-metadata
+          pip install toml pytest uvicorn importlib-metadata requests
 
       # - name: Load cached venv
       #   id: cached-poetry-dependencies
@@ -57,9 +72,8 @@ jobs:
       #     key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
       - name: Install obb Dependencies
-        # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: |
-          python openbb_platform/dev_install.py -e
+          python ${{ github.workspace }}/openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
         run: |
@@ -85,12 +99,11 @@ jobs:
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
-        run: |
-          sleep 60
+        run: sleep 60
 
       - name: Run Integration Tests
         run: |
-          pytest -m integration
+          pytest ${{ github.workspace }}/openbb_platform -m integration
 
     # - name: Upload summary to Slack
     #   uses: adrey/slack-file-upload-action@master
