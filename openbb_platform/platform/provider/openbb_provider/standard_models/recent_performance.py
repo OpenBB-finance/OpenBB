@@ -30,4 +30,4 @@ class RecentPerformanceData(Data):
     qtd: Optional[float] = Field(description="QTD return.", default=None)
     ytd: Optional[float] = Field(description="YTD return.", default=None)
     ttm: Optional[float] = Field(description="TTM return.", default=None)
-    one_year: Optional[float] = Field(description="One-year return.", default=None)
+    three_year: Optional[float] = Field(description="One-year return.", default=None)
