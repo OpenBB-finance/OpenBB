@@ -52,12 +52,13 @@ async def startup():
     """Startup event."""
     version = VERSION
     auth = "ENABLED" if Env().API_AUTH else "DISABLED"
+    auth_docs = "<LINK_TO_AUTH_DOCS>"
     banner = rf"""
 
                    ███╗
   █████████████████╔══█████████████████╗       OpenBB Platform {version}
   ███╔══════════███║  ███╔══════════███║
-  █████████████████║  █████████████████║       Authentication: {auth}
+  █████████████████║  █████████████████║       Authentication: {auth} | {auth_docs}
   ╚═════════════███║  ███╔═════════════╝
      ██████████████║  ██████████████╗
      ███╔═══════███║  ███╔═══════███║

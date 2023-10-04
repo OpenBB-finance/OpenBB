@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import dotenv
 
@@ -46,14 +46,14 @@ class Env(metaclass=SingletonMeta):
         return self._environ.get("OPENBB_API_AUTH_EXTENSION", "openbb_userauth")
 
     @property
-    def API_USERNAME(self) -> str:
-        """API username: specify username"""
-        return self._environ.get("OPENBB_API_USERNAME", "openbb")
+    def API_USERNAME(self) -> Optional[str]:
+        """API username: specify username for authentication"""
+        return self._environ.get("OPENBB_API_USERNAME", None)
 
     @property
-    def API_PASSWORD(self) -> str:
-        """API password: specify password"""
-        return self._environ.get("OPENBB_API_PASSWORD", "openbb")
+    def API_PASSWORD(self) -> Optional[str]:
+        """API password: specify password for authentication"""
+        return self._environ.get("OPENBB_API_PASSWORD", None)
 
     @staticmethod
     def str2bool(value) -> bool:

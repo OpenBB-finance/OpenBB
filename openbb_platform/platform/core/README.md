@@ -26,6 +26,8 @@
     - [5.1 HTTPS](#51-https)
     - [5.2 Docker](#52-docker)
     - [5.3 Authentication](#53-authentication)
+        - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
+        - [5.3.2 Custom authentication](#532-custom-authentication)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -471,13 +473,15 @@ This means that if you deploy it on some network, any client will be served.
 
 > This method is not recommended for production environments.
 
-If you are in a rush and still want some layer of security you can use FastAPI HTTP Basic Auth buit-in our API. To enable this feature set the environment variable `OPENBB_API_AUTH` to `True` (check [4.1.5. Environment variables](#415-environment-variables)).
+If you are in a rush and still want some layer of security you can use FastAPI HTTP Basic Auth buit-in our API. To enable this feature set the following environment variables (more info at [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
 
-The application will expect a header that contains username and password in the form of `<username:password>` encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization" key.
+```.env
+OPENBB_API_AUTH="True"
+OPENBB_API_USERNAME="some_user"
+OPENBB_API_PASSWORD="some_pass"
+```
 
-Example for `openbb:openbb`: `{"Authorization": Basic b3BlbmJiOm9wZW5iYg==}`.
-
-To change the default username and password set the environment variables `OPENBB_API_USERNAME` and `OPENBB_API_PASSWORD` respectively.
+The application will expect a header that contains username and password in the form of `Basic <username:password>`, "username:password" is encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization".
 
 #### 5.3.2 Custom authentication
 
