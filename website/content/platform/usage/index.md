@@ -76,7 +76,7 @@ jupyter lab
 
 Or
 
-```cosole
+```console
 conda activate obb
 jupyter notebook
 ```

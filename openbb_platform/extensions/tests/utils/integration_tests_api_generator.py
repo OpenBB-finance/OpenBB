@@ -1,10 +1,10 @@
 import os
+from platform.core.openbb_core.app.provider_interface import ProviderInterface
+from platform.core.openbb_core.app.router import CommandMap
 from typing import Dict, List, Type, get_type_hints
 
 import requests
 from extensions.tests.utils.integration_tests_generator import get_test_params
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import CommandMap
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
