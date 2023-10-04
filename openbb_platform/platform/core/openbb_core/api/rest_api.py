@@ -38,7 +38,7 @@ app.add_middleware(
 AppLoader.from_routers(
     app=app,
     routers=[
-        AuthService().router if Env().API_AUTH else None,
+        AuthService().router,
         router_system,
         router_coverage,
         router_commands,
