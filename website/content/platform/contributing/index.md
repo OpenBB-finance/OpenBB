@@ -41,3 +41,10 @@ This section will take you through two types of contributions:
 
 1. Building a custom extension
 2. Contributing directly to the OpenBB Platform
+
+Before moving forward, please take a look at the high-level view of the OpenBB Platform architecture. We will go over each bit in the following sections.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a"/>
+  <img alt="OpenBB Platform High-Level Architecture" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a"/>
+</picture>
