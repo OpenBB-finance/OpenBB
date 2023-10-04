@@ -25,7 +25,7 @@
   - [5. REST API](#5-rest-api)
     - [5.1 HTTPS](#51-https)
     - [5.2 Docker](#52-docker)
-    - [5.3 Test users](#53-test-users)
+    - [5.3 Authentication](#53-authentication)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -357,7 +357,9 @@ The variables we use are:
 - `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
 - `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
 - `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
-- `OPENBB_API_AUTH`: enables commands authentication in FastAPI
+- `OPENBB_API_AUTH`: enables API authentication
+- `OPENBB_API_USERNAME`: sets API username
+- `OPENBB_API_PASSWORD`: sets API password
 
 ## 4.2 Dynamic version
 
@@ -459,19 +461,39 @@ docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb
 
 This will mount the local `~/.openbb_platform` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
 
-### 5.3 Test users
+### 5.3 Authentication
 
-There are 2 default users for testing purpose:
+By default our API launches with no authentication.
 
-User "openbb"
+This means that if you deploy it on some network, any client will be served.
 
-- username : openbb
-- password : openbb
+#### 5.3.1 HTTP Basic Auth
 
-User "finance"
+> This method is not recommended for production environments.
 
-- username : finance
-- password : finance
+If you are in a rush and still want some layer of security you can use FastAPI HTTP Basic Auth buit-in our API. To enable this feature set the environment variable `OPENBB_API_AUTH` to `True` (check [4.1.5. Environment variables](#415-environment-variables)).
+
+The application will expect a header that contains username and password in the form of `<username:password>` encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization" key.
+
+Example for `openbb:openbb`: `{"Authorization": Basic b3BlbmJiOm9wZW5iYg==}`.
+
+To change the default username and password set the environment variables `OPENBB_API_USERNAME` and `OPENBB_API_PASSWORD` respectively.
+
+#### 5.3.2 Custom authentication
+
+For custom authentication methods you can plug an authentication extension into the API. To do so, set the environment variable `OPENBB_API_AUTH_EXTENSION` with the name of the extension you want to use. Don't forget to set `OPENBB_API_AUTH` to `True` as well.
+
+The extension entry point defined in the respective "pyproject.toml should be similar to
+
+```toml
+[tool.poetry.plugins."openbb_core_extension"]
+auth = "openbb_auth.auth_router:router"
+```
+
+In this case, the `auth_router.py` module should define:
+
+- `router`: `fastapi.APIRouter` with relevant user authentication endpoints (e.g. /login, /logout, etc.)
+- `auth_hook`: function implementing the security mechanism and returning the `UserSettings` on successful authentication. This hook will be called by every command to get the user settings.
 
 ## 6. Front-end typing
 
