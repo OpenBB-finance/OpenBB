@@ -9,7 +9,7 @@ from openbb_core.api.router.system import router as router_system
 from openbb_core.app.app_loader import AppLoader
 from openbb_core.app.constants import VERSION
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.service.userauth_service import UserAuthService
+from openbb_core.app.service.auth_service import AuthService
 from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
@@ -38,7 +38,7 @@ app.add_middleware(
 AppLoader.from_routers(
     app=app,
     routers=[
-        UserAuthService().router,
+        AuthService().router,
         router_system,
         router_coverage,
         router_commands,

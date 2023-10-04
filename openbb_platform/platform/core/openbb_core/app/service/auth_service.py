@@ -19,9 +19,9 @@ EXT_NAME = Env().AUTH_EXTENSION
 logger = logging.getLogger("uvicorn.error")
 
 
-class UserAuthService(metaclass=SingletonMeta):
+class AuthService(metaclass=SingletonMeta):
     def __init__(self, ext_name: str = EXT_NAME) -> None:
-        """Initializes UserAuthService."""
+        """Initializes AuthService."""
         if not self.load_extension(ext_name):
             self._router = default_router
             self._auth_hook = default_hook
