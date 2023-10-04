@@ -1602,28 +1602,15 @@ def export_data(
                     )
 
                 elif saved_path.exists():
-                    # Load the Excel file to get the existing data
-                    existing_df = pd.read_excel(saved_path, sheet_name=sheet_name)
-                    # Get the number of rows in the existing data
-                    start_row = (
-                        existing_df.shape[0] + 1
-                    )  # Add 1 to start writing after the last row
-
-                    # Append data to the existing sheet
                     with pd.ExcelWriter(
                         saved_path,
                         mode="a",
-                        if_sheet_exists="overlay",
+                        if_sheet_exists="new",
                         engine="openpyxl",
                     ) as writer:
                         df.to_excel(
-                            writer,
-                            sheet_name=sheet_name,
-                            startrow=start_row,
-                            index=True,
-                            header=False,
+                            writer, sheet_name=sheet_name, index=True, header=True
                         )
-
                 else:
                     with pd.ExcelWriter(
                         saved_path,
