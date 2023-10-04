@@ -132,7 +132,7 @@ class Account:
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session
         if not hub_session:
-            UserService.write_default(self._base_app._command_runner.user_settings)
+            UserService.write_default_user_settings(self._base_app._command_runner.user_settings)
         else:
             hs = HubService(hub_session)
             hs.push(self._base_app._command_runner.user_settings)
@@ -149,7 +149,7 @@ class Account:
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session
         if not hub_session:
-            self._base_app._command_runner.user_settings = UserService.read_default()
+            self._base_app._command_runner.user_settings = UserService.read_default_user_settings()
         else:
             hs = HubService(hub_session)
             incoming = hs.pull()
@@ -178,5 +178,5 @@ class Account:
         if session_file.exists():
             session_file.unlink()
 
-        self._base_app._command_runner.user_settings = UserService.read_default()
+        self._base_app._command_runner.user_settings = UserService.read_default_user_settings()
         return self._base_app._command_runner.user_settings

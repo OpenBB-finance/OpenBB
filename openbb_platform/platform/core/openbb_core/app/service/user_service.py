@@ -37,7 +37,7 @@ class UserService(metaclass=SingletonMeta):
         self._user_settings_repository = self.build_user_settings_repository(
             user_settings_repository
         )
-        self._default_user_settings = default_user_settings or self.read_default()
+        self._default_user_settings = default_user_settings or self.read_default_user_settings()
 
     @staticmethod
     def build_token_repository(
@@ -54,7 +54,7 @@ class UserService(metaclass=SingletonMeta):
         return user_settings_repository or InMemoryUserSettingsRepository()
 
     @classmethod
-    def read_default(cls, path: Optional[Path] = None) -> UserSettings:
+    def read_default_user_settings(cls, path: Optional[Path] = None) -> UserSettings:
         """Read default user settings."""
         path = path or cls.USER_SETTINGS_PATH
 
@@ -65,7 +65,7 @@ class UserService(metaclass=SingletonMeta):
         )
 
     @classmethod
-    def write_default(
+    def write_default_user_settings(
         cls,
         user_settings: UserSettings,
         path: Optional[Path] = None,
@@ -81,7 +81,7 @@ class UserService(metaclass=SingletonMeta):
     @classmethod
     def merge_with_default(cls, user_settings: UserSettings) -> UserSettings:
         """Update default user settings."""
-        d1 = cls.read_default().model_dump()
+        d1 = cls.read_default_user_settings().model_dump()
         d2 = user_settings.model_dump() if user_settings else {}
         updated = cls._merge_dicts([d1, d2])
 
