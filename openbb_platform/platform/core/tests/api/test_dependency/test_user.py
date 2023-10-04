@@ -2,7 +2,7 @@
 import asyncio
 from unittest.mock import MagicMock, patch
 
-from openbb_core.api.dependency.user import (
+from openbb_core.api.auth.user import (
     UserSettings,
     get_user_service,
     get_user_settings,

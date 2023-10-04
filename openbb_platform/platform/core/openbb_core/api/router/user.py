@@ -1,8 +1,7 @@
 """OpenBB API Account Router."""
 
 from fastapi import APIRouter, Depends
-from openbb_core.api.auth.user import authenticate_user
-from openbb_core.api.dependency.user import get_user_settings
+from openbb_core.api.auth.user import authenticate_user, get_user_settings
 from openbb_core.app.model.user_settings import UserSettings
 from typing_extensions import Annotated
 
