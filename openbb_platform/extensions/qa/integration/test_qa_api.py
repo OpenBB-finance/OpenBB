@@ -28,33 +28,45 @@ def headers():
     return h
 
 
-def get_random_data(menu: str, symbols: List[str], providers: List[str]):
+def get_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    symbol = random.choice(symbols)  # noqa: S311
-    provider = random.choice(providers)  # noqa: S311
 
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
     result = requests.get(url, headers=auth_header(), timeout=5)
     return result.json()["results"]
 
 
-symbols = ["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "GOOG", "FB", "BABA", "TSM", "V"]
-providers = ["fmp", "intrinio", "polygon", "yfinance"]
-stocks_data = get_random_data("stocks", symbols=symbols, providers=providers)
+data = {}
 
-# TODO : add more crypto providers and symbols
-symbols_crypto = ["BTC"]
-providers_crypto = ["fmp"]
-crypto_data = get_random_data(
-    menu="crypto", symbols=symbols_crypto, providers=providers_crypto
-)
+
+def get_stocks_data():
+    if "stocks_data" in data:
+        return data["stocks_data"]
+
+    symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
+    provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
+
+    data["stocks_data"] = get_data("stocks", symbol=symbol, provider=provider)
+    return data["stocks_data"]
+
+
+def get_crypto_data():
+    if "crypto_data" in data:
+        return data["crypto_data"]
+
+    # TODO : add more crypto providers and symbols
+    symbol = random.choice(["BTC"])  # noqa: S311
+    provider = random.choice(["fmp"])  # noqa: S311
+
+    data["crypto_data"] = get_data(menu="crypto", symbol=symbol, provider=provider)
+    return data["crypto_data"]
 
 
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close"}),
-        ({"data": crypto_data, "target": "high"}),
+        ({"data": get_stocks_data(), "target": "close"}),
+        ({"data": get_crypto_data(), "target": "high"}),
     ],
 )
 @pytest.mark.integration
@@ -72,8 +84,8 @@ def test_qa_normality(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close"}),
-        ({"data": crypto_data, "target": "high"}),
+        ({"data": get_stocks_data(), "target": "close"}),
+        ({"data": get_crypto_data(), "target": "high"}),
     ],
 )
 @pytest.mark.integration
@@ -93,7 +105,7 @@ def test_qa_capm(params, headers):
     [
         (
             {
-                "data": stocks_data,
+                "data": get_stocks_data(),
                 "target": "close",
                 "threshold_start": "",
                 "threshold_end": "",
@@ -101,7 +113,7 @@ def test_qa_capm(params, headers):
         ),
         (
             {
-                "data": crypto_data,
+                "data": get_crypto_data(),
                 "target": "high",
                 "threshold_start": "0.1",
                 "threshold_end": "1.6",
@@ -124,8 +136,8 @@ def test_qa_om(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close", "window": "5"}),
-        ({"data": crypto_data, "target": "high", "window": "10"}),
+        ({"data": get_stocks_data(), "target": "close", "window": "5"}),
+        ({"data": get_crypto_data(), "target": "high", "window": "10"}),
     ],
 )
 @pytest.mark.integration
@@ -143,8 +155,22 @@ def test_qa_kurtosis(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close", "fuller_reg": "c", "kpss_reg": "ct"}),
-        ({"data": stocks_data, "target": "high", "fuller_reg": "ct", "kpss_reg": "c"}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "close",
+                "fuller_reg": "c",
+                "kpss_reg": "ct",
+            }
+        ),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "high",
+                "fuller_reg": "ct",
+                "kpss_reg": "c",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -162,8 +188,8 @@ def test_qa_unitroot(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close", "rfr": "", "window": ""}),
-        ({"data": crypto_data, "target": "high", "rfr": "0.5", "window": "250"}),
+        ({"data": get_stocks_data(), "target": "close", "rfr": "", "window": ""}),
+        ({"data": get_crypto_data(), "target": "high", "rfr": "0.5", "window": "250"}),
     ],
 )
 @pytest.mark.integration
@@ -183,7 +209,7 @@ def test_qa_sh(params, headers):
     [
         (
             {
-                "data": stocks_data,
+                "data": get_stocks_data(),
                 "target": "close",
                 "target_return": "",
                 "window": "",
@@ -192,7 +218,7 @@ def test_qa_sh(params, headers):
         ),
         (
             {
-                "data": crypto_data,
+                "data": get_crypto_data(),
                 "target": "close",
                 "target_return": "0.5",
                 "window": "275",
@@ -216,7 +242,7 @@ def test_qa_so(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close", "window": "220"}),
+        ({"data": get_stocks_data(), "target": "close", "window": "220"}),
     ],
 )
 @pytest.mark.integration
@@ -234,10 +260,17 @@ def test_qa_skew(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close", "window": "10", "quantile_pct": ""}),
         (
             {
-                "data": crypto_data,
+                "data": get_stocks_data(),
+                "target": "close",
+                "window": "10",
+                "quantile_pct": "",
+            }
+        ),
+        (
+            {
+                "data": get_crypto_data(),
                 "target": "high",
                 "window": "50",
                 "quantile_pct": "0.6",
@@ -260,8 +293,8 @@ def test_qa_quantile(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": stocks_data, "target": "close"}),
-        ({"data": crypto_data, "target": "high"}),
+        ({"data": get_stocks_data(), "target": "close"}),
+        ({"data": get_crypto_data(), "target": "high"}),
     ],
 )
 @pytest.mark.integration
