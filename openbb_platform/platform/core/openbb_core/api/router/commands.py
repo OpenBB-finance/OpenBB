@@ -76,7 +76,9 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                 "__authenticated_user_settings",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 default=UserSettings(),
-                annotation=Annotated[UserSettings, Depends(AuthService().user_settings_hook)],
+                annotation=Annotated[
+                    UserSettings, Depends(AuthService().user_settings_hook)
+                ],
             )
         )
 

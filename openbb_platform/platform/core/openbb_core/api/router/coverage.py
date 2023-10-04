@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Depends
 from openbb_core.api.dependency.coverage import get_command_map
 from openbb_core.app.router import CommandMap
