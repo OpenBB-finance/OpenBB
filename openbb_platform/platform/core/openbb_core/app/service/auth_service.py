@@ -22,7 +22,7 @@ logger = logging.getLogger("uvicorn.error")
 class AuthService(metaclass=SingletonMeta):
     def __init__(self, ext_name: str = EXT_NAME) -> None:
         """Initializes AuthService."""
-        if not self.load_extension(ext_name):
+        if not self._load_extension(ext_name):
             self._router = default_router
             self._auth_hook = default_hook
 
@@ -46,12 +46,12 @@ class AuthService(metaclass=SingletonMeta):
         """Get the module of the given auth_extension."""
         return import_module(entry_points(group=group)[ext_name].module)
 
-    def load_extension(self, ext_name: str) -> bool:
+    def _load_extension(self, ext_name: str) -> bool:
         """Load auth extension."""
         if ext_name and self._is_installed(ext_name):
             entry_mod = self._get_entry_mod(ext_name)
-            self._router = getattr(entry_mod, "router")
-            self._auth_hook = getattr(entry_mod, "auth_hook")
+            self._router = entry_mod.router
+            self._auth_hook = entry_mod.auth_hook
             logger.info("Loaded auth_extension: %s", ext_name)
             return True
         return False
