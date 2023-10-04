@@ -65,7 +65,7 @@ def test_update_default():
 
 def test_merge_dicts():
     """Test merge dicts."""
-    result = UserService.merge_dicts(
+    result = UserService._merge_dicts(
         list_of_dicts=[
             {"a": 1, "b": 2},
             {"a": 3, "b": 4},

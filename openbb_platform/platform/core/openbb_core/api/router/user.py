@@ -13,7 +13,7 @@ auth_hook = get_user_settings
 
 
 @router.get("/me")
-def read_user_settings(
+async def read_user_settings(
     user_settings: Annotated[UserSettings, Depends(get_user_settings)]
 ) -> UserSettings:
     """Read current user settings."""

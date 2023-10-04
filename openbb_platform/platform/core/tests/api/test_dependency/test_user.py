@@ -3,59 +3,12 @@ import asyncio
 from unittest.mock import MagicMock, patch
 
 from openbb_core.api.dependency.user import (
-    AccessToken,
     UserSettings,
-    authenticate_user,
-    create_access_token,
-    create_jwt_token,
-    get_password_hash,
-    get_user,
+    get_user_settings,
     get_user_service,
-    verify_password,
 )
 
 # ruff: noqa: S105 S106
-
-
-def test_password_functions():
-    """Test password functions."""
-    password = "my_password"
-    hashed_password = get_password_hash(password)
-    assert verify_password(password, hashed_password)
-
-
-@patch("openbb_core.api.dependency.user.UserService")
-def test_authenticate_user(mock_user_service):
-    """Test authenticate_user."""
-    mock_user_settings = MagicMock(
-        spec=UserSettings, profile=MagicMock(password_hash="hashed_password")
-    )
-    mock_user_service.user_settings_repository.read_by_profile.return_value = (
-        mock_user_settings
-    )
-    with patch("openbb_core.api.dependency.user.verify_password", return_value=True):
-        result = authenticate_user("password", "username", mock_user_service)
-
-    assert result == mock_user_settings
-
-
-def test_create_access_token():
-    """Test create_access_token."""
-    sub = "subject"
-    access_token = create_access_token(sub)
-
-    assert isinstance(access_token, AccessToken)
-    assert access_token.sub == sub
-
-
-def test_create_jwt_token():
-    """Test create_jwt_token."""
-    mock_access_token = MagicMock(
-        spec=AccessToken, model_dump=lambda: {"sub": "subject", "exp": 12345}
-    )
-    jwt_token = create_jwt_token(mock_access_token)
-
-    assert isinstance(jwt_token, str)
 
 
 @patch("openbb_core.api.dependency.user.UserService")
@@ -69,14 +22,21 @@ def test_get_user_service(mock_user_service):
     mock_user_service.assert_called_once_with()
 
 
-@patch("openbb_core.api.dependency.user.jwt.decode")
+@patch("openbb_core.api.dependency.user.Env")
+@patch("openbb_core.api.dependency.user.HTTPBasicCredentials")
 @patch("openbb_core.api.dependency.user.UserService")
-def test_get_user(mock_user_service, mock_decode):
+def test_get_user_settings_(mock_user_service, mock_credentials, mock_env):
     """Test get_user."""
-    mock_decode.return_value = {"sub": "user_id"}
+    mock_env.return_value = MagicMock(
+        ADMIN_USERNAME="some_username", ADMIN_PASSWORD="some_password"
+    )
+
+    mock_credentials.username = "some_username"
+    mock_credentials.password = "some_password"
+
     mock_user_settings = MagicMock(spec=UserSettings, profile=MagicMock(active=True))
-    mock_user_service.user_settings_repository.read.return_value = mock_user_settings
+    mock_user_service.default_user_settings = mock_user_settings
     mock_user_service.return_value = mock_user_service
-    result = asyncio.run(get_user("jwt_token", mock_user_service))
+    result = asyncio.run(get_user_settings(mock_credentials, mock_user_service))
 
     assert result == mock_user_settings
