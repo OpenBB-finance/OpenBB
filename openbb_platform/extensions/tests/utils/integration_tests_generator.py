@@ -15,6 +15,8 @@ TEST_TEMPLATE = """\n\n@pytest.mark.parametrize(
 )
 @pytest.mark.integration
 def test_{test_name}(params, obb):
+    params = {{p: v for p, v in params.items() if v}}
+
     result = obb.{command_name}(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -194,6 +196,8 @@ def write_test_data_processing(
             test_name, full_command = get_full_command_name_and_test_name(route=route)
 
             hints = get_type_hints(commands_map[route])
+            hints.pop("cc", None)
+            hints.pop("return", None)
             test_params_list = [{k: "" for k in get_test_params_data_processing(hints)}]
 
             write_to_file_w_template(
@@ -249,4 +253,5 @@ def write_integration_test() -> None:
     add_test_commands_to_file(extensions)
 
 
-write_integration_test()
+if __name__ == "__main__":
+    write_integration_test()
