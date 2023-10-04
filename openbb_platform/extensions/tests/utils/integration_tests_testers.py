@@ -12,13 +12,13 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
 
-def get_integration_tests(test_type: Literal["integration", "unit"]) -> List[Any]:
+def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
     """Get integration tests for the OpenBB Platform."""
     integration_tests: List[Any] = []
 
-    if test_type == "unit":
+    if test_type == "python":
         file_end = "_python.py"
-    elif test_type == "integration":
+    elif test_type == "api":
         file_end = "_api.py"
 
     for extension in find_extensions():
@@ -112,9 +112,11 @@ def check_missing_params(
             if isinstance(command_params, list):
                 for expected_param in command_params[0]:
                     if expected_param not in test_params.keys():
-                        missing_params.append(
-                            f"Missing param {expected_param} in function {function}"
-                        )
+                        # if return is the expected param, we can ignore
+                        if expected_param != "return":
+                            missing_params.append(
+                                f"Missing param {expected_param} in function {function}"
+                            )
     return missing_params
 
 
@@ -170,6 +172,7 @@ def check_integration_tests(
                 missing_items = check_function(
                     processing_command_params, function_params, function, True
                 )
+
                 all_missing_items.extend(missing_items)
 
     return all_missing_items
