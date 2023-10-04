@@ -14,7 +14,7 @@ from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.env import Env
 
 EXT_GROUP = "openbb_core_extension"
-EXT_NAME = Env().AUTH_EXTENSION
+EXT_NAME = Env().API_AUTH_EXTENSION
 
 logger = logging.getLogger("uvicorn.error")
 

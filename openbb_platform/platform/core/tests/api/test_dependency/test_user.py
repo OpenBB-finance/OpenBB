@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 from openbb_core.api.dependency.user import (
     UserSettings,
-    get_user_settings,
     get_user_service,
+    get_user_settings,
 )
 
 # ruff: noqa: S105 S106
@@ -28,7 +28,7 @@ def test_get_user_service(mock_user_service):
 def test_get_user_settings_(mock_user_service, mock_credentials, mock_env):
     """Test get_user."""
     mock_env.return_value = MagicMock(
-        ADMIN_USERNAME="some_username", ADMIN_PASSWORD="some_password"
+        API_USERNAME="some_username", API_PASSWORD="some_password"
     )
 
     mock_credentials.username = "some_username"

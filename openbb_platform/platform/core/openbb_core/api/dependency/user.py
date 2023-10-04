@@ -19,8 +19,9 @@ async def get_user_settings(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
     user_service: Annotated[UserService, Depends(get_user_service)],
 ) -> UserSettings:
-    username = Env().ADMIN_USERNAME
-    password = Env().ADMIN_PASSWORD
+    """Get user settings."""
+    username = Env().API_USERNAME
+    password = Env().API_PASSWORD
 
     is_correct_username = False
     is_correct_password = False
