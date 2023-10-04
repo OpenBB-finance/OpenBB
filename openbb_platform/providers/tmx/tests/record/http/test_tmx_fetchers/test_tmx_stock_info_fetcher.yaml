@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: '{"operationName": "getQuoteBySymbol", "variables": {"locale": "en", "symbol":
+      "RY"}, "query": " query getQuoteBySymbol(\n      $symbol: String,\n      $locale:
+      String\n    ) {\n      getQuoteBySymbol(symbol: $symbol, locale: $locale) {\n        symbol\n        name\n        price\n        priceChange\n        percentChange\n        exchangeName\n        exShortName\n        exchangeCode\n        sector\n        industry\n        volume\n        openPrice\n        dayHigh\n        dayLow\n        MarketCap\n        MarketCapAllClasses\n        peRatio\n        prevClose\n        dividendFrequency\n        dividendYield\n        dividendAmount\n        dividendCurrency\n        beta\n        eps\n        exDividendDate\n        shortDescription\n        longDescription\n        website\n        email\n        phoneNumber\n        fullAddress\n        employees\n        shareOutStanding\n        totalDebtToEquity\n        totalSharesOutStanding\n        sharesESCROW\n        vwap\n        dividendPayDate\n        weeks52high\n        weeks52low\n        alpha\n        averageVolume10D\n        averageVolume30D\n        averageVolume50D\n        priceToBook\n        priceToCashFlow\n        returnOnEquity\n        returnOnAssets\n        day21MovingAvg\n        day50MovingAvg\n        day200MovingAvg\n        dividend3Years\n        dividend5Years\n        datatype\n        issueType\n        qmdescription\n      }\n    }\n  "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1447'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/RY
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61VTW/jNhC991cQuvRQWasvWpJvjpygBZrNh9Ntc6SliUVEJhWSsiss8t87Iyux
+        vcDeavhgveE8zjy9GX/3auGEt/jubcE99NrB1bAedhvdEmanX97js+d7SuyAfutBtOxKqFemX1gp
+        lKgFRjsjKwxHURJE6fRYNkJtEZzFQR4hBqYC5c7QNE5Snvse/FuN4NfjFU/aaOU0WztdvbLrKejR
+        uXWjjfs4tv7HO+WWuj6BFiqnDT7eSCVURblS1b11ZkCQipdqi+Betz1x8WKeRbzwPd2Buv9ohQfc
+        R4GG3+W2OT7Pj8Cf+kDPcTDHlFthXsGVokOI53NecM6jkJ8Flm1btsJasHQky+OimIc8D0mSR+Gk
+        JrIgGWWDfdlqO11f0HVyL2tQ9Y2Btx5URQ089MI4MO3gneLPEtraW6RBliUndLnTvXLIFiRnXGVv
+        zERVLldIsgFyQRjkcZhTT9BRqSEmFfiZk8qrKXclHOkch3Eyi8JZzFkYLsZvEJLy9IJWYCsjO+xM
+        /cQxTFqmFRDgGmDuoFkrzBasYxs8aJlU08kASVuttv8rJ/vD0WnBUBEwVr5IqNnL6BWJvBbMHj1g
+        WaV3nVCDj5wvYNAzDE1stcIzQtUU3qGpKWVz9JTPDiBa18x2eNEWduj3TzYfC7C9IT/6mGo6bVDL
+        U+bIKDrpkG43esd+5gbsqTkepborrWiSKL0+dYV3S9cwUdeSVEIWdLMhf6mxdxLlr2AdjBdpfDJI
+        hO4wEvlR5QNsrBxfbuNcZxdfvhwOh8BsqgD7pEnbCUnbgKa9QaG/9rsN0JD9FrE0mrMiS2d5UnCM
+        v/Rtu6xrAxZ95EXsvhUVsG+ybWGGYyHBLz/7X0Nl0H5m+NWyFXTobFLNZ7e4AwyK6bOH0mflcqyg
+        a/UANEdenvM0Gg0nDNz1bu2wLZrqRZSiN+MineOAOY1qrmDjnvT1Wy/dQC6Poimwplx7mZwUaVFk
+        YRhO1PZ6XT7e/e0tFPaEG+MwDjquuTiPEx6fhupeDBezEc3idFQVXi2Pm+MOSfH2/BNsz/eIaLtm
+        HMIwTBKsUKAz0ULfxhUVhStvkSRzzmkaL0IJheIsL5Ik/CHEx6w0i7GlaSc/6SutX2kh8DD5xEph
+        m5uxmpR2Hr6P3qg79SFZlAZpcoKXuMqcpVKzbNyHcXSr9yjfck8KxrQ3eJyOIR5ehJIgyfn8mBRe
+        hjJsHEs9CZo8gzB4TRaco3xCaTv549+XGzpSHY7F4qa3toenI1iuEXjb1RfLY3U29LRCrPf+/v7L
+        fwdefekMBwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 04 Oct 2023 04:28:32 GMT
+      ETag:
+      - W/"70c-h+tWNUSt8o5m7A2uX4AWL4n9WxM"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
