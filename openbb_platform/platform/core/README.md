@@ -465,7 +465,7 @@ This will mount the local `~/.openbb_platform` directory into the Docker contain
 
 ### 5.3 Authentication
 
-By default our API launches with no authentication.
+By default the API launches with no authentication.
 
 This means that if you deploy it on some network, any client will be served.
 
