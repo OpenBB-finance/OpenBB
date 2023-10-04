@@ -187,7 +187,7 @@ def query_graph(url: str, query: str) -> dict:
         ) from e
 
     if response.status_code == 500:
-        raise HTTPError(f"Internal sever error {response.reason}")
+        raise HTTPError(f"Internal sever error {response.reason}")  # type: ignore
 
     if not 200 <= response.status_code < 300:
         raise BitQueryApiKeyException(
@@ -816,4 +816,7 @@ def get_spread_for_crypto_pair(
     return df
 
 
-POSSIBLE_CRYPTOS = list(get_erc20_tokens()["symbol"].unique())
+@log_start_end(log=logger)
+def get_possible_crypto_symbols():
+    """Get possible crypto symbols."""
+    return list(get_erc20_tokens()["symbol"].unique())

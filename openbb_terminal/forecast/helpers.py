@@ -986,8 +986,9 @@ def dt_format(x) -> str:
     Returns:
         x: formatted string
     """
-    x = pd.to_datetime(x)
-    x = x.strftime("%Y-%m-%d")
+    # x = pd.to_datetime(x, infer_datetime_format=False)
+
+    # x = x.strftime("%Y-%m-%d") if x.time() == datetime.time(0,0) else x.strftime("%Y-%m-%d %H:%M:%S")
     return x
 
 
@@ -1002,9 +1003,10 @@ def get_series(
         df=data,
         time_col=time_col,
         value_cols=[target_column],
-        freq="B",
+        freq=None,
         fill_missing_dates=True,
     )
+    freq = "D"
     try:
         # for the sdk, we must check if date is a column not an index
         # check if date is in the index, if true, reset the index
@@ -1014,7 +1016,10 @@ def get_series(
             # reset the index
             data.reset_index(drop=True, inplace=True)
             # remove 00:00:00 from 2019-11-19 00:00:00
-            data[time_col] = data[time_col].apply(lambda x: dt_format(x))
+            # data[time_col] = data[time_col].apply(lambda x: dt_format(x))
+            freq = pd.infer_freq(data[time_col])
+
+        filler_kwargs["freq"] = freq
 
         ticker_series = TimeSeries.from_dataframe(**filler_kwargs)
     except ValueError:
@@ -1078,7 +1083,7 @@ def get_prediction(
 ):
     _, val = ticker_series.split_before(train_split)
 
-    console.print(f"Predicting {model_name} for {n_predict} days")
+    console.print(f"Predicting {model_name} for {n_predict} periods")
     if model_name not in ["Regression", "Logistic Regression"]:
         # need to create a new pytorch trainer for historical backtesting to remove progress bar
         best_model.trainer = None

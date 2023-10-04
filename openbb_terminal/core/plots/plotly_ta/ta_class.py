@@ -264,7 +264,7 @@ class PlotlyTA(PltTA):
 
     def calculate_indicators(self):
         """Return dataframe with all indicators"""
-        return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)
+        return self.indicators.to_dataframe(self.df_stock, self.ma_mode)
 
     def get_subplot(self, subplot: str) -> bool:
         """Return True if subplots will be able to be plotted with current data"""

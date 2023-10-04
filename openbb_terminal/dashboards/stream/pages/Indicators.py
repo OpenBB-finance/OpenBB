@@ -159,7 +159,12 @@ async def plot_indicators(
     ):
         annotation.xshift += -5
 
-    y_min, y_max = data["Low"].min().min(), data["High"].max().max()
+    min_max = {"min": data["Low"].min(), "max": data["High"].max()}
+    for attr in min_max:
+        if hasattr(min_max[attr], attr):
+            min_max[attr] = getattr(min_max[attr], attr)()
+
+    y_min, y_max = min_max["min"], min_max["max"]
     y_range = y_max - y_min
     y_min -= y_range * 0.05
     y_max += y_range * 0.05
