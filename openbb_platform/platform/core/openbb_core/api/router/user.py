@@ -2,15 +2,19 @@
 
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBasic
-from openbb_core.api.dependency.user import get_current_username
+from openbb_core.api.dependency.user import get_user_settings
+from openbb_core.app.model.user_settings import UserSettings
 from typing_extensions import Annotated
 
 security = HTTPBasic()
 
 router = APIRouter(prefix="/user", tags=["User"])
-auth_hook = get_current_username
+auth_hook = get_user_settings
 
 
 @router.get("/me")
-def read_current_user(username: Annotated[str, Depends(get_current_username)]):
-    return {"username": username}
+def read_user_settings(
+    user_settings: Annotated[UserSettings, Depends(get_user_settings)]
+) -> UserSettings:
+    """Read current user."""
+    return user_settings

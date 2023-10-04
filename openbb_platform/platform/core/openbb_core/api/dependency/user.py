@@ -2,14 +2,21 @@ import secrets
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from typing_extensions import Annotated
 
 security = HTTPBasic()
 
 
-def get_current_username(
-    credentials: Annotated[HTTPBasicCredentials, Depends(security)]
+async def get_user_service() -> UserService:
+    """Get user service."""
+    return UserService()
+
+
+async def get_user_settings(
+    credentials: Annotated[HTTPBasicCredentials, Depends(security)],
+    user_service: Annotated[UserService, Depends(get_user_service)],
 ):
     current_username_bytes = credentials.username.encode("utf8")
     username = Env().ADMIN_USERNAME
@@ -35,4 +42,4 @@ def get_current_username(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Basic"},
         )
-    return credentials.username
+    return user_service.default_user_settings
