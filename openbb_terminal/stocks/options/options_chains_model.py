@@ -759,7 +759,7 @@ def calculate_strangle(
 
     strangle: dict[str, Any] = {}
 
-    # Includees the as-of date if it is historical EOD data.
+    # Includes the as-of date if it is historical EOD data.
     if (
         options.source == "Intrinio"
         and options.date != ""
@@ -892,7 +892,7 @@ def calculate_vertical_call_spread(
     max_profit = sold - bought - spread_cost[0]
     call_spread_: dict[str, Any] = {}
     if sold != bought and spread_cost[0] != 0:
-        # Includees the as-of date if it is historical EOD data.
+        # Includes the as-of date if it is historical EOD data.
         if (
             options.source == "Intrinio"
             and options.date != ""
@@ -1036,7 +1036,7 @@ def calculate_vertical_put_spread(
     max_loss = (sold - bought - max_profit) * -1
     put_spread_: dict[str, Any] = {}
     if sold != bought and max_loss != 0:
-        # Includees the as-of date if it is historical EOD data.
+        # Includes the as-of date if it is historical EOD data.
         if (
             options.source == "Intrinio"
             and options.date != ""

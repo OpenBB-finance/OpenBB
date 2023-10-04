@@ -1,9 +1,9 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
+from platform.core.openbb_core.app.provider_interface import ProviderInterface
+from platform.core.openbb_core.app.router import CommandMap
 from typing import Any, Dict, List, Literal, Tuple, Type, get_origin, get_type_hints
 
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
