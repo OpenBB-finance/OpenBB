@@ -15,38 +15,37 @@ def obb(pytestconfig):
         return openbb.obb
 
 
-stocks_symbol = random.choice(
-    ["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "GOOG", "FB", "BABA", "TSM", "V"]
-)
-# TODO : add more crypto symbols
-crypto_symbol = random.choice(["BTC"])
-# TODO : add more providers
-provider = random.choice(
-    [
-        "fmp",
-    ]
-)
-
 data = {}
 
 
-def get_stocks_data(symbol: str = stocks_symbol, prov: str = provider):
+def get_stocks_data():
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
         return data["stocks_data"]
 
-    data["stocks_data"] = openbb.obb.stocks.load(symbol=symbol, provider=prov).results
+    symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
+    provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
+
+    data["stocks_data"] = openbb.obb.stocks.load(
+        symbol=symbol, provider=provider
+    ).results
     return data["stocks_data"]
 
 
-def get_crypto_data(symbol: str = crypto_symbol, prov: str = provider):
+def get_crypto_data():
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "crypto_data" in data:
         return data["crypto_data"]
 
-    data["crypto_data"] = openbb.obb.crypto.load(symbol=symbol, provider=prov).results
+    # TODO : add more crypto providers and symbols
+    symbol = random.choice(["BTC"])  # noqa: S311
+    provider = random.choice(["fmp"])  # noqa: S311
+
+    data["crypto_data"] = openbb.obb.crypto.load(
+        symbol=symbol, provider=provider
+    ).results
     return data["crypto_data"]
 
 
