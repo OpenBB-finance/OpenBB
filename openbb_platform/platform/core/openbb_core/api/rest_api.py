@@ -38,7 +38,7 @@ app.add_middleware(
 AppLoader.from_routers(
     app=app,
     routers=[
-        AuthService().router,
+        AuthService().router if Env().API_AUTH else None,
         router_system,
         router_coverage,
         router_commands,
@@ -51,9 +51,7 @@ AppLoader.from_routers(
 async def startup():
     """Startup event."""
     version = VERSION
-    ON = "ENABLED"
-    OFF = "DISABLED"
-    auth = ON if Env().API_AUTH else OFF
+    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
     banner = rf"""
 
                    ███╗
