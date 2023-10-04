@@ -10,6 +10,7 @@ from openbb_core.api.router.user import (
     router as default_router,
 )
 from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.env import Env
 
 EXT_GROUP = "openbb_core_extension"
@@ -31,7 +32,7 @@ class UserAuthService(metaclass=SingletonMeta):
         return self._router
 
     @property
-    def auth_hook(self) -> Callable:
+    def auth_hook(self) -> Callable[..., UserSettings]:
         """Gets authentication hook."""
         return self._auth_hook
 
