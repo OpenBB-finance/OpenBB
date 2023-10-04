@@ -1,6 +1,5 @@
 import json
 import random
-from typing import List
 
 import pytest
 import requests
@@ -177,7 +176,15 @@ def test_ta_fisher(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "index": "", "fast": "", "slow": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "index": "",
+                "fast": "",
+                "slow": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -243,7 +250,15 @@ def test_ta_bbands(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -296,7 +311,15 @@ def test_ta_aroon(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -416,7 +439,15 @@ def test_ta_macd(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -518,7 +549,14 @@ def test_ta_ichimoku(params, headers):
     "params",
     [
         ({"data": get_stocks_data(), "index": "", "target": "", "period": ""}),
-        ({"data": get_crypto_data(), "index": "date", "target": "close", "period": "95"}),
+        (
+            {
+                "data": get_crypto_data(),
+                "index": "date",
+                "target": "close",
+                "period": "95",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -555,7 +593,15 @@ def test_ta_ad(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "index": "", "length": "", "scalar": "", "drift": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "index": "",
+                "length": "",
+                "scalar": "",
+                "drift": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -582,7 +628,15 @@ def test_ta_adx(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -610,7 +664,14 @@ def test_ta_wma(params, headers):
     "params",
     [
         ({"data": get_stocks_data(), "index": "", "length": "", "scalar": ""}),
-        ({"data": get_crypto_data(), "index": "date", "length": "16", "scalar": "0.02"}),
+        (
+            {
+                "data": get_crypto_data(),
+                "index": "date",
+                "length": "16",
+                "scalar": "0.02",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
