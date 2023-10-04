@@ -3,7 +3,7 @@ name: API Integration Tests
 on:
   push:
     branches:
-      - feature/openbb-sdk-v4
+      - feature/int-tests-dt-processing
   workflow_dispatch:
 
 concurrency:
@@ -50,7 +50,7 @@ jobs:
           wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
           bash miniconda.sh -b -p $HOME/miniconda
           echo "$HOME/miniconda/bin" >> $GITHUB_PATH
-  
+
       - name: Create and Activate Conda Environment
         run: |
           conda create -n obb-38 python=3.8 -y
