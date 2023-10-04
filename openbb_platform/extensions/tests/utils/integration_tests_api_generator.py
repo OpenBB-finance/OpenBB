@@ -132,7 +132,7 @@ def write_integration_tests(
 
 
 if __name__ == "__main__":
-    r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=5).json()
+    r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=10).json()
 
     if not r:
         raise Exception("Could not get openapi.json")

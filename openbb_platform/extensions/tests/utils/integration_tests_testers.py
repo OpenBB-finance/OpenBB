@@ -111,12 +111,13 @@ def check_missing_params(
         for test_params in function_params:
             if isinstance(command_params, list):
                 for expected_param in command_params[0]:
-                    if expected_param not in test_params.keys():
-                        # if return is the expected param, we can ignore
-                        if expected_param != "return":
-                            missing_params.append(
-                                f"Missing param {expected_param} in function {function}"
-                            )
+                    if (
+                        expected_param not in test_params.keys()
+                        and expected_param != "return"
+                    ):
+                        missing_params.append(
+                            f"Missing param {expected_param} in function {function}"
+                        )
     return missing_params
 
 
