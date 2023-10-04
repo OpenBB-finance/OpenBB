@@ -37,7 +37,9 @@ class UserService(metaclass=SingletonMeta):
         self._user_settings_repository = self.build_user_settings_repository(
             user_settings_repository
         )
-        self._default_user_settings = default_user_settings or self.read_default_user_settings()
+        self._default_user_settings = (
+            default_user_settings or self.read_default_user_settings()
+        )
 
     @staticmethod
     def build_token_repository(
