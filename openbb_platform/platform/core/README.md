@@ -496,7 +496,7 @@ auth = "openbb_auth.auth_router:router"
 
 In this case, the `auth_router.py` module should define:
 
-- `router`: `fastapi.APIRouter` with relevant user authentication endpoints (e.g. /login, /logout, etc.)
+- `router`: `fastapi.APIRouter` with relevant user authentication endpoints (e.g. /token)
 - `auth_hook`: awaitable function that generally checks that a user is authenticated without returning anything. It raises an exception if the user is not authenticated.
 - `user_settings_hook`: awaitable function that returns a `UserSettings` object. This will be called by every command to obtain the user settings and usually depends on `auth_hook` to be executed first.
 
