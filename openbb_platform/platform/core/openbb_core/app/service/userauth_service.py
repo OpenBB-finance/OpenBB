@@ -47,6 +47,7 @@ class UserAuthService(metaclass=SingletonMeta):
         return import_module(entry_points(group=group)[ext_name].module)
 
     def load_extension(self, ext_name: str) -> bool:
+        """Load auth extension."""
         if ext_name and self._is_installed(ext_name):
             entry_mod = self._get_entry_mod(ext_name)
             self._router = getattr(entry_mod, "router")

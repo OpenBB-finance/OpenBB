@@ -16,5 +16,5 @@ auth_hook = get_user_settings
 def read_user_settings(
     user_settings: Annotated[UserSettings, Depends(get_user_settings)]
 ) -> UserSettings:
-    """Read current user."""
+    """Read current user settings."""
     return user_settings
