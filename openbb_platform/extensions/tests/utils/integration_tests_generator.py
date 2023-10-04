@@ -82,7 +82,7 @@ def get_model_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
             elif field.annotation == bool:
                 test_params[field_name] = True
             elif get_origin(field.annotation) is Literal:
-                test_params[field_name] = field.annotation.__args__[0]
+                test_params[field_name] = field.annotation.__args__[0]  # type: ignore
 
     return test_params
 
@@ -116,12 +116,12 @@ def get_test_params(
 
 
 def get_test_params_data_processing(hints: Dict[str, Type]):
+    """Get the test params for the data processing commands."""
     return list(hints.keys())
 
 
 def get_full_command_name_and_test_name(route: str) -> Tuple[str, str]:
     """Get the full command name and test name."""
-
     cmd_parts = route.split("/")
     del cmd_parts[0]
 
@@ -139,11 +139,13 @@ def get_full_command_name_and_test_name(route: str) -> Tuple[str, str]:
 
 
 def test_exists(command_name: str, path: str):
+    """Check if test exists."""
     with open(path) as f:
         return command_name in f.read()
 
 
 def write_to_file_w_template(test_file, params_list, full_command, test_name):
+    """Write to file with template."""
     params = ""
     for test_params in params_list:
         params += f"({test_params}),\n"
@@ -166,7 +168,6 @@ def write_test(
     provider_interface_map: Dict[str, Any],
 ):
     """Write test."""
-
     for route, model in commands_model.items():
         if extension_name in route and route.startswith(f"/{extension_name}/"):
             test_name, full_command = get_full_command_name_and_test_name(route=route)
@@ -188,7 +189,6 @@ def write_test_data_processing(
     test_file: PosixPath, commands_map: Dict[str, str], extension_name: str
 ):
     """Write test for data processing commands."""
-
     for route, _ in commands_map.items():
         if extension_name in route and route.startswith(f"/{extension_name}/"):
             test_name, full_command = get_full_command_name_and_test_name(route=route)
@@ -208,7 +208,6 @@ def add_test_commands_to_file(  # pylint: disable=W0102
     extensions: List[PosixPath],
 ) -> None:
     """Add test commands to file."""
-
     provider_interface = ProviderInterface()
     provider_interface_map = provider_interface.map
 
@@ -249,4 +248,5 @@ def write_integration_test() -> None:
     add_test_commands_to_file(extensions)
 
 
-write_integration_test()
+if __name__ == "__main__":
+    write_integration_test()

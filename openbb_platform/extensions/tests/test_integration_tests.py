@@ -34,3 +34,6 @@ def test_api_interface_integration_tests() -> None:
 def test_api_interface_integration_test_params() -> None:
     """Test if there are any missing params for integration tests."""
     run_test("integration", check_missing_integration_test_params)
+
+
+test_python_interface_integration_test_params()
