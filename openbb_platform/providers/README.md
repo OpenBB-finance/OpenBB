@@ -2,7 +2,7 @@
 
 ## Available Providers
 
-See full list of available providers in the [EXTENSIONS file](../EXTENSIONS.md)
+See full list of available providers in the [PROVIDERS file](../PROVIDERS.md)
 
 ## Default Provider Configuration
 
