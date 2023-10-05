@@ -51,8 +51,14 @@ jobs:
           python -m pip install -U virtualenv pip
           python -m virtualenv ${{ github.workspace }}/.venv
           ${{ github.workspace }}/.venv/bin/python -m pip install pytest \
-            ./openbb_platform
-            # Add the extensions you want to test within this workflow here
+            ./openbb_platform \
+            ./openbb_platform/providers/alpha_vantage \
+            ./openbb_platform/providers/cboe \
+            ./openbb_platform/providers/quandl \
+            ./openbb_platform/providers/yfinance \
+            ./openbb_platform/extensions/futures \
+            ./openbb_platform/extensions/qa \
+            ./openbb_platform/extensions/ta
 
       - name: Populate System Setting Files
         run: |
@@ -75,7 +81,7 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
-          uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
+          ${{ github.workspace }}/.venv/bin/uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
         run: sleep 60
