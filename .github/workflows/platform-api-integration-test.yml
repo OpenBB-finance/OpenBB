@@ -96,7 +96,7 @@ jobs:
           source runner_env/bin/activate
           pip list
           cd openbb_platform
-          pytest /openbb_platform -m integration
+          pytest . -m integration
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
