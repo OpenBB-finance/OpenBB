@@ -85,6 +85,7 @@ jobs:
         run: |
           source runner_env/bin/activate
           pip list
+          cd openbb_platform
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
@@ -94,6 +95,7 @@ jobs:
         run: |
           source runner_env/bin/activate
           pip list
+          cd openbb_platform
           pytest /openbb_platform -m integration
 
       - name: Upload summary to Slack
