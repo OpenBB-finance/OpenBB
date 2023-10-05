@@ -540,6 +540,11 @@ def get_gdp(
         no_data_message(error=str(e))
         return df
 
+    print(
+        f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{units_dict[units]}.A/OECD?contentType=csv&detail=code"
+        f"&separator=comma&csv-lang=en&startPeriod={start_date}&endPeriod={end_date}"
+    )
+
     df = df.iloc[:, [0, 5]]
 
     result = pd.DataFrame()

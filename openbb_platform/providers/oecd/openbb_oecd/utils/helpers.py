@@ -1,13 +1,12 @@
-from io import StringIO
-from pandas import DataFrame, read_csv
-import urllib3
 import ssl
-from typing import Any
-import requests
 import sys
-from openbb_provider import helpers
+from io import StringIO
+from typing import Any, Dict, Optional
 
-from typing import Optional, Dict
+import requests
+import urllib3
+from openbb_provider import helpers
+from pandas import DataFrame, read_csv
 
 if sys.version_info >= (3, 10):
     PATCH = True

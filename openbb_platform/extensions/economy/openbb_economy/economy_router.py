@@ -170,3 +170,14 @@ def gdpnom(
 ) -> OBBject[BaseModel]:
     """GDP Data."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="GDPReal")
+def gdpreal(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """GDP Data."""
+    return OBBject(results=Query(**locals()).execute())

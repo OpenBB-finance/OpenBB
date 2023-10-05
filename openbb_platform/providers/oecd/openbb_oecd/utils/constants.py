@@ -105,6 +105,8 @@ COUNTRY_TO_CODE_RGDP = {
     "united_states": "USA",
 }
 
+CODE_TO_COUNTRY_RGDP = {v: k for k, v in COUNTRY_TO_CODE_RGDP.items()}
+
 COUNTRY_TO_CODE_GDP_FORECAST = {
     "argentina": "ARG",
     "asia": "DAE",
