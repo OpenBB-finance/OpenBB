@@ -359,6 +359,7 @@ The variables we use are:
 - `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
 - `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
 - `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
+- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
 - `OPENBB_API_AUTH`: enables API authentication
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
@@ -473,7 +474,7 @@ This means that if you deploy it on some network, any client will be served.
 
 > This method is not recommended for production environments.
 
-If you are in a rush and still want some layer of security you can use FastAPI HTTP Basic Auth buit-in our API. To enable this feature set the following environment variables (more info at [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
+If you are in a rush and still want some layer of security you can use the FastAPI HTTP Basic Auth we included in the API. To enable this feature, set the following environment variables (more info at [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
 
 ```.env
 OPENBB_API_AUTH="True"
@@ -481,7 +482,7 @@ OPENBB_API_USERNAME="some_user"
 OPENBB_API_PASSWORD="some_pass"
 ```
 
-The application will expect a header that contains username and password in the form of `Basic <username:password>`, "username:password" is encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization".
+The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization" field.
 
 #### 5.3.2 Custom authentication
 
@@ -497,8 +498,8 @@ auth = "openbb_auth.auth_router:router"
 In this case, the `auth_router.py` module should define:
 
 - `router`: `fastapi.APIRouter` with relevant user authentication endpoints (e.g. /token)
-- `auth_hook`: awaitable function that generally checks that a user is authenticated without returning anything. It raises an exception if the user is not authenticated.
-- `user_settings_hook`: awaitable function that returns a `UserSettings` object. This will be called by every command to obtain the user settings and usually depends on `auth_hook` to be executed first.
+- `auth_hook`: awaitable function that checks if given authorization credentials are valid and raises an `HTTP_401_UNAUTHORIZED` exception if not.
+- `user_settings_hook`: awaitable function that returns a `UserSettings` object. This will be called by every command endpoint to obtain the user settings for a given user and should depend on `auth_hook` to be executed first.
 
 ## 6. Front-end typing
 
