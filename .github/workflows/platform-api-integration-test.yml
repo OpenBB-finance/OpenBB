@@ -59,7 +59,8 @@ jobs:
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
-          pip list
+            pip install -U pydantic
+            pip list
 
       - name: Populate System Setting Files
         run: |
