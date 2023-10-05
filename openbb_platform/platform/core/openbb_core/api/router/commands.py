@@ -120,15 +120,15 @@ def validate_output(c_out: OBBject) -> OBBject:
 
         # if it's a model with nested fields
         elif is_model(type_):
-            for field in type_.__fields__.values():
+            for field_name, field in type_.__fields__.items():
                 if field.json_schema_extra and field.json_schema_extra.get(
                     "exclude_from_api", None
                 ):
-                    delattr(value, field.name)
+                    delattr(value, field_name)
 
                 # if it's a yet a nested model we need to go deeper in the recursion
                 elif is_model(field.annotation):
-                    exclude_fields_from_api(field.name, getattr(value, field.name))
+                    exclude_fields_from_api(field_name, getattr(value, field_name))
 
     for k, v in c_out.model_copy():
         exclude_fields_from_api(k, v)

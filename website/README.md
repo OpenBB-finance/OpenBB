@@ -238,7 +238,7 @@ website/content/_index.md
                       /...
 ```
 
-Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
+Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crypto`.
 
 ### New Feature
 

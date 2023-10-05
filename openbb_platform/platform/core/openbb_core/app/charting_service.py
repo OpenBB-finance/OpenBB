@@ -127,10 +127,15 @@ class ChartingService(metaclass=SingletonMeta):
         """
         Get the module of the given extension.
         """
-
-        for entry_point in entry_points(group=plugin):
-            if entry_point.name == extension_name:
-                return import_module(entry_point.module)
+        entry_points_ = entry_points(group=plugin)
+        entry_point = next(
+            (ep for ep in entry_points_ if ep.name == extension_name), None
+        )
+        if entry_point is None:
+            raise ChartingServiceError(
+                f"Extension '{extension_name}' is not installed."
+            )
+        return import_module(entry_point.module)
 
     @staticmethod
     def _handle_backend(charting_extension: str, charting_settings: ChartingSettings):
@@ -182,21 +187,21 @@ class ChartingService(metaclass=SingletonMeta):
         """
         Given an extension name, it returns the implemented charting functions from its router.
         """
-
-        module = cls._get_extension_router(extension_name)
-        if not module:
-            return []
-
         implemented_functions = []
-        module_name = module.__name__
 
-        for name, obj in getmembers(module, isfunction):
-            if (
-                obj.__module__ == module_name
-                and not name.startswith("_")
-                and "NotImplementedError" not in getsource(obj)
-            ):
-                implemented_functions.append(name)
+        try:
+            if module := cls._get_extension_router(extension_name):
+                module_name = module.__name__
+
+                for name, obj in getmembers(module, isfunction):
+                    if (
+                        obj.__module__ == module_name
+                        and not name.startswith("_")
+                        and "NotImplementedError" not in getsource(obj)
+                    ):
+                        implemented_functions.append(name)
+        except ChartingServiceError:
+            pass
 
         return implemented_functions
 
@@ -251,7 +256,7 @@ class ChartingService(metaclass=SingletonMeta):
         route: str,
         obbject_item: T,
         **kwargs,
-    ):
+    ) -> Chart:
         """
         If the charting extension is not installed, an error is raised.
         Otherwise, a charting function will be retrieved and executed from the user's preferred charting extension.

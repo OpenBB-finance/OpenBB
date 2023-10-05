@@ -1,7 +1,16 @@
 """Test futures extension."""
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -32,7 +41,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_futures_load(params):
+def test_futures_load(params, obb):
     result = obb.futures.load(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -46,7 +55,7 @@ def test_futures_load(params):
     ],
 )
 @pytest.mark.integration
-def test_futures_curve(params):
+def test_futures_curve(params, obb):
     result = obb.futures.curve(**params)
     assert result
     assert isinstance(result, OBBject)

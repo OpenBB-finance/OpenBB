@@ -86,6 +86,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     df_target = df_target.set_index("date")
     df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
+    df_target.index = pd.to_datetime(df_target.index)
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")
     df_fama = get_fama_raw(start_date, end_date)
@@ -141,13 +142,21 @@ def om(
         """Get omega ratio."""
         daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
         excess = df_target - daily_threshold
-        omega = excess[excess > 0].sum() / -excess[excess < 0].sum()
-        return omega
+        numerator = excess[excess > 0].sum()
+        denominator = -excess[excess < 0].sum()
+
+        if denominator == 0:
+            return float("inf")
+
+        return numerator / denominator
 
     threshold = np.linspace(threshold_start, threshold_end, 50)
     results = []
     for i in threshold:
-        results.append(OmegaModel(threshold=i, omega=get_omega_ratio(series_target, i)))
+        omega = get_omega_ratio(series_target, i)
+        # TODO : we should find a way of supporting inf values in the API
+        if omega != float("inf"):
+            results.append(OmegaModel(threshold=i, omega=omega))
 
     return OBBject(results=results)
 

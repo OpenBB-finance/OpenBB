@@ -1,6 +1,7 @@
 from typing import List, Literal, Optional
 
 import pandas as pd
+import pandas_ta as ta
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -10,12 +11,7 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_provider.abstract.data import Data
-from pydantic import (
-    NonNegativeFloat,
-    NonNegativeInt,
-    PositiveFloat,
-    PositiveInt,
-)
+from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
 from . import ta_helpers
 
@@ -522,8 +518,8 @@ def demark(
     data: List[Data],
     index: str = "date",
     target: str = "close",
-    show_all: bool = False,
-    asint: bool = False,
+    show_all: bool = True,
+    asint: bool = True,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
     """
@@ -540,7 +536,7 @@ def demark(
     show_all : bool, optional
         Show 1 - 13. If set to False, show 6 - 9
     asint : bool, optional
-        If True, fill NAs with 0 and change type to int, by default False
+        If True, fill NAs with 0 and change type to int, by default True.
     offset : int, optional
         How many periods to offset the result
 
@@ -555,20 +551,11 @@ def demark(
     >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> demark_data = obb.ta.demark(data=stock_data.results,offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    demark_df = pd.DataFrame(
-        df_target.ta.td_seq(
-            offset=offset,
-            show_all=show_all,
-            asint=asint,
-            close=target,
-            prefix=target,
-        ).dropna()
-    )
-
-    results = df_to_basemodel(df_target.join(demark_df, how="left"), index=True)
+    demark = ta.td_seq(df_target[target], asint=asint, show_all=show_all, offset=offset)
+    demark_df = df[[target]].reset_index().join(demark)
+    results = df_to_basemodel(demark_df)
 
     return OBBject(results=results)
 
@@ -1370,7 +1357,7 @@ def cones(
         data=df, lower_q=lower_q, upper_q=upper_q, model=model, is_crypto=is_crypto
     )
 
-    results = df_to_basemodel(df_cones, index=True)
+    results = df_to_basemodel(df_cones)
 
     return OBBject(results=results)
 
