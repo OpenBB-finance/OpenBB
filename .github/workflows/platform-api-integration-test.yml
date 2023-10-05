@@ -42,16 +42,15 @@ jobs:
         id: cached-python-environment
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/.venv
+          path: runner_env
           key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
       - name: Install Dependencies
         if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
-          python -m pip install -U virtualenv pip
-          python -m virtualenv ${{ github.workspace }}/.venv
-          source ${{ github.workspace }}/.venv/bin/activate
-          ${{ github.workspace }}/.venv/bin/python -m pip install pytest \
+          python -m venv runner_env
+          source runner_env/bin/activate
+          pip install pytest poetry\
             ./openbb_platform \
             ./openbb_platform/providers/alpha_vantage \
             ./openbb_platform/providers/cboe \
@@ -83,17 +82,18 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
+          source runner_env/bin/activate
           pip list
-          ${{ github.workspace }}/.venv/bin/uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
+          uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
         run: sleep 60
 
       - name: Run API Integration Tests
         run: |
-          source ${{ github.workspace }}/.venv/bin/activate
+          source runner_env/bin/activate
           pip list
-          ${{ github.workspace }}/.venv/bin/pytest ${{ github.workspace }}/openbb_platform -m integration
+          pytest /openbb_platform -m integration
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
