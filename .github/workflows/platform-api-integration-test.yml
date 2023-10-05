@@ -60,7 +60,7 @@ jobs:
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
             pip install -U pydantic
-            pip list
+            pwd
 
       - name: Populate System Setting Files
         run: |
@@ -85,7 +85,7 @@ jobs:
         run: |
           source runner_env/bin/activate
           pip list
-          cd openbb_platform
+          pwd
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
@@ -95,6 +95,7 @@ jobs:
         run: |
           source runner_env/bin/activate
           pip list
+          pwd
           cd openbb_platform
           pytest . -m integration
 
