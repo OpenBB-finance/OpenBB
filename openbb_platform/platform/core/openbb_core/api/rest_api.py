@@ -3,10 +3,10 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from openbb_core.api.app_loader import AppLoader
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
-from openbb_core.app.app_loader import AppLoader
 from openbb_core.app.constants import VERSION
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.auth_service import AuthService
