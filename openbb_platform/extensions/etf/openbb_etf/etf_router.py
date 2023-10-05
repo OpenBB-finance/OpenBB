@@ -52,7 +52,9 @@ def holdings(
     _data = Query(**locals()).execute()
 
     # Determine if the Fetcher returned extras, then conditionally parse through the Results helper class.
-    _data_ = _data if isinstance(_data, list) else (_data.holdings_data, _data.extra_info)
+    _data_ = (
+        _data if isinstance(_data, list) else (_data.holdings_data, _data.extra_info)
+    )
     data = Results(OBBject(results=_data_), "EtfHoldings")
 
     # Set and validate the parsed results object through a model which inherits from OBBject.
@@ -64,7 +66,8 @@ def holdings(
     results.fields = list(results.to_df().columns)
 
     return EtfHoldings.model_validate(results)
-    #return _data
+    # return _data
+
 
 @router.command(model="EtfSectors")
 def sectors(
