@@ -14,6 +14,7 @@ from openbb_blackrock.utils.helpers import (
     blackrock_canada_historical_holdings,
     blackrock_canada_holdings,
 )
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_holdings import (
     EtfHoldingsData,
@@ -152,10 +153,15 @@ class BlackrockEtfHoldingsData(EtfHoldingsData):
     )
 
 
+class FinalEtfHoldingsData(Data):
+    holdings_data: Optional[List[BlackrockEtfHoldingsData]] = Field(default=None)
+    extra_info: Optional[Dict[str, Any]] = Field(default=None)
+
+
 class BlackrockEtfHoldingsFetcher(
     Fetcher[
         BlackrockEtfHoldingsQueryParams,
-        List[BlackrockEtfHoldingsData],
+        FinalEtfHoldingsData,
     ]
 ):
     """Transform the query, extract and transform the data from the Blackrock endpoints."""
@@ -170,10 +176,10 @@ class BlackrockEtfHoldingsFetcher(
         query: BlackrockEtfHoldingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+    ) -> Tuple[List[Dict], Dict[str, Any]]:
         """Return the raw data from the Blackrock endpoint."""
         query.symbol = query.symbol.upper()
-        data: Tuple[pd.DataFrame, Dict[str, Any]]
+        data: Tuple[List[Dict], Dict[str, Any]]
         holdings: pd.DataFrame = pd.DataFrame()
         metadata = pd.Series(dtype="object")
 
@@ -252,17 +258,17 @@ class BlackrockEtfHoldingsFetcher(
             columns={"Location": "country"}
         )
 
-        data = (holdings, metadata.dropna().to_dict())
+        data = (holdings.to_dict("records"), metadata.dropna().to_dict())
 
         return data
 
     @staticmethod
-    def transform_data(
-        data: Tuple[pd.DataFrame, Dict]
-    ) -> Tuple[List[BlackrockEtfHoldingsData], Dict]:
+    def transform_data(data: Tuple[List[Dict], Dict]) -> FinalEtfHoldingsData:
         """Transform the data to the standard format."""
-        holdings: List[Dict] = data[0].to_dict("records")
+        holdings: List[Dict] = data[0]
         results = [BlackrockEtfHoldingsData.model_validate(d) for d in holdings]
         metadata = data[1]
-
-        return results, metadata
+        data = FinalEtfHoldingsData()
+        data.holdings_data = results
+        data.extra_info = metadata
+        return data

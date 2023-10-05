@@ -48,13 +48,23 @@ def holdings(
 ) -> EtfHoldings:
     """Get the holdings for an individual ETF."""
 
-    data = Results(OBBject(results=Query(**locals()).execute()), "EtfHoldings")
+    # Return data from the Fetcher.  This function operates differently because not all providers return extras.
+    _data = Query(**locals()).execute()
+
+    # Determine if the Fetcher returned extras, then conditionally parse through the Results helper class.
+    _data_ = _data if isinstance(_data, list) else (_data.holdings_data, _data.extra_info)
+    data = Results(OBBject(results=_data_), "EtfHoldings")
+
+    # Set and validate the parsed results object through a model which inherits from OBBject.
     results = EtfHoldings()
     for d in list(data.__dict__.keys()):
         setattr(results, d, data.__dict__[d])
-    results.fields = list(results.to_df().columns)
-    return EtfHoldings.model_validate(results)
 
+    # Reset the fields using to_df() instead of what was populated by Results, via basemodel_to_df().
+    results.fields = list(results.to_df().columns)
+
+    return EtfHoldings.model_validate(results)
+    #return _data
 
 @router.command(model="EtfSectors")
 def sectors(

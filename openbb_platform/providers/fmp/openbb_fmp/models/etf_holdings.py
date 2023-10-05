@@ -12,6 +12,7 @@ from openbb_provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
+from openbb_provider.abstract.data import Data
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
 
@@ -96,10 +97,15 @@ class FMPEtfHoldingsData(EtfHoldingsData):
     )
 
 
+class FinalEtfHoldingsData(Data):
+    holdings_data: Optional[List[FMPEtfHoldingsData]] = Field(default=None)
+    extra_info: Optional[Dict[str, Any]] = Field(default=None)
+
+
 class FMPEtfHoldingsFetcher(
     Fetcher[
         FMPEtfHoldingsQueryParams,
-        List[FMPEtfHoldingsData],
+        FinalEtfHoldingsData,
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
@@ -129,7 +135,7 @@ class FMPEtfHoldingsFetcher(
             date = dates[0]
         new_date: str = ""
         if date:
-            # Check that the date is valid, or gets the nearest valid date.
+            # Gets the nearest valid date to the requested one.
             __dates = pd.Series(pd.to_datetime(dates))
             __date = pd.to_datetime(date)
             __nearest = pd.DataFrame(__dates - __date)
@@ -142,7 +148,7 @@ class FMPEtfHoldingsFetcher(
 
         if "Error Message" in r_holdings.json():
             raise RuntimeError(r_holdings.json()["Error Message"])
-        holdings = pd.DataFrame(r_holdings.json())
+        holdings = r_holdings.json()
 
         return holdings
 
@@ -156,35 +162,79 @@ class FMPEtfHoldingsFetcher(
         query: FMPEtfHoldingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> pd.DataFrame:
+    ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-        query.symbol = query.symbol.upper()
+        symbol = query.symbol.upper()
+        date = query.date
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        return FMPEtfHoldingsFetcher.get_holdings(
-            symbol=query.symbol, date=query.date, api_key=api_key
-        )
+        BASE_URL = "https://financialmodelingprep.com/api/v4/etf-holdings/"
+
+        if isinstance(date, dateType) and date is not None:
+            date = datetime.strftime(date, "%Y-%m-%d")  # type: ignore
+
+        dates_url = BASE_URL + f"portfolio-date?symbol={symbol}&apikey={api_key}"
+
+        # Get the list of valid dates from FMP.
+        r_dates = make_request(dates_url)
+
+        if "Error Message" in r_dates.json():
+            raise RuntimeError(r_dates.json()["Error Message"])
+
+        if len(r_dates.json()) == 0:
+            return []
+
+        _dates = r_dates.json()
+        dates = [_dates["date"] for _dates in _dates]
+        if not date:
+            date = dates[0]
+        new_date: str = ""
+        if date:
+            # Check that the date is valid, or gets the nearest valid date.
+            __dates = pd.Series(pd.to_datetime(dates))
+            __date = pd.to_datetime(date)
+            __nearest = pd.DataFrame(__dates - __date)
+            __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
+            new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
+
+        new_date = new_date if new_date else date
+        holdings_url = BASE_URL + f"?symbol={symbol}&date={new_date}&apikey={api_key}"
+        r_holdings = make_request(holdings_url)
+
+        if "Error Message" in r_holdings.json():
+            raise RuntimeError(r_holdings.json()["Error Message"])
+        holdings = r_holdings.json()
+
+        return holdings
 
     @staticmethod
     def transform_data(
-        data: pd.DataFrame,
-    ) -> Tuple[List[FMPEtfHoldingsData], Dict[str, str]]:
+        data: List[Dict],
+    ) -> FinalEtfHoldingsData:
         """Return the transformed data."""
         metadata = {}
         results = pd.DataFrame()
-        if not data.empty:
+        if len(data) > 0:
             metadata.update(
                 {
-                    "cik": data.iloc[0].get("cik"),
-                    "acceptance_time": data.iloc[0].get("acceptanceTime"),
-                    "date": data.iloc[0].get("date"),
+                    "cik": data[0].get("cik"),
+                    "acceptance_time": data[0].get("acceptanceTime"),
+                    "date": data[0].get("date"),
                 }
             )
+            # Dropped columns are removed from the table and returned separately.
+            # The data is redundant for each row and is about the filing entity, not the holding.
+            results = pd.DataFrame(data).drop(columns=["cik", "acceptanceTime", "date"])
             results = (
-                data.sort_values(by="pctVal", ascending=False)
+                pd.DataFrame(data)
+                .sort_values(by="pctVal", ascending=False)
                 .drop(columns=["cik", "acceptanceTime", "date"])
                 .to_dict("records")
             )
 
         results = [FMPEtfHoldingsData.parse_obj(d) for d in results]
-        return results, metadata
+        data = FinalEtfHoldingsData()
+        data.holdings_data = results
+        data.extra_info = metadata
+
+        return data

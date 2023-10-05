@@ -38,7 +38,6 @@ def test_blackrock_etf_countries_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip
 def test_blackrock_etf_holdings_fetcher(credentials=test_credentials):
     params = {"symbol": "GOVZ"}
 
