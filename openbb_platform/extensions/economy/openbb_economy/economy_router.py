@@ -159,3 +159,14 @@ def fred_index(
 ) -> OBBject[BaseModel]:
     """Fred Historical."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="GDPNom")
+def gdpnom(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """GDP Data."""
+    return OBBject(results=Query(**locals()).execute())
