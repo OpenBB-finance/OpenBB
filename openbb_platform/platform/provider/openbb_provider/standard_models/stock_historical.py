@@ -2,7 +2,6 @@
 
 
 from datetime import (
-    date as dateType,
     datetime,
 )
 from typing import List, Optional, Set, Union

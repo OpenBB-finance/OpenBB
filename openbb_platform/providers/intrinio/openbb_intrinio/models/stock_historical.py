@@ -1,9 +1,13 @@
 """Intrinio Stocks end of day fetcher."""
 
-from datetime import datetime, date as dateType, time
-from dateutil import parser
+from datetime import (
+    date as dateType,
+    datetime,
+    time,
+)
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil import parser
 from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
@@ -13,7 +17,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, model_validator, PrivateAttr
+from pydantic import Field, PrivateAttr, model_validator
 
 
 class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -27,9 +31,9 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
     )
-    interval: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1w", "1M", "1Q", "1Y"] = Field(
-        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
-    )
+    interval: Literal[
+        "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1w", "1M", "1Q", "1Y"
+    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
     start_date: Optional[datetime] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
@@ -39,7 +43,8 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     timezone: str = Field(
-        default="UTC", description="Timezone of the data, in the IANA format ('Continent/City')."
+        default="UTC",
+        description="Timezone of the data, in the IANA format ('Continent/City').",
     )
     source: Optional[Literal["realtime", "delayed", "nasdaq_basic"]] = Field(
         default="realtime", description="The source of the data."
@@ -51,9 +56,9 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(
         default=None
     )
-    _frequency: Literal["daily", "weekly", "monthly", "quarterly", "yearly"] = PrivateAttr(
-        default=None
-    )
+    _frequency: Literal[
+        "daily", "weekly", "monthly", "quarterly", "yearly"
+    ] = PrivateAttr(default=None)
 
     @model_validator(mode="after")
     @classmethod
@@ -101,7 +106,8 @@ class IntrinioStockHistoricalData(StockHistoricalData):
         description="The timestamp that represents the end of the interval span.",
     )
     interval: Optional[str] = Field(
-        default=None, description="The data time frequency.",
+        default=None,
+        description="The data time frequency.",
         alias="frequency",
     )
     average: Optional[float] = Field(
@@ -142,7 +148,7 @@ class IntrinioStockHistoricalData(StockHistoricalData):
     factor: Optional[float] = Field(
         default=None,
         description="factor by which to multiply stock prices before this "
-        "date, in order to calculate historically-adjusted stock prices."
+        "date, in order to calculate historically-adjusted stock prices.",
     )
     split_ratio: Optional[float] = Field(
         default=None,
@@ -199,7 +205,9 @@ class IntrinioStockHistoricalFetcher(
             f"start_date={query._api_start_date}&end_date={query._api_end_date}&"
             f"start_time={query._start_time}&end_time={query._end_time}"
         )
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "interval"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "interval"]
+        )
         url = f"{base_url}&{api_params}&{query_str}&api_key={api_key}"
 
         data = get_data_one(url, **kwargs)
@@ -209,7 +217,9 @@ class IntrinioStockHistoricalFetcher(
         data = data.get(data_key, [])
 
         while next_page:
-            query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "interval"])
+            query_str = get_querystring(
+                query.model_dump(by_alias=True), ["symbol", "interval"]
+            )
             url = f"{base_url}&{api_params}&{query_str}&api_key={api_key}"
             temp_data = get_data_one(url, **kwargs)
 
