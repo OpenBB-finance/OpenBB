@@ -15,7 +15,7 @@ from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS, PERIODS
 from pandas import Timestamp, to_datetime
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -57,7 +57,7 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
 class YFinanceStockHistoricalData(StockHistoricalData):
     """YFinance Stock End of Day Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         if isinstance(v, Timestamp):
