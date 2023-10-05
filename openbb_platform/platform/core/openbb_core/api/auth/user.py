@@ -15,13 +15,14 @@ async def authenticate_user(
     credentials: Annotated[Optional[HTTPBasicCredentials], Depends(security)]
 ):
     """Authenticate the user."""
-    username = Env().API_USERNAME
-    password = Env().API_PASSWORD
-
-    is_correct_username = False
-    is_correct_password = False
 
     if credentials:
+        username = Env().API_USERNAME
+        password = Env().API_PASSWORD
+
+        is_correct_username = False
+        is_correct_password = False
+
         if username is not None and password is not None:
             current_username_bytes = credentials.username.encode("utf8")
             correct_username_bytes = username.encode("utf8")
