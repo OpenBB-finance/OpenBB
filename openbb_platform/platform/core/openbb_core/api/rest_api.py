@@ -50,15 +50,13 @@ AppLoader.from_routers(
 @app.on_event("startup")
 async def startup():
     """Startup event."""
-    version = VERSION
     auth = "ENABLED" if Env().API_AUTH else "DISABLED"
-    auth_docs = "<LINK_TO_AUTH_DOCS>"
     banner = rf"""
 
                    ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {version}
+  █████████████████╔══█████████████████╗       OpenBB Platform {VERSION}
   ███╔══════════███║  ███╔══════════███║
-  █████████████████║  █████████████████║       Authentication: {auth} | {auth_docs}
+  █████████████████║  █████████████████║       Authentication: {auth}
   ╚═════════════███║  ███╔═════════════╝
      ██████████████║  ██████████████╗
      ███╔═══════███║  ███╔═══════███║
