@@ -360,7 +360,7 @@ The variables we use are:
 - `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
 - `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
 - `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
-- `OPENBB_API_AUTH`: enables API authentication
+- `OPENBB_API_AUTH`: enables API authentication for command endpoints
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
 

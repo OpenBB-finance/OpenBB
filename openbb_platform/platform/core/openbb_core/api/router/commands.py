@@ -14,6 +14,7 @@ from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
+from openbb_core.env import Env
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
 
@@ -69,16 +70,17 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             )
         )
 
-    new_parameter_list.append(
-        Parameter(
-            "__authenticated_user_settings",
-            kind=Parameter.POSITIONAL_OR_KEYWORD,
-            default=UserSettings(),
-            annotation=Annotated[
-                UserSettings, Depends(AuthService().user_settings_hook)
-            ],
+    if Env().API_AUTH:
+        new_parameter_list.append(
+            Parameter(
+                "__authenticated_user_settings",
+                kind=Parameter.POSITIONAL_OR_KEYWORD,
+                default=UserSettings(),
+                annotation=Annotated[
+                    UserSettings, Depends(AuthService().user_settings_hook)
+                ],
+            )
         )
-    )
 
     return Signature(
         parameters=new_parameter_list,
