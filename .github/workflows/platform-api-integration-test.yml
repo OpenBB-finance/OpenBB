@@ -50,6 +50,7 @@ jobs:
         run: |
           python -m pip install -U virtualenv pip
           python -m virtualenv ${{ github.workspace }}/.venv
+          source ${{ github.workspace }}/.venv/bin/activate
           ${{ github.workspace }}/.venv/bin/python -m pip install pytest \
             ./openbb_platform \
             ./openbb_platform/providers/alpha_vantage \
@@ -88,6 +89,7 @@ jobs:
 
       - name: Run API Integration Tests
         run: |
+          source ${{ github.workspace }}/.venv/bin/activate
           ${{ github.workspace }}/.venv/bin/pytest ${{ github.workspace }}/openbb_platform -m integration
 
       - name: Upload summary to Slack
