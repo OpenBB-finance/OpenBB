@@ -38,32 +38,21 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Load cached venv
+        id: cached-python-environment
+        uses: actions/cache@v3
         with:
-          version: 1.4.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          path: ${{ github.workspace }}/.venv
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
-      # - name: Configure Poetry
-      #   run: poetry config virtualenvs.in-project true
-
-      - name: Install Python Dependencies
-        # source $(poetry env info --path)/bin/activate
+      - name: Install Dependencies
+        if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
-          pip install toml pytest uvicorn importlib-metadata requests
-
-      # - name: Load cached venv
-      #   id: cached-poetry-dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: .venv
-      #     key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-
-      - name: Install obb Dependencies
-        # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          python ${{ github.workspace }}/openbb_platform/dev_install.py -e
+          python -m pip install -U virtualenv pip
+          python -m virtualenv ${{ github.workspace }}/.venv
+          ${{ github.workspace }}/.venv/bin/python -m pip install pytest \
+            ./openbb_platform
+            # Add the extensions you want to test within this workflow here
 
       - name: Populate System Setting Files
         run: |
@@ -91,23 +80,23 @@ jobs:
       - name: Wait for 1 minute
         run: sleep 60
 
-      - name: Run Integration Tests
+      - name: Run API Integration Tests
         run: |
-          pytest ${{ github.workspace }}/openbb_platform -m integration
+          ${{ github.workspace }}/.venv/bin/pytest ${{ github.workspace }}/openbb_platform -m integration
 
-    # - name: Upload summary to Slack
-    #   uses: adrey/slack-file-upload-action@master
-    #   with:
-    #     token: ${{ secrets.SLACK_API_TOKEN }}
-    #     initial_comment: "API Integration test summary"
-    #     title: "Integration test summary"
-    #     path: summary.txt
-    #     channel: ${{ secrets.SLACK_CHANNEL_ID }}
+      - name: Upload summary to Slack
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          initial_comment: "API Integration test summary"
+          title: "Integration test summary"
+          path: summary.txt
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
-    # - name: Slack Notification - Success/Failure
-    #   uses: act10ns/slack@v1
-    #   with:
-    #     status: ${{ job.status }}
-    #     steps: ${{ toJson(steps) }}
-    #     channel: '#workflows'
-    #   if: always()
+      - name: Slack Notification - Success/Failure
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#workflows"
+        if: always()
