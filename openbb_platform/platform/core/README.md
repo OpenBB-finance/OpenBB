@@ -485,7 +485,7 @@ The application will expect a header that contains username and password in the 
 
 #### 5.3.2 Custom authentication
 
-For custom authentication methods you can plug an authentication extension into the API. To do so, set the environment variable `OPENBB_API_AUTH_EXTENSION` with the name of the extension you want to use. Don't forget to set `OPENBB_API_AUTH` to `True` as well.
+For custom authentication methods you can plug an authentication extension into the API. To do so, set the environment variable `OPENBB_API_AUTH_EXTENSION` with the name of the extension you want to use.
 
 The extension entry point defined in the respective "pyproject.toml should be similar to
 
