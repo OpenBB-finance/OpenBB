@@ -48,6 +48,7 @@ jobs:
       - name: Install Dependencies
         if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
+          cat openbb_platform/providers/benzinga/tests/test_benzinga_fetchers.py
           python -m venv runner_env
           source runner_env/bin/activate
           pip install pytest poetry\
@@ -64,9 +65,9 @@ jobs:
 
       - name: Populate System Setting Files
         run: |
-          mkdir -p ${{ github.workspace }}/.openbb_platform
-          touch ${{ github.workspace }}/.openbb_platform/system_settings.json
-          echo '{"log_collect":false}' > ${{ github.workspace }}/.openbb_platform/system_settings.json
+          mkdir -p /.openbb_platform
+          touch /.openbb_platform/system_settings.json
+          echo '{"log_collect":false}' > /.openbb_platform/system_settings.json
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
