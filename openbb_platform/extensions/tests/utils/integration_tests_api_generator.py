@@ -31,7 +31,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -51,8 +51,8 @@ def write_test_w_template(
     params_str = ",\n".join([f"({params})" for params in params_list])
 
     http_template_request = {
-        "get": "requests.get(url, headers=headers, timeout=5)",
-        "post": "requests.post(url, headers=headers, timeout=5, data=data)",
+        "get": "requests.get(url, headers=headers, timeout=10)",
+        "post": "requests.post(url, headers=headers, timeout=10, data=data)",
     }
 
     http_template_params = {"get": "", "post": "data = json.dumps(params.pop('data'))"}

@@ -7,7 +7,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -41,6 +41,18 @@ def headers():
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "fmp",
+                "limit": 20,
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "limit": 20,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -49,6 +61,6 @@ def test_news_globalnews(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/news/globalnews?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
