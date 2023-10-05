@@ -60,6 +60,7 @@ jobs:
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
+          pip list
 
       - name: Populate System Setting Files
         run: |
@@ -82,6 +83,7 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
+          pip list
           ${{ github.workspace }}/.venv/bin/uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
@@ -90,6 +92,7 @@ jobs:
       - name: Run API Integration Tests
         run: |
           source ${{ github.workspace }}/.venv/bin/activate
+          pip list
           ${{ github.workspace }}/.venv/bin/pytest ${{ github.workspace }}/openbb_platform -m integration
 
       - name: Upload summary to Slack
