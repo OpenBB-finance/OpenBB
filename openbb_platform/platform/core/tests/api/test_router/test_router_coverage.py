@@ -13,7 +13,7 @@ def test_get_provider_coverage(mock_command_map):
         "provider1": ["coverage1", "coverage2"]
     }
 
-    response = get_provider_coverage()
+    response = get_provider_coverage(mock_command_map)
 
     assert response
 
@@ -25,5 +25,5 @@ def test_get_command_coverage(mock_command_map):
         "command1": ["coverage1", "coverage2"]
     }
 
-    response = get_command_coverage()
+    response = get_command_coverage(mock_command_map)
     assert response
