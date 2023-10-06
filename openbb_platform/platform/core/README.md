@@ -355,14 +355,15 @@ To apply an environment variable use one of the following:
 
 The variables we use are:
 
-- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
-- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
-- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
-- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
-- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
-- `OPENBB_API_AUTH`: enables API authentication for command endpoints
+- `OPENBB_API_AUTH`: enables API endpoint authentication
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
+- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
+- `OPENBB_AUTO_BUILD`: enables automatic package build on import
+- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
+- `OPENBB_DEBUG_MODE`: enables debug mode
+- `OPENBB_DEV_MODE`: enables development mode
+- `OPENBB_HUB_BACKEND`: sets the backend for the OpenBB Hub
 
 ## 4.2 Dynamic version
 
@@ -453,13 +454,13 @@ We provide a `.dockerfile`` in OpenBB [repo](https://github.com/OpenBB-finance/O
 To build the image, you can run the following command from the repo root:
 
 ```bash
-docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
+docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
 ```
 
 To run this newly-built image:
 
 ```bash
-docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-sdk:latest
+docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
 ```
 
 This will mount the local `~/.openbb_platform` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.
@@ -474,7 +475,7 @@ This means that if you deploy it on some network, any client will be served.
 
 > This method is not recommended for production environments.
 
-If you are in a rush and still want some layer of security you can use the FastAPI HTTP Basic Auth we included in the API. To enable this feature, set the following environment variables (more info at [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
+If you are in a rush and still want some layer of security you can use the FastAPI HTTP Basic Auth we included in the API. To enable this feature, set the following environment variables (more info on environment variables here [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
 
 ```.env
 OPENBB_API_AUTH="True"
@@ -483,6 +484,24 @@ OPENBB_API_PASSWORD="some_pass"
 ```
 
 The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization" field.
+
+Here is an example using `base64` and `requests` libraries:
+
+```python
+import base64
+import requests
+
+msg = "some_user:some_pass"
+msg_bytes = msg.encode('ascii')
+base64_bytes = base64.b64encode(msg_bytes)
+base64_msg = base64_bytes.decode('ascii')
+
+requests.get(
+    url="http://127.0.0.1:8000/api/v1/stocks/load?provider=fmp&symbol=AAPL",
+    headers={"Authorization": f"Basic {base64_msg}"}
+)
+``````
+
 
 #### 5.3.2 Custom authentication
 
