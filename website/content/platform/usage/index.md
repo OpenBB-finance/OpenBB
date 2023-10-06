@@ -18,15 +18,15 @@ The OpenBB Platform is a modern investment research platform for everyone.  At i
 
 ## Authorization
 
-Most data connections require API keys, assigned to individual users.  When using the Python client, authorization is not required to initialize the core services.
+By default, authorization is not required to initialize and use the core services.  Most data providers, however,  require an API key to access their data.  They can be stored locally, or securely on the OpenBB Hub for convenient remote access.  Refer to our Developer Guidelines for best practices within a production environment.
 
 ### OpenBB Hub
 
-Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed with a revokable Personal Access Token (PAT).  Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed via a revokable Personal Access Token (PAT).  Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
 #### Python Client
 
-Login using the Python client with:
+The OpenBB Hub is a convenient solution for accessing data in temporary environments, like Google Colab.  Login using the Python client with:
 
 ```jupyterpython
 from openbb import obb
@@ -50,9 +50,9 @@ obb.account.refresh()
 obb.account.logout()
 ```
 
-Set `remember_me` as `False` when logging in to discard all credentials at the end of the session.
+Set `remember_me` as `False` to discard all credentials at the end of the session.
 
-#### Fast API
+### Fast API
 
 Activate the Python environment and then start the server from a Terminal command line with:
 
@@ -60,42 +60,33 @@ Activate the Python environment and then start the server from a Terminal comman
 uvicorn openbb_core.api.rest_api:app
 ```
 
-To use the Fast API documentation page, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+To use the Fast API documentation page, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).  By default, no authorization is required.  Basic authorization can be enabled with environment variables.  In the home folder, along with `user_settings.json`, create a new file, `.env`, if it does not yet exist.
 
-Start a Python session and make a POST request to login.
-
-```python
-import requests
-
-url = 'http://127.0.0.1:8000/api/v1/account/token'
-headers = {
-    "accept": "application/json",
-    "Content-Type": "application/x-www-form-urlencoded"
-}
-json = f"openbb_hub=true&grant_type=&username={username}&password={password}&scope=&client_id=&client_secret="
-
-response = requests.post(url=url, headers=headers, data=data)
-
-response.json()
+```.env
+OPENBB_API_AUTH="True"
+OPENBB_API_USERNAME="some_user"
+OPENBB_API_PASSWORD="some_pass"
 ```
 
-Format headers for data requests by including the bearer token generated in the response from the login and then make a GET request.
+The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request to the API inside the headers "Authorization" field.
 
 ```python
 import requests
 
 symbol="SPY"
 url = f"http://127.0.0.1:8000/api/v1/stocks/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
-headers = {"accept": "application/json", "Authorization": f"Bearer {access_token}"}
+headers = {"accept": "application/json", "Authorization": f"Basic {basic_auth}"}
 
 response = requests.get(url=url, headers=headers)
 
 response.json()
 ```
 
+Refer to the Developer Guidelines for custom authorization procedures.
+
 ### Local Environment
 
-Credentials and user preferences  can be stored locally, in `~/.openbb_platform/`, as a JSON file, `user_settings.json`.  If this file does not exist, create it with any text editor.  The schema below can be copy/pasted if required, providers not listed here are added using the same format:
+Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`.  It is read upon initializing the Python client, or when the Fast API is authorized.  If the file does not exist, create it with any text editor.  The schema below can be copy/pasted if required, providers not listed here are added using the same format:
 
 ```json
 {
@@ -111,28 +102,114 @@ Credentials and user preferences  can be stored locally, in `~/.openbb_platform/
 }
 ```
 
-The credentials will be read when the Python client is initialized, or when the Fast API is authorized with one of the test users.  There are 2 default users for testing purpose:
-
-- User "openbb"
-
-  - username : openbb
-  - password : openbb
-
-- User "finance"
-
-  - username : finance
-  - password : finance
-
-Use these, in conjunction with `openbb_hub=false`, to generate an authorization token for the Fast API without logging into Hub.
-
-To inspect the credentials use:
-
-```python
-requests.get("http://127.0.0.1:8000/api/v1/user", headers=headers).json()["credentials"]
-```
-
 To set keys from the Python client for the current session only, access the Credentials class:
 
 ```python
 obb.user.credentials.intrinio_api_key = "REPLACE_WITH_KEY"
+```
+
+## Environment Variables
+
+Environment variables are defined in a `.env` file.  If this file does not exist, create it inside the same folder `user_settings.json` is located.
+
+- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
+- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
+- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
+- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
+- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
+- `OPENBB_API_AUTH`: enables API authentication for command endpoints
+- `OPENBB_API_USERNAME`: sets API username
+- `OPENBB_API_PASSWORD`: sets API password
+
+Variables can be defined for current session only.
+
+    ```python
+    import os
+    os.environ["OPENBB_DEBUG_MODE"] = "True"
+    from openbb import obb
+    ```
+
+## User Settings
+
+User settings can be set from the Python interface directly.
+
+```python
+from openbb import obb
+
+obb.user.profile
+obb.user.credentials
+obb.user.preferences
+obb.user.defaults
+```
+
+Notably, `obb.user.defaults`, is for defining default providers of end points.  They are stored in the `user_settings.json` file, under `routes`.
+
+```json
+{
+    "credentials": {
+        "benzinga_api_key": null,
+        "fmp_api_key": null,
+        "polygon_api_key": null,
+        "fred_api_key": null
+    },
+    "defaults": {
+        "routes": {
+            "/stocks/fa/balance": {
+                "provider": "polygon"
+            },
+            "/stocks/load": {
+                "provider": "fmp"
+            },
+            "/stocks/news": {
+                "provider": "benzinga"
+            }
+        }
+    }
+}
+```
+
+## Basic Response
+
+The output of every command is an object which contains the request results, along with additional information.  It is a custom class, `OBBject`, and always returns with the fields listed below:
+
+```console
+id: ...                 # UUID Tag
+results: ...            # Serializable results.
+provider: ...           # Provider name.
+warnings: ...           # List of warnings.
+chart: ...              # Chart object.
+extra: ...              # Extra info.
+```
+
+```python
+from openbb import obb
+
+data = obb.stocks.load("SPY", provider="polygon")
+
+data
+```
+
+Additional class methods are helpers for converting the results to a variety of formats.
+
+- `to_dict()`: converts to a dictionary of lists.
+- `to_df()`/`to_dataframe()`: converts to a Pandas DataFrame.
+- `to_polars()`: converts to a Polars table.
+
+The output from the Fast API is a serialized version of this object, and these methods are lost on conversion.  OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
+
+```python
+import requests
+from openbb_core.app.model.obbject import OBBject
+
+data = []
+symbol="SPY"
+url = f"http://127.0.0.1:8000/api/v1/stocks/load?provider=polygon&symbol={symbol}"
+headers = {"accept": "application/json"}
+
+response = requests.get(url, headers=headers, timeout=3)
+
+if response.status_code == 200:
+  data = OBBject.model_validate(response.json())
+
+data.to_df()
 ```
