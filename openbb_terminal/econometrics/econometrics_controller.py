@@ -458,7 +458,7 @@ class EconometricsController(BaseController):
             type=str,
         )
 
-        export_group = parser.add_mutually_exclusive_group(required=True)
+        export_group = parser.add_mutually_exclusive_group(required=False)
         export_group.add_argument(
             "-f",
             "--file",
