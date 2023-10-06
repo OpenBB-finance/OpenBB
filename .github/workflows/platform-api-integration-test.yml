@@ -49,7 +49,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: runner_env
-          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
       - name: Install Dependencies
         if: steps.cached-python-environment.outputs.cache-hit != 'true'
@@ -103,8 +103,8 @@ jobs:
           pip list
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
-      - name: Wait for 1 minute
-        run: sleep 60
+      - name: Wait for 10 seconds
+        run: sleep 10
 
       - name: Run API Integration Tests
         run: |
@@ -112,6 +112,14 @@ jobs:
           pip list
           cd openbb_platform
           pytest . -m integration
+
+      - name: Cache pip packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
