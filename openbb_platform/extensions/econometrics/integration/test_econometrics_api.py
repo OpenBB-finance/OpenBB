@@ -28,7 +28,7 @@ def get_data(menu: str, symbol: str, provider: str, headers):
 data = {}
 
 
-def get_stocks_data():
+def get_stocks_data(headers):
     if "stocks_data" in data:
         return data["stocks_data"]
 
@@ -36,12 +36,12 @@ def get_stocks_data():
     provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = get_data(
-        "stocks", symbol=symbol, provider=provider, headers=headers()
+        "stocks", symbol=symbol, provider=provider, headers=headers
     )
     return data["stocks_data"]
 
 
-def get_crypto_data():
+def get_crypto_data(headers):
     if "crypto_data" in data:
         return data["crypto_data"]
 
@@ -58,8 +58,8 @@ def get_crypto_data():
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data()}),
-        ({"data": get_crypto_data()}),
+        ({"data": get_stocks_data(headers)}),
+        ({"data": get_crypto_data(headers)}),
     ],
 )
 @pytest.mark.integration
@@ -77,8 +77,20 @@ def test_econometrics_corr(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]}),
-        ({"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]}),
+        (
+            {
+                "data": get_stocks_data(headers),
+                "y_column": "close",
+                "x_columns": ["date"],
+            }
+        ),
+        (
+            {
+                "data": get_crypto_data(headers),
+                "y_column": "close",
+                "x_columns": ["date"],
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -102,8 +114,20 @@ def test_econometrics_ols_summary(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "y_column": "volume", "x_columns": ["close"]}),
-        ({"data": get_crypto_data(), "y_column": "volume", "x_columns": ["close"]}),
+        (
+            {
+                "data": get_stocks_data(headers),
+                "y_column": "volume",
+                "x_columns": ["close"],
+            }
+        ),
+        (
+            {
+                "data": get_crypto_data(headers),
+                "y_column": "volume",
+                "x_columns": ["close"],
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -129,7 +153,7 @@ def test_econometrics_dwat(params, headers):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": get_stocks_data(headers),
                 "y_column": "volume",
                 "x_columns": ["close"],
                 "lags": "",
@@ -137,7 +161,7 @@ def test_econometrics_dwat(params, headers):
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": get_crypto_data(headers),
                 "y_column": "volume",
                 "x_columns": ["close"],
                 "lags": "2",
@@ -168,13 +192,13 @@ def test_econometrics_bgot(params, headers):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": get_stocks_data(headers),
                 "columns": ["close", "volume"],
             }
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": get_crypto_data(headers),
                 "columns": ["close", "volume"],
             }
         ),
@@ -203,7 +227,7 @@ def test_econometrics_coint(params, headers):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": get_stocks_data(headers),
                 "y_column": "volume",
                 "x_column": "close",
                 "lag": "",
@@ -211,7 +235,7 @@ def test_econometrics_coint(params, headers):
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": get_crypto_data(headers),
                 "y_column": "volume",
                 "x_column": "close",
                 "lag": "2",
@@ -234,8 +258,8 @@ def test_econometrics_granger(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "column": "close", "regression": "c"}),
-        ({"data": get_crypto_data(), "column": "volume", "regression": "ctt"}),
+        ({"data": get_stocks_data(headers), "column": "close", "regression": "c"}),
+        ({"data": get_crypto_data(headers), "column": "volume", "regression": "ctt"}),
     ],
 )
 @pytest.mark.integration
