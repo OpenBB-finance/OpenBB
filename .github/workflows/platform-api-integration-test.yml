@@ -59,8 +59,10 @@ jobs:
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
-            pip install -U pydantic
-            pwd
+            pip uninstall -y openbb_core
+            cd openbb_platform/platform/core
+            pip install -U .
+            cd ../../../
 
       - name: Populate System Setting Files
         run: |
