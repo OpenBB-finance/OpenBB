@@ -117,7 +117,7 @@ class Account:
                 if not hs.session:
                     raise OpenBBError("Not connected to hub.")
 
-                json.dump(hs.session.dict(), f, indent=4)
+                json.dump(hs.session.model_dump(), f, indent=4)
 
         return self._base_app._command_runner.user_settings
 

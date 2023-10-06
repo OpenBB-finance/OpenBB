@@ -541,11 +541,11 @@ class RouterLoader:
     def from_extensions() -> Router:
         router = Router()
 
-        for entry_point in entry_points(group="openbb_core_extension"):
+        for entry_point in sorted(entry_points(group="openbb_core_extension")):
             try:
-                router.include_router(
-                    router=entry_point.load(), prefix=f"/{entry_point.name}"
-                )
+                entry = entry_point.load()
+                if isinstance(entry, Router):
+                    router.include_router(router=entry, prefix=f"/{entry_point.name}")
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
                 raise LoadingError(f"Invalid extension '{entry_point.name}'") from e

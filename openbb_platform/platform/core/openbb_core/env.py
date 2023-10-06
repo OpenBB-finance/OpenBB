@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import dotenv
 
@@ -9,6 +9,8 @@ from openbb_core.app.model.abstract.singleton import SingletonMeta
 
 
 class Env(metaclass=SingletonMeta):
+    """Environment variables."""
+
     _environ: Dict[str, str]
 
     def __init__(self) -> None:
@@ -27,7 +29,7 @@ class Env(metaclass=SingletonMeta):
 
     @property
     def AUTO_BUILD(self) -> bool:
-        """Automatic build: enables automatic SDK package build on import"""
+        """Automatic build: enables automatic package build on import"""
         return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD", True))
 
     @property
@@ -38,7 +40,22 @@ class Env(metaclass=SingletonMeta):
     @property
     def API_AUTH(self) -> bool:
         """API authentication: enables commands authentication in FastAPI"""
-        return self.str2bool(self._environ.get("OPENBB_API_AUTH", True))
+        return self.str2bool(self._environ.get("OPENBB_API_AUTH", False))
+
+    @property
+    def API_AUTH_EXTENSION(self) -> Optional[str]:
+        """Auth extension: specify auth extension"""
+        return self._environ.get("OPENBB_API_AUTH_EXTENSION", None)
+
+    @property
+    def API_USERNAME(self) -> Optional[str]:
+        """API username: specify username for authentication"""
+        return self._environ.get("OPENBB_API_USERNAME", None)
+
+    @property
+    def API_PASSWORD(self) -> Optional[str]:
+        """API password: specify password for authentication"""
+        return self._environ.get("OPENBB_API_PASSWORD", None)
 
     @staticmethod
     def str2bool(value) -> bool:
