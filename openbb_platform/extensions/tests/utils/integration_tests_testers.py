@@ -97,13 +97,13 @@ def check_missing_params(
                     for expected_param in command_params[provider]["QueryParams"][
                         "fields"
                     ]:
-                        if expected_param not in test_params.keys():
+                        if expected_param not in test_params:
                             missing_params.append(
                                 f"Missing param {expected_param} for provider {provider} in function {function}"
                             )
             elif isinstance(command_params, dict):
                 for expected_param in command_params["openbb"]["QueryParams"]["fields"]:
-                    if expected_param not in test_params.keys():
+                    if expected_param not in test_params:
                         missing_params.append(
                             f"Missing standard param {expected_param} in function {function}"
                         )
