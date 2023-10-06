@@ -13,7 +13,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-
 jobs:
   api-integration-tests:
     runs-on: ubuntu-latest
@@ -79,13 +78,13 @@ jobs:
 
       - name: Populate System Setting Files
         run: |
-          mkdir -p ${{ github.workspace }}/.openbb_platform
-          touch ${{ github.workspace }}/.openbb_platform/system_settings.json
-          echo '{"log_collect":false}' > ${{ github.workspace }}/.openbb_platform/system_settings.json
+          mkdir -p /.openbb_platform
+          touch /.openbb_platform/system_settings.json
+          echo '{"log_collect":false}' > /.openbb_platform/system_settings.json
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
-          touch ${{ github.workspace }}/.openbb_platform/user_settings.json
+          touch /.openbb_platform/user_settings.json
           echo '{
             "credentials": {
               "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
@@ -95,7 +94,7 @@ jobs:
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
             }
-          }' > ${{ github.workspace }}/.openbb_platform/user_settings.json
+          }' > /.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
@@ -131,4 +130,3 @@ jobs:
           steps: ${{ toJson(steps) }}
           channel: "#workflows"
         if: always()
-
