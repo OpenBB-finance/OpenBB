@@ -1,7 +1,7 @@
 """TMX Stock Analysts Model"""
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import requests
 from openbb_provider.abstract.fetcher import Fetcher

@@ -166,7 +166,7 @@ def get_all_tmx_companies() -> Dict:
     return all_tmx
 
 
-def get_available_tmx_indices() -> Dict:
+def get_available_tmx_indices() -> List[Dict]:
     """Gets a dictionary of available TMX indices."""
 
     r = tmx_indices_session.get(
@@ -183,4 +183,8 @@ def get_available_tmx_indices() -> Dict:
     for i in data.index:
         data["symbol"].iloc[i] = f"^{data['symbol'].iloc[i]}"
 
-    return data.set_index("symbol").sort_index().to_dict()["name"]
+    data["currency"] = "CAD"
+    idx = data[data["name"].str.contains("USD")].index
+    data["currency"].iloc[idx] = "USD"
+
+    return data.sort_values(by="name").to_dict("records")
