@@ -1,10 +1,11 @@
+import base64
 import json
 import random
 from typing import Literal
 
 import pytest
 import requests
-from extensions.tests.utils.helpers import get_auth
+from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
 data = {}
@@ -14,7 +15,11 @@ def get_headers():
     if "headers" in data:
         return data["headers"]
 
-    data["headers"] = {"Authorization": get_auth()}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    data["headers"] = {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
     return data["headers"]
 
 

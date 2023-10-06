@@ -1,15 +1,20 @@
+import base64
 import json
 import random
 
 import pytest
 import requests
-from extensions.tests.utils.helpers import get_auth
+from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
 def headers():
-    return {"Authorization": get_auth()}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 def get_data(menu: str, symbol: str, provider: str, headers):
