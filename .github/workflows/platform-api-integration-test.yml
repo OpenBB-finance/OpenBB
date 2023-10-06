@@ -60,7 +60,10 @@ jobs:
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
             pip uninstall -y openbb_core
+            pip uninstall -y openbb_provider
             cd openbb_platform/platform/core
+            pip install -U .
+            cd ../provider/
             pip install -U .
             cd ../../../
             pip install -U pydantic
