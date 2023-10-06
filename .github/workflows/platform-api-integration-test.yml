@@ -55,6 +55,7 @@ jobs:
             ./openbb_platform/providers/alpha_vantage \
             ./openbb_platform/providers/cboe \
             ./openbb_platform/providers/quandl \
+            ./openbb_platform/providers/fmp \
             ./openbb_platform/providers/yfinance \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
