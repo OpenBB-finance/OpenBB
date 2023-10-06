@@ -355,14 +355,15 @@ To apply an environment variable use one of the following:
 
 The variables we use are:
 
-- `OPENBB_DEBUG_MODE`: enables verbosity while running the program
-- `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
-- `OPENBB_AUTO_BUILD`: enables automatic SDK package build on import
-- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
-- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
 - `OPENBB_API_AUTH`: enables API authentication for command endpoints
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
+- `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
+- `OPENBB_AUTO_BUILD`: enables automatic package build on import
+- `OPENBB_CHARTING_EXTENSION`: specifies which charting extension to use
+- `OPENBB_DEBUG_MODE`: enables debug mode
+- `OPENBB_DEV_MODE`: enables development mode
+- `OPENBB_HUB_BACKEND`: sets the backend for the OpenBB Hub
 
 ## 4.2 Dynamic version
 
