@@ -2,7 +2,7 @@
 import importlib.util
 import inspect
 import os
-from typing import Any, Callable, Dict, List, Literal, Union, get_type_hints
+from typing import Any, Callable, Dict, List, Literal, Tuple, Union, get_type_hints
 
 from extensions.tests.utils.integration_tests_generator import (
     find_extensions,
@@ -49,7 +49,7 @@ def get_module_functions(module_list: List[Any]) -> Dict[str, Any]:
 
 
 def check_missing_providers(
-    command_params: Union[Dict[str, Dict[str, dict]], List[Dict[str, str]]],
+    command_params: Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
     function_params: List[dict],
     function,
     processing: bool = False,
@@ -82,7 +82,7 @@ def check_missing_providers(
 
 
 def check_missing_params(
-    command_params: Union[Dict[str, Dict[str, dict]], List[Dict[str, str]]],
+    command_params: Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
     function_params: List[dict],
     function,
     processing: bool = False,
@@ -97,24 +97,30 @@ def check_missing_params(
                     for expected_param in command_params[provider]["QueryParams"][
                         "fields"
                     ]:
-                        if expected_param not in test_params.keys():
+                        if expected_param not in test_params:
                             missing_params.append(
                                 f"Missing param {expected_param} for provider {provider} in function {function}"
                             )
             elif isinstance(command_params, dict):
                 for expected_param in command_params["openbb"]["QueryParams"]["fields"]:
-                    if expected_param not in test_params.keys():
+                    if expected_param not in test_params:
                         missing_params.append(
                             f"Missing standard param {expected_param} in function {function}"
                         )
     else:
         for test_params in function_params:
             if isinstance(command_params, list):
-                for expected_param in command_params[0]:
-                    if (
-                        expected_param not in test_params.keys()
-                        and expected_param != "return"
-                    ):
+                try:
+                    iter_commands_params = command_params[0][0]
+                except KeyError:
+                    iter_commands_params = command_params[0]  # type: ignore
+
+                for expected_param in iter_commands_params:
+                    try:
+                        used_params = test_params[0].keys()
+                    except KeyError:
+                        used_params = test_params.keys()
+                    if expected_param not in used_params and expected_param != "return":
                         missing_params.append(
                             f"Missing param {expected_param} in function {function}"
                         )
@@ -125,7 +131,7 @@ def check_integration_tests(
     functions: Dict[str, Any],
     check_function: Callable[
         [
-            Union[Dict[str, Dict[str, dict]], List[Dict[str, str]]],
+            Union[Dict[str, Dict[str, dict]], List[Tuple[Dict[str, str], str]]],
             List[dict],
             str,
             bool,
@@ -171,7 +177,7 @@ def check_integration_tests(
                 function_params = functions[function].pytestmark[1].args[1]
 
                 missing_items = check_function(
-                    processing_command_params, function_params, function, True
+                    processing_command_params, function_params, function, True  # type: ignore
                 )
 
                 all_missing_items.extend(missing_items)

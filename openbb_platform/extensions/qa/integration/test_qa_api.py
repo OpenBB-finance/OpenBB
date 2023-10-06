@@ -1,31 +1,38 @@
 import base64
 import json
 import random
+from typing import Literal
 
 import pytest
 import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
+data = {}
 
-@pytest.fixture(scope="session")
-def headers():
+
+def get_headers():
+    if "headers" in data:
+        return data["headers"]
+
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
 
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+    data["headers"] = {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+    return data["headers"]
 
 
-def get_data(menu: str, symbol: str, provider: str, headers):
+def get_data(menu: Literal["stocks", "crypto"]):
+    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+    return funcs[menu]()
+
+
+def request_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
-    result = requests.get(url, headers=headers(), timeout=10)
+    result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
-
-
-data = {}
 
 
 def get_stocks_data():
@@ -35,9 +42,7 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = get_data(
-        "stocks", symbol=symbol, provider=provider, headers=headers
-    )
+    data["stocks_data"] = request_data("stocks", symbol=symbol, provider=provider)
     return data["stocks_data"]
 
 
@@ -49,254 +54,264 @@ def get_crypto_data():
     symbol = random.choice(["BTC"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
-    data["crypto_data"] = get_data(
-        menu="crypto", symbol=symbol, provider=provider, headers=headers
+    data["crypto_data"] = request_data(
+        menu="crypto",
+        symbol=symbol,
+        provider=provider,
     )
     return data["crypto_data"]
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_normality(params, headers):
+def test_qa_normality(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/normality?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_capm(params, headers):
+def test_qa_capm(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/capm?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "threshold_start": "",
                 "threshold_end": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "threshold_start": "0.1",
                 "threshold_end": "1.6",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_om(params, headers):
+def test_qa_om(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/om?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "window": "5"}),
-        ({"data": get_crypto_data(), "target": "high", "window": "10"}),
+        ({"data": "", "target": "close", "window": "5"}, "stocks"),
+        ({"data": "", "target": "high", "window": "10"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_kurtosis(params, headers):
+def test_qa_kurtosis(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/kurtosis?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "fuller_reg": "c",
                 "kpss_reg": "ct",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "high",
                 "fuller_reg": "ct",
                 "kpss_reg": "c",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_unitroot(params, headers):
+def test_qa_unitroot(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/unitroot?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "rfr": "", "window": ""}),
-        ({"data": get_crypto_data(), "target": "high", "rfr": "0.5", "window": "250"}),
+        ({"data": "", "target": "close", "rfr": "", "window": ""}, "stocks"),
+        ({"data": "", "target": "high", "rfr": "0.5", "window": "250"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_sh(params, headers):
+def test_qa_sh(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/sh?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "target_return": "",
                 "window": "",
                 "adjusted": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "close",
                 "target_return": "0.5",
                 "window": "275",
                 "adjusted": "true",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_so(params, headers):
+def test_qa_so(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/so?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "window": "220"}),
+        ({"data": "", "target": "close", "window": "220"}, "stocks"),
     ],
 )
 @pytest.mark.integration
-def test_qa_skew(params, headers):
+def test_qa_skew(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/skew?{query_str}"
-    result = requests.post(url, headers=headers, timeout=60, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "window": "10",
                 "quantile_pct": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "window": "50",
                 "quantile_pct": "0.6",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_quantile(params, headers):
+def test_qa_quantile(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/quantile?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_summary(params, headers):
+def test_qa_summary(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(params.pop("data"))
+    data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/summary?{query_str}"
-    result = requests.post(url, headers=headers, timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
