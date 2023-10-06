@@ -474,7 +474,7 @@ This means that if you deploy it on some network, any client will be served.
 
 > This method is not recommended for production environments.
 
-If you are in a rush and still want some layer of security you can use the FastAPI HTTP Basic Auth we included in the API. To enable this feature, set the following environment variables (more info at [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
+If you are in a rush and still want some layer of security you can use the FastAPI HTTP Basic Auth we included in the API. To enable this feature, set the following environment variables (more info on environment variables here [4.1.5. Environment variables](#415-environment-variables)) and replace the username and password with your preferred values:
 
 ```.env
 OPENBB_API_AUTH="True"
@@ -483,6 +483,24 @@ OPENBB_API_PASSWORD="some_pass"
 ```
 
 The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request you make to the API inside the headers "Authorization" field.
+
+Here is an example using `base64` and `requests` libraries:
+
+```python
+import base64
+import requests
+
+msg = "some_user:some_pass"
+msg_bytes = msg.encode('ascii')
+base64_bytes = base64.b64encode(msg_bytes)
+base64_msg = base64_bytes.decode('ascii')
+
+requests.get(
+    url="http://127.0.0.1:8000/api/v1/stocks/load?provider=fmp&symbol=AAPL",
+    headers={"Authorization": f"Basic {base64_msg}"}
+)
+``````
+
 
 #### 5.3.2 Custom authentication
 
