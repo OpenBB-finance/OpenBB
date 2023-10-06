@@ -7,7 +7,6 @@ from openbb_provider.utils.helpers import get_querystring
 @pytest.fixture(scope="session")
 def headers():
     return {"Authorization": get_auth()}
-    return {"Authorization": get_auth()}
 
 
 @pytest.mark.parametrize(
