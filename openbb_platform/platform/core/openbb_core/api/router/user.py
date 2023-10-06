@@ -1,30 +1,18 @@
+"""OpenBB API Account Router."""
+
 from fastapi import APIRouter, Depends
-from openbb_core.api.dependency.user import UserService, get_user, get_user_service
-from openbb_core.app.model.credentials import Credentials
+from openbb_core.api.auth.user import authenticate_user, get_user_settings
 from openbb_core.app.model.user_settings import UserSettings
 from typing_extensions import Annotated
 
 router = APIRouter(prefix="/user", tags=["User"])
+auth_hook = authenticate_user
+user_settings_hook = get_user_settings
 
 
-@router.get("")
-async def read_users_settings(
-    user_settings: Annotated[UserSettings, Depends(get_user)],
-) -> UserSettings:
-    """Read users settings."""
-    return user_settings
-
-
-@router.patch("/credentials", operation_id="patch_user_credentials")
-async def patch_user_credentials(
-    credentials: Credentials,
-    user_settings: Annotated[UserSettings, Depends(get_user)],
-    user_service: Annotated[UserService, Depends(get_user_service)],
-) -> UserSettings:
-    """Patch user credentials."""
-    current = user_settings.credentials.model_dump()
-    incoming = credentials.model_dump(exclude_none=True)
-    current.update(incoming)
-    user_settings.credentials = Credentials.model_validate(current)
-    user_service.user_settings_repository.update(user_settings)
+@router.get("/me")
+async def read_user_settings(
+    user_settings: Annotated[UserSettings, Depends(get_user_settings)]
+):
+    """Read current user settings."""
     return user_settings
