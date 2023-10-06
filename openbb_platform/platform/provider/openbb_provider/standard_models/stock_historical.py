@@ -2,6 +2,7 @@
 
 
 from datetime import (
+    date as dateType,
     datetime,
 )
 from typing import List, Optional, Set, Union
@@ -22,11 +23,11 @@ class StockHistoricalQueryParams(QueryParams):
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
-    start_date: Optional[datetime] = Field(
+    start_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[datetime] = Field(
+    end_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
