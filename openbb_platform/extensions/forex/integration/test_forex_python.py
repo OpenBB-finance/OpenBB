@@ -31,6 +31,16 @@ def obb(pytestconfig):
                 "provider": "polygon",
             }
         ),
+        (
+            {
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -44,13 +54,7 @@ def test_forex_pairs(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
+        ({"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "interval": "1min",
@@ -63,7 +67,7 @@ def test_forex_pairs(params, obb):
         (
             {
                 "interval": "1day",
-                "provider": "fmp",
+                "provider": "intrinio",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

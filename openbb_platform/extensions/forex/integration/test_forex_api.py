@@ -7,7 +7,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -33,6 +33,16 @@ def headers():
                 "provider": "polygon",
             }
         ),
+        (
+            {
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -41,7 +51,7 @@ def test_forex_pairs(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/forex/pairs?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -62,7 +72,7 @@ def test_forex_pairs(params, headers):
         (
             {
                 "interval": "1day",
-                "provider": "fmp",
+                "provider": "intrinio",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -122,6 +132,6 @@ def test_forex_load(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/forex/load?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

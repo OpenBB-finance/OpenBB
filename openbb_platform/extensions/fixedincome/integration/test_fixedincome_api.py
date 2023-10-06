@@ -7,7 +7,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -27,7 +27,7 @@ def test_fixedincome_treasury(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/treasury?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -42,7 +42,7 @@ def test_fixedincome_ycrv(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/ycrv?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -67,7 +67,7 @@ def test_fixedincome_sofr(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/sofr?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -92,7 +92,7 @@ def test_fixedincome_estr(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/estr?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -117,7 +117,7 @@ def test_fixedincome_sonia(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/sonia?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -142,7 +142,7 @@ def test_fixedincome_ameribor(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/ameribor?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -167,7 +167,7 @@ def test_fixedincome_fed(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/fed?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -182,7 +182,7 @@ def test_fixedincome_projections(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/projections?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -197,6 +197,6 @@ def test_fixedincome_iorb(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/iorb?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

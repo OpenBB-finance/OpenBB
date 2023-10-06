@@ -1,6 +1,5 @@
 import json
 import random
-from typing import List
 
 import pytest
 import requests
@@ -11,7 +10,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -32,7 +31,7 @@ def get_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
 
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
-    result = requests.get(url, headers=auth_header(), timeout=5)
+    result = requests.get(url, headers=auth_header(), timeout=10)
     return result.json()["results"]
 
 
@@ -76,7 +75,7 @@ def test_qa_normality(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/normality?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -95,7 +94,7 @@ def test_qa_capm(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/capm?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -128,7 +127,7 @@ def test_qa_om(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/om?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -147,7 +146,7 @@ def test_qa_kurtosis(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/kurtosis?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -180,7 +179,7 @@ def test_qa_unitroot(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/unitroot?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -199,7 +198,7 @@ def test_qa_sh(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/sh?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -234,7 +233,7 @@ def test_qa_so(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/so?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -285,7 +284,7 @@ def test_qa_quantile(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/quantile?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -304,6 +303,6 @@ def test_qa_summary(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/qa/summary?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

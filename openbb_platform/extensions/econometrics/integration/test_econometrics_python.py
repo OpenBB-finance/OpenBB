@@ -180,7 +180,7 @@ def test_econometrics_coint(params, obb):
             {
                 "data": get_stocks_data(),
                 "y_column": "volume",
-                "x_columns": "close",
+                "x_column": "close",
                 "lag": "",
             }
         ),
@@ -188,7 +188,7 @@ def test_econometrics_coint(params, obb):
             {
                 "data": get_crypto_data(),
                 "y_column": "volume",
-                "x_columns": "close",
+                "x_column": "close",
                 "lag": "2",
             }
         ),

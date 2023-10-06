@@ -1,6 +1,5 @@
 import json
 import random
-from typing import List
 
 import pytest
 import requests
@@ -11,7 +10,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -32,7 +31,7 @@ def get_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
 
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
-    result = requests.get(url, headers=auth_header(), timeout=5)
+    result = requests.get(url, headers=auth_header(), timeout=10)
     return result.json()["results"]
 
 
@@ -94,7 +93,7 @@ def test_ta_atr(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/atr?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -131,7 +130,7 @@ def test_ta_fib(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/fib?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -150,7 +149,7 @@ def test_ta_obv(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/obv?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -169,7 +168,7 @@ def test_ta_fisher(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/fisher?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -177,7 +176,15 @@ def test_ta_fisher(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "index": "", "fast": "", "slow": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "index": "",
+                "fast": "",
+                "slow": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -196,7 +203,7 @@ def test_ta_adosc(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/adosc?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -235,7 +242,7 @@ def test_ta_bbands(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/bbands?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -243,7 +250,15 @@ def test_ta_bbands(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -262,7 +277,7 @@ def test_ta_zlma(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/zlma?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -288,7 +303,7 @@ def test_ta_aroon(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/aroon?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -296,7 +311,15 @@ def test_ta_aroon(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -315,7 +338,7 @@ def test_ta_sma(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/sma?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -352,7 +375,7 @@ def test_ta_demark(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/demark?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -371,7 +394,7 @@ def test_ta_vwap(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/vwap?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -408,7 +431,7 @@ def test_ta_macd(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/macd?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -416,7 +439,15 @@ def test_ta_macd(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -435,7 +466,7 @@ def test_ta_hma(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/hma?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -470,7 +501,7 @@ def test_ta_donchian(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/donchian?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -509,7 +540,7 @@ def test_ta_ichimoku(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ichimoku?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -518,7 +549,14 @@ def test_ta_ichimoku(params, headers):
     "params",
     [
         ({"data": get_stocks_data(), "index": "", "target": "", "period": ""}),
-        ({"data": get_crypto_data(), "index": "date", "target": "close", "period": "95"}),
+        (
+            {
+                "data": get_crypto_data(),
+                "index": "date",
+                "target": "close",
+                "period": "95",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -528,7 +566,7 @@ def test_ta_clenow(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/clenow?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -547,7 +585,7 @@ def test_ta_ad(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ad?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -555,7 +593,15 @@ def test_ta_ad(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "index": "", "length": "", "scalar": "", "drift": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "index": "",
+                "length": "",
+                "scalar": "",
+                "drift": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -574,7 +620,7 @@ def test_ta_adx(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/adx?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -582,7 +628,15 @@ def test_ta_adx(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "target": "", "index": "", "length": "", "offset": ""}),
+        (
+            {
+                "data": get_stocks_data(),
+                "target": "",
+                "index": "",
+                "length": "",
+                "offset": "",
+            }
+        ),
         (
             {
                 "data": get_crypto_data(),
@@ -601,7 +655,7 @@ def test_ta_wma(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/wma?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -610,7 +664,14 @@ def test_ta_wma(params, headers):
     "params",
     [
         ({"data": get_stocks_data(), "index": "", "length": "", "scalar": ""}),
-        ({"data": get_crypto_data(), "index": "date", "length": "16", "scalar": "0.02"}),
+        (
+            {
+                "data": get_crypto_data(),
+                "index": "date",
+                "length": "16",
+                "scalar": "0.02",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -620,7 +681,7 @@ def test_ta_cci(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cci?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -657,7 +718,7 @@ def test_ta_rsi(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/rsi?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -692,7 +753,7 @@ def test_ta_stoch(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/stoch?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -729,7 +790,7 @@ def test_ta_kc(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/kc?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -748,7 +809,7 @@ def test_ta_cg(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cg?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -785,7 +846,7 @@ def test_ta_cones(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cones?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -820,6 +881,6 @@ def test_ta_ema(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ema?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

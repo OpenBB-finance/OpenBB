@@ -7,7 +7,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -27,7 +27,7 @@ def test_economy_const(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/const?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -53,7 +53,7 @@ def test_economy_cpi(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cpi?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -87,6 +87,7 @@ def test_economy_cpi(params, headers):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -96,6 +97,7 @@ def test_economy_cpi(params, headers):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -156,7 +158,7 @@ def test_economy_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -191,7 +193,7 @@ def test_economy_european_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/european_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -206,14 +208,19 @@ def test_economy_european_index_constituents(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/european_index_constituents?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
     "params",
-    [({}), ({"europe": True, "provider": "cboe"})],
+    [
+        ({}),
+        ({"europe": True, "provider": "cboe"}),
+        ({"provider": "fmp"}),
+        ({"provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_economy_available_indices(params, headers):
@@ -221,7 +228,7 @@ def test_economy_available_indices(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/available_indices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -236,7 +243,7 @@ def test_economy_risk(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/risk?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -261,7 +268,7 @@ def test_economy_index_search(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -276,7 +283,7 @@ def test_economy_index_snapshots(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index_snapshots?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -291,7 +298,7 @@ def test_economy_cot_search(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cot_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -321,7 +328,7 @@ def test_economy_cot(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cot?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -346,7 +353,7 @@ def test_economy_sp500_multiples(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/sp500_multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -370,6 +377,6 @@ def test_economy_fred_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fred_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

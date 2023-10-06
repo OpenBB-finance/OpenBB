@@ -1,6 +1,5 @@
 import json
 import random
-from typing import List
 
 import pytest
 import requests
@@ -11,7 +10,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -32,7 +31,7 @@ def get_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
 
     url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
-    result = requests.get(url, headers=auth_header(), timeout=5)
+    result = requests.get(url, headers=auth_header(), timeout=10)
     return result.json()["results"]
 
 
@@ -76,7 +75,7 @@ def test_econometrics_corr(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/corr?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -101,7 +100,7 @@ def test_econometrics_ols_summary(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/ols_summary?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=body)
+    result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -126,7 +125,7 @@ def test_econometrics_dwat(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/dwat?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=body)
+    result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -165,7 +164,7 @@ def test_econometrics_bgot(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/bgot?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=body)
+    result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -200,7 +199,7 @@ def test_econometrics_coint(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/coint?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=body)
+    result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -212,7 +211,7 @@ def test_econometrics_coint(params, headers):
             {
                 "data": get_stocks_data(),
                 "y_column": "volume",
-                "x_columns": "close",
+                "x_column": "close",
                 "lag": "",
             }
         ),
@@ -220,7 +219,7 @@ def test_econometrics_coint(params, headers):
             {
                 "data": get_crypto_data(),
                 "y_column": "volume",
-                "x_columns": "close",
+                "x_column": "close",
                 "lag": "2",
             }
         ),
@@ -233,7 +232,7 @@ def test_econometrics_granger(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/granger?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -252,6 +251,6 @@ def test_econometrics_unitroot(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/unitroot?{query_str}"
-    result = requests.post(url, headers=headers, timeout=5, data=data)
+    result = requests.post(url, headers=headers, timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -7,7 +7,7 @@ def get_token():
     return requests.post(
         "http://0.0.0.0:8000/api/v1/account/token",
         data={"username": "openbb", "password": "openbb"},
-        timeout=5,
+        timeout=10,
     )
 
 
@@ -28,6 +28,7 @@ def headers():
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "timeseries": 1,
             }
         ),
         (
@@ -37,6 +38,7 @@ def headers():
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -93,6 +95,6 @@ def test_crypto_load(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/crypto/load?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
