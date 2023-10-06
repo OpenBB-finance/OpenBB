@@ -38,32 +38,36 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Load cached venv
+        id: cached-python-environment
+        uses: actions/cache@v3
         with:
-          version: 1.4.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          path: runner_env
+          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
-      # - name: Configure Poetry
-      #   run: poetry config virtualenvs.in-project true
-
-      - name: Install Python Dependencies
-        # source $(poetry env info --path)/bin/activate
+      - name: Install Dependencies
+        if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
-          pip install toml pytest uvicorn importlib-metadata requests
-
-      # - name: Load cached venv
-      #   id: cached-poetry-dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: .venv
-      #     key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-
-      - name: Install obb Dependencies
-        # if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: |
-          python ${{ github.workspace }}/openbb_platform/dev_install.py -e
+          python -m venv runner_env
+          source runner_env/bin/activate
+          pip install pytest poetry\
+            ./openbb_platform \
+            ./openbb_platform/providers/alpha_vantage \
+            ./openbb_platform/providers/cboe \
+            ./openbb_platform/providers/quandl \
+            ./openbb_platform/providers/fmp \
+            ./openbb_platform/providers/yfinance \
+            ./openbb_platform/extensions/futures \
+            ./openbb_platform/extensions/qa \
+            ./openbb_platform/extensions/ta
+            pip uninstall -y openbb_core
+            pip uninstall -y openbb_provider
+            cd openbb_platform/platform/core
+            pip install -U .
+            cd ../provider/
+            pip install -U .
+            cd ../../../
+            pip install -U pydantic
 
       - name: Populate System Setting Files
         run: |
@@ -86,28 +90,35 @@ jobs:
 
       - name: Launch the Uvicorn Process
         run: |
+          source runner_env/bin/activate
+          pip list
+          pwd
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
         run: sleep 60
 
-      - name: Run Integration Tests
+      - name: Run API Integration Tests
         run: |
-          pytest ${{ github.workspace }}/openbb_platform -m integration
+          source runner_env/bin/activate
+          pip list
+          pwd
+          cd openbb_platform
+          pytest . -m integration
 
-    # - name: Upload summary to Slack
-    #   uses: adrey/slack-file-upload-action@master
-    #   with:
-    #     token: ${{ secrets.SLACK_API_TOKEN }}
-    #     initial_comment: "API Integration test summary"
-    #     title: "Integration test summary"
-    #     path: summary.txt
-    #     channel: ${{ secrets.SLACK_CHANNEL_ID }}
+      - name: Upload summary to Slack
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          initial_comment: "API Integration test summary"
+          title: "Integration test summary"
+          path: summary.txt
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
 
-    # - name: Slack Notification - Success/Failure
-    #   uses: act10ns/slack@v1
-    #   with:
-    #     status: ${{ job.status }}
-    #     steps: ${{ toJson(steps) }}
-    #     channel: '#workflows'
-    #   if: always()
+      - name: Slack Notification - Success/Failure
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#workflows"
+        if: always()
