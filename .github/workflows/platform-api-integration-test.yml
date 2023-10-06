@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      OPENBB_API_AUTH: true
+      OPENBB_API_USERNAME: 'USER'
+      OPENBB_API_PASSWORD: 'PASS'
 
     steps:
       - name: Slack Notification - Starting

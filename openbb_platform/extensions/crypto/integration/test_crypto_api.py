@@ -1,20 +1,12 @@
 import pytest
 import requests
+from extensions.tests.utils.helpers import get_auth
 from openbb_provider.utils.helpers import get_querystring
-
-
-def get_token():
-    return requests.post(
-        "http://0.0.0.0:8000/api/v1/account/token",
-        data={"username": "openbb", "password": "openbb"},
-        timeout=10,
-    )
 
 
 @pytest.fixture(scope="session")
 def headers():
-    access_token = get_token().json()["access_token"]
-    return {"Authorization": f"Bearer {access_token}"}
+    return {"Authorization": get_auth()}
 
 
 @pytest.mark.parametrize(
