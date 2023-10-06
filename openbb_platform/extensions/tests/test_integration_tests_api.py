@@ -1,6 +1,6 @@
 """Test the integration tests."""
 import pytest
-from extensions.tests.utils.integration_tests_testers import (
+from .openbb_platform.extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
     get_integration_tests,
