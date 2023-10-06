@@ -1,6 +1,9 @@
 name: API Integration Tests
 
 on:
+  pull_request:
+    branches:
+      - feature/openbb-sdk-v4
   push:
     branches:
       - feature/openbb-sdk-v4
@@ -9,6 +12,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 
 jobs:
   api-integration-tests:
@@ -60,6 +64,7 @@ jobs:
             ./openbb_platform/providers/quandl \
             ./openbb_platform/providers/fmp \
             ./openbb_platform/providers/yfinance \
+            ./openbb_platform/providers/intrinio \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta
@@ -87,7 +92,8 @@ jobs:
               "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
               "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
               "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
-              "fred_api_key": "${{ secrets.FRED_API_KEY }}"
+              "fred_api_key": "${{ secrets.FRED_API_KEY }}",
+              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
             }
           }' > ${{ github.workspace }}/.openbb_platform/user_settings.json
 
@@ -125,3 +131,4 @@ jobs:
           steps: ${{ toJson(steps) }}
           channel: "#workflows"
         if: always()
+
