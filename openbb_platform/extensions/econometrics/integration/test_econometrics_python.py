@@ -9,7 +9,6 @@ from openbb_core.app.model.obbject import OBBject
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 

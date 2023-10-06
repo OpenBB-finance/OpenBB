@@ -1,5 +1,6 @@
 """Test ta extension."""
 import random
+from typing import Literal
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
@@ -8,7 +9,6 @@ from openbb_core.app.model.obbject import OBBject
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -49,34 +49,42 @@ def get_crypto_data():
     return data["crypto_data"]
 
 
+def get_data(menu: Literal["stocks", "crypto"]):
+    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+    return funcs[menu]()
+
+
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "length": "",
                 "mamode": "",
                 "drift": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "length": "15",
                 "mamode": "rma",
                 "drift": "2",
                 "offset": "1",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_atr(params, obb):
+def test_ta_atr(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.atr(**params)
     assert result
@@ -85,33 +93,36 @@ def test_ta_atr(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "close_column": "",
                 "period": "",
                 "start_date": "",
                 "end_date": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "close_column": "adj_close",
                 "period": "125",
                 "start_date": "",
                 "end_date": "",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_fib(params, obb):
+def test_ta_fib(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.fib(**params)
     assert result
@@ -120,15 +131,16 @@ def test_ta_fib(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "offset": ""}),
-        ({"data": get_crypto_data(), "index": "date", "offset": "1"}),
+        ({"data": "", "index": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "date", "offset": "1"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_obv(params, obb):
+def test_ta_obv(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.obv(**params)
     assert result
@@ -137,15 +149,16 @@ def test_ta_obv(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "length": "", "signal": ""}),
-        ({"data": get_crypto_data(), "index": "date", "length": "15", "signal": "2"}),
+        ({"data": "", "index": "", "length": "", "signal": ""}, "stocks"),
+        ({"data": "", "index": "date", "length": "15", "signal": "2"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_fisher(params, obb):
+def test_ta_fisher(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.fisher(**params)
     assert result
@@ -154,31 +167,34 @@ def test_ta_fisher(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "fast": "",
                 "slow": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "fast": "5",
                 "slow": "15",
                 "offset": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_adosc(params, obb):
+def test_ta_adosc(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.adosc(**params)
     assert result
@@ -187,35 +203,38 @@ def test_ta_adosc(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "std": "",
                 "mamode": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "55",
                 "std": "3",
                 "mamode": "wma",
                 "offset": "1",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_bbands(params, obb):
+def test_ta_bbands(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.bbands(**params)
     assert result
@@ -224,31 +243,34 @@ def test_ta_bbands(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "55",
                 "offset": "5",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_zlma(params, obb):
+def test_ta_zlma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.zlma(**params)
     assert result
@@ -257,22 +279,24 @@ def test_ta_zlma(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "length": "", "scalar": ""}),
+        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "length": "30",
                 "scalar": "110",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_aroon(params, obb):
+def test_ta_aroon(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.aroon(**params)
     assert result
@@ -281,31 +305,34 @@ def test_ta_aroon(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "55",
                 "offset": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_sma(params, obb):
+def test_ta_sma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.sma(**params)
     assert result
@@ -314,33 +341,36 @@ def test_ta_sma(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "target": "",
                 "show_all": "",
                 "asint": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "target": "high",
                 "show_all": "true",
                 "asint": "true",
                 "offset": "5",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_demark(params, obb):
+def test_ta_demark(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.demark(**params)
     assert result
@@ -349,15 +379,16 @@ def test_ta_demark(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "anchor": "", "offset": ""}),
-        ({"data": get_crypto_data(), "index": "date", "anchor": "W", "offset": "5"}),
+        ({"data": "", "index": "", "anchor": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "date", "anchor": "W", "offset": "5"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_vwap(params, obb):
+def test_ta_vwap(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.vwap(**params)
     assert result
@@ -366,33 +397,36 @@ def test_ta_vwap(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "fast": "",
                 "slow": "",
                 "signal": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "fast": "10",
                 "slow": "30",
                 "signal": "10",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_macd(params, obb):
+def test_ta_macd(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.macd(**params)
     assert result
@@ -401,31 +435,34 @@ def test_ta_macd(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "55",
                 "offset": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_hma(params, obb):
+def test_ta_hma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.hma(**params)
     assert result
@@ -434,31 +471,34 @@ def test_ta_hma(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "lower_length": "",
                 "upper_length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "lower_length": "30",
                 "upper_length": "40",
                 "offset": "5",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_donchian(params, obb):
+def test_ta_donchian(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.donchian(**params)
     assert result
@@ -467,35 +507,38 @@ def test_ta_donchian(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "conversion": "",
                 "base": "",
                 "lagging": "",
                 "offset": "",
                 "lookahead": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "conversion": "10",
                 "base": "30",
                 "lagging": "50",
                 "offset": "30",
                 "lookahead": "true",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_ichimoku(params, obb):
+def test_ta_ichimoku(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.ichimoku(**params)
     assert result
@@ -504,22 +547,24 @@ def test_ta_ichimoku(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "target": "", "period": ""}),
+        ({"data": "", "index": "", "target": "", "period": ""}, "stocks"),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "target": "close",
                 "period": "95",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_clenow(params, obb):
+def test_ta_clenow(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.clenow(**params)
     assert result
@@ -528,31 +573,34 @@ def test_ta_clenow(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "length": "",
                 "scalar": "",
                 "drift": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "length": "60",
                 "scalar": "90.0",
                 "drift": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_adx(params, obb):
+def test_ta_adx(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.adx(**params)
     assert result
@@ -561,31 +609,34 @@ def test_ta_adx(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "60",
                 "offset": "10",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_wma(params, obb):
+def test_ta_wma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.wma(**params)
     assert result
@@ -594,22 +645,24 @@ def test_ta_wma(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "length": "", "scalar": ""}),
+        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "length": "16",
                 "scalar": "0.02",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_cci(params, obb):
+def test_ta_cci(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.cci(**params)
     assert result
@@ -618,33 +671,36 @@ def test_ta_cci(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "",
                 "index": "",
                 "length": "",
                 "scalar": "",
                 "drift": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "date",
                 "length": "16",
                 "scalar": "90.0",
                 "drift": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_rsi(params, obb):
+def test_ta_rsi(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.rsi(**params)
     assert result
@@ -653,31 +709,34 @@ def test_ta_rsi(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "fast_k_period": "",
                 "slow_d_period": "",
                 "slow_k_period": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "fast_k_period": "12",
                 "slow_d_period": "2",
                 "slow_k_period": "2",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_stoch(params, obb):
+def test_ta_stoch(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.stoch(**params)
     assert result
@@ -686,33 +745,36 @@ def test_ta_stoch(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "length": "",
                 "scalar": "",
                 "mamode": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "length": "22",
                 "scalar": "24",
                 "mamode": "sma",
                 "offset": "5",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_kc(params, obb):
+def test_ta_kc(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.kc(**params)
     assert result
@@ -721,15 +783,16 @@ def test_ta_kc(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "index": "", "length": ""}),
-        ({"data": get_crypto_data(), "index": "date", "length": "20"}),
+        ({"data": "", "index": "", "length": ""}, "stocks"),
+        ({"data": "", "index": "date", "length": "20"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_cg(params, obb):
+def test_ta_cg(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.cg(**params)
     assert result
@@ -738,33 +801,36 @@ def test_ta_cg(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "index": "",
                 "lower_q": "",
                 "upper_q": "",
                 "model": "",
                 "is_crypto": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "index": "date",
                 "lower_q": "0.3",
                 "upper_q": "0.7",
                 "model": "Parkinson",
                 "is_crypto": "true",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_cones(params, obb):
+def test_ta_cones(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.cones(**params)
     assert result
@@ -773,31 +839,34 @@ def test_ta_cones(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "index": "date",
                 "length": "",
                 "offset": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "index": "",
                 "length": "60",
                 "offset": "10",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_ta_ema(params, obb):
+def test_ta_ema(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.ta.ema(**params)
     assert result

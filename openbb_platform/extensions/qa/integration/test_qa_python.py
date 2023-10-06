@@ -1,5 +1,6 @@
 """Test qa extension."""
 import random
+from typing import Literal
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
@@ -8,7 +9,6 @@ from openbb_core.app.model.obbject import OBBject
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -49,16 +49,22 @@ def get_crypto_data():
     return data["crypto_data"]
 
 
+def get_data(menu: Literal["stocks", "crypto"]):
+    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+    return funcs[menu]()
+
+
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_normality(params, obb):
+def test_qa_normality(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.normality(**params)
     assert result
@@ -66,15 +72,16 @@ def test_qa_normality(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_capm(params, obb):
+def test_qa_capm(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.capm(**params)
     assert result
@@ -82,29 +89,32 @@ def test_qa_capm(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "threshold_start": "",
                 "threshold_end": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "threshold_start": "0.1",
                 "threshold_end": "1.6",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_om(params, obb):
+def test_qa_om(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.om(**params)
     assert result
@@ -112,15 +122,16 @@ def test_qa_om(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "window": "5"}),
-        ({"data": get_crypto_data(), "target": "high", "window": "10"}),
+        ({"data": "", "target": "close", "window": "5"}, "stocks"),
+        ({"data": "", "target": "high", "window": "10"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_kurtosis(params, obb):
+def test_qa_kurtosis(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.kurtosis(**params)
     assert result
@@ -129,29 +140,32 @@ def test_qa_kurtosis(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "fuller_reg": "c",
                 "kpss_reg": "ct",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "high",
                 "fuller_reg": "ct",
                 "kpss_reg": "c",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_unitroot(params, obb):
+def test_qa_unitroot(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.unitroot(**params)
     assert result
@@ -159,15 +173,16 @@ def test_qa_unitroot(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "rfr": "", "window": ""}),
-        ({"data": get_crypto_data(), "target": "high", "rfr": "0.5", "window": "250"}),
+        ({"data": "", "target": "close", "rfr": "", "window": ""}, "stocks"),
+        ({"data": "", "target": "high", "rfr": "0.5", "window": "250"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_sh(params, obb):
+def test_qa_sh(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.sh(**params)
     assert result
@@ -175,31 +190,34 @@ def test_qa_sh(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "target_return": "",
                 "window": "",
                 "adjusted": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "close",
                 "target_return": "0.5",
                 "window": "275",
                 "adjusted": "true",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_so(params, obb):
+def test_qa_so(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.so(**params)
     assert result
@@ -207,14 +225,15 @@ def test_qa_so(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close", "window": "220"}),
+        ({"data": "", "target": "close", "window": "220"}, "stocks"),
     ],
 )
 @pytest.mark.integration
-def test_qa_skew(params, obb):
+def test_qa_skew(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.skew(**params)
     assert result
@@ -223,29 +242,32 @@ def test_qa_skew(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "target": "close",
                 "window": "10",
                 "quantile_pct": "",
-            }
+            },
+            "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "target": "high",
                 "window": "50",
                 "quantile_pct": "0.6",
-            }
+            },
+            "crypto",
         ),
     ],
 )
 @pytest.mark.integration
-def test_qa_quantile(params, obb):
+def test_qa_quantile(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.quantile(**params)
     assert result
@@ -254,15 +276,16 @@ def test_qa_quantile(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": get_stocks_data(), "target": "close"}),
-        ({"data": get_crypto_data(), "target": "high"}),
+        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_summary(params, obb):
+def test_qa_summary(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.qa.summary(**params)
     assert result
