@@ -1,6 +1,6 @@
 """Test the integration tests."""
 import pytest
-from .openbb_platform.extensions.tests.utils.integration_tests_testers import (
+from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
     get_integration_tests,
@@ -28,3 +28,6 @@ def test_api_interface_integration_test_providers() -> None:
 def test_api_interface_integration_test_params() -> None:
     """Test if there are any missing params for integration tests."""
     run_test("api", check_missing_integration_test_params)
+
+
+test_api_interface_integration_test_params()
