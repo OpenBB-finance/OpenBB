@@ -78,13 +78,14 @@ jobs:
 
       - name: Populate System Setting Files
         run: |
-          mkdir -p /.openbb_platform
-          touch /.openbb_platform/system_settings.json
-          echo '{"log_collect":false}' > /.openbb_platform/system_settings.json
+          mkdir -p ~/.openbb_platform
+          touch ~/.openbb_platform/system_settings.json
+          echo '{"log_collect":false}' > ~/.openbb_platform/system_settings.json
+          cat ~/.openbb_platform/system_settings.json
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
-          touch /.openbb_platform/user_settings.json
+          touch ~/.openbb_platform/user_settings.json
           echo '{
             "credentials": {
               "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
@@ -94,13 +95,12 @@ jobs:
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
             }
-          }' > /.openbb_platform/user_settings.json
+          }' > ~/.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate
           pip list
-          pwd
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
@@ -110,7 +110,6 @@ jobs:
         run: |
           source runner_env/bin/activate
           pip list
-          pwd
           cd openbb_platform
           pytest . -m integration
 
