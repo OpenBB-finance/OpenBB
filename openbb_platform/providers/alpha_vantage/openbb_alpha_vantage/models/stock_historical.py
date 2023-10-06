@@ -71,7 +71,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     @model_validator(mode="after")
     @classmethod
-    def get_function_value(cls, values: "AVStockHistoricalQueryParams") -> str:
+    def get_function_value(cls, values: "AVStockHistoricalQueryParams"):
         """Get the function from the provided interval for the Alpha Vantage API."""
 
         functions = {
