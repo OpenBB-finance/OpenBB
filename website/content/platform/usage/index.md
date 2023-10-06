@@ -189,6 +189,17 @@ data = obb.stocks.load("SPY", provider="polygon")
 data
 ```
 
+```console
+OBBject
+
+id: 06520558-d54a-7e53-8000-7aafc8a42694
+results: [{'date': datetime.datetime(2022, 10, 5, 0, 0), 'open': 375.62, 'high': 37...
+provider: polygon
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'polygon'}, 'st...
+```
+
 Additional class methods are helpers for converting the results to a variety of formats.
 
 - `to_dict()`: converts to a dictionary of lists.
