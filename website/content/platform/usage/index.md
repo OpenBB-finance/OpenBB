@@ -10,11 +10,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB Platform is a modern investment research platform for everyone.  At its base, the Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
-    - Charting libraries and views
-    - Data cleaning
-    - Technical/Quantitative Analysis
-    - Community data providers
-    - CLI Terminal
+- Charting libraries and views
+- Data cleaning
+- Technical/Quantitative Analysis
+- Community data providers
+- CLI Terminal
 
 ## Authorization
 
