@@ -1,10 +1,10 @@
 import os
-from platform.core.openbb_core.app.provider_interface import ProviderInterface
-from platform.core.openbb_core.app.router import CommandMap
 from typing import Dict, List, Type, get_type_hints
 
 import requests
 from extensions.tests.utils.integration_tests_generator import get_test_params
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.router import CommandMap
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
@@ -43,10 +43,10 @@ def write_test_w_template(
 
     http_template_request = {
         "get": "requests.get(url, headers=headers, timeout=10)",
-        "post": "requests.post(url, headers=headers, timeout=10, data=data)",
+        "post": "requests.post(url, headers=headers, timeout=10, data=body)",
     }
 
-    http_template_params = {"get": "", "post": "data = json.dumps(params.pop('data'))"}
+    http_template_params = {"get": "", "post": "body = json.dumps(params.pop('data'))"}
 
     template = f"""
 @pytest.mark.parametrize(
