@@ -36,7 +36,7 @@ def get_stocks_data():
     provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = get_data(
-        "stocks", symbol=symbol, provider=provider, headers=headers
+        "stocks", symbol=symbol, provider=provider, headers=headers()
     )
     return data["stocks_data"]
 
