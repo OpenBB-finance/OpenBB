@@ -123,11 +123,11 @@ Environment variables are defined in a `.env` file.  If this file does not exist
 
 Variables can be defined for current session only.
 
-    ```python
-    import os
-    os.environ["OPENBB_DEBUG_MODE"] = "True"
-    from openbb import obb
-    ```
+```python
+import os
+os.environ["OPENBB_DEBUG_MODE"] = "True"
+from openbb import obb
+```
 
 ## User Settings
 
@@ -170,7 +170,7 @@ Notably, `obb.user.defaults`, is for defining default providers of end points.  
 
 ## Basic Response
 
-The output of every command is an object which contains the request results, along with additional information.  It is a custom class, `OBBject`, and always returns with the fields listed below:
+The output of every command is an object which contains the results of the request, along with additional information.  It is a custom class, `OBBject`, and always returns with the fields listed below:
 
 ```console
 id: ...                 # UUID Tag
