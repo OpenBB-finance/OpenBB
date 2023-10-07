@@ -10,7 +10,7 @@ packages = [{ include = "openbb_tmx" }]
 python = "^3.8"
 requests-cache = "^1.1.0"
 random-user-agent = "^1.0.1"
-pandas-market-calendars = ">=3.2"
+openpyxl = "^3.1.2"
 openbb-core = "^0.1.0a2"
 
 [build-system]
