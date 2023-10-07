@@ -103,14 +103,14 @@ def divs(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EarningsCalendar")
-def earning(
+@router.command(model="HistoricalEps")
+def historical_eps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Earnings Calendar."""
+    """Historical EPS for a company."""
     return OBBject(results=Query(**locals()).execute())
 
 

@@ -23,6 +23,7 @@ from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -104,5 +105,6 @@ fmp_provider = Provider(
         "EtfSectors": FMPEtfSectorsFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
         "EtfInfo": FMPEtfInfoFetcher,
+        "HistoricalEps": FMPHistoricalEpsFetcher,
     },
 )

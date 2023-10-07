@@ -1,6 +1,10 @@
+from datetime import date
+
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_tmx.models.available_indices import TmxAvailableIndicesFetcher
 from openbb_tmx.models.company_filings import TmxCompanyFilingsFetcher
+from openbb_tmx.models.earnings_calendar import TmxEarningsCalendarFetcher
 from openbb_tmx.models.etf_countries import TmxEtfCountriesFetcher
 from openbb_tmx.models.etf_holdings import TmxEtfHoldingsFetcher
 from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
@@ -100,5 +104,23 @@ def test_tmx_stock_info_fetcher(credentials=test_credentials):
     params = {"symbol": "RY,NTR"}
 
     fetcher = TmxStockInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_available_indices_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = TmxAvailableIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_earnings_calendar_fetcher(credentials=test_credentials):
+    params = {"start_date": date(2023, 9, 1), "end_date": date(2023, 9, 30)}
+
+    fetcher = TmxEarningsCalendarFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

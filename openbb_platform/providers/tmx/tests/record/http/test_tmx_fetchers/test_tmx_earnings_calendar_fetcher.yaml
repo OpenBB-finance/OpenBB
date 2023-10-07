@@ -1,0 +1,133 @@
+interactions:
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-09-01"},
+      "query": "query getEnhancedEarningsForDate(\n      $date: String!\n      ) {\n      getEnhancedEarningsForDate(\n        date:
+      $date\n    ) {\n          symbol\n          companyName\n          announceTime\n          estimatedEps\n          actualEps\n          epsSurprisePercent\n          epsSurpriseDollar\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '413'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA82TUU/CMBSF3/0VTZ8J4hvZG8MqJIAzLJnR+HDdrqOxu51tZxiE/25HJELKOzz2
+        3NObLz2nW16AAx5teYlO0Aoox0KAIUmlfdDmHhzy6G3LbVt9aMUjPs5i3uO5rmqgdgEVdhoQFBKI
+        ZWgdGmIx0Jd3AZFu/MZU7m1x+uRFb5GVX1uI2vJo0B96X+4aUIezF7C2y8bURlpM0ORIjkd3gxP9
+        XisFprswGO56R4Cj13kAONrIqnFMrGulDTipiU0p74eIi9tRgPgnHkEebGcow9EBdD85IY3TaUAa
+        Sw1WWpZiviKtdCnRXgPr+OXxXOzrUquCzWXXFzbWpr405ySZ9ScB6UQbufGhJ+iMVthUbOaKS6Mm
+        zyIA3QM6/GaC0JTtNSSfCXHmRTP4wU+jyf03tWVLrZruc11FY7P5LKRGUG7V9RUNKHupFrzvdje/
+        tjIRzXoFAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 07 Oct 2023 03:54:41 GMT
+      ETag:
+      - W/"57a-2q/i3dr+2oSbl4jOybRDNCUSwek"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getEnhancedEarningsForDate", "variables": {"date": "2023-09-20"},
+      "query": "query getEnhancedEarningsForDate(\n      $date: String!\n      ) {\n      getEnhancedEarningsForDate(\n        date:
+      $date\n    ) {\n          symbol\n          companyName\n          announceTime\n          estimatedEps\n          actualEps\n          epsSurprisePercent\n          epsSurpriseDollar\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '413'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Referer:
+      - https://money.tmx.com/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getEnhancedEarningsForDate":[{"symbol":"AI","companyName":"Atrium
+        Mortgage Investment Corporation","announceTime":"N/A","estimatedEps":"N/A","actualEps":"N/A","epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"BKM","companyName":"Pacific
+        Booker Minerals Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"CUU","companyName":"Copper
+        Fox Metals Inc.","announceTime":"N/A","estimatedEps":"N/A","actualEps":0,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"},{"symbol":"FPC","companyName":"Falco
+        Resources Ltd.","announceTime":"N/A","estimatedEps":"N/A","actualEps":-0.01,"epsSurprisePercent":"N/A","epsSurpriseDollar":"N/A"}]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '729'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 07 Oct 2023 03:54:42 GMT
+      ETag:
+      - W/"2d9-/Ov6Mmxnl5Kuh7mFtTvHf7D6R+U"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

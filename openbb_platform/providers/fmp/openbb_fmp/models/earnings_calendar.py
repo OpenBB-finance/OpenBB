@@ -1,42 +1,48 @@
 """FMP Earnings Calendar fetcher."""
 
 
-from datetime import datetime
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.earnings_calendar import (
     EarningsCalendarData,
     EarningsCalendarQueryParams,
 )
-from pydantic import field_validator
+from pydantic import Field
 
 
 class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
     """FMP Earnings Calendar Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
+    Source: https://site.financialmodelingprep.com/developer/docs#earnings-calendar-earnings
     """
 
 
 class FMPEarningsCalendarData(EarningsCalendarData):
     """FMP Earnings Calendar Data."""
 
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
+    __alias_dict__ = {
+        "eps_actual": "eps",
+        "eps_estimated": "epsEstimated",
+        "announce_time": "time",
+    }
 
-    @field_validator("updatedFromDate", mode="before", check_fields=False)
-    def updated_from_date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the updated from date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("fiscalDateEnding", mode="before", check_fields=False)
-    def fiscal_date_ending_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the fiscal date ending as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
+    revenue: Optional[float] = Field(
+        default=None, description="Revenue of the earnings calendar."
+    )
+    revenue_estimated: Optional[float] = Field(
+        default=None,
+        description="Estimated revenue of the earnings calendar.",
+        alias="revenueEstimated",
+    )
+    fiscal_date_ending: Optional[dateType] = Field(
+        default=None, description="Fiscal date ending for the company reporting."
+    )
+    updated_from_date: Optional[dateType] = Field(
+        default=None, description="Updated from date."
+    )
 
 
 class FMPEarningsCalendarFetcher(
@@ -61,8 +67,14 @@ class FMPEarningsCalendarFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            3, f"historical/earning_calendar/{query.symbol}", api_key, query, ["symbol"]
+        if query.date:
+            query.start_date = query.date
+            query.end_date = query.date
+
+        BASE_URL = "https://financialmodelingprep.com/api/v3/"
+        url = (
+            BASE_URL
+            + f"earning_calendar?from={query.start_date}&to={query.end_date}&apikey={api_key}"
         )
 
         return get_data_many(url, **kwargs)

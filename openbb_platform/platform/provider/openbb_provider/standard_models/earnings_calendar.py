@@ -1,10 +1,13 @@
-"""Earnings calendar data model."""
+"""Earnings Calendar data model."""
 
 
-from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from datetime import (
+    date as dateType,
+    datetime,
+)
+from typing import Optional
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -12,49 +15,56 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EarningsCalendarQueryParams(QueryParams):
-    """Earnings calendar rating Query."""
+    """Earnings Calendar Query."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
-        default=50, description=QUERY_DESCRIPTIONS.get("limit", "")
+    start_date: Optional[dateType] = Field(
+        default=None, description="The start date to filter from."
+    )
+    end_date: Optional[dateType] = Field(
+        default=None, description="The end date to filter to."
+    )
+    date: Optional[dateType] = Field(
+        default=None, description="An alias for start/end dates being the same."
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    @field_validator("start_date", mode="before", check_fields=False)
+    def start_date_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        try:
+            return datetime.strftime(v, "%Y-%m-%d") if v else None
+        except TypeError:
+            return datetime.strptime(v, "%Y-%m-%d") if v else None
+
+    @field_validator("end_date", mode="before", check_fields=False)
+    def end_date_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        try:
+            return datetime.strftime(v, "%Y-%m-%d") if v else None
+        except TypeError:
+            return datetime.strptime(v, "%Y-%m-%d") if v else None
+
+    @field_validator("date", mode="before", check_fields=False)
+    def date_validate(cls, v: str):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        try:
+            return datetime.strftime(v, "%Y-%m-%d") if v else None
+        except TypeError:
+            return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
 class EarningsCalendarData(Data):
-    """Earnings calendar Data."""
+    """Earnings Calendar Data."""
 
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
+    )
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    eps: Optional[float] = Field(
-        default=None, description="EPS of the earnings calendar."
+    announce_time: Optional[str] = Field(
+        default=None, description="Time of the earnings announcement."
+    )
+    eps_actual: Optional[float] = Field(
+        default=None, description="Actual EPS from the earnings announcement."
     )
     eps_estimated: Optional[float] = Field(
-        default=None, description="Estimated EPS of the earnings calendar."
+        default=None, description="Estimated EPS for the earnings announcement."
     )
-    time: str = Field(description="Time of the earnings calendar.")
-    revenue: Optional[float] = Field(
-        default=None, description="Revenue of the earnings calendar."
-    )
-    revenue_estimated: Optional[float] = Field(
-        default=None, description="Estimated revenue of the earnings calendar."
-    )
-    updated_from_date: dateType = Field(
-        default=None, description="Updated from date of the earnings calendar."
-    )
-    fiscal_date_ending: dateType = Field(
-        description="Fiscal date ending of the earnings calendar."
-    )
-
-    @validator("symbol", pre=True, check_fields=False, always=True)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

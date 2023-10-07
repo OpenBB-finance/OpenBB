@@ -26,6 +26,7 @@ from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -299,9 +300,18 @@ def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_earnings_calendar_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"start_date": date(2023, 9, 5), "end_date": date(2023, 10, 6)}
 
     fetcher = FMPEarningsCalendarFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_historical_eps_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FMPHistoricalEpsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
