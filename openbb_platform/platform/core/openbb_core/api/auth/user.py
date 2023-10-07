@@ -8,7 +8,7 @@ from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from typing_extensions import Annotated
 
-security = HTTPBasic()
+security = HTTPBasic() if Env().API_AUTH else lambda: None
 
 
 async def authenticate_user(
