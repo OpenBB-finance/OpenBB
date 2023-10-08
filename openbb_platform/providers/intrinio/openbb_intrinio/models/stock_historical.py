@@ -220,7 +220,7 @@ class IntrinioStockHistoricalFetcher(
             query_str = get_querystring(
                 query.model_dump(by_alias=True), ["symbol", "interval"]
             )
-            url = f"{base_url}&{api_params}&{query_str}&api_key={api_key}"
+            url = f"{base_url}&{api_params}&{query_str}&next_page={next_page}&api_key={api_key}"
             temp_data = get_data_one(url, **kwargs)
 
             next_page = temp_data.get("next_page", None)
