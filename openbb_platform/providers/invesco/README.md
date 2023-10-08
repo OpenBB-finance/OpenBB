@@ -1,6 +1,6 @@
-# OpenBB Blackrock Provider
+# OpenBB Invesco Provider
 
-This extension integrates the Blackrock data provider
+This extension integrates the Invesco data provider
 into the OpenBB Platform.
 
 ## Installation

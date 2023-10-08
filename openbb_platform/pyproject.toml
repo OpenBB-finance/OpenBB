@@ -28,6 +28,7 @@ openbb-stocks = "^0.1.0a2"
 openbb-alpha-vantage = { version = "^0.1.0a2", optional = true }
 openbb-blackrock = { version = "^0.1.0a2", optional = true }
 openbb-cboe = { version = "^0.1.0a2", optional = true }
+openbb-invesco = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
 openbb-tmx = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
@@ -42,6 +43,7 @@ openbb-econometrics = { version = "^0.1.0a2", optional = true }
 alpha_vantage = ["openbb-alpha-vantage"]
 blackrock = ["openbb-blackrock"]
 cboe = ["openbb-cboe"]
+invesco = ["openbb-invesco"]
 quandl = ["openbb-quandl"]
 tmx = ["openbb-tmx"]
 yfinance = ["openbb-yfinance"]
@@ -55,6 +57,7 @@ all = [
     "openbb-alpha-vantage",
     "openbb-blackrock",
     "openbb-cboe",
+    "openbb-invesco",
     "openbb-quandl",
     "openbb-tmx",
     "openbb-yfinance",

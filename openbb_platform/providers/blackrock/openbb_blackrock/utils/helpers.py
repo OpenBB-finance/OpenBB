@@ -31,6 +31,12 @@ blackrock_america_holdings = requests_cache.CachedSession(
     use_cache_dir=True,
 )
 
+blackrock_america_data_download = requests_cache.CachedSession(
+    "OpenBB_Blackrock_America_Data_Download",
+    expire_after=timedelta(days=1),
+    use_cache_dir=True,
+)
+
 blackrock_canada_historical_holdings = requests_cache.CachedSession(
     "OpenBB_Blackrock_Canada_Historical_Holdings",
     expire_after=timedelta(days=30),
@@ -453,6 +459,18 @@ class America:
             url = url + f"&asOfDate={date}"
         url = url + f"&fileName={symbol.lower()}_holdings&dataType=fund"
 
+        return url
+
+    @staticmethod
+    def generate_data_download_url(symbol: str) -> str:
+        """Generates the URL for the Blackrock US ETF holdings."""
+        symbol = symbol.upper()
+        etfs = America.get_all_etfs()
+        product_page_url = etfs[etfs["symbol"] == symbol].iloc[0].get("productPageUrl")
+        product_name = str(
+            etfs[etfs["symbol"] == symbol].iloc[0].get("fundName")
+        ).replace(" ", "-")
+        url = f"https://www.ishares.com{product_page_url}/1521942788811.ajax?fileType=xls&fileName={product_name}_fund&dataType=fund"
         return url
 
 

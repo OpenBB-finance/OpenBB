@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-invesco"
+version = "0.1.0a2"
+description = "Invesco extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_invesco" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests-cache = "^1.1.0"
+openbb-core = "^0.1.0a2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+invesco = "openbb_invesco:invesco_provider"

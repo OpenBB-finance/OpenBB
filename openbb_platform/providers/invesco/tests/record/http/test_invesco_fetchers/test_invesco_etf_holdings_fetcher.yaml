@@ -1,0 +1,153 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.invesco.com/us/financial-products/etfs/holdings/main/holdings/0?action=download&audienceType=Investor&ticker=QQQ
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4368'
+      Date:
+      - Sun, 08 Oct 2023 03:49:02 GMT
+      Vary:
+      - Accept-Encoding
+      X-Cache:
+      - MISS, MISS
+      X-Cache-Hits:
+      - 0, 0
+      X-Served-By:
+      - cache-bfi-krnt7300088-BFI, cache-bfi-krnt7300088-BFI
+      X-Timer:
+      - S1696736942.211194,VS0,VE288
+      cache-control:
+      - no-cache, no-store, must-revalidate, max-age=0
+      content-disposition:
+      - attachment; filename=holdings_1696736942470.csv
+      content-encoding:
+      - gzip
+      content-security-policy:
+      - frame-ancestors 'self' https://us-sunset-public.prd.invesco.net experience.adobe.com
+        invescogroup.experiencecloud.adobe.com
+      content-type:
+      - text/csv;charset=UTF-8
+      expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      pragma:
+      - no-cache
+      server:
+      - Apache
+      set-cookie:
+      - IVZ_JSESSIONID=B72D3C5AA61444280A7B2285DBFC9754; Path=/; Secure; HttpOnly
+      - audienceRole=IndividualInvestor; Max-Age=31536000; Expires=Mon, 07-Oct-2024
+        03:49:02 GMT; Path=/; Secure
+      - audience=INVESTOR; Max-Age=31536000; Expires=Mon, 07-Oct-2024 03:49:02 GMT;
+        Path=/us; Secure
+      - audienceRole=IndividualInvestor; Max-Age=31536000; Expires=Mon, 07-Oct-2024
+        03:49:02 GMT; Path=/; Secure
+      strict-transport-security:
+      - max-age=15552000
+      via:
+      - 1.1 varnish, 1.1 varnish
+      x-aem-fastly-host:
+      - www.invesco.com
+      x-forwarded-for:
+      - 2604:3d08:8e7c:ba00:f0b6:3219:ccda:283a
+      x-frame-options:
+      - ALLOW-FROM https://us-sunset-public.prd.invesco.net/
+      - SAMEORIGIN
+      x-ua-compatible:
+      - IE=edge
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

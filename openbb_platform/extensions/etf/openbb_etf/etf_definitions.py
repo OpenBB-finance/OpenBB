@@ -77,6 +77,10 @@ class EtfSearch(EtfBase):
             Convert the results to a Pandas DataFrame.
         to_dict(): Dict
             Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
     """
 
     def __repr__(self):
@@ -95,8 +99,8 @@ class EtfSearch(EtfBase):
         return data.convert_dtypes()
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary."""
-        return self.dict()["results"]
+        """Convert the results to a dictionary of lists."""
+        return self.to_df().to_dict("list")
 
 
 class EtfHoldings(EtfBase):
@@ -129,6 +133,10 @@ class EtfHoldings(EtfBase):
             Convert the results to a Pandas DataFrame.
         to_dict(): Dict
             Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
     """
 
     info: Optional[Dict] = Field(
@@ -155,8 +163,8 @@ class EtfHoldings(EtfBase):
         return data
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary."""
-        return self.dict()["results"]
+        """Convert the results to a dictionary of lists."""
+        return self.to_df().to_dict("list")
 
 
 class EtfSectors(EtfBase):
@@ -187,6 +195,10 @@ class EtfSectors(EtfBase):
             Convert the results to a Pandas DataFrame.
         to_dict(): Dict
             Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
     """
 
     def __repr__(self) -> str:
@@ -212,8 +224,8 @@ class EtfSectors(EtfBase):
         return data
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary."""
-        return self.dict()["results"]
+        """Convert the results to a dictionary of lists."""
+        return self.to_df().to_dict("list")
 
 
 class EtfCountries(EtfBase):
@@ -244,6 +256,10 @@ class EtfCountries(EtfBase):
             Convert the results to a Pandas DataFrame.
         to_dict(): Dict
             Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
     """
 
     def __repr__(self) -> str:
@@ -269,8 +285,8 @@ class EtfCountries(EtfBase):
         return data
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary."""
-        return self.dict()["results"]
+        """Convert the results to a dictionary of lists."""
+        return self.to_df().to_dict("list")
 
 
 class EtfInfo(EtfBase):
@@ -301,6 +317,10 @@ class EtfInfo(EtfBase):
             Convert the results to a Pandas DataFrame.
         to_dict(): Dict
             Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
     """
 
     def __repr__(self) -> str:
@@ -322,5 +342,5 @@ class EtfInfo(EtfBase):
         return data
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary."""
-        return self.dict()["results"]
+        """Convert the results to a dictionary of lists."""
+        return self.to_df().to_dict("list")
