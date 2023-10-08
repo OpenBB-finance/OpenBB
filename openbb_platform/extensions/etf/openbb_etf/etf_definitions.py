@@ -9,6 +9,8 @@ from pydantic import ConfigDict, Field
 
 
 class EtfBase(OBBject):
+    """ETF Extension Base Model."""
+
     __pydantic_config__ = ConfigDict(extra="allow", from_attributes=True)  # type: ignore
 
     model: Optional[str] = Field(description="The OpenBB data model.", default=None)
@@ -51,7 +53,7 @@ class Results:
 
 class EtfSearch(EtfBase):
     """
-    ETFSearchData
+    EtfSearchData
     ---------------
 
         Attributes
@@ -84,7 +86,7 @@ class EtfSearch(EtfBase):
     """
 
     def __repr__(self):
-        query = self.dict()["extra"]["metadata"]["arguments"]["standard_params"]["query"]  # type: ignore
+        query = self.model_dump()["extra"]["metadata"]["arguments"]["standard_params"]["query"]  # type: ignore
         repr_str = (
             f"EtfSearch(provider={self.provider.lower()}, query={query}, "  # type: ignore
             f"fields={self.fields})"
@@ -93,9 +95,9 @@ class EtfSearch(EtfBase):
 
     def to_dataframe(self) -> pd.DataFrame:
         """Convert the results to a Pandas DataFrame."""
-        if len(self.results) == 0:
+        if len(self.results) == 0:  # type: ignore
             return pd.DataFrame()
-        data = pd.DataFrame.from_records(self.dict()["results"])
+        data = pd.DataFrame.from_records(self.model_dump()["results"])
         return data.convert_dtypes()
 
     def to_dict(self) -> Dict:
@@ -105,7 +107,7 @@ class EtfSearch(EtfBase):
 
 class EtfHoldings(EtfBase):
     """
-    ETFHoldingsData
+    EtfHoldingsData
     ---------------
 
         Attributes
@@ -154,7 +156,7 @@ class EtfHoldings(EtfBase):
 
     def to_dataframe(self) -> pd.DataFrame:
         """Convert the results to a Pandas DataFrame."""
-        if len(self.results) == 0:
+        if len(self.results) == 0:  # type: ignore
             return pd.DataFrame()
         data = pd.DataFrame.from_records(self.dict()["results"]).convert_dtypes()
         for column in data.columns:
@@ -169,7 +171,7 @@ class EtfHoldings(EtfBase):
 
 class EtfSectors(EtfBase):
     """
-    ETFSectorsData
+    EtfSectorsData
     ---------------
 
         Attributes
@@ -202,7 +204,7 @@ class EtfSectors(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.dict()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.model_dump()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfSectors(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().transpose().reset_index().columns.to_list()})"
@@ -212,8 +214,8 @@ class EtfSectors(EtfBase):
     def to_dataframe(self) -> pd.DataFrame:
         """Convert the results to a Pandas DataFrame."""
         data = pd.DataFrame()
-        if len(self.results) > 0:
-            data = pd.DataFrame(self.dict()["results"]).set_index("symbol")
+        if len(self.results) > 0:  # type: ignore
+            data = pd.DataFrame(self.model_dump()["results"]).set_index("symbol")
 
         data = data.transpose()
         if len(data.columns) == 1:
@@ -230,7 +232,7 @@ class EtfSectors(EtfBase):
 
 class EtfCountries(EtfBase):
     """
-    ETFSectorsData
+    EtfSectorsData
     ---------------
 
         Attributes
@@ -263,7 +265,7 @@ class EtfCountries(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.dict()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.model_dump()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfCountries(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().transpose().reset_index().columns.to_list()})"
@@ -273,7 +275,7 @@ class EtfCountries(EtfBase):
     def to_dataframe(self) -> pd.DataFrame:
         """Convert the results to a Pandas DataFrame."""
         data = pd.DataFrame()
-        if len(self.results) > 0:
+        if len(self.results) > 0:  # type: ignore
             data = pd.DataFrame(self.dict()["results"]).set_index("symbol")
 
         data = data.transpose()
@@ -324,7 +326,7 @@ class EtfInfo(EtfBase):
     """
 
     def __repr__(self) -> str:
-        symbols = self.dict()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
+        symbols = self.model_dump()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
         repr_str = (
             f"EtfInfo(provider={self.provider.lower()}, symbols=[{symbols}], "  # type: ignore
             f"fields={self.to_dataframe().index.to_list()})"
@@ -334,7 +336,7 @@ class EtfInfo(EtfBase):
     def to_dataframe(self) -> pd.DataFrame:
         """Convert the results to a Pandas DataFrame."""
         data = pd.DataFrame()
-        if len(self.results) > 0:
+        if len(self.results) > 0:  # type: ignore
             data = pd.DataFrame(self.dict()["results"]).transpose()
             data.columns = data.loc["symbol"].to_list()
             data = data.drop("symbol", axis=0)
@@ -344,3 +346,46 @@ class EtfInfo(EtfBase):
     def to_dict(self) -> Dict:
         """Convert the results to a dictionary of lists."""
         return self.to_df().to_dict("list")
+
+
+class EtfHistoricalNav(EtfBase):
+    """
+    EtfHistoricalNavData
+    ------------
+
+        Attributes
+        ----------
+        model: str
+            The OpenBB data model.
+        provider: str
+            The data source.
+        fields: List
+            Fields returned from the provider.
+        results: List
+            Serialized results.
+        extra: Dict
+            Additional information and metadata.
+        warnings: List
+            Warnings generated by the command execution.
+        id: str
+            Unique hash string for the request.
+
+        Methods
+        -------
+        to_dataframe(): pd.DataFrame
+            Convert the results to a Pandas DataFrame.
+        to_dict(): Dict
+            Convert the results to a dictionary.
+        to_numpy(): np.ndarray
+            Convert the results to a numpy array.
+        to_polars(): polars.DataFrame
+            Convert the results to a polars DataFrame.
+    """
+
+    def __repr__(self) -> str:
+        symbols = self.model_dump()["extra"]["metadata"]["arguments"]["standard_params"]["symbol"]  # type: ignore
+        repr_str = (
+            f"EtfHistoricalNav(provider={self.provider.lower()}, symbol={symbols}, "  # type: ignore
+            f"fields={self.fields})"
+        )
+        return repr_str

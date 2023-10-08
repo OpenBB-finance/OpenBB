@@ -12,6 +12,7 @@ from openbb_core.app.router import Router
 
 from openbb_etf.etf_definitions import (
     EtfCountries,
+    EtfHistoricalNav,
     EtfHoldings,
     EtfInfo,
     EtfSearch,
@@ -115,3 +116,19 @@ def info(
     for d in list(data.__dict__.keys()):
         setattr(results, d, data.__dict__[d])
     return EtfInfo.model_validate(results)
+
+
+@router.command(model="EtfHistoricalNav")
+def historical_nav(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> EtfHistoricalNav:
+    """ETF Historical NAV."""
+
+    data = Results(OBBject(results=Query(**locals()).execute()), "EtfHistoricalNav")
+    results = EtfHistoricalNav()
+    for d in list(data.__dict__.keys()):
+        setattr(results, d, data.__dict__[d])
+    return EtfHistoricalNav.model_validate(results)

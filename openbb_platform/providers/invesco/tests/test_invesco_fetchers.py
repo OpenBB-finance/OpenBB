@@ -1,5 +1,6 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_invesco.models.etf_historical_nav import InvescoEtfHistoricalNavFetcher
 from openbb_invesco.models.etf_holdings import InvescoEtfHoldingsFetcher
 from openbb_invesco.models.etf_search import InvescoEtfSearchFetcher
 
@@ -30,5 +31,14 @@ def test_invesco_etf_holdings_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
     fetcher = InvescoEtfHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_invesco_etf_historical_nav_fetcher(credentials=test_credentials):
+    params = {"symbol": "QQQ"}
+
+    fetcher = InvescoEtfHistoricalNavFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

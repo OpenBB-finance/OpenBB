@@ -4,14 +4,13 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_invesco.utils.helpers import COUNTRIES, America
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_search import (
     EtfSearchData,
     EtfSearchQueryParams,
 )
 from pydantic import Field
-
-from openbb_invesco.utils.helpers import COUNTRIES, America
 
 
 class InvescoEtfSearchQueryParams(EtfSearchQueryParams):
