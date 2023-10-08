@@ -164,6 +164,8 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
     "world": "WLD",
 }
 
+CODE_TO_COUNTRY_GDP_FORECAST = {v: k for k, v in COUNTRY_TO_CODE_GDP_FORECAST.items()}
+
 COUNTRY_TO_CODE_CPI = {
     "G20": "G-20",
     "G7": "G-7",
