@@ -13,7 +13,7 @@ class IndexInfoQueryParams(QueryParams):
 
     symbol: str = Field(description="The index ticker symbol.")
 
-    @field_validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol")
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -35,6 +35,6 @@ class IndexInfoData(Data):
     factsheet: Optional[str] = Field(
         description="URL to the factsheet document.", default=None
     )
-    nb_constituents: Optional[int] = Field(
+    num_constituents: Optional[int] = Field(
         description="The number of constituents in the index.", default=None
     )

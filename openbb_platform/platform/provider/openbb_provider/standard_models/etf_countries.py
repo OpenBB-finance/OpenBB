@@ -1,4 +1,4 @@
-"""Index Sectors data model."""
+"""ETF Countries data model."""
 
 from typing import List, Set, Union
 
@@ -8,10 +8,10 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
 
-class IndexSectorsQueryParams(QueryParams):
-    """Index Info Query Params"""
+class EtfCountriesQueryParams(QueryParams):
+    """ETF Countries Query Params"""
 
-    symbol: str = Field(description="The index ticker symbol.")
+    symbol: str = Field(description="The exchange ticker symbol for the ETF.")
 
     @field_validator("symbol")
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
@@ -21,8 +21,8 @@ class IndexSectorsQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class IndexSectorsData(Data):
-    """Index Sectors Data."""
+class EtfCountriesData(Data):
+    """ETF Countries Data."""
 
-    sector: str = Field(description="The sector name.")
-    weight: float = Field(description="The weight of the sector in the index.")
+    country: str = Field(description="The country of the exposure.")
+    weight: float = Field(description="The weight of the country in the ETF.")

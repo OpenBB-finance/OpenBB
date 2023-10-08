@@ -9,11 +9,11 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
 
-class IndustryPeQueryParams(QueryParams):
+class IndustryPEQueryParams(QueryParams):
     """Industry P/E Ratio Query."""
 
 
-class IndustryPeData(Data):
+class IndustryPEData(Data):
     """Industry P/E Ratio Data."""
 
     date: Optional[dateType] = Field(
@@ -22,5 +22,5 @@ class IndustryPeData(Data):
     exchange: Optional[str] = Field(
         default=None, description="The exchange where the data is from."
     )
-    sector: str = Field(description="The name of the industry.")
+    industry: str = Field(description="The name of the industry.")
     pe: float = Field(description="The P/E ratio of the industry.")

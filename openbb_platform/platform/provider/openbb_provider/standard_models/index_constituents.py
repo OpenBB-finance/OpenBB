@@ -13,7 +13,7 @@ class IndexConstituentsQueryParams(QueryParams):
 
     symbol: str = Field(description="The index ticker symbol.")
 
-    @field_validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol")
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

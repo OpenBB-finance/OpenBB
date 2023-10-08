@@ -9,11 +9,11 @@ from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
 
-class SectorPeQueryParams(QueryParams):
+class SectorPEQueryParams(QueryParams):
     """Sector P/E Ratio Query."""
 
 
-class SectorPeData(Data):
+class SectorPEData(Data):
     """Sector P/E Ratio Data."""
 
     date: Optional[dateType] = Field(
