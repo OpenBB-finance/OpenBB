@@ -42,17 +42,33 @@ jobs:
         id: cached-python-environment
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/.venv
+          path: runner_env
           key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
       - name: Install Dependencies
         if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
-          python -m pip install -U virtualenv pip
-          python -m virtualenv ${{ github.workspace }}/.venv
-          ${{ github.workspace }}/.venv/bin/python -m pip install pytest \
-            ./openbb_platform
-            # Add the extensions you want to test within this workflow here
+          python -m venv runner_env
+          source runner_env/bin/activate
+          pip install pytest poetry\
+            ./openbb_platform \
+            ./openbb_platform/providers/alpha_vantage \
+            ./openbb_platform/providers/cboe \
+            ./openbb_platform/providers/quandl \
+            ./openbb_platform/providers/fmp \
+            ./openbb_platform/providers/yfinance \
+            ./openbb_platform/providers/intrinio \
+            ./openbb_platform/extensions/futures \
+            ./openbb_platform/extensions/qa \
+            ./openbb_platform/extensions/ta
+            pip uninstall -y openbb_core
+            pip uninstall -y openbb_provider
+            cd openbb_platform/platform/core
+            pip install -U .
+            cd ../provider/
+            pip install -U .
+            cd ../../../
+            pip install -U pydantic
 
       - name: Populate System Setting Files
         run: |
@@ -69,12 +85,16 @@ jobs:
               "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
               "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
               "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
-              "fred_api_key": "${{ secrets.FRED_API_KEY }}"
+              "fred_api_key": "${{ secrets.FRED_API_KEY }}",
+              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
             }
           }' > ${{ github.workspace }}/.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
+          source runner_env/bin/activate
+          pip list
+          pwd
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 1 minute
@@ -82,7 +102,11 @@ jobs:
 
       - name: Run API Integration Tests
         run: |
-          ${{ github.workspace }}/.venv/bin/pytest ${{ github.workspace }}/openbb_platform -m integration
+          source runner_env/bin/activate
+          pip list
+          pwd
+          cd openbb_platform
+          pytest . -m integration
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
