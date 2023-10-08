@@ -29,6 +29,8 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
 
+    __alias_dict__ = {"output_size": "outputsize"}
+
     interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", ""),
@@ -47,7 +49,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         description="Query a specific month in history (in YYYY-MM format).",
         default=None,
     )
-    outputsize: Optional[Literal["compact", "full"]] = Field(
+    output_size: Optional[Literal["compact", "full"]] = Field(
         description="Compact returns only the latest 100 data points in the intraday "
         "time series; full returns trailing 30 days of the most recent intraday data "
         "if the month parameter is not specified, or the full intraday data for a"
