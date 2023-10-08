@@ -312,7 +312,7 @@ def test_static_command_runner_run(
 
     assert result.results == [1, 2, 3, 4]
     assert hasattr(result, "extra")
-    assert result.extra.get("metadata") != None
+    assert result.extra.get("metadata") is not None
 
 
 @patch("openbb_core.app.command_runner.LoggingService")
