@@ -29,9 +29,9 @@ def obb(pytestconfig):
         ),
         (
             {
-                "company_name": "Apple Inc",
-                "company_name_search": "AAPL",
-                "sic": "35719904",
+                "company_name": "Apple Inc.",
+                "company_name_search": "Apple Inc.",
+                "sic": "3571",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -39,6 +39,33 @@ def obb(pytestconfig):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
+                "filing_date": "2022-10-27",
+                "filing_date_lt": "2022-11-01",
+                "filing_date_lte": "2022-11-01",
+                "filing_date_gt": "2022-10-10",
+                "filing_date_gte": "2022-10-10",
+                "period_of_report_date": "2022-09-24",
+                "period_of_report_date_lt": "2022-11-01",
+                "period_of_report_date_lte": "2022-11-01",
+                "period_of_report_date_gt": "2022-10-10",
+                "period_of_report_date_gte": "2022-10-10",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "fmp",
+                "cik": "0000320193",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "yfinance",
             }
         ),
     ],
@@ -100,9 +127,9 @@ def test_stocks_fa_cal(params, obb):
         ),
         (
             {
-                "company_name": "Apple Inc",
-                "company_name_search": "AAPL",
-                "sic": "35719904",
+                "company_name": "Apple Inc.",
+                "company_name_search": "Apple Inc.",
+                "sic": "3571",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -110,6 +137,33 @@ def test_stocks_fa_cal(params, obb):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
+                "filing_date": "2022-10-27",
+                "filing_date_lt": "2022-11-01",
+                "filing_date_lte": "2022-11-01",
+                "filing_date_gt": "2022-10-10",
+                "filing_date_gte": "2022-10-10",
+                "period_of_report_date": "2022-09-24",
+                "period_of_report_date_lt": "2022-11-01",
+                "period_of_report_date_lte": "2022-11-01",
+                "period_of_report_date_gt": "2022-10-10",
+                "period_of_report_date_gte": "2022-10-10",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "fmp",
+                "cik": "0000320193",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "yfinance",
             }
         ),
     ],
@@ -241,9 +295,9 @@ def test_stocks_fa_est(params, obb):
         ),
         (
             {
-                "company_name": "Apple Inc",
-                "company_name_search": "AAPL",
-                "sic": "35719904",
+                "company_name": "Apple Inc.",
+                "company_name_search": "Apple Inc.",
+                "sic": "3571",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
@@ -251,6 +305,33 @@ def test_stocks_fa_est(params, obb):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
+                "filing_date": "2022-10-27",
+                "filing_date_lt": "2022-11-01",
+                "filing_date_lte": "2022-11-01",
+                "filing_date_gt": "2022-10-10",
+                "filing_date_gte": "2022-10-10",
+                "period_of_report_date": "2022-09-24",
+                "period_of_report_date_lt": "2022-11-01",
+                "period_of_report_date_lte": "2022-11-01",
+                "period_of_report_date_gt": "2022-10-10",
+                "period_of_report_date_gte": "2022-10-10",
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "limit": 12,
+                "period": "annual",
+                "cik": "0000320193",
+            }
+        ),
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "AAPL",
+                "limit": 12,
+                "period": "annual",
             }
         ),
     ],
@@ -265,9 +346,7 @@ def test_stocks_fa_income(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({"symbol": "AAPL", "limit": 10, "period": "annual"}),
-    ],
+    [({"symbol": "AAPL", "limit": 10, "period": "annual"})],
 )
 @pytest.mark.integration
 def test_stocks_fa_income_growth(params, obb):
@@ -521,6 +600,7 @@ def test_stocks_ca_peers(params, obb):
     [
         ({"symbol": "AAPL"}),
         ({"date": "2023-01-01", "provider": "intrinio", "symbol": "AAPL"}),
+        ({"provider": "cboe", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration
@@ -553,6 +633,7 @@ def test_stocks_options_chains(params, obb):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "function_": "TIME_SERIES_DAILY",
             }
         ),
         (
@@ -580,6 +661,7 @@ def test_stocks_options_chains(params, obb):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "timeseries": 1,
             }
         ),
         (
@@ -589,16 +671,20 @@ def test_stocks_options_chains(params, obb):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
             {
                 "timezone": "UTC",
+                "source": "realtime",
                 "interval_size": "30m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "start_time": "00:00:00",
+                "end_time": "23:59:59",
             }
         ),
         (
@@ -610,6 +696,8 @@ def test_stocks_options_chains(params, obb):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "start_time": "00:00:00",
+                "end_time": "23:59:59",
             }
         ),
         (
@@ -722,6 +810,27 @@ def test_stocks_load(params, obb):
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "fmp",
+                "symbols": "AAPL",
+                "limit": 20,
+            }
+        ),
+        (
+            {
+                "provider": "yfinance",
+                "symbols": "AAPL",
+                "limit": 20,
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbols": "AAPL",
+                "limit": 20,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -764,6 +873,7 @@ def test_stocks_search(params, obb):
     [
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration

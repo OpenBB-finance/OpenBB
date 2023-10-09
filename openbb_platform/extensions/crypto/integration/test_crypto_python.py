@@ -31,6 +31,7 @@ def obb(pytestconfig):
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "timeseries": 1,
             }
         ),
         (
@@ -40,6 +41,7 @@ def obb(pytestconfig):
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (

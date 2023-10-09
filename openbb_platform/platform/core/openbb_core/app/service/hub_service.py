@@ -26,8 +26,7 @@ class HubService:
         session: Optional[HubSession] = None,
         base_url: Optional[str] = None,
     ):
-        domain = "dev" if Env().DEV_MODE else "co"
-        self._base_url = base_url or f"https://payments.openbb.{domain}"
+        self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
 
     @property
