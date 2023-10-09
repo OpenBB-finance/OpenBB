@@ -6,7 +6,7 @@ from datetime import (
 )
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, NonNegativeInt, field_validator, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -24,7 +24,8 @@ class CashFlowStatementQueryParams(QueryParams):
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -133,6 +134,7 @@ class CashFlowStatementData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
