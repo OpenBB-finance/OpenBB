@@ -12,9 +12,6 @@ from openbb_core.api.auth.user import (
 )
 
 
-# ruff: noqa: S105 S106
-
-
 @pytest.mark.parametrize(
     "error, correct, received",
     [
