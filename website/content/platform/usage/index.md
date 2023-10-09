@@ -142,7 +142,7 @@ obb.user.preferences
 obb.user.defaults
 ```
 
-Notably, `obb.user.defaults`, is for defining default providers of end points.  They are stored in the `user_settings.json` file, under `routes`.
+Notably, `obb.user.defaults`, defines default providers for any command.  They are stored in the `user_settings.json` file, under `routes`.
 
 ```json
 {
@@ -203,7 +203,8 @@ extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'polygon'}, 
 Additional class methods are helpers for converting the results to a variety of formats.
 
 - `to_dict()`: converts to a dictionary of lists.
-- `to_df()`/`to_dataframe()`: converts to a Pandas DataFrame.
+- `to_df()` / `to_dataframe()`: converts to a Pandas DataFrame.
+- `to_numpy()`: converts to a Numpy array.
 - `to_polars()`: converts to a Polars table.
 
 The output from the Fast API is a serialized version of this object, and these methods are lost on conversion.  OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
@@ -224,3 +225,64 @@ if response.status_code == 200:
 
 data.to_df()
 ```
+
+## Dynamic Command Execution
+
+Dynamic execution provides an alternate entry point to functions.  This method requires formatting the query as demonstrated below.
+
+```python
+from openbb_core.app.command_runner import CommandRunner
+runner = CommandRunner()
+output = runner.run(
+    "/stocks/fa/ratios",
+    provider_choices={
+        "provider": "fmp",
+    },
+    standard_params={
+        "symbol" : "TSLA",
+        "period" : "quarter",
+    },
+    extra_params={}
+)
+```
+
+```console
+>>> output
+OBBject
+
+id: 065241b7-bd9d-7313-8000-9406d8afab75
+results: [{'symbol': 'TSLA', 'date': '2023-06-30', 'period': 'Q2', 'current_ratio':...
+provider: fmp
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'standa...
+```
+
+## Commands and Provider Coverage
+
+The installed commands and data providers are found under, `obb.coverage`.
+
+```python
+obb.coverage
+```
+
+```console
+/coverage
+    providers
+    commands
+```
+
+`obb.coverage.providers` is a dictionary of the installed provider extensions, each with its own list of available commands.
+
+`obb.coverage.commands` is a dictionary of commands, each with its own list of available providers for the data.
+
+## Logging Out
+
+Logging out and saving changes to preferences is done in the account module.
+
+```python
+obb.account.save()
+obb.account.logout()
+```
+
+Any saved changes will be pulled to a new session after logging in.  If `remember_me=False`, ending the Python session will be an equivalent to logging out.
