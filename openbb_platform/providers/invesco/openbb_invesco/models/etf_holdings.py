@@ -6,18 +6,17 @@ from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from dateutil import parser
+from openbb_invesco.utils.helpers import (
+    COUNTRIES,
+    America,
+    invesco_america_etf_holdings,
+)
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
 from pydantic import Field, field_validator
-
-from openbb_invesco.utils.helpers import (
-    COUNTRIES,
-    America,
-    invesco_america_etf_holdings,
-)
 
 
 class InvescoEtfHoldingsQueryParams(EtfHoldingsQueryParams):
