@@ -2,8 +2,17 @@
 import datetime
 
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -25,7 +34,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_forex_pairs(params):
+def test_forex_pairs(params, obb):
     result = obb.forex.pairs(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -109,7 +118,7 @@ def test_forex_pairs(params):
     ],
 )
 @pytest.mark.integration
-def test_forex_load(params):
+def test_forex_load(params, obb):
     result = obb.forex.load(**params)
     assert result
     assert isinstance(result, OBBject)

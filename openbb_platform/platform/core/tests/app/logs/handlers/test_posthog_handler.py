@@ -19,7 +19,7 @@ class MockLoggingSettings:
         appid,
         platform,
         python_version,
-        terminal_version,
+        platform_version,
         userid,
     ):
         self.app_name = app_name
@@ -30,7 +30,7 @@ class MockLoggingSettings:
         self.app_id = appid
         self.platform = platform
         self.python_version = python_version
-        self.terminal_version = terminal_version
+        self.platform_version = platform_version
         self.user_id = userid
 
 
@@ -46,7 +46,7 @@ logging_settings.frequency = "H"
 logging_settings.app_id = "test123"
 logging_settings.platform = "Windows"
 logging_settings.python_version = "3.9"
-logging_settings.terminal_version = "1.2.3"
+logging_settings.platform_version = "1.2.3"
 logging_settings.user_id = "user123"
 
 

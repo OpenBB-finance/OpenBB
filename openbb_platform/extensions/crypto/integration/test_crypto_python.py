@@ -1,8 +1,17 @@
 """Test crypto extension."""
 
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
 
 
 @pytest.mark.parametrize(
@@ -82,7 +91,7 @@ from openbb_core.app.model.obbject import OBBject
     ],
 )
 @pytest.mark.integration
-def test_crypto_load(params):
+def test_crypto_load(params, obb):
     result = obb.crypto.load(**params)
     assert result
     assert isinstance(result, OBBject)

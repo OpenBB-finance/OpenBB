@@ -390,21 +390,25 @@ def calculate_cones(
     top_q = []
     bottom_q = []
     realized = []
-    data = data.sort_index(ascending=False)
+    allowed_windows = []
+    data = data.sort_index(ascending=True)
+
+    model_functions = {
+        "STD": standard_deviation,
+        "Parkinson": parkinson,
+        "Garman-Klass": garman_klass,
+        "Hodges-Tompkins": hodges_tompkins,
+        "Rogers-Satchell": rogers_satchell,
+        "Yang-Zhang": yang_zhang,
+    }
 
     for window in windows:
-        model_functions = {
-            "STD": standard_deviation,
-            "Parkinson": parkinson,
-            "Garman-Klass": garman_klass,
-            "Hodges-Tompkins": hodges_tompkins,
-            "Rogers-Satchell": rogers_satchell,
-            "Yang-Zhang": yang_zhang,
-        }
-
         estimator = model_functions[model](
             window=window, data=data, is_crypto=is_crypto
         )
+
+        if estimator.empty:
+            continue
 
         min_.append(estimator.min())
         max_.append(estimator.max())
@@ -413,21 +417,23 @@ def calculate_cones(
         bottom_q.append(estimator.quantile(quantiles[0]))
         realized.append(estimator[-1])
 
+        allowed_windows.append(window)
+
     df_ = [realized, min_, bottom_q, median, top_q, max_]
-    df_windows = windows
+    df_windows = allowed_windows
     df = pd.DataFrame(df_, columns=df_windows)
     df = df.rename(
         index={
             0: "realized",
             1: "min",
-            2: f"lower_{lower_q_label}_%",
+            2: f"lower_{lower_q_label}%",
             3: "median",
-            4: f"upper_{upper_q_label}_%",
+            4: f"upper_{upper_q_label}%",
             5: "max",
         }
     )
     cones_df = df.copy()
-    return cones_df.transpose()
+    return cones_df.transpose().reset_index().rename(columns={"index": "window"})
 
 
 def clenow_momentum(

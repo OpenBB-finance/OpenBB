@@ -1,9 +1,9 @@
 """Integration test generator."""
 from pathlib import Path, PosixPath
+from platform.core.openbb_core.app.provider_interface import ProviderInterface
+from platform.core.openbb_core.app.router import CommandMap
 from typing import Any, Dict, List, Literal, get_origin
 
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
@@ -29,8 +29,16 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
                 f.write(
                     f'''"""Test {extension_name} extension."""
 import pytest
-from openbb import obb
 from openbb_core.app.model.obbject import OBBject
+
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
     '''
                 )
 
@@ -110,7 +118,7 @@ def add_test_commands_to_file(  # pylint: disable=W0102
     ],
 )
 @pytest.mark.integration
-def test_{test_name}(**params):
+def test_{test_name}(**params, obb):
     result = obb.{command_name}(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -181,4 +189,5 @@ def write_integration_test() -> None:
     add_test_commands_to_file(extensions)
 
 
-write_integration_test()
+if __name__ == "__main__":
+    write_integration_test()

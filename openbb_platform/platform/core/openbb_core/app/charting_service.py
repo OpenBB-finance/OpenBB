@@ -187,22 +187,21 @@ class ChartingService(metaclass=SingletonMeta):
         """
         Given an extension name, it returns the implemented charting functions from its router.
         """
-
-        module = cls._get_extension_router(extension_name)
-
-        if not module:
-            return []
-
         implemented_functions = []
-        module_name = module.__name__
 
-        for name, obj in getmembers(module, isfunction):
-            if (
-                obj.__module__ == module_name
-                and not name.startswith("_")
-                and "NotImplementedError" not in getsource(obj)
-            ):
-                implemented_functions.append(name)
+        try:
+            if module := cls._get_extension_router(extension_name):
+                module_name = module.__name__
+
+                for name, obj in getmembers(module, isfunction):
+                    if (
+                        obj.__module__ == module_name
+                        and not name.startswith("_")
+                        and "NotImplementedError" not in getsource(obj)
+                    ):
+                        implemented_functions.append(name)
+        except ChartingServiceError:
+            pass
 
         return implemented_functions
 

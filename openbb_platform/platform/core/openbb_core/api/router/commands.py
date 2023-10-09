@@ -5,13 +5,13 @@ from typing import Any, Callable, Dict, Tuple, TypeVar
 
 from fastapi import APIRouter, Depends
 from fastapi.routing import APIRoute
-from openbb_core.api.dependency.user import get_user
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import RouterLoader
+from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
@@ -76,7 +76,9 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                 "__authenticated_user_settings",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 default=UserSettings(),
-                annotation=Annotated[UserSettings, Depends(get_user)],
+                annotation=Annotated[
+                    UserSettings, Depends(AuthService().user_settings_hook)
+                ],
             )
         )
 
@@ -118,15 +120,15 @@ def validate_output(c_out: OBBject) -> OBBject:
 
         # if it's a model with nested fields
         elif is_model(type_):
-            for field in type_.__fields__.values():
+            for field_name, field in type_.__fields__.items():
                 if field.json_schema_extra and field.json_schema_extra.get(
                     "exclude_from_api", None
                 ):
-                    delattr(value, field.name)
+                    delattr(value, field_name)
 
                 # if it's a yet a nested model we need to go deeper in the recursion
                 elif is_model(field.annotation):
-                    exclude_fields_from_api(field.name, getattr(value, field.name))
+                    exclude_fields_from_api(field_name, getattr(value, field_name))
 
     for k, v in c_out.model_copy():
         exclude_fields_from_api(k, v)
