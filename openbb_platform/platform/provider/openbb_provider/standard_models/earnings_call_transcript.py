@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import List, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -16,14 +16,9 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     year: int = Field(description="Year of the earnings call transcript.")
-    quarter: int = Field(
-        default=1,
-        gt=0,
-        lt=5,
-        description="Quarter of the earnings call transcript.",
-    )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -40,7 +35,8 @@ class EarningsCallTranscriptData(Data):
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     content: str = Field(description="Content of the earnings call transcript.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
