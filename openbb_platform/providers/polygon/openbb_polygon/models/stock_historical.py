@@ -7,7 +7,7 @@ from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_polygon.utils.helpers import get_data, get_timespan_and_multiplier
+from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -17,6 +17,8 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import (
     Field,
     PositiveInt,
+    PrivateAttr,
+    model_validator,
 )
 
 
@@ -39,6 +41,29 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
         default=True,
         description="Output time series is adjusted by historical split and dividend events.",
     )
+    _multiplier: PositiveInt = PrivateAttr(default=None)
+    _timespan: str = PrivateAttr(default=None)
+
+    @model_validator(mode="after")
+    @classmethod
+    def get_api_interval_params(cls, values: "PolygonStockHistoricalQueryParams"):
+        """Get the multiplier and timespan parameters for the Polygon API."""
+
+        intervals = {
+            "s": "second",
+            "m": "minute",
+            "h": "hour",
+            "d": "day",
+            "W": "week",
+            "M": "month",
+            "Q": "quarter",
+            "Y": "year",
+        }
+
+        values._multiplier = int(values.interval[:-1])
+        values._timespan = intervals[values.interval[-1]]
+
+        return values
 
 
 class PolygonStockHistoricalData(StockHistoricalData):
@@ -87,8 +112,6 @@ class PolygonStockHistoricalFetcher(
     ) -> List[Dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        multiplier, timespan = get_timespan_and_multiplier(query.interval)
-
         data: List = []
 
         def multiple_symbols(
@@ -98,7 +121,7 @@ class PolygonStockHistoricalFetcher(
 
             url = (
                 "https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{multiplier}/{timespan}/"
+                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
@@ -116,7 +139,7 @@ class PolygonStockHistoricalFetcher(
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
-                if timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
                 if "," in query.symbol:
                     r["symbol"] = symbol
