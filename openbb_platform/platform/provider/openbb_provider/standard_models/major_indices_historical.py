@@ -8,7 +8,7 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, PositiveFloat, validator
+from pydantic import Field, PositiveFloat, NonNegativeFloat, validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -38,7 +38,7 @@ class MajorIndicesHistoricalData(Data):
     """Major Indices end of day price data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    open: NonNegativeFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
