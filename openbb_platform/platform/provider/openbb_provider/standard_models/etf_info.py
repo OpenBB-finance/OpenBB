@@ -9,11 +9,12 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class EtfInfoQueryParams(QueryParams):
-    """ETF Info Query Params"""
+    """ETF Info Query Params."""
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
 
     @field_validator("symbol")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

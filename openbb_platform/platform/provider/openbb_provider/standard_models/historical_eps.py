@@ -15,11 +15,12 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class HistoricalEpsQueryParams(QueryParams):
-    """Historical EPS Query."""
+    """Historical Earnings Per Share Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @validator("symbol", pre=True, check_fields=False, always=True)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -28,7 +29,7 @@ class HistoricalEpsQueryParams(QueryParams):
 
 
 class HistoricalEpsData(Data):
-    """Historical EPS Data."""
+    """Historical Earnings Per Share Data."""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))

@@ -9,11 +9,12 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class IndexConstituentsQueryParams(QueryParams):
-    """Index Constituents Query Params"""
+    """Index Constituents Query Params."""
 
     symbol: str = Field(description="The index ticker symbol.")
 
     @field_validator("symbol")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

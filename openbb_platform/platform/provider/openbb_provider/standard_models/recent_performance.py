@@ -9,11 +9,12 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class RecentPerformanceQueryParams(QueryParams):
-    """Recent Performance Query Params"""
+    """Recent Performance Query Params."""
 
     symbol: str = Field(description="The ticker symbol to fetch.")
 
     @field_validator("symbol")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

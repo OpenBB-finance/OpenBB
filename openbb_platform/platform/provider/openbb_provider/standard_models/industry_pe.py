@@ -10,11 +10,11 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class IndustryPEQueryParams(QueryParams):
-    """Industry P/E Ratio Query."""
+    """Industry Price to Earnings Ratio Query."""
 
 
 class IndustryPEData(Data):
-    """Industry P/E Ratio Data."""
+    """Industry Price to Earnings Ratio Data."""
 
     date: Optional[dateType] = Field(
         description="The date of the P/E ratio.", default=None
