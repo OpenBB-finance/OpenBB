@@ -1,13 +1,9 @@
 """Intrinio Stocks end of day fetcher."""
 
-from datetime import (
-    date as dateType,
-    datetime,
-    time,
-)
+from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
@@ -31,14 +27,6 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     interval: Literal[
         "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"
     ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
-    start_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("start_date", ""),
-    )
-    end_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("end_date", ""),
-    )
     start_time: Optional[time] = Field(
         default=None,
         description="Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.",
