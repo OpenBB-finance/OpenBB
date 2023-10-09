@@ -26,7 +26,7 @@ def test_{test_name}(params, obb):
 
 def find_extensions():
     """Find extensions."""
-    filter_ext = ["tests", "charting"]
+    filter_ext = ["tests", "charting", "__pycache__"]
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
