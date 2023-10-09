@@ -85,6 +85,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         """Get the function from the provided interval for the Alpha Vantage API."""
 
         functions = {
+            "m": "TIME_SERIES_INTRADAY",
             "d": "TIME_SERIES_DAILY",
             "W": "TIME_SERIES_WEEKLY",
             "M": "TIME_SERIES_MONTHLY",
@@ -95,7 +96,9 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
             True: "_ADJUSTED",
         }
 
-        if values.interval[-1] != "m":
+        if values.interval[-1] == "m":
+            values._function = f"{functions[values.interval[-1]]}"
+        else:
             values._function = (
                 f"{functions[values.interval[-1]]}{adjusted_value[values.adjusted]}"
             )
