@@ -1,0 +1,96 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - release/*
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+    - name: Slack Notification - Starting
+      uses: act10ns/slack@v1
+      with:
+        status: starting
+        channel: '#workflows'
+        message: Starting Integration Test...
+      if: always()
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Checkout specific ref
+      if: github.event_name == 'pull_request'
+      run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
+
+    - name: Setup Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+        architecture: x64
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.4.0
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Setup sudo apt installs for ubuntu-latest
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+            libgtk-3-dev \
+            libwebkit2gtk-4.0-dev
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction -E optimization
+
+    - name: Run integration tests
+      id: integration-tests
+      run: |
+        source $VENV
+        python terminal.py -t | tee result.txt
+        grep "================================ Integration Test Summary ================================" result.txt -A100 | tail --bytes=2000 > summary.txt
+        echo  >> summary.txt
+
+    - name: Run Integration Tests Coverage Report
+      id: integration-tests-coverage
+      run: |
+        source $VENV
+        python terminal.py -t --coverage | tee result.txt
+        sed -n '/Integration Coverage Summary/,$p' result.txt >> summary.txt
+
+    - name: Upload summary to Slack
+      uses: adrey/slack-file-upload-action@master
+      with:
+        token: ${{ secrets.SLACK_API_TOKEN }}
+        initial_comment: "Integration test summary"
+        title: "Integration test summary"
+        path: summary.txt
+        channel: ${{ secrets.SLACK_CHANNEL_ID }}
+
+    - name: Slack Notification - Success/Failure
+      uses: act10ns/slack@v1
+      with:
+        status: ${{ job.status }}
+        steps: ${{ toJson(steps) }}
+        channel: '#workflows'
+      if: always()
