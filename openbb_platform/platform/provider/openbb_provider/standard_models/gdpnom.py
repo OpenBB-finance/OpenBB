@@ -1,8 +1,8 @@
 """GDP data and query params."""
 from datetime import date as dateType
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -33,11 +33,3 @@ class GDPNomData(Data):
     value: Optional[float] = Field(
         default=None, description="Nominal GDP value on the date."
     )
-
-    @field_validator("date", mode="before")
-    @classmethod
-    def date_validate(cls, date: Union[dateType, int]):  # pylint: disable=E0213
-        """Validate value."""
-        if isinstance(date, int):
-            return dateType(date, 12, 31)
-        return date

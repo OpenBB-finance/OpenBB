@@ -1,9 +1,8 @@
 """GDP data and query params."""
-import re
 from datetime import date as dateType
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -38,22 +37,3 @@ class GDPForecastData(Data):
     value: Optional[float] = Field(
         default=None, description="Nominal GDP value on the date."
     )
-
-    @field_validator("date", mode="before")
-    @classmethod
-    def date_validate(
-        cls, date: Union[dateType, Union[str, int]]
-    ):  # pylint: disable=E0213
-        """Validate value."""
-        # OECD Returns dates like 2022-Q2, so we map that to the end of the quarter.
-        if isinstance(date, str):
-            if re.match(r"\d{4}-Q[1-4]$", date):
-                year, quarter = date.split("-")
-                quarter = int(quarter[1])
-                month = quarter * 3
-                return dateType(int(year), month, 1)
-            else:
-                raise ValueError("Date string does not match the format YYYY-QN")
-        if isinstance(date, int):
-            return dateType(date, 12, 31)
-        return date

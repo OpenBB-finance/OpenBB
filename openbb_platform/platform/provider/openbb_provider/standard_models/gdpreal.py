@@ -1,8 +1,8 @@
 """GDP data and query params."""
 from datetime import date as dateType
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -33,20 +33,3 @@ class GDPRealData(Data):
     value: Optional[float] = Field(
         default=None, description="Nominal GDP value on the date."
     )
-
-    @field_validator("date", mode="before")
-    @classmethod
-    def date_validate(cls, date: Union[dateType, str]):  # pylint: disable=E0213
-        """Validate value."""
-        if isinstance(date, str):
-            year, quarter = date.split("-")
-            year = int(year)
-            if quarter == "Q1":
-                return dateType(year, 3, 31)
-            elif quarter == "Q2":
-                return dateType(year, 6, 30)
-            elif quarter == "Q3":
-                return dateType(year, 9, 30)
-            elif quarter == "Q4":
-                return dateType(year, 12, 31)
-        return date

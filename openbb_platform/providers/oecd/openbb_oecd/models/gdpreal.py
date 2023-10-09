@@ -2,12 +2,12 @@
 
 
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_oecd.utils import constants, helpers
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.gdpreal import GDPRealData, GDPRealQueryParams
-from pydantic import Field
+from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys())
 
@@ -22,6 +22,23 @@ class OECDGDPRealQueryParams(GDPRealQueryParams):
 
 class OECDGDPRealData(GDPRealData):
     """Nominal GDP data from OECD."""
+
+    @field_validator("date", mode="before")
+    @classmethod
+    def date_validate(cls, in_date: Union[date, str]):  # pylint: disable=E0213
+        """Validate value."""
+        if isinstance(in_date, str):
+            year, quarter = in_date.split("-")
+            year = int(year)
+            if quarter == "Q1":
+                return date(year, 3, 31)
+            elif quarter == "Q2":
+                return date(year, 6, 30)
+            elif quarter == "Q3":
+                return date(year, 9, 30)
+            elif quarter == "Q4":
+                return date(year, 12, 31)
+        return in_date
 
 
 class OECDGDPRealFetcher(Fetcher[OECDGDPRealQueryParams, List[OECDGDPRealData]]):

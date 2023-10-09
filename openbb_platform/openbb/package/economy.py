@@ -744,10 +744,10 @@ class ROUTER_economy(Container):
     @validate_call
     def gdpforecast(
         self,
-        units: Annotated[
+        period: Annotated[
             Literal["quarter", "annual"],
             OpenBBCustomParameter(
-                description="Units to get nominal GDP in.  Either quarter or annual."
+                description="Units for nominal GDP period.  Either quarter or annual."
             ),
         ] = "annual",
         start_date: Annotated[
@@ -775,8 +775,8 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        units : Literal['quarter', 'annual']
-            Units to get nominal GDP in.  Either quarter or annual.
+        period : Literal['quarter', 'annual']
+            Units for nominal GDP period.  Either quarter or annual.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
@@ -816,7 +816,7 @@ class ROUTER_economy(Container):
                 "provider": provider,
             },
             standard_params={
-                "units": units,
+                "period": period,
                 "start_date": start_date,
                 "end_date": end_date,
                 "type": type,

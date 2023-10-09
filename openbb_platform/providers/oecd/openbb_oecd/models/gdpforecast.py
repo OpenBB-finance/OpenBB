@@ -1,5 +1,6 @@
+import re
 from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_oecd.utils import constants, helpers
 from openbb_provider.abstract.fetcher import Fetcher
@@ -7,7 +8,7 @@ from openbb_provider.standard_models.gdpforecast import (
     GDPForecastData,
     GDPForecastQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
 
@@ -22,6 +23,25 @@ class OECDGDPForecastQueryParams(GDPForecastQueryParams):
 
 class OECDGDPForecastData(GDPForecastData):
     """GDP Forecast data from OECD."""
+
+    @field_validator("date", mode="before")
+    @classmethod
+    def date_validate(
+        cls, in_date: Union[date, Union[str, int]]
+    ):  # pylint: disable=E0213
+        """Validate value."""
+        # OECD Returns dates like 2022-Q2, so we map that to the end of the quarter.
+        if isinstance(in_date, str):
+            if re.match(r"\d{4}-Q[1-4]$", in_date):
+                year, quarter = in_date.split("-")
+                quarter = int(quarter[1])
+                month = quarter * 3
+                return date(int(year), month, 1)
+            else:
+                raise ValueError("Date string does not match the format YYYY-QN")
+        if isinstance(in_date, int):
+            return date(in_date, 12, 31)
+        return date
 
 
 class OECDGDPForecastFetcher(
