@@ -34,8 +34,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
     adjusted: Optional[bool] = Field(
-        description="Output time series is adjusted by historical split and dividend events."
-        "Only available for intraday data.",
+        description="Output time series is adjusted by historical split and dividend events.",
         default=False,
     )
     extended_hours: Optional[bool] = Field(
