@@ -1,12 +1,6 @@
 name: API Integration Tests
 
 on:
-  pull_request:
-    branches:
-      - feature/openbb-sdk-v4
-  push:
-    branches:
-      - feature/openbb-sdk-v4
   workflow_dispatch:
 
 concurrency:
@@ -66,7 +60,8 @@ jobs:
             ./openbb_platform/providers/intrinio \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
-            ./openbb_platform/extensions/ta
+            ./openbb_platform/extensions/ta \
+            ./openbb_platform/extensions/econometrics
             pip uninstall -y openbb_core
             pip uninstall -y openbb_provider
             cd openbb_platform/platform/core
