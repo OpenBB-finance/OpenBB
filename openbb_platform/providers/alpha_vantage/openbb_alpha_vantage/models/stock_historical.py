@@ -29,8 +29,6 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
 
-    __alias_dict__ = {"output_size": "outputsize"}
-
     interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", ""),
@@ -55,6 +53,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         "if the month parameter is not specified, or the full intraday data for a"
         "specific month in history if the month parameter is specified.",
         default="full",
+        alias="outputsize",
     )
 
     _function: Literal[
@@ -70,6 +69,16 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     )
 
     _datatype: Literal["json", "csv"] = PrivateAttr(default="json")
+
+    @field_validator("month", mode="before")
+    def month_validate(cls, v):  # pylint: disable=E0213
+        """Validate month, check if the month is in YYYY-MM format."""
+        if v is not None:
+            try:
+                datetime.strptime(v, "%Y-%m")
+            except ValueError as e:
+                raise e
+        return v
 
     @model_validator(mode="after")
     @classmethod
@@ -93,16 +102,6 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
             )
 
         return values
-
-    @field_validator("month", mode="before")
-    def month_validate(cls, v):  # pylint: disable=E0213
-        """Validate month, check if the month is in YYYY-MM format."""
-        if v is not None:
-            try:
-                datetime.strptime(v, "%Y-%m")
-            except ValueError as e:
-                raise e
-        return v
 
 
 class AVStockHistoricalData(StockHistoricalData):
