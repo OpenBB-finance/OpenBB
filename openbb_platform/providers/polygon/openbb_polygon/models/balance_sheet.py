@@ -10,6 +10,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
@@ -20,8 +21,13 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
 
-    __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
+    __alias_dict__ = {"symbol": "ticker"}
 
+    period: Literal["annual", "quarter", "ttm"] = Field(
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+        alias="timeframe",
+    )
     company_name: Optional[str] = Field(
         default=None, description="Name of the company."
     )
@@ -131,6 +137,7 @@ class PolygonBalanceSheetFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
+        query.period = "quarterly" if query.period == "quarter" else query.period
         query_string = get_querystring(query.model_dump(), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
