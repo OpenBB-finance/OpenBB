@@ -82,7 +82,7 @@ class ROUTER_futures(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/futures/curve",
             **inputs,
         )
@@ -132,7 +132,7 @@ class ROUTER_futures(Container):
         interval : Optional[Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
             Data granularity. (provider: yfinance)
         period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
+            Time period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         adjust : bool
@@ -182,7 +182,7 @@ class ROUTER_futures(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/futures/load",
             **inputs,
         )

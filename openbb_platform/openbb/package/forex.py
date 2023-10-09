@@ -70,7 +70,7 @@ class ROUTER_forex(Container):
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
         period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
+            Time period of the data to return. (provider: yfinance)
 
         Returns
         -------

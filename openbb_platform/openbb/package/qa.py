@@ -47,7 +47,7 @@ class ROUTER_qa(Container):
             target=target,
         )
 
-        return self.run(
+        return self._run(
             "/qa/capm",
             **inputs,
         )
@@ -82,7 +82,7 @@ class ROUTER_qa(Container):
             window=window,
         )
 
-        return self.run(
+        return self._run(
             "/qa/kurtosis",
             **inputs,
         )
@@ -118,7 +118,7 @@ class ROUTER_qa(Container):
             target=target,
         )
 
-        return self.run(
+        return self._run(
             "/qa/normality",
             **inputs,
         )
@@ -157,7 +157,7 @@ class ROUTER_qa(Container):
             threshold_end=threshold_end,
         )
 
-        return self.run(
+        return self._run(
             "/qa/om",
             **inputs,
         )
@@ -179,7 +179,7 @@ class ROUTER_qa(Container):
             quantile_pct=quantile_pct,
         )
 
-        return self.run(
+        return self._run(
             "/qa/quantile",
             **inputs,
         )
@@ -218,7 +218,7 @@ class ROUTER_qa(Container):
             window=window,
         )
 
-        return self.run(
+        return self._run(
             "/qa/sh",
             **inputs,
         )
@@ -253,7 +253,7 @@ class ROUTER_qa(Container):
             window=window,
         )
 
-        return self.run(
+        return self._run(
             "/qa/skew",
             **inputs,
         )
@@ -298,7 +298,7 @@ class ROUTER_qa(Container):
             adjusted=adjusted,
         )
 
-        return self.run(
+        return self._run(
             "/qa/so",
             **inputs,
         )
@@ -327,7 +327,7 @@ class ROUTER_qa(Container):
             target=target,
         )
 
-        return self.run(
+        return self._run(
             "/qa/summary",
             **inputs,
         )
@@ -369,7 +369,7 @@ class ROUTER_qa(Container):
             kpss_reg=kpss_reg,
         )
 
-        return self.run(
+        return self._run(
             "/qa/unitroot",
             **inputs,
         )

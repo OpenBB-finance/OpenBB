@@ -151,7 +151,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/info",
             **inputs,
         )
@@ -163,6 +163,10 @@ class ROUTER_stocks(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+        interval: typing_extensions.Annotated[
+            Union[str, None],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
         start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -188,6 +192,8 @@ class ROUTER_stocks(Container):
         ----------
         symbol : str
             Symbol to get data for.
+        interval : Union[str, None]
+            Time interval of the data to return.
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
@@ -198,56 +204,34 @@ class ROUTER_stocks(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
-        function_ : Literal['TIME_SERIES_INTRADAY', 'TIME_SERIES_DAILY', 'TIME_SERIES_WEEKLY', 'TIME_SERIES_MONTHLY', 'TIME_SERIES_DAILY_ADJUSTED', 'TIME_SERIES_WEEKLY_ADJUSTED', 'TIME_SERIES_MONTHLY_ADJUSTED']
-            The time series of your choice.  (provider: alpha_vantage)
-        period : Optional[Union[Literal['intraday', 'daily', 'weekly', 'monthly'], Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: alpha_vantage, yfinance)
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '60min'], Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: alpha_vantage, cboe, fmp, polygon, yfinance)
         adjusted : Optional[Union[bool]]
-            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon)
+            Output time series is adjusted by historical split and dividend events.Only available for intraday data. (provider: alpha_vantage, polygon); Adjust all OHLC data automatically. (provider: yfinance)
         extended_hours : Optional[Union[bool]]
-            Extended trading hours during pre-market and after-hours. (provider: alpha_vantage)
+            Extended trading hours during pre-market and after-hours.Only available for intraday data. (provider: alpha_vantage)
         month : Optional[Union[str]]
             Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
-        outputsize : Optional[Union[Literal['compact', 'full']]]
-            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter (see above) is not specified, or the full intraday data for a specific month in history if the month parameter is specified. (provider: alpha_vantage)
-        timeseries : Optional[Union[typing_extensions.Annotated[int, Ge(ge=0)]]]
-            Number of days to look back. (provider: fmp)
-        timezone : Optional[Union[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]]
-            Returns trading times in this timezone. (provider: intrinio)
+        output_size : Optional[Union[Literal['compact', 'full']]]
+            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter is not specified, or the full intraday data for aspecific month in history if the month parameter is specified. (provider: alpha_vantage)
+        limit : Optional[Union[typing_extensions.Annotated[int, Ge(ge=0)], int]]
+            Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon)
+        start_time : Optional[Union[datetime.time]]
+            Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        end_time : Optional[Union[datetime.time]]
+            Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        timezone : str
+            Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
         source : Optional[Union[Literal['realtime', 'delayed', 'nasdaq_basic']]]
             The source of the data. (provider: intrinio)
-        start_time : Optional[Union[datetime.time]]
-            Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        end_time : Optional[Union[datetime.time]]
-            Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        interval_size : Optional[Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]]
-            The data time frequency. (provider: intrinio)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        limit : int
-            The number of data entries to return. (provider: polygon)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
-        actions : bool
-            Include actions. (provider: yfinance)
-        auto_adjust : bool
-            Adjust all OHLC data automatically. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
         back_adjust : bool
             Attempt to adjust all the data automatically. (provider: yfinance)
-        progress : bool
-            Show progress bar. (provider: yfinance)
         ignore_tz : bool
             When combining from different timezones, ignore that part of datetime. (provider: yfinance)
-        rounding : bool
-            Round to two decimal places? (provider: yfinance)
-        repair : bool
-            Detect currency unit 100x mixups and attempt repair. (provider: yfinance)
-        keepna : bool
-            Keep NaN rows returned by Yahoo? (provider: yfinance)
-        group_by : Literal['ticker', 'column']
-            Group by ticker or column. (provider: yfinance)
 
         Returns
         -------
@@ -280,7 +264,7 @@ class ROUTER_stocks(Container):
         vwap : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
             Volume Weighted Average Price of the symbol.
         adj_close : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)], float]]
-            The adjusted close price of the symbol. (provider: alpha_vantage, fmp)
+            The adjusted close price of the symbol. (provider: alpha_vantage, fmp); Adjusted closing price during the period. (provider: intrinio)
         dividend_amount : Optional[Union[typing_extensions.Annotated[float, Ge(ge=0)]]]
             Dividend amount paid for the corresponding date. (provider: alpha_vantage)
         split_coefficient : Optional[Union[typing_extensions.Annotated[float, Ge(ge=0)]]]
@@ -291,14 +275,14 @@ class ROUTER_stocks(Container):
             Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         total_options_volume : Optional[Union[float]]
             Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        label : Optional[Union[str]]
+            Human readable format of the date. (provider: fmp)
         unadjusted_volume : Optional[Union[float]]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[Union[float]]
             Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
         change_percent : Optional[Union[float]]
             Change % in the price of the symbol. (provider: fmp)
-        label : Optional[Union[str]]
-            Human readable format of the date. (provider: fmp)
         change_over_time : Optional[Union[float]]
             Change % in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[Union[datetime]]
@@ -307,6 +291,28 @@ class ROUTER_stocks(Container):
             The data time frequency. (provider: intrinio)
         average : Optional[Union[float]]
             Average trade price of an individual stock during the interval. (provider: intrinio)
+        intra_period : Optional[Union[bool]]
+            If true, the stock price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
+        adj_open : Optional[Union[float]]
+            Adjusted open price during the period. (provider: intrinio)
+        adj_high : Optional[Union[float]]
+            Adjusted high price during the period. (provider: intrinio)
+        adj_low : Optional[Union[float]]
+            Adjusted low price during the period. (provider: intrinio)
+        adj_volume : Optional[Union[float]]
+            Adjusted volume during the period. (provider: intrinio)
+        factor : Optional[Union[float]]
+            factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
+        split_ratio : Optional[Union[float]]
+            Ratio of the stock split, if a stock split occurred. (provider: intrinio)
+        dividend : Optional[Union[float]]
+            Dividend amount, if a dividend was paid. (provider: intrinio)
+        percent_change : Optional[Union[float]]
+            Percent change in the price of the symbol from the previous day. (provider: intrinio)
+        fifty_two_week_high : Optional[Union[float]]
+            52 week high price for the symbol. (provider: intrinio)
+        fifty_two_week_low : Optional[Union[float]]
+            52 week low price for the symbol. (provider: intrinio)
         transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
@@ -317,6 +323,7 @@ class ROUTER_stocks(Container):
             },
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "interval": interval,
                 "start_date": start_date,
                 "end_date": end_date,
             },
@@ -867,7 +874,7 @@ class ROUTER_stocks(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/stocks/search",
             **inputs,
         )

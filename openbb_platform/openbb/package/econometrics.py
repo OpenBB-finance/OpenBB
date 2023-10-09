@@ -66,7 +66,7 @@ class ROUTER_econometrics(Container):
             lags=lags,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/bgot",
             **inputs,
         )
@@ -96,7 +96,7 @@ class ROUTER_econometrics(Container):
             columns=columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/coint",
             **inputs,
         )
@@ -120,7 +120,7 @@ class ROUTER_econometrics(Container):
             data=data,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/corr",
             **inputs,
         )
@@ -155,7 +155,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/dwat",
             **inputs,
         )
@@ -193,7 +193,7 @@ class ROUTER_econometrics(Container):
             lag=lag,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/granger",
             **inputs,
         )
@@ -228,7 +228,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/ols",
             **inputs,
         )
@@ -263,7 +263,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/ols_summary",
             **inputs,
         )
@@ -298,7 +298,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelbols",
             **inputs,
         )
@@ -333,7 +333,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelfd",
             **inputs,
         )
@@ -368,7 +368,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelfmac",
             **inputs,
         )
@@ -403,7 +403,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelols",
             **inputs,
         )
@@ -438,7 +438,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelpols",
             **inputs,
         )
@@ -473,7 +473,7 @@ class ROUTER_econometrics(Container):
             x_columns=x_columns,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/panelre",
             **inputs,
         )
@@ -508,7 +508,7 @@ class ROUTER_econometrics(Container):
             regression=regression,
         )
 
-        return self.run(
+        return self._run(
             "/econometrics/unitroot",
             **inputs,
         )

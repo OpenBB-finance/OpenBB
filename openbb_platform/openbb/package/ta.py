@@ -92,7 +92,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/ad",
             **inputs,
         )
@@ -145,7 +145,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/adosc",
             **inputs,
         )
@@ -199,7 +199,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/adx",
             **inputs,
         )
@@ -257,7 +257,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/aroon",
             **inputs,
         )
@@ -312,7 +312,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/atr",
             **inputs,
         )
@@ -383,7 +383,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/bbands",
             **inputs,
         )
@@ -427,7 +427,7 @@ class ROUTER_ta(Container):
             scalar=scalar,
         )
 
-        return self.run(
+        return self._run(
             "/ta/cci",
             **inputs,
         )
@@ -473,7 +473,7 @@ class ROUTER_ta(Container):
             length=length,
         )
 
-        return self.run(
+        return self._run(
             "/ta/cg",
             **inputs,
         )
@@ -519,7 +519,7 @@ class ROUTER_ta(Container):
             period=period,
         )
 
-        return self.run(
+        return self._run(
             "/ta/clenow",
             **inputs,
         )
@@ -601,7 +601,7 @@ class ROUTER_ta(Container):
             is_crypto=is_crypto,
         )
 
-        return self.run(
+        return self._run(
             "/ta/cones",
             **inputs,
         )
@@ -612,8 +612,8 @@ class ROUTER_ta(Container):
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
         target: str = "close",
-        show_all: bool = False,
-        asint: bool = False,
+        show_all: bool = True,
+        asint: bool = True,
         offset: int = 0,
     ) -> OBBject[List[Data]]:
         """
@@ -630,7 +630,7 @@ class ROUTER_ta(Container):
         show_all : bool, optional
             Show 1 - 13. If set to False, show 6 - 9
         asint : bool, optional
-            If True, fill NAs with 0 and change type to int, by default False
+            If True, fill NAs with 0 and change type to int, by default True.
         offset : int, optional
             How many periods to offset the result
 
@@ -655,7 +655,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/demark",
             **inputs,
         )
@@ -710,7 +710,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/donchian",
             **inputs,
         )
@@ -770,7 +770,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/ema",
             **inputs,
         )
@@ -817,7 +817,7 @@ class ROUTER_ta(Container):
             end_date=end_date,
         )
 
-        return self.run(
+        return self._run(
             "/ta/fib",
             **inputs,
         )
@@ -867,7 +867,7 @@ class ROUTER_ta(Container):
             signal=signal,
         )
 
-        return self.run(
+        return self._run(
             "/ta/fisher",
             **inputs,
         )
@@ -922,7 +922,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/hma",
             **inputs,
         )
@@ -972,7 +972,7 @@ class ROUTER_ta(Container):
             lookahead=lookahead,
         )
 
-        return self.run(
+        return self._run(
             "/ta/ichimoku",
             **inputs,
         )
@@ -1030,7 +1030,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/kc",
             **inputs,
         )
@@ -1094,7 +1094,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/macd",
             **inputs,
         )
@@ -1144,7 +1144,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/obv",
             **inputs,
         )
@@ -1204,7 +1204,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/rsi",
             **inputs,
         )
@@ -1262,7 +1262,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/sma",
             **inputs,
         )
@@ -1317,7 +1317,7 @@ class ROUTER_ta(Container):
             slow_k_period=slow_k_period,
         )
 
-        return self.run(
+        return self._run(
             "/ta/stoch",
             **inputs,
         )
@@ -1366,7 +1366,7 @@ class ROUTER_ta(Container):
             offset=offset,
         )
 
-        return self.run(
+        return self._run(
             "/ta/vwap",
             **inputs,
         )
@@ -1421,7 +1421,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/wma",
             **inputs,
         )
@@ -1479,7 +1479,7 @@ class ROUTER_ta(Container):
             chart=chart,
         )
 
-        return self.run(
+        return self._run(
             "/ta/zlma",
             **inputs,
         )

@@ -267,7 +267,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/cot",
             **inputs,
         )
@@ -331,7 +331,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/cot_search",
             **inputs,
         )
@@ -566,7 +566,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/european_index",
             **inputs,
         )
@@ -649,7 +649,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/european_index_constituents",
             **inputs,
         )
@@ -791,7 +791,7 @@ class ROUTER_economy(Container):
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
         period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
+            Time period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         rounding : bool
@@ -946,7 +946,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/index_search",
             **inputs,
         )
@@ -1027,7 +1027,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/index_snapshots",
             **inputs,
         )
@@ -1208,7 +1208,7 @@ class ROUTER_economy(Container):
             extra_params=kwargs,
         )
 
-        return self.run(
+        return self._run(
             "/economy/sp500_multiples",
             **inputs,
         )
