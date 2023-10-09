@@ -391,7 +391,7 @@ def calculate_cones(
     bottom_q = []
     realized = []
     allowed_windows = []
-    data = data.sort_index(ascending=False)
+    data = data.sort_index(ascending=True)
 
     model_functions = {
         "STD": standard_deviation,
@@ -426,14 +426,14 @@ def calculate_cones(
         index={
             0: "realized",
             1: "min",
-            2: f"lower_{lower_q_label}_%",
+            2: f"lower_{lower_q_label}%",
             3: "median",
-            4: f"upper_{upper_q_label}_%",
+            4: f"upper_{upper_q_label}%",
             5: "max",
         }
     )
     cones_df = df.copy()
-    return cones_df.transpose()
+    return cones_df.transpose().reset_index().rename(columns={"index": "window"})
 
 
 def clenow_momentum(

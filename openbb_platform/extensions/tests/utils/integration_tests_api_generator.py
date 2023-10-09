@@ -2,9 +2,10 @@ import os
 from typing import Dict, List, Type, get_type_hints
 
 import requests
-from extensions.tests.utils.integration_tests_generator import get_test_params
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
+
+from extensions.tests.utils.integration_tests_generator import get_test_params
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
@@ -25,20 +26,17 @@ def write_init_test_template(http_method: str, path: str):
 import pytest
 import requests
 from openbb_provider.utils.helpers import get_querystring
-
-
-def get_token():
-    return requests.post(
-        "http://0.0.0.0:8000/api/v1/account/token",
-        data={"username": "openbb", "password": "openbb"},
-        timeout=5,
-    )
+import base64
+from openbb_core.env import Env
 
 
 @pytest.fixture(scope="session")
 def headers():
-    access_token = get_token().json()["access_token"]
-    return {"Authorization": f"Bearer {access_token}"}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 """
 
     with open(path, "w") as f:
@@ -51,11 +49,11 @@ def write_test_w_template(
     params_str = ",\n".join([f"({params})" for params in params_list])
 
     http_template_request = {
-        "get": "requests.get(url, headers=headers, timeout=5)",
-        "post": "requests.post(url, headers=headers, timeout=5, data=data)",
+        "get": "requests.get(url, headers=headers, timeout=10)",
+        "post": "requests.post(url, headers=headers, timeout=10, data=body)",
     }
 
-    http_template_params = {"get": "", "post": "data = json.dumps(params.pop('data'))"}
+    http_template_params = {"get": "", "post": "body = json.dumps(params.pop('data'))"}
 
     template = f"""
 @pytest.mark.parametrize(
@@ -132,7 +130,7 @@ def write_integration_tests(
 
 
 if __name__ == "__main__":
-    r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=5).json()
+    r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=10).json()
 
     if not r:
         raise Exception("Could not get openapi.json")

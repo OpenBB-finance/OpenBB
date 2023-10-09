@@ -377,7 +377,7 @@ openbb.keys.finnhub(key = 'REPLACE_WITH_KEY', persist = True)
 
 ### Financial Modeling Prep
 
-> Enchance your application with our data that goes up to 30 years back in history. Earnings calendar, financial statements, multiple exchanges and more!
+> Enhance your application with our data that goes up to 30 years back in history. Earnings calendar, financial statements, multiple exchanges and more!
 
 <details>
 <summary>Instructions</summary>

@@ -7,6 +7,7 @@ from openbb_core.app.command_runner import (
     CommandRunner,
     ExecutionContext,
     ParametersBuilder,
+    StaticCommandRunner,
 )
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.system_settings import SystemSettings
@@ -285,3 +286,130 @@ def test_command_runner_run(_):
         **{"return_value.run": True},
     ):
         assert runner.run("mock/route")
+
+
+@patch("openbb_core.app.command_runner.CommandMap.get_command")
+@patch("openbb_core.app.command_runner.StaticCommandRunner._execute_func")
+def test_static_command_runner_run(
+    mock_execute_func, mock_get_command, execution_context
+):
+    """Test static command runner run."""
+
+    def other_mock_func(a: int, b: int, c: int, d: int) -> None:
+        return [a, b, c, d]
+
+    class MockOBBject:
+        """Mock OBBject"""
+
+        def __init__(self, results):
+            self.results = results
+            self.extra = {}
+
+    mock_get_command.return_value = other_mock_func
+    mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])
+
+    result = StaticCommandRunner.run(execution_context, 1, 2, c=3, d=4)
+
+    assert result.results == [1, 2, 3, 4]
+    assert hasattr(result, "extra")
+    assert result.extra.get("metadata") is not None
+
+
+@patch("openbb_core.app.command_runner.LoggingService")
+@patch("openbb_core.app.command_runner.ParametersBuilder.build")
+@patch("openbb_core.app.command_runner.StaticCommandRunner._command")
+@patch("openbb_core.app.command_runner.StaticCommandRunner._chart")
+def test_static_command_runner_execute_func(
+    mock_chart,
+    mock_command,
+    mock_parameters_builder_build,
+    mock_logging_service,
+    execution_context,
+    mock_func,
+):
+    """Test execute_func."""
+
+    class MockOBBject:
+        """Mock OBBject"""
+
+        def __init__(self, results):
+            self.results = results
+            self.extra = {}
+
+    mock_parameters_builder_build.return_value = {
+        "a": 1,
+        "b": 2,
+        "c": 3.0,
+        "d": 4,
+        "provider_choices": {"provider": ["provider1", "provider2"]},
+        "chart": True,
+    }
+    mock_logging_service.log.return_value = None
+    mock_command.return_value = MockOBBject(results=[1, 2, 3, 4])
+    mock_chart.return_value = None
+
+    result = StaticCommandRunner._execute_func(
+        "mock/route", (1, 2, 3, 4), execution_context, mock_func, {}
+    )
+
+    assert result.results == [1, 2, 3, 4]
+    assert mock_logging_service.called_once()
+    assert mock_parameters_builder_build.called_once()
+    assert mock_command.called_once()
+    assert mock_chart.called_once()
+
+
+@patch("openbb_core.app.command_runner.ChartingService.chart")
+def test_static_command_runner_chart(mock_charting_service_chart, execution_context):
+    """Test chart."""
+
+    class MockOBBject:
+        """Mock OBBject"""
+
+        def __init__(self, results):
+            self.results = results
+            self.chart = {}
+
+    mock_charting_service_chart.return_value = {"mock": "chart"}
+    mock_obbject = MockOBBject(results=[1, 2, 3, 4])
+
+    StaticCommandRunner._chart(
+        obbject=mock_obbject,
+        user_settings=execution_context.user_settings,
+        system_settings=execution_context.system_settings,
+        route="mock/route",
+    )
+
+    assert mock_charting_service_chart.called_once()
+    assert mock_obbject.results == [1, 2, 3, 4]
+    assert mock_obbject.chart == {"mock": "chart"}
+
+
+def test_static_command_runner_command():
+    """Test command."""
+
+    class MockOBBject:
+        """Mock OBBject"""
+
+        def __init__(self, results):
+            self.results = results
+            self.extra = {}
+
+    class MockProviderChoices:
+        """Mock ProviderChoices"""
+
+        def __init__(self, provider):
+            self.provider = provider
+
+    def other_mock_func(**kwargs):
+        return MockOBBject(results=[1, 2, 3, 4])
+
+    mock_provider_choices = MockProviderChoices(provider="mock_provider")
+
+    result = StaticCommandRunner._command(
+        func=other_mock_func,
+        kwargs={"provider_choices": mock_provider_choices},
+    )
+
+    assert result.results == [1, 2, 3, 4]
+    assert result.provider == "mock_provider"

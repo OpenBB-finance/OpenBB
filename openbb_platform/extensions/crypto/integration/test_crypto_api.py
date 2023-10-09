@@ -1,20 +1,18 @@
+import base64
+
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
-
-
-def get_token():
-    return requests.post(
-        "http://0.0.0.0:8000/api/v1/account/token",
-        data={"username": "openbb", "password": "openbb"},
-        timeout=5,
-    )
 
 
 @pytest.fixture(scope="session")
 def headers():
-    access_token = get_token().json()["access_token"]
-    return {"Authorization": f"Bearer {access_token}"}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 @pytest.mark.parametrize(
@@ -28,6 +26,7 @@ def headers():
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+                "timeseries": 1,
             }
         ),
         (
@@ -37,6 +36,7 @@ def headers():
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -93,6 +93,6 @@ def test_crypto_load(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/crypto/load?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
