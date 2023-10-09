@@ -7,8 +7,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil import parser
-from dateutil.relativedelta import relativedelta
+from dateutil import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
@@ -26,33 +25,35 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
 
-    __alias_dict__ = {"limit": "page_size"}
-
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
     )
     interval: Literal[
-        "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1w", "1M", "1Q", "1Y"
+        "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"
     ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
-    start_date: Optional[datetime] = Field(
+    start_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
     )
-    end_date: Optional[datetime] = Field(
+    end_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
+    start_time: Optional[time] = Field(
+        default=None,
+        description="Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.",
+    )
+    end_time: Optional[time] = Field(
+        default=None,
+        description="Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.",
+    )
     timezone: str = Field(
         default="UTC",
-        description="Timezone of the data, in the IANA format ('Continent/City').",
+        description="Timezone of the data, in the IANA format (Continent/City).",
     )
     source: Optional[Literal["realtime", "delayed", "nasdaq_basic"]] = Field(
         default="realtime", description="The source of the data."
     )
-    _api_start_date: Optional[dateType] = PrivateAttr(default=None)
-    _api_end_date: Optional[dateType] = PrivateAttr(default=None)
-    _start_time: Optional[time] = PrivateAttr(default=time(0, 0, 0))
-    _end_time: Optional[time] = PrivateAttr(default=time(23, 59, 59))
     _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(
         default=None
     )
@@ -62,35 +63,20 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
 
     @model_validator(mode="after")
     @classmethod
-    def set_time_params(cls, values: "IntrinioStockHistoricalQueryParams") -> str:
+    def set_time_params(cls, values: "IntrinioStockHistoricalQueryParams"):
         """Set the default start & end date and time params for Intrinio API."""
 
         frequency_dict = {
             "1d": "daily",
-            "1w": "weekly",
+            "1W": "weekly",
             "1M": "monthly",
             "1Q": "quarterly",
             "1Y": "yearly",
         }
 
-        now = datetime.now()
-        if values.start_date is None:
-            values.start_date = now - relativedelta(years=1)
-        if values.end_date is None:
-            values.end_date = now
-
-        start_datetime_tz = parser.parse(str(values.start_date))
-        end_datetime_tz = parser.parse(str(values.end_date))
-
-        values._api_start_date = start_datetime_tz.date()
-        values._start_time = start_datetime_tz.time()
-
-        values._api_end_date = end_datetime_tz.date()
-        values._end_time = end_datetime_tz.time()
-
         if values.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]:
             values._interval_size = values.interval
-        elif values.interval in ["1d", "1w", "1M", "1Q", "1Y"]:
+        elif values.interval in ["1d", "1W", "1M", "1Q", "1Y"]:
             values._frequency = frequency_dict[values.interval]
 
         return values
@@ -118,12 +104,13 @@ class IntrinioStockHistoricalData(StockHistoricalData):
         default=None,
         description="Change in the price of the symbol from the previous day.",
     )
-    intraperiod: Optional[bool] = Field(
+    intra_period: Optional[bool] = Field(
         default=None,
         description="If true, the stock price represents an unfinished period "
         "(be it day, week, quarter, month, or year), meaning that the close "
         "price is the latest price available, not the official close price "
         "for the period",
+        alias="intraperiod",
     )
     adj_open: Optional[float] = Field(
         default=None,
@@ -183,7 +170,22 @@ class IntrinioStockHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioStockHistoricalQueryParams:
         """Transform the query params."""
-        return IntrinioStockHistoricalQueryParams(**params)
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(years=1)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        if params.get("start_time") is None:
+            transformed_params["start_time"] = time(0, 0, 0)
+
+        if params.get("end_time") is None:
+            transformed_params["end_time"] = time(23, 59, 59)
+
+        return IntrinioStockHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -198,29 +200,27 @@ class IntrinioStockHistoricalFetcher(
 
         if query._interval_size:
             base_url += f"/intervals?interval_size={query._interval_size}"
+            data_key = "intervals"
         elif query._frequency:
             base_url += f"?frequency={query._frequency}"
+            data_key = "stock_prices"
 
-        api_params = (
-            f"start_date={query._api_start_date}&end_date={query._api_end_date}&"
-            f"start_time={query._start_time}&end_time={query._end_time}"
-        )
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["symbol", "interval"]
         )
-        url = f"{base_url}&{api_params}&{query_str}&api_key={api_key}"
+        url = f"{base_url}&{query_str}&api_key={api_key}"
 
         data = get_data_one(url, **kwargs)
 
         next_page = data.get("next_page", None)
-        data_key = (set(data.keys()) - {"security", "next_page"}).pop()
+        # data_key = (set(data.keys()) - {"security", "source", "next_page"}).pop()
         data = data.get(data_key, [])
 
         while next_page:
             query_str = get_querystring(
                 query.model_dump(by_alias=True), ["symbol", "interval"]
             )
-            url = f"{base_url}&{api_params}&{query_str}&next_page={next_page}&api_key={api_key}"
+            url = f"{base_url}&{query_str}&next_page={next_page}&api_key={api_key}"
             temp_data = get_data_one(url, **kwargs)
 
             next_page = temp_data.get("next_page", None)
