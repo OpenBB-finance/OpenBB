@@ -19,8 +19,8 @@ jobs:
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       OPENBB_API_AUTH: true
-      OPENBB_API_USERNAME: 'USER'
-      OPENBB_API_PASSWORD: 'PASS'
+      OPENBB_API_USERNAME: "USER"
+      OPENBB_API_PASSWORD: "PASS"
 
     steps:
       - name: Slack Notification - Starting
@@ -111,7 +111,7 @@ jobs:
           source runner_env/bin/activate
           pip list
           cd openbb_platform
-          pytest . -m integration
+          pytest -m integration
 
       - name: Cache pip packages
         uses: actions/cache@v2
