@@ -276,7 +276,7 @@ class EtfCountries(EtfBase):
         """Convert the results to a Pandas DataFrame."""
         data = pd.DataFrame()
         if len(self.results) > 0:  # type: ignore
-            data = pd.DataFrame(self.dict()["results"]).set_index("symbol")
+            data = pd.DataFrame(self.model_dump()["results"]).set_index("symbol")
 
         data = data.transpose()
         if len(data.columns) == 1:
@@ -287,8 +287,8 @@ class EtfCountries(EtfBase):
         return data
 
     def to_dict(self) -> Dict:
-        """Convert the results to a dictionary of lists."""
-        return self.to_df().to_dict("list")
+        """Convert the results to a dictionary."""
+        return self.to_df().to_dict()
 
 
 class EtfInfo(EtfBase):
@@ -337,7 +337,7 @@ class EtfInfo(EtfBase):
         """Convert the results to a Pandas DataFrame."""
         data = pd.DataFrame()
         if len(self.results) > 0:  # type: ignore
-            data = pd.DataFrame(self.dict()["results"]).transpose()
+            data = pd.DataFrame(self.model_dump()["results"]).transpose()
             data.columns = data.loc["symbol"].to_list()
             data = data.drop("symbol", axis=0)
 
@@ -389,3 +389,17 @@ class EtfHistoricalNav(EtfBase):
             f"fields={self.fields})"
         )
         return repr_str
+
+    def to_dataframe(self) -> pd.DataFrame:
+        """Convert the results to a Pandas DataFrame."""
+        data = pd.DataFrame()
+        if len(self.results) > 0:  # type: ignore
+            data = (
+                pd.DataFrame(self.model_dump()["results"])
+                .set_index("date")
+                .convert_dtypes()
+            )
+            if "value" in data.columns and data["value"].sum() == 0:  # type: ignore
+                data = data.drop(columns=["value"])
+
+        return data

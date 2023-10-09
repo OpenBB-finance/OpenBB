@@ -1406,6 +1406,19 @@ type = "directory"
 url = "providers/blackrock"
 
 [[package]]
+name = "openbb-bmo"
+version = "0.1.0a2"
+description = "BMO extension for OpenBB"
+optional = true
+python-versions = "*"
+files = []
+develop = true
+
+[package.source]
+type = "directory"
+url = "providers/bmo"
+
+[[package]]
 name = "openbb-cboe"
 version = "0.1.0a2"
 description = "CBOE extension for OpenBB"
@@ -3529,9 +3542,10 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-blackrock", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-futures", "openbb-invesco", "openbb-qa", "openbb-quandl", "openbb-ta", "openbb-tmx", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-blackrock", "openbb-bmo", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-futures", "openbb-invesco", "openbb-qa", "openbb-quandl", "openbb-ta", "openbb-tmx", "openbb-yfinance"]
 alpha-vantage = ["openbb-alpha-vantage"]
 blackrock = ["openbb-blackrock"]
+bmo = ["openbb-bmo"]
 cboe = ["openbb-cboe"]
 charting = ["openbb-charting"]
 econometrics = ["openbb-econometrics"]
@@ -3546,4 +3560,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "af20dafb3b4610a353cd380fc67c45f719420dc0e054bbec2261af5fb803f175"
+content-hash = "565dfdce243854c3d010a183e868fe992f8b12a1fdc0ce5fd410d5a121018806"

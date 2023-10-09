@@ -35,6 +35,7 @@ openbb-stocks = { path = "./extensions/stocks", develop = true }
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-blackrock = { path = "./providers/blackrock", optional = true, develop = true }
+openbb-bmo = { path = "./providers/bmo", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-invesco = { path = "./providers/invesco", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }

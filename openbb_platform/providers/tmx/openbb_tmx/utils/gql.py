@@ -414,3 +414,81 @@ class GQL:
         },
         "query": get_index_constituents_query,
     }
+
+    get_stock_list_query = """query getStockListSymbolsWithQuote(
+      $stockListId: String!
+      $locale: String,
+    ) {
+      stockList: getStockListSymbolsWithQuote(
+        stockListId: $stockListId,
+        locale: $locale
+      ) {
+        stockListId
+        name
+        description
+        longDescription
+        metricTitle
+        listItems
+          {
+           symbol
+           longName
+           rank
+           metric
+           price
+           priceChange
+           percentChange
+           volume
+        }
+        totalPriceChange
+        totalPercentChange
+        createdAt
+        updatedAt
+      }
+    }"""
+
+    get_stock_list_payload = {
+        "operationName": "getStockListSymbolsWithQuote",
+        "variables": {"locale": "en", "stockListId": "TOP_VOLUME"},
+        "query": get_stock_list_query,
+    }
+
+    get_company_insiders_query = """query getCompanyInsidersActivities(
+        $symbol: String
+    ) {
+        getCompanyInsidersActivities(
+          symbol: $symbol
+      ) {
+        insiderActivities {
+          periodkey
+          buy {
+            name
+            trades
+            shares
+            sharesHeld
+            tradeValue
+        }
+          sell {
+            name
+            trades
+            shares
+            sharesHeld
+            tradeValue
+        }
+      }
+        activitySummary {
+          periodkey
+          buyShares
+          soldShares
+          netActivity
+          totalShares
+        }
+      }
+    }"""
+
+    get_company_insiders_payload = {
+        "operationName": "getCompanyInsidersActivities",
+        "variables": {
+            "symbol": "CNQ",
+        },
+        "query": get_company_insiders_query,
+    }

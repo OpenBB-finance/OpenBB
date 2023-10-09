@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
+    historical_nav
     holdings
     info
     search
@@ -32,16 +33,16 @@ class ROUTER_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "bmo", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject[Union[List[Data], Data]]:
         """ETF Country weighting.
 
         Parameters
         ----------
         symbol : str
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
@@ -53,9 +54,9 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfCountries]
+            results : Union[List[EtfCountries], EtfCountries]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -85,6 +86,79 @@ class ROUTER_etf(Container):
         )
 
     @validate_call
+    def historical_nav(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The exchange ticker symbol for the ETF."
+            ),
+        ],
+        provider: Optional[Literal["bmo", "invesco"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """ETF Historical NAV.
+
+        Parameters
+        ----------
+        symbol : str
+            The exchange ticker symbol for the ETF.
+        provider : Optional[Literal['bmo', 'invesco']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'bmo' if there is
+            no default.
+        country : Optional[Literal['america', 'canada']]
+            The country the ETF is registered in. (provider: invesco)
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfHistoricalNav]
+                Serializable results.
+            provider : Optional[Literal['bmo', 'invesco']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        EtfHistoricalNav
+        ----------------
+        date : date
+            The date of the NAV.
+        nav : float
+            The net asset value on the date.
+        net_assets : Optional[float]
+            The net assets of the fund. (provider: bmo)
+        market_price : Optional[float]
+            The closing market price of the fund. (provider: bmo)
+        index_value : Optional[float]
+            The value of the tracking index. (provider: bmo)
+        fund_1_day_growth : Optional[float]
+            The 1-day growth of the fund. (provider: bmo)
+        index_1_day_growth : Optional[float]
+            The 1-day growth of the tracking index. (provider: bmo)
+        shares_outstanding : Optional[float]
+            The number of shares outstanding. (provider: bmo)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/etf/historical_nav",
+            **inputs,
+        )
+
+    @validate_call
     def holdings(
         self,
         symbol: Annotated[
@@ -93,30 +167,30 @@ class ROUTER_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "bmo", "fmp", "invesco", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject[Union[List[Data], Data]]:
         """Get the holdings for an individual ETF.
 
         Parameters
         ----------
         symbol : str
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'invesco', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
             The as-of date for historical daily holdings. (provider: blackrock, fmp)
         country : Optional[Literal['america', 'canada']]
-            The country the ETF is registered in. (provider: blackrock)
+            The country the ETF is registered in. (provider: blackrock, invesco)
 
         Returns
         -------
         OBBject
-            results : List[EtfHoldings]
+            results : Union[List[EtfHoldings], EtfHoldings]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'invesco', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -127,94 +201,68 @@ class ROUTER_etf(Container):
 
         EtfHoldings
         -----------
+        holdings_data : Optional[Union[List[openbb_blackrock.models.etf_holdings.BlackrockEtfHoldingsData], List[openbb_fmp.models.etf_holdings.FMPEtfHoldingsData]]]
+            None (provider: blackrock, fmp)
+        extra_info : Optional[Dict[str, Any]]
+            None (provider: blackrock, fmp)
         symbol : Optional[str]
-            The asset's ticker symbol. (provider: blackrock); The ticker symbol of the holding. (provider: fmp); The ticker symbol of the asset. (provider: tmx)
+            The ticker symbol of the asset. (provider: bmo, invesco, tmx)
         name : Optional[str]
-            The name of the holding. (provider: blackrock, fmp); The name of the asset. (provider: tmx)
-        weight : Optional[Union[float, str]]
-            The weight of the holding. (provider: blackrock, fmp); The weight of the asset in the portfolio. (provider: tmx)
-        price : Optional[Union[float, str]]
-            The price-per-share of the asset. (provider: blackrock)
-        shares : Optional[Union[float, str, int]]
-            The number of shares held. (provider: blackrock); The value of the assets under management. (provider: tmx)
-        market_value : Optional[Union[float, str]]
-            The market value of the holding. (provider: blackrock, tmx)
-        notional_value : Optional[Union[float, str]]
-            The notional value of the holding. (provider: blackrock)
-        asset_class : Optional[str]
-            The asset class of the holding. (provider: blackrock)
-        sector : Optional[str]
-            The sector the asset belongs to. (provider: blackrock)
+            The name of the asset. (provider: bmo, invesco, tmx)
+        label : Optional[str]
+            The label of the asset. (provider: bmo)
         isin : Optional[str]
-            The ISIN of the asset. (provider: blackrock); The ISIN of the holding. (provider: fmp)
-        sedol : Optional[str]
-            The SEDOL of the asset. (provider: blackrock)
-        cusip : Optional[str]
-            The CUSIP of the asset. (provider: blackrock); The CUSIP of the holding. (provider: fmp)
-        exchange : Optional[str]
-            The exchange the asset is traded on. (provider: blackrock); The exchange code of the holding. (provider: tmx)
-        country : Optional[str]
-            The location of the risk exposure is. (provider: blackrock); The country of the holding. (provider: fmp); The country of the holding. (provider: tmx)
+            The ISIN of the asset. (provider: bmo)
+        asset_group : Optional[str]
+            The type of asset. (provider: bmo)
+        weight : Optional[float]
+            The weight of the asset in the portfolio. (provider: bmo, invesco, tmx)
+        shares : Optional[Union[float, int, str]]
+            The number of shares or contracts of the asset held. (provider: bmo); The value of the assets under management. (provider: tmx)
         currency : Optional[str]
-            The currency of the asset. (provider: blackrock); The currency of the holding. (provider: fmp); The currency of the holding. (provider: tmx)
-        market_currency : Optional[str]
-            The currency for the market the asset trades in. (provider: blackrock)
-        fx_rate : Optional[float]
-            The exchange rate of the asset against the fund's base currency. (provider: blackrock)
-        coupon : Optional[Union[float, str]]
-            The coupon rate of the asset. (provider: blackrock)
-        par_value : Optional[Union[float, str]]
-            The par value of the asset. (provider: blackrock)
-        ytm : Optional[Union[float, str]]
-            The yield-to-maturity of the asset. (provider: blackrock)
-        real_ytm : Optional[Union[float, str]]
-            The real yield-to-maturity of the asset. (provider: blackrock)
-        yield_to_worst : Optional[Union[float, str]]
-            The yield-to-worst of the asset. (provider: blackrock)
-        duration : Optional[Union[float, str]]
-            The duration of the asset. (provider: blackrock)
-        real_duration : Optional[Union[float, str]]
-            The real duration of the asset. (provider: blackrock)
-        yield_to_call : Optional[Union[float, str]]
-            The yield-to-call of the asset. (provider: blackrock)
-        mod_duration : Optional[Union[float, str]]
-            The modified duration of the asset. (provider: blackrock)
-        maturity : Optional[Union[float, str]]
-            The maturity date of the asset. (provider: blackrock)
-        accrual_date : Optional[Union[str, date]]
-            The accrual date of the asset. (provider: blackrock)
-        effective_date : Optional[Union[str, date]]
-            The effective date of the asset. (provider: blackrock)
-        lei : Optional[str]
-            The LEI of the company. (provider: fmp)
-        title : Optional[str]
-            The title of the holding. (provider: fmp)
-        balance : Optional[float]
-            The balance of the holding. (provider: fmp)
-        units : Optional[Union[float, str]]
-            The units of the holding. (provider: fmp)
+            The currency of the asset. (provider: bmo); The currency of the holding. (provider: tmx)
+        market_value : Optional[Union[float, str]]
+            The market value of the holding. (provider: bmo, invesco, tmx)
         value : Optional[float]
-            The value of the holding in USD. (provider: fmp)
-        payoff_profile : Optional[str]
-            The payoff profile of the holding. (provider: fmp)
-        asset_category : Optional[str]
-            The asset category of the holding. (provider: fmp)
-        issuer_category : Optional[str]
-            The issuer category of the holding. (provider: fmp)
-        is_restricted : Optional[str]
-            Whether the holding is restricted. (provider: fmp)
-        fair_value_level : Optional[int]
-            The fair value level of the holding. (provider: fmp)
-        is_cash_collateral : Optional[str]
-            Whether the holding is cash collateral. (provider: fmp)
-        is_non_cash_collateral : Optional[str]
-            Whether the holding is non-cash collateral. (provider: fmp)
-        is_loan_by_fund : Optional[str]
-            Whether the holding is loan by fund. (provider: fmp)
+            The value of the holding. (provider: bmo)
+        par_value : Optional[float]
+            The par value of the holding. (provider: bmo)
+        income_rate : Optional[float]
+            The income rate of the holding. (provider: bmo)
+        maturity_date : Optional[Union[date, str]]
+            The maturity date of the holding. (provider: bmo, invesco)
+        sector : Optional[str]
+            The sector of the asset. (provider: bmo, invesco)
+        holdings_date : Optional[date]
+            The date of the holdings. (provider: bmo); The date the asset was added to the portfolio. (provider: invesco)
+        security_identifier : Optional[Union[int, str]]
+            The unique security identifier of the asset. (provider: invesco)
+        identifier : Optional[str]
+            The asset class identifier. (provider: invesco)
+        shares_or_contracts : Optional[float]
+            The number of shares or contracts of the asset held. (provider: invesco)
+        rating : Optional[str]
+            The rating of the bond. (provider: invesco)
+        coupon_rate : Optional[float]
+            The coupon rate of the bond. (provider: invesco)
+        contract_expiry_date : Optional[Union[str, date]]
+            The expiration date of the derivatives contract. (provider: invesco)
+        effective_date : Optional[Union[str, date]]
+            The effective date of the bond holding. (provider: invesco)
+        next_call_date : Optional[Union[str, date]]
+            The next call date of the bond. (provider: invesco)
+        share_class : Optional[str]
+            The share class of the asset. (provider: invesco)
+        fund_ticker : Optional[str]
+            The ticker symbol of the Fund. (provider: invesco)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
         share_change : Optional[Union[float, str]]
             The change in shares of the holding. (provider: tmx)
+        country : Optional[str]
+            The country of the holding. (provider: tmx)
+        exchange : Optional[str]
+            The exchange code of the holding. (provider: tmx)
         type_id : Optional[str]
             The holding type ID of the asset. (provider: tmx)
         fund_id : Optional[str]
@@ -244,7 +292,7 @@ class ROUTER_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "bmo", "fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """ETF Info.
@@ -253,7 +301,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
@@ -265,7 +313,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -376,7 +424,7 @@ class ROUTER_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "bmo", "fmp", "invesco", "tmx"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Fuzzy search for ETFs. An empty query returns the full list of ETFs from the provider.
@@ -385,18 +433,22 @@ class ROUTER_etf(Container):
         ----------
         query : Optional[str]
             Search query.
-        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'invesco', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
         country : Literal['america', 'canada']
-            The country the ETF is registered in. (provider: blackrock)
+            The country the ETF is registered in. (provider: blackrock, invesco)
         exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
             The exchange code the ETF trades on. (provider: fmp)
         is_active : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
         div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
-            The dividend payment frequency. (provider: tmx)
+            The dividend payment frequency. (provider: invesco, tmx)
+        options : Optional[Literal['True', 'False']]
+            Does the fund trade options? (provider: invesco)
+        short : Optional[Literal['True', 'False']]
+            Is the fund shortable? (provider: invesco)
         sort_by : Optional[Literal['nav', 'return_1m', 'return_3m', 'return_6m', 'return_1y', 'return_3y', 'return_ytd', 'beta_1y', 'volume_avg_daily', 'management_fee', 'distribution_yield', 'pb_ratio', 'pe_ratio']]
             The column to sort by. (provider: tmx)
 
@@ -405,7 +457,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfSearch]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'invesco', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -421,11 +473,11 @@ class ROUTER_etf(Container):
         name : Optional[str]
             Name of the ETF.
         asset_class : Optional[str]
-            The asset class of the ETF. (provider: blackrock)
+            The asset class of the ETF. (provider: blackrock, bmo)
         sub_asset_class : Optional[str]
             The sub-asset class of the ETF. (provider: blackrock)
         region : Optional[str]
-            The region of the ETF. (provider: blackrock)
+            The region of the ETF. (provider: blackrock); The target region of the fund. (provider: bmo)
         country : Optional[str]
             The country the ETF is registered in. (provider: blackrock, fmp)
         market_type : Optional[str]
@@ -436,6 +488,16 @@ class ROUTER_etf(Container):
             The investment strategy of the ETF. (provider: blackrock)
         nav : Optional[Union[float, int]]
             The value of the assets under management. (provider: blackrock, tmx)
+        currency : Optional[str]
+            The currency of the fund. (provider: bmo)
+        trading_currency : Optional[str]
+            The currency the fund trades in. (provider: bmo)
+        fees : Optional[float]
+            The management fee of the fund. (provider: bmo)
+        mer : Optional[float]
+            The management expense ratio of the fund. (provider: bmo)
+        inception_date : Optional[date]
+            The inception date of the fund. (provider: bmo, invesco)
         market_cap : Optional[float]
             The market cap of the ETF. (provider: fmp)
         sector : Optional[str]
@@ -451,11 +513,33 @@ class ROUTER_etf(Container):
         volume : Optional[float]
             The current trading volume of the ETF. (provider: fmp)
         exchange : Optional[str]
-            The exchange code the ETF trades on. (provider: fmp)
+            The exchange code the ETF trades on. (provider: fmp); The primary exchange where the fund is listed. (provider: invesco)
         exchange_name : Optional[str]
             The full name of the exchange the ETF trades on. (provider: fmp)
         actively_trading : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
+        index_ticker : Optional[str]
+            The ticker symbol of the tracking index. (provider: invesco)
+        iiv_ticker : Optional[str]
+            The intraday indicative value ticker. (provider: invesco)
+        cusip : Optional[str]
+            The CUSIP of the fund. (provider: invesco)
+        isin : Optional[str]
+            The ISIN of the fund. (provider: invesco)
+        distribution_yield : Optional[float]
+            The distribution yield of the fund. (provider: invesco); The distribution yield. (provider: tmx)
+        sec_yield : Optional[float]
+            The SEC yield of the fund. (provider: invesco)
+        ttm_yield : Optional[float]
+            The TTM yield of the fund. (provider: invesco)
+        distribution_frequency : Optional[str]
+            The distribution frequency of the fund. (provider: invesco)
+        marginable : Optional[str]
+            Is the fund marginable? (provider: invesco)
+        short : Optional[str]
+            Is the fund shortable? (provider: invesco)
+        options : Optional[str]
+            Is the fund optionable? (provider: invesco)
         return_1m : Optional[float]
             The one-month return. (provider: tmx)
         return_3m : Optional[float]
@@ -470,8 +554,6 @@ class ROUTER_etf(Container):
             The average daily volume. (provider: tmx)
         management_fee : Optional[float]
             The management fee. (provider: tmx)
-        distribution_yield : Optional[float]
-            The distribution yield. (provider: tmx)
         dividend_frequency : Optional[str]
             The dividend payment frequency. (provider: tmx)"""  # noqa: E501
 
@@ -499,16 +581,16 @@ class ROUTER_etf(Container):
                 description="The exchange ticker symbol for the ETF."
             ),
         ],
-        provider: Optional[Literal["blackrock", "fmp", "tmx"]] = None,
+        provider: Optional[Literal["blackrock", "bmo", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject[Union[List[Data], Data]]:
         """ETF Sector weighting.
 
         Parameters
         ----------
         symbol : str
             The exchange ticker symbol for the ETF.
-        provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+        provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'blackrock' if there is
             no default.
@@ -520,9 +602,9 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfSectors]
+            results : Union[List[EtfSectors], EtfSectors]
                 Serializable results.
-            provider : Optional[Literal['blackrock', 'fmp', 'tmx']]
+            provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
