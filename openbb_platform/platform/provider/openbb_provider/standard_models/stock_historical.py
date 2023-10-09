@@ -8,7 +8,7 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, PositiveFloat, validator
+from pydantic import Field, PositiveFloat, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -32,7 +32,7 @@ class StockHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -53,7 +53,7 @@ class StockHistoricalData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
     )
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))
