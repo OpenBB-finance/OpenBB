@@ -4,12 +4,13 @@ import inspect
 import os
 from typing import Any, Callable, Dict, List, Literal, Tuple, Union, get_type_hints
 
+from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.router import CommandMap
+
 from extensions.tests.utils.integration_tests_generator import (
     find_extensions,
     get_test_params_data_processing,
 )
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import CommandMap
 
 
 def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
