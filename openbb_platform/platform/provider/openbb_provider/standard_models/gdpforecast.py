@@ -1,4 +1,5 @@
 """GDP data and query params."""
+import re
 from datetime import date as dateType
 from typing import Literal, Optional, Union
 
@@ -12,9 +13,9 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class GDPForecastQueryParams(QueryParams):
     """GDP Forecast query."""
 
-    units: Literal["quarter", "annual"] = Field(
+    period: Literal["quarter", "annual"] = Field(
         default="annual",
-        description="Units to get nominal GDP in.  Either quarter or annual.",
+        description="Units for nominal GDP period.  Either quarter or annual.",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -44,8 +45,7 @@ class GDPForecastData(Data):
         cls, date: Union[dateType, Union[str, int]]
     ):  # pylint: disable=E0213
         """Validate value."""
-        import re
-
+        # OECD Returns dates like 2022-Q2, so we map that to the end of the quarter.
         if isinstance(date, str):
             if re.match(r"\d{4}-Q[1-4]$", date):
                 year, quarter = date.split("-")

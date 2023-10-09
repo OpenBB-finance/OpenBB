@@ -31,12 +31,13 @@ class OECDGDPForecastFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> OECDGDPForecastQueryParams:
-        if params["start_date"] is None:
-            params["start_date"] = date(1990, 1, 1)
-        if params["end_date"] is None:
-            params["end_date"] = date(date.today().year + 10, 12, 31)
+        transformed_params = params.copy()
+        if transformed_params["start_date"] is None:
+            transformed_params["start_date"] = date(1990, 1, 1)
+        if transformed_params["end_date"] is None:
+            transformed_params["end_date"] = date(date.today().year + 10, 12, 31)
 
-        return OECDGDPForecastQueryParams(**params)
+        return OECDGDPForecastQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -44,11 +45,11 @@ class OECDGDPForecastFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
-        units = query.units[0].upper()
+        units = query.period[0].upper()
         if query.type == "real":
             url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
         elif query.type == "nominal":
-            url = "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
+            url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
 
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
         # Sometimes there is weird unicode characters in the column names, so we need to rename them.

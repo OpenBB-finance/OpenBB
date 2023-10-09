@@ -29,12 +29,13 @@ class OECDGDPRealFetcher(Fetcher[OECDGDPRealQueryParams, List[OECDGDPRealData]])
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> OECDGDPRealQueryParams:
-        if params["start_date"] is None:
-            params["start_date"] = date(1950, 1, 1)
-        if params["end_date"] is None:
-            params["end_date"] = date(date.today().year, 12, 31)
+        transformed_params = params.copy()
+        if transformed_params["start_date"] is None:
+            transformed_params["start_date"] = date(1950, 1, 1)
+        if transformed_params["end_date"] is None:
+            transformed_params["end_date"] = date(date.today().year, 12, 31)
 
-        return OECDGDPRealQueryParams(**params)
+        return OECDGDPRealQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
