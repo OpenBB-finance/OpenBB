@@ -3,7 +3,7 @@
 ## The OpenBBTerminal
 
 <details>
-<summary> Pull Request the OpenBBTerminal</summary>
+<summary> Pull Request for the OpenBBTerminal</summary>
 
 ### Description
 
@@ -16,18 +16,18 @@
 ### How has this been tested?
 
 - Please describe the tests that you ran to verify your changes.
-- Provide instructions so we can reproduce.
+- Please provide instructions so we can reproduce.
 - Please also list any relevant details for your test configuration.
 
-- [ ] Make sure affected commands still run in terminal
-- [ ] Ensure the SDK still works
-- [ ] Check any related reports
+- [ ] Ensure the affected commands still execute in the OpenBB Terminal.
+- [ ] Ensure the Platform (previously named SDK) is working as intended.
+- [ ] Check any related reports.
 
 ### Checklist
 
 
-- [ ] I have performed a self-review of my own code.
-- [ ] I have commented my code, particularly in hard-to-understand areas.
+- [ ] I ensure I have self-reviewed my code.
+- [ ] I have commented/documented my code, particularly in hard-to-understand sections.
 - [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `hotfix/hotfix-name`.
 - [ ] Update [our documentation](https://openbb-finance.github.io/OpenBBTerminal/) following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website).  Update any user guides that are affected by the changes.
 - [ ] Update our tests following [these guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/tests).
@@ -39,7 +39,7 @@
 ## The OpenBB Platform
 
 <details>
-<summary> Pull Request the OpenBB Platform</summary>
+<summary> Pull Request for the OpenBB Platform</summary>
 
 ### Description
 
@@ -52,19 +52,19 @@
 ### How has this been tested?
 
 - Please describe the tests that you ran to verify your changes.
-- Provide instructions so we can reproduce.
+- Please provide instructions so we can reproduce.
 - Please also list any relevant details for your test configuration.
 
-- [ ] Make sure all unit and integration tests pass
-- If you changed a command or added a new one:
-  - [ ] Make sure affected commands run and the output is correct
-    - [ ] API
-    - [ ] Python Interface
-  - [ ] If applicable, add new tests for the command (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing)
-- If a new provider was added or a new fetcher was added to an existing provider:
-  - [ ] Make sure existing tests pass
-  - [ ] Make sure you can use the new provider and/or fetcher
-  - [ ] If applicable, add new tests for the provider and/or fetcher (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing)
+- [ ] Ensure all unit and integration tests pass.
+- If you modified/added command(s):
+  - [ ] Ensure the command(s) execute with the expected output.
+    - [ ] API.
+    - [ ] Python Interface.
+  - [ ] If applicable, please add new tests for the command (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing).
+- If a new provider was introduced or a new fetcher was added to an existing provider:
+  - [ ] Ensure the existing tests pass.
+  - [ ] Ensure the new provider and/or fetcher is stable and usable.
+  - [ ] If applicable, please add new tests for the provider and/or fetcher (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing).
 
 
 ### Checklist
@@ -72,8 +72,8 @@
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
 - [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `hotfix/hotfix-name`.
-- [ ] Make sure you are following our [CONTRIBUTING guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
-  - [ ] If applicable, update tests following [these guidelines](/openbb_platform/CONTRIBUTING.md#qa-your-extension).
+- [ ] I ensure that I am following th [CONTRIBUTING guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+  - [ ] (If applicable) I have updated tests following [these guidelines](/openbb_platform/CONTRIBUTING.md#qa-your-extension).
 
 
 </details>
