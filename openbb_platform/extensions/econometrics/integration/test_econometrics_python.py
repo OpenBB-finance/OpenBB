@@ -77,11 +77,11 @@ def test_econometrics_corr(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -101,8 +101,8 @@ def test_econometrics_ols(params, data_type, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]}),
-        ({"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]}),
+        ({"data": "", "y_column": "close", "x_columns": ["date"]}),
+        ({"data": "", "y_column": "close", "x_columns": ["date"]}),
     ],
 )
 @pytest.mark.integration
@@ -119,11 +119,11 @@ def test_econometrics_ols_summary(params, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "volume", "x_columns": ["close"]},
+            {"data": "", "y_column": "volume", "x_columns": ["close"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "volume", "x_columns": ["close"]},
+            {"data": "", "y_column": "volume", "x_columns": ["close"]},
             "crypto",
         ),
     ],
@@ -144,7 +144,7 @@ def test_econometrics_dwat(params, data_type, obb):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "y_column": "volume",
                 "x_columns": ["close"],
                 "lags": "",
@@ -153,7 +153,7 @@ def test_econometrics_dwat(params, data_type, obb):
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "y_column": "volume",
                 "x_columns": ["close"],
                 "lags": "2",
@@ -178,14 +178,14 @@ def test_econometrics_bgot(params, data_type, obb):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "columns": ["close", "volume"],
             },
             "stocks",
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "columns": ["close", "volume"],
             },
             "crypto",
@@ -209,7 +209,7 @@ def test_econometrics_coint(params, data_type, obb):
     [
         (
             {
-                "data": get_stocks_data(),
+                "data": "",
                 "y_column": "volume",
                 "x_column": "close",
                 "lag": "",
@@ -218,7 +218,7 @@ def test_econometrics_coint(params, data_type, obb):
         ),
         (
             {
-                "data": get_crypto_data(),
+                "data": "",
                 "y_column": "volume",
                 "x_column": "close",
                 "lag": "2",
@@ -242,9 +242,9 @@ def test_econometrics_granger(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": get_stocks_data(), "column": "close", "regression": "c"}, "stocks"),
+        ({"data": "", "column": "close", "regression": "c"}, "stocks"),
         (
-            {"data": get_crypto_data(), "column": "volume", "regression": "ctt"},
+            {"data": "", "column": "volume", "regression": "ctt"},
             "crypto",
         ),
     ],
@@ -264,11 +264,11 @@ def test_econometrics_unitroot(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -289,11 +289,11 @@ def test_econometrics_panelre(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -314,11 +314,11 @@ def test_econometrics_panelbols(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -339,11 +339,11 @@ def test_econometrics_panelpols(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -364,11 +364,11 @@ def test_econometrics_panelols(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],
@@ -389,11 +389,11 @@ def test_econometrics_panelfd(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": get_stocks_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "stocks",
         ),
         (
-            {"data": get_crypto_data(), "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["date"]},
             "crypto",
         ),
     ],

@@ -41,7 +41,7 @@ def get_stocks_data():
     return data["stocks_data"]
 
 
-def get_crypto_data(headers):
+def get_crypto_data():
     if "crypto_data" in data:
         return data["crypto_data"]
 
