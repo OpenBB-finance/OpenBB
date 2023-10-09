@@ -211,9 +211,7 @@ class IntrinioStockHistoricalFetcher(
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
         data = get_data_one(url, **kwargs)
-
         next_page = data.get("next_page", None)
-        # data_key = (set(data.keys()) - {"security", "source", "next_page"}).pop()
         data = data.get(data_key, [])
 
         while next_page:
