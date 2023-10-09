@@ -230,7 +230,7 @@ class ParametersBuilder:
 
 class StaticCommandRunner:
     @classmethod
-    def __command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
+    def _command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
         context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
             warnings.catch_warnings(record=True)
@@ -251,7 +251,7 @@ class StaticCommandRunner:
         return obbject
 
     @classmethod
-    def __chart(
+    def _chart(
         cls,
         obbject: OBBject,
         user_settings: UserSettings,
@@ -272,7 +272,7 @@ class StaticCommandRunner:
         )
 
     @classmethod
-    def __execute_func(
+    def _execute_func(
         cls,
         route: str,
         args: Tuple[Any],
@@ -306,13 +306,13 @@ class StaticCommandRunner:
         kwargs.pop("chart", None)
 
         try:
-            obbject = cls.__command(
+            obbject = cls._command(
                 func=func,
                 kwargs=kwargs,
             )
 
             if chart and obbject.results:
-                cls.__chart(
+                cls._chart(
                     obbject=obbject,
                     user_settings=user_settings,
                     system_settings=system_settings,
@@ -352,7 +352,7 @@ class StaticCommandRunner:
         route = execution_context.route
 
         if func := command_map.get_command(route=route):
-            obbject = cls.__execute_func(
+            obbject = cls._execute_func(
                 route=route,
                 args=args,  # type: ignore
                 execution_context=execution_context,

@@ -355,7 +355,7 @@ To apply an environment variable use one of the following:
 
 The variables we use are:
 
-- `OPENBB_API_AUTH`: enables API authentication for command endpoints
+- `OPENBB_API_AUTH`: enables API endpoint authentication
 - `OPENBB_API_USERNAME`: sets API username
 - `OPENBB_API_PASSWORD`: sets API password
 - `OPENBB_API_AUTH_EXTENSION`: specifies which authentication extension to use
@@ -454,13 +454,13 @@ We provide a `.dockerfile`` in OpenBB [repo](https://github.com/OpenBB-finance/O
 To build the image, you can run the following command from the repo root:
 
 ```bash
-docker build -f build/docker/api.dockerfile -t openbb-sdk:latest .
+docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
 ```
 
 To run this newly-built image:
 
 ```bash
-docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-sdk:latest
+docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
 ```
 
 This will mount the local `~/.openbb_platform` directory into the Docker container so you can use the API keys from there and it will expose the API on port `8000`.

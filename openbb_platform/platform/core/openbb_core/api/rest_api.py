@@ -39,7 +39,7 @@ AppLoader.from_routers(
     app=app,
     routers=[AuthService().router, router_system, router_coverage, router_commands]
     if Env().DEV_MODE
-    else [router_coverage, router_commands],
+    else [router_commands],
     prefix="/api/v1",
 )
 

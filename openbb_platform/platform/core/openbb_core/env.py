@@ -19,7 +19,7 @@ class Env(metaclass=SingletonMeta):
 
     @property
     def API_AUTH(self) -> bool:
-        """API authentication: enables commands authentication in FastAPI"""
+        """API authentication: enables API endpoint authentication"""
         return self.str2bool(self._environ.get("OPENBB_API_AUTH", False))
 
     @property
