@@ -13,6 +13,7 @@ from openbb_provider.standard_models.stock_historical import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
+from openbb_yfinance.utils.references import PERIODS
 from pandas import Timestamp, to_datetime
 from pydantic import Field, PrivateAttr, field_validator
 
@@ -43,9 +44,6 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
-    # period: Optional[PERIODS] = Field(
-    #     default="max", description=QUERY_DESCRIPTIONS.get("period", "")
-    # )
     prepost: bool = Field(
         default=False, description="Include Pre and Post market data."
     )
@@ -65,14 +63,10 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
     )
     _progress: bool = PrivateAttr(default=False)
     _keepna: bool = PrivateAttr(default=False)
-    # rounding: bool = Field(default=True, description="Round to two decimal places?")
-    # repair: bool = Field(
-    #     default=False,
-    #     description="Detect currency unit 100x mixups and attempt repair.",
-    # )
-    # group_by: Literal["ticker", "column"] = Field(
-    #     default="column", description="Group by ticker or column."
-    # )
+    _period: Optional[PERIODS] = PrivateAttr(default="max")
+    _rounding: bool = PrivateAttr(default=True)
+    _repair: bool = PrivateAttr(default=False)
+    _group_by: Literal["ticker", "column"] = PrivateAttr(default="ticker")
 
 
 class YFinanceStockHistoricalData(StockHistoricalData):
@@ -111,7 +105,6 @@ class YFinanceStockHistoricalFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceStockHistoricalQueryParams,
-        # credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the yfinance endpoint."""
@@ -127,7 +120,7 @@ class YFinanceStockHistoricalFetcher(
             start_date=query.start_date,
             end_date=query.end_date,
             interval=query.interval,
-            # period=query.period,
+            period=query._period,
             prepost=query.prepost,
             actions=query.include,
             auto_adjust=query.adjusted,
@@ -135,9 +128,9 @@ class YFinanceStockHistoricalFetcher(
             progress=query._progress,
             ignore_tz=query.ignore_tz,
             keepna=query._keepna,
-            # repair=query.repair,
-            # rounding=query.rounding,
-            # group_by=query.group_by,
+            repair=query._repair,
+            rounding=query._rounding,
+            group_by=query._group_by,
         )
 
         if data.empty:
