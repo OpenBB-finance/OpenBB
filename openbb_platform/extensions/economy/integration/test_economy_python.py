@@ -86,6 +86,7 @@ def test_economy_cpi(params):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -95,6 +96,7 @@ def test_economy_cpi(params):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -214,6 +216,8 @@ def test_economy_european_index_constituents(params):
     [
         ({}),
         ({"europe": True, "provider": "cboe"}),
+        ({"provider": "fmp"}),
+        ({"provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration

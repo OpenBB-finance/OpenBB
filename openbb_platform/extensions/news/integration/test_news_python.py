@@ -38,6 +38,18 @@ def obb(pytestconfig):
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "fmp",
+                "limit": 20,
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "limit": 20,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
