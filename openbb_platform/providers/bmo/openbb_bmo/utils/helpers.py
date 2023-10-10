@@ -30,18 +30,44 @@ def get_token(use_cache: bool = True) -> str:
 
     token_url = "https://www.bmogam.com/ksys-app-manager/services/getApplicationAppConfig/default"  # noqa
 
-    if use_cache:
-        return bmo_token_session.get(token_url, timeout=5).json()["authentication"][
-            "token"
-        ]
+    headers = {
+        "Host": "api-us.fundpress.io",
+        "User-Agent": get_random_agent(),
+        "Accept": "application/json",
+        "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
+        "Accept-Encoding": "gzip",
+        "Connection": "keep-alive",
+        "Referer": "https://www.bmogam.com/",
+        "content-type": "application/json",
+        "Origin": "https://www.bmogam.com",
+    }
 
-    return requests.get(token_url, timeout=5).json()["authentication"]["token"]
+    if use_cache:
+        return bmo_token_session.get(token_url, headers=headers, timeout=5).json()[
+            "authentication"
+        ]["token"]
+
+    return requests.get(token_url, headers=headers, timeout=5).json()["authentication"][
+        "token"
+    ]
 
 
 def get_fund_properties(symbol: str, use_cache: bool = True, **kwargs: Any) -> Dict:
     """Gets the data dump for an individual fund."""
 
     token = get_token()
+
+    headers = {
+        "Host": "api-us.fundpress.io",
+        "User-Agent": get_random_agent(),
+        "Accept": "application/json",
+        "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
+        "Accept-Encoding": "gzip",
+        "Connection": "keep-alive",
+        "Referer": "https://www.bmogam.com/",
+        "content-type": "application/json",
+        "Origin": "https://www.bmogam.com",
+    }
 
     url = (
         "https://api-us.fundpress.io/fund/savedSearchEntity/productPage?"
@@ -51,10 +77,10 @@ def get_fund_properties(symbol: str, use_cache: bool = True, **kwargs: Any) -> D
     data = {}
 
     if use_cache:
-        data = bmo_etf_session.get(url, timeout=5).json()
+        data = bmo_etf_session.get(url, headers=headers, timeout=5).json()
 
     if not use_cache:
-        data = requests.get(url, timeout=5).json()
+        data = requests.get(url, headers=headers, timeout=5).json()
 
     if len(data["values"]) > 0:
         return data["values"]
