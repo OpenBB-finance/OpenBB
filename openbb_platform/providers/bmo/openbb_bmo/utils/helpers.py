@@ -1,7 +1,7 @@
 """BMO Helpers Module"""
 
 from datetime import timedelta
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import pandas as pd
 import requests
@@ -61,7 +61,7 @@ def get_fund_properties(symbol: str, use_cache: bool = True, **kwargs: Any) -> D
     return data
 
 
-def get_data_dump(use_cache: bool = True, **kwargs: Any) -> pd.DataFrame:
+def get_data_dump(use_cache: bool = True, **kwargs: Any) -> List[Dict]:
     """Gets a data dump with all BMO ETFs."""
 
     results = []
