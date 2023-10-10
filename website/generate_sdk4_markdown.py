@@ -4,13 +4,7 @@ import shutil
 from inspect import Parameter, _empty, signature
 from pathlib import Path
 from textwrap import shorten
-from typing import (
-    Any,
-    Dict,
-    List,
-    TextIO,
-    Union,
-)
+from typing import Any, Dict, List, TextIO, Union, Tuple
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
@@ -83,7 +77,9 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
     path = "reference" if not data_models else "data_models"
     cmd_cards = ""
     for cmd in cmd_text:
-        url = f"/platform/{path}/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        url = f"/platform/{path}/{cmd['url']}".replace("//", "/")
+        if not data_models:
+            url = f"{url}/{cmd['title']}"
         description = shorten(f"{cmd['description']}", width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["title"]}"
@@ -370,6 +366,16 @@ def generate_params_markdown_section(meta: Dict[str, Any]):
     return markdown
 
 
+def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
+    description = meta["description"]
+
+    split_description = list(filter(None, description.split(".")))
+    title = split_description[0]
+    description = ".".join(split_description[1:]) if len(split_description) > 1 else ""
+
+    return title, description
+
+
 def generate_sdk_markdown() -> bool:
     """Generate markdown files for OpenBB FastAPI SDK Docusaurus website."""
     route_map = PathHandler.build_route_map()
@@ -423,14 +429,16 @@ import TabItem from '@theme/TabItem';
             markdown += data_model_markdown
 
             data_filepath = data_models_path / f"{data_model}.md"
+            (
+                data_model_card_title,
+                data_model_card_description,
+            ) = generate_data_model_card_info(meta_command)
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
-                    title=data_model,
-                    description=func.__doc__ or "",
-                    url="/".join(
-                        (data_models_path).relative_to(data_models_path).parts
-                    ),
+                    title=data_model_card_title,
+                    description=data_model_card_description or "",
+                    url=data_models_path.relative_to(data_models_path) / data_model,
                 )
             )
             data_filepath.parent.mkdir(parents=True, exist_ok=True)
