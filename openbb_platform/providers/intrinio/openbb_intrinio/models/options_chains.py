@@ -1,9 +1,12 @@
 """Intrinio Options Chains fetcher."""
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import (
+    date as dateType,
     datetime,
     timedelta,
 )
+from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_many
@@ -22,7 +25,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
-    date: Optional[str] = Field(
+    date: Optional[dateType] = Field(
         description="Date for which the options chains are returned."
     )
 
@@ -38,12 +41,11 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-def get_weekday(date: str) -> str:
+def get_weekday(date: dateType) -> str:
     """Return the weekday date."""
-    strptime = datetime.strptime(date, "%Y-%m-%d")
-    if strptime.weekday() in [5, 6]:
-        date = (strptime - timedelta(days=strptime.weekday() - 4)).strftime("%Y-%m-%d")
-    return date
+    if date.weekday() in [5, 6]:
+        return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
+    return date.strftime("%Y-%m-%d")
 
 
 class IntrinioOptionsChainsFetcher(
@@ -70,10 +72,12 @@ class IntrinioOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        base_url = "https://api-v2.intrinio.com/options"
 
         if query.symbol in TICKER_EXCEPTIONS:
             query.symbol = f"${query.symbol}"
+
+        data: List = []
+        base_url = "https://api-v2.intrinio.com/options"
 
         def get_expirations(date: str) -> List[str]:
             """Return the expirations for the given date."""
@@ -83,23 +87,29 @@ class IntrinioOptionsChainsFetcher(
             )
             return get_data_many(url, "expirations", **kwargs)
 
-        def get_data(expirations: List[str]) -> List[Dict]:
+        def get_options_chains(
+            expiration: str, data: List[IntrinioOptionsChainsData]
+        ) -> None:
             """Return the data for the given expiration."""
-            data = []
-            for expiration in expirations:
-                url = (
-                    f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
-                    f"date={query.date}&api_key={api_key}"
-                )
-                response = get_data_many(url, "chain", **kwargs)
-                data.extend(response)
-
-            return data
-
-        if len(data := get_data(get_expirations(get_weekday(query.date)))) == 0:
-            data = get_data(
-                get_expirations(get_weekday(query.date - timedelta(days=1)))
+            url = (
+                f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
+                f"date={query.date}&api_key={api_key}"
             )
+            response = get_data_many(url, "chain", **kwargs)
+            data.extend(response)
+
+        def get_data(date: str) -> None:
+            """Fetch data for a given date using ThreadPoolExecutor."""
+            expirations = get_expirations(date)
+            with ThreadPoolExecutor() as executor:
+                executor.map(get_options_chains, expirations, repeat(data))
+
+        date = get_weekday(query.date)
+        get_data(date)
+
+        if not data:
+            date = get_weekday(query.date - timedelta(days=1))
+            get_data(date)
 
         return data
 
