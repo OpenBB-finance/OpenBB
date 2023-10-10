@@ -366,9 +366,16 @@ def test_economy_fred_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-({'country': 'united_states', 'provider': 'oecd', 'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-
+        ({"units": "usd", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "usd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -384,9 +391,16 @@ def test_economy_gdpnom(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-({'country': 'united_states', 'provider': 'oecd', 'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-
+        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "yoy",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -402,9 +416,24 @@ def test_economy_gdpreal(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'}),
-({'country': 'united_states', 'provider': 'oecd', 'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'}),
-
+        (
+            {
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
