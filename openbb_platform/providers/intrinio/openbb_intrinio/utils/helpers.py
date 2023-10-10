@@ -1,7 +1,10 @@
 """Intrinio Helpers Module."""
 
 import json
-from datetime import date as dateType, datetime, timedelta
+from datetime import (
+    date as dateType,
+    timedelta,
+)
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
