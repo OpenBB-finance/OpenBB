@@ -9,7 +9,7 @@ from datetime import (
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
-from openbb_intrinio.utils.helpers import get_data_many
+from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
@@ -39,13 +39,6 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
         return datetime.strptime(v, "%Y-%m-%d")
-
-
-def get_weekday(date: dateType) -> str:
-    """Return the weekday date."""
-    if date.weekday() in [5, 6]:
-        return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
-    return date.strftime("%Y-%m-%d")
 
 
 class IntrinioOptionsChainsFetcher(
@@ -79,14 +72,6 @@ class IntrinioOptionsChainsFetcher(
         data: List = []
         base_url = "https://api-v2.intrinio.com/options"
 
-        def get_expirations(date: str) -> List[str]:
-            """Return the expirations for the given date."""
-            url = (
-                f"{base_url}/expirations/{query.symbol}/eod?"
-                f"after={date}&api_key={api_key}"
-            )
-            return get_data_many(url, "expirations", **kwargs)
-
         def get_options_chains(
             expiration: str, data: List[IntrinioOptionsChainsData]
         ) -> None:
@@ -100,7 +85,12 @@ class IntrinioOptionsChainsFetcher(
 
         def get_data(date: str) -> None:
             """Fetch data for a given date using ThreadPoolExecutor."""
-            expirations = get_expirations(date)
+            url = (
+                f"{base_url}/expirations/{query.symbol}/eod?"
+                f"after={date}&api_key={api_key}"
+            )
+            expirations = get_data_many(url, "expirations", **kwargs)
+
             with ThreadPoolExecutor() as executor:
                 executor.map(get_options_chains, expirations, repeat(data))
 
