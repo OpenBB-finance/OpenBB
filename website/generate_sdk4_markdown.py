@@ -378,7 +378,8 @@ def generate_sdk_markdown() -> bool:
     print("Generating markdown files...")
     kwargs = {"encoding": "utf-8", "newline": "\n"}
     content_path = website_path / "versioned_docs/version-v4/platform/reference"
-    data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
+    # data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
+    data_models_path = website_path / "content/platform/data_models"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
     data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
@@ -421,14 +422,14 @@ import TabItem from '@theme/TabItem';
             data_markdown += data_model_markdown
             markdown += data_model_markdown
 
-            data_filepath = data_models_path / folder / f"{data_model}.md"
+            data_filepath = data_models_path / f"{data_model}.md"
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
                     title=data_model,
                     description=func.__doc__ or "",
                     url="/".join(
-                        (data_models_path / folder).relative_to(data_models_path).parts
+                        (data_models_path).relative_to(data_models_path).parts
                     ),
                 )
             )
