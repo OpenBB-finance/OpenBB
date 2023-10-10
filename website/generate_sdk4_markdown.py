@@ -413,8 +413,13 @@ def generate_sdk_markdown() -> bool:
 
         markdown = generate_markdown(meta_command=meta_command)
         if data_model := meta_command.get("model", None):
+            (
+                data_model_card_title,
+                data_model_card_description,
+            ) = generate_data_model_card_info(meta_command)
+
             data_markdown = f"""---
-title: {data_model}
+title: {data_model_card_title}
 description: OpenBB Platform Data Model
 ---\n\n
 import Tabs from '@theme/Tabs';
@@ -428,11 +433,7 @@ import TabItem from '@theme/TabItem';
             data_markdown += data_model_markdown
             markdown += data_model_markdown
 
-            data_filepath = data_models_path / f"{data_model}.md"
-            (
-                data_model_card_title,
-                data_model_card_description,
-            ) = generate_data_model_card_info(meta_command)
+            data_filepath = data_models_path / f"{data_model_card_title}.md"
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
