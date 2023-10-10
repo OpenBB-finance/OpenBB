@@ -160,6 +160,23 @@ class BmoEtfInfoData(EtfInfoData):
     )
 
 
+# Some symbols need cleaning to be compatible with everything else and return consistent data.
+def help_clean(data: pd.DataFrame):
+    return (
+        data[0]
+        .astype(str)
+        .str.replace("{'value':", "")
+        .str.replace("'", "")
+        .str.replace("[", "")
+        .str.replace("]", "")
+        .str.strip()
+        .str.replace("}", "")
+        .str.replace("{", "")
+        .str.replace("/{}/, /{}/", "", regex=True)
+        .str.replace(",", "")
+    )
+
+
 class BmoEtfInfoFetcher(
     Fetcher[
         BmoEtfInfoQueryParams,
@@ -178,7 +195,7 @@ class BmoEtfInfoFetcher(
         """Helper to get the fund properties."""
 
         symbol = symbol.replace(".TO", "").replace(".TSX", "").replace("-", ".")  # noqa
-        _properties = pd.DataFrame()
+        _properties = pd.DataFrame(dtype="object")
         _price = pd.DataFrame()
         _profile = pd.DataFrame()
         _distribution = pd.DataFrame()
@@ -186,11 +203,17 @@ class BmoEtfInfoFetcher(
 
         # Positional values for each response may be different, so we need to find the correct item in the list.
         if isinstance(data, List) and len(data) == 1 and "properties_pub" in data[0]:
-            _info = pd.DataFrame(data[0]["properties_pub"])
+            try:
+                _info = pd.DataFrame(data[0]["properties_pub"])
+            except ValueError:
+                # Exception handling for certain tickers that have a different nested structure.
+                _info_ = pd.DataFrame(pd.Series(data[0]["properties_pub"]))
+                _info = pd.DataFrame(help_clean(_info_)).transpose()
+
             _properties = (
                 pd.concat([_properties, _info])
                 .transpose()
-                .rename(columns={"value": symbol})
+                .rename(columns={0: symbol, "value": symbol})
             )
 
         if isinstance(data, List) and len(data) == 1 and "statistics" in data[0]:
