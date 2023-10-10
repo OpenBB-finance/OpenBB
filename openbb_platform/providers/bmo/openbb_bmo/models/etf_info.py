@@ -204,6 +204,16 @@ class BmoEtfInfoFetcher(
                 )
                 _properties = pd.concat([_properties, _distribution], axis=0)
 
+            for item in ["asset_class", "region", "sub_asset_class", "strategy"]:
+                _properties.loc[item] = (
+                    _properties.loc[item]
+                    .astype(str)
+                    .str.replace("[", "")
+                    .str.replace("]", "")
+                    .str.replace("'", "")
+                    .str.replace(", ", ",")
+                )
+
         return _properties.transpose().to_dict("records")
 
     @staticmethod
