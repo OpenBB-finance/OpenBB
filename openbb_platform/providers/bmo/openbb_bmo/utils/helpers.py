@@ -71,7 +71,7 @@ def get_data_dump(use_cache: bool = True, **kwargs: Any) -> List[Dict]:
         "User-Agent": get_random_agent(),
         "Accept": "application/json",
         "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
-        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Encoding": "gzip",
         "Connection": "keep-alive",
         "Referer": "https://www.bmogam.com/",
         "content-type": "application/json",
@@ -157,22 +157,15 @@ def get_all_etfs(use_cache: bool = True) -> pd.DataFrame:
         "mer",
         "inception_date",
     ]
-    results["asset_class"] = (
-        results["asset_class"]
-        .astype(str)
-        .str.replace("[", "")
-        .str.replace("]", "")
-        .str.replace("'", "")
-        .str.replace(", ", ",")
-    )
-    results["region"] = (
-        results["region"]
-        .astype(str)
-        .str.replace("[", "")
-        .str.replace("]", "")
-        .str.replace("'", "")
-        .str.replace(", ", ",")
-    )
+    for item in ["asset_class", "region"]:
+        results[item] = (
+            results[item]
+            .astype(str)
+            .str.replace("[", "")
+            .str.replace("]", "")
+            .str.replace("'", "")
+            .str.replace(", ", ",")
+        )
 
     return (
         results.set_index("symbol").sort_values(by="mer", ascending=True).reset_index()

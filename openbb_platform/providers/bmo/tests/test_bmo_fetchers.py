@@ -40,7 +40,7 @@ def test_bmo_etf_countries_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_bmo_etf_sectors_fetcher(credentials=test_credentials):
-    params = {"symbol": "BGIF"}
+    params = {"symbol": "BGIF"}  #
 
     fetcher = BmoEtfSectorsFetcher()
     result = fetcher.test(params, credentials)

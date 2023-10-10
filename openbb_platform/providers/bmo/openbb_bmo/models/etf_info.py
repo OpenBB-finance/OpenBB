@@ -1,5 +1,6 @@
 """BMO ETF Info fetcher."""
 import concurrent.futures
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -18,6 +19,11 @@ class BmoEtfInfoQueryParams(EtfInfoQueryParams):
     Source: https://www.bmogam.com/
     """
 
+    use_cache: bool = Field(
+        description="Whether to cache the request. Defaults to True.",
+        default=True,
+    )
+
 
 class BmoEtfInfoData(EtfInfoData):
     """Bmo ETF Info Data."""
@@ -31,6 +37,36 @@ class BmoEtfInfoData(EtfInfoData):
     currency: Optional[str] = Field(
         description="The base currency of the fund.",
         alias="base_currency",
+        default=None,
+    )
+    region: Optional[str] = Field(
+        description="The target region of the fund.", alias="region", default=None
+    )
+    asset_class: Optional[str] = Field(
+        description="The asset class of the fund.", alias="fund_class", default=None
+    )
+    sub_asset_class: Optional[str] = Field(
+        description="The sub asset class of the fund.",
+        alias="sub_asset_class",
+        default=None,
+    )
+    strategy: Optional[str] = Field(
+        description="The strategy of the fund.", alias="strategy", default=None
+    )
+    objective: Optional[str] = Field(
+        description="The investment objective of the fund.",
+        alias="objective",
+        default=None,
+    )
+    structure: Optional[str] = Field(
+        description="The structure of the fund.", alias="structure", default=None
+    )
+    index_name: Optional[str] = Field(
+        description="The name of tracking index.", alias="index_name", default=None
+    )
+    index_inception_date: Optional[dateType] = Field(
+        description="The inception date of tracking index.",
+        alias="index_inception_date",
         default=None,
     )
     number_of_securites: Optional[int] = Field(
@@ -78,18 +114,21 @@ class BmoEtfInfoData(EtfInfoData):
     )
     pe: Optional[float] = Field(
         description="The price to earnings ratio of the fund.",
-        alias="price_to_earnings_ratio",
+        alias="price_earning_ratio",
         default=None,
     )
     pb: Optional[float] = Field(
         description="The price to book ratio of the fund.",
-        alias="price_to_book_ratio",
+        alias="price_book_ratio",
         default=None,
     )
     roc: Optional[float] = Field(
         description="The return on capital of the fund.",
-        alias="return_on_capital",
+        alias="return_of_capital",
         default=None,
+    )
+    income_frequency: Optional[str] = Field(
+        description="The frequency of income distributions.",
     )
     distribution_yield: Optional[float] = Field(
         description="The distribution yield of the fund.",
@@ -135,7 +174,7 @@ class BmoEtfInfoFetcher(
         return BmoEtfInfoQueryParams(**params)
 
     @staticmethod
-    def get_properties(symbol) -> List[Dict]:
+    def get_properties(symbol: str, use_cache: bool = True, **kwargs) -> List[Dict]:
         """Helper to get the fund properties."""
 
         symbol = symbol.replace(".TO", "").replace(".TSX", "").replace("-", ".")  # noqa
@@ -143,8 +182,9 @@ class BmoEtfInfoFetcher(
         _price = pd.DataFrame()
         _profile = pd.DataFrame()
         _distribution = pd.DataFrame()
-        data = get_fund_properties(symbol)
+        data = get_fund_properties(symbol, use_cache, **kwargs)
 
+        # Positional values for each response may be different, so we need to find the correct item in the list.
         if isinstance(data, List) and len(data) == 1 and "properties_pub" in data[0]:
             _info = pd.DataFrame(data[0]["properties_pub"])
             _properties = (
@@ -155,7 +195,6 @@ class BmoEtfInfoFetcher(
 
         if isinstance(data, List) and len(data) == 1 and "statistics" in data[0]:
             key = -1
-            # Find the correct position in the data list for the target.
             for i in range(0, len(data[0]["statistics"])):
                 if data[0]["statistics"][i]["code"] == "price":
                     key = i
@@ -167,7 +206,7 @@ class BmoEtfInfoFetcher(
                     .rename(columns={0: symbol})
                 )
                 _properties = pd.concat([_properties, _price], axis=0)
-
+            # Reset the loop for the next property to parse.
             key = -1
             for i in range(0, len(data[0]["statistics"])):
                 if data[0]["statistics"][i]["code"] == "fund_profile_characteristics":
@@ -204,15 +243,25 @@ class BmoEtfInfoFetcher(
                 )
                 _properties = pd.concat([_properties, _distribution], axis=0)
 
-            for item in ["asset_class", "region", "sub_asset_class", "strategy"]:
-                _properties.loc[item] = (
-                    _properties.loc[item]
-                    .astype(str)
-                    .str.replace("[", "")
-                    .str.replace("]", "")
-                    .str.replace("'", "")
-                    .str.replace(", ", ",")
-                )
+            # Force list items to a string.
+            for item in [
+                "asset_class",
+                "region",
+                "sub_asset_class",
+                "strategy",
+                "structure",
+            ]:
+                if item in _properties.index:
+                    _properties.loc[item] = (
+                        _properties.loc[item]
+                        .astype(str)
+                        .str.replace("[", "")
+                        .str.replace("]", "")
+                        .str.replace("'", "")
+                        .str.replace(", ", ",")
+                        .fillna(value="-")
+                        .replace("-", None)
+                    )
 
         return _properties.transpose().to_dict("records")
 
@@ -231,7 +280,9 @@ class BmoEtfInfoFetcher(
         output = pd.DataFrame()
 
         def get_one(symbol):
-            _data = BmoEtfInfoFetcher.get_properties(symbol)
+            _data = BmoEtfInfoFetcher.get_properties(
+                symbol, use_cache=query.use_cache, **kwargs
+            )
             if len(_data) == 1:
                 results.extend(_data)
 
@@ -244,6 +295,10 @@ class BmoEtfInfoFetcher(
                 .set_index("ticker")
                 .sort_values(by="market_cap_billion", ascending=False)
             )
+            # Replace stray NaN values in fields.
+            for column in ["structure", "index_inception_date"]:
+                if column in output.columns:
+                    output[column] = output[column].fillna(value="-").replace("-", None)
 
         return output.reset_index().to_dict("records")
 
