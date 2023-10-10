@@ -11,6 +11,8 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_provider.abstract.data import Data
+from pydantic import NonNegativeFloat, PositiveInt
+
 from openbb_qa.qa_helpers import get_fama_raw
 from openbb_qa.qa_models import (
     ADFTestModel,
@@ -22,7 +24,6 @@ from openbb_qa.qa_models import (
     TestModel,
     UnitRootModel,
 )
-from pydantic import NonNegativeFloat, PositiveInt
 
 router = Router(prefix="")
 
