@@ -14,7 +14,7 @@ from typing import (
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
-from pydantic.fields import ModelField
+from pydantic import BaseModel
 
 website_path = Path(__file__).parent.absolute()
 
@@ -182,7 +182,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
     if model_name:
         providers = provider_interface.map[model_name]
 
-        obb_query_fields: Dict[str, ModelField] = providers["openbb"]["QueryParams"][
+        obb_query_fields: Dict[str, BaseModel] = providers["openbb"]["QueryParams"][
             "fields"
         ]
 
@@ -210,7 +210,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 optional = "True"
                 default = "False"
             else:
-                description = obb_query_fields[param.name].field_info.description
+                description = obb_query_fields[param.name].description
 
                 param_type = param.annotation
 
@@ -278,23 +278,23 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         standard, provider_extras, provider_params = {}, {}, {}
 
         for provider_name, model_details in providers.items():
-            data_fields: Dict[str, ModelField] = model_details["Data"]["fields"]
-            query_fields: Dict[str, ModelField] = model_details["QueryParams"]["fields"]
+            data_fields: Dict[str, BaseModel] = model_details["Data"]["fields"]
+            query_fields: Dict[str, BaseModel] = model_details["QueryParams"]["fields"]
 
             if provider_name == "openbb":
                 for name, field in data_fields.items():
                     standard[name] = {
                         "type": get_annotation_type(field.annotation),
-                        "doc": field.field_info.description,
+                        "doc": field.description,
                     }
             else:
                 for name, field in query_fields.items():
                     if name not in obb_query_fields:
                         provider_params.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.field_info.description,
-                            "optional": "True" if not field.required else "False",
-                            "default": str(field.field_info.default).replace(
+                            "doc": field.description,
+                            "optional": "True" if not field.is_required() else "False",
+                            "default": str(field.default).replace(
                                 "PydanticUndefined", ""
                             ),
                         }
@@ -302,7 +302,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                     if name not in providers["openbb"]["Data"]["fields"]:
                         provider_extras.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.field_info.description,
+                            "doc": field.description,
                         }
 
         meta_command["schema"] = {
