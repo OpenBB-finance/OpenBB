@@ -262,6 +262,12 @@ python openbb_platform/providers/tests/utils/unit_tests_generator.py
 
 The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
 
+To record the unit tests, you can run the following command:
+
+```bash
+pytest <path_to_the_unit_test_file> --record=all
+```
+
 > Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 
 ### Integration tests
