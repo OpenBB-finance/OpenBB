@@ -35,7 +35,7 @@ class ROUTER_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "bmo", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[Union[List[Data], Data]]:
+    ) -> OBBject[List[Data]]:
         """ETF Country weighting.
 
         Parameters
@@ -54,7 +54,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EtfCountries], EtfCountries]
+            results : List[EtfCountries]
                 Serializable results.
             provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
                 Provider name.
@@ -217,7 +217,7 @@ class ROUTER_etf(Container):
             The type of asset. (provider: bmo)
         weight : Optional[float]
             The weight of the asset in the portfolio. (provider: bmo, invesco, tmx)
-        shares : Optional[Union[float, int, str]]
+        shares : Optional[Union[float, str, int]]
             The number of shares or contracts of the asset held. (provider: bmo); The value of the assets under management. (provider: tmx)
         currency : Optional[str]
             The currency of the asset. (provider: bmo); The currency of the holding. (provider: tmx)
@@ -235,7 +235,7 @@ class ROUTER_etf(Container):
             The sector of the asset. (provider: bmo, invesco)
         holdings_date : Optional[date]
             The date of the holdings. (provider: bmo); The date the asset was added to the portfolio. (provider: invesco)
-        security_identifier : Optional[Union[int, str]]
+        security_identifier : Optional[Union[str, int]]
             The unique security identifier of the asset. (provider: invesco)
         identifier : Optional[str]
             The asset class identifier. (provider: invesco)
@@ -257,7 +257,7 @@ class ROUTER_etf(Container):
             The ticker symbol of the Fund. (provider: invesco)
         share_percentage : Optional[float]
             The share percentage of the holding. (provider: tmx)
-        share_change : Optional[Union[float, str]]
+        share_change : Optional[Union[str, float]]
             The change in shares of the holding. (provider: tmx)
         country : Optional[str]
             The country of the holding. (provider: tmx)
@@ -307,6 +307,8 @@ class ROUTER_etf(Container):
             no default.
         country : Literal['america', 'canada']
             The country the ETF is registered in. '.TO' acts as a proxy to 'canada'. (provider: blackrock)
+        use_cache : bool
+            Whether to cache the request. Defaults to True. (provider: bmo)
 
         Returns
         -------
@@ -331,31 +333,77 @@ class ROUTER_etf(Container):
         name : Optional[str]
             Name of the ETF.
         asset_class : Optional[str]
-            The asset class of the ETF. (provider: blackrock, fmp)
+            The asset class of the ETF. (provider: blackrock, bmo, fmp)
         sub_asset_class : Optional[str]
-            The sub-asset class of the ETF. (provider: blackrock)
+            The sub-asset class of the ETF. (provider: blackrock, bmo)
         country : Optional[str]
             The country the ETF is registered in. (provider: blackrock); The country where the ETF is domiciled. (provider: fmp)
         region : Optional[str]
-            The region of the ETF. (provider: blackrock)
+            The region of the ETF. (provider: blackrock); The target region of the fund. (provider: bmo)
         investment_style : Optional[str]
             The investment style of the ETF. (provider: blackrock, tmx)
         yield_ttm : Optional[float]
             The TTM yield of the ETF. (provider: blackrock)
         aum : Optional[Union[float, int]]
             The value of the assets under management. (provider: blackrock); The AUM of the ETF. (provider: fmp); The AUM of the ETF. (provider: tmx)
+        currency : Optional[str]
+            The base currency of the fund. (provider: bmo); The currency of the ETF. (provider: fmp); The currency of the ETF. (provider: tmx)
+        strategy : Optional[str]
+            The strategy of the fund. (provider: bmo)
+        objective : Optional[str]
+            The investment objective of the fund. (provider: bmo)
+        structure : Optional[str]
+            The structure of the fund. (provider: bmo)
+        index_name : Optional[str]
+            The name of tracking index. (provider: bmo)
+        index_inception_date : Optional[date]
+            The inception date of tracking index. (provider: bmo)
+        number_of_securites : Optional[int]
+            The number of securities in the fund. (provider: bmo)
+        beta : Optional[float]
+            The beta of the fund with respect to its benchmark. (provider: bmo)
+        price : Optional[float]
+            The market price of the fund. (provider: bmo)
+        volume : Optional[int]
+            The market volume of the fund. (provider: bmo)
+        market_cap : Optional[float]
+            The market cap of the fund, in billions. (provider: bmo)
+        nav : Optional[float]
+            The net asset value of the fund. (provider: bmo); The NAV of the ETF. (provider: fmp)
+        net_assets : Optional[float]
+            The net assets of the fund. (provider: bmo)
+        management_fee : Optional[float]
+            The management fee of the fund. (provider: bmo, tmx)
+        mer : Optional[float]
+            The management expense ratio of the fund. (provider: bmo, tmx)
+        pe : Optional[float]
+            The price to earnings ratio of the fund. (provider: bmo)
+        pb : Optional[float]
+            The price to book ratio of the fund. (provider: bmo)
+        roc : Optional[float]
+            The return on capital of the fund. (provider: bmo)
+        income_frequency : Optional[str]
+            The frequency of income distributions. (provider: bmo)
+        distribution_yield : Optional[float]
+            The distribution yield of the fund. (provider: bmo, tmx)
+        weight_avg_coupon : Optional[float]
+            The weighted average coupon of the fund. (provider: bmo)
+        weight_avg_current_yield : Optional[float]
+            The weighted average current yield of the fund. (provider: bmo)
+        weight_avg_duration : Optional[float]
+            The weighted average duration of the fund. (provider: bmo)
+        weight_avg_maturity : Optional[float]
+            The weighted average term-maturity of the fund. (provider: bmo)
+        weight_avg_ytm : Optional[float]
+            The weighted average yield-to-maturity of the fund. (provider: bmo)
         issuer : Optional[str]
             The issuer of the ETF. (provider: fmp, tmx)
-        currency : Optional[str]
-            The currency of the ETF. (provider: fmp, tmx)
         cusip : Optional[str]
             The CUSIP number of the ETF. (provider: fmp)
         isin : Optional[str]
             The ISIN number of the ETF. (provider: fmp)
         holdings_count : Optional[int]
             The number of holdings of the ETF. (provider: fmp)
-        nav : Optional[float]
-            The NAV of the ETF. (provider: fmp)
         expense_ratio : Optional[float]
             The expense ratio of the ETF. (provider: fmp)
         avg_volume : Optional[Union[float, int]]
@@ -390,12 +438,6 @@ class ROUTER_etf(Container):
             The price-to-earnings ratio of the ETF. (provider: tmx)
         pb_ratio : Optional[float]
             The price-to-book ratio of the ETF. (provider: tmx)
-        management_fee : Optional[float]
-            The management fee of the ETF. (provider: tmx)
-        mer : Optional[float]
-            The management expense ratio of the ETF. (provider: tmx)
-        distribution_yield : Optional[float]
-            The distribution yield of the ETF. (provider: tmx)
         dividend_frequency : Optional[str]
             The dividend payment frequency of the ETF. (provider: tmx)
         regions : Optional[List[Dict]]
@@ -583,7 +625,7 @@ class ROUTER_etf(Container):
         ],
         provider: Optional[Literal["blackrock", "bmo", "fmp", "tmx"]] = None,
         **kwargs
-    ) -> OBBject[Union[List[Data], Data]]:
+    ) -> OBBject[List[Data]]:
         """ETF Sector weighting.
 
         Parameters
@@ -602,7 +644,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EtfSectors], EtfSectors]
+            results : List[EtfSectors]
                 Serializable results.
             provider : Optional[Literal['blackrock', 'bmo', 'fmp', 'tmx']]
                 Provider name.

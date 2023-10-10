@@ -31,15 +31,9 @@ def get_token(use_cache: bool = True) -> str:
     token_url = "https://www.bmogam.com/ksys-app-manager/services/getApplicationAppConfig/default"  # noqa
 
     headers = {
-        "Host": "api-us.fundpress.io",
-        "User-Agent": get_random_agent(),
         "Accept": "application/json",
-        "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
         "Accept-Encoding": "gzip",
-        "Connection": "keep-alive",
-        "Referer": "https://www.bmogam.com/",
         "content-type": "application/json",
-        "Origin": "https://www.bmogam.com",
     }
 
     if use_cache:
@@ -58,15 +52,9 @@ def get_fund_properties(symbol: str, use_cache: bool = True, **kwargs: Any) -> D
     token = get_token()
 
     headers = {
-        "Host": "api-us.fundpress.io",
-        "User-Agent": get_random_agent(),
         "Accept": "application/json",
-        "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
         "Accept-Encoding": "gzip",
-        "Connection": "keep-alive",
-        "Referer": "https://www.bmogam.com/",
         "content-type": "application/json",
-        "Origin": "https://www.bmogam.com",
     }
 
     url = (
