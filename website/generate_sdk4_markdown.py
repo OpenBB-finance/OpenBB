@@ -378,8 +378,7 @@ def generate_sdk_markdown() -> bool:
     print("Generating markdown files...")
     kwargs = {"encoding": "utf-8", "newline": "\n"}
     content_path = website_path / "versioned_docs/version-v4/platform/reference"
-    # data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
-    data_models_path = website_path / "content/platform/data_models"
+    data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
     data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 

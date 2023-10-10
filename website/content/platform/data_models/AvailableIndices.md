@@ -1,0 +1,84 @@
+---
+title: AvailableIndices
+description: OpenBB Platform Data Model
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+---
+
+## Parameters
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| provider | Union[Literal['cboe', 'fmp', 'yfinance']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
+</TabItem>
+
+<TabItem value='cboe' label='cboe'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| provider | Union[Literal['cboe', 'fmp', 'yfinance']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
+| europe | bool | Filter for European indices. False for US indices. | False | True |
+</TabItem>
+
+</Tabs>
+
+## Data
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| name | Union[str] | Name of the index. |
+| currency | Union[str] | Currency the index is traded in. |
+</TabItem>
+
+<TabItem value='cboe' label='cboe'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| name | Union[str] | Name of the index. |
+| currency | Union[str] | Currency the index is traded in. |
+| isin | Union[str] | ISIN code for the index. Valid only for European indices. |
+| region | Union[str] | Region for the index. Valid only for European indices |
+| symbol | Union[str] | Symbol for the index. |
+| description | Union[str] | Description for the index. Valid only for US indices. |
+| data_delay | Union[int] | Data delay for the index. Valid only for US indices. |
+| open_time | Union[datetime.time] | Opening time for the index. Valid only for US indices. |
+| close_time | Union[datetime.time] | Closing time for the index. Valid only for US indices. |
+| time_zone | Union[str] | Time zone for the index. Valid only for US indices. |
+| tick_days | Union[str] | The trading days for the index. Valid only for US indices. |
+| tick_frequency | Union[str] | The frequency of the index ticks. Valid only for US indices. |
+| tick_period | Union[str] | The period of the index ticks. Valid only for US indices. |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| name | Union[str] | Name of the index. |
+| currency | Union[str] | Currency the index is traded in. |
+| stock_exchange | str | Stock exchange where the index is listed. |
+| exchange_short_name | str | Short name of the stock exchange where the index is listed. |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| name | Union[str] | Name of the index. |
+| currency | Union[str] | Currency the index is traded in. |
+| code | str | ID code for keying the index in the OpenBB Terminal. |
+| symbol | str | Symbol for the index. |
+</TabItem>
+
+</Tabs>
+

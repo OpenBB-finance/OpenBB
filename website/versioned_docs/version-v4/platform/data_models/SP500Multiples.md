@@ -1,0 +1,42 @@
+---
+title: SP500Multiples
+description: OpenBB Platform Data Model
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+---
+
+## Parameters
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| series_name | Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Ratio by Year', 'PE Ratio by Month', 'Dividend by Year', 'Dividend by Month', 'Dividend Growth by Quarter', 'Dividend Growth by Year', 'Dividend Yield by Year', 'Dividend Yield by Month', 'Earnings by Year', 'Earnings by Month', 'Earnings Growth by Year', 'Earnings Growth by Quarter', 'Real Earnings Growth by Year', 'Real Earnings Growth by Quarter', 'Earnings Yield by Year', 'Earnings Yield by Month', 'Real Price by Year', 'Real Price by Month', 'Inflation Adjusted Price by Year', 'Inflation Adjusted Price by Month', 'Sales by Year', 'Sales by Quarter', 'Sales Growth by Year', 'Sales Growth by Quarter', 'Real Sales by Year', 'Real Sales by Quarter', 'Real Sales Growth by Year', 'Real Sales Growth by Quarter', 'Price to Sales Ratio by Year', 'Price to Sales Ratio by Quarter', 'Price to Book Value Ratio by Year', 'Price to Book Value Ratio by Quarter', 'Book Value per Share by Year', 'Book Value per Share by Quarter'] | The name of the series. Defaults to 'PE Ratio by Month'. | PE Ratio by Month | True |
+| start_date | Union[str] | The start date of the time series. Format: YYYY-MM-DD |  | True |
+| end_date | Union[str] | The end date of the time series. Format: YYYY-MM-DD |  | True |
+| collapse | Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual']] | Collapse the frequency of the time series. | monthly | True |
+| transform | Union[Literal['diff', 'rdiff', 'cumul', 'normalize']] | The transformation of the time series. | None | True |
+| provider | Union[Literal['quandl']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'quandl' if there is no default. | quandl | True |
+</TabItem>
+
+</Tabs>
+
+## Data
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | str | The date data for the time series. |
+| value | float | The data value for the time series. |
+</TabItem>
+
+</Tabs>
+
