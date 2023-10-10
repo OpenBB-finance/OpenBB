@@ -11,8 +11,6 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_provider.abstract.data import Data
-from pydantic import NonNegativeFloat, PositiveInt
-
 from openbb_qa.qa_helpers import get_fama_raw
 from openbb_qa.qa_models import (
     ADFTestModel,
@@ -24,14 +22,14 @@ from openbb_qa.qa_models import (
     TestModel,
     UnitRootModel,
 )
+from pydantic import NonNegativeFloat, PositiveInt
 
 router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
-    """
-    Normality Statistics.
+    """Get Normality Statistics.
 
     - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
     - **Skewness**: whether the skewness of a sample differs from the normal distribution.
@@ -51,7 +49,6 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
-
     from scipy import stats
 
     df = basemodel_to_df(data)
@@ -76,8 +73,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 
 @router.command(methods=["POST"])
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
-    """Capital Asset Pricing Model."""
-
+    """Get Capital Asset Pricing Model."""
     import statsmodels.api as sm
 
     df = basemodel_to_df(data)
@@ -116,7 +112,7 @@ def om(
     threshold_start: float = 0.0,
     threshold_end: float = 1.5,
 ) -> OBBject[List[OmegaModel]]:
-    """Omega Ratio.
+    """Calculate the Omega Ratio.
 
     Parameters
     ----------
@@ -134,19 +130,17 @@ def om(
     OBBject[List[OmegaModel]]
         Omega ratios.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
+
+    epsilon = 1e-6  # to avoid division by zero
 
     def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
         """Get omega ratio."""
         daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
         excess = df_target - daily_threshold
         numerator = excess[excess > 0].sum()
-        denominator = -excess[excess < 0].sum()
-
-        if denominator == 0:
-            return float("inf")
+        denominator = -excess[excess < 0].sum() + epsilon
 
         return numerator / denominator
 
@@ -154,16 +148,14 @@ def om(
     results = []
     for i in threshold:
         omega = get_omega_ratio(series_target, i)
-        # TODO : we should find a way of supporting inf values in the API
-        if omega != float("inf"):
-            results.append(OmegaModel(threshold=i, omega=omega))
+        results.append(OmegaModel(threshold=i, omega=omega))
 
     return OBBject(results=results)
 
 
 @router.command(methods=["POST"])
 def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Kurtosis.
+    """Get the Kurtosis.
 
     Parameters
     ----------
@@ -179,7 +171,6 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Kurtosis.
     """
-
     import pandas_ta as ta
 
     df = basemodel_to_df(data)
@@ -197,7 +188,7 @@ def unitroot(
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
     kpss_reg: Literal["c", "ct"] = "c",
 ) -> OBBject[UnitRootModel]:
-    """Unit Root Test.
+    """Get Unit Root Test.
 
     Augmented Dickey-Fuller test for unit root.
     Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
@@ -218,7 +209,6 @@ def unitroot(
     OBBject[UnitRootModel]
         Unit root tests summary.
     """
-
     from statsmodels.tsa import stattools
 
     df = basemodel_to_df(data)
@@ -248,7 +238,7 @@ def unitroot(
 def sh(
     data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
 ) -> OBBject[List[Data]]:
-    """Sharpe Ratio.
+    """Get Sharpe Ratio.
 
     Parameters
     ----------
@@ -266,7 +256,6 @@ def sh(
     OBBject[List[Data]]
         Sharpe ratio.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
@@ -287,7 +276,7 @@ def so(
     window: PositiveInt = 252,
     adjusted: bool = False,
 ) -> OBBject[List[Data]]:
-    """Sortino Ratio.
+    """Get Sortino Ratio.
 
     For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
@@ -309,7 +298,6 @@ def so(
     OBBject[List[Data]]
         Sortino ratio.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
@@ -329,7 +317,7 @@ def so(
 
 @router.command(methods=["POST"])
 def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Skewness.
+    """Get Skewness.
 
     Parameters
     ----------
@@ -345,7 +333,6 @@ def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Dat
     OBBject[List[Data]]
         Skewness.
     """
-
     import pandas_ta as ta
 
     df = basemodel_to_df(data)
@@ -363,8 +350,24 @@ def quantile(
     window: PositiveInt,
     quantile_pct: NonNegativeFloat = 0.5,
 ) -> OBBject[List[Data]]:
-    """Quantile."""
+    """Get Quantile.
 
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+    window : PositiveInt
+        Window size.
+    quantile_pct : NonNegativeFloat, optional
+        Quantile percentage, by default 0.5
+
+    Returns
+    -------
+    OBBject[List[Data]]
+        Quantile.
+    """
     import pandas_ta as ta
 
     df = basemodel_to_df(data)
@@ -381,7 +384,7 @@ def quantile(
 
 @router.command(methods=["POST"])
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
-    """Summary.
+    """Get Summary Statistics.
 
     Parameters
     ----------
@@ -395,7 +398,6 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     OBBject[SummaryModel]
         Summary table.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 
