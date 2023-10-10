@@ -1,9 +1,6 @@
 name: API Integration Tests
 
 on:
-  push:
-    branches:
-      - feature/openbb-sdk-v4
   workflow_dispatch:
 
 concurrency:
@@ -15,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      OPENBB_API_AUTH: true
+      OPENBB_API_USERNAME: "USER"
+      OPENBB_API_PASSWORD: "PASS"
 
     steps:
       - name: Slack Notification - Starting
@@ -43,7 +43,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: runner_env
-          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
 
       - name: Install Dependencies
         if: steps.cached-python-environment.outputs.cache-hit != 'true'
@@ -60,7 +60,8 @@ jobs:
             ./openbb_platform/providers/intrinio \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
-            ./openbb_platform/extensions/ta
+            ./openbb_platform/extensions/ta \
+            ./openbb_platform/extensions/econometrics
             pip uninstall -y openbb_core
             pip uninstall -y openbb_provider
             cd openbb_platform/platform/core
@@ -72,13 +73,14 @@ jobs:
 
       - name: Populate System Setting Files
         run: |
-          mkdir -p ${{ github.workspace }}/.openbb_platform
-          touch ${{ github.workspace }}/.openbb_platform/system_settings.json
-          echo '{"log_collect":false}' > ${{ github.workspace }}/.openbb_platform/system_settings.json
+          mkdir -p ~/.openbb_platform
+          touch ~/.openbb_platform/system_settings.json
+          echo '{"log_collect":false}' > ~/.openbb_platform/system_settings.json
+          cat ~/.openbb_platform/system_settings.json
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
-          touch ${{ github.workspace }}/.openbb_platform/user_settings.json
+          touch ~/.openbb_platform/user_settings.json
           echo '{
             "credentials": {
               "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
@@ -88,25 +90,31 @@ jobs:
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
             }
-          }' > ${{ github.workspace }}/.openbb_platform/user_settings.json
+          }' > ~/.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate
           pip list
-          pwd
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
-      - name: Wait for 1 minute
-        run: sleep 60
+      - name: Wait for 10 seconds
+        run: sleep 10
 
       - name: Run API Integration Tests
         run: |
           source runner_env/bin/activate
           pip list
-          pwd
           cd openbb_platform
-          pytest . -m integration
+          pytest -m integration
+
+      - name: Cache pip packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
