@@ -378,3 +378,51 @@ def test_economy_fred_index(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
+({'country': 'united_states', 'provider': 'oecd', 'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'})],
+)
+@pytest.mark.integration
+def test_economy_gdpnom(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpnom?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
+({'country': 'united_states', 'provider': 'oecd', 'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'})],
+)
+@pytest.mark.integration
+def test_economy_gdpreal(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpreal?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'}),
+({'country': 'united_states', 'provider': 'oecd', 'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'})],
+)
+@pytest.mark.integration
+def test_economy_gdpforecast(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpforecast?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
