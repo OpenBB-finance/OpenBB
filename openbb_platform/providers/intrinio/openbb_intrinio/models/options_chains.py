@@ -9,6 +9,7 @@ from datetime import (
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
+from dateutil import parser
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
 from openbb_provider.abstract.fetcher import Fetcher
@@ -36,9 +37,10 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     __alias_dict__ = {"contract_symbol": "code", "symbol": "ticker"}
 
     @validator("expiration", "date", pre=True, check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
-        return datetime.strptime(v, "%Y-%m-%d")
+        return parser.parse(v)
 
 
 class IntrinioOptionsChainsFetcher(
