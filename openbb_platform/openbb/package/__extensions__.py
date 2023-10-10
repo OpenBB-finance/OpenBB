@@ -36,16 +36,13 @@ Extensions:
 
     - alpha_vantage@0.1.0a2
     - benzinga@0.1.0a2
-    - blackrock@0.1.0a2
-    - bmo@0.1.0a2
     - cboe@0.1.0a2
     - fmp@0.1.0a2
     - fred@0.1.0a2
     - intrinio@0.1.0a2
-    - invesco@0.1.0a2
+    - oecd@0.1.0a2
     - polygon@0.1.0a2
     - quandl@0.1.0a2
-    - tmx@0.1.0a2
     - yfinance@0.1.0a2    """
     # fmt: on
     def __repr__(self) -> str:
