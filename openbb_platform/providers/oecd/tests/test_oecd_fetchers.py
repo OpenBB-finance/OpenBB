@@ -1,9 +1,10 @@
 import datetime
+
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_oecd.models.gdpforecast import OECDGDPForecastFetcher
 from openbb_oecd.models.gdpnom import OECDGDPNomFetcher
 from openbb_oecd.models.gdpreal import OECDGDPRealFetcher
-from openbb_oecd.models.gdpforecast import OECDGDPForecastFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 

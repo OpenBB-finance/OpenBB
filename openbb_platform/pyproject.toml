@@ -33,6 +33,7 @@ openbb-invesco = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
 openbb-tmx = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
+openbb-oecd = { version = "^0.1.0a2", optional = true }
 
 openbb-charting = { version = "^0.1.0a2", optional = true }
 openbb-futures = { version = "^0.1.0a2", optional = true }
@@ -49,6 +50,7 @@ invesco = ["openbb-invesco"]
 quandl = ["openbb-quandl"]
 tmx = ["openbb-tmx"]
 yfinance = ["openbb-yfinance"]
+oecd = ["openbb-oecd"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
@@ -64,6 +66,7 @@ all = [
     "openbb-quandl",
     "openbb-tmx",
     "openbb-yfinance",
+    "openbb-oecd",
     "openbb-charting",
     "openbb-futures",
     "openbb-qa",

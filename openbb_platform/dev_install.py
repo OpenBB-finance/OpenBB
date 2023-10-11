@@ -41,6 +41,7 @@ openbb-invesco = { path = "./providers/invesco", optional = true, develop = true
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
+openbb-oecd= { path = "./providers/oecd", optional = true, develop = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
