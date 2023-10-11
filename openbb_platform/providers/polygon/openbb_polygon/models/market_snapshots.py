@@ -243,4 +243,4 @@ class PolygonMarketSnapshotsFetcher(
     def transform_data(
         data: dict,
     ) -> List[PolygonMarketSnapshotsData]:
-        return [PolygonMarketSnapshotsData.parse_obj(d) for d in data]
+        return [PolygonMarketSnapshotsData.model_validate(d) for d in data]
