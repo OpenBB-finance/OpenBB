@@ -72,18 +72,18 @@ class OECDGDPForecastFetcher(
                 "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH."
                 + units
                 + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
-                + query.start_date
+                + str(query.start_date)
                 + "&endPeriod="
-                + query.end_date
+                + str(query.end_date)
             )
         elif query.type == "nominal":
             url = (
                 "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH."
                 + units
                 + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
-                + query.start_date
+                + str(query.start_date)
                 + "&endPeriod="
-                + query.end_date
+                + str(query.end_date)
             )
 
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
