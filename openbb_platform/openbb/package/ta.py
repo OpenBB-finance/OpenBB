@@ -612,8 +612,8 @@ class ROUTER_ta(Container):
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
         target: str = "close",
-        show_all: bool = False,
-        asint: bool = False,
+        show_all: bool = True,
+        asint: bool = True,
         offset: int = 0,
     ) -> OBBject[List[Data]]:
         """
@@ -630,7 +630,7 @@ class ROUTER_ta(Container):
         show_all : bool, optional
             Show 1 - 13. If set to False, show 6 - 9
         asint : bool, optional
-            If True, fill NAs with 0 and change type to int, by default False
+            If True, fill NAs with 0 and change type to int, by default True.
         offset : int, optional
             How many periods to offset the result
 

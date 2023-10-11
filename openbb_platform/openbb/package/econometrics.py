@@ -53,6 +53,7 @@ class ROUTER_econometrics(Container):
             List of columns to use as exogenous variables.
         lags: PositiveInt
             Number of lags to use in the test.
+
         Returns
         -------
         OBBject[Data]
@@ -85,6 +86,7 @@ class ROUTER_econometrics(Container):
             Data columns to check cointegration
         maxlag: PositiveInt
             Number of lags to use in the test.
+
         Returns
         -------
         OBBject[Data]
@@ -132,7 +134,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform Durbin-Watson test for autocorrelation
+        """Perform Durbin-Watson test for autocorrelation.
 
         Parameters
         ----------
@@ -180,6 +182,7 @@ class ROUTER_econometrics(Container):
             Columns to use as exogenous variables.
         lag: PositiveInt
             Number of lags to use in the test.
+
         Returns
         -------
         OBBject[Data]
@@ -275,7 +278,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform a Between estimator regression on panel data
+        """Perform a Between estimator regression on panel data.
 
         Parameters
         ----------
@@ -310,7 +313,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform a first-difference estimate for panel data
+        """Perform a first-difference estimate for panel data.
 
         Parameters
         ----------
@@ -345,7 +348,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Fama-MacBeth estimator for panel data
+        """Fama-MacBeth estimator for panel data.
 
         Parameters
         ----------
@@ -380,7 +383,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """One- and two-way fixed effects estimator for panel data
+        """One- and two-way fixed effects estimator for panel data.
 
         Parameters
         ----------
@@ -415,7 +418,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform a Pooled coefficvient estimator regression on panel data
+        """Perform a Pooled coefficvient estimator regression on panel data.
 
         Parameters
         ----------
@@ -450,7 +453,7 @@ class ROUTER_econometrics(Container):
         y_column: str,
         x_columns: List[str],
     ) -> OBBject[Dict]:
-        """Perform One-way Random Effects model for panel data
+        """Perform One-way Random Effects model for panel data.
 
         Parameters
         ----------
@@ -496,6 +499,7 @@ class ROUTER_econometrics(Container):
         regression: str
             Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
             constant, trend, and trend-squared.
+
         Returns
         -------
         OBBject[Data]
