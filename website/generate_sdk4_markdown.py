@@ -1,13 +1,15 @@
 import json
+import os
 import re
 import shutil
 from inspect import Parameter, _empty, signature
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, TextIO, Union, Tuple
+from typing import Any, Dict, List, TextIO, Tuple, Union
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
+from openbb_provider import standard_models
 from pydantic import BaseModel
 
 website_path = Path(__file__).parent.absolute()
@@ -376,6 +378,43 @@ def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
     return title, description
 
 
+def find_data_model_implementation_file(data_model: str) -> str:
+    def search_in_file(file_path, search_string):
+        with open(file_path, encoding="utf-8", errors="ignore") as file:
+            if search_string in file.read():
+                return True
+        return False
+
+    standard_models_path = Path(standard_models.__file__).parent
+    file_name = ""
+
+    for file in os.listdir(standard_models_path):
+        if file.endswith(".py"):
+            file_path = os.path.join(standard_models_path, file)
+            if search_in_file(file_path, data_model):
+                file_name = file_path.split("/")[-1]
+
+    return file_name.replace(".py", "")
+
+
+def generate_implementation_details_markdown_section(data_model: str) -> str:
+    markdown = "---\n\n## Implementation details\n\n"
+    markdown += "### Class names\n\n"
+    markdown += "| Model name | Parameters class | Data class |\n"
+    markdown += "| ---------- | ---------------- | ---------- |\n"
+    markdown += f"| `{data_model}` | `{data_model}QueryParams` | `{data_model}Data` |\n"
+    markdown += "\n### Import Statement\n\n"
+    markdown += "```python\n"
+
+    file_name = find_data_model_implementation_file(data_model)
+
+    markdown += f"from openbb_provider.standard_models.{file_name} import (\n"
+    markdown += f"{data_model}Data,\n{data_model}QueryParams,\n"
+    markdown += ")\n```"
+
+    return markdown
+
+
 def generate_sdk_markdown() -> bool:
     """Generate markdown files for OpenBB FastAPI SDK Docusaurus website."""
     route_map = PathHandler.build_route_map()
@@ -425,15 +464,20 @@ description: OpenBB Platform Data Model
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 \n\n"""
+
+            data_markdown += generate_implementation_details_markdown_section(
+                data_model
+            )
+
             data_model_markdown = generate_data_markdown_section(meta_command)
-            data_markdown += "---\n\n## Parameters\n\n"
+            data_markdown += "\n\n## Parameters\n\n"
             if meta_command["params"]:
                 data_markdown += generate_params_markdown_section(meta_command)
 
             data_markdown += data_model_markdown
             markdown += data_model_markdown
 
-            data_filepath = data_models_path / f"{data_model_card_title}.md"
+            data_filepath = data_models_path / f"{data_model}.md"
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
