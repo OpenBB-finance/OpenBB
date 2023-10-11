@@ -1350,10 +1350,10 @@ class ROUTER_stocks_fa(Container):
             URL to the document.
         symbol : Optional[str]
             The ticker symbol of the company. (provider: fmp)
-        accepted_date : Optional[date]
-            Accepted date of the SEC filing. (provider: fmp)
         cik : Optional[str]
             CIK of the SEC filing. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date of the SEC filing. (provider: fmp)
         final_link : Optional[str]
             Final link of the SEC filing. (provider: fmp)"""  # noqa: E501
 
