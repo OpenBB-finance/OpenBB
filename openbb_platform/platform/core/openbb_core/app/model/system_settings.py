@@ -25,7 +25,7 @@ class SystemSettings(Tagged):
     platform: str = FrozenField(default=str(pl.platform()))
 
     # OpenBB section
-    # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
+    # TODO: Get the version of the Platform from somewhere that's not pyproject.toml
     version: str = FrozenField(default=VERSION)
     home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
     openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
