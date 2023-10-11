@@ -75,7 +75,7 @@ These signals offer a good starting point, and results can be narrowed by creati
 
 :::note
 
-Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accpeted values.
+Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
 
 All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
 :::

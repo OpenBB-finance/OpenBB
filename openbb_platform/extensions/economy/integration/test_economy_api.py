@@ -1,20 +1,18 @@
+import base64
+
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
-
-
-def get_token():
-    return requests.post(
-        "http://0.0.0.0:8000/api/v1/account/token",
-        data={"username": "openbb", "password": "openbb"},
-        timeout=5,
-    )
 
 
 @pytest.fixture(scope="session")
 def headers():
-    access_token = get_token().json()["access_token"]
-    return {"Authorization": f"Bearer {access_token}"}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 @pytest.mark.parametrize(
@@ -27,7 +25,7 @@ def test_economy_const(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/const?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -53,7 +51,7 @@ def test_economy_cpi(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cpi?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -87,6 +85,7 @@ def test_economy_cpi(params, headers):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -96,6 +95,7 @@ def test_economy_cpi(params, headers):
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "timeseries": 1,
             }
         ),
         (
@@ -156,7 +156,7 @@ def test_economy_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -191,7 +191,7 @@ def test_economy_european_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/european_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -206,14 +206,19 @@ def test_economy_european_index_constituents(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/european_index_constituents?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
 
 @pytest.mark.parametrize(
     "params",
-    [({}), ({"europe": True, "provider": "cboe"})],
+    [
+        ({}),
+        ({"europe": True, "provider": "cboe"}),
+        ({"provider": "fmp"}),
+        ({"provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_economy_available_indices(params, headers):
@@ -221,7 +226,7 @@ def test_economy_available_indices(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/available_indices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -236,7 +241,7 @@ def test_economy_risk(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/risk?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -261,7 +266,7 @@ def test_economy_index_search(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -276,7 +281,7 @@ def test_economy_index_snapshots(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index_snapshots?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -291,7 +296,7 @@ def test_economy_cot_search(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cot_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -321,7 +326,7 @@ def test_economy_cot(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/cot?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -346,7 +351,7 @@ def test_economy_sp500_multiples(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/sp500_multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -370,6 +375,92 @@ def test_economy_fred_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fred_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=5)
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"units": "usd", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "usd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_gdpnom(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpnom?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "yoy",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_gdpreal(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpreal?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_gdpforecast(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/gdpforecast?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

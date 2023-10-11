@@ -52,6 +52,8 @@ def test_futures_load(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "date": "2023-01-01"}),
+        ({"provider": "cboe", "symbol": "AAPL", "date": "2023-01-01"}),
+        ({"provider": "yfinance", "symbol": "AAPL", "date": "2023-01-01"}),
     ],
 )
 @pytest.mark.integration

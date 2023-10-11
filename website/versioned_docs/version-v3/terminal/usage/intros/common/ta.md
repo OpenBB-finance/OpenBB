@@ -240,7 +240,7 @@ load qqq -i 1 -s 2023-04-21/macd
 
 The Accumulation/Distribution Line at the same one-minute interval signals in advance of the upward drift reversal, beginning to sell into the Friday close just before 14:00.
 
-![Accumlation Distribution](https://user-images.githubusercontent.com/85772166/233764089-531dad18-d3c1-4bbb-aa6c-3c2c182f8fd3.png)
+![Accumulation Distribution](https://user-images.githubusercontent.com/85772166/233764089-531dad18-d3c1-4bbb-aa6c-3c2c182f8fd3.png)
 
 ## Indicators Dashboard
 
