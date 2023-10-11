@@ -2,12 +2,7 @@
 
 from typing import Dict
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    alias_generators,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, Extra, alias_generators, model_validator
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 
@@ -32,7 +27,7 @@ class Data(BaseModel):
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in super().model_dump().items()])})"
 
     model_config = ConfigDict(
-        extra="allow",
+        extra=Extra.allow,
         populate_by_name=True,
         alias_generator=alias_generators.to_camel,
         strict=False,
