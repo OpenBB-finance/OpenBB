@@ -71,11 +71,18 @@ OPENBB_API_PASSWORD="some_pass"
 The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request to the API inside the headers "Authorization" field.
 
 ```python
+import base64
 import requests
+
+msg = "some_user:some_pass"
+msg_bytes = msg.encode('ascii')
+base64_bytes = base64.b64encode(msg_bytes)
+base64_msg = base64_bytes.decode('ascii')
+
 
 symbol="SPY"
 url = f"http://127.0.0.1:8000/api/v1/stocks/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
-headers = {"accept": "application/json", "Authorization": f"Basic {basic_auth}"}
+headers = {"accept": "application/json", "Authorization": f"Basic {base64_msg}"}
 
 response = requests.get(url=url, headers=headers)
 
