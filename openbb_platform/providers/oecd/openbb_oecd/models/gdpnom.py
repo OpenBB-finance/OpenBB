@@ -10,12 +10,13 @@ from openbb_provider.standard_models.gdpnom import GDPNomData, GDPNomQueryParams
 from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys())
+GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
 class OECDGDPNomQueryParams(GDPNomQueryParams):
     """GDP query."""
 
-    country: Literal[*gdp_countries] = Field(
+    country: GDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
     )
 
