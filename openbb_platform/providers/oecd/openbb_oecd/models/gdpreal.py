@@ -10,12 +10,13 @@ from openbb_provider.standard_models.gdpreal import GDPRealData, GDPRealQueryPar
 from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys())
+RGDPCountriesLiteral = Literal[rgdp_countries]  # type: ignore
 
 
 class OECDGDPRealQueryParams(GDPRealQueryParams):
     """GDP query."""
 
-    country: Literal[*rgdp_countries] = Field(
+    country: RGDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
     )
 
