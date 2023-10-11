@@ -15,6 +15,9 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
+# pylint: disable=redefined-outer-name
+
+
 @pytest.mark.parametrize(
     "params",
     [({"index": "dowjones"})],
@@ -308,7 +311,7 @@ def test_economy_cot_search(params, headers):
         (
             {
                 "code": "13874P",
-                "data_type": "FO",
+                "data_type": "FO",  # cspell: disable-line
                 "legacy_format": True,
                 "report_type": "ALL",
                 "measure": "CR",
