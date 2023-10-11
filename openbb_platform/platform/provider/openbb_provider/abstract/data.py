@@ -5,7 +5,6 @@ from typing import Dict
 from pydantic import (
     BaseModel,
     ConfigDict,
-    Extra,
     alias_generators,
     model_validator,
 )
@@ -33,7 +32,7 @@ class Data(BaseModel):
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in super().model_dump().items()])})"
 
     model_config = ConfigDict(
-        extra=Extra.allow,
+        extra="allow",
         populate_by_name=True,
         alias_generator=alias_generators.to_camel,
         strict=False,
