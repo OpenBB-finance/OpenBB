@@ -28,5 +28,5 @@ def test_check_get_estimates_eps(recorder):
 
 @pytest.mark.vcr
 def test_check_get_estimates_rev(recorder):
-    df = seeking_alpha_model.get_estimates_eps(ticker="JNJ")
+    df = seeking_alpha_model.get_estimates_rev(ticker="JNJ")
     recorder.capture(df)

@@ -68,6 +68,7 @@ def display_rev_estimates(
             show_index=False,
             title=f"{symbol.upper()} Revenue History and Estimations",
             export=bool(export),
+            columns_keep_types=["fiscalyear"],
         )
 
         export_data(
