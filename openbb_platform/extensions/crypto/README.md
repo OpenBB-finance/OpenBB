@@ -1,4 +1,4 @@
-# Crypto data extension for OpenBB SDK
+# Crypto data extension for OpenBB Platform
 
 This extension provides a set of commands for crypto data retrieval.
 

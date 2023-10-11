@@ -32,7 +32,7 @@
 
 ## 1. Introduction
 
-This directory contains the OpenBB SDK's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
+This directory contains the OpenBB Platform's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
 
 
 ## 2. How to install?
@@ -297,7 +297,7 @@ from openbb import obb
 # Login with personal access token
 obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
 
-# Login with email, password or SDK token
+# Login with email, password or Platform token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
@@ -317,7 +317,7 @@ obb.account.logout()
 
 How do we execute commands?
 
-OpenBB SDK core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
+OpenBB Platform core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
 
 If you are using the `openbb` package, running the command below triggers a "request" to the `CommandRunner` class. The "request" will be similar to the one found in [4.2 Dynamic version](#42-dynamic-version). This will hit the endpoint matching the command and return the result.
 
@@ -335,7 +335,7 @@ obb.stocks.load(
 
 ### 4.1.5. Environment variables
 
-The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
+The OS environment is only read once before the program starts, so make sure you change the variable before importing the Platform. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
 To apply an environment variable use one of the following:
 
@@ -400,7 +400,7 @@ extra: ...              # Extra info.
 
 ## 5. REST API
 
-OpenBB SDK comes with a ready to use Rest API built with FastAPI. Start the application using this command:
+OpenBB Platform comes with a ready to use Rest API built with FastAPI. Start the application using this command:
 
 ```bash
 uvicorn openbb_core.api.rest_api:app --reload
