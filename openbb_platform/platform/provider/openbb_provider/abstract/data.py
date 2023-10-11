@@ -2,13 +2,7 @@
 
 from typing import Dict
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Extra,
-    alias_generators,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, alias_generators, model_validator
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 
@@ -16,8 +10,8 @@ from typing_extensions import Annotated
 def check_int(v: int) -> int:
     try:
         return int(v)
-    except ValueError:
-        raise TypeError("value must be an int")
+    except ValueError as exc:
+        raise TypeError("value must be an int") from exc
 
 
 StrictInt = Annotated[int, BeforeValidator(check_int)]
@@ -33,7 +27,7 @@ class Data(BaseModel):
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in super().model_dump().items()])})"
 
     model_config = ConfigDict(
-        extra=Extra.allow,
+        extra="allow",
         populate_by_name=True,
         alias_generator=alias_generators.to_camel,
         strict=False,

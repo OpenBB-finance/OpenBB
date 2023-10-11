@@ -11,12 +11,13 @@ from openbb_provider.standard_models.gdpforecast import (
 from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
+GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
 class OECDGDPForecastQueryParams(GDPForecastQueryParams):
     """GDP Forecast query."""
 
-    country: Literal[*gdp_countries] = Field(
+    country: GDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
     )
 
