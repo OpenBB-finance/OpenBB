@@ -86,11 +86,11 @@ def test_econometrics_corr(params, data_type):
     "params, data_type",
     [
         (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
             "stocks",
         ),
         (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
             "crypto",
         ),
     ],
@@ -108,7 +108,7 @@ def test_econometrics_ols_summary(params, data_type):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/econometrics/ols_summary?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
+    result = requests.post(url, headers=get_headers(), timeout=20, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -257,7 +257,7 @@ def test_econometrics_granger(params, data_type):
 
 @pytest.mark.parametrize(
     "params, data_type",
-    [({"data": "", "column": "", "regression": ""}, "stocks")],
+    [({"data": "", "column": "high", "regression": "c"}, "stocks")],
 )
 @pytest.mark.integration
 def test_econometrics_unitroot(params, data_type):
