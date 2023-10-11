@@ -5,13 +5,16 @@ from openbb_core.app.model.obbject import OBBject
 
 
 @pytest.fixture(scope="session")
-def obb(pytestconfig):
+def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
+
+
+# pylint: disable=redefined-outer-name
 
 
 @pytest.mark.parametrize(
@@ -366,9 +369,16 @@ def test_economy_fred_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-({'country': 'united_states', 'provider': 'oecd', 'units': 'usd', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-
+        ({"units": "usd", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "usd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -384,9 +394,16 @@ def test_economy_gdpnom(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-({'country': 'united_states', 'provider': 'oecd', 'units': 'yoy', 'start_date': '2023-01-01', 'end_date': '2023-06-06'}),
-
+        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "units": "yoy",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -402,9 +419,24 @@ def test_economy_gdpreal(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'}),
-({'country': 'united_states', 'provider': 'oecd', 'period': 'annual', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'type': 'real'}),
-
+        (
+            {
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "period": "annual",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type": "real",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
