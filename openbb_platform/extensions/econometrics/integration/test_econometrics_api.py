@@ -226,19 +226,11 @@ def test_econometrics_coint(params, data_type):
     "params, data_type",
     [
         (
-            {
-                "data": "",
-                "y_column": "volume",
-                "x_column": "close",
-            },
+            {"data": "", "y_column": "volume", "x_column": "close", "lag": ""},
             "stocks",
         ),
         (
-            {
-                "data": "",
-                "y_column": "volume",
-                "x_column": "close",
-            },
+            {"data": "", "y_column": "volume", "x_column": "close", "lag": "2"},
             "crypto",
         ),
     ],
