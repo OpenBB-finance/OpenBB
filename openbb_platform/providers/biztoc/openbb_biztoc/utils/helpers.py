@@ -13,6 +13,8 @@ def get_sources(api_key: str) -> List[Dict]:
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
     }
     sources = biztoc_session_sources.get(
         "https://biztoc.p.rapidapi.com/sources", headers=headers, timeout=10
@@ -30,6 +32,8 @@ def get_pages(api_key: str) -> List[str]:
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
     }
     pages = biztoc_session_pages.get(
         "https://biztoc.p.rapidapi.com/pages", headers=headers, timeout=10
@@ -47,6 +51,8 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
     }
     tags = biztoc_session_tags.get(
         f"https://biztoc.p.rapidapi.com/tags/{page_id}", headers=headers, timeout=10

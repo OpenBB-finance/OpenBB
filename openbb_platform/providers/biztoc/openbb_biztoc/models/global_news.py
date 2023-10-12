@@ -95,6 +95,8 @@ class BiztocGlobalNewsFetcher(
         headers = {
             "X-RapidAPI-Key": f"{api_key}",
             "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip",
         }
 
         filter_dict = {
