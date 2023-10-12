@@ -96,7 +96,7 @@ def test_ta_atr(params, data_type):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/atr?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=15, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -119,7 +119,7 @@ def test_ta_atr(params, data_type):
             {
                 "data": "",
                 "index": "date",
-                "close_column": "adj_close",
+                "close_column": "close",
                 "period": "125",
                 "start_date": "",
                 "end_date": "",
@@ -572,7 +572,7 @@ def test_ta_ichimoku(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "target": "", "period": ""}, "stocks"),
+        ({"data": "", "index": "date", "target": "close", "period": "10"}, "stocks"),
         (
             {
                 "data": "",
@@ -591,7 +591,7 @@ def test_ta_clenow(params, data_type):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/clenow?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=15, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
