@@ -504,7 +504,8 @@
     "holdings": ["StockAnalysis"],
     "weights": ["FinancialModelingPrep"],
     "news": ["NewsApi"],
-    "compare": ["StockAnalysis"]
+    "compare": ["StockAnalysis"],
+    "holding_perf": ["FinancialModelingPrep"]
   },
   "economy": {
     "overview": ["WallStreetJournal"],

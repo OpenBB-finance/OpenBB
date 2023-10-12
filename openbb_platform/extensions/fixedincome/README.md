@@ -1,6 +1,6 @@
 # OpenBB Fixed Income Extension
 
-This extension provides fixed income data for the OpenBB SDK.
+This extension provides fixed income data for the OpenBB Platform.
 
 Features of the Fixed Income extension include information on government bonds and central bank rates.
 

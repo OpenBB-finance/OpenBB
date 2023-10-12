@@ -1,4 +1,4 @@
-# Econometrics extension for OpenBB SDK
+# Econometrics extension for OpenBB Platform
 
 This extension provides a set of econometrics tools.
 
