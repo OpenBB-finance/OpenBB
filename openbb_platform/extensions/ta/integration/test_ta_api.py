@@ -92,11 +92,11 @@ def get_crypto_data():
 @pytest.mark.integration
 def test_ta_atr(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/atr?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -131,11 +131,11 @@ def test_ta_atr(params, data_type):
 @pytest.mark.integration
 def test_ta_fib(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/fib?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -150,11 +150,11 @@ def test_ta_fib(params, data_type):
 @pytest.mark.integration
 def test_ta_obv(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/obv?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -169,11 +169,11 @@ def test_ta_obv(params, data_type):
 @pytest.mark.integration
 def test_ta_fisher(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/fisher?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -206,11 +206,11 @@ def test_ta_fisher(params, data_type):
 @pytest.mark.integration
 def test_ta_adosc(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/adosc?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -247,11 +247,11 @@ def test_ta_adosc(params, data_type):
 @pytest.mark.integration
 def test_ta_bbands(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/bbands?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -284,11 +284,11 @@ def test_ta_bbands(params, data_type):
 @pytest.mark.integration
 def test_ta_zlma(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/zlma?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -311,11 +311,11 @@ def test_ta_zlma(params, data_type):
 @pytest.mark.integration
 def test_ta_aroon(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/aroon?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -348,11 +348,11 @@ def test_ta_aroon(params, data_type):
 @pytest.mark.integration
 def test_ta_sma(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/sma?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -387,11 +387,11 @@ def test_ta_sma(params, data_type):
 @pytest.mark.integration
 def test_ta_demark(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/demark?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -406,11 +406,11 @@ def test_ta_demark(params, data_type):
 @pytest.mark.integration
 def test_ta_vwap(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/vwap?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -445,11 +445,11 @@ def test_ta_vwap(params, data_type):
 @pytest.mark.integration
 def test_ta_macd(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/macd?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -482,11 +482,11 @@ def test_ta_macd(params, data_type):
 @pytest.mark.integration
 def test_ta_hma(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/hma?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -519,11 +519,11 @@ def test_ta_hma(params, data_type):
 @pytest.mark.integration
 def test_ta_donchian(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/donchian?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -560,11 +560,11 @@ def test_ta_donchian(params, data_type):
 @pytest.mark.integration
 def test_ta_ichimoku(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ichimoku?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -587,11 +587,11 @@ def test_ta_ichimoku(params, data_type):
 @pytest.mark.integration
 def test_ta_clenow(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/clenow?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -606,11 +606,11 @@ def test_ta_clenow(params, data_type):
 @pytest.mark.integration
 def test_ta_ad(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ad?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -643,11 +643,11 @@ def test_ta_ad(params, data_type):
 @pytest.mark.integration
 def test_ta_adx(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/adx?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -680,11 +680,11 @@ def test_ta_adx(params, data_type):
 @pytest.mark.integration
 def test_ta_wma(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/wma?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -707,11 +707,11 @@ def test_ta_wma(params, data_type):
 @pytest.mark.integration
 def test_ta_cci(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cci?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -746,11 +746,11 @@ def test_ta_cci(params, data_type):
 @pytest.mark.integration
 def test_ta_rsi(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/rsi?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -783,11 +783,11 @@ def test_ta_rsi(params, data_type):
 @pytest.mark.integration
 def test_ta_stoch(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/stoch?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -822,11 +822,11 @@ def test_ta_stoch(params, data_type):
 @pytest.mark.integration
 def test_ta_kc(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/kc?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -841,11 +841,11 @@ def test_ta_kc(params, data_type):
 @pytest.mark.integration
 def test_ta_cg(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cg?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -880,11 +880,11 @@ def test_ta_cg(params, data_type):
 @pytest.mark.integration
 def test_ta_cones(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/cones?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -917,10 +917,10 @@ def test_ta_cones(params, data_type):
 @pytest.mark.integration
 def test_ta_ema(params, data_type):
     params = {p: v for p, v in params.items() if v}
-    data = json.dumps(get_data(data_type))
+    body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ema?{query_str}"
-    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
