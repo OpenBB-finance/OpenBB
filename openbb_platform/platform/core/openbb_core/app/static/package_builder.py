@@ -252,7 +252,7 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_call, BaseModel"
+        code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
@@ -262,6 +262,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
+        code += "\nfrom openbb_core.app.static.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
         code += "\nfrom openbb_provider.abstract.data import Data"
         if path.startswith("/qa"):
@@ -721,12 +722,12 @@ class MethodDefinition:
         func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type, model_name)
 
-        extra = (
+        args = (
             "(config=dict(arbitrary_types_allowed=True))"
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate_call{extra}"
+        code = f"\n    @validate{args}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

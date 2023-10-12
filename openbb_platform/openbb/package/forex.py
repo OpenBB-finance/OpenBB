@@ -7,9 +7,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_forex(Container):
@@ -21,7 +21,7 @@ class ROUTER_forex(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -42,7 +42,7 @@ class ROUTER_forex(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Forex Intraday Price.
@@ -55,12 +55,12 @@ class ROUTER_forex(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+        provider : Union[Literal['fmp', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: fmp, yfinance)
+        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
+            Data granularity. (provider: fmp)
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -71,15 +71,13 @@ class ROUTER_forex(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-        period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : Union[List[ForexHistorical]]
                 Serializable results.
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
+            provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -137,7 +135,7 @@ class ROUTER_forex(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pairs(
         self,
         provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
