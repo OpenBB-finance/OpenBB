@@ -8,10 +8,10 @@ import TabItem from '@theme/TabItem';
 
 # ratios
 
-Extensive set of ratios over time.
+Extensive set of ratios over time. Financial ratios for a given company.
 
 ```python wordwrap
-ratios(symbol: Union[str, List[str]], period: Literal[str] = annual, limit: NonNegativeInt = 12, provider: Literal[str] = fmp)
+ratios(symbol: Union[str, List[str]], period: Literal[str] = annual, limit: int = 12, provider: Literal[str] = fmp)
 ```
 
 ---
@@ -25,8 +25,19 @@ ratios(symbol: Union[str, List[str]], period: Literal[str] = annual, limit: NonN
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | NonNegativeInt | The number of data entries to return. | 12 | True |
+| limit | int | The number of data entries to return. | 12 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 12 | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| with_ttm | bool | Include trailing twelve months (TTM) data. | False | True |
 </TabItem>
 
 </Tabs>

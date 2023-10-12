@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # shrs
 
-Share Statistics.
+Share Statistics. Share statistics for a given company.
 
 ```python wordwrap
 shrs(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

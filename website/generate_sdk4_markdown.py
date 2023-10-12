@@ -4,17 +4,12 @@ import shutil
 from inspect import Parameter, _empty, signature
 from pathlib import Path
 from textwrap import shorten
-from typing import (
-    Any,
-    Dict,
-    List,
-    TextIO,
-    Union,
-)
+from typing import Any, Dict, List, TextIO, Tuple, Union
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
-from pydantic.fields import ModelField
+from openbb_provider import standard_models
+from pydantic.fields import FieldInfo
 
 website_path = Path(__file__).parent.absolute()
 
@@ -25,7 +20,7 @@ import ReferenceCard from "@site/src/components/General/ReferenceCard";
 """
 
 
-def generate_markdown(meta_command: dict, command: bool = True):
+def generate_markdown(meta_command: dict):
     markdown = f"""---
 title: {meta_command["name"]}
 description: OpenBB Platform Function
@@ -83,7 +78,9 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
     path = "reference" if not data_models else "data_models"
     cmd_cards = ""
     for cmd in cmd_text:
-        url = f"/platform/{path}/{cmd['url']}/{cmd['title']}".replace("//", "/")
+        url = f"/platform/{path}/{cmd['url']}".replace("//", "/")
+        if not data_models:
+            url = f"{url}/{cmd['title']}"
         description = shorten(f"{cmd['description']}", width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
     title="{cmd["title"]}"
@@ -139,7 +136,9 @@ provider_interface = ProviderInterface()
 
 def get_annotation_type(annotation: Any) -> str:
     optional_regex = re.compile(r"Optional\[(.*)\]")
-    return re.sub(
+    annotated_regex = re.compile(r"Annotated\[(?P<type>.*)\,.*\]")
+
+    subbed = re.sub(
         optional_regex,
         r"\1",
         str(annotation)
@@ -152,6 +151,10 @@ def get_annotation_type(annotation: Any) -> str:
         .replace("NoneType", "None")
         .replace(", None", ""),
     )
+    if match := annotated_regex.match(subbed):
+        subbed = match.group("type")
+
+    return subbed
 
 
 def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
@@ -182,7 +185,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
     if model_name:
         providers = provider_interface.map[model_name]
 
-        obb_query_fields: Dict[str, ModelField] = providers["openbb"]["QueryParams"][
+        obb_query_fields: Dict[str, FieldInfo] = providers["openbb"]["QueryParams"][
             "fields"
         ]
 
@@ -210,7 +213,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 optional = "True"
                 default = "False"
             else:
-                description = obb_query_fields[param.name].field_info.description
+                description = obb_query_fields[param.name].description
 
                 param_type = param.annotation
 
@@ -278,23 +281,23 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         standard, provider_extras, provider_params = {}, {}, {}
 
         for provider_name, model_details in providers.items():
-            data_fields: Dict[str, ModelField] = model_details["Data"]["fields"]
-            query_fields: Dict[str, ModelField] = model_details["QueryParams"]["fields"]
+            data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
+            query_fields: Dict[str, FieldInfo] = model_details["QueryParams"]["fields"]
 
             if provider_name == "openbb":
                 for name, field in data_fields.items():
                     standard[name] = {
                         "type": get_annotation_type(field.annotation),
-                        "doc": field.field_info.description,
+                        "doc": field.description,
                     }
             else:
                 for name, field in query_fields.items():
                     if name not in obb_query_fields:
                         provider_params.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.field_info.description,
-                            "optional": "True" if not field.required else "False",
-                            "default": str(field.field_info.default).replace(
+                            "doc": field.description,
+                            "optional": "True" if not field.is_required() else "False",
+                            "default": str(field.default).replace(
                                 "PydanticUndefined", ""
                             ),
                         }
@@ -302,7 +305,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                     if name not in providers["openbb"]["Data"]["fields"]:
                         provider_extras.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.field_info.description,
+                            "doc": field.description,
                         }
 
         meta_command["schema"] = {
@@ -370,6 +373,51 @@ def generate_params_markdown_section(meta: Dict[str, Any]):
     return markdown
 
 
+def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
+    description = meta["description"]
+
+    split_description = list(filter(None, description.split(".")))
+    title = split_description[0]
+    description = ".".join(split_description[1:]) if len(split_description) > 1 else ""
+
+    return title, description
+
+
+def find_data_model_implementation_file(data_model: str) -> str:
+    def search_in_file(file_path: Path, search_string: str) -> bool:
+        with open(file_path, encoding="utf-8", errors="ignore") as file:
+            if search_string in file.read():
+                return True
+        return False
+
+    standard_models_path = Path(standard_models.__file__).parent
+    file_name = ""
+
+    for file in standard_models_path.glob("**/*.py"):
+        if search_in_file(file, f"class {data_model}Data"):
+            file_name = file.with_suffix("").name
+
+    return file_name
+
+
+def generate_implementation_details_markdown_section(data_model: str) -> str:
+    markdown = "---\n\n## Implementation details\n\n"
+    markdown += "### Class names\n\n"
+    markdown += "| Model name | Parameters class | Data class |\n"
+    markdown += "| ---------- | ---------------- | ---------- |\n"
+    markdown += f"| `{data_model}` | `{data_model}QueryParams` | `{data_model}Data` |\n"
+    markdown += "\n### Import Statement\n\n"
+    markdown += "```python\n"
+
+    file_name = find_data_model_implementation_file(data_model)
+
+    markdown += f"from openbb_provider.standard_models.{file_name} import (\n"
+    markdown += f"{data_model}Data,\n{data_model}QueryParams,\n"
+    markdown += ")\n```"
+
+    return markdown
+
+
 def generate_sdk_markdown() -> bool:
     """Generate markdown files for OpenBB FastAPI SDK Docusaurus website."""
     route_map = PathHandler.build_route_map()
@@ -377,8 +425,8 @@ def generate_sdk_markdown() -> bool:
 
     print("Generating markdown files...")
     kwargs = {"encoding": "utf-8", "newline": "\n"}
-    content_path = website_path / "versioned_docs/version-v4/platform/reference"
-    data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
+    content_path = website_path / "content/platform/reference"
+    data_models_path = website_path / "content/platform/data_models"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
     data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
@@ -406,30 +454,38 @@ def generate_sdk_markdown() -> bool:
 
         markdown = generate_markdown(meta_command=meta_command)
         if data_model := meta_command.get("model", None):
+            (
+                data_model_card_title,
+                data_model_card_description,
+            ) = generate_data_model_card_info(meta_command)
+
             data_markdown = f"""---
-title: {data_model}
+title: {data_model_card_title}
 description: OpenBB Platform Data Model
 ---\n\n
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 \n\n"""
+
+            data_markdown += generate_implementation_details_markdown_section(
+                data_model
+            )
+
             data_model_markdown = generate_data_markdown_section(meta_command)
-            data_markdown += "---\n\n## Parameters\n\n"
+            data_markdown += "\n\n## Parameters\n\n"
             if meta_command["params"]:
                 data_markdown += generate_params_markdown_section(meta_command)
 
             data_markdown += data_model_markdown
             markdown += data_model_markdown
 
-            data_filepath = data_models_path / folder / f"{data_model}.md"
+            data_filepath = data_models_path / f"{data_model}.md"
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
-                    title=data_model,
-                    description=func.__doc__ or "",
-                    url="/".join(
-                        (data_models_path / folder).relative_to(data_models_path).parts
-                    ),
+                    title=data_model_card_title,
+                    description=data_model_card_description or "",
+                    url=data_models_path.relative_to(data_models_path) / data_model,
                 )
             )
             data_filepath.parent.mkdir(parents=True, exist_ok=True)

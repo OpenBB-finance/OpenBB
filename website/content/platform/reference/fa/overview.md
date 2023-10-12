@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # overview
 
-Company Overview.
+Company Overview. General information about a company.
 
 ```python wordwrap
 overview(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

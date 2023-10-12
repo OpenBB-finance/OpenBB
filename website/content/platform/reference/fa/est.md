@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # est
 
-Analyst Estimates.
+Analyst Estimates. Analyst stock recommendations.
 
 ```python wordwrap
 est(symbol: Union[str, List[str]], period: Literal[str] = annual, limit: int = 30, provider: Literal[str] = fmp)
