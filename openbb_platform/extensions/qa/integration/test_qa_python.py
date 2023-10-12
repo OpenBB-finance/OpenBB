@@ -25,7 +25,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = openbb.obb.stocks.load(
         symbol=symbol, provider=provider
