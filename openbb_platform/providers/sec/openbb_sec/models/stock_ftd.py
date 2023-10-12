@@ -44,7 +44,7 @@ class SecStockFtdData(StockFtdData):
 
     settlement_date: dateType = Field(description="The settlement date of the fail.")
     quantity: int = Field(description="The quantity of fails.")
-    price: float = Field(description="The price on the day of the fail.")
+    price: float = Field(description="The closing price from the previous day.")
 
 
 class SecStockFtdFetcher(
