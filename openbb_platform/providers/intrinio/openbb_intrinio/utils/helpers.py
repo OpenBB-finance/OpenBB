@@ -1,6 +1,10 @@
 """Intrinio Helpers Module."""
 
 import json
+from datetime import (
+    date as dateType,
+    timedelta,
+)
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
@@ -116,3 +120,10 @@ def get_data_one(url: str, **kwargs: Any) -> dict:
             raise ValueError("Expected dict, got list of dicts") from e
 
     return data
+
+
+def get_weekday(date: dateType) -> str:
+    """Return the weekday date."""
+    if date.weekday() in [5, 6]:
+        return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
+    return date.strftime("%Y-%m-%d")

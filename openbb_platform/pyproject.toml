@@ -15,6 +15,7 @@ openbb-fmp = "^0.1.0a2"
 openbb-fred = "^0.1.0a2"
 openbb-intrinio = "^0.1.0a2"
 openbb-polygon = "^0.1.0a2"
+openbb-tradingeconomics = "^0.1.0a2"
 
 openbb-crypto = "^0.1.0a2"
 openbb-economy = "^0.1.0a2"
