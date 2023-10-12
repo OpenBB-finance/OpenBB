@@ -14,6 +14,7 @@ openbb-benzinga = "^0.1.0a2"
 openbb-fmp = "^0.1.0a2"
 openbb-fred = "^0.1.0a2"
 openbb-intrinio = "^0.1.0a2"
+openbb-oecd = "^0.1.0a2"
 openbb-polygon = "^0.1.0a2"
 openbb-tradingeconomics = "^0.1.0a2"
 
@@ -30,7 +31,6 @@ openbb-biztoc = { version = "^0.1.0a2", optional = true }
 openbb-cboe = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
-openbb-oecd = { version = "^0.1.0a2", optional = true }
 
 openbb-charting = { version = "^0.1.0a2", optional = true }
 openbb-futures = { version = "^0.1.0a2", optional = true }
@@ -44,7 +44,6 @@ biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
 quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
-oecd = ["openbb-oecd"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
@@ -57,7 +56,6 @@ all = [
     "openbb-cboe",
     "openbb-quandl",
     "openbb-yfinance",
-    "openbb-oecd",
     "openbb-charting",
     "openbb-futures",
     "openbb-qa",
