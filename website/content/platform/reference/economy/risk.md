@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # risk
 
-Market Risk Premium.
+Market Risk Premium. Historical market risk premium.
 
 ```python wordwrap
 risk(provider: Literal[str] = fmp)
@@ -61,8 +61,8 @@ OBBject
 | ---- | ---- | ----------- |
 | country | str | Market country. |
 | continent | str | Continent of the country. |
-| total_equity_risk_premium | PositiveFloat | Total equity risk premium for the country. |
-| country_risk_premium | NonNegativeFloat | Country-specific risk premium. |
+| total_equity_risk_premium | float | Total equity risk premium for the country. |
+| country_risk_premium | float | Country-specific risk premium. |
 </TabItem>
 
 </Tabs>

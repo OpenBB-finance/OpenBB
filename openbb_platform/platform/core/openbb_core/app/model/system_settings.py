@@ -25,7 +25,7 @@ class SystemSettings(Tagged):
     platform: str = FrozenField(default=str(pl.platform()))
 
     # OpenBB section
-    # TODO: Get the version of the SDK from somewhere that's not pyproject.toml
+    # TODO: Get the version of the Platform from somewhere that's not pyproject.toml
     version: str = FrozenField(default=VERSION)
     home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
     openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
@@ -33,7 +33,7 @@ class SystemSettings(Tagged):
     system_settings_path: str = FrozenField(default=str(SYSTEM_SETTINGS_PATH))
 
     # Logging section
-    logging_app_name: Literal["sdk"] = FrozenField(default="sdk")
+    logging_app_name: Literal["platform"] = FrozenField(default="platform")
     logging_commit_hash: Optional[str] = FrozenField(default=None)
     logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(default="H")
     logging_handlers: List[str] = FrozenField(default_factory=lambda: ["file"])

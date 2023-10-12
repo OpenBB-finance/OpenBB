@@ -48,7 +48,7 @@ class Console:
 
 
 class PackageBuilder:
-    """Build the extension package for the SDK."""
+    """Build the extension package for the Platform."""
 
     def __init__(
         self, directory: Optional[Path] = None, lint: bool = True, verbose: bool = False
@@ -72,7 +72,7 @@ class PackageBuilder:
         self,
         modules: Optional[Union[str, List[str]]] = None,
     ) -> None:
-        """Build the extensions for the SDK."""
+        """Build the extensions for the Platform."""
         self.console.log("\nBuilding extensions package...\n")
         self.clean_package(modules)
         ext_map = self.get_extension_map()
@@ -170,7 +170,7 @@ class PackageBuilder:
 
 
 class ModuleBuilder:
-    """Build the module for the SDK."""
+    """Build the module for the Platform."""
 
     @staticmethod
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
@@ -183,7 +183,7 @@ class ModuleBuilder:
 
 
 class ImportDefinition:
-    """Build the import definition for the SDK."""
+    """Build the import definition for the Platform."""
 
     @staticmethod
     def filter_hint_type_list(hint_type_list: List[Type]) -> List[Type]:
@@ -252,7 +252,7 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport datetime"
         code += "\nimport pydantic"
-        code += "\nfrom pydantic import validate_call, BaseModel"
+        code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
@@ -262,6 +262,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
+        code += "\nfrom openbb_core.app.static.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
         code += "\nfrom openbb_provider.abstract.data import Data"
         if path.startswith("/qa"):
@@ -280,7 +281,7 @@ class ImportDefinition:
 
 
 class ClassDefinition:
-    """Build the class definition for the SDK."""
+    """Build the class definition for the Platform."""
 
     @staticmethod
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
@@ -515,7 +516,7 @@ class DocstringGenerator:
 
 
 class MethodDefinition:
-    """Build the method definition for the SDK."""
+    """Build the method definition for the Platform."""
 
     @staticmethod
     def build_class_loader_method(path: str) -> str:
@@ -721,12 +722,12 @@ class MethodDefinition:
         func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type, model_name)
 
-        extra = (
+        args = (
             "(config=dict(arbitrary_types_allowed=True))"
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate_call{extra}"
+        code = f"\n    @validate{args}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code
@@ -817,7 +818,7 @@ class MethodDefinition:
 
 
 class PathHandler:
-    """Handle the paths for the SDK."""
+    """Handle the paths for the Platform."""
 
     @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
@@ -884,7 +885,7 @@ class PathHandler:
 
 
 class Linters:
-    """Run the linters for the SDK."""
+    """Run the linters for the Platform."""
 
     def __init__(self, directory: Path, verbose: bool = False) -> None:
         self.directory = directory

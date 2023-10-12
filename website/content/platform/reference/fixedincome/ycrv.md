@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # ycrv
 
-Get United States yield curve.
+US Yield Curve. Get United States yield curve.
 
 ```python wordwrap
 ycrv(date: date = None, inflation_adjusted: bool = False, provider: Literal[str] = fred)

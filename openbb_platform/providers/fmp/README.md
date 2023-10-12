@@ -1,6 +1,6 @@
 # OpenBB Financial Modeling Prep Provider
 
-This extension integrates the [Financial Modeling Prep](https://site.financialmodelingprep.com/) data provider into the OpenBB SDK.
+This extension integrates the [Financial Modeling Prep](https://site.financialmodelingprep.com/) data provider into the OpenBB Platform.
 
 ## Installation
 

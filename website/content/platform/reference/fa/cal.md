@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # cal
 
-Show Dividend Calendar for a given start and end dates.
+Dividend Calendar. Show Dividend Calendar for a given start and end dates.
 
 ```python wordwrap
 cal(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fmp)
@@ -64,8 +64,8 @@ OBBject
 | symbol | str | Symbol to get data for. |
 | date | date | The date of the data. |
 | label | str | Date in human readable form in the calendar. |
-| adj_dividend | NonNegativeFloat | Adjusted dividend on a date in the calendar. |
-| dividend | NonNegativeFloat | Dividend amount in the calendar. |
+| adj_dividend | float | Adjusted dividend on a date in the calendar. |
+| dividend | float | Dividend amount in the calendar. |
 | record_date | date | Record date of the dividend in the calendar. |
 | payment_date | date | Payment date of the dividend in the calendar. |
 | declaration_date | date | Declaration date of the dividend in the calendar. |

@@ -1,6 +1,6 @@
 # OpenBB Forex Extension
 
-This extension provides currency exchange related data for the OpenBB SDK.
+This extension provides currency exchange related data for the OpenBB Platform.
 
 ## Installation
 
