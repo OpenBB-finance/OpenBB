@@ -262,7 +262,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.decorators import validate as _validate\n"
+        code += "\nfrom openbb_core.app.static.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
         code += "\nfrom openbb_provider.abstract.data import Data"
         if path.startswith("/qa"):
@@ -727,7 +727,7 @@ class MethodDefinition:
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @_validate{args}"
+        code = f"\n    @validate{args}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate as _validate
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from typing_extensions import Annotated
@@ -25,7 +25,7 @@ class ROUTER_economy(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @_validate
+    @validate
     def available_indices(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List[Data]]:
@@ -77,7 +77,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @_validate
+    @validate
     def const(
         self,
         index: Annotated[
@@ -148,7 +148,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @_validate
+    @validate
     def cpi(
         self,
         countries: Annotated[
@@ -298,7 +298,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @_validate
+    @validate
     def fred_index(
         self,
         symbol: Annotated[
@@ -384,7 +384,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @_validate
+    @validate
     def index(
         self,
         symbol: Annotated[
@@ -496,7 +496,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @_validate
+    @validate
     def risk(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List[Data]]:
