@@ -42,7 +42,7 @@ def test_charting_extension_function_coverage() -> None:
     integration_tests_functions = get_module_functions(charting_module)
 
     missing_items = [
-        test for test in test_names if test not in integration_tests_functions.keys()
+        test for test in test_names if test not in integration_tests_functions
     ]
 
     assert missing_items == [], "\n".join(missing_items)
