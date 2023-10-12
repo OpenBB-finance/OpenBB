@@ -27,11 +27,11 @@ class OptionsChainsData(Data):
     """Options Chains Data."""
 
     contract_symbol: str = Field(description="Contract symbol for the option.")
-    symbol: str = Field(description="Underlying symbol for the option.")
+    symbol: Optional[str] = Field(description="Underlying symbol for the option.")
     expiration: dateType = Field(description="Expiration date of the contract.")
     strike: float = Field(description="Strike price of the contract.")
-    type: str = Field(description="Call or Put.")
-    date: dateType = Field(
+    option_type: str = Field(description="Call or Put.")
+    eod_date: dateType = Field(
         description="Date for which the options chains are returned."
     )
 
