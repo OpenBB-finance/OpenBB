@@ -231,7 +231,7 @@ def get_top_headlines(ticker: str) -> dict:
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
             return {}
         json = data.json()
-        if 'message' in json:
+        if "message" in json:
             console.print(f"[red]{json['message']}[/red]")
             return {}
         return json
