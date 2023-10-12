@@ -5,7 +5,7 @@ from datetime import date, datetime
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, field_validator, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -47,7 +47,7 @@ class FuturesHistoricalData(Data):
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("symbol", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))
