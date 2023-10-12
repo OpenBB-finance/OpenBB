@@ -1,14 +1,19 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
+<<<<<<< HEAD
 from typing_extensions import Annotated
+=======
+from pydantic import validate_call
+>>>>>>> feature/openbb-sdk-v4
 
 
 class ROUTER_stocks_ca(Container):
@@ -22,11 +27,11 @@ class ROUTER_stocks_ca(Container):
     @validate
     def peers(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[Data]:
         """Company peers.
@@ -35,7 +40,7 @@ class ROUTER_stocks_ca(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -43,9 +48,9 @@ class ROUTER_stocks_ca(Container):
         Returns
         -------
         OBBject
-            results : StockPeers
+            results : Union[StockPeers]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

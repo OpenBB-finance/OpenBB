@@ -111,6 +111,12 @@ def ols_summary(
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
 
+    try:
+        X = X.astype(float)
+        y = y.astype(float)
+    except ValueError as exc:
+        raise ValueError("All columns must be numeric") from exc
+
     results = sm.OLS(y, X).fit()
     results_summary = results.summary()
     results = {}
@@ -201,10 +207,17 @@ def bgot(
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     model = sm.OLS(y, X)
-    lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
-    return OBBject(
-        results=Data(lm_stat=lm_stat, p_value=p_value, f_stat=f_stat, fp_value=fp_value)
-    )
+    results = model.fit()
+    lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(results, nlags=lags)
+
+    results = {
+        "lm_stat": lm_stat,
+        "p_value": p_value,
+        "f_stat": f_stat,
+        "fp_value": fp_value,
+    }
+
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -230,7 +243,7 @@ def coint(
     """
     pairs = list(combinations(columns, 2))
     dataset = get_target_columns(basemodel_to_df(data), columns)
-    result = []
+    result = {}
     for x, y in pairs:
         (
             c,
@@ -240,16 +253,13 @@ def coint(
             adfstat,
             pvalue,
         ) = get_engle_granger_two_step_cointegration_test(dataset[x], dataset[y])
-        result.append(
-            Data(
-                pair=f"{x}/{y}",
-                c=c,
-                gamma=gamma,
-                alpha=alpha,
-                adfstat=adfstat,
-                pvalue=pvalue,
-            )
-        )
+        result[f"{x}/{y}"] = {
+            "c": c,
+            "gamma": gamma,
+            "alpha": alpha,
+            "adfstat": adfstat,
+            "pvalue": pvalue,
+        }
 
     return OBBject(results=result)
 
@@ -292,15 +302,9 @@ def granger(
             granger[lag][0][test] = (pars[0], pars[1], "-", pars[2])
 
     df = pd.DataFrame(granger[lag][0], index=["F-test", "P-value", "Count", "Lags"]).T
+    results = df.to_dict()
 
-    return OBBject(
-        results=[
-            Data(**d)
-            for d in df.reset_index()
-            .rename(columns={"index": "test"})
-            .to_dict(orient="records")
-        ]
-    )
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -328,15 +332,14 @@ def unitroot(
     """
     dataset = get_target_column(basemodel_to_df(data), column)
     adfstat, pvalue, usedlag, nobs, _, icbest = adfuller(dataset, regression=regression)
-    return OBBject(
-        results=Data(
-            adfstat=adfstat,
-            pvalue=pvalue,
-            usedlag=usedlag,
-            nobs=nobs,
-            icbest=icbest,
-        )
-    )
+    results = {
+        "adfstat": adfstat,
+        "pvalue": pvalue,
+        "usedlag": usedlag,
+        "nobs": nobs,
+        "icbest": icbest,
+    }
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"], include_in_schema=False)

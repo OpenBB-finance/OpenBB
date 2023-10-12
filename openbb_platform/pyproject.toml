@@ -28,6 +28,7 @@ openbb-alpha-vantage = { version = "^0.1.0a2", optional = true }
 openbb-cboe = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
+openbb-oecd = { version = "^0.1.0a2", optional = true }
 
 openbb-charting = { version = "^0.1.0a2", optional = true }
 openbb-futures = { version = "^0.1.0a2", optional = true }
@@ -40,6 +41,7 @@ alpha_vantage = ["openbb-alpha-vantage"]
 cboe = ["openbb-cboe"]
 quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
+oecd = ["openbb-oecd"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
@@ -51,6 +53,7 @@ all = [
     "openbb-cboe",
     "openbb-quandl",
     "openbb-yfinance",
+    "openbb-oecd",
     "openbb-charting",
     "openbb-futures",
     "openbb-qa",

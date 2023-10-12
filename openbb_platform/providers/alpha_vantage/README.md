@@ -1,6 +1,6 @@
 # OpenBB Alpha Vantage Provider
 
-This extension integrates the [Alpha Vantage](https://www.alphavantage.co/) data provider into the OpenBB SDK.
+This extension integrates the [Alpha Vantage](https://www.alphavantage.co/) data provider into the OpenBB Platform.
 
 ## Installation
 

@@ -885,7 +885,7 @@ def test_stocks_multiples(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "AAPl", "ticker": True})],
+    [({"query": "AAPl", "is_symbol": True})],
 )
 @pytest.mark.integration
 def test_stocks_search(params, headers):

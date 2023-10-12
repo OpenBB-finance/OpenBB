@@ -1,6 +1,6 @@
 # OpenBB Yahoo!Finance Provider
 
-This extension integrates the [Yahoo!Finance](https://finance.yahoo.com/) data provider into the OpenBB SDK.
+This extension integrates the [Yahoo!Finance](https://finance.yahoo.com/) data provider into the OpenBB Platform.
 
 ## Installation
 
