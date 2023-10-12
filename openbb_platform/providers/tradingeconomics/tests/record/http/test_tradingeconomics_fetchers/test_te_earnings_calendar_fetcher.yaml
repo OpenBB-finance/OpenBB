@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tradingeconomics.com/calendar/country/All/2023-01-01/2023-10-10
+  response:
+    body:
+      string: You must provide valid credentials. Please contact support@tradingeconomics.com
+    headers:
+      APIServer:
+      - TEIIS1A
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '79'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Thu, 12 Oct 2023 16:30:57 GMT
+      Expires:
+      - '-1'
+      Pragma:
+      - no-cache
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

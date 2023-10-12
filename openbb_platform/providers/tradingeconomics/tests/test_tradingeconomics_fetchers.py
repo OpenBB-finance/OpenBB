@@ -12,7 +12,7 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ("token", "MOCK_TOKEN"),
+            ("api_key", "mock_api_key"),
         ],
     }
 
@@ -20,8 +20,8 @@ def vcr_config():
 @pytest.mark.record_http
 def test_te_earnings_calendar_fetcher(credentials=test_credentials):
     params = {
-        "start_date": datetime.date(2023, 1, 1),
-        "end_date": datetime.date(2023, 6, 6),
+        "start_date": "2023-01-01",
+        "end_date": "2023-10-10",
     }
 
     fetcher = TEEarningsCalendarFetcher()

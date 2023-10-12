@@ -94,7 +94,9 @@ class TEEarningsCalendarFetcher(
             raise RuntimeError(
                 "No url generated.  Check combination of input parameters."
             )
-        response = make_request(url.replace("api_key", api_key), **kwargs)
+        response = make_request(
+            url.replace("api_key", api_key if api_key else ""), **kwargs
+        )
         if response.status_code != 200:
             raise RuntimeError(f"Error in TE request -> {response.text}")
         return response.json()
