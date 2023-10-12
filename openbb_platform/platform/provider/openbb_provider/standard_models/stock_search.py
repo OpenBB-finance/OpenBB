@@ -13,7 +13,7 @@ class StockSearchQueryParams(QueryParams):
     """Company Search Query Params"""
 
     query: str = Field(description="Search query.", default="")
-    ticker: bool = Field(
+    is_symbol: bool = Field(
         description="Whether to search by ticker symbol.", default=False
     )
 
