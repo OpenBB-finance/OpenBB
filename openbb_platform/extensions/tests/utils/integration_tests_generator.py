@@ -6,11 +6,11 @@ from typing import (
     Dict,
     List,
     Literal,
+    Optional,
     Tuple,
     Type,
     get_origin,
     get_type_hints,
-    Optional,
 )
 
 from openbb_core.app.charting_service import ChartingService

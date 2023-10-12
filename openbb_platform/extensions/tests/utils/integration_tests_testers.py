@@ -8,10 +8,10 @@ from typing import (
     Dict,
     List,
     Literal,
+    Optional,
     Tuple,
     Union,
     get_type_hints,
-    Optional,
 )
 
 from openbb_core.app.provider_interface import ProviderInterface

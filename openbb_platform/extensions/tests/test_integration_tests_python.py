@@ -1,11 +1,12 @@
 """Test the integration tests."""
+from openbb_core.app.charting_service import ChartingService
+
 from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
     get_integration_tests,
     get_module_functions,
 )
-from openbb_core.app.charting_service import ChartingService
 
 
 def run_test(test_type: str, check_function) -> None:
