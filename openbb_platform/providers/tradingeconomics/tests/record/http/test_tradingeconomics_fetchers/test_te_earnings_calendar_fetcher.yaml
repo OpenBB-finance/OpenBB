@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.tradingeconomics.com/calendar/country/All/2023-01-01/2023-06-06?c=49267C21458E46F%3A756C2E40C34A421
+    uri: https://api.tradingeconomics.com/calendar/country/All/2023-01-01/2023-06-06?c=mock_api_key
   response:
     body:
       string: "[{\"CalendarId\":\"332979\",\"Date\":\"2023-01-01T00:00:00\",\"Country\":\"Angola\",\"Category\":\"Holidays\",\"Event\":\"New
@@ -1953,7 +1953,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 12 Oct 2023 19:06:33 GMT
+      - Thu, 12 Oct 2023 19:24:00 GMT
       Expires:
       - '-1'
       Pragma:
