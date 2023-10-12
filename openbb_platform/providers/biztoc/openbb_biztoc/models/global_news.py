@@ -44,9 +44,6 @@ class BiztocGlobalNewsData(GlobalNewsData):
     favicon: Optional[str] = Field(
         description="Icon image for the source of the article.", default=None
     )
-    domain: Optional[str] = Field(
-        description="Domain base url for the article source.", default=None
-    )
     tags: Optional[List[str]] = Field(description="Tags for the article.", default=None)
     id: Optional[str] = Field(description="Unique Article ID.", default=None)
     score: Optional[float] = Field(
