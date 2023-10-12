@@ -2,13 +2,12 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_biztoc.utils.helpers import get_all_tags, get_pages, get_sources
+from openbb_biztoc.utils.helpers import get_news
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
@@ -70,62 +69,6 @@ class BiztocGlobalNewsFetcher(
         return BiztocGlobalNewsQueryParams(**params)
 
     @staticmethod
-    def get_news(
-        api_key: str,
-        filter: Literal[
-            "crypto", "hot", "latest", "main", "media", "source", "tag"
-        ] = "latest",
-        source: str = "bloomberg",
-        tag: str = "",
-        term: str = "",
-    ) -> List[Dict]:
-        """Calls the BizToc API and returns the data."""
-
-        term = term.replace(" ", "%20") if term else ""
-        _tags = get_all_tags(api_key)
-        pages = get_pages(api_key)
-        tags = []
-        tag = tag.lower() if tag else ""
-        for page in pages:
-            tags.extend(_tags[page][:])
-
-        _sources = get_sources(api_key)
-        sources = sorted([i["id"] for i in _sources])
-
-        headers = {
-            "X-RapidAPI-Key": f"{api_key}",
-            "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
-            "Accept": "application/json",
-            "Accept-Encoding": "gzip",
-        }
-
-        filter_dict = {
-            "hot": "news/hot",
-            "latest": "news/latest",
-            "crypto": "news/latest/crypto",
-            "main": "news/latest/main",
-            "media": "news/latest/media",
-            "source": f"news/source/{source.lower()}",
-            "tag": f"tag/{tag}",
-        }
-        if filter == "source" and source.lower() not in sources:
-            raise ValueError(f"{source} not a valid source. Valid sources: {sources}")
-
-        if filter == "tag" and tag.lower().replace(" ", "") not in tags:
-            raise ValueError(f"{tag} not a valid tag. Valid tags: {tags}")
-
-        url = (
-            f"https://biztoc.p.rapidapi.com/search?q={term}"
-            if term
-            else f"https://biztoc.p.rapidapi.com/{filter_dict[filter]}"
-        )
-        r = make_request(url, headers=headers)
-        if r.status_code != 200:
-            raise RuntimeError(f"HTTP error - > {r.text}")
-
-        return r.json()
-
-    @staticmethod
     def extract_data(
         query: BiztocGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
@@ -135,7 +78,7 @@ class BiztocGlobalNewsFetcher(
 
         api_key = credentials.get("biztoc_api_key") if credentials else ""
 
-        data = BiztocGlobalNewsFetcher.get_news(
+        data = get_news(
             api_key=api_key, filter=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
         )
         if query.filter == "hot":

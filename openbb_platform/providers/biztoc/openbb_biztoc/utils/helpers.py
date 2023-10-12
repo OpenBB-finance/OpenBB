@@ -1,6 +1,7 @@
 from datetime import timedelta
-from typing import Dict, List
+from typing import Dict, List, Literal
 
+import requests
 import requests_cache
 
 
@@ -70,3 +71,65 @@ def get_all_tags(api_key) -> Dict[str, List[str]]:
         tags.update({page: [x["tag"] for x in page_tags]})
 
     return tags
+
+
+def get_news(
+    api_key: str,
+    filter: Literal[
+        "crypto", "hot", "latest", "main", "media", "source", "tag"
+    ] = "latest",
+    source: str = "bloomberg",
+    tag: str = "",
+    term: str = "",
+) -> List[Dict]:
+    """Calls the BizToc API and returns the data."""
+
+    results = []
+    term = term.replace(" ", "%20") if term else ""
+    _tags = get_all_tags(api_key)
+    pages = get_pages(api_key)
+    tags = []
+    tag = tag.lower() if tag else ""
+    for page in pages:
+        tags.extend(_tags[page][:])
+
+    _sources = get_sources(api_key)
+    sources = sorted([i["id"] for i in _sources])
+
+    headers = {
+        "X-RapidAPI-Key": f"{api_key}",
+        "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+    }
+
+    filter_dict = {
+        "hot": "news/hot",
+        "latest": "news/latest",
+        "crypto": "news/latest/crypto",
+        "main": "news/latest/main",
+        "media": "news/latest/media",
+        "source": f"news/source/{source.lower()}",
+        "tag": f"tag/{tag}",
+    }
+    if filter == "source" and source.lower() not in sources:
+        raise ValueError(f"{source} not a valid source. Valid sources: {sources}")
+
+    if filter == "tag" and tag.lower().replace(" ", "") not in tags:
+        raise ValueError(f"{tag} not a valid tag. Valid tags: {tags}")
+
+    url = (
+        f"https://biztoc.p.rapidapi.com/search?q={term}"
+        if term
+        else f"https://biztoc.p.rapidapi.com/{filter_dict[filter]}"
+    )
+    r = requests.get(url, headers=headers, timeout=5)
+    if r.status_code != 200:
+        raise RuntimeError(f"HTTP error - > {r.text}")
+
+    try:
+        results = r.json()
+    except Exception as e:
+        raise (e)
+
+    return results
