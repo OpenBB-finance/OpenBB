@@ -23,7 +23,7 @@ def validate(
 ) -> Any:
     """Validate function calls."""
 
-    def decorated(f):
+    def decorated(f: Callable[P, R]):
         """Decorated function."""
 
         @wraps(f)
