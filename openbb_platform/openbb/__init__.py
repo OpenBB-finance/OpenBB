@@ -1,4 +1,4 @@
-"""OpenBB SDK."""
+"""OpenBB Platform."""
 # flake8: noqa
 
 import os
