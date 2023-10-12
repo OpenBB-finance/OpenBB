@@ -17,7 +17,7 @@ def check_args(query_args: Dict, to_include: List[str]):
 def generate_url(in_query):
     """
     Generate the url for trading economimcs.  There is not a single api endpoint to hit so these are
-    generated based on the cominations.  There are also some combinations that return no data so that will return ""
+    generated based on the combinations.  There are also some combinations that return no data so that will return ""
     """
     # Converting the input query to a dict of params that are not None
     query = {k: v for k, v in in_query.dict().items() if v is not None}
