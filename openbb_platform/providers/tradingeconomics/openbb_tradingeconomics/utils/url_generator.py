@@ -1,6 +1,23 @@
 """Helper to generate urls for Trading Economics API."""
 from datetime import date
-from urllib.parse import quote
+from typing import Dict, List
+from urllib.parse import quote, urlencode
+
+
+def check_args(query_args: Dict, to_include: List[str]):
+    available_args = ["country", "start_date", "end_date", "importance", "group"]
+
+    # Check if all fields in to_include are present in query_args
+    if all(field in query_args for field in to_include):
+        # Check if elements in available_args that are not in to_include are not present in query_args
+        if all(
+            field not in query_args
+            for field in available_args
+            if field not in to_include
+        ):
+            return True
+
+    return False
 
 
 def generate_url(in_query):
@@ -27,101 +44,41 @@ def generate_url(in_query):
     if "group" in query:
         group = quote(query["group"])
 
-    # We can have the possible combinations:
-    # Country only
-    if (
-        "country" in query
-        and "start_date" not in query
-        and "importance" not in query
-        and "group" not in query
-        and "end_date" not in query
-    ):
-        return f"https://api.tradingeconomics.com/calendar/country/{country}?c="
-    #  Country + Date
-    if (
-        "country" in query
-        and "start_date" in query
-        and "end_date" in query
-        and "importance" not in query
-        and "group" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}/{query["start_date"]}/{query["end_date"]}?c='
-    #  Country + Importance
-    if (
-        "country" in query
-        and "importance" in query
-        and "start_date" not in query
-        and "end_date" not in query
-        and "group" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}?importance{query["importance"]}&c='
-    #  Country + Group
-    if (
-        "country" in query
-        and "group" in query
-        and "start_date" not in query
-        and "end_date" not in query
-        and "importance" not in query
-    ):
-        return f"https://api.tradingeconomics.com/calendar/country/{country}/group/{group}?c="
-    #  Country + group + date
-    if (
-        "country" in query
-        and "group" in query
-        and "start_date" in query
-        and "end_date" in query
-        and "importance" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}&group={group}/{query["start_date"]}/{query["end_date"]}?c='
+    base_url = "https://api.tradingeconomics.com/calendar"
+    url = ""
 
+    # Construct URL based on query parameters
+    # Country Only
+    if check_args(query, ["country"]):
+        url = f"{base_url}/country/{country}?c="
+    # Country + Date
+    elif check_args(query, ["country", "start_date", "end_date"]):
+        url = (
+            f'{base_url}/country/{country}/{query["start_date"]}/{query["end_date"]}?c='
+        )
+    # Country + Importance
+    elif check_args(query, ["country", "importance"]):
+        url = f"{base_url}/country/{country}?{urlencode(query)}&c="
+    # Country + Group
+    elif check_args(query, ["country", "group"]):
+        url = f"{base_url}/country/{country}/group/{group}?c="
+    # Country + Group + Date
+    elif check_args(query, ["country", "group", "start_date", "end_date"]):
+        url = f'{base_url}/country/{country}/group/{group}/{query["start_date"]}/{query["end_date"]}?c='
     # By date only
-    if (
-        "start_date" in query
-        and "end_date" in query
-        and "country" not in query
-        and "importance" not in query
-        and "group" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?c='
-
+    elif check_args(query, ["start_date", "end_date"]):
+        url = f'{base_url}/country/All/{query["start_date"]}/{query["end_date"]}?c='
     # By importance only
-    if (
-        "importance" in query
-        and "country" not in query
-        and "group" not in query
-        and "start_date" not in query
-        and "end_date" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar?importance={query["importance"]}&c='
-
+    elif check_args(query, ["importance"]):
+        url = f"{base_url}?{urlencode(query)}&c="
     # By importance and date
-    if (
-        "importance" in query
-        and "start_date" in query
-        and "end_date" in query
-        and "country" not in query
-        and "group" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?importance={query["importance"]}&c='
-
+    elif check_args(query, ["importance", "start_date", "end_date"]):
+        url = f'{base_url}/country/All/{query["start_date"]}/{query["end_date"]}?{urlencode(query)}&c='
     # Group Only
-    if (
-        "group" in query
-        and "country" not in query
-        and "start_date" not in query
-        and "end_date" not in query
-        and "importance" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}?c='
-
+    elif check_args(query, ["group"]):
+        url = f'{base_url}/group/{query["group"]}?c='
     # Group + Date
-    if (
-        "group" in query
-        and "start_date" in query
-        and "end_date" in query
-        and "country" not in query
-        and "importance" not in query
-    ):
-        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}/{query["start_date"]}/{query["end_date"]}?c='
+    elif check_args(query, ["group", "start_date", "end_date"]):
+        url = f'{base_url}/group/{query["group"]}/{query["start_date"]}/{query["end_date"]}?c='
 
-    return ""
+    return url if url else ""
