@@ -13,7 +13,7 @@ def generate_url(in_query):
 
     # Nothing -- just a snapshot
     if not query:
-        return "https://api.tradingeconomics.com/calendar?c=api_key"
+        return "https://api.tradingeconomics.com/calendar?c="
 
     # Both start and end date are required
     if "start_date" in query and "end_date" not in query:
@@ -36,7 +36,7 @@ def generate_url(in_query):
         and "group" not in query
         and "end_date" not in query
     ):
-        return f"https://api.tradingeconomics.com/calendar/country/{country}?c=api_key"
+        return f"https://api.tradingeconomics.com/calendar/country/{country}?c="
     #  Country + Date
     if (
         "country" in query
@@ -45,7 +45,7 @@ def generate_url(in_query):
         and "importance" not in query
         and "group" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}/{query["start_date"]}/{query["end_date"]}?c=api_key'
+        return f'https://api.tradingeconomics.com/calendar/country/{country}/{query["start_date"]}/{query["end_date"]}?c='
     #  Country + Importance
     if (
         "country" in query
@@ -54,7 +54,7 @@ def generate_url(in_query):
         and "end_date" not in query
         and "group" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}?c=api_key&importance{query["importance"]}'
+        return f'https://api.tradingeconomics.com/calendar/country/{country}?importance{query["importance"]}&c='
     #  Country + Group
     if (
         "country" in query
@@ -63,7 +63,7 @@ def generate_url(in_query):
         and "end_date" not in query
         and "importance" not in query
     ):
-        return f"https://api.tradingeconomics.com/calendar/country/{country}/group/{group}?c=api_key"
+        return f"https://api.tradingeconomics.com/calendar/country/{country}/group/{group}?c="
     #  Country + group + date
     if (
         "country" in query
@@ -72,7 +72,7 @@ def generate_url(in_query):
         and "end_date" in query
         and "importance" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/country/{country}&group={group}/{query["start_date"]}/{query["end_date"]}?c=api_key'
+        return f'https://api.tradingeconomics.com/calendar/country/{country}&group={group}/{query["start_date"]}/{query["end_date"]}?c='
 
     # By date only
     if (
@@ -82,7 +82,7 @@ def generate_url(in_query):
         and "importance" not in query
         and "group" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?c=api_key'
+        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?c='
 
     # By importance only
     if (
@@ -92,7 +92,7 @@ def generate_url(in_query):
         and "start_date" not in query
         and "end_date" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar?c=api_key&importance={query["importance"]}'
+        return f'https://api.tradingeconomics.com/calendar?importance={query["importance"]}&c='
 
     # By importance and date
     if (
@@ -102,7 +102,7 @@ def generate_url(in_query):
         and "country" not in query
         and "group" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?c=api_key&importance={query["importance"]}'
+        return f'https://api.tradingeconomics.com/calendar/country/All/{query["start_date"]}/{query["end_date"]}?importance={query["importance"]}&c='
 
     # Group Only
     if (
@@ -112,7 +112,7 @@ def generate_url(in_query):
         and "end_date" not in query
         and "importance" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}?c=api_key'
+        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}?c='
 
     # Group + Date
     if (
@@ -122,6 +122,6 @@ def generate_url(in_query):
         and "country" not in query
         and "importance" not in query
     ):
-        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}/{query["start_date"]}/{query["end_date"]}?c=api_key'
+        return f'https://api.tradingeconomics.com/calendar/group/{query["group"]}/{query["start_date"]}/{query["end_date"]}?c='
 
     return ""
