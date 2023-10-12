@@ -1,6 +1,6 @@
 # OpenBB TA Extension
 
-This extension provides Technical Analysis (TA) tools for the OpenBB SDK.
+This extension provides Technical Analysis (TA) tools for the OpenBB Platform.
 
 Features of the TA extension include various TA indicators and oscillators.
 

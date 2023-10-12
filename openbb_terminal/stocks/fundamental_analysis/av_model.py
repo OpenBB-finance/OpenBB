@@ -724,16 +724,16 @@ def get_dupont(symbol: str) -> pd.DataFrame:
             )
         return pd.DataFrame()
 
-    if not df_bs.index.equals(df_is.index):
-        console.print(
-            "The fiscal dates in the balance sheet do not correspond to the fiscal dates in the income statement."
-        )
-        return pd.DataFrame()
-
     # pylint: disable=no-member
     df_bs = df_bs.set_index("fiscalDateEnding")
     df_is = df_is.set_index("fiscalDateEnding")
     dupont_years = pd.DataFrame()
+
+    if len(df_bs) != len(df_is):
+        console.print(
+            "The fiscal dates in the balance sheet do not correspond to the fiscal dates in the income statement."
+        )
+        return pd.DataFrame()
 
     for i in range(len(df_bs)):
         ni = df_values(df_is, "netIncome", i, 1)

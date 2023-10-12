@@ -6,9 +6,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_stocks_options(Container):
@@ -19,7 +19,7 @@ class ROUTER_stocks_options(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def chains(
         self,
         symbol: typing_extensions.Annotated[
