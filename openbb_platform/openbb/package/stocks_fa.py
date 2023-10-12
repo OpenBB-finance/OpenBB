@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
+from openbb_core.app.static.decorators import validate as _validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from typing_extensions import Annotated
@@ -47,7 +47,7 @@ class ROUTER_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate
+    @_validate
     def balance(
         self,
         symbol: Annotated[
@@ -266,7 +266,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def balance_growth(
         self,
         symbol: Annotated[
@@ -410,7 +410,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def cal(
         self,
         start_date: Annotated[
@@ -490,7 +490,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def cash(
         self,
         symbol: Annotated[
@@ -689,7 +689,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def cash_growth(
         self,
         symbol: Annotated[
@@ -815,7 +815,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def comp(
         self,
         symbol: Annotated[
@@ -894,7 +894,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def comsplit(
         self,
         start_date: Annotated[
@@ -968,7 +968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def divs(
         self,
         symbol: Annotated[
@@ -1035,7 +1035,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def earning(
         self,
         symbol: Annotated[
@@ -1113,7 +1113,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def emp(
         self,
         symbol: Annotated[
@@ -1184,7 +1184,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def est(
         self,
         symbol: Annotated[
@@ -1295,7 +1295,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def filings(
         self,
         symbol: Annotated[
@@ -1373,7 +1373,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def income(
         self,
         symbol: Annotated[
@@ -1572,7 +1572,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def income_growth(
         self,
         symbol: Annotated[
@@ -1697,7 +1697,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def ins(
         self,
         symbol: Annotated[
@@ -1819,7 +1819,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def ins_own(
         self,
         symbol: Annotated[
@@ -1959,7 +1959,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def metrics(
         self,
         symbol: Annotated[
@@ -2150,7 +2150,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def mgmt(
         self,
         symbol: Annotated[
@@ -2217,7 +2217,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def overview(
         self,
         symbol: Annotated[
@@ -2342,7 +2342,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def own(
         self,
         symbol: Annotated[
@@ -2487,7 +2487,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def pt(
         self,
         symbol: Annotated[
@@ -2550,7 +2550,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def pta(
         self,
         symbol: Annotated[
@@ -2633,7 +2633,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def ratios(
         self,
         symbol: Annotated[
@@ -2816,7 +2816,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def revgeo(
         self,
         symbol: Annotated[
@@ -2897,7 +2897,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def revseg(
         self,
         symbol: Annotated[
@@ -2968,7 +2968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def shrs(
         self,
         symbol: Annotated[
@@ -3033,7 +3033,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def split(
         self,
         symbol: Annotated[
@@ -3094,7 +3094,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def transcript(
         self,
         symbol: Annotated[

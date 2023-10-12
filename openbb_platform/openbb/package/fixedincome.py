@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
+from openbb_core.app.static.decorators import validate as _validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from typing_extensions import Annotated
@@ -28,7 +28,7 @@ class ROUTER_fixedincome(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate
+    @_validate
     def ameribor(
         self,
         start_date: Annotated[
@@ -101,7 +101,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def estr(
         self,
         start_date: Annotated[
@@ -175,7 +175,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def fed(
         self,
         start_date: Annotated[
@@ -249,7 +249,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def iorb(
         self,
         start_date: Annotated[
@@ -321,7 +321,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def projections(
         self, provider: Optional[Literal["fred"]] = None, **kwargs
     ) -> OBBject[List[Data]]:
@@ -386,7 +386,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def sofr(
         self,
         start_date: Annotated[
@@ -456,7 +456,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def sonia(
         self,
         start_date: Annotated[
@@ -529,7 +529,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def treasury(
         self,
         start_date: Annotated[
@@ -619,7 +619,7 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
+    @_validate
     def ycrv(
         self,
         date: Annotated[
