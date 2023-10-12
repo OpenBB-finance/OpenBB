@@ -40,7 +40,7 @@ class ROUTER_qa(Container):
     def capm(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[CAPMModel]:
-        """Capital Asset Pricing Model."""  # noqa: E501
+        """Get Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -59,7 +59,7 @@ class ROUTER_qa(Container):
         target: str,
         window: Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
-        """Kurtosis.
+        """Get the Kurtosis.
 
         Parameters
         ----------
@@ -91,8 +91,7 @@ class ROUTER_qa(Container):
     def normality(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[NormalityModel]:
-        """
-        Normality Statistics.
+        """Get Normality Statistics.
 
         - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
         - **Skewness**: whether the skewness of a sample differs from the normal distribution.
@@ -131,7 +130,7 @@ class ROUTER_qa(Container):
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
     ) -> OBBject[List[OmegaModel]]:
-        """Omega Ratio.
+        """Calculate the Omega Ratio.
 
         Parameters
         ----------
@@ -170,7 +169,24 @@ class ROUTER_qa(Container):
         window: Annotated[int, Gt(gt=0)],
         quantile_pct: Annotated[float, Ge(ge=0)] = 0.5,
     ) -> OBBject[List[Data]]:
-        """Quantile."""  # noqa: E501
+        """Get Quantile.
+
+        Parameters
+        ----------
+        data : List[Data]
+            Time series data.
+        target : str
+            Target column name.
+        window : PositiveInt
+            Window size.
+        quantile_pct : NonNegativeFloat, optional
+            Quantile percentage, by default 0.5
+
+        Returns
+        -------
+        OBBject[List[Data]]
+            Quantile.
+        """  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -192,7 +208,7 @@ class ROUTER_qa(Container):
         rfr: float = 0.0,
         window: Annotated[int, Gt(gt=0)] = 252,
     ) -> OBBject[List[Data]]:
-        """Sharpe Ratio.
+        """Get Sharpe Ratio.
 
         Parameters
         ----------
@@ -230,7 +246,7 @@ class ROUTER_qa(Container):
         target: str,
         window: Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
-        """Skewness.
+        """Get Skewness.
 
         Parameters
         ----------
@@ -267,7 +283,7 @@ class ROUTER_qa(Container):
         window: Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
     ) -> OBBject[List[Data]]:
-        """Sortino Ratio.
+        """Get Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
@@ -307,7 +323,7 @@ class ROUTER_qa(Container):
     def summary(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[SummaryModel]:
-        """Summary.
+        """Get Summary Statistics.
 
         Parameters
         ----------
@@ -340,7 +356,7 @@ class ROUTER_qa(Container):
         fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
     ) -> OBBject[UnitRootModel]:
-        """Unit Root Test.
+        """Get Unit Root Test.
 
         Augmented Dickey-Fuller test for unit root.
         Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
