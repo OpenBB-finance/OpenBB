@@ -180,7 +180,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cot(
         self, provider: Union[Literal["quandl"], None] = None, **kwargs
     ) -> OBBject[List[Data]]:
@@ -272,7 +272,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cot_search(
         self,
         query: typing_extensions.Annotated[
@@ -336,7 +336,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cpi(
         self,
         countries: typing_extensions.Annotated[
@@ -486,7 +486,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def european_index(
         self,
         symbol: typing_extensions.Annotated[
@@ -571,7 +571,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def european_index_constituents(
         self,
         symbol: typing_extensions.Annotated[
@@ -654,7 +654,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def fred_index(
         self,
         symbol: typing_extensions.Annotated[
@@ -864,7 +864,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def index_search(
         self,
         query: typing_extensions.Annotated[
@@ -951,7 +951,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def index_snapshots(
         self,
         region: typing_extensions.Annotated[
@@ -1032,7 +1032,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def risk(
         self, provider: Union[Literal["fmp"], None] = None, **kwargs
     ) -> OBBject[List[Data]]:
@@ -1083,7 +1083,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def sp500_multiples(
         self,
         series_name: typing_extensions.Annotated[

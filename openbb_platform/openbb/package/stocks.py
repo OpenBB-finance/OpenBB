@@ -41,7 +41,7 @@ class ROUTER_stocks(Container):
 
         return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
 
-    @validate_call
+    @validate
     def info(
         self,
         symbol: typing_extensions.Annotated[
@@ -156,7 +156,7 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -809,13 +809,13 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def search(
         self,
         query: typing_extensions.Annotated[
             str, OpenBBCustomParameter(description="Search query.")
         ] = "",
-        ticker: typing_extensions.Annotated[
+        is_symbol: typing_extensions.Annotated[
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
@@ -828,7 +828,7 @@ class ROUTER_stocks(Container):
         ----------
         query : str
             Search query.
-        ticker : bool
+        is_symbol : bool
             Whether to search by ticker symbol.
         provider : Union[Literal['cboe'], None]
             The provider to use for the query, by default None.
@@ -866,7 +866,7 @@ class ROUTER_stocks(Container):
             },
             standard_params={
                 "query": query,
-                "ticker": ticker,
+                "is_symbol": is_symbol,
             },
             extra_params=kwargs,
         )
