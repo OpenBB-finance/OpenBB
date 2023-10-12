@@ -27,6 +27,7 @@ class CboeStockSearchData(StockSearchData):
     dpm_name: Optional[str] = Field(
         description="Name of the primary market maker.",
         alias="DPM Name",
+        default=None,
     )
     post_station: Optional[str] = Field(
         default=None, description="Post and station location on the CBOE trading floor."
@@ -51,12 +52,12 @@ class CboeStockSearchFetcher(
         query: CboeStockSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
         """Return the raw data from the CBOE endpoint."""
 
         data = {}
         symbols = get_cboe_directory().reset_index()
-        target = "name" if not query.is_symbol else "symbol"
+        target = "name" if query.is_symbol is False else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")
         data.update({"results": result})
@@ -64,6 +65,6 @@ class CboeStockSearchFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeStockSearchData]:
+    def transform_data(data: Dict) -> List[CboeStockSearchData]:
         """Transform the data to the standard format."""
         return [CboeStockSearchData.model_validate(d) for d in data["results"]]
