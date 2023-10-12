@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Callable, Optional, ParamSpec, TypeVar, overload
+from typing import Any, Callable, Optional, ParamSpec, TypeVar, overload
 
 from pydantic.validate_call import validate_call
 
@@ -20,7 +20,7 @@ def validate(**dec_kwargs) -> Callable[P, R]:
 def validate(
     func: Optional[Callable[P, R]] = None,
     **dec_kwargs,
-) -> Optional[Callable]:
+) -> Any:
     """Validate function calls."""
 
     def decorated(f):
