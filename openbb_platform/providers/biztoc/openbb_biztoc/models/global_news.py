@@ -150,7 +150,9 @@ class BiztocGlobalNewsFetcher(
                 data[i].pop("body_preview")
             # Some items when filter is 'hot' don't have a proper timestamp, only a label.
             if "created" in data[i] and data[i]["created"] in times:
-                data[i]["created"] = datetime.now()-timedelta(hours=times[data[i]["created"]])
+                data[i]["created"] = datetime.now() - timedelta(
+                    hours=times[data[i]["created"]]
+                )
 
         return data
 
