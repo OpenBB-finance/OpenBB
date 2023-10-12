@@ -1,11 +1,11 @@
 import argparse
 import os
-from typing import Dict, List, Type, get_type_hints, Literal
+from typing import Dict, List, Literal, Type, get_type_hints
 
 import requests
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
-from openbb_core.app.charting_service import ChartingService
 
 from extensions.tests.utils.integration_tests_generator import get_test_params
 
