@@ -3,13 +3,13 @@
 from typing import Dict, List, Literal, Union
 
 import pandas
+import typing_extensions
 from annotated_types import Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from pydantic import validate_call
-from typing_extensions import Annotated
 
 
 class ROUTER_econometrics(Container):
@@ -39,7 +39,7 @@ class ROUTER_econometrics(Container):
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        lags: Annotated[int, Gt(gt=0)] = 1,
+        lags: typing_extensions.Annotated[int, Gt(gt=0)] = 1,
     ) -> OBBject[Data]:
         """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
@@ -168,7 +168,7 @@ class ROUTER_econometrics(Container):
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_column: str,
-        lag: Annotated[int, Gt(gt=0)] = 3,
+        lag: typing_extensions.Annotated[int, Gt(gt=0)] = 3,
     ) -> OBBject[Data]:
         """Perform Granger causality test to determine if X "causes" y.
 
