@@ -710,20 +710,13 @@ class MethodDefinition:
         return func_returns
 
     @staticmethod
-    def check_list_params(od: OrderedDict[str, Parameter]) -> Dict[str, int]:
-        """Check if any of the params is a list."""
+    def get_listify(od: OrderedDict[str, Parameter]) -> Dict[str, int]:
+        """Get the params to listify."""
         listify_params = {}
-        pos = 1
+        pos = 1  # position starts at 1 because 0 is the self parameter
         for name, param in od.items():
             if get_origin(param.annotation) == list:
                 listify_params[name] = pos
-            elif get_origin(param.annotation) == Union:
-                args = get_args(param.annotation)
-                for arg in args:
-                    if get_origin(arg) == list:
-                        inner = get_args(arg)[0]
-                        if inner is Literal:
-                            listify_params[name] = pos
             pos += 1
 
         return listify_params
@@ -736,26 +729,21 @@ class MethodDefinition:
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
-        listify_params = MethodDefinition.check_list_params(od=formatted_params)
+        listify_params = MethodDefinition.get_listify(od=formatted_params)
         MethodDefinition.add_field_descriptions(
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
         func_returns = MethodDefinition.build_func_returns(return_type, model_name)
 
-        validate_args = "("
-        validate_args += (
-            "config=dict(arbitrary_types_allowed=True), "
-            if "pandas.DataFrame" in func_params
-            else ""
-        )
-        validate_args += (
-            f"listify_params={str(listify_params)}" if listify_params else ""
-        )
-        validate_args += ")"
-        if validate_args == "()":
-            validate_args = ""
-        code = f"\n    @validate{validate_args}"
+        validate_args = []
+        if "pandas.DataFrame" in func_params:
+            validate_args.append("config=dict(arbitrary_types_allowed=True)")
+        if listify_params:
+            validate_args.append(f"listify_params={str(listify_params)}")
+        args = "(" + ", ".join(validate_args) + ")" if validate_args else ""
+
+        code = f"\n    @validate{args}"
         code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
 
         return code

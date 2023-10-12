@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any, Callable, Optional, TypeVar, overload
+from typing import Any, Callable, Dict, List, Optional, Tuple, TypeVar, overload
 
 from pydantic.validate_call import validate_call
 from typing_extensions import ParamSpec
@@ -7,7 +7,9 @@ from typing_extensions import ParamSpec
 P = ParamSpec("P")
 R = TypeVar("R")
 
-def listify(f_args, f_kwargs, listify_params) -> tuple:
+
+def listify(f_args, f_kwargs, listify_params) -> Tuple[List[Any], Dict[str, Any]]:
+    """Converts function arguments to list if they are in listify_params."""
     args = list(f_args)
     for _, v in listify_params.items():
         if v < len(args) and not isinstance(args[v], list):
@@ -17,6 +19,7 @@ def listify(f_args, f_kwargs, listify_params) -> tuple:
         for k, v in f_kwargs.items()
     }
     return args, kwargs
+
 
 @overload
 def validate(func: Callable[P, R]) -> Callable[P, R]:
