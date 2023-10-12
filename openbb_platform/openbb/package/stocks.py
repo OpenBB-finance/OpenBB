@@ -815,9 +815,9 @@ class ROUTER_stocks(Container):
         query: typing_extensions.Annotated[
             str, OpenBBCustomParameter(description="Search query.")
         ] = "",
-        symbol: typing_extensions.Annotated[
-            Union[bool, List[str]],
-            OpenBBCustomParameter(description="Whether to search by a symbol."),
+        is_symbol: typing_extensions.Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         provider: Union[Literal["cboe"], None] = None,
         **kwargs
@@ -828,8 +828,8 @@ class ROUTER_stocks(Container):
         ----------
         query : str
             Search query.
-        symbol : bool
-            Whether to search by a symbol.
+        is_symbol : bool
+            Whether to search by ticker symbol.
         provider : Union[Literal['cboe'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
@@ -866,7 +866,7 @@ class ROUTER_stocks(Container):
             },
             standard_params={
                 "query": query,
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "is_symbol": is_symbol,
             },
             extra_params=kwargs,
         )
