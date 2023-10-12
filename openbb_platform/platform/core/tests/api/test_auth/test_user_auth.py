@@ -1,3 +1,4 @@
+# ruff: noqa: S105 S106
 """Test the user module."""
 import asyncio
 from unittest.mock import MagicMock, patch
@@ -10,8 +11,6 @@ from openbb_core.api.auth.user import (
     get_user_service,
     get_user_settings,
 )
-
-# ruff: noqa: S105 S106
 
 
 @pytest.mark.parametrize(

@@ -1,8 +1,8 @@
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, overload
-from typing_extensions import ParamSpec
 
 from pydantic.validate_call import validate_call
+from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
 R = TypeVar("R")
