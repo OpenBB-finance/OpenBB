@@ -5,6 +5,7 @@ from extensions.tests.utils.integration_tests_testers import (
     get_integration_tests,
     get_module_functions,
 )
+from openbb_core.app.charting_service import ChartingService
 
 
 def run_test(test_type: str, check_function) -> None:
@@ -24,3 +25,23 @@ def test_api_interface_integration_test_providers() -> None:
 def test_api_interface_integration_test_params() -> None:
     """Test if there are any missing params for integration tests."""
     run_test("api", check_missing_integration_test_params)
+
+
+def test_charting_extension_function_coverage() -> None:
+    """Test if all charting extension functions are covered by integration tests."""
+
+    functions = ChartingService.get_implemented_charting_functions()
+    test_names = [f"test_chart_{func}" for func in functions]
+    integration_tests_modules = get_integration_tests(
+        test_type="api", filter_charting_ext=False
+    )
+    charting_module = [
+        module for module in integration_tests_modules if "charting" in module.__name__
+    ]
+    integration_tests_functions = get_module_functions(charting_module)
+
+    missing_items = [
+        test for test in test_names if test not in integration_tests_functions.keys()
+    ]
+
+    assert missing_items == [], "\n".join(missing_items)

@@ -2,7 +2,17 @@
 import importlib.util
 import inspect
 import os
-from typing import Any, Callable, Dict, List, Literal, Tuple, Union, get_type_hints
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Literal,
+    Tuple,
+    Union,
+    get_type_hints,
+    Optional,
+)
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
@@ -13,7 +23,9 @@ from extensions.tests.utils.integration_tests_generator import (
 )
 
 
-def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
+def get_integration_tests(
+    test_type: Literal["api", "python"], filter_charting_ext: Optional[bool] = True
+) -> List[Any]:
     """Get integration tests for the OpenBB Platform."""
     integration_tests: List[Any] = []
 
@@ -22,7 +34,7 @@ def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
     elif test_type == "api":
         file_end = "_api.py"
 
-    for extension in find_extensions():
+    for extension in find_extensions(filter_charting_ext):
         integration_folder = os.path.join(extension, "integration")
         for file in os.listdir(integration_folder):
             if file.endswith(file_end):

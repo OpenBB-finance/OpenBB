@@ -1,7 +1,17 @@
 """Integration test generator."""
 import argparse
 from pathlib import Path, PosixPath
-from typing import Any, Dict, List, Literal, Tuple, Type, get_origin, get_type_hints
+from typing import (
+    Any,
+    Dict,
+    List,
+    Literal,
+    Tuple,
+    Type,
+    get_origin,
+    get_type_hints,
+    Optional,
+)
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.provider_interface import ProviderInterface
@@ -27,9 +37,11 @@ def test_{test_name}(params, obb):
 """
 
 
-def find_extensions():
+def find_extensions(filter_chart: Optional[bool] = True):
     """Find extensions."""
-    filter_ext = ["tests", "charting", "__pycache__"]
+    filter_ext = ["tests", "__pycache__"]
+    if filter_chart:
+        filter_ext.append("charting")
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
