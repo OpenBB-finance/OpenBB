@@ -1,5 +1,6 @@
-# ruff: noqa: S105 S106
 """Test the user module."""
+# ruff: noqa: S105 S106
+
 import asyncio
 from unittest.mock import MagicMock, patch
 
