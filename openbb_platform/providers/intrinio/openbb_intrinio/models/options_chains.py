@@ -11,13 +11,12 @@ from typing import Any, Dict, List, Optional
 
 from dateutil import parser
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
-from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -36,7 +35,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
 
     __alias_dict__ = {"contract_symbol": "code", "symbol": "ticker"}
 
-    @validator("expiration", "date", pre=True, check_fields=False)
+    @field_validator("expiration", "date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
@@ -67,9 +66,6 @@ class IntrinioOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-
-        if query.symbol in TICKER_EXCEPTIONS:
-            query.symbol = f"${query.symbol}"
 
         data: List = []
         base_url = "https://api-v2.intrinio.com/options"
