@@ -19,7 +19,7 @@ from pydantic import Field
 
 now = datetime.now().date().day
 days = 7
-if now == 15 or now == 30 or now == 31 or now == 14 or now == 29:
+if now in (15, 30, 31, 14, 29):
     days = 0
 
 sec_session_ftd = requests_cache.CachedSession(
