@@ -8,16 +8,10 @@ def check_args(query_args: Dict, to_include: List[str]):
     available_args = ["country", "start_date", "end_date", "importance", "group"]
 
     # Check if all fields in to_include are present in query_args
-    if all(field in query_args for field in to_include):
-        # Check if elements in available_args that are not in to_include are not present in query_args
-        if all(
-            field not in query_args
-            for field in available_args
-            if field not in to_include
-        ):
-            return True
-
-    return False
+    # and elements in available_args that are not in to_include are not present in query_args
+    return all(field in query_args for field in to_include) and all(
+        field not in query_args for field in available_args if field not in to_include
+    )
 
 
 def generate_url(in_query):
