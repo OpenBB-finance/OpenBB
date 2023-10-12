@@ -1,7 +1,19 @@
 """Integration test generator."""
+import argparse
 from pathlib import Path, PosixPath
-from typing import Any, Dict, List, Literal, Tuple, Type, get_origin, get_type_hints
+from typing import (
+    Any,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Type,
+    get_origin,
+    get_type_hints,
+)
 
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
@@ -21,12 +33,15 @@ def test_{test_name}(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+    {extra}
 """
 
 
-def find_extensions():
+def find_extensions(filter_chart: Optional[bool] = True):
     """Find extensions."""
-    filter_ext = ["tests", "charting", "__pycache__"]
+    filter_ext = ["tests", "__pycache__"]
+    if filter_chart:
+        filter_ext.append("charting")
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
@@ -146,7 +161,7 @@ def test_exists(command_name: str, path: str):
         return command_name in f.read()
 
 
-def write_to_file_w_template(test_file, params_list, full_command, test_name):
+def write_to_file_w_template(test_file, params_list, full_command, test_name, extra=""):
     """Write to file with template."""
     params = ""
     for test_params in params_list:
@@ -159,6 +174,7 @@ def write_to_file_w_template(test_file, params_list, full_command, test_name):
                     test_name=test_name,
                     command_name=full_command,
                     params=params,
+                    extra=extra,
                 )
             )
 
@@ -245,12 +261,62 @@ def add_test_commands_to_file(  # pylint: disable=W0102
             )
 
 
-def write_integration_test() -> None:
+def write_commands_integration_tests() -> None:
     """Write integration test."""
     extensions = find_extensions()
     create_integration_test_files(extensions)
     add_test_commands_to_file(extensions)
 
 
+def write_charting_extension_integration_tests():
+    """Write charting extension integration tests."""
+    import openbb_charting  # pylint: disable=W0611
+
+    functions = ChartingService.get_implemented_charting_functions()
+
+    charting_ext_path = Path(openbb_charting.__file__).parent.parent
+    test_file = charting_ext_path / "integration" / "test_charting_python.py"
+
+    extra = """assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)"""
+
+    for func in functions:
+        write_to_file_w_template(
+            test_file=test_file,
+            params_list=[{"chart": "True"}],
+            full_command=func.replace("_", "."),
+            test_name=f"chart_{func}",
+            extra=extra,
+        )
+
+
 if __name__ == "__main__":
-    write_integration_test()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="API Integration Tests Generator",
+        description="Generate API integration tests",
+    )
+    parser.add_argument(
+        "--charting",
+        dest="charting",
+        default=True,
+        action="store_false",
+        help="Generate charting extension integration tests",
+    )
+    parser.add_argument(
+        "--commands",
+        dest="commands",
+        default=True,
+        action="store_false",
+        help="Generate commands integration tests",
+    )
+
+    args = parser.parse_args()
+    charting = args.charting
+    commands = args.commands
+
+    if commands:
+        write_commands_integration_tests()
+
+    if charting:
+        write_charting_extension_integration_tests()
