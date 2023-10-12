@@ -9,6 +9,7 @@ from openbb_provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Headers fixture."""
     return get_headers()
 
 
@@ -16,6 +17,7 @@ data = {}
 
 
 def get_headers():
+    """Get headers for requests."""
     if "headers" in data:
         return data["headers"]
 
@@ -28,6 +30,7 @@ def get_headers():
 
 
 def get_stocks_data():
+    """Get stocks data."""
     if "stocks_data" in data:
         return data["stocks_data"]
 
@@ -52,6 +55,7 @@ def get_stocks_data():
 )
 @pytest.mark.integration
 def test_chart_stocks_load(params, headers):
+    """Test chart stocks load."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -69,6 +73,7 @@ def test_chart_stocks_load(params, headers):
 )
 @pytest.mark.integration
 def test_chart_stocks_multiples(params, headers):
+    """Test chart stocks multiples."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -87,6 +92,7 @@ def test_chart_stocks_multiples(params, headers):
 )
 @pytest.mark.integration
 def test_chart_stocks_news(params, headers):
+    """Test chart stocks news."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -116,6 +122,7 @@ def test_chart_stocks_news(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_adx(params, headers):
+    """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -135,6 +142,7 @@ def test_chart_ta_adx(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_aroon(params, headers):
+    """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -165,6 +173,7 @@ def test_chart_ta_aroon(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_ema(params, headers):
+    """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -195,6 +204,7 @@ def test_chart_ta_ema(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_hma(params, headers):
+    """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -226,6 +236,7 @@ def test_chart_ta_hma(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_macd(params, headers):
+    """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -257,6 +268,7 @@ def test_chart_ta_macd(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_rsi(params, headers):
+    """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -287,6 +299,7 @@ def test_chart_ta_rsi(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_sma(params, headers):
+    """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -317,6 +330,7 @@ def test_chart_ta_sma(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_wma(params, headers):
+    """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 
@@ -347,6 +361,7 @@ def test_chart_ta_wma(params, headers):
 )
 @pytest.mark.integration
 def test_chart_ta_zlma(params, headers):
+    """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_stocks_data())
 

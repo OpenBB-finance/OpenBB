@@ -11,6 +11,7 @@ from extensions.tests.utils.integration_tests_generator import get_test_params
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
+    """Given a set of paths and a route, return the http method for that route."""
     route_info = api_paths.get(route, None)
     if not route_info:
         return route_info
@@ -18,10 +19,13 @@ def get_http_method(api_paths: Dict[str, dict], route: str):
 
 
 def get_post_flat_params(hints: Dict[str, Type]):
+    """Flattens the params for a post request."""
     return list(hints.keys())
 
 
 def write_init_test_template(http_method: str, path: str):
+    """Write some common initialization for the tests with the defined template."""
+
     http_template_imports = {"get": "", "post": "import json"}
     template = http_template_imports[http_method]
     template += """
@@ -52,6 +56,8 @@ def write_test_w_template(
     path: str,
     chart: bool = False,
 ):
+    """Write the test with the defined template."""
+
     params_str = ",\n".join([f"({params})" for params in params_list])
 
     http_template_request = {
@@ -92,6 +98,7 @@ def test_{test_name_extra}{route.replace("/", "_")[1:]}(params, headers):
 
 
 def test_exists(route: str, path: str):
+    """Check if a test exists."""
     with open(path) as f:
         return route.replace("/", "_")[1:] in f.read()
 
@@ -101,6 +108,7 @@ def write_commands_integration_tests(
     provider_interface: ProviderInterface,
     api_paths: Dict[str, dict],
 ) -> List[str]:
+    """Write the commands integration tests."""
     commands_not_found = []
 
     commandmap_map = command_map.map
@@ -145,6 +153,8 @@ def write_commands_integration_tests(
 
 
 def write_charting_extension_integration_tests():
+    """Write the charting extension integration tests."""
+
     functions = ChartingService.get_implemented_charting_functions()
 
     # we assume test file exists

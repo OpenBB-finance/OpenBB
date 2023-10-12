@@ -18,6 +18,7 @@ data = {}
 
 
 def get_stocks_data():
+    """Get stocks data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
@@ -46,6 +47,7 @@ def get_stocks_data():
 )
 @pytest.mark.integration
 def test_chart_stocks_load(params, obb):
+    """Test chart stocks load."""
     result = obb.stocks.load(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -62,6 +64,7 @@ def test_chart_stocks_load(params, obb):
 )
 @pytest.mark.integration
 def test_chart_stocks_multiples(params, obb):
+    """Test chart stocks multiples."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.multiples(**params)
@@ -87,6 +90,7 @@ def test_chart_stocks_multiples(params, obb):
 )
 @pytest.mark.integration
 def test_chart_stocks_news(params, obb):
+    """Test chart stocks news."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.news(**params)
@@ -114,6 +118,7 @@ def test_chart_stocks_news(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_adx(params, obb):
+    """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -142,6 +147,7 @@ def test_chart_ta_adx(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_aroon(params, obb):
+    """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -171,6 +177,7 @@ def test_chart_ta_aroon(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_ema(params, obb):
+    """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -200,6 +207,7 @@ def test_chart_ta_ema(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_hma(params, obb):
+    """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -230,6 +238,7 @@ def test_chart_ta_hma(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_macd(params, obb):
+    """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -260,6 +269,7 @@ def test_chart_ta_macd(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_rsi(params, obb):
+    """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -289,6 +299,7 @@ def test_chart_ta_rsi(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_sma(params, obb):
+    """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -318,6 +329,7 @@ def test_chart_ta_sma(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_wma(params, obb):
+    """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
@@ -347,6 +359,7 @@ def test_chart_ta_wma(params, obb):
 )
 @pytest.mark.integration
 def test_chart_ta_zlma(params, obb):
+    """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_stocks_data()
