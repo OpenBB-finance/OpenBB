@@ -14,6 +14,24 @@ def obb(pytestconfig):
         return openbb.obb
 
 
+data = {}
+
+
+def get_stocks_data():
+    import openbb  # pylint:disable=import-outside-toplevel
+
+    if "stocks_data" in data:
+        return data["stocks_data"]
+
+    symbol = "AAPL"
+    provider = "fmp"
+
+    data["stocks_data"] = openbb.obb.stocks.load(
+        symbol=symbol, provider=provider
+    ).results
+    return data["stocks_data"]
+
+
 @pytest.mark.parametrize(
     "params",
     [
@@ -39,7 +57,7 @@ def test_chart_stocks_load(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        ({"symbol": "AAPL", "limit": 100, "chart": "True"}),
     ],
 )
 @pytest.mark.integration
@@ -57,7 +75,14 @@ def test_chart_stocks_multiples(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "provider": "fmp",
+                "symbols": "AAPL",
+                "limit": 20,
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -75,12 +100,23 @@ def test_chart_stocks_news(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "index": "date",
+                "length": "60",
+                "scalar": "90.0",
+                "drift": "2",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_adx(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.adx(**params)
     assert result
@@ -93,12 +129,22 @@ def test_chart_ta_adx(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "index": "date",
+                "length": "30",
+                "scalar": "110",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_aroon(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.aroon(**params)
     assert result
@@ -111,12 +157,23 @@ def test_chart_ta_aroon(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "",
+                "length": "60",
+                "offset": "10",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_ema(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.ema(**params)
     assert result
@@ -129,12 +186,23 @@ def test_chart_ta_ema(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "length": "55",
+                "offset": "2",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_hma(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.hma(**params)
     assert result
@@ -147,12 +215,24 @@ def test_chart_ta_hma(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "fast": "10",
+                "slow": "30",
+                "signal": "10",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_macd(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.macd(**params)
     assert result
@@ -165,12 +245,24 @@ def test_chart_ta_macd(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "length": "16",
+                "scalar": "90.0",
+                "drift": "2",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_rsi(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.rsi(**params)
     assert result
@@ -183,12 +275,23 @@ def test_chart_ta_rsi(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "length": "55",
+                "offset": "2",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_sma(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.sma(**params)
     assert result
@@ -201,12 +304,23 @@ def test_chart_ta_sma(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "length": "60",
+                "offset": "10",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_wma(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.wma(**params)
     assert result
@@ -219,12 +333,23 @@ def test_chart_ta_wma(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"chart": "True"}),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "index": "date",
+                "length": "55",
+                "offset": "5",
+                "chart": "True",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
 def test_chart_ta_zlma(params, obb):
     params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_stocks_data()
 
     result = obb.ta.zlma(**params)
     assert result
