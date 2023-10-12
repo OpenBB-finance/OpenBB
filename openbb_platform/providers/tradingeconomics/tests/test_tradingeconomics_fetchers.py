@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
@@ -20,8 +20,8 @@ def vcr_config():
 @pytest.mark.record_http
 def test_te_earnings_calendar_fetcher(credentials=test_credentials):
     params = {
-        "start_date": "2023-01-01",
-        "end_date": "2023-10-10",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
     }
 
     fetcher = TEEarningsCalendarFetcher()
