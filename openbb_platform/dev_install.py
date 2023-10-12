@@ -21,6 +21,8 @@ openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
+openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-oecd = { path = "./providers/oecd", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
