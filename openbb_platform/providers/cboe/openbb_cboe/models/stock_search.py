@@ -52,12 +52,12 @@ class CboeStockSearchFetcher(
         query: CboeStockSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
         """Return the raw data from the CBOE endpoint."""
 
         data = {}
-        symbols = get_cboe_directory().reset_index().replace("nan", None)
-        target = "name" if not query.is_symbol else "symbol"
+        symbols = get_cboe_directory().reset_index()
+        target = "name" if query.is_symbol is False else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")
         data.update({"results": result})
