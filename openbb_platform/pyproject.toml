@@ -14,6 +14,7 @@ openbb-benzinga = "^0.1.0a2"
 openbb-fmp = "^0.1.0a2"
 openbb-fred = "^0.1.0a2"
 openbb-intrinio = "^0.1.0a2"
+openbb-oecd = "^0.1.0a2"
 openbb-polygon = "^0.1.0a2"
 openbb-tradingeconomics = "^0.1.0a2"
 
@@ -27,7 +28,6 @@ openbb-stocks = "^0.1.0a2"
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a2", optional = true }
 openbb-cboe = { version = "^0.1.0a2", optional = true }
-openbb-oecd = { version = "^0.1.0a2", optional = true }
 openbb-quandl = { version = "^0.1.0a2", optional = true }
 openbb-sec = { version = "^0.1.0a2", optional = true }
 openbb-yfinance = { version = "^0.1.0a2", optional = true }
