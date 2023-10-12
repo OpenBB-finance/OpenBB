@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # divs
 
-Historical Dividends.
+Historical Dividends. Historical dividends data for a given company.
 
 ```python wordwrap
 divs(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

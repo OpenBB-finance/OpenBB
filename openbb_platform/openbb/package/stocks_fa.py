@@ -7,9 +7,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_stocks_fa(Container):
@@ -47,7 +47,7 @@ class ROUTER_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def balance(
         self,
         symbol: typing_extensions.Annotated[
@@ -62,7 +62,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet.
@@ -75,7 +75,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -123,7 +123,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[BalanceSheet]]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -266,7 +266,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def balance_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -410,7 +410,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cal(
         self,
         start_date: typing_extensions.Annotated[
@@ -490,7 +490,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash(
         self,
         symbol: typing_extensions.Annotated[
@@ -505,7 +505,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement.
@@ -518,7 +518,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -566,7 +566,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[CashFlowStatement]]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -689,7 +689,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -815,7 +815,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comp(
         self,
         symbol: typing_extensions.Annotated[
@@ -894,7 +894,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comsplit(
         self,
         start_date: typing_extensions.Annotated[
@@ -968,7 +968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def divs(
         self,
         symbol: typing_extensions.Annotated[
@@ -1035,7 +1035,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def earning(
         self,
         symbol: typing_extensions.Annotated[
@@ -1113,7 +1113,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def emp(
         self,
         symbol: typing_extensions.Annotated[
@@ -1184,7 +1184,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def est(
         self,
         symbol: typing_extensions.Annotated[
@@ -1295,7 +1295,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def filings(
         self,
         symbol: typing_extensions.Annotated[
@@ -1373,7 +1373,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income(
         self,
         symbol: typing_extensions.Annotated[
@@ -1388,7 +1388,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement.
@@ -1401,7 +1401,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1449,7 +1449,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[IncomeStatement]]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1572,7 +1572,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -1697,7 +1697,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins(
         self,
         symbol: typing_extensions.Annotated[
@@ -1819,7 +1819,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins_own(
         self,
         symbol: typing_extensions.Annotated[
@@ -1959,7 +1959,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def metrics(
         self,
         symbol: typing_extensions.Annotated[
@@ -2150,7 +2150,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def mgmt(
         self,
         symbol: typing_extensions.Annotated[
@@ -2217,7 +2217,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def overview(
         self,
         symbol: typing_extensions.Annotated[
@@ -2342,7 +2342,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def own(
         self,
         symbol: typing_extensions.Annotated[
@@ -2487,7 +2487,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pt(
         self,
         symbol: typing_extensions.Annotated[
@@ -2550,7 +2550,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pta(
         self,
         symbol: typing_extensions.Annotated[
@@ -2633,7 +2633,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ratios(
         self,
         symbol: typing_extensions.Annotated[
@@ -2816,7 +2816,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revgeo(
         self,
         symbol: typing_extensions.Annotated[
@@ -2897,7 +2897,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revseg(
         self,
         symbol: typing_extensions.Annotated[
@@ -2968,7 +2968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def shrs(
         self,
         symbol: typing_extensions.Annotated[
@@ -3033,7 +3033,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def split(
         self,
         symbol: typing_extensions.Annotated[
@@ -3094,7 +3094,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def transcript(
         self,
         symbol: typing_extensions.Annotated[
