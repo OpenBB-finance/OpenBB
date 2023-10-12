@@ -183,6 +183,8 @@ pytest-recorder = "^0.2.1"
 freezegun = "^1.2.2"
 ruff = "^0.0.285"
 mypy = "^1.5.1"
+toml = "^0.10.2"
+tomli = "^2.0.1"
 
 [build-system]
 requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
