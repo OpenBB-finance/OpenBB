@@ -36,7 +36,7 @@ BalanceSheetGrowthQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | limit | int | The number of data entries to return. | 10 | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -48,7 +48,7 @@ BalanceSheetGrowthQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | Union[str] | Symbol to get data for. |
+| symbol | str | Symbol to get data for. |
 | date | date | The date of the data. |
 | period | str | Reporting period. |
 | growth_cash_and_cash_equivalents | float | Growth rate of cash and cash equivalents. |

@@ -35,7 +35,7 @@ HistoricalDividendsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -51,9 +51,9 @@ HistoricalDividendsQueryParams,
 | label | str | Label of the historical dividends. |
 | adj_dividend | float | Adjusted dividend of the historical dividends. |
 | dividend | float | Dividend of the historical dividends. |
-| record_date | Union[date] | Record date of the historical dividends. |
-| payment_date | Union[date] | Payment date of the historical dividends. |
-| declaration_date | Union[date] | Declaration date of the historical dividends. |
+| record_date | date | Record date of the historical dividends. |
+| payment_date | date | Payment date of the historical dividends. |
+| declaration_date | date | Declaration date of the historical dividends. |
 </TabItem>
 
 </Tabs>

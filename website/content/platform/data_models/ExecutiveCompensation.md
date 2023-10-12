@@ -35,7 +35,7 @@ ExecutiveCompensationQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -48,7 +48,7 @@ ExecutiveCompensationQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
-| cik | Union[str] | Central Index Key (CIK) of the company. |
+| cik | str | Central Index Key (CIK) of the company. |
 | filing_date | date | Date of the filing. |
 | accepted_date | datetime | Date the filing was accepted. |
 | name_and_position | str | Name and position of the executive. |

@@ -35,9 +35,9 @@ StockOwnershipQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| date | Union[date] | A specific date to get data for. | None | True |
-| page | Union[int] | Page number of the data to fetch. | 0 | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| date | date | A specific date to get data for. | None | True |
+| page | int | Page number of the data to fetch. | 0 | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>

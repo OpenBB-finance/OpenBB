@@ -35,7 +35,7 @@ ShareStatisticsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -48,11 +48,11 @@ ShareStatisticsQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
-| date | Union[date] | A specific date to get data for. |
-| free_float | Union[float] | Percentage of unrestricted shares of a publicly-traded company. |
-| float_shares | Union[float] | Number of shares available for trading by the general public. |
-| outstanding_shares | Union[float] | Total number of shares of a publicly-traded company. |
-| source | Union[str] | Source of the received data. |
+| date | date | A specific date to get data for. |
+| free_float | float | Percentage of unrestricted shares of a publicly-traded company. |
+| float_shares | float | Number of shares available for trading by the general public. |
+| outstanding_shares | float | Total number of shares of a publicly-traded company. |
+| source | str | Source of the received data. |
 </TabItem>
 
 </Tabs>

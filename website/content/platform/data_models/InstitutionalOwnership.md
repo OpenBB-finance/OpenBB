@@ -35,9 +35,9 @@ InstitutionalOwnershipQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| include_current_quarter | Union[bool] | Include current quarter data. | False | True |
-| date | Union[date] | A specific date to get data for. | None | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| include_current_quarter | bool | Include current quarter data. | False | True |
+| date | date | A specific date to get data for. | None | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -50,7 +50,7 @@ InstitutionalOwnershipQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
-| cik | Union[str] | CIK of the company. |
+| cik | str | CIK of the company. |
 | date | date | The date of the data. |
 | investors_holding | int | Number of investors holding the stock. |
 | last_investors_holding | int | Number of investors holding the stock in the last quarter. |

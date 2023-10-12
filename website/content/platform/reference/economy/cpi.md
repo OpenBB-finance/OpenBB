@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # cpi
 
-CPI.
+CPI. Consumer Price Index.
 
 ```python wordwrap
 cpi(countries: List[Literal[str]], units: Literal[str] = growth_same, frequency: Literal[str] = monthly, harmonized: bool = False, start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fred)
@@ -66,9 +66,7 @@ OBBject
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | date | The date of the data. |
-| realtime_start | date | Date the data was updated. |
-| realtime_end | date | Date the data was updated. |
-| value | float | Value of the data. |
+| value | float | CPI value on the date. |
 </TabItem>
 
 </Tabs>

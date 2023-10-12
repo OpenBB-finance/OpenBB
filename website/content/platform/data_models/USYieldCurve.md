@@ -34,9 +34,9 @@ USYieldCurveQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| date | Union[date] | Date to get Yield Curve data.  Defaults to the most recent FRED entry. | None | True |
-| inflation_adjusted | Union[bool] | Get inflation adjusted rates. | False | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| date | date | Date to get Yield Curve data.  Defaults to the most recent FRED entry. | None | True |
+| inflation_adjusted | bool | Get inflation adjusted rates. | False | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 </TabItem>
 
 </Tabs>

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.price_target_consensus import (
+from openbb_provider.standard_models.price_target import (
 PriceTargetData,
 PriceTargetQueryParams,
 )
@@ -35,7 +35,7 @@ PriceTargetQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -43,7 +43,7 @@ PriceTargetQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | with_grade | bool | Include upgrades and downgrades in the response. | False | True |
 </TabItem>
 
@@ -58,15 +58,15 @@ PriceTargetQueryParams,
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
 | published_date | datetime | Published date of the price target. |
-| news_url | Union[str] | News URL of the price target. |
-| news_title | Union[str] | News title of the price target. |
-| analyst_name | Union[str] | Analyst name. |
-| analyst_company | Union[str] | Analyst company. |
-| price_target | Union[float] | Price target. |
-| adj_price_target | Union[float] | Adjusted price target. |
-| price_when_posted | Union[float] | Price when posted. |
-| news_publisher | Union[str] | News publisher of the price target. |
-| news_base_url | Union[str] | News base URL of the price target. |
+| news_url | str | News URL of the price target. |
+| news_title | str | News title of the price target. |
+| analyst_name | str | Analyst name. |
+| analyst_company | str | Analyst company. |
+| price_target | float | Price target. |
+| adj_price_target | float | Adjusted price target. |
+| price_when_posted | float | Price when posted. |
+| news_publisher | str | News publisher of the price target. |
+| news_base_url | str | News base URL of the price target. |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -75,18 +75,18 @@ PriceTargetQueryParams,
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
 | published_date | datetime | Published date of the price target. |
-| news_url | Union[str] | News URL of the price target. |
-| news_title | Union[str] | News title of the price target. |
-| analyst_name | Union[str] | Analyst name. |
-| analyst_company | Union[str] | Analyst company. |
-| price_target | Union[float] | Price target. |
-| adj_price_target | Union[float] | Adjusted price target. |
-| price_when_posted | Union[float] | Price when posted. |
-| news_publisher | Union[str] | News publisher of the price target. |
-| news_base_url | Union[str] | News base URL of the price target. |
-| new_grade | Union[str] | New grade |
-| previous_grade | Union[str] | Previous grade |
-| grading_company | Union[str] | Grading company |
+| news_url | str | News URL of the price target. |
+| news_title | str | News title of the price target. |
+| analyst_name | str | Analyst name. |
+| analyst_company | str | Analyst company. |
+| price_target | float | Price target. |
+| adj_price_target | float | Adjusted price target. |
+| price_when_posted | float | Price when posted. |
+| news_publisher | str | News publisher of the price target. |
+| news_base_url | str | News base URL of the price target. |
+| new_grade | str | New grade |
+| previous_grade | str | Previous grade |
+| grading_company | str | Grading company |
 </TabItem>
 
 </Tabs>

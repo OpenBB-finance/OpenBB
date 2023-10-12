@@ -36,7 +36,7 @@ StockSplitCalendarQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>

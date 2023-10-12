@@ -36,7 +36,7 @@ FEDFUNDSQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 </TabItem>
 
 <TabItem value='fred' label='fred'>
@@ -45,7 +45,7 @@ FEDFUNDSQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 | parameter | Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume'] | Period of FED rate. | weekly | True |
 </TabItem>
 
@@ -59,7 +59,7 @@ FEDFUNDSQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | date | The date of the data. |
-| rate | Union[float] | FED rate. |
+| rate | float | FED rate. |
 </TabItem>
 
 </Tabs>

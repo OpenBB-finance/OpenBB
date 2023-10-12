@@ -37,7 +37,7 @@ IncomeStatementGrowthQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | limit | int | The number of data entries to return. | 10 | True |
 | period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
@@ -49,7 +49,7 @@ IncomeStatementGrowthQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | Union[str] | Symbol to get data for. |
+| symbol | str | Symbol to get data for. |
 | date | date | The date of the data. |
 | period | str | Period the statement is returned for. |
 | growth_revenue | float | Growth rate of total revenue. |

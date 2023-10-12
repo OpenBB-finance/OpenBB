@@ -35,9 +35,8 @@ StockNewsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str | Comma separated list of symbols. |  | False |
-| limit | Union[typing_extensions.Annotated[int, Ge(ge=0)]] | Number of results to return per page. | 20 | True |
-| chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| limit | int | Number of results to return per page. | 20 | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 </TabItem>
 
 <TabItem value='benzinga' label='benzinga'>
@@ -45,23 +44,22 @@ StockNewsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str | Comma separated list of symbols. |  | False |
-| limit | Union[typing_extensions.Annotated[int, Ge(ge=0)]] | Number of results to return per page. | 20 | True |
-| chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| limit | int | Number of results to return per page. | 20 | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | display | Literal['headline', 'abstract', 'full'] | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). | full | True |
-| date | Union[str] | Date of the news to retrieve. | None | True |
-| start_date | Union[str] | Start date of the news to retrieve. | None | True |
-| end_date | Union[str] | End date of the news to retrieve. | None | True |
-| updated_since | Union[int] | Number of seconds since the news was updated. | None | True |
-| published_since | Union[int] | Number of seconds since the news was published. | None | True |
-| sort | Union[Literal['id', 'created', 'updated']] | Key to sort the news by. | created | True |
-| order | Union[Literal['asc', 'desc']] | Order to sort the news by. | desc | True |
-| isin | Union[str] | The ISIN of the news to retrieve. | None | True |
-| cusip | Union[str] | The CUSIP of the news to retrieve. | None | True |
-| channels | Union[str] | Channels of the news to retrieve. | None | True |
-| topics | Union[str] | Topics of the news to retrieve. | None | True |
-| authors | Union[str] | Authors of the news to retrieve. | None | True |
-| content_types | Union[str] | Content types of the news to retrieve. | None | True |
+| date | str | Date of the news to retrieve. | None | True |
+| start_date | str | Start date of the news to retrieve. | None | True |
+| end_date | str | End date of the news to retrieve. | None | True |
+| updated_since | int | Number of seconds since the news was updated. | None | True |
+| published_since | int | Number of seconds since the news was published. | None | True |
+| sort | Literal['id', 'created', 'updated'] | Key to sort the news by. | created | True |
+| order | Literal['asc', 'desc'] | Order to sort the news by. | desc | True |
+| isin | str | The ISIN of the news to retrieve. | None | True |
+| cusip | str | The CUSIP of the news to retrieve. | None | True |
+| channels | str | Channels of the news to retrieve. | None | True |
+| topics | str | Topics of the news to retrieve. | None | True |
+| authors | str | Authors of the news to retrieve. | None | True |
+| content_types | str | Content types of the news to retrieve. | None | True |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
@@ -69,11 +67,10 @@ StockNewsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str | Comma separated list of symbols. |  | False |
-| limit | Union[typing_extensions.Annotated[int, Ge(ge=0)]] | Number of results to return per page. | 20 | True |
-| chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
-| published_utc | Union[str] | Date query to fetch articles. Supports operators <, <=, >, >= | None | True |
-| order | Union[Literal['asc', 'desc']] | Sort order of the articles. | desc | True |
+| limit | int | Number of results to return per page. | 20 | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| published_utc | str | Date query to fetch articles. Supports operators <, <=, >, >= | None | True |
+| order | Literal['asc', 'desc'] | Sort order of the articles. | desc | True |
 </TabItem>
 
 </Tabs>
@@ -87,8 +84,8 @@ StockNewsQueryParams,
 | ---- | ---- | ----------- |
 | date | datetime | Published date of the news. |
 | title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
+| image | str | Image URL of the news. |
+| text | str | Text/body of the news. |
 | url | str | URL of the news. |
 </TabItem>
 
@@ -98,17 +95,17 @@ StockNewsQueryParams,
 | ---- | ---- | ----------- |
 | date | datetime | Published date of the news. |
 | title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
+| image | str | Image URL of the news. |
+| text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | id | str | ID of the news. |
-| author | Union[str] | Author of the news. |
-| teaser | Union[str] | Teaser of the news. |
-| images | Union[List[Dict[str, str]]] | Images associated with the news. |
-| channels | Union[str] | Channels associated with the news. |
-| stocks | Union[str] | Stocks associated with the news. |
-| tags | Union[str] | Tags associated with the news. |
-| updated | Union[datetime] | None |
+| author | str | Author of the news. |
+| teaser | str | Teaser of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
+| channels | str | Channels associated with the news. |
+| stocks | str | Stocks associated with the news. |
+| tags | str | Tags associated with the news. |
+| updated | datetime | None |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -117,8 +114,8 @@ StockNewsQueryParams,
 | ---- | ---- | ----------- |
 | date | datetime | Published date of the news. |
 | title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
+| image | str | Image URL of the news. |
+| text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | symbol | str | Ticker of the fetched news. |
 | site | str | Name of the news source. |
@@ -130,8 +127,8 @@ StockNewsQueryParams,
 | ---- | ---- | ----------- |
 | date | datetime | Published date of the news. |
 | title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
+| image | str | Image URL of the news. |
+| text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | id | str | Intrinio ID for the article. |
 </TabItem>
@@ -142,32 +139,16 @@ StockNewsQueryParams,
 | ---- | ---- | ----------- |
 | date | datetime | Published date of the news. |
 | title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
+| image | str | Image URL of the news. |
+| text | str | Text/body of the news. |
 | url | str | URL of the news. |
-| amp_url | Union[str] | AMP URL. |
-| author | Union[str] | Author of the article. |
+| amp_url | str | AMP URL. |
+| author | str | Author of the article. |
 | id | str | Article ID. |
-| image_url | Union[str] | Image URL. |
-| keywords | Union[List[str]] | Keywords in the article |
+| image_url | str | Image URL. |
+| keywords | List[str] | Keywords in the article |
 | publisher | openbb_polygon.models.stock_news.PolygonPublisher | Publisher of the article. |
 | tickers | List[str] | Tickers covered in the article. |
-</TabItem>
-
-<TabItem value='yfinance' label='yfinance'>
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| date | datetime | Published date of the news. |
-| title | str | Title of the news. |
-| image | Union[str] | Image URL of the news. |
-| text | Union[str] | Text/body of the news. |
-| url | str | URL of the news. |
-| uuid | str | Unique identifier for the news article |
-| publisher | str | Publisher of the news article |
-| type | str | Type of the news article |
-| thumbnail | Union[List] | Thumbnail related data to the ticker news article. |
-| relatedTickers | str | Tickers related to the news article. |
 </TabItem>
 
 </Tabs>

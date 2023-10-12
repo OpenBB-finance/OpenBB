@@ -1,31 +1,20 @@
 ---
-title: Company Filings
-description: OpenBB Platform Data Model
+title: filings
+description: OpenBB Platform Function
 ---
-
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+# filings
+
+Company Filings. Company filings data.
+
+```python wordwrap
+filings(symbol: Union[str, List[str]], limit: int = 100, provider: Literal[str] = fmp)
+```
 
 ---
-
-## Implementation details
-
-### Class names
-
-| Model name | Parameters class | Data class |
-| ---------- | ---------------- | ---------- |
-| `CompanyFilings` | `CompanyFilingsQueryParams` | `CompanyFilingsData` |
-
-### Import Statement
-
-```python
-from openbb_provider.standard_models.company_filings import (
-CompanyFilingsData,
-CompanyFilingsQueryParams,
-)
-```
 
 ## Parameters
 
@@ -51,6 +40,30 @@ CompanyFilingsQueryParams,
 </TabItem>
 
 </Tabs>
+
+---
+
+## Returns
+
+```python wordwrap
+OBBject
+    results : List[CompanyFilings]
+        Serializable results.
+
+    provider : Optional[Literal['fmp']]
+        Provider name.
+
+    warnings : Optional[List[Warning_]]
+        List of warnings.
+
+    chart : Optional[Chart]
+        Chart object.
+
+    metadata: Optional[Metadata]
+        Metadata info about the command execution.
+```
+
+---
 
 ## Data
 

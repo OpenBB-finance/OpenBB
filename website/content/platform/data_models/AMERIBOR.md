@@ -36,7 +36,7 @@ AMERIBORQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 </TabItem>
 
 <TabItem value='fred' label='fred'>
@@ -45,7 +45,7 @@ AMERIBORQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 | parameter | Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma'] | Period of AMERIBOR rate. | overnight | True |
 </TabItem>
 
@@ -59,7 +59,7 @@ AMERIBORQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | date | The date of the data. |
-| rate | Union[float] | AMERIBOR rate. |
+| rate | float | AMERIBOR rate. |
 </TabItem>
 
 </Tabs>

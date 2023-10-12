@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import shutil
 from inspect import Parameter, _empty, signature
@@ -10,7 +9,7 @@ from typing import Any, Dict, List, TextIO, Tuple, Union
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
 from openbb_provider import standard_models
-from pydantic import BaseModel
+from pydantic.fields import FieldInfo
 
 website_path = Path(__file__).parent.absolute()
 
@@ -21,7 +20,7 @@ import ReferenceCard from "@site/src/components/General/ReferenceCard";
 """
 
 
-def generate_markdown(meta_command: dict, command: bool = True):
+def generate_markdown(meta_command: dict):
     markdown = f"""---
 title: {meta_command["name"]}
 description: OpenBB Platform Function
@@ -137,7 +136,9 @@ provider_interface = ProviderInterface()
 
 def get_annotation_type(annotation: Any) -> str:
     optional_regex = re.compile(r"Optional\[(.*)\]")
-    return re.sub(
+    annotated_regex = re.compile(r"Annotated\[(?P<type>.*)\,.*\]")
+
+    subbed = re.sub(
         optional_regex,
         r"\1",
         str(annotation)
@@ -150,6 +151,10 @@ def get_annotation_type(annotation: Any) -> str:
         .replace("NoneType", "None")
         .replace(", None", ""),
     )
+    if match := annotated_regex.match(subbed):
+        subbed = match.group("type")
+
+    return subbed
 
 
 def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
@@ -180,7 +185,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
     if model_name:
         providers = provider_interface.map[model_name]
 
-        obb_query_fields: Dict[str, BaseModel] = providers["openbb"]["QueryParams"][
+        obb_query_fields: Dict[str, FieldInfo] = providers["openbb"]["QueryParams"][
             "fields"
         ]
 
@@ -276,8 +281,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         standard, provider_extras, provider_params = {}, {}, {}
 
         for provider_name, model_details in providers.items():
-            data_fields: Dict[str, BaseModel] = model_details["Data"]["fields"]
-            query_fields: Dict[str, BaseModel] = model_details["QueryParams"]["fields"]
+            data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
+            query_fields: Dict[str, FieldInfo] = model_details["QueryParams"]["fields"]
 
             if provider_name == "openbb":
                 for name, field in data_fields.items():
@@ -379,7 +384,7 @@ def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
 
 
 def find_data_model_implementation_file(data_model: str) -> str:
-    def search_in_file(file_path, search_string):
+    def search_in_file(file_path: Path, search_string: str) -> bool:
         with open(file_path, encoding="utf-8", errors="ignore") as file:
             if search_string in file.read():
                 return True
@@ -388,13 +393,11 @@ def find_data_model_implementation_file(data_model: str) -> str:
     standard_models_path = Path(standard_models.__file__).parent
     file_name = ""
 
-    for file in os.listdir(standard_models_path):
-        if file.endswith(".py"):
-            file_path = os.path.join(standard_models_path, file)
-            if search_in_file(file_path, data_model):
-                file_name = file_path.split("/")[-1]
+    for file in standard_models_path.glob("**/*.py"):
+        if search_in_file(file, f"class {data_model}Data"):
+            file_name = file.with_suffix("").name
 
-    return file_name.replace(".py", "")
+    return file_name
 
 
 def generate_implementation_details_markdown_section(data_model: str) -> str:
@@ -422,8 +425,8 @@ def generate_sdk_markdown() -> bool:
 
     print("Generating markdown files...")
     kwargs = {"encoding": "utf-8", "newline": "\n"}
-    content_path = website_path / "versioned_docs/version-v4/platform/reference"
-    data_models_path = website_path / "versioned_docs/version-v4/platform/data_models"
+    content_path = website_path / "content/platform/reference"
+    data_models_path = website_path / "content/platform/data_models"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
     data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 

@@ -37,7 +37,7 @@ AnalystEstimatesQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | period | Literal['quarter', 'annual'] | Period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 30 | True |
-| provider | Union[Literal['fmp']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>

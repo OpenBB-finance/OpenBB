@@ -36,7 +36,7 @@ ESTRQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 </TabItem>
 
 <TabItem value='fred' label='fred'>
@@ -45,7 +45,7 @@ ESTRQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 | parameter | Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume'] | Period of ESTR rate. | volume_weighted_trimmed_mean_rate | True |
 </TabItem>
 
@@ -59,7 +59,7 @@ ESTRQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | date | The date of the data. |
-| rate | Union[float] | ESTR rate. |
+| rate | float | ESTR rate. |
 </TabItem>
 
 </Tabs>

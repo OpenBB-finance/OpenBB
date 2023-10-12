@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # own
 
-Stock Ownership.
+Stock Ownership. Information about the company ownership.
 
 ```python wordwrap
 own(symbol: Union[str, List[str]], date: date = None, page: int = 0, provider: Literal[str] = fmp)

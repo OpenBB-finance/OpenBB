@@ -40,7 +40,7 @@ CPIQueryParams,
 | harmonized | bool | Whether you wish to obtain harmonized data. | False | True |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Union[Literal['fred']] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 </TabItem>
 
 </Tabs>
@@ -52,8 +52,8 @@ CPIQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| date | Union[date] | The date of the data. |
-| value | Union[float] | CPI value on the date. |
+| date | date | The date of the data. |
+| value | float | CPI value on the date. |
 </TabItem>
 
 </Tabs>
