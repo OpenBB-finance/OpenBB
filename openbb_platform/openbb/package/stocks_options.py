@@ -9,11 +9,6 @@ from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-<<<<<<< HEAD
-from typing_extensions import Annotated
-=======
-from pydantic import validate_call
->>>>>>> feature/openbb-sdk-v4
 
 
 class ROUTER_stocks_options(Container):
@@ -31,11 +26,7 @@ class ROUTER_stocks_options(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< HEAD
-        provider: Optional[Literal["intrinio"]] = None,
-=======
-        provider: Union[Literal["cboe", "intrinio"], None] = None,
->>>>>>> feature/openbb-sdk-v4
+        provider: Union[Literal["intrinio"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Get the complete options chain for a ticker.
@@ -44,11 +35,7 @@ class ROUTER_stocks_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-<<<<<<< HEAD
-        provider : Optional[Literal['intrinio']]
-=======
-        provider : Union[Literal['cboe', 'intrinio'], None]
->>>>>>> feature/openbb-sdk-v4
+        provider : Union[Literal['intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
@@ -60,11 +47,7 @@ class ROUTER_stocks_options(Container):
         OBBject
             results : Union[List[OptionsChains]]
                 Serializable results.
-<<<<<<< HEAD
-            provider : Optional[Literal['intrinio']]
-=======
-            provider : Union[Literal['cboe', 'intrinio'], None]
->>>>>>> feature/openbb-sdk-v4
+            provider : Union[Literal['intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -125,35 +108,8 @@ class ROUTER_stocks_options(Container):
             Gamma of the option.
         theta : Optional[Union[float]]
             Theta of the option.
-<<<<<<< HEAD
-        vega : Optional[float]
-            Vega of the option."""  # noqa: E501
-=======
         vega : Optional[Union[float]]
-            Vega of the option.
-        bid_size : Optional[Union[int]]
-            Bid size for the option. (provider: cboe)
-        ask_size : Optional[Union[int]]
-            Ask size for the option. (provider: cboe)
-        theoretical : Optional[Union[float]]
-            Theoretical value of the option. (provider: cboe)
-        last_trade_price : Optional[Union[float]]
-            Last trade price of the option. (provider: cboe)
-        tick : Optional[Union[str]]
-            Whether the last tick was up or down in price. (provider: cboe)
-        prev_close : Optional[Union[float]]
-            Previous closing price of the option. (provider: cboe)
-        change : Optional[Union[float]]
-            Change in  price of the option. (provider: cboe)
-        change_percent : Optional[Union[float]]
-            Change, in percent, of the option. (provider: cboe)
-        rho : Optional[Union[float]]
-            Rho of the option. (provider: cboe)
-        last_trade_timestamp : Optional[Union[datetime]]
-            Last trade timestamp of the option. (provider: cboe)
-        dte : Optional[Union[int]]
-            Days to expiration for the option. (provider: cboe)"""  # noqa: E501
->>>>>>> feature/openbb-sdk-v4
+            Vega of the option."""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

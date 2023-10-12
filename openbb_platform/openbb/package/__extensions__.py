@@ -27,13 +27,7 @@ Extensions:
     - fmp@0.1.0a2
     - fred@0.1.0a2
     - intrinio@0.1.0a2
-<<<<<<< HEAD
     - polygon@0.1.0a2    """
-=======
-    - polygon@0.1.0a2
-    - quandl@0.1.0a2
-    - yfinance@0.1.0a2    """
->>>>>>> feature/openbb-sdk-v4
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""

@@ -10,11 +10,6 @@ from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-<<<<<<< HEAD
-from typing_extensions import Annotated
-=======
-from pydantic import validate_call
->>>>>>> feature/openbb-sdk-v4
 
 
 class ROUTER_stocks_fa(Container):
@@ -67,11 +62,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< HEAD
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> feature/openbb-sdk-v4
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet.
@@ -84,11 +75,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -136,11 +123,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[BalanceSheet]]
                 Serializable results.
-<<<<<<< HEAD
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -522,11 +505,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< HEAD
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> feature/openbb-sdk-v4
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement.
@@ -539,11 +518,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -591,11 +566,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[CashFlowStatement]]
                 Serializable results.
-<<<<<<< HEAD
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1417,11 +1388,7 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< HEAD
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> feature/openbb-sdk-v4
+        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement.
@@ -1434,11 +1401,7 @@ class ROUTER_stocks_fa(Container):
             Period of the data to return.
         limit : int
             The number of data entries to return.
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1486,11 +1449,7 @@ class ROUTER_stocks_fa(Container):
         OBBject
             results : Union[List[IncomeStatement]]
                 Serializable results.
-<<<<<<< HEAD
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-=======
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

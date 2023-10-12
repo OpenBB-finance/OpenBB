@@ -10,11 +10,6 @@ from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-<<<<<<< HEAD
-from typing_extensions import Annotated
-=======
-from pydantic import validate_call
->>>>>>> feature/openbb-sdk-v4
 
 
 class ROUTER_crypto(Container):
@@ -46,11 +41,7 @@ class ROUTER_crypto(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-<<<<<<< HEAD
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-=======
-        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
->>>>>>> feature/openbb-sdk-v4
+        provider: Union[Literal["fmp", "polygon"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Crypto Historical Price.
@@ -63,11 +54,7 @@ class ROUTER_crypto(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-<<<<<<< HEAD
-        provider : Optional[Literal['fmp', 'polygon']]
-=======
-        provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+        provider : Union[Literal['fmp', 'polygon'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -85,22 +72,13 @@ class ROUTER_crypto(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
-<<<<<<< HEAD
-=======
-        period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
->>>>>>> feature/openbb-sdk-v4
 
         Returns
         -------
         OBBject
             results : Union[List[CryptoHistorical]]
                 Serializable results.
-<<<<<<< HEAD
-            provider : Optional[Literal['fmp', 'polygon']]
-=======
-            provider : Union[Literal['fmp', 'polygon', 'yfinance'], None]
->>>>>>> feature/openbb-sdk-v4
+            provider : Union[Literal['fmp', 'polygon'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

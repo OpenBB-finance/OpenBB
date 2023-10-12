@@ -10,11 +10,6 @@ from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-<<<<<<< HEAD
-from typing_extensions import Annotated
-=======
-from pydantic import validate_call
->>>>>>> feature/openbb-sdk-v4
 
 
 class ROUTER_fixedincome(Container):
