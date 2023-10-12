@@ -28,14 +28,15 @@ def validate(func: Optional[Callable[P, R]] = None, **dec_kwargs) -> Any:
         @wraps(f)
         def wrapper(*f_args, **f_kwargs):
             """Wrapper function."""
-            args = list(f_args)
-            for _, v in listify_params.items():
-                if v < len(args) and not isinstance(args[v], list):
-                    args[v] = [args[v]]
-            kwargs = {
-                k: [v] if k in listify_params and not isinstance(v, list) else v
-                for k, v in f_kwargs.items()
-            }
+            if listify_params:
+                args = list(f_args)
+                for _, v in listify_params.items():
+                    if v < len(args) and not isinstance(args[v], list):
+                        args[v] = [args[v]]
+                kwargs = {
+                    k: [v] if k in listify_params and not isinstance(v, list) else v
+                    for k, v in f_kwargs.items()
+                }
             return validate_call(f, **dec_kwargs)(*args, **kwargs)
 
         return wrapper
