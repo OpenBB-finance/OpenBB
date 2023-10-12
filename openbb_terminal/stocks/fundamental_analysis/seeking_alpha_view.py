@@ -25,7 +25,8 @@ def display_eps_estimates(
         ticker of company
     """
     eps_estimates = seeking_alpha_model.get_estimates_eps(symbol)
-
+    eps_estimates["fiscalyear"] = eps_estimates["fiscalyear"].astype(str)
+    
     if not eps_estimates.empty:
         print_rich_table(
             eps_estimates,
@@ -33,6 +34,7 @@ def display_eps_estimates(
             show_index=False,
             title=f"{symbol.upper()} EPS History and Estimations",
             export=bool(export),
+            columns_keep_types=["fiscalyear"]
         )
 
         export_data(
@@ -60,7 +62,8 @@ def display_rev_estimates(
     """
 
     rev_estimates = seeking_alpha_model.get_estimates_rev(symbol)
-
+    rev_estimates["fiscalyear"] = rev_estimates["fiscalyear"].astype(str)
+        
     if not rev_estimates.empty:
         print_rich_table(
             rev_estimates,
