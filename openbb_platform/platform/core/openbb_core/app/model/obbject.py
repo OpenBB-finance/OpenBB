@@ -191,11 +191,18 @@ class OBBject(Tagged, Generic[T]):
         Union[Dict[str, Any], List[Dict[str, Any]]]
             Dict or list of dicts.
         """
-        return (
-            self.results.model_dump()
-            if not isinstance(self.results, list)
-            else [d.model_dump() for d in self.results]
-        )
+
+        def nested_model_to_dict(item: Any) -> Any:
+            if hasattr(item, "model_dump"):
+                return item.model_dump()
+            elif isinstance(item, list):
+                return [nested_model_to_dict(i) for i in item]
+            elif isinstance(item, dict):
+                return {k: nested_model_to_dict(v) for k, v in item.items()}
+
+            return item
+
+        return nested_model_to_dict(self.results)
 
     def to_chart(self, **kwargs):
         """
