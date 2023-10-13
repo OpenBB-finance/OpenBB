@@ -107,15 +107,7 @@ class Fetcher(Generic[Q, R]):
         # Query Assertions
         assert query
         assert issubclass(type(query), cls.query_params_type)
-
-        for key, value in test_params.items():
-            query_value = getattr(query, key)
-            query_value = (
-                query_value
-                if not isinstance(query_value, datetime.date)
-                else str(query_value)
-            )
-            assert query_value == value
+        assert all(getattr(query, key) == value for key, value in test_params.items())
 
         # Data Assertions
         assert data
