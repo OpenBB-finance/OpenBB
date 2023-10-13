@@ -61,7 +61,7 @@ def test_forex_pairs(params, headers):
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "interval": "1d",
+                "interval": "1day",
                 "provider": "fmp",
             }
         ),
