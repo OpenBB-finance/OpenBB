@@ -467,7 +467,17 @@ def test_economy_gdpforecast(params, headers):
 @pytest.mark.skip(reason="Not being picked up by the API.")
 @pytest.mark.parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "country": "Portugal"})],
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "Portugal",
+                "group": "gdp",
+                "importance": 3,
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_economy_econcal(params, headers):
