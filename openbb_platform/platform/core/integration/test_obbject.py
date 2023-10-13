@@ -1,25 +1,19 @@
-import pytest
+import contextlib
 import sys
 
-try:
+import pytest
+
+with contextlib.suppress(ImportError):
     import polars as pl
-except ImportError:
-    pass
 
-try:
+with contextlib.suppress(ImportError):
     import pandas as pd
-except ImportError:
-    pass
 
-try:
+with contextlib.suppress(ImportError):
     import numpy as np
-except ImportError:
-    pass
 
-try:
+with contextlib.suppress(ImportError):
     from openbb_charting.core.openbb_figure import OpenBBFigure
-except ImportError:
-    pass
 
 
 @pytest.fixture(scope="session")
