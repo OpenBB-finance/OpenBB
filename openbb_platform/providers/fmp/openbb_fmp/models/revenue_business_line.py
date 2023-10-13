@@ -61,7 +61,9 @@ class FMPRevenueBusinessLineFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPRevenueBusinessLineData]:
+    def transform_data(
+        data: List[Dict], query: FMPRevenueBusinessLineQueryParams, **kwargs: Any
+    ) -> List[FMPRevenueBusinessLineData]:
         """Return the transformed data."""
         return [
             FMPRevenueBusinessLineData(date=key, business_line=value)

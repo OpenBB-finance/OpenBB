@@ -131,6 +131,8 @@ class IntrinioStockHistoricalFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
+    def transform_data(
+        data: List[Dict], query: IntrinioStockHistoricalQueryParams, **kwargs: Any
+    ) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
         return [IntrinioStockHistoricalData.model_validate(d) for d in data]

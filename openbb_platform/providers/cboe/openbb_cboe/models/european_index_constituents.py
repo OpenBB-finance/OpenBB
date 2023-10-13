@@ -112,7 +112,9 @@ class CboeEuropeanIndexConstituentsFetcher(
         return data.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexConstituentsData]:
+    def transform_data(
+        data: List[Dict], query: CboeEuropeanIndexConstituentsQueryParams, **kwargs: Any
+    ) -> List[CboeEuropeanIndexConstituentsData]:
         """Transform the data to the standard format"""
 
         return [CboeEuropeanIndexConstituentsData.model_validate(d) for d in data]

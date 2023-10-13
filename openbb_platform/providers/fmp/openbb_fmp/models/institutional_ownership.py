@@ -63,6 +63,8 @@ class FMPInstitutionalOwnershipFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPInstitutionalOwnershipData]:
+    def transform_data(
+        data: List[Dict], query: FMPInstitutionalOwnershipQueryParams, **kwargs: Any
+    ) -> List[FMPInstitutionalOwnershipData]:
         """Return the transformed data."""
         return [FMPInstitutionalOwnershipData.model_validate(d) for d in data]

@@ -59,6 +59,8 @@ class FMPHistoricalStockSplitsFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPHistoricalStockSplitsData]:
+    def transform_data(
+        data: List[Dict], query: FMPHistoricalStockSplitsQueryParams, **kwargs: Any
+    ) -> List[FMPHistoricalStockSplitsData]:
         """Return the transformed data."""
         return [FMPHistoricalStockSplitsData.model_validate(d) for d in data]

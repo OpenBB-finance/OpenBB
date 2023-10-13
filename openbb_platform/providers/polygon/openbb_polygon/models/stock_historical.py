@@ -129,7 +129,9 @@ class PolygonStockHistoricalFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
+    def transform_data(
+        data: List[Dict], query: PolygonStockHistoricalQueryParams, **kwargs: Any
+    ) -> List[PolygonStockHistoricalData]:
         transformed_data = [PolygonStockHistoricalData.model_validate(d) for d in data]
         transformed_data.sort(key=lambda x: x.date)
         return transformed_data

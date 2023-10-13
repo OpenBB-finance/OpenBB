@@ -70,6 +70,8 @@ class FMPEarningsCallTranscriptFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEarningsCallTranscriptData]:
+    def transform_data(
+        data: List[Dict], query: FMPEarningsCallTranscriptQueryParams, **kwargs: Any
+    ) -> List[FMPEarningsCallTranscriptData]:
         """Return the transformed data."""
         return [FMPEarningsCallTranscriptData.model_validate(d) for d in data]

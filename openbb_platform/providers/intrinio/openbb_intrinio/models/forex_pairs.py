@@ -63,7 +63,9 @@ class IntrinioForexPairsFetcher(
         return get_data_many(url, "pairs", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioForexPairsData]:
+    def transform_data(
+        data: List[Dict], query: IntrinioForexPairsQueryParams, **kwargs: Any
+    ) -> List[IntrinioForexPairsData]:
         """Return the transformed data."""
 
         return [IntrinioForexPairsData.model_validate(d) for d in data]

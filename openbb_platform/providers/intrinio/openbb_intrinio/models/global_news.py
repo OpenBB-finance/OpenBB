@@ -66,7 +66,9 @@ class IntrinioGlobalNewsFetcher(
         return get_data_many(url, "news", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioGlobalNewsData]:
+    def transform_data(
+        data: List[Dict], query: IntrinioGlobalNewsQueryParams, **kwargs: Any
+    ) -> List[IntrinioGlobalNewsData]:
         """Return the transformed data."""
 
         return [IntrinioGlobalNewsData.model_validate(d) for d in data]

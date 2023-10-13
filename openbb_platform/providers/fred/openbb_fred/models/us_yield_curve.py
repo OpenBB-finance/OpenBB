@@ -82,5 +82,7 @@ class FREDYieldCurveFetcher(
         return yield_curve_data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FREDYieldCurveData]:
+    def transform_data(
+        data: List[Dict], query: FREDYieldCurveQueryParams, **kwargs: Any
+    ) -> List[FREDYieldCurveData]:
         return [FREDYieldCurveData(**x) for x in data]

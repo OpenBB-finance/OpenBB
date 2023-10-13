@@ -78,6 +78,8 @@ class FMPMajorIndicesConstituentsFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesConstituentsData]:
+    def transform_data(
+        data: List[Dict], query: FMPMajorIndicesConstituentsQueryParams, **kwargs: Any
+    ) -> List[FMPMajorIndicesConstituentsData]:
         """Return the raw data from the FMP endpoint."""
         return [FMPMajorIndicesConstituentsData.model_validate(d) for d in data]

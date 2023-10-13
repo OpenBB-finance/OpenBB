@@ -107,7 +107,9 @@ class IntrinioOptionsChainsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioOptionsChainsData]:
+    def transform_data(
+        data: List[Dict], query: IntrinioOptionsChainsQueryParams, **kwargs: Any
+    ) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         data = [{**item["option"], **item["prices"]} for item in data]
         return [IntrinioOptionsChainsData.model_validate(d) for d in data]

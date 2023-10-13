@@ -128,6 +128,8 @@ class IntrinioStockQuoteFetcher(
         return get_data_one(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: Dict) -> IntrinioStockQuoteData:
+    def transform_data(
+        data: dict, query: IntrinioStockQuoteQueryParams, **kwargs: Any
+    ) -> IntrinioStockQuoteData:
         """Return the transformed data."""
         return IntrinioStockQuoteData.model_validate(data)

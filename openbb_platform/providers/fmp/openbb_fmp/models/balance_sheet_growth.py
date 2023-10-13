@@ -63,6 +63,8 @@ class FMPBalanceSheetGrowthFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPBalanceSheetGrowthData]:
+    def transform_data(
+        data: List[Dict], query: FMPBalanceSheetGrowthQueryParams, **kwargs: Any
+    ) -> List[FMPBalanceSheetGrowthData]:
         """Return the transformed data."""
         return [FMPBalanceSheetGrowthData.model_validate(d) for d in data]

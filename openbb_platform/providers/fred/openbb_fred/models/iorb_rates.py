@@ -51,6 +51,8 @@ class FREDIORBFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDIORBData]]]:
+    def transform_data(
+        data: dict, query: FREDIORBQueryParams, **kwargs: Any
+    ) -> List[Dict[str, List[FREDIORBData]]]:
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]

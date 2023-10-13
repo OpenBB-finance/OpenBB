@@ -39,7 +39,7 @@ class Fetcher(Generic[Q, R]):
         raise NotImplementedError
 
     @staticmethod
-    def transform_data(data: Any) -> R:
+    def transform_data(data: Any, query: Q, **kwargs) -> R:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -53,7 +53,7 @@ class Fetcher(Generic[Q, R]):
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
-        return cls.transform_data(data=data)
+        return cls.transform_data(data=data, query=query, **kwargs)
 
     @classproperty
     def query_params_type(self) -> Q:

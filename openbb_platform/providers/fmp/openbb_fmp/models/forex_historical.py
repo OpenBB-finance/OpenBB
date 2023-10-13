@@ -97,6 +97,8 @@ class FMPForexHistoricalFetcher(
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPForexHistoricalData]:
+    def transform_data(
+        data: List[Dict], query: FMPForexHistoricalQueryParams, **kwargs: Any
+    ) -> List[FMPForexHistoricalData]:
         """Return the transformed data."""
         return [FMPForexHistoricalData.model_validate(d) for d in data]

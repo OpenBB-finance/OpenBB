@@ -64,6 +64,8 @@ class CboeStockSearchFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeStockSearchData]:
+    def transform_data(
+        data: dict, query: CboeStockSearchQueryParams, **kwargs: Any
+    ) -> List[CboeStockSearchData]:
         """Transform the data to the standard format."""
         return [CboeStockSearchData.model_validate(d) for d in data["results"]]

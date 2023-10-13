@@ -119,6 +119,8 @@ class FMPBalanceSheetFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPBalanceSheetData]:
+    def transform_data(
+        data: List[Dict], query: FMPBalanceSheetQueryParams, **kwargs: Any
+    ) -> List[FMPBalanceSheetData]:
         """Return the transformed data."""
         return [FMPBalanceSheetData.model_validate(d) for d in data]

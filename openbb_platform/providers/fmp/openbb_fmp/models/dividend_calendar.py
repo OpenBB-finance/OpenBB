@@ -91,6 +91,8 @@ class FMPDividendCalendarFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPDividendCalendarData]:
+    def transform_data(
+        data: List[Dict], query: FMPDividendCalendarQueryParams, **kwargs: Any
+    ) -> List[FMPDividendCalendarData]:
         """Return the transformed data."""
         return [FMPDividendCalendarData.model_validate(d) for d in data]

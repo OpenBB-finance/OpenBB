@@ -86,6 +86,8 @@ class FMPTreasuryRatesFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPTreasuryRatesData]:
+    def transform_data(
+        data: List[Dict], query: FMPTreasuryRatesQueryParams, **kwargs: Any
+    ) -> List[FMPTreasuryRatesData]:
         """Return the transformed data."""
         return [FMPTreasuryRatesData.model_validate(d) for d in data]

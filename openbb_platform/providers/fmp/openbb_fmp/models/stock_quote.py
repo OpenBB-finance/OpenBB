@@ -123,6 +123,8 @@ class FMPStockQuoteFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockQuoteData]:
+    def transform_data(
+        data: List[Dict], query: FMPStockQuoteQueryParams, **kwargs: Any
+    ) -> List[FMPStockQuoteData]:
         """Return the transformed data."""
         return [FMPStockQuoteData.model_validate(d) for d in data]
