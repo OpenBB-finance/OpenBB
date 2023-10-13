@@ -826,7 +826,7 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 ### Ultima Insights
 
-> Ultima Insights' News Monitor is a platform that harnesses the power of GPT + LLMs to help deliver better, more relevant news to investors. We help find the news & tell you why it's important before it's on the front page of Bloomberg.
+> Ultima Insights offers tools such as the SEC Filing Analyst, Company news monitoring, Industry event watch, and Earnings Call Roundup for comprehensive investment monitoring. It incorporates daily Wall Street-level Qualitative analysis into OpenBB to keep users updated. The News curation system, powered by GPT + LLMs technology, presents relevant news to investors, often before it appears on platforms like Bloomberg. Ultima aims to provide timely and significant information for its users.
 
 <details>
 <summary>Instructions</summary>
