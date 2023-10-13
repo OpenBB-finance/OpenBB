@@ -21,8 +21,8 @@ def headers():
         (
             {
                 "provider": "polygon",
-                "symbol": "",
-                "date": "",
+                "symbol": "USDJPY",
+                "date": "2023-10-12",
                 "search": "",
                 "active": True,
                 "order": "asc",
