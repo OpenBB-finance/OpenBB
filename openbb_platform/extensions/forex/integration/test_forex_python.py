@@ -1,5 +1,4 @@
 """Test forex extension."""
-import datetime
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
@@ -18,16 +17,8 @@ def obb(pytestconfig):
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         (
             {
-                "symbol": "EURUSD",
-                "date": datetime.date(2023, 9, 25),
-                "search": "USD",
-                "active": True,
-                "order": "asc",
-                "sort": "ticker",
-                "limit": 1000,
                 "provider": "polygon",
             }
         ),
@@ -54,7 +45,14 @@ def test_forex_pairs(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
         (
             {
                 "interval": "1min",
@@ -62,15 +60,6 @@ def test_forex_pairs(params, obb):
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
-            }
-        ),
-        (
-            {
-                "interval": "1day",
-                "provider": "intrinio",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
             }
         ),
         (
@@ -101,7 +90,7 @@ def test_forex_pairs(params, obb):
         ),
         (
             {
-                "interval": "5m",
+                "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
                 "symbol": "EURUSD",

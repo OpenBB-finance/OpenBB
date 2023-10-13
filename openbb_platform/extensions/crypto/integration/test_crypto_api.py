@@ -18,7 +18,14 @@ def headers():
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "BTCUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "BTC-USD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-06",
+                "provider": "polygon",
+            }
+        ),
         (
             {
                 "interval": "1min",
@@ -31,7 +38,7 @@ def headers():
         ),
         (
             {
-                "interval": "1day",
+                "interval": "15min",
                 "provider": "fmp",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
@@ -72,7 +79,7 @@ def headers():
                 "provider": "yfinance",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-08",
             }
         ),
         (

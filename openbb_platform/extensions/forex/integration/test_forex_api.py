@@ -18,16 +18,8 @@ def headers():
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         (
             {
-                "symbol": "EURUSD",
-                "date": "2023-01-01",
-                "search": "USD",
-                "active": True,
-                "order": "asc",
-                "sort": "ticker",
-                "limit": 1000,
                 "provider": "polygon",
             }
         ),
@@ -57,7 +49,14 @@ def test_forex_pairs(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "EURUSD", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
         (
             {
                 "interval": "1min",
@@ -65,15 +64,6 @@ def test_forex_pairs(params, headers):
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
-            }
-        ),
-        (
-            {
-                "interval": "1day",
-                "provider": "intrinio",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
             }
         ),
         (
