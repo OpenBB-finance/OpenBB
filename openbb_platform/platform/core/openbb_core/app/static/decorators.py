@@ -32,7 +32,7 @@ def validate(**dec_kwargs) -> Callable[P, R]:
 
 
 def validate(func: Optional[Callable[P, R]] = None, **dec_kwargs) -> Any:
-    """Validate function calls."""
+    """Validate function calls. This decorator avoids Pydantic ValidateCallWrapper to pollute the methods docstring."""
     listify_params = dec_kwargs.pop("listify_params", {})
 
     def decorated(f: Callable[P, R]):
