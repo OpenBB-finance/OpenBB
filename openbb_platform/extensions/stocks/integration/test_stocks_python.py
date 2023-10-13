@@ -896,3 +896,17 @@ def test_stocks_info(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_ftd(params, obb):
+    result = obb.stocks.fa.shrs(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
