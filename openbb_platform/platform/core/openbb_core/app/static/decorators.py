@@ -39,10 +39,10 @@ def validate(func: Optional[Callable[P, R]] = None, **dec_kwargs) -> Any:
         """Decorated function."""
 
         @wraps(f)
-        def wrapper(*f_args, **f_kwargs):
+        def wrapper(*args, **kwargs):
             """Wrapper function."""
             if listify_params:
-                args, kwargs = listify(f_args, f_kwargs, listify_params)
+                args, kwargs = listify(args, kwargs, listify_params)
             return validate_call(f, **dec_kwargs)(*args, **kwargs)
 
         return wrapper
