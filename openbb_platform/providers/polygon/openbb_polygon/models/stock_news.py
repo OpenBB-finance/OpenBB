@@ -36,6 +36,8 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
 
 
 class PolygonPublisher(BaseModel):
+    """PolygonPublisher data model."""
+
     favicon_url: str = Field(description="Favicon URL.")
     homepage_url: str = Field(description="Homepage URL.")
     logo_url: str = Field(description="Logo URL.")
@@ -43,7 +45,7 @@ class PolygonPublisher(BaseModel):
 
 
 class PolygonStockNewsData(StockNewsData):
-    """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
+    """Source: https://polygon.io/docs/stocks/get_v2_reference_news."""
 
     __alias_dict__ = {
         "url": "article_url",
@@ -90,6 +92,11 @@ class PolygonStockNewsFetcher(
                     query.model_dump(by_alias=True), ["published_utc"]
                 )
                 query_str += f"&published_utc.{condition}={date}"
+            else:
+                query_str = get_querystring(
+                    query.model_dump(by_alias=True), ["published_utc"]
+                )
+                query_str += f"&published_utc={date}"
 
         else:
             query_str = get_querystring(query.model_dump(by_alias=True), [])
