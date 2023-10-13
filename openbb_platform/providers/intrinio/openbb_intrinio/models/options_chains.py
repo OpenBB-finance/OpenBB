@@ -61,6 +61,8 @@ class IntrinioOptionsChainsFetcher(
         if params.get("date") is None:
             transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
 
+        transform_params["date"] = parser.parse(transform_params["date"]).date()
+
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
     @staticmethod
