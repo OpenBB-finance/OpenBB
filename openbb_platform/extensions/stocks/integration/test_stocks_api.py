@@ -1,4 +1,5 @@
 import base64
+from datetime import time
 
 import pytest
 import requests
@@ -661,7 +662,7 @@ def test_stocks_options_chains(params, headers):
         ),
         (
             {
-                "period": "daily",
+                "period": "intraday",
                 "interval": "60min",
                 "adjusted": True,
                 "extended_hours": True,
@@ -671,7 +672,7 @@ def test_stocks_options_chains(params, headers):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "function_": "TIME_SERIES_DAILY",
+                "function_": "TIME_SERIES_INTRADAY",
             }
         ),
         (
@@ -719,10 +720,10 @@ def test_stocks_options_chains(params, headers):
                 "interval_size": "30m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "start_time": "00:00:00",
-                "end_time": "23:59:59",
+                "start_date": "2023-10-10",
+                "end_date": "2023-10-12",
+                "start_time": time(5, 30, 0),
+                "end_time": time(12, 0, 0),
             }
         ),
         (
@@ -732,10 +733,10 @@ def test_stocks_options_chains(params, headers):
                 "interval_size": "60m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "start_time": "00:00:00",
-                "end_time": "23:59:59",
+                "start_date": "2023-10-10",
+                "end_date": "2023-10-12",
+                "start_time": time(5, 30, 0),
+                "end_time": time(12, 0, 0),
             }
         ),
         (
@@ -808,8 +809,6 @@ def test_stocks_options_chains(params, headers):
 )
 @pytest.mark.integration
 def test_stocks_load(params, headers):
-    if params.get("provider") == "alpha_vantage":
-        pytest.skip("Alpha Vantage requires a premium API key.")
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

@@ -1,4 +1,6 @@
 """Test stocks extension."""
+from datetime import time
+
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
@@ -620,7 +622,7 @@ def test_stocks_options_chains(params, obb):
         ),
         (
             {
-                "period": "daily",
+                "period": "intraday",
                 "interval": "60min",
                 "adjusted": True,
                 "extended_hours": True,
@@ -630,7 +632,7 @@ def test_stocks_options_chains(params, obb):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "function_": "TIME_SERIES_DAILY",
+                "function_": "TIME_SERIES_INTRADAY",
             }
         ),
         (
@@ -678,10 +680,10 @@ def test_stocks_options_chains(params, obb):
                 "interval_size": "30m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "start_time": "00:00:00",
-                "end_time": "23:59:59",
+                "start_date": "2023-10-10",
+                "end_date": "2023-10-12",
+                "start_time": time(5, 30, 0),
+                "end_time": time(12, 0, 0),
             }
         ),
         (
@@ -691,10 +693,10 @@ def test_stocks_options_chains(params, obb):
                 "interval_size": "60m",
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "start_time": "00:00:00",
-                "end_time": "23:59:59",
+                "start_date": "2023-10-10",
+                "end_date": "2023-10-12",
+                "start_time": time(5, 30, 0),
+                "end_time": time(12, 0, 0),
             }
         ),
         (
@@ -767,8 +769,6 @@ def test_stocks_options_chains(params, obb):
 )
 @pytest.mark.integration
 def test_stocks_load(params, obb):
-    if params.get("provider") == "alpha_vantage":
-        pytest.skip("Skipping alpha_vantage due to API key requirement.")
     result = obb.stocks.load(**params)
     assert result
     assert isinstance(result, OBBject)
