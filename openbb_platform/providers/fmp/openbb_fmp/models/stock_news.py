@@ -1,8 +1,6 @@
 """FMP Stock News fetcher."""
 
-
-import math
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
@@ -20,6 +18,10 @@ class FMPStockNewsQueryParams(StockNewsQueryParams):
     """
 
     __alias_dict__ = {"symbols": "tickers"}
+    page: Optional[int] = Field(
+        default=0,
+        description="Page number of the results. Use in combination with limit.",
+    )
 
 
 class FMPStockNewsData(StockNewsData):
@@ -28,10 +30,13 @@ class FMPStockNewsData(StockNewsData):
     __alias_dict__ = {"date": "publishedDate"}
 
     symbol: str = Field(description="Ticker of the fetched news.")
-    image: Optional[str] = Field(
+    image: Optional[Union[List[str], str]] = Field(
         default=None, description="URL to the image of the news source."
     )
     site: str = Field(description="Name of the news source.")
+    images: Optional[Union[List[str], str]] = Field(
+        default=None, description="URL to the images of the news."
+    )
 
 
 class FMPStockNewsFetcher(
@@ -57,18 +62,14 @@ class FMPStockNewsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/stock_news"
-        querystring = get_querystring(query.dict(by_alias=True), [])
+        querystring = get_querystring(query.model_dump(by_alias=True), [])
 
-        pages = math.ceil(query.limit / 20)
         data = []
+        url = f"{base_url}?{querystring}&page={query.page}&limit={query.limit}&apikey={api_key}"
+        response = get_data_many(url, **kwargs)
 
-        for page in range(pages):
-            url = f"{base_url}?{querystring}&page={page}&apikey={api_key}"
-            response = get_data_many(url, **kwargs)
-            data.extend(response)
-
-        data = sorted(data, key=lambda x: x["publishedDate"], reverse=True)
-        data = data[: query.limit]
+        if len(response) > 0:
+            data = sorted(response, key=lambda x: x["publishedDate"], reverse=True)
 
         return data
 

@@ -79,7 +79,7 @@ class PolygonStockNewsFetcher(
         query: PolygonStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
@@ -107,6 +107,6 @@ class PolygonStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[Dict],
     ) -> List[PolygonStockNewsData]:
         return [PolygonStockNewsData.model_validate(d) for d in data]
