@@ -82,7 +82,6 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
-
         symbol = query.symbol.upper()
 
         INDEXES = get_cboe_index_directory()
