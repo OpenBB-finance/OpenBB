@@ -20,6 +20,13 @@ def obb(pytestconfig):
         (
             {
                 "provider": "polygon",
+                "symbol": "",
+                "date": "",
+                "search": "",
+                "active": True,
+                "order": "asc",
+                "sort": "currency_name",
+                "limit": 100,
             }
         ),
         (
@@ -48,6 +55,7 @@ def test_forex_pairs(params, obb):
         (
             {
                 "symbol": "EURUSD",
+                "interval": "1d",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "provider": "fmp",

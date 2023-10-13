@@ -21,6 +21,13 @@ def headers():
         (
             {
                 "provider": "polygon",
+                "symbol": "",
+                "date": "",
+                "search": "",
+                "active": True,
+                "order": "asc",
+                "sort": "currency_name",
+                "limit": 100,
             }
         ),
         (
@@ -54,6 +61,7 @@ def test_forex_pairs(params, headers):
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
                 "provider": "fmp",
             }
         ),
