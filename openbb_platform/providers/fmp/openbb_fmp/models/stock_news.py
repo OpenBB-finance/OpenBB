@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
@@ -62,10 +62,8 @@ class FMPStockNewsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/stock_news"
-        querystring = get_querystring(query.model_dump(by_alias=True), [])
-
         data = []
-        url = f"{base_url}?{querystring}&page={query.page}&limit={query.limit}&apikey={api_key}"
+        url = f"{base_url}?page={query.page}&tickers={query.symbols}&limit={query.limit}&apikey={api_key}"
         response = get_data_many(url, **kwargs)
 
         if len(response) > 0:
