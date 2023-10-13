@@ -1222,7 +1222,9 @@ class OpenBBFigure(go.Figure):
 
         return super().to_html(*args, **kwargs)
 
-    def to_plotly_json(self, ndarray: bool = False, np_nan: bool = False) -> Dict[str, Any]:
+    def to_plotly_json(
+        self, ndarray: bool = False, np_nan: bool = False
+    ) -> Dict[str, Any]:
         """
         Convert figure to a JSON representation as a Python dict
 
