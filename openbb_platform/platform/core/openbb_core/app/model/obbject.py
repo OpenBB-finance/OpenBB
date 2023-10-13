@@ -1,6 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar, Union
 
 import pandas as pd
 from numpy import ndarray
@@ -183,37 +183,19 @@ class OBBject(Tagged, Generic[T]):
         """Convert results field to numpy array."""
         return self.to_dataframe().reset_index().to_numpy()
 
-    def to_dict(self) -> Dict[str, List]:
-        """Convert results field to list of values.
+    def to_dict(self) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+        """Convert results field Data models to dict.
 
         Returns
         -------
-        Dict[str, List]
-            Dictionary of lists.
+        Union[Dict[str, Any], List[Dict[str, Any]]]
+            Dict or list of dicts.
         """
-        if isinstance(self.results, dict) and all(
-            isinstance(v, dict) for v in self.results.values()
-        ):
-            results: Dict[str, List] = {}
-            for _, v in self.results.items():
-                for kk, vv in v.items():
-                    if kk not in results:
-                        results[kk] = []
-                    results[kk].append(vv)
-
-            return results
-
-        df = self.to_dataframe().reset_index()  # type: ignore
-        results = {}
-        for field in df.columns:
-            f = df[field].tolist()
-            results[field] = f[0] if len(f) == 1 else f
-
-        # remove index from results
-        if "index" in results:
-            del results["index"]
-
-        return results
+        return (
+            self.results.model_dump()
+            if not isinstance(self.results, list)
+            else [d.model_dump() for d in self.results]
+        )
 
     def to_chart(self, **kwargs):
         """
