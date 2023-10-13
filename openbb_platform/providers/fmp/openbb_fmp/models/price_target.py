@@ -70,7 +70,7 @@ class FMPPriceTargetFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPPriceTargetQueryParams, **kwargs: Any
+        query: FMPPriceTargetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPPriceTargetData]:
         """Return the transformed data."""
         return [FMPPriceTargetData.model_validate(d) for d in data]

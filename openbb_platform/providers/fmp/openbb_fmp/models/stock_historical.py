@@ -104,7 +104,7 @@ class FMPStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPStockHistoricalQueryParams, **kwargs: Any
+        query: FMPStockHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockHistoricalData]:
         """Return the transformed data."""
         return [FMPStockHistoricalData.model_validate(d) for d in data]

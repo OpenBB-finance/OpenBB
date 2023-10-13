@@ -62,7 +62,7 @@ class FMPRevenueGeographicFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPRevenueGeographicQueryParams, **kwargs: Any
+        query: FMPRevenueGeographicQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPRevenueGeographicData]:
         """Return the transformed data."""
         return [

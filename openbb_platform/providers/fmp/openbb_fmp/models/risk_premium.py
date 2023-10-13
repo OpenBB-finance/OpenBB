@@ -50,7 +50,7 @@ class FMPRiskPremiumFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPRiskPremiumQueryParams, **kwargs: Any
+        query: FMPRiskPremiumQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPRiskPremiumData]:
         """Return the transformed data."""
         return [FMPRiskPremiumData(**item) for item in data]

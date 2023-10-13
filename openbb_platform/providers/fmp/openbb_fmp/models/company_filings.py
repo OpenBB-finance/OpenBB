@@ -75,7 +75,7 @@ class FMPCompanyFilingsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPCompanyFilingsQueryParams, **kwargs: Any
+        query: FMPCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCompanyFilingsData]:
         """Return the transformed data."""
         return [FMPCompanyFilingsData.model_validate(d) for d in data]

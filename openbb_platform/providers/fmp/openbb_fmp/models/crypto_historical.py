@@ -105,7 +105,7 @@ class FMPCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPCryptoHistoricalQueryParams, **kwargs: Any
+        query: FMPCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCryptoHistoricalData]:
         """Return the transformed data."""
         return [FMPCryptoHistoricalData.model_validate(d) for d in data]

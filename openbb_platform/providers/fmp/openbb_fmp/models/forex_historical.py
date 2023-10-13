@@ -98,7 +98,7 @@ class FMPForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPForexHistoricalQueryParams, **kwargs: Any
+        query: FMPForexHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPForexHistoricalData]:
         """Return the transformed data."""
         return [FMPForexHistoricalData.model_validate(d) for d in data]

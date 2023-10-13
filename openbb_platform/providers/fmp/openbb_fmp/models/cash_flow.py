@@ -125,7 +125,7 @@ class FMPCashFlowStatementFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPCashFlowStatementQueryParams, **kwargs: Any
+        query: FMPCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCashFlowStatementData]:
         """Return the transformed data."""
         return [FMPCashFlowStatementData.model_validate(d) for d in data]

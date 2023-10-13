@@ -102,6 +102,6 @@ class PolygonCryptoHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: PolygonCryptoHistoricalQueryParams, **kwargs: Any
+        query: PolygonCryptoHistoricalQueryParams, data: dict, **kwargs: Any
     ) -> List[PolygonCryptoHistoricalData]:
         return [PolygonCryptoHistoricalData.model_validate(d) for d in data]

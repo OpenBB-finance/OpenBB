@@ -102,7 +102,7 @@ class TEEarningsCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: TEEarningsCalendarQueryParams, **kwargs: Any
+        query: TEEarningsCalendarQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TEEarningsCalendarData]:
         """Return the transformed data."""
         return [TEEarningsCalendarData.model_validate(d) for d in data]

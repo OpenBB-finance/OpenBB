@@ -141,7 +141,7 @@ class CboeEuropeanIndexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: CboeEuropeanIndexHistoricalQueryParams, **kwargs: Any
+        query: CboeEuropeanIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeEuropeanIndexHistoricalData]:
         """Transform the data to the standard format."""
         return [CboeEuropeanIndexHistoricalData.model_validate(d) for d in data]

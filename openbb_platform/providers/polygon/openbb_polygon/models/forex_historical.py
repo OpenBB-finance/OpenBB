@@ -99,6 +99,6 @@ class PolygonForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: PolygonForexHistoricalQueryParams, **kwargs: Any
+        query: PolygonForexHistoricalQueryParams, data: dict, **kwargs: Any
     ) -> List[PolygonForexHistoricalData]:
         return [PolygonForexHistoricalData.model_validate(d) for d in data]

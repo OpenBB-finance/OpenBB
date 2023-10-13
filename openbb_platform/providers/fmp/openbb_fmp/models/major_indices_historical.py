@@ -105,7 +105,7 @@ class FMPMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPMajorIndicesHistoricalQueryParams, **kwargs: Any
+        query: FMPMajorIndicesHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPMajorIndicesHistoricalData]:
         """Return the transformed data."""
         return [FMPMajorIndicesHistoricalData.model_validate(d) for d in data]

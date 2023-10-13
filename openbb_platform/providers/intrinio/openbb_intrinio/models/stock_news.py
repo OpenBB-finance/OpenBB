@@ -72,7 +72,7 @@ class IntrinioStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: IntrinioStockNewsQueryParams, **kwargs: Any
+        query: IntrinioStockNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioStockNewsData]:
         """Return the transformed data."""
 

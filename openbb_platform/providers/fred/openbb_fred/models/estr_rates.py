@@ -71,7 +71,7 @@ class FREDESTRFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: FREDESTRQueryParams, **kwargs: Any
+        query: FREDESTRQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDESTRData]]]:
         keys = ["date", "value"]
         return [FREDESTRData(**{k: x[k] for k in keys}) for x in data]

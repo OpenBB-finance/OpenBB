@@ -85,6 +85,6 @@ class OECDGDPRealFetcher(Fetcher[OECDGDPRealQueryParams, List[OECDGDPRealData]])
 
     @staticmethod
     def transform_data(
-        data: dict, query: OECDGDPRealQueryParams, **kwargs: Any
+        query: OECDGDPRealQueryParams, data: dict, **kwargs: Any
     ) -> List[OECDGDPRealData]:
         return [OECDGDPRealData.model_validate(d) for d in data]

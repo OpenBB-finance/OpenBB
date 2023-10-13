@@ -134,7 +134,7 @@ class CboeStockInfoFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: CboeStockInfoQueryParams, **kwargs: Any
+        query: CboeStockInfoQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeStockInfoData]:
         """Transform the data to the standard format"""
 

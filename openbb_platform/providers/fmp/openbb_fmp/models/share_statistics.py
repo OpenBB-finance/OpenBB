@@ -63,7 +63,7 @@ class FMPShareStatisticsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPShareStatisticsQueryParams, **kwargs: Any
+        query: FMPShareStatisticsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPShareStatisticsData]:
         """Return the transformed data."""
         return [FMPShareStatisticsData.model_validate(d) for d in data]

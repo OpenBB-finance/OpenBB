@@ -62,7 +62,7 @@ class FMPStockSplitCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPStockSplitCalendarQueryParams, **kwargs: Any
+        query: FMPStockSplitCalendarQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockSplitCalendarData]:
         """Return the transformed data."""
         return [FMPStockSplitCalendarData.model_validate(d) for d in data]

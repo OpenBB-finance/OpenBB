@@ -90,7 +90,7 @@ class IntrinioIncomeStatementFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: IntrinioIncomeStatementQueryParams, **kwargs: Any
+        query: IntrinioIncomeStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioIncomeStatementData]:
         """Return the transformed data."""
 

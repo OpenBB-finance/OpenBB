@@ -113,7 +113,7 @@ class CboeEuropeanIndexConstituentsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: CboeEuropeanIndexConstituentsQueryParams, **kwargs: Any
+        query: CboeEuropeanIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeEuropeanIndexConstituentsData]:
         """Transform the data to the standard format"""
 

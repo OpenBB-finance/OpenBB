@@ -108,7 +108,7 @@ class IntrinioOptionsChainsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: IntrinioOptionsChainsQueryParams, **kwargs: Any
+        query: IntrinioOptionsChainsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         data = [{**item["option"], **item["prices"]} for item in data]

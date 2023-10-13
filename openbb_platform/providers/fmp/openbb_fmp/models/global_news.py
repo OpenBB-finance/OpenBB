@@ -72,7 +72,7 @@ class FMPGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPGlobalNewsQueryParams, **kwargs: Any
+        query: FMPGlobalNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPGlobalNewsData]:
         """Return the transformed data."""
         return [FMPGlobalNewsData.model_validate(d) for d in data]

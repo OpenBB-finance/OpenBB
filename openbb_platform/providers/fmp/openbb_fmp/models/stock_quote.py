@@ -124,7 +124,7 @@ class FMPStockQuoteFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPStockQuoteQueryParams, **kwargs: Any
+        query: FMPStockQuoteQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockQuoteData]:
         """Return the transformed data."""
         return [FMPStockQuoteData.model_validate(d) for d in data]

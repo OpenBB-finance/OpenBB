@@ -69,7 +69,7 @@ class FMPStockOwnershipFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPStockOwnershipQueryParams, **kwargs: Any
+        query: FMPStockOwnershipQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockOwnershipData]:
         """Return the transformed data."""
         own = [FMPStockOwnershipData.model_validate(d) for d in data]

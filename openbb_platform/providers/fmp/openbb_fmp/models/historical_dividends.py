@@ -50,7 +50,7 @@ class FMPHistoricalDividendsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPHistoricalDividendsQueryParams, **kwargs: Any
+        query: FMPHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPHistoricalDividendsData]:
         """Return the transformed data."""
         return [FMPHistoricalDividendsData.model_validate(d) for d in data]

@@ -106,6 +106,6 @@ class OECDGDPForecastFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: OECDGDPForecastQueryParams, **kwargs: Any
+        query: OECDGDPForecastQueryParams, data: dict, **kwargs: Any
     ) -> List[OECDGDPForecastData]:
         return [OECDGDPForecastData.model_validate(d) for d in data]

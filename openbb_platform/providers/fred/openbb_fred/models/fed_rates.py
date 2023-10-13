@@ -70,7 +70,7 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
 
     @staticmethod
     def transform_data(
-        data: dict, query: FREDFEDQueryParams, **kwargs: Any
+        query: FREDFEDQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDFEDData]]]:
         keys = ["date", "value"]
         return [FREDFEDData(**{k: x[k] for k in keys}) for x in data]

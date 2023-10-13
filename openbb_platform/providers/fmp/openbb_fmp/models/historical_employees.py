@@ -50,7 +50,7 @@ class FMPHistoricalEmployeesFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPHistoricalEmployeesQueryParams, **kwargs: Any
+        query: FMPHistoricalEmployeesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPHistoricalEmployeesData]:
         """Return the transformed data."""
         return [FMPHistoricalEmployeesData.model_validate(d) for d in data]

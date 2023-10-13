@@ -132,7 +132,7 @@ class CboeIndexSnapshotsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: CboeIndexSnapshotsQueryParams, **kwargs: Any
+        query: CboeIndexSnapshotsQueryParams, data: dict, **kwargs: Any
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         return [CboeIndexSnapshotsData.model_validate(d) for d in data]

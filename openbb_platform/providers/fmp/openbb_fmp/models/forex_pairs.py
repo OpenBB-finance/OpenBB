@@ -62,7 +62,7 @@ class FMPForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPForexPairsQueryParams, **kwargs: Any
+        query: FMPForexPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPForexPairsData]:
         """Return the transformed data."""
         return [FMPForexPairsData.model_validate(d) for d in data]

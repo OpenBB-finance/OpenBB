@@ -60,7 +60,7 @@ class FMPAvailableIndicesFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPAvailableIndicesQueryParams, **kwargs: Any
+        query: FMPAvailableIndicesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPAvailableIndicesData]:
         """Return the transformed data."""
         return [FMPAvailableIndicesData.model_validate(d) for d in data]

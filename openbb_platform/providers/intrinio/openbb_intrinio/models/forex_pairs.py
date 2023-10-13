@@ -64,7 +64,7 @@ class IntrinioForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: IntrinioForexPairsQueryParams, **kwargs: Any
+        query: IntrinioForexPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioForexPairsData]:
         """Return the transformed data."""
 

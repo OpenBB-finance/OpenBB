@@ -82,7 +82,7 @@ class FREDAMERIBORFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict, query: FREDAMERIBORQueryParams, **kwargs: Any
+        query: FREDAMERIBORQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDAMERIBORData]]]:
         keys = ["date", "value"]
         return [FREDAMERIBORData(**{k: x[k] for k in keys}) for x in data]

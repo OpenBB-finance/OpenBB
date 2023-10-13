@@ -51,7 +51,7 @@ class YFinanceAvailableIndicesFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: YFinanceAvailableIndicesQueryParams, **kwargs: Any
+        query: YFinanceAvailableIndicesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[YFinanceAvailableIndicesData]:
         """Return the transformed data."""
         return [YFinanceAvailableIndicesData.model_validate(d) for d in data]

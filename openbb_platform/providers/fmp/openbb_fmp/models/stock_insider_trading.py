@@ -55,7 +55,7 @@ class FMPStockInsiderTradingFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], query: FMPStockInsiderTradingQueryParams, **kwargs: Any
+        query: FMPStockInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
         return [FMPStockInsiderTradingData.model_validate(d) for d in data]
