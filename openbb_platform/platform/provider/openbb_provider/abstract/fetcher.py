@@ -2,7 +2,7 @@
 # ruff: noqa: S101
 # pylint: disable=E1101
 
-
+import datetime
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from openbb_provider.abstract.data import Data
@@ -107,7 +107,15 @@ class Fetcher(Generic[Q, R]):
         # Query Assertions
         assert query
         assert issubclass(type(query), cls.query_params_type)
-        assert all(getattr(query, key) == value for key, value in test_params.items())
+
+        for key, value in test_params.items():
+            query_value = getattr(query, key)
+            query_value = (
+                query_value
+                if not isinstance(query_value, datetime.date)
+                else str(query_value)
+            )
+            assert query_value == value
 
         # Data Assertions
         assert data
