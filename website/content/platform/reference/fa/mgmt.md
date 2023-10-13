@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # mgmt
 
-Key Executives.
+Key Executives. Key executives for a given company.
 
 ```python wordwrap
 mgmt(symbol: Union[str, List[str]], provider: Literal[str] = fmp)
@@ -65,7 +65,7 @@ OBBject
 | pay | int | Pay of the key executive. |
 | currency_pay | str | Currency of the pay. |
 | gender | str | Gender of the key executive. |
-| year_born | str | Birth year of the key executive. |
+| year_born | int | Birth year of the key executive. |
 | title_since | int | Date the tile was held since. |
 </TabItem>
 

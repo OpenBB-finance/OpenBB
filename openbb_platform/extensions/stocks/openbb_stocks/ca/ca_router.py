@@ -22,5 +22,5 @@ def peers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Company peers."""
+    """Stock Peers. Company peers."""
     return OBBject(results=Query(**locals()).execute())

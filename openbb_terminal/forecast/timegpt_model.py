@@ -69,9 +69,9 @@ def get_timegpt_model(
         levels = [80, 95]
 
     if isinstance(data[time_col].values[0], pd.Timestamp):
-        data[time_col] = data[time_col].dt.strftime("%Y-%m-%d")
+        data[time_col] = data[time_col].dt.strftime("%Y-%m-%d %H:%M:%S")
     elif isinstance(data[time_col].values[0], numpy.datetime64):
-        data[time_col] = pd.to_datetime(data[time_col]).dt.strftime("%Y-%m-%d")
+        data[time_col] = pd.to_datetime(data[time_col]).dt.strftime("%Y-%m-%d %H:%M:%S")
 
     date_features_param = True if "auto" in date_features else date_features  # type: ignore
 

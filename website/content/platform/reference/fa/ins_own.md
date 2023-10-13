@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # ins_own
 
-Institutional Ownership.
+Institutional Ownership. Institutional ownership data.
 
 ```python wordwrap
 ins_own(symbol: Union[str, List[str]], include_current_quarter: bool = False, date: date = None, provider: Literal[str] = fmp)
