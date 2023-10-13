@@ -108,7 +108,7 @@ class PolygonForexPairsFetcher(
         transform_params = params
         now = datetime.now().date()
         transform_params["symbol"] = (
-            f"ticker=C:{params.get('symbol')}" if params.get("symbol") else ""
+            f"ticker=C:{params.get('symbol').upper()}" if params.get("symbol") else ""
         )
         if params.get("date") is None:
             transform_params["start_date"] = now
