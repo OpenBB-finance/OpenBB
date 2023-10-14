@@ -20,7 +20,7 @@ def pairs(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Forex Available Pairs."""
+    """Forex Pairs. Forex available pairs."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -32,5 +32,5 @@ def load(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Forex Intraday Price."""
+    """Forex Historical Price. Forex historical data."""
     return OBBject(results=Query(**locals()).execute())

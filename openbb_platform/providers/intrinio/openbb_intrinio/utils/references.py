@@ -12,20 +12,6 @@ SOURCES = Literal[
     "delayed_sip",
 ]
 
-TICKER_EXCEPTIONS = [
-    "SPX",
-    "XSP",
-    "XEO",
-    "NDX",
-    "XND",
-    "VIX",
-    "RUT",
-    "MRUT",
-    "DJX",
-    "XAU",
-    "OEX",
-]
-
 INTERVALS = Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"]
 
 TIMEZONES = Literal[

@@ -40,7 +40,7 @@ def load(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Load stock data for a specific ticker."""
+    """Stock Historical price. Load stock data for a specific ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -51,7 +51,7 @@ def news(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get news for one or more stock tickers."""
+    """Stock News. Get news for one or more stock tickers."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -62,7 +62,7 @@ def multiples(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get valuation multiples for a stock ticker."""
+    """Stock Multiples. Valuation multiples for a stock ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -73,7 +73,7 @@ def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Search for a company or stock ticker."""
+    """Stock Search. Search for a company or stock ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -84,7 +84,7 @@ def quote(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Load stock data for a specific ticker."""
+    """Stock Quote. Load stock data for a specific ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -95,7 +95,7 @@ def info(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get general price and performance metrics of a stock."""
+    """Stock Info. Get general price and performance metrics of a stock."""
     return OBBject(results=Query(**locals()).execute())
 
 

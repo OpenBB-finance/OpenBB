@@ -13,7 +13,7 @@ from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetch
 from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump()
 
 
 @pytest.fixture(scope="module")

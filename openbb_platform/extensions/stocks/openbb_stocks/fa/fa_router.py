@@ -22,7 +22,7 @@ def balance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Balance Sheet."""
+    """Balance Sheet. Balance sheet statement."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -33,7 +33,7 @@ def balance_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Balance Sheet Statement Growth."""
+    """Balance Sheet Statement Growth. Information about the growth of the company balance sheet."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -44,7 +44,7 @@ def cal(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Show Dividend Calendar for a given start and end dates."""
+    """Dividend Calendar. Show Dividend Calendar for a given start and end dates."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -55,7 +55,7 @@ def cash(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Cash Flow Statement."""
+    """Cash Flow Statement. Information about the cash flow statement."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -66,7 +66,7 @@ def cash_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Cash Flow Statement Growth."""
+    """Cash Flow Statement Growth. Information about the growth of the company cash flow statement."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -77,7 +77,7 @@ def comp(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Executive Compensation."""
+    """Executive Compensation. Information about the executive compensation for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -88,7 +88,7 @@ def comsplit(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Split Calendar."""
+    """Stock Split Calendar. Show Stock Split Calendar."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -99,7 +99,7 @@ def divs(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical Dividends."""
+    """Historical Dividends. Historical dividends data for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -110,7 +110,7 @@ def historical_eps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical EPS for a company."""
+    """Earnings Calendar. Earnings calendar for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -121,7 +121,7 @@ def emp(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Number of Employees."""
+    """Historical Employees. Historical number of employees."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -132,7 +132,7 @@ def est(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Analyst Estimates."""
+    """Analyst Estimates. Analyst stock recommendations."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -143,7 +143,7 @@ def income(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Income Statement."""
+    """Income Statement. Report on a company's finanacial performance."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -154,7 +154,7 @@ def income_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Income Statement Growth."""
+    """Income Statement Growth. Information about the growth of the company income statement."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -165,7 +165,7 @@ def ins(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Insider Trading."""
+    """Stock Insider Trading. Information about insider trading."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -176,7 +176,7 @@ def ins_own(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Institutional Ownership."""
+    """Institutional Ownership. Institutional ownership data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -187,7 +187,7 @@ def metrics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Key Metrics."""
+    """Key Metrics. Key metrics for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -198,7 +198,7 @@ def mgmt(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Key Executives."""
+    """Key Executives. Key executives for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -209,7 +209,7 @@ def overview(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Company Overview."""
+    """Company Overview. General information about a company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -220,7 +220,7 @@ def own(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Ownership."""
+    """Stock Ownership. Information about the company ownership."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -231,7 +231,7 @@ def pt(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Price Target Consensus."""
+    """Price Target Consensus. Price target consensus data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -242,7 +242,7 @@ def pta(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Price Target."""
+    """Price Target. Price target data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -253,7 +253,7 @@ def ratios(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Extensive set of ratios over time."""
+    """Extensive set of ratios over time. Financial ratios for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -264,7 +264,7 @@ def revgeo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Revenue Geographic."""
+    """Revenue Geographic. Geographic revenue data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -275,7 +275,7 @@ def revseg(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Revenue Business Line."""
+    """Revenue Business Line. Business line revenue data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -286,7 +286,7 @@ def filings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Company Filings."""
+    """Company Filings. Company filings data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -297,7 +297,7 @@ def shrs(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Share Statistics."""
+    """Share Statistics. Share statistics for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -308,7 +308,7 @@ def split(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical Stock Splits."""
+    """Historical Stock Splits. Historical stock splits data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -319,5 +319,5 @@ def transcript(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Earnings Call Transcript."""
+    """Earnings Call Transcript. Earnings call transcript for a given company."""
     return OBBject(results=Query(**locals()).execute())

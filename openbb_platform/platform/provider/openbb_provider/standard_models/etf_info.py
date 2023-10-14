@@ -2,18 +2,19 @@
 
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
 
 class EtfInfoQueryParams(QueryParams):
-    """ETF Info Query Params"""
+    """ETF Info Query Params."""
 
     symbol: str = Field(description="The exchange ticker symbol for the ETF.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

@@ -1,5 +1,6 @@
 """ETF Holdings data model."""
 
+from typing import Optional
 
 from pydantic import Field
 
@@ -15,3 +16,9 @@ class EtfHoldingsQueryParams(QueryParams):
 
 class EtfHoldingsData(Data):
     """ETF Holdings Data."""
+
+    symbol: Optional[str] = Field(
+        description="The exchange ticker symbol for the holding."
+    )
+    name: Optional[str] = Field(description="Name of the ETF holding.")
+    weight: Optional[float] = Field(description="Weight of the ETF holding.")

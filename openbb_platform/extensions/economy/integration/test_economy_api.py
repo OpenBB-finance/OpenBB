@@ -15,6 +15,9 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
+# pylint: disable=redefined-outer-name
+
+
 @pytest.mark.parametrize(
     "params",
     [({"index": "dowjones"})],
@@ -308,7 +311,7 @@ def test_economy_cot_search(params, headers):
         (
             {
                 "code": "13874P",
-                "data_type": "FO",
+                "data_type": "FO",  # cspell: disable-line
                 "legacy_format": True,
                 "report_type": "ALL",
                 "measure": "CR",
@@ -461,6 +464,31 @@ def test_economy_gdpforecast(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/gdpforecast?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "Portugal",
+                "group": "gdp",
+                "importance": 3,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_economy_econcal(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/econcal?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

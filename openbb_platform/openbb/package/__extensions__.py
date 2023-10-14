@@ -40,7 +40,6 @@ Extensions:
     - fmp@0.1.0a2
     - fred@0.1.0a2
     - intrinio@0.1.0a2
-    - oecd@0.1.0a2
     - polygon@0.1.0a2
     - quandl@0.1.0a2
     - yfinance@0.1.0a2    """

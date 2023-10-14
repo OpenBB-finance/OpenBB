@@ -56,7 +56,7 @@ class CboeStockSearchFetcher(
 
         data = {}
         symbols = get_cboe_directory().reset_index()
-        target = "name" if not query.ticker else "symbol"
+        target = "name" if not query.is_symbol else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")
         data.update({"results": result})

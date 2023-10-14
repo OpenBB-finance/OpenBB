@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # comp
 
-Executive Compensation.
+Executive Compensation. Information about the executive compensation for a given company.
 
 ```python wordwrap
 comp(symbol: Union[str, List[str]], provider: Literal[str] = fmp)
@@ -66,12 +66,12 @@ OBBject
 | accepted_date | datetime | Date the filing was accepted. |
 | name_and_position | str | Name and position of the executive. |
 | year | int | Year of the compensation. |
-| salary | PositiveFloat | Salary of the executive. |
-| bonus | NonNegativeFloat | Bonus of the executive. |
-| stock_award | NonNegativeFloat | Stock award of the executive. |
-| incentive_plan_compensation | NonNegativeFloat | Incentive plan compensation of the executive. |
-| all_other_compensation | NonNegativeFloat | All other compensation of the executive. |
-| total | PositiveFloat | Total compensation of the executive. |
+| salary | float | Salary of the executive. |
+| bonus | float | Bonus of the executive. |
+| stock_award | float | Stock award of the executive. |
+| incentive_plan_compensation | float | Incentive plan compensation of the executive. |
+| all_other_compensation | float | All other compensation of the executive. |
+| total | float | Total compensation of the executive. |
 | url | str | URL of the filing data. |
 </TabItem>
 

@@ -3,13 +3,13 @@
 from typing import Dict, List, Literal, Union
 
 import pandas
+import typing_extensions
 from annotated_types import Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
-from typing_extensions import Annotated
 
 
 class ROUTER_econometrics(Container):
@@ -33,13 +33,13 @@ class ROUTER_econometrics(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def bgot(
         self,
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        lags: Annotated[int, Gt(gt=0)] = 1,
+        lags: typing_extensions.Annotated[int, Gt(gt=0)] = 1,
     ) -> OBBject[Data]:
         """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
@@ -72,7 +72,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def coint(
         self, data: Union[List[Data], pandas.DataFrame], columns: List[str]
     ) -> OBBject[Data]:
@@ -103,7 +103,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def corr(self, data: Union[List[Data], pandas.DataFrame]) -> OBBject[List[Data]]:
         """Get the corrlelation matrix of an input dataset.
 
@@ -127,7 +127,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def dwat(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -162,13 +162,13 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def granger(
         self,
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_column: str,
-        lag: Annotated[int, Gt(gt=0)] = 3,
+        lag: typing_extensions.Annotated[int, Gt(gt=0)] = 3,
     ) -> OBBject[Data]:
         """Perform Granger causality test to determine if X "causes" y.
 
@@ -201,7 +201,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def ols(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -236,7 +236,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def ols_summary(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -271,7 +271,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelbols(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -306,7 +306,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelfd(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -341,7 +341,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelfmac(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -376,7 +376,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelols(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -411,7 +411,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelpols(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -446,7 +446,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def panelre(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -481,7 +481,7 @@ class ROUTER_econometrics(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[Data], pandas.DataFrame],

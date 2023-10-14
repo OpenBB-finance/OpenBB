@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # peers
 
-Company peers.
+Stock Peers. Company peers.
 
 ```python wordwrap
 peers(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

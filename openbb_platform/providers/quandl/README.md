@@ -1,6 +1,6 @@
 # OpenBB Quandl Provider
 
-This extension integrates the [Quandl](https://data.nasdaq.com/publishers/QDL) data provider into the OpenBB SDK.
+This extension integrates the [Quandl](https://data.nasdaq.com/publishers/QDL) data provider into the OpenBB Platform.
 
 ## Installation
 

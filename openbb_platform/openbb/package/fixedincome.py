@@ -1,15 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
-from typing_extensions import Annotated
 
 
 class ROUTER_fixedincome(Container):
@@ -28,22 +28,22 @@ class ROUTER_fixedincome(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def ameribor(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -53,11 +53,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -67,9 +67,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[AMERIBOR]
+            results : Union[List[AMERIBOR]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -82,7 +82,7 @@ class ROUTER_fixedincome(Container):
         --------
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             AMERIBOR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -101,22 +101,22 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def estr(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -127,11 +127,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -141,9 +141,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[ESTR]
+            results : Union[List[ESTR]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -156,7 +156,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             ESTR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -175,22 +175,22 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def fed(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -201,11 +201,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -215,9 +215,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[FEDFUNDS]
+            results : Union[List[FEDFUNDS]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -230,7 +230,7 @@ class ROUTER_fixedincome(Container):
         --------
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             FED rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -249,22 +249,22 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def iorb(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -275,11 +275,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -287,9 +287,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[IORB]
+            results : Union[List[IORB]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -302,7 +302,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             IORB rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -321,9 +321,9 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def projections(
-        self, provider: Optional[Literal["fred"]] = None, **kwargs
+        self, provider: Union[Literal["fred"], None] = None, **kwargs
     ) -> OBBject[List[Data]]:
         """
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -333,7 +333,7 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -343,9 +343,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[PROJECTIONS]
+            results : Union[List[PROJECTIONS]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -358,19 +358,19 @@ class ROUTER_fixedincome(Container):
         -----------
         date : date
             The date of the data.
-        range_high : Optional[float]
+        range_high : Union[float]
             High projection of rates.
-        central_tendency_high : Optional[float]
+        central_tendency_high : Union[float]
             Central tendency of high projection of rates.
-        median : Optional[float]
+        median : Union[float]
             Median projection of rates.
-        range_midpoint : Optional[float]
+        range_midpoint : Union[float]
             Midpoint projection of rates.
-        central_tendency_midpoint : Optional[float]
+        central_tendency_midpoint : Union[float]
             Central tendency of midpoint projection of rates.
-        range_low : Optional[float]
+        range_low : Union[float]
             Low projection of rates.
-        central_tendency_low : Optional[float]
+        central_tendency_low : Union[float]
             Central tendency of low projection of rates."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -386,33 +386,33 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def sofr(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -422,9 +422,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : Union[List[SOFR]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -437,7 +437,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             SOFR rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -456,22 +456,22 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def sonia(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -481,11 +481,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -495,9 +495,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SONIA]
+            results : Union[List[SONIA]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -510,7 +510,7 @@ class ROUTER_fixedincome(Container):
         -----
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             SONIA rate."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -529,33 +529,33 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def treasury(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Get treasury rates.
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -563,9 +563,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[TreasuryRates]
+            results : Union[List[TreasuryRates]]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -619,31 +619,31 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ycrv(
         self,
-        date: Annotated[
-            Optional[datetime.date],
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
             OpenBBCustomParameter(
                 description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
             ),
         ] = None,
-        inflation_adjusted: Annotated[
-            Optional[bool],
+        inflation_adjusted: typing_extensions.Annotated[
+            Union[bool, None],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Get United States yield curve.
 
         Parameters
         ----------
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None]
             Date to get Yield Curve data.  Defaults to the most recent FRED entry.
-        inflation_adjusted : Optional[bool]
+        inflation_adjusted : Union[bool, None]
             Get inflation adjusted rates.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -651,9 +651,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[USYieldCurve]
+            results : Union[List[USYieldCurve]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

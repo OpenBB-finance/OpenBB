@@ -15,4 +15,6 @@ def tests(session):
     )
     session.install("pytest")
     session.install("pytest-cov")
-    session.run("pytest", *test_locations, "--cov=openbb_platform/")
+    session.run(
+        "pytest", *test_locations, "--cov=openbb_platform/", "-m", "not integration"
+    )
