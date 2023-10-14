@@ -1,4 +1,4 @@
-"""TMX Company Insider Acitivity Model"""
+"""TMX Company Insider Activity Model"""
 
 from typing import Any, Dict, List, Optional
 
