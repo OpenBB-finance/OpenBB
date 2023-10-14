@@ -39,7 +39,6 @@ openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-sec = { path = "./providers/sec", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
 
-
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
 openbb-qa = { path = "./extensions/qa", optional = true, develop = true }
