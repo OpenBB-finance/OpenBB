@@ -1,5 +1,4 @@
 import ssl
-import sys
 from io import StringIO
 from typing import Any, Dict, Optional
 
@@ -7,7 +6,6 @@ import requests
 import urllib3
 from openbb_provider import helpers
 from pandas import DataFrame, read_csv
-
 
 # OECD does not play well with newer python.  This code block from stackoverflow helps
 # to create a custom session:
