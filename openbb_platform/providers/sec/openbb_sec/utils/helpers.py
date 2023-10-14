@@ -43,38 +43,6 @@ def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     return df.astype(str)
 
 
-def search_companies(query: str, use_cache: bool = True) -> pd.DataFrame:
-    """Search the SEC ticker list by keyword.  Partial words are accepted.
-    Results are sorted by market cap and are case-insensitive.
-
-    Parameters
-    ----------
-    query: str
-        The keyword to search for. Partial words are accepted. Results are case-sensitive.
-
-    Returns
-    -------
-    pd.DataFrame: Pandas DataFrame with the results.
-
-    Examples
-    --------
-    >>> results = search_companies('Credit')
-
-    >>> results = search_companies('TRUST')
-
-    >>> results = search_companies('Trust')
-    """
-
-    companies = get_all_companies(use_cache=use_cache)
-    hp = (
-        companies["name"].str.contains(query, case=False)
-        | companies["symbol"].str.contains(query, case=False)
-        | companies["cik"].str.contains(query, case=False)
-    )
-
-    return companies[hp].reset_index(drop=True)
-
-
 def symbol_map(symbol: str, use_cache: bool = True) -> str:
     """Returns a ticker's CIK number for querying the SEC API."""
 

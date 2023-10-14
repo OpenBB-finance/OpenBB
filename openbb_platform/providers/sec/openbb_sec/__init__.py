@@ -1,6 +1,7 @@
 """SEC provider module."""
 from openbb_provider.abstract.provider import Provider
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
+from openbb_sec.models.stock_search import SecStockSearchFetcher
 
 sec_provider = Provider(
     name="sec",
@@ -9,5 +10,6 @@ sec_provider = Provider(
     required_credentials=None,
     fetcher_dict={
         "StockFTD": SecStockFtdFetcher,
+        "StockSearch": SecStockSearchFetcher,
     },
 )

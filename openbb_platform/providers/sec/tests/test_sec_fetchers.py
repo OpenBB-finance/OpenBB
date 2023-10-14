@@ -1,6 +1,7 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
+from openbb_sec.models.stock_search import SecStockSearchFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -16,9 +17,18 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_sec_ftd_fetcher(credentials=test_credentials):
+def test_sec_stock_ftd_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = SecStockFtdFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_stock_search_fetcher(credentials=test_credentials):
+    params = {"query": "trust", "use_cache": False}
+
+    fetcher = SecStockSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
