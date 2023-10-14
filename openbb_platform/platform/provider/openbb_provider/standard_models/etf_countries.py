@@ -25,5 +25,4 @@ class EtfCountriesQueryParams(QueryParams):
 class EtfCountriesData(Data):
     """ETF Countries Data."""
 
-    country: str = Field(description="The country of the exposure.")
-    weight: float = Field(description="The weight of the country in the ETF.")
+    symbol: str = Field(description="The exchange ticker symbol for the ETF.")
