@@ -1,0 +1,95 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyInsidersActivities", "variables": {"symbol":
+      "CNQ"}, "query": "query getCompanyInsidersActivities(\n        $symbol: String\n    )
+      {\n        getCompanyInsidersActivities(\n          symbol: $symbol\n      )
+      {\n        insiderActivities {\n          periodkey\n          buy {\n            name\n            trades\n            shares\n            sharesHeld\n            tradeValue\n        }\n          sell
+      {\n            name\n            trades\n            shares\n            sharesHeld\n            tradeValue\n        }\n      }\n        activitySummary
+      {\n          periodkey\n          buyShares\n          soldShares\n          netActivity\n          totalShares\n        }\n      }\n    }"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '732'
+      Content-Type:
+      - application/json
+      Host:
+      - app-money.tmx.com
+      Origin:
+      - https://money.tmx.com
+      Referer:
+      - https://money.tmx.com/en/quote/CNQ/
+      locale:
+      - en
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 14 Oct 2023 05:02:51 GMT
+      ETag:
+      - W/"2223-2FOQQruIy4LFKD06xN3WJbOkzXQ"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

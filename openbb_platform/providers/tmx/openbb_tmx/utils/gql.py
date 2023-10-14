@@ -208,14 +208,12 @@ class GQL:
         source
         newsid
         summary
-        __typename
       }
       events: getUpComingEventsForSymbol(symbol: $symbol, locale: $locale) {
         title
         date
         status
         type
-        __typename
         }
       }
     """

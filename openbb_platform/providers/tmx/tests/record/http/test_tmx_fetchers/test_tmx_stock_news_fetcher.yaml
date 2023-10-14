@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: '{"operationName": "getNewsAndEvents", "variables": {"symbol": "SU", "page":
+      1, "limit": 20, "locale": "en"}, "query": "query getNewsAndEvents(\n      $symbol:
+      String!,\n      $page: Int!,\n      $limit: Int!,\n      $locale: String!\n    )
+      {\n      news: getNewsForSymbol(\n        symbol: $symbol,\n        page: $page,\n        limit:
+      $limit,\n        locale: $locale\n      ) {\n        headline\n        datetime\n        source\n        newsid\n        summary\n      }\n      events:
+      getUpComingEventsForSymbol(symbol: $symbol, locale: $locale) {\n        title\n        date\n        status\n        type\n        }\n      }\n    "}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '639'
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        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
+        P04nXamZFwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 14 Oct 2023 05:01:34 GMT
+      ETag:
+      - W/"1799-8Sr5mIO1TOdMXaX4FjMfJjPqWH4"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

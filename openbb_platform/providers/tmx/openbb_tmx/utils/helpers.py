@@ -1,11 +1,14 @@
 """TMX Helpers Module."""
 
+import json
 from datetime import timedelta
 from io import BytesIO
-from typing import Dict, List, Literal
+from typing import Dict, List, Literal, Union
 
 import pandas as pd
+import requests
 import requests_cache
+from openbb_tmx.utils.gql import GQL
 from random_user_agent.user_agent import UserAgent
 
 
@@ -188,3 +191,110 @@ def get_available_tmx_indices() -> List[Dict]:
     data["currency"].iloc[idx] = "USD"
 
     return data.sort_values(by="name").to_dict("records")
+
+
+def get_company_insider_activity(symbol: str) -> Dict:
+    """Summary of company insider activity over windows of time."""
+
+    symbol = symbol.upper().replace("-", ".")
+
+    payload = GQL.get_company_insiders_payload.copy()
+    payload["variables"]["symbol"] = symbol
+
+    data = {}
+    url = "https://app-money.tmx.com/graphql"
+    r = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers={
+            "Host": "app-money.tmx.com",
+            "Origin": "https://money.tmx.com",
+            "Referer": f"https://money.tmx.com/en/quote/{symbol}/",
+            "locale": "en",
+            "Content-Type": "application/json",
+            "User-Agent": get_random_agent(),
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+        },
+        timeout=3,
+    )
+    try:
+        if r.status_code == 403:
+            raise RuntimeError(f"HTTP error - > {r.text}")
+        else:
+            data = r.json()["data"]["getCompanyInsidersActivities"]
+    except Exception as e:
+        raise (e)
+
+    return data
+
+
+def get_news_and_events(
+    symbol: str,
+    page: int = 1,
+    limit: int = 100,
+    locale: str = "en",
+    data_type: Literal["news", "events", "both"] = "news",
+) -> Union[List[Dict], None]:
+    """
+    Parameters
+    -----------
+    symbol: str
+        The symbol of the company.
+    page: int
+        The page number to start from.
+    limit: int
+        Limit the number of results.
+
+    Returns
+    -------
+        List[Dict]
+            List of news or events.
+    """
+
+    payload = GQL.get_company_news_events_payload
+    payload["variables"]["symbol"] = symbol
+    payload["variables"]["page"] = page
+    payload["variables"]["limit"] = limit
+    payload["variables"]["locale"] = locale
+    url = "https://app-money.tmx.com/graphql"
+    r = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": get_random_agent(),
+            "Accept": "*/*",
+        },
+        timeout=3,
+    )
+    try:
+        if r.status_code == 403:
+            raise RuntimeError(f"HTTP error - > {r.text}")
+        else:
+            allData = r.json()
+            data = allData["data"]
+            if data_type == "news":
+                news = pd.DataFrame.from_records(data["news"]).astype(str)
+                for i in news.index:
+                    url = (
+                        f"https://money.tmx.com/quote/{symbol.upper()}"
+                        + f"/news/{news.loc[i, 'newsid']}"
+                    )
+                    news.loc[i, "summary"] = str(news.loc[i, "summary"]).strip()
+                    news.loc[i, "url"] = url
+
+                news["datetime"] = pd.to_datetime(news["datetime"], utc=True)
+
+                return news.to_dict("records")
+
+            if data_type == "events":
+                events = pd.DataFrame.from_records(data["events"])
+
+                return events.to_dict(orient="records")
+
+            else:
+                return data
+
+    except KeyError as _e:
+        raise RuntimeError(_e, symbol)

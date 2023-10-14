@@ -13,6 +13,9 @@ from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.stock_info import TmxStockInfoFetcher
+from openbb_tmx.models.stock_insider_activity import TmxStockInsiderActivityFetcher
+from openbb_tmx.models.stock_news import TmxStockNewsFetcher
+from openbb_tmx.models.stock_search import TmxStockSearchFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -25,6 +28,33 @@ def vcr_config():
             None,
         ],
     }
+
+
+@pytest.mark.record_http
+def test_tmx_stock_insider_activity_fetcher(credentials=test_credentials):
+    params = {"symbol": "CNQ"}
+
+    fetcher = TmxStockInsiderActivityFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_stock_news_fetcher(credentials=test_credentials):
+    params = {"symbols": "SU"}
+
+    fetcher = TmxStockNewsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_stock_search_fetcher(credentials=test_credentials):
+    params = {"query": "bmo"}
+
+    fetcher = TmxStockSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

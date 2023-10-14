@@ -1,6 +1,5 @@
 """TMX provider module."""
 
-
 from openbb_provider.abstract.provider import Provider
 from openbb_tmx.models.available_indices import TmxAvailableIndicesFetcher
 from openbb_tmx.models.company_filings import TmxCompanyFilingsFetcher
@@ -13,6 +12,9 @@ from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.stock_info import TmxStockInfoFetcher
+from openbb_tmx.models.stock_insider_activity import TmxStockInsiderActivityFetcher
+from openbb_tmx.models.stock_news import TmxStockNewsFetcher
+from openbb_tmx.models.stock_search import TmxStockSearchFetcher
 
 tmx_provider = Provider(
     name="tmx",
@@ -43,5 +45,8 @@ tmx_provider = Provider(
         "HistoricalDividends": TmxHistoricalDividendsFetcher,
         "PriceTargetConsensus": TmxPriceTargetConsensusFetcher,
         "StockInfo": TmxStockInfoFetcher,
+        "StockInsiderTrading": TmxStockInsiderActivityFetcher,
+        "StockNews": TmxStockNewsFetcher,
+        "StockSearch": TmxStockSearchFetcher,
     },
 )
