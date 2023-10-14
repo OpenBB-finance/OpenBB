@@ -15,11 +15,11 @@ The Server plan for OpenBB Bot offers three different capabilities - Charting, B
 
 ## Server
 
-### Auto Posting (Discord Only)
+### Auto Posting (Feeds) (Discord Only)
 
-Auto Posting is our most powerful feature for Discord Servers - We offer the ability to push updates into the server for Flow, Darkpool, or Heatmap/Charts. (more to come soon!) Once you set up your account you will be able to query the bot directly in your server like below :
+Auto Posting is our most powerful feature for Discord Servers - We offer the ability to push updates into the server for Flow, Darkpool, or Heatmap/Charts. Once you set up your account you will be able to query the bot directly in your server like below :
 
-<img src="https://openbb-assets.s3.amazonaws.com/discord/autopost/add.png" alt="autoposting openBB" width="40%" height="40%" />
+<img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/autopost.png" alt="autoposting openBB" width="40%" height="40%" />
 
 Or you can manage them at the HUB :
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/autoposting.png" alt="autoposting openBB" width="70%" height="70%" />
@@ -45,6 +45,25 @@ For a further breakdown on what each Flow Auto Post entails - See below
 |   Sell to Open   |     "Premium > $1,000,000" & "Volume > Open Interest" & "Trade Type is Below Bed"        |
 |   Buy to Open   |     "Premium > $1,000,000" & "Volume > Open Interest" & "Trade Type is Above Ask"        |
 |   Whale   |    "Premium > $1.000,000" & "Days to Expiration < 45"         |
+
+
+### Auto Posting (Commands) (Discord Only)
+
+Much like Feeds we now offer Commands to be set up as autoposts as well - These behave in the same way but can be setup to autopost bot commands.
+
+Once you set up your account you will be able to query the bot directly in your server like below :
+<img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/commands+add.png" alt="commands add openBB" width="40%" height="40%" />
+
+Commands as autoposts are a great way to get your community the info they need in a timely manner.
+
+We have allowed even more autoposts to be set up in your server so you can really create a fun environment for all your needs:
+<img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/autopost+list.png" alt="autopost list openBB" width="40%" height="40%" />
+
+Below are a few examples of autoposts set up as commands in a server :
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/earnings+example.png" alt="earnings command autopost openBB" width="40%" height="40%" />
+
+<img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/flow+example.png" alt="earnings command autopost openBB" width="40%" height="40%" />
 
 ### Charting
 
