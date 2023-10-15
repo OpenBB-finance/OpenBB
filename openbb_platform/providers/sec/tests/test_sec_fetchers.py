@@ -1,5 +1,6 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
 from openbb_sec.models.stock_search import SecStockSearchFetcher
 
@@ -30,5 +31,14 @@ def test_sec_stock_search_fetcher(credentials=test_credentials):
     params = {"query": "trust", "use_cache": False}
 
     fetcher = SecStockSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_company_filings_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL", "type": "10-K", "use_cache": False}
+
+    fetcher = SecCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
