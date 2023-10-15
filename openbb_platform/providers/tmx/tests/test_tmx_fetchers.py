@@ -32,6 +32,15 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+def test_tmx_index_constituents_fetcher(credentials=test_credentials):
+    params = {"symbol": "tsx"}
+
+    fetcher = TmxIndexConstituentsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_tmx_stock_insider_activity_fetcher(credentials=test_credentials):
     params = {"symbol": "CNQ"}
 
@@ -153,14 +162,5 @@ def test_tmx_earnings_calendar_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 9, 1), "end_date": date(2023, 9, 30)}
 
     fetcher = TmxEarningsCalendarFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_tmx_index_constituents_fetcher(credentials=test_credentials):
-    params = {"symbol": "tsx"}
-
-    fetcher = TmxIndexConstituentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
