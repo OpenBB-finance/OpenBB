@@ -14,8 +14,6 @@ from pydantic import Field
 class TmxIndexConstituentsQueryParams(IndexConstituentsQueryParams):
     """TMX Index Constituents Query Params."""
 
-    symbol: str = Field(description="The ticker symbol of the index.")
-
 
 class TmxIndexConstituentsData(IndexConstituentsData):
     """TMX Index Constituents Data."""
@@ -48,6 +46,10 @@ class TmxIndexConstituentsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxIndexConstituentsQueryParams:
         """Transform the query."""
+
+        params["symbol"] = (
+            params["symbol"].upper().replace(".TO", "").replace(".TSX", "")
+        )
         return TmxIndexConstituentsQueryParams(**params)
 
     @staticmethod
@@ -55,8 +57,8 @@ class TmxIndexConstituentsFetcher(
         query: TmxIndexConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
-        results = []
+    ) -> List:
+        results: List[Dict] = []
         data = {}
         data = get_index_data(query.symbol)
 
@@ -66,6 +68,6 @@ class TmxIndexConstituentsFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxIndexConstituentsData]:
+    def transform_data(data: List) -> List[TmxIndexConstituentsData]:
         """Return the transformed data."""
         return [TmxIndexConstituentsData.model_validate(d) for d in data]
