@@ -113,4 +113,4 @@ class TmxEtfHoldingsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[TmxEtfHoldingsData]:
         """Transform the data to the standard format."""
-        return [TmxEtfHoldingsData.parse_obj(d) for d in data]
+        return [TmxEtfHoldingsData.model_validate(d) for d in data]

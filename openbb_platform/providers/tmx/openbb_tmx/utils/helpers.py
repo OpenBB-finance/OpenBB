@@ -298,3 +298,48 @@ def get_news_and_events(
 
     except KeyError as _e:
         raise RuntimeError(_e, symbol)
+
+
+def get_index_data(symbol: str) -> Dict:
+    symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
+    if "^" not in symbol:
+        symbol = f"^{symbol}"
+
+    available_indices = get_available_tmx_indices()
+    indices = [available_indices[i]["symbol"] for i in range(len(available_indices))]
+
+    if symbol not in indices:
+        return {}
+
+    payload = GQL.get_index_constituents_payload.copy()
+    payload["variables"]["symbol"] = symbol
+
+    data = {}
+    url = "https://app-money.tmx.com/graphql"
+    r = requests.post(
+        url,
+        data=json.dumps(payload),
+        headers={
+            "Host": "app-money.tmx.com",
+            "Origin": "https://money.tmx.com",
+            "Referer": "https://money.tmx.com/",
+            "locale": "en",
+            "Content-Type": "application/json",
+            "User-Agent": get_random_agent(),
+            "Accept": "*/*",
+        },
+        timeout=3,
+    )
+    try:
+        if r.status_code == 403:
+            raise RuntimeError(f"HTTP error - > {r.text}")
+        else:
+            data.update(
+                {
+                    "constituents": r.json()["data"]["constituents"],
+                }
+            )
+    except Exception as e:
+        raise (e)
+
+    return data

@@ -20,12 +20,13 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @pytest.mark.parametrize(
     "params",
     [
-        ({"index": "dowjones"}),
+        ({"symbol": "dowjones", "provider": "fmp"}),
+        ({"symbol": "tsx", "provider": "tmx"}),
     ],
 )
 @pytest.mark.integration
-def test_economy_const(params):
-    result = obb.economy.const(**params)
+def test_economy_index_constituents(params):
+    result = obb.economy.index_constituents(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

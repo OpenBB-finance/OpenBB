@@ -30,12 +30,10 @@ from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
+from openbb_fmp.models.index_constituents import FMPIndexConstituentsFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
-from openbb_fmp.models.major_indices_constituents import (
-    FMPMajorIndicesConstituentsFetcher,
-)
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
@@ -434,10 +432,10 @@ def test_fmp_risk_premium_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_major_indices_constituents_fetcher(credentials=test_credentials):
+def test_fmp_index_constituents_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = FMPMajorIndicesConstituentsFetcher()
+    fetcher = FMPIndexConstituentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

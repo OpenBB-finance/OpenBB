@@ -27,12 +27,12 @@ from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
+from openbb_fmp.models.index_constituents import (
+    FMPIndexConstituentsFetcher,
+)
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
-from openbb_fmp.models.major_indices_constituents import (
-    FMPMajorIndicesConstituentsFetcher,
-)
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
@@ -96,7 +96,7 @@ fmp_provider = Provider(
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
         "AvailableIndices": FMPAvailableIndicesFetcher,
         "RiskPremium": FMPRiskPremiumFetcher,
-        "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
+        "IndexConstituents": FMPIndexConstituentsFetcher,
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,

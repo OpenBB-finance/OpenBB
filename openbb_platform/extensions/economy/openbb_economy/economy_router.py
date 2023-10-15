@@ -18,14 +18,14 @@ router = Router(prefix="")
 # pylint: disable=unused-argument
 
 
-@router.command(model="MajorIndicesConstituents")
-def const(
+@router.command(model="IndexConstituents")
+def index_constituents(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Major Indices Constituents. Constituents of an index."""
+    """Constituents of an index."""
     return OBBject(results=Query(**locals()).execute())
 
 

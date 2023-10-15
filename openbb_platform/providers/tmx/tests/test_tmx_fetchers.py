@@ -11,13 +11,14 @@ from openbb_tmx.models.etf_info import TmxEtfInfoFetcher
 from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
 from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
+from openbb_tmx.models.index_constituents import TmxIndexConstituentsFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.stock_info import TmxStockInfoFetcher
 from openbb_tmx.models.stock_insider_activity import TmxStockInsiderActivityFetcher
 from openbb_tmx.models.stock_news import TmxStockNewsFetcher
 from openbb_tmx.models.stock_search import TmxStockSearchFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump()
 
 
 @pytest.fixture(scope="module")
@@ -152,5 +153,14 @@ def test_tmx_earnings_calendar_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 9, 1), "end_date": date(2023, 9, 30)}
 
     fetcher = TmxEarningsCalendarFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_tmx_index_constituents_fetcher(credentials=test_credentials):
+    params = {"symbol": "tsx"}
+
+    fetcher = TmxIndexConstituentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
