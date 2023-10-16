@@ -54,11 +54,13 @@ class YFinanceCashFlowStatementFetcher(
     ) -> List[YFinanceCashFlowStatementData]:
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
-            as_dict=True, pretty=False, freq=period
+            as_dict=False, pretty=False, freq=period
         )
 
-        if not data:
+        if data is None:
             raise EmptyDataError()
+
+        data = data.fillna(0).to_dict()
 
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
