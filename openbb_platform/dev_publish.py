@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 repo_dir = Path(__file__).parent.parent
 
@@ -18,42 +18,36 @@ providers = [x for x in providers_dir.iterdir() if x.is_dir()]
 VERSION_BUMP_CMD = "poetry version prerelease"
 PUBLISH_CMD = "poetry publish --build"
 
-raise Exception(
-    "If you're ar running this script for the first time,"
-    "ensure you have changed `VERSION` on System Settings "
-    "before you publish the `openbb-core` package to Pypi."
-)
+# raise Exception(
+#     "If you're ar running this script for the first time,"
+#     "ensure you have changed `VERSION` on System Settings "
+#     "before you publish the `openbb-core` package to Pypi."
+# )
+
+
+def run_cmds(directory: Path):
+    print(f"Publishing: {directory.name}")  # noqa: T201
+    os.chdir(directory)
+    os.system(VERSION_BUMP_CMD)  # noqa: S605
+    os.system(PUBLISH_CMD)  # noqa: S605
+
 
 # core
-print(f"Publishing core: {core_dir.name}")
-os.chdir(core_dir)
-os.system(VERSION_BUMP_CMD)
-os.system(PUBLISH_CMD)
+run_cmds(core_dir)
 
 # provider
-print(f"Publishing provider: {provider_dir.name}")
-os.chdir(provider_dir)
-os.system(VERSION_BUMP_CMD)
-os.system(PUBLISH_CMD)
+run_cmds(provider_dir)
 
 # extensions
 for extension in extensions:
-    print(f"Publishing extension: {extension.name}")
-
     if extension.name in ["__pycache__", "tests"]:
         continue
 
-    os.chdir(extension)
-    os.system(VERSION_BUMP_CMD)
-    os.system(PUBLISH_CMD)
+    run_cmds(extension)
 
 # providers
 for provider in providers:
-    print(f"Publishing provider: {provider.name}")
-
     if provider.name in ["__pycache__", "tests"]:
         continue
 
-    os.chdir(provider)
-    os.system(VERSION_BUMP_CMD)
-    os.system(PUBLISH_CMD)
+    run_cmds(provider)
