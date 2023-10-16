@@ -26,7 +26,7 @@ class MajorIndicesHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
-    @field_validator("symbol", mode="after", check_fields=False)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -46,7 +46,7 @@ class MajorIndicesHistoricalData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 
-    @field_validator("date", mode="after", check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))

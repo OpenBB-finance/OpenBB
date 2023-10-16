@@ -10,7 +10,7 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -27,7 +27,7 @@ class FMPGlobalNewsData(GlobalNewsData):
 
     site: str = Field(description="Site of the news.")
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")
