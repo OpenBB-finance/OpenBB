@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 The OpenBB Platform is installed within a Python virtual environment.  It is compatible with versions of Python between 3.8 and 3.11, inclusively.  Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
 
 :::note
-It is not recommended to install packages directly to your system Python or  `base` environment.  Create a new environment.
+Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment.
 :::
 
 ```console
