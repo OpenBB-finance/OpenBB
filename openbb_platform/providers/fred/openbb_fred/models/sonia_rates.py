@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 SONIA_PARAMETER_TO_FRED_ID = {
     "rate": "IUDSOIA",
@@ -38,7 +38,7 @@ class FREDSONIAData(SONIAData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)

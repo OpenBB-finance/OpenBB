@@ -89,9 +89,6 @@ class BenzingaGlobalNewsData(GlobalNewsData):
     id: str = Field(description="ID of the news.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
-    images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="Images associated with the news."
-    )
     channels: Optional[str] = Field(
         default=None,
         description="Channels associated with the news.",

@@ -10,7 +10,7 @@ from openbb_provider.standard_models.global_news import (
     GlobalNewsData,
     GlobalNewsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
@@ -23,11 +23,11 @@ class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
 class FMPGlobalNewsData(GlobalNewsData):
     """FMP Global News Data."""
 
-    __alias_dict__ = {"date": "publishedDate"}
+    __alias_dict__ = {"date": "publishedDate", "images": "image"}
 
     site: str = Field(description="Site of the news.")
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -73,4 +73,8 @@ class FMPGlobalNewsFetcher(
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:
         """Return the transformed data."""
+        for d in data:
+            if isinstance(d["image"], str):
+                d["image"] = [{"url": d["image"]}]
+
         return [FMPGlobalNewsData.model_validate(d) for d in data]

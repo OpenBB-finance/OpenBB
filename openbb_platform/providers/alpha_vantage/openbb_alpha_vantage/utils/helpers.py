@@ -1,7 +1,7 @@
-"""FMP Helpers Module."""
+"""Alpha Vantage Helpers Module."""
 
 import json
-from datetime import date as dateType
+import re
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
@@ -53,21 +53,17 @@ def request(url: str) -> BasicResponse:
 
 
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from FMP endpoint."""
+    """Get data from Alpha Vantage endpoint."""
     try:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
     if r.status_code == 404:
-        raise RuntimeError("FMP endpoint doesn't exist")
+        raise RuntimeError("Alpha Vantage endpoint doesn't exist")
 
     data = r.json()
-    if r.status_code != 200:
-        message = data.get("message", "unknown error")
-        raise RuntimeError(f"Error in FMP request -> {message}")
-
-    if "Error Message" in data:
-        raise RuntimeError("FMP Error Message -> " + data["Error Message"])
+    if "Information" in data:
+        raise RuntimeError(f"Error in Alpha Vantage request -> {data['Information']}")
 
     if len(data) == 0:
         raise EmptyDataError()
@@ -82,7 +78,7 @@ def create_url(
     query: Optional[BaseModel] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
-    """Return a URL for the FMP API.
+    """Return a URL for the Alpha Vantage API.
 
     Parameters
     ----------
@@ -111,7 +107,7 @@ def create_url(
 def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[dict]:
-    """Get data from FMP endpoint and convert to list of schemas.
+    """Get data from Alpha Vantage endpoint and convert to list of schemas.
 
     Parameters
     ----------
@@ -137,7 +133,7 @@ def get_data_many(
 
 
 def get_data_one(url: str, **kwargs: Any) -> dict:
-    """Get data from FMP endpoint and convert to schema."""
+    """Get data from Alpha Vantage endpoint and convert to schema."""
     data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
@@ -151,29 +147,20 @@ def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
-    """Get the most recent quarter date."""
-    base = min(base, dateType.today())  # This prevents dates from being in the future
-    exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
-    for exact in exacts:
-        if base.month == exact[0] and base.day == exact[1]:
-            return base
-    if base.month < 4:
-        return dateType(base.year - 1, 12, 31)
-    if base.month < 7:
-        return dateType(base.year, 3, 31)
-    if base.month < 10:
-        return dateType(base.year, 6, 30)
-    return dateType(base.year, 9, 30)
-
-
 def get_interval(value: str) -> str:
-    """Get the intervals for the FMP API."""
+    """Get the intervals for the Alpha Vantage API."""
 
     intervals = {
         "m": "min",
-        "h": "hour",
         "d": "day",
+        "W": "week",
+        "M": "month",
     }
 
     return f"{value[:-1]}{intervals[value[-1]]}"
+
+
+def extract_key_name(key):
+    """Extract the alphabetical part of the key using regex."""
+    match = re.search(r"\d+\.\s+([a-z]+)", key, re.I)
+    return match.group(1) if match else key
