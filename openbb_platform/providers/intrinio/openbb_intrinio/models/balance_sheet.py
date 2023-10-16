@@ -97,7 +97,6 @@ class IntrinioBalanceSheetFetcher(
         query: IntrinioBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioBalanceSheetData]:
         """Return the transformed data."""
-
         transformed_data = []
 
         for item in data:

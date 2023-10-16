@@ -58,23 +58,32 @@ class FREDYieldCurveFetcher(
 
         fred = Fred(api_key)
         vals = []
+        value = None
+
         for series in fred_series.values():
             data = fred.get_series(series, start_date=start_date, **kwargs)
 
             if date:
                 # if date is not empty, loop through the data and find the closest value
-                value = sorted(
+                sorted_data = sorted(
                     data,
-                    key=lambda x: abs(
-                        datetime.strptime(x["date"], "%Y-%m-%d").date() - date
+                    key=lambda item: abs(
+                        (date - datetime.strptime(item["date"], "%Y-%m-%d").date()).days
                     ),
-                )[0]["value"]
+                )
+                for item in sorted_data:
+                    if item.get("value") and item["value"] != ".":
+                        value = float(item["value"])
+                        break
+
             else:
                 # if date is empty, find the most recent date's value
                 sorted_data = sorted(data, key=lambda x: x["date"], reverse=True)
-                value = sorted_data[0]["value"] if sorted_data else None
+                value = float(sorted_data[0]["value"]) if sorted_data else None
 
-            vals.append(value)
+            if isinstance(value, (float, int)):
+                vals.append(value)
+
         yield_curve_data = []
         for maturity, rate in zip(years, vals):
             yield_curve_data.append({"maturity": maturity, "rate": rate})

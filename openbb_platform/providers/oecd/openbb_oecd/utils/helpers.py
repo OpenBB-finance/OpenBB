@@ -1,5 +1,4 @@
 import ssl
-import sys
 from io import StringIO
 from typing import Any, Dict, Optional
 
@@ -7,12 +6,6 @@ import requests
 import urllib3
 from openbb_provider import helpers
 from pandas import DataFrame, read_csv
-
-if sys.version_info >= (3, 10):
-    PATCH = True
-else:
-    PATCH = False
-
 
 # OECD does not play well with newer python.  This code block from stackoverflow helps
 # to create a custom session:
@@ -43,20 +36,9 @@ def get_legacy_session():
     return session
 
 
-def create_session():
-    """Create a session for making requests to the OECD API.
-
-    This will create the patched session if the python version is >= 3.10.  Otherwise,
-    it will just use regular requests.
-    """
-    if PATCH:
-        return get_legacy_session()
-    return requests.Session()
-
-
 def fetch_data(url: str, csv_kwargs: Optional[Dict] = None, **kwargs: Any) -> DataFrame:
     """Create a session and fetch data from the OECD API."""
-    session = create_session()
+    session = get_legacy_session()
     response = helpers.make_request(url, session=session, **kwargs)
     if csv_kwargs is None:
         csv_kwargs = {}

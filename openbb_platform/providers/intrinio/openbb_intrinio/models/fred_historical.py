@@ -45,7 +45,6 @@ class IntrinioFredHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioFredHistoricalQueryParams:
         """Transform the query params."""
-
         transformed_params = params
 
         now = datetime.now().date()
@@ -64,7 +63,6 @@ class IntrinioFredHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"

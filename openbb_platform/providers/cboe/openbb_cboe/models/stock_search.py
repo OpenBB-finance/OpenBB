@@ -25,6 +25,7 @@ class CboeStockSearchData(StockSearchData):
     __alias_dict__ = {"name": "Company Name"}
 
     dpm_name: Optional[str] = Field(
+        default=None,
         description="Name of the primary market maker.",
         alias="DPM Name",
     )
@@ -55,7 +56,7 @@ class CboeStockSearchFetcher(
         """Return the raw data from the CBOE endpoint."""
 
         data = {}
-        symbols = get_cboe_directory().reset_index()
+        symbols = get_cboe_directory().reset_index().replace("nan", None)
         target = "name" if not query.is_symbol else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")

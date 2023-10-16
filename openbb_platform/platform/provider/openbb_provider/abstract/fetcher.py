@@ -2,7 +2,6 @@
 # ruff: noqa: S101
 # pylint: disable=E1101
 
-
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from openbb_provider.abstract.data import Data
