@@ -18,11 +18,11 @@ providers = [x for x in providers_dir.iterdir() if x.is_dir()]
 VERSION_BUMP_CMD = "poetry version prerelease"
 PUBLISH_CMD = "poetry publish --build"
 
-# raise Exception(
-#     "If you're ar running this script for the first time,"
-#     "ensure you have changed `VERSION` on System Settings "
-#     "before you publish the `openbb-core` package to Pypi."
-# )
+raise Exception(
+    "If you're ar running this script for the first time,"
+    "ensure you have changed `VERSION` on System Settings "
+    "before you publish the `openbb-core` package to Pypi."
+)
 
 
 def run_cmds(directory: Path):
