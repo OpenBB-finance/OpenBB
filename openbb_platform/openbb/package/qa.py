@@ -7,7 +7,6 @@ import typing_extensions
 from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from openbb_qa.qa_models import (
@@ -17,6 +16,7 @@ from openbb_qa.qa_models import (
     SummaryModel,
     UnitRootModel,
 )
+from pydantic import validate_call
 
 
 class ROUTER_qa(Container):
@@ -36,11 +36,11 @@ class ROUTER_qa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def capm(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[CAPMModel]:
-        """Get Capital Asset Pricing Model."""  # noqa: E501
+        """Capital Asset Pricing Model."""  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -52,14 +52,14 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
-        """Get the Kurtosis.
+        """Kurtosis.
 
         Parameters
         ----------
@@ -87,11 +87,12 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def normality(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[NormalityModel]:
-        """Get Normality Statistics.
+        """
+        Normality Statistics.
 
         - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
         - **Skewness**: whether the skewness of a sample differs from the normal distribution.
@@ -122,7 +123,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -130,7 +131,7 @@ class ROUTER_qa(Container):
         threshold_start: float = 0.0,
         threshold_end: float = 1.5,
     ) -> OBBject[List[OmegaModel]]:
-        """Calculate the Omega Ratio.
+        """Omega Ratio.
 
         Parameters
         ----------
@@ -161,7 +162,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -169,24 +170,7 @@ class ROUTER_qa(Container):
         window: typing_extensions.Annotated[int, Gt(gt=0)],
         quantile_pct: typing_extensions.Annotated[float, Ge(ge=0)] = 0.5,
     ) -> OBBject[List[Data]]:
-        """Get Quantile.
-
-        Parameters
-        ----------
-        data : List[Data]
-            Time series data.
-        target : str
-            Target column name.
-        window : PositiveInt
-            Window size.
-        quantile_pct : NonNegativeFloat, optional
-            Quantile percentage, by default 0.5
-
-        Returns
-        -------
-        OBBject[List[Data]]
-            Quantile.
-        """  # noqa: E501
+        """Quantile."""  # noqa: E501
 
         inputs = filter_inputs(
             data=data,
@@ -200,7 +184,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -208,7 +192,7 @@ class ROUTER_qa(Container):
         rfr: float = 0.0,
         window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
     ) -> OBBject[List[Data]]:
-        """Get Sharpe Ratio.
+        """Sharpe Ratio.
 
         Parameters
         ----------
@@ -239,14 +223,14 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
-        """Get Skewness.
+        """Skewness.
 
         Parameters
         ----------
@@ -274,7 +258,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -283,7 +267,7 @@ class ROUTER_qa(Container):
         window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
     ) -> OBBject[List[Data]]:
-        """Get Sortino Ratio.
+        """Sortino Ratio.
 
         For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
@@ -319,11 +303,11 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def summary(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[SummaryModel]:
-        """Get Summary Statistics.
+        """Summary.
 
         Parameters
         ----------
@@ -348,7 +332,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate(config=dict(arbitrary_types_allowed=True))
+    @validate_call(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -356,7 +340,7 @@ class ROUTER_qa(Container):
         fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
     ) -> OBBject[UnitRootModel]:
-        """Get Unit Root Test.
+        """Unit Root Test.
 
         Augmented Dickey-Fuller test for unit root.
         Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
