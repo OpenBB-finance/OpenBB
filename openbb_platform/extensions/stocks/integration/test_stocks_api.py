@@ -857,6 +857,7 @@ def test_stocks_load(params, headers):
                 "provider": "fmp",
                 "symbols": "AAPL",
                 "limit": 20,
+                "page": 1,
             }
         ),
         (
