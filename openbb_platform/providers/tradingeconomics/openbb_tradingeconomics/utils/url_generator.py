@@ -74,5 +74,10 @@ def generate_url(in_query):
     # Group + Date
     elif check_args(query, ["group", "start_date", "end_date"]):
         url = f'{base_url}/group/{query["group"]}/{query["start_date"]}/{query["end_date"]}?c='
+    # All fields
+    elif check_args(
+        query, ["country", "group", "importance", "start_date", "end_date"]
+    ):
+        url = f'{base_url}/country/{country}/group/{group}/{query["start_date"]}/{query["end_date"]}?{urlencode(query)}&c='
 
     return url if url else ""
