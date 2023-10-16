@@ -179,7 +179,7 @@ class TmxIndexInfoFetcher(Fetcher[TmxIndexInfoQueryParams, List[TmxIndexInfoData
                 .replace("<p>", "")
                 .replace("</p>", "")
                 .replace("amp;", "")
-                .replace("\r\n", "")
+                .replace("\r\n", " ")
             )
 
         if data != {}:
