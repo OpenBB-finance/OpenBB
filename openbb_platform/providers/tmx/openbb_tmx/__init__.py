@@ -11,6 +11,7 @@ from openbb_tmx.models.etf_search import TmxEtfSearchFetcher
 from openbb_tmx.models.etf_sectors import TmxEtfSectorsFetcher
 from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 from openbb_tmx.models.index_constituents import TmxIndexConstituentsFetcher
+from openbb_tmx.models.index_info import TmxIndexInfoFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.stock_info import TmxStockInfoFetcher
 from openbb_tmx.models.stock_insider_activity import TmxStockInsiderActivityFetcher
@@ -45,6 +46,7 @@ tmx_provider = Provider(
         "EtfInfo": TmxEtfInfoFetcher,
         "HistoricalDividends": TmxHistoricalDividendsFetcher,
         "IndexConstituents": TmxIndexConstituentsFetcher,
+        "IndexInfo": TmxIndexInfoFetcher,
         "PriceTargetConsensus": TmxPriceTargetConsensusFetcher,
         "StockInfo": TmxStockInfoFetcher,
         "StockInsiderTrading": TmxStockInsiderActivityFetcher,

@@ -193,6 +193,24 @@ def get_available_tmx_indices() -> List[Dict]:
     return data.sort_values(by="name").to_dict("records")
 
 
+def get_all_index_data(use_cache: bool = True) -> Dict:
+    """Gets a dictionary of available TMX index data."""
+
+    r = (
+        tmx_indices_session.get(
+            "https://tmxinfoservices.com/files/indices/sptsx-indices.json", timeout=5
+        )
+        if use_cache
+        else requests.get(
+            "https://tmxinfoservices.com/files/indices/sptsx-indices.json", timeout=5
+        )
+    )
+    if r.status_code != 200:
+        raise RuntimeError("Error with the request. -> " + str(r.status_code))
+
+    return r.json()
+
+
 def get_company_insider_activity(symbol: str) -> Dict:
     """Summary of company insider activity over windows of time."""
 
@@ -334,11 +352,7 @@ def get_index_data(symbol: str) -> Dict:
         if r.status_code == 403:
             raise RuntimeError(f"HTTP error - > {r.text}")
         else:
-            data.update(
-                {
-                    "constituents": r.json()["data"]["constituents"],
-                }
-            )
+            data.update({"data": r.json()["data"]})
     except Exception as e:
         raise (e)
 

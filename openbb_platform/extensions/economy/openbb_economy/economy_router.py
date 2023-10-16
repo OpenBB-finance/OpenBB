@@ -29,6 +29,17 @@ def index_constituents(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="IndexInfo")
+def index_info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Key information about an index."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="CPI")
 def cpi(
     cc: CommandContext,

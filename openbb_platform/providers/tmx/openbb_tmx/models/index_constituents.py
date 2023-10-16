@@ -62,8 +62,8 @@ class TmxIndexConstituentsFetcher(
         data = {}
         data = get_index_data(query.symbol)
 
-        if data != {} and "constituents" in data:
-            results.extend(data["constituents"])
+        if data != {} and "data" in data and "constituents" in data["data"]:
+            results.extend(data["data"]["constituents"])
 
         return results
 

@@ -25,8 +25,8 @@ class IndexInfoQueryParams(QueryParams):
 class IndexInfoData(Data):
     """Index Info Data."""
 
-    symbol: str = Field(description="The index ticker symbol.")
-    name: str = Field(description="The name of the index.")
+    symbol: Optional[str] = Field(description="The index ticker symbol.", default=None)
+    name: Optional[str] = Field(description="The name of the index.", default=None)
     description: Optional[str] = Field(
         description="The short description of the index.", default=None
     )
