@@ -7,7 +7,7 @@ from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
-from pydantic import ConfigDict, Extra, create_model
+from pydantic import ConfigDict, create_model
 
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
@@ -176,7 +176,7 @@ class ParametersBuilder:
     ) -> Dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type"""
 
-        config = ConfigDict(extra=Extra.allow, arbitrary_types_allowed=True)
+        config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
         sig = signature(func)
         fields = {

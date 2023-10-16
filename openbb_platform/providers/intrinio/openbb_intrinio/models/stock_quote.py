@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_quote import (
     StockQuoteData,
     StockQuoteQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
@@ -90,7 +90,7 @@ class IntrinioStockQuoteData(StockQuoteData):
         default=None, description="Security details related to the quote."
     )
 
-    @validator("last_time", "updated_on", pre=True, check_fields=False)
+    @field_validator("last_time", "updated_on", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return (

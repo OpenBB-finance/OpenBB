@@ -10,7 +10,6 @@ from pydantic import (
     AliasChoices,
     BaseModel,
     ConfigDict,
-    Extra,
     Field,
     create_model,
 )
@@ -491,10 +490,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                     ),
                 )
 
-            model_config = ConfigDict(
-                extra=Extra.allow,
-                populate_by_name=True,
-            )
+            model_config = ConfigDict(extra="allow", populate_by_name=True)
 
             result[model_name] = create_model(  # type: ignore
                 model_name,

@@ -11,7 +11,7 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class IntrinioStockNewsQueryParams(StockNewsQueryParams):
@@ -34,7 +34,7 @@ class IntrinioStockNewsData(StockNewsData):
 
     id: str = Field(description="Intrinio ID for the article.")
 
-    @validator("publication_date", pre=True, check_fields=False)
+    @field_validator("publication_date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.000Z")
