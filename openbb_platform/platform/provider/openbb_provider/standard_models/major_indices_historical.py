@@ -8,7 +8,7 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, field_validator, StrictInt, StrictFloat
+from pydantic import Field, StrictFloat, StrictInt, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
