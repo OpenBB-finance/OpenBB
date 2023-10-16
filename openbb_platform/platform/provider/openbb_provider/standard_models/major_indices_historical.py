@@ -8,9 +8,9 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, PositiveFloat, validator
+from pydantic import Field, StrictFloat, StrictInt, field_validator
 
-from openbb_provider.abstract.data import Data, StrictInt
+from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
@@ -26,7 +26,7 @@ class MajorIndicesHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="after", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -38,15 +38,15 @@ class MajorIndicesHistoricalData(Data):
     """Major Indices end of day price data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    open: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
+    high: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
+    low: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    close: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: Optional[StrictInt] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="after", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))
