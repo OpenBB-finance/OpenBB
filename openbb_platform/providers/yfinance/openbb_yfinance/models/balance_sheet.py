@@ -54,11 +54,12 @@ class YFinanceBalanceSheetFetcher(
     ) -> List[Dict]:
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
-            as_dict=True, pretty=False, freq=period
+            as_dict=False, pretty=False, freq=period
         )
-
-        if not data:
+        if data is None:
             raise EmptyDataError()
+
+        data = data.convert_dtypes().fillna(0).to_dict()
 
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
