@@ -281,7 +281,7 @@ def test_economy_index_search(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"region": "US"})],
+    [({"provider": "cboe", "region": "US"})],
 )
 @pytest.mark.integration
 def test_economy_index_snapshots(params, headers):
