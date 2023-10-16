@@ -28,7 +28,6 @@ class CboeStockSearchData(StockSearchData):
         default=None,
         description="Name of the primary market maker.",
         alias="DPM Name",
-        default=None,
     )
     post_station: Optional[str] = Field(
         default=None, description="Post and station location on the CBOE trading floor."
