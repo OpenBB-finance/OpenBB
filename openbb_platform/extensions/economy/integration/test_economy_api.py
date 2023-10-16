@@ -464,7 +464,6 @@ def test_economy_gdpforecast(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.skip(reason="Not being picked up by the API.")
 @pytest.mark.parametrize(
     "params",
     [

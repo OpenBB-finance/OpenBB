@@ -435,3 +435,19 @@ def test_economy_gdpforecast(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "country": "Portugal"}),
+    ],
+)
+@pytest.mark.integration
+def test_economy_econcal(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.econcal(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
