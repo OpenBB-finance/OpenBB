@@ -15,6 +15,9 @@ extensions = [x for x in extensions_dir.iterdir() if x.is_dir()]
 providers_dir = repo_dir / "openbb_platform/providers"
 providers = [x for x in providers_dir.iterdir() if x.is_dir()]
 
+# openbb
+openbb_dir = repo_dir / "openbb_platform"
+
 VERSION_BUMP_CMD = "poetry version prerelease"
 PUBLISH_CMD = "poetry publish --build"
 
@@ -32,11 +35,11 @@ def run_cmds(directory: Path):
     os.system(PUBLISH_CMD)  # noqa: S605
 
 
-# core
-run_cmds(core_dir)
-
 # provider
 run_cmds(provider_dir)
+
+# core
+run_cmds(core_dir)
 
 # extensions
 for extension in extensions:
@@ -51,3 +54,6 @@ for provider in providers:
         continue
 
     run_cmds(provider)
+
+# openbb
+run_cmds(openbb_dir)
