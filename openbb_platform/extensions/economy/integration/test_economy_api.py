@@ -281,7 +281,7 @@ def test_economy_index_search(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"region": "US"})],
+    [({"provider": "cboe", "region": "US"})],
 )
 @pytest.mark.integration
 def test_economy_index_snapshots(params, headers):
@@ -480,11 +480,12 @@ def test_economy_gdpforecast(params, headers):
     [
         (
             {
+                "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "country": "Portugal",
+                "country": "portugal",
                 "group": "gdp",
-                "importance": 3,
+                "importance": "Low",
             }
         )
     ],
