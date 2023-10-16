@@ -50,8 +50,9 @@ class YFinanceIncomeStatementFetcher(
     ) -> List[YFinanceIncomeStatementData]:
         period = "yearly" if query.period == "annual" else "quarterly"
         data = Ticker(query.symbol).get_income_stmt(
-            as_dict=True, pretty=False, freq=period
+            as_dict=False, pretty=False, freq=period
         )
+        data = data.convert_dtypes().fillna(0).to_dict()
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
         for d in data:

@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # emp
 
-Number of Employees.
+Historical Employees. Historical number of employees.
 
 ```python wordwrap
 emp(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

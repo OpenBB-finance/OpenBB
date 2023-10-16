@@ -3,7 +3,7 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -15,7 +15,7 @@ class OptionsChainsQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -27,14 +27,15 @@ class OptionsChainsData(Data):
     """Options Chains Data."""
 
     contract_symbol: str = Field(description="Contract symbol for the option.")
-    symbol: str = Field(description="Underlying symbol for the option.")
+    symbol: Optional[str] = Field(
+        description="Underlying symbol for the option.", default=None
+    )
     expiration: dateType = Field(description="Expiration date of the contract.")
     strike: float = Field(description="Strike price of the contract.")
-    type: str = Field(description="Call or Put.")
-    date: dateType = Field(
-        description="Date for which the options chains are returned."
+    option_type: str = Field(description="Call or Put.")
+    eod_date: Optional[dateType] = Field(
+        default=None, description="Date for which the options chains are returned."
     )
-
     close: Optional[float] = Field(
         default=None, description="Close price for the option that day."
     )
@@ -84,7 +85,7 @@ class OptionsChainsData(Data):
     theta: Optional[float] = Field(default=None, description="Theta of the option.")
     vega: Optional[float] = Field(default=None, description="Vega of the option.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("date", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

@@ -8,10 +8,10 @@ import TabItem from '@theme/TabItem';
 
 # ins
 
-Stock Insider Trading.
+Stock Insider Trading. Information about insider trading.
 
 ```python wordwrap
-ins(symbol: Union[str, List[str]], transactionType: List[Literal[list]] = ['P-Purchase'], reportingCik: int = None, companyCik: int = None, page: int = 0, provider: Literal[str] = fmp)
+ins(symbol: Union[str, List[str]], transactionType: Union[List[Literal[list]], str] = ['P-Purchase'], page: int = 0, provider: Literal[str] = fmp)
 ```
 
 ---
@@ -24,9 +24,7 @@ ins(symbol: Union[str, List[str]], transactionType: List[Literal[list]] = ['P-Pu
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| transactionType | List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']] | Type of the transaction. | ['P-Purchase'] | True |
-| reportingCik | int | CIK of the reporting owner. | None | True |
-| companyCik | int | CIK of the company owner. | None | True |
+| transactionType | Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], str] | Type of the transaction. | ['P-Purchase'] | True |
 | page | int | Page number of the data to fetch. | 0 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
@@ -73,7 +71,7 @@ OBBject
 | company_cik | int | Company CIK of the stock insider trading. |
 | reporting_name | str | Reporting name of the stock insider trading. |
 | type_of_owner | str | Type of owner of the stock insider trading. |
-| acquistion_or_disposition | str | Acquistion or disposition of the stock insider trading. |
+| acquisition_or_disposition | str | Acquisition or disposition of the stock insider trading. |
 | form_type | str | Form type of the stock insider trading. |
 | securities_transacted | float | Securities transacted of the stock insider trading. |
 | price | float | Price of the stock insider trading. |

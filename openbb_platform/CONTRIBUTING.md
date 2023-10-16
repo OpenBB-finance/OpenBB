@@ -254,12 +254,19 @@ Each `Fetcher` comes equipped with a `test` method that will ensure that it is i
 To create unit tests for your Fetchers, you can run the following command:
 
 ```bash
-python openbb_platform/providers/tests/utils/unit_test_generator.py
+python openbb_platform/providers/tests/utils/unit_tests_generator.py
 ```
 
 > Note that you should be running this file from the root of the repository.
+> Note that the `tests` folder must exist in order to generate the tests.
 
 The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
+
+To record the unit tests, you can run the following command:
+
+```bash
+pytest <path_to_the_unit_test_file> --record=all
+```
 
 > Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 

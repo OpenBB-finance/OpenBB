@@ -1,3 +1,4 @@
+import re
 from itertools import combinations
 from typing import Dict, List, Literal
 
@@ -14,11 +15,7 @@ from linearmodels.panel import (
 )
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    get_target_column,
-    get_target_columns,
-)
+from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
 from openbb_provider.abstract.data import Data
 from pydantic import PositiveInt
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
@@ -113,8 +110,45 @@ def ols_summary(
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
+
+    try:
+        X = X.astype(float)
+        y = y.astype(float)
+    except ValueError as exc:
+        raise ValueError("All columns must be numeric") from exc
+
     results = sm.OLS(y, X).fit()
-    return OBBject(results=Data(summary=results.summary()))
+    results_summary = results.summary()
+    results = {}
+
+    for item in results_summary.tables[0].data:
+        results[item[0].strip()] = item[1].strip()
+        results[item[2].strip()] = str(item[3]).strip()
+
+    table_1 = results_summary.tables[1]
+    headers = table_1.data[0]  # Assuming the headers are in the first row
+    for i, row in enumerate(table_1.data):
+        if i == 0:  # Skipping the header row
+            continue
+        for j, cell in enumerate(row):
+            if j == 0:  # Skipping the row index
+                continue
+            key = f"{row[0].strip()}_{headers[j].strip()}"  # Combining row index and column header
+            results[key] = cell.strip()
+
+    for item in results_summary.tables[2].data:
+        results[item[0].strip()] = item[1].strip()
+        results[item[2].strip()] = str(item[3]).strip()
+
+    results = {k: v for k, v in results.items() if v}
+    clean_results = {}
+    for k, v in results.items():
+        new_key = re.sub(r"[.,\]\[:-]", "", k).lower().strip().replace(" ", "_")
+        clean_results[new_key] = v
+
+    clean_results["raw"] = str(results_summary)
+
+    return OBBject(results=clean_results)
 
 
 @router.command(methods=["POST"])
@@ -123,7 +157,7 @@ def dwat(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform Durbin-Watson test for autocorrelation
+    """Perform Durbin-Watson test for autocorrelation.
 
     Parameters
     ----------
@@ -164,6 +198,7 @@ def bgot(
         List of columns to use as exogenous variables.
     lags: PositiveInt
         Number of lags to use in the test.
+
     Returns
     -------
     OBBject[Data]
@@ -172,10 +207,17 @@ def bgot(
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
     model = sm.OLS(y, X)
-    lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
-    return OBBject(
-        results=Data(lm_stat=lm_stat, p_value=p_value, f_stat=f_stat, fp_value=fp_value)
-    )
+    results = model.fit()
+    lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(results, nlags=lags)
+
+    results = {
+        "lm_stat": lm_stat,
+        "p_value": p_value,
+        "f_stat": f_stat,
+        "fp_value": fp_value,
+    }
+
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -193,6 +235,7 @@ def coint(
         Data columns to check cointegration
     maxlag: PositiveInt
         Number of lags to use in the test.
+
     Returns
     -------
     OBBject[Data]
@@ -200,7 +243,7 @@ def coint(
     """
     pairs = list(combinations(columns, 2))
     dataset = get_target_columns(basemodel_to_df(data), columns)
-    result = []
+    result = {}
     for x, y in pairs:
         (
             c,
@@ -210,16 +253,13 @@ def coint(
             adfstat,
             pvalue,
         ) = get_engle_granger_two_step_cointegration_test(dataset[x], dataset[y])
-        result.append(
-            Data(
-                pair=f"{x}/{y}",
-                c=c,
-                gamma=gamma,
-                alpha=alpha,
-                adfstat=adfstat,
-                pvalue=pvalue,
-            )
-        )
+        result[f"{x}/{y}"] = {
+            "c": c,
+            "gamma": gamma,
+            "alpha": alpha,
+            "adfstat": adfstat,
+            "pvalue": pvalue,
+        }
 
     return OBBject(results=result)
 
@@ -243,6 +283,7 @@ def granger(
         Columns to use as exogenous variables.
     lag: PositiveInt
         Number of lags to use in the test.
+
     Returns
     -------
     OBBject[Data]
@@ -261,15 +302,9 @@ def granger(
             granger[lag][0][test] = (pars[0], pars[1], "-", pars[2])
 
     df = pd.DataFrame(granger[lag][0], index=["F-test", "P-value", "Count", "Lags"]).T
+    results = df.to_dict()
 
-    return OBBject(
-        results=[
-            Data(**d)
-            for d in df.reset_index()
-            .rename(columns={"index": "test"})
-            .to_dict(orient="records")
-        ]
-    )
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"])
@@ -289,6 +324,7 @@ def unitroot(
     regression: str
         Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
         constant, trend, and trend-squared.
+
     Returns
     -------
     OBBject[Data]
@@ -296,15 +332,14 @@ def unitroot(
     """
     dataset = get_target_column(basemodel_to_df(data), column)
     adfstat, pvalue, usedlag, nobs, _, icbest = adfuller(dataset, regression=regression)
-    return OBBject(
-        results=Data(
-            adfstat=adfstat,
-            pvalue=pvalue,
-            usedlag=usedlag,
-            nobs=nobs,
-            icbest=icbest,
-        )
-    )
+    results = {
+        "adfstat": adfstat,
+        "pvalue": pvalue,
+        "usedlag": usedlag,
+        "nobs": nobs,
+        "icbest": icbest,
+    }
+    return OBBject(results=results)
 
 
 @router.command(methods=["POST"], include_in_schema=False)
@@ -313,7 +348,7 @@ def panelre(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform One-way Random Effects model for panel data
+    """Perform One-way Random Effects model for panel data.
 
     Parameters
     ----------
@@ -342,7 +377,7 @@ def panelbols(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform a Between estimator regression on panel data
+    """Perform a Between estimator regression on panel data.
 
     Parameters
     ----------
@@ -371,7 +406,7 @@ def panelpols(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform a Pooled coefficvient estimator regression on panel data
+    """Perform a Pooled coefficvient estimator regression on panel data.
 
     Parameters
     ----------
@@ -400,7 +435,7 @@ def panelols(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """One- and two-way fixed effects estimator for panel data
+    """One- and two-way fixed effects estimator for panel data.
 
     Parameters
     ----------
@@ -429,7 +464,7 @@ def panelfd(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform a first-difference estimate for panel data
+    """Perform a first-difference estimate for panel data.
 
     Parameters
     ----------
@@ -458,7 +493,7 @@ def panelfmac(
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Fama-MacBeth estimator for panel data
+    """Fama-MacBeth estimator for panel data.
 
     Parameters
     ----------

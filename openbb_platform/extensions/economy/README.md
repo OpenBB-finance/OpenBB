@@ -1,6 +1,6 @@
 # OpenBB Economy Extension
 
-The Economy extension provides global macroeconomic data access for the OpenBB SDK.
+The Economy extension provides global macroeconomic data access for the OpenBB Platform.
 
 ## Installation
 

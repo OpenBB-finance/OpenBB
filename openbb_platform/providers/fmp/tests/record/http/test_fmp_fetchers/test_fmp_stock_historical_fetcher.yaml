@@ -5,11 +5,11 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?apikey=MOCK_API_KEY&from=2023-01-01&interval=1day&to=2023-01-10
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?apikey=MOCK_API_KEY&from=2023-01-01&to=2023-01-10
   response:
     body:
       string: !!binary |
@@ -42,7 +42,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 26 Sep 2023 19:06:49 GMT
+      - Mon, 16 Oct 2023 12:21:51 GMT
       ETag:
       - W/"890-71zThPvex5A4Sl4GSuy+Npc+m7c"
       Server:

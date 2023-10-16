@@ -8,7 +8,8 @@ import TabItem from '@theme/TabItem';
 
 # fed
 
-Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
+Fed Funds Rate.
+    Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
     domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
     United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
@@ -34,6 +35,9 @@ fed(start_date: Union[date, str] = None, end_date: Union[date, str] = None, prov
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 | parameter | Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume'] | Period of FED rate. | weekly | True |
 </TabItem>
 

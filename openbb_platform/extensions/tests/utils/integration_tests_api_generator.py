@@ -1,7 +1,9 @@
+import argparse
 import os
-from typing import Dict, List, Type, get_type_hints
+from typing import Dict, List, Literal, Type, get_type_hints
 
 import requests
+from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
@@ -9,6 +11,7 @@ from extensions.tests.utils.integration_tests_generator import get_test_params
 
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
+    """Given a set of paths and a route, return the http method for that route."""
     route_info = api_paths.get(route, None)
     if not route_info:
         return route_info
@@ -16,10 +19,13 @@ def get_http_method(api_paths: Dict[str, dict], route: str):
 
 
 def get_post_flat_params(hints: Dict[str, Type]):
+    """Flattens the params for a post request."""
     return list(hints.keys())
 
 
 def write_init_test_template(http_method: str, path: str):
+    """Write some common initialization for the tests with the defined template."""
+
     http_template_imports = {"get": "", "post": "import json"}
     template = http_template_imports[http_method]
     template += """
@@ -44,8 +50,14 @@ def headers():
 
 
 def write_test_w_template(
-    http_method: str, params_list: List[Dict[str, str]], route: str, path: str
+    http_method: Literal["post", "get"],
+    params_list: List[Dict[str, str]],
+    route: str,
+    path: str,
+    chart: bool = False,
 ):
+    """Write the test with the defined template."""
+
     params_str = ",\n".join([f"({params})" for params in params_list])
 
     http_template_request = {
@@ -55,13 +67,20 @@ def write_test_w_template(
 
     http_template_params = {"get": "", "post": "body = json.dumps(params.pop('data'))"}
 
+    test_name_extra = "chart_" if chart else ""
+
+    chart_extra_template = """
+    assert result.json()["chart"]
+    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    """
+
     template = f"""
 @pytest.mark.parametrize(
     "params",
     [{params_str}],
 )
 @pytest.mark.integration
-def test_{route.replace("/", "_")[1:]}(params, headers):
+def test_{test_name_extra}{route.replace("/", "_")[1:]}(params, headers):
     params = {{p: v for p, v in params.items() if v}}
     {http_template_params[http_method]}
 
@@ -71,21 +90,25 @@ def test_{route.replace("/", "_")[1:]}(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 """
+    if chart:
+        template += chart_extra_template
 
     with open(path, "a") as f:
         f.write(template)
 
 
 def test_exists(route: str, path: str):
+    """Check if a test exists."""
     with open(path) as f:
         return route.replace("/", "_")[1:] in f.read()
 
 
-def write_integration_tests(
+def write_commands_integration_tests(
     command_map: CommandMap,
     provider_interface: ProviderInterface,
     api_paths: Dict[str, dict],
 ) -> List[str]:
+    """Write the commands integration tests."""
     commands_not_found = []
 
     commandmap_map = command_map.map
@@ -129,7 +152,57 @@ def write_integration_tests(
     return commands_not_found
 
 
+def write_charting_extension_integration_tests():
+    """Write the charting extension integration tests."""
+
+    functions = ChartingService.get_implemented_charting_functions()
+
+    # we assume test file exists
+    path = os.path.join(
+        "openbb_platform",
+        "extensions",
+        "charting",
+        "integration",
+        "test_charting_api.py",
+    )
+
+    for function in functions:
+        route = "/" + function.replace("_", "/")
+        if not test_exists(route=function, path=path):
+            write_test_w_template(
+                http_method="post",
+                params_list=[{"chart": True}],
+                route=route,
+                path=path,
+                chart=True,
+            )
+
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+        prog="API Integration Tests Generator",
+        description="Generate API integration tests",
+    )
+    parser.add_argument(
+        "--charting",
+        dest="charting",
+        default=True,
+        action="store_false",
+        help="Generate charting extension integration tests",
+    )
+    parser.add_argument(
+        "--commands",
+        dest="commands",
+        default=True,
+        action="store_false",
+        help="Generate commands integration tests",
+    )
+
+    args = parser.parse_args()
+    charting = args.charting
+    commands = args.commands
+
     r = requests.get("http://0.0.0.0:8000/openapi.json", timeout=10).json()
 
     if not r:
@@ -138,13 +211,16 @@ if __name__ == "__main__":
     command_map = CommandMap()
     provider_interface = ProviderInterface()
 
-    commands_not_found_in_openapi = write_integration_tests(
-        command_map=command_map,
-        provider_interface=provider_interface,
-        api_paths=r["paths"],
-    )
-
-    if commands_not_found_in_openapi:
-        print(  # noqa
-            f"Commands not found in openapi.json: {commands_not_found_in_openapi}"
+    if commands:
+        commands_not_found_in_openapi = write_commands_integration_tests(
+            command_map=command_map,
+            provider_interface=provider_interface,
+            api_paths=r["paths"],
         )
+        if commands_not_found_in_openapi:
+            print(  # noqa
+                f"Commands not found in openapi.json: {commands_not_found_in_openapi}"
+            )
+
+    if charting:
+        write_charting_extension_integration_tests()

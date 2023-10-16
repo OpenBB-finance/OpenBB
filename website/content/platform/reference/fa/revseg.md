@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # revseg
 
-Revenue Business Line.
+Revenue Business Line. Business line revenue data.
 
 ```python wordwrap
 revseg(symbol: Union[str, List[str]], period: Literal[str] = annual, structure: Literal[str] = flat, provider: Literal[str] = fmp)

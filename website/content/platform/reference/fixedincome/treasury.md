@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # treasury
 
-Get treasury rates.
+Treasury Rates. Treasury rates data.
 
 ```python wordwrap
 treasury(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fmp)

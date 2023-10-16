@@ -2,7 +2,7 @@
 title: Showcase
 sidebar_position: 6
 description: Showcasing apps created by users using the OpenBB Platform
-keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
+keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi, platform]
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
