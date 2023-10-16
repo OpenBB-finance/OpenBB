@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # pt
 
-Price Target Consensus.
+Price Target Consensus. Price target consensus data.
 
 ```python wordwrap
 pt(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

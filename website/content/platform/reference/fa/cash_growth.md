@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # cash_growth
 
-Cash Flow Statement Growth.
+Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
 ```python wordwrap
 cash_growth(symbol: Union[str, List[str]], limit: int = 10, provider: Literal[str] = fmp)

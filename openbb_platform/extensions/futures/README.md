@@ -1,4 +1,4 @@
-# Futures data extension for OpenBB SDK
+# Futures data extension for OpenBB Platform
 
 This extension provides a set of commands for futures data retrieval.
 

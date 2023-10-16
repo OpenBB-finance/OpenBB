@@ -20,7 +20,7 @@ def load(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Futures Historical Price."""
+    """Futures Historical Price. Futures historical data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -31,5 +31,5 @@ def curve(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Futures Historical Price."""
+    """Futures Historical Price. Futures historical data."""
     return OBBject(results=Query(**locals()).execute())

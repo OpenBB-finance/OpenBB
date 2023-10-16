@@ -393,9 +393,9 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "root_symbols": "rootSymbols",
         }
     )
-    underlying_price[
+    underlying_price[  # pylint: disable=unsupported-assignment-operation
         "lastTradeTimestamp"
-    ] = (  # pylint: disable=unsupported-assignment-operation
+    ] = (
         pd.to_datetime(underlying_price["lastTradeTimestamp"], unit="ms").tz_localize(
             "EST"
         )

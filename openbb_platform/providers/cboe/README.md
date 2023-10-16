@@ -1,6 +1,6 @@
 # OpenBB CBOE Provider
 
-This extension integrates the [CBOE](https://www.cboe.com/) data provider into the OpenBB SDK.
+This extension integrates the [CBOE](https://www.cboe.com/) data provider into the OpenBB Platform.
 
 ## Installation
 
