@@ -5,7 +5,6 @@ import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
@@ -53,7 +52,7 @@ class YFinanceIncomeStatementFetcher(
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=False, pretty=False, freq=period
         )
-        data = pd.DataFrame(data).convert_dtypes().fillna(0).to_dict()
+        data = data.convert_dtypes().fillna(0).to_dict()
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
         for d in data:

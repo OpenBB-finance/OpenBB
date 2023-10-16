@@ -5,7 +5,6 @@ import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
@@ -60,7 +59,8 @@ class YFinanceBalanceSheetFetcher(
         if data is None:
             raise EmptyDataError()
 
-        data = pd.DataFrame(data).convert_dtypes().fillna(0).to_dict()
+        data = data.convert_dtypes().fillna(0).to_dict()
+
         data = [{"date": str(key), **value} for key, value in data.items()]
         # To match standardization
         for d in data:
