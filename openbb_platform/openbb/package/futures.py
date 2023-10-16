@@ -7,9 +7,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
+from pydantic import validate_call
 
 
 class ROUTER_futures(Container):
@@ -21,7 +21,7 @@ class ROUTER_futures(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate
+    @validate_call
     def curve(
         self,
         symbol: typing_extensions.Annotated[
@@ -87,7 +87,7 @@ class ROUTER_futures(Container):
             **inputs,
         )
 
-    @validate
+    @validate_call
     def load(
         self,
         symbol: typing_extensions.Annotated[
@@ -132,7 +132,7 @@ class ROUTER_futures(Container):
         interval : Optional[Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
             Data granularity. (provider: yfinance)
         period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
-            Period of the data to return. (provider: yfinance)
+            Time period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         adjust : bool
