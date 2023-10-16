@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-tradingeconomics"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "Trading Economics extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
