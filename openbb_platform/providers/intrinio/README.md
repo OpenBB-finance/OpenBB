@@ -1,6 +1,6 @@
 # OpenBB Intrinio Provider
 
-This extension integrates the [Intrinio](https://intrinio.com/) data provider into the OpenBB SDK.
+This extension integrates the [Intrinio](https://intrinio.com/) data provider into the OpenBB Platform.
 
 ## Installation
 

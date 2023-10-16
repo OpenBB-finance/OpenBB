@@ -1,6 +1,6 @@
 # OpenBB Stocks Extension
 
-This extension provides stock market data tools for the OpenBB SDK.
+This extension provides stock market data tools for the OpenBB Platform.
 
 Features of the Stocks extension include:
 

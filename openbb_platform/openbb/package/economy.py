@@ -7,9 +7,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_economy(Container):
@@ -32,7 +32,7 @@ class ROUTER_economy(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def available_indices(
         self, provider: Union[Literal["cboe", "fmp", "yfinance"], None] = None, **kwargs
     ) -> OBBject[List[Data]]:
@@ -109,7 +109,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def const(
         self,
         index: typing_extensions.Annotated[
@@ -740,7 +740,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def index(
         self,
         symbol: typing_extensions.Annotated[

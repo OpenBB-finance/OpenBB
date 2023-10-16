@@ -1,6 +1,6 @@
 # OpenBB QA Extension
 
-This extension provides Quantitative Analysis (QA) tools for the OpenBB SDK.
+This extension provides Quantitative Analysis (QA) tools for the OpenBB Platform.
 
 Features of the QA extension include various statistical tools and models.
 

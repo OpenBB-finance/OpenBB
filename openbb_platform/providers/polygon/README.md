@@ -1,6 +1,6 @@
 # OpenBB Polygon Provider
 
-This extension integrates the [Polygon](https://polygon.io/) data provider into the OpenBB SDK.
+This extension integrates the [Polygon](https://polygon.io/) data provider into the OpenBB Platform.
 
 ## Installation
 

@@ -7,6 +7,7 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from pydantic import validate_call
@@ -47,7 +48,7 @@ class ROUTER_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def balance(
         self,
         symbol: typing_extensions.Annotated[
@@ -58,6 +59,7 @@ class ROUTER_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
+        limit: typing_extensions.Annotated[
         limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -122,6 +124,7 @@ class ROUTER_stocks_fa(Container):
         -------
         OBBject
             results : Union[List[BalanceSheet]]
+            results : Union[List[BalanceSheet]]
                 Serializable results.
             provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
                 Provider name.
@@ -134,6 +137,7 @@ class ROUTER_stocks_fa(Container):
 
         BalanceSheet
         ------------
+        symbol : Optional[Union[str]]
         symbol : Optional[Union[str]]
             Symbol to get data for.
         date : date
@@ -266,7 +270,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def balance_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -410,7 +414,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cal(
         self,
         start_date: typing_extensions.Annotated[
@@ -490,7 +494,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash(
         self,
         symbol: typing_extensions.Annotated[
@@ -501,6 +505,7 @@ class ROUTER_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
+        limit: typing_extensions.Annotated[
         limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -523,9 +528,11 @@ class ROUTER_stocks_fa(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         cik : Optional[Union[str]]
+        cik : Optional[Union[str]]
             Central Index Key (CIK) of the company. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
+        year : Optional[Union[int]]
         year : Optional[Union[int]]
             Year of the statement to be fetched. (provider: intrinio)
         company_name : Optional[Union[str]]
@@ -564,6 +571,7 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
+            results : Union[List[CashFlowStatement]]
             results : Union[List[CashFlowStatement]]
                 Serializable results.
             provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
@@ -689,7 +697,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -815,7 +823,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comp(
         self,
         symbol: typing_extensions.Annotated[
@@ -894,7 +902,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comsplit(
         self,
         start_date: typing_extensions.Annotated[
@@ -968,7 +976,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def divs(
         self,
         symbol: typing_extensions.Annotated[
@@ -1035,7 +1043,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def earning(
         self,
         symbol: typing_extensions.Annotated[
@@ -1113,7 +1121,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def emp(
         self,
         symbol: typing_extensions.Annotated[
@@ -1184,9 +1192,10 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def est(
         self,
+        symbol: typing_extensions.Annotated[
         symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
@@ -1196,9 +1205,11 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
+        limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
+        provider: Union[Literal["fmp"], None] = None,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -1295,7 +1306,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def filings(
         self,
         symbol: typing_extensions.Annotated[
@@ -1373,7 +1384,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income(
         self,
         symbol: typing_extensions.Annotated[
@@ -1384,6 +1395,7 @@ class ROUTER_stocks_fa(Container):
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
+        limit: typing_extensions.Annotated[
         limit: typing_extensions.Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
@@ -1406,11 +1418,14 @@ class ROUTER_stocks_fa(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         cik : Optional[Union[str]]
+        cik : Optional[Union[str]]
             The CIK of the company if no symbol is provided. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
         year : Optional[Union[int]]
+        year : Optional[Union[int]]
             Year of the statement to be fetched. (provider: intrinio)
+        company_name : Optional[Union[str]]
         company_name : Optional[Union[str]]
             Name of the company. (provider: polygon)
         company_name_search : Optional[Union[str]]
@@ -1448,6 +1463,7 @@ class ROUTER_stocks_fa(Container):
         -------
         OBBject
             results : Union[List[IncomeStatement]]
+            results : Union[List[IncomeStatement]]
                 Serializable results.
             provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
                 Provider name.
@@ -1460,6 +1476,7 @@ class ROUTER_stocks_fa(Container):
 
         IncomeStatement
         ---------------
+        symbol : Optional[Union[str]]
         symbol : Optional[Union[str]]
             Symbol to get data for.
         date : date
@@ -1572,7 +1589,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income_growth(
         self,
         symbol: typing_extensions.Annotated[
@@ -1608,6 +1625,7 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
+            results : Union[List[IncomeStatementGrowth]]
             results : Union[List[IncomeStatementGrowth]]
                 Serializable results.
             provider : Union[Literal['fmp'], None]
@@ -1697,7 +1715,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins(
         self,
         symbol: typing_extensions.Annotated[
@@ -1819,7 +1837,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins_own(
         self,
         symbol: typing_extensions.Annotated[
@@ -1959,9 +1977,10 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def metrics(
         self,
+        symbol: typing_extensions.Annotated[
         symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
@@ -1972,8 +1991,11 @@ class ROUTER_stocks_fa(Container):
         ] = "annual",
         limit: typing_extensions.Annotated[
             Union[int, None],
+        limit: typing_extensions.Annotated[
+            Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
+        provider: Union[Literal["fmp"], None] = None,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -1988,9 +2010,11 @@ class ROUTER_stocks_fa(Container):
         limit : Union[int, None]
             The number of data entries to return.
         provider : Union[Literal['fmp'], None]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        with_ttm : Optional[Union[bool]]
         with_ttm : Optional[Union[bool]]
             Include trailing twelve months (TTM) data. (provider: fmp)
 
@@ -2150,7 +2174,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def mgmt(
         self,
         symbol: typing_extensions.Annotated[
@@ -2217,7 +2241,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def overview(
         self,
         symbol: typing_extensions.Annotated[
@@ -2342,7 +2366,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def own(
         self,
         symbol: typing_extensions.Annotated[
@@ -2487,7 +2511,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pt(
         self,
         symbol: typing_extensions.Annotated[
@@ -2550,7 +2574,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pta(
         self,
         symbol: typing_extensions.Annotated[
@@ -2633,7 +2657,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ratios(
         self,
         symbol: typing_extensions.Annotated[
@@ -2791,11 +2815,15 @@ class ROUTER_stocks_fa(Container):
         price_earnings_to_growth_ratio : Optional[Union[float]]
             Price earnings to growth ratio.
         price_sales_ratio : Optional[Union[float]]
+        price_sales_ratio : Optional[Union[float]]
             Price sales ratio.
+        dividend_yield : Optional[Union[float]]
         dividend_yield : Optional[Union[float]]
             Dividend yield.
         enterprise_value_multiple : Optional[Union[float]]
+        enterprise_value_multiple : Optional[Union[float]]
             Enterprise value multiple.
+        price_fair_value : Optional[Union[float]]
         price_fair_value : Optional[Union[float]]
             Price fair value."""  # noqa: E501
 
@@ -2816,7 +2844,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revgeo(
         self,
         symbol: typing_extensions.Annotated[
@@ -2827,6 +2855,7 @@ class ROUTER_stocks_fa(Container):
             Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
+        structure: typing_extensions.Annotated[
         structure: typing_extensions.Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
@@ -2897,7 +2926,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revseg(
         self,
         symbol: typing_extensions.Annotated[
@@ -2968,7 +2997,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def shrs(
         self,
         symbol: typing_extensions.Annotated[
@@ -3033,7 +3062,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def split(
         self,
         symbol: typing_extensions.Annotated[
@@ -3094,7 +3123,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def transcript(
         self,
         symbol: typing_extensions.Annotated[

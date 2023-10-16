@@ -8,9 +8,9 @@ from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_stocks(Container):
@@ -336,7 +336,7 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def multiples(
         self,
         symbol: typing_extensions.Annotated[
@@ -520,7 +520,7 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def news(
         self,
         symbols: typing_extensions.Annotated[
@@ -669,7 +669,7 @@ class ROUTER_stocks(Container):
 
         return stocks_options.ROUTER_stocks_options(command_runner=self._command_runner)
 
-    @validate_call
+    @validate
     def quote(
         self,
         symbol: typing_extensions.Annotated[

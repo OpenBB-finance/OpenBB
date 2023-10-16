@@ -1,6 +1,6 @@
 # OpenBB Benzinga Provider
 
-This extension integrates the [Benzinga](https://www.benzinga.com/) data provider into the OpenBB SDK.
+This extension integrates the [Benzinga](https://www.benzinga.com/) data provider into the OpenBB Platform.
 
 ## Installation
 

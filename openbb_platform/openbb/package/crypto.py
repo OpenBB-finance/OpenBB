@@ -7,9 +7,9 @@ import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 
 
 class ROUTER_crypto(Container):
@@ -20,12 +20,14 @@ class ROUTER_crypto(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def load(
         self,
         symbol: typing_extensions.Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format."
+            ),
         ],
         start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
@@ -47,7 +49,7 @@ class ROUTER_crypto(Container):
         Parameters
         ----------
         symbol : str
-            Symbol to get data for.
+            Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format.
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]

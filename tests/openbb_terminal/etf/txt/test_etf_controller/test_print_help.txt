@@ -9,6 +9,7 @@ Major holdings:
 
 [unvl]    overview           get overview[/unvl]                                                    [StockAnalysis]
 [unvl]    holdings           top company holdings[/unvl]                                            [StockAnalysis]
+[unvl]    holding_perf       Performance of holdings in ETF.[/unvl]                                 [FinancialModelingPrep]
 [unvl]    weights            sector weights allocation[/unvl]                                       [FinancialModelingPrep]
 [unvl]    news               latest news of the company[/unvl]                                      [NewsApi]
 [unvl]    candle             view a candle chart for ETF[/unvl]
