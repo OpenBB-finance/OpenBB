@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # income_growth
 
-Income Statement Growth.
+Income Statement Growth. Information about the growth of the company income statement.
 
 ```python wordwrap
 income_growth(symbol: Union[str, List[str]], limit: int = 10, period: Literal[str] = annual, provider: Literal[str] = fmp)

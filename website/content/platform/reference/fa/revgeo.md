@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # revgeo
 
-Revenue Geographic.
+Revenue Geographic. Geographic revenue data.
 
 ```python wordwrap
 revgeo(symbol: Union[str, List[str]], period: Literal[str] = annual, structure: Literal[str] = flat, provider: Literal[str] = fmp)

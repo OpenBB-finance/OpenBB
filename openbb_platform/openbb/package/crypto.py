@@ -42,6 +42,7 @@ class ROUTER_crypto(Container):
             ),
         ] = None,
         provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
+        provider: Union[Literal["fmp", "polygon", "yfinance"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Crypto Historical Price.

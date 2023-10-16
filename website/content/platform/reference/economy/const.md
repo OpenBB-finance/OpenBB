@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # const
 
-Get the constituents of an index.
+Major Indices Constituents. Constituents of an index.
 
 ```python wordwrap
 const(index: Literal[str] = dowjones, provider: Literal[str] = fmp)
@@ -65,7 +65,7 @@ OBBject
 | sector | str | Sector the constituent company in the index belongs to. |
 | sub_sector | str | Sub-sector the constituent company in the index belongs to. |
 | headquarter | str | Location of the headquarter of the constituent company in the index. |
-| date_first_added | Union[date, str, None] | Date the constituent company was added to the index. |
+| date_first_added | Union[date, str] | Date the constituent company was added to the index. |
 | cik | int | Central Index Key of the constituent company in the index. |
 | founded | Union[date, str] | Founding year of the constituent company in the index. |
 </TabItem>

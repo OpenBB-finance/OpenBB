@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # multiples
 
-Get valuation multiples for a stock ticker.
+Stock Multiples. Valuation multiples for a stock ticker.
 
 ```python wordwrap
 multiples(symbol: Union[str, List[str]], limit: int = 100, provider: Literal[str] = fmp)

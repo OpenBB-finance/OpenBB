@@ -39,7 +39,7 @@ class ROUTER_stocks_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Optional[Union[str]]
+        date : Optional[Union[datetime.date]]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
@@ -60,15 +60,15 @@ class ROUTER_stocks_options(Container):
         -------------
         contract_symbol : str
             Contract symbol for the option.
-        symbol : str
+        symbol : Union[str]
             Underlying symbol for the option.
         expiration : date
             Expiration date of the contract.
         strike : float
             Strike price of the contract.
-        type : str
+        option_type : str
             Call or Put.
-        date : date
+        eod_date : date
             Date for which the options chains are returned.
         close : Optional[Union[float]]
             Close price for the option that day.

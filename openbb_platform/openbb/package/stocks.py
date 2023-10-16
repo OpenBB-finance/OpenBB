@@ -41,7 +41,7 @@ class ROUTER_stocks(Container):
 
         return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
 
-    @validate_call
+    @validate
     def info(
         self,
         symbol: typing_extensions.Annotated[
@@ -156,7 +156,7 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def load(
         self,
         symbol: typing_extensions.Annotated[

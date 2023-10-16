@@ -11,17 +11,3 @@ SOURCES = Literal[
     "intrinio_mx_plus",
     "delayed_sip",
 ]
-
-TICKER_EXCEPTIONS = [
-    "SPX",
-    "XSP",
-    "XEO",
-    "NDX",
-    "XND",
-    "VIX",
-    "RUT",
-    "MRUT",
-    "DJX",
-    "XAU",
-    "OEX",
-]
