@@ -60,7 +60,7 @@ class IncomeStatementData(Data):
     general_and_administrative_expenses: Optional[StrictInt] = Field(
         default=None, description="General and administrative expenses."
     )
-    selling_and_marketing_expenses: float = Field(
+    selling_and_marketing_expenses: Optional[float] = Field(
         default=None, description="Selling and marketing expenses."
     )
     selling_general_and_administrative_expenses: Optional[StrictInt] = Field(

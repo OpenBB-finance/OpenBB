@@ -101,7 +101,7 @@ def get_cboe_directory(**kwargs) -> pd.DataFrame:
         }
     ).set_index("symbol")
 
-    return CBOE_DIRECTORY
+    return CBOE_DIRECTORY.astype(str)
 
 
 def get_cboe_index_directory(**kwargs) -> pd.DataFrame:
