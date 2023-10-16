@@ -45,7 +45,18 @@ def test_economy_const(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
-        )
+        ),
+        (
+            {
+                "countries": ["portugal", "spain"],
+                "units": "growth_same",
+                "frequency": "monthly",
+                "harmonized": True,
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fred",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
