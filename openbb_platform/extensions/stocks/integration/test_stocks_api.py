@@ -733,9 +733,9 @@ def test_stocks_options_chains(params, headers):
                 "end_time": time(12, 0, 0),
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-03",
-                "interval": "1m",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
             }
         ),
         (
