@@ -18,6 +18,10 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
+    __alias_dict__ = {
+        "transaction_type": "transactionType",
+    }
+
 
 class FMPStockInsiderTradingData(StockInsiderTradingData):
     """FMP Stock Insider Trading Data."""
