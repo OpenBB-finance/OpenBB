@@ -107,6 +107,6 @@ class FMPIndexConstituentsFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPIndexConstituentsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPIndexConstituentsData]:
         """Return the raw data from the FMP endpoint."""
         return [FMPIndexConstituentsData.model_validate(d) for d in data]

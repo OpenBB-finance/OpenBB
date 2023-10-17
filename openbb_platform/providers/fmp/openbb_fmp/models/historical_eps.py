@@ -71,6 +71,6 @@ class FMPHistoricalEpsFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPHistoricalEpsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPHistoricalEpsData]:
         """Return the transformed data."""
         return [FMPHistoricalEpsData.model_validate(d) for d in data]
