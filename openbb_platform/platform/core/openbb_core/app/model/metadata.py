@@ -5,7 +5,7 @@ from typing import Any, Dict
 import numpy as np
 import pandas as pd
 from openbb_provider.abstract.data import Data
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class Metadata(BaseModel):
@@ -21,10 +21,10 @@ class Metadata(BaseModel):
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(
-            f"{k}: {v}" for k, v in self.dict().items()
+            f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
-    @validator("arguments")
+    @field_validator("arguments")
     @classmethod
     def scale_arguments(cls, v):
         """Scale arguments.

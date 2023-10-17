@@ -1,27 +1,29 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
+from typing_extensions import Annotated
 
 
 class ROUTER_stocks(Container):
     """/stocks
     /ca
     /fa
+    info
     load
     multiples
     news
     /options
     quote
+    search
     """
 
     def __repr__(self) -> str:
@@ -39,73 +41,203 @@ class ROUTER_stocks(Container):
 
         return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
 
-    @validate_call
-    def load(
+    @validate
+    def info(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fmp", "intrinio", "polygon"], None] = None,
-        **kwargs
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Load stock data for a specific ticker.
+        """Stock Info. Get general price and performance metrics of a stock.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
+        provider : Optional[Literal['cboe']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        timeseries : Optional[Union[typing_extensions.Annotated[int, Ge(ge=0)]]]
-            Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
-        timezone : Optional[Union[Literal['Africa/Algiers', 'Africa/Cairo', 'Africa/Casablanca', 'Africa/Harare', 'Africa/Johannesburg', 'Africa/Monrovia', 'Africa/Nairobi', 'America/Argentina/Buenos_Aires', 'America/Bogota', 'America/Caracas', 'America/Chicago', 'America/Chihuahua', 'America/Denver', 'America/Godthab', 'America/Guatemala', 'America/Guyana', 'America/Halifax', 'America/Indiana/Indianapolis', 'America/Juneau', 'America/La_Paz', 'America/Lima', 'America/Lima', 'America/Los_Angeles', 'America/Mazatlan', 'America/Mexico_City', 'America/Mexico_City', 'America/Monterrey', 'America/Montevideo', 'America/New_York', 'America/Phoenix', 'America/Regina', 'America/Santiago', 'America/Sao_Paulo', 'America/St_Johns', 'America/Tijuana', 'Asia/Almaty', 'Asia/Baghdad', 'Asia/Baku', 'Asia/Bangkok', 'Asia/Bangkok', 'Asia/Chongqing', 'Asia/Colombo', 'Asia/Dhaka', 'Asia/Dhaka', 'Asia/Hong_Kong', 'Asia/Irkutsk', 'Asia/Jakarta', 'Asia/Jerusalem', 'Asia/Kabul', 'Asia/Kamchatka', 'Asia/Karachi', 'Asia/Karachi', 'Asia/Kathmandu', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Kolkata', 'Asia/Krasnoyarsk', 'Asia/Kuala_Lumpur', 'Asia/Kuwait', 'Asia/Magadan', 'Asia/Muscat', 'Asia/Muscat', 'Asia/Novosibirsk', 'Asia/Rangoon', 'Asia/Riyadh', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Srednekolymsk', 'Asia/Taipei', 'Asia/Tashkent', 'Asia/Tbilisi', 'Asia/Tehran', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Tokyo', 'Asia/Ulaanbaatar', 'Asia/Urumqi', 'Asia/Vladivostok', 'Asia/Yakutsk', 'Asia/Yekaterinburg', 'Asia/Yerevan', 'Atlantic/Azores', 'Atlantic/Cape_Verde', 'Atlantic/South_Georgia', 'Australia/Adelaide', 'Australia/Brisbane', 'Australia/Darwin', 'Australia/Hobart', 'Australia/Melbourne', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney', 'Etc/UTC', 'UTC', 'Europe/Amsterdam', 'Europe/Athens', 'Europe/Belgrade', 'Europe/Berlin', 'Europe/Berlin', 'Europe/Bratislava', 'Europe/Brussels', 'Europe/Bucharest', 'Europe/Budapest', 'Europe/Copenhagen', 'Europe/Dublin', 'Europe/Helsinki', 'Europe/Istanbul', 'Europe/Kaliningrad', 'Europe/Kiev', 'Europe/Lisbon', 'Europe/Ljubljana', 'Europe/London', 'Europe/London', 'Europe/Madrid', 'Europe/Minsk', 'Europe/Moscow', 'Europe/Moscow', 'Europe/Paris', 'Europe/Prague', 'Europe/Riga', 'Europe/Rome', 'Europe/Samara', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Sofia', 'Europe/Stockholm', 'Europe/Tallinn', 'Europe/Vienna', 'Europe/Vilnius', 'Europe/Volgograd', 'Europe/Warsaw', 'Europe/Zagreb', 'Pacific/Apia', 'Pacific/Auckland', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Fakaofo', 'Pacific/Fiji', 'Pacific/Guadalcanal', 'Pacific/Guam', 'Pacific/Honolulu', 'Pacific/Majuro', 'Pacific/Midway', 'Pacific/Midway', 'Pacific/Noumea', 'Pacific/Pago_Pago', 'Pacific/Port_Moresby', 'Pacific/Tongatapu']]]
-            Returns trading times in this timezone. (provider: intrinio)
-        source : Optional[Union[Literal['realtime', 'delayed', 'nasdaq_basic']]]
-            The source of the data. (provider: intrinio)
-        start_time : Optional[Union[datetime.time]]
-            Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        end_time : Optional[Union[datetime.time]]
-            Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'. (provider: intrinio)
-        interval_size : Optional[Union[Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h']]]
-            The data time frequency. (provider: intrinio)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
-        sort : Literal['asc', 'desc']
-            Sort order of the data. (provider: polygon)
-        limit : int
-            The number of data entries to return. (provider: polygon)
-        adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : Union[List[StockHistorical]]
+            results : List[StockInfo]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon'], None]
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        StockInfo
+        ---------
+        symbol : str
+            Symbol to get data for.
+        name : str
+            Name associated with the ticker symbol.
+        price : Optional[float]
+            Last transaction price.
+        open : Optional[float]
+            Opening price of the stock.
+        high : Optional[float]
+            High price of the current trading day.
+        low : Optional[float]
+            Low price of the current trading day.
+        close : Optional[float]
+            Closing price of the most recent trading day.
+        change : Optional[float]
+            Change in price over the current trading period.
+        change_percent : Optional[float]
+            Percent change in price over the current trading period.
+        prev_close : Optional[float]
+            Previous closing price.
+        type : Optional[str]
+            Type of asset. (provider: cboe)
+        exchange_id : Optional[int]
+            The Exchange ID number. (provider: cboe)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        bid : Optional[float]
+            Current bid price. (provider: cboe)
+        bid_size : Optional[float]
+            Bid lot size. (provider: cboe)
+        ask : Optional[float]
+            Current ask price. (provider: cboe)
+        ask_size : Optional[float]
+            Ask lot size. (provider: cboe)
+        volume : Optional[float]
+            Stock volume for the current trading day. (provider: cboe)
+        iv30 : Optional[float]
+            The 30-day implied volatility of the stock. (provider: cboe)
+        iv30_change : Optional[float]
+            Change in 30-day implied volatility of the stock. (provider: cboe)
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp for the stock. (provider: cboe)
+        iv30_annual_high : Optional[float]
+            The 1-year high of implied volatility. (provider: cboe)
+        hv30_annual_high : Optional[float]
+            The 1-year high of realized volatility. (provider: cboe)
+        iv30_annual_low : Optional[float]
+            The 1-year low of implied volatility. (provider: cboe)
+        hv30_annual_low : Optional[float]
+            The 1-year low of realized volatility. (provider: cboe)
+        iv60_annual_high : Optional[float]
+            The 60-day high of implied volatility. (provider: cboe)
+        hv60_annual_high : Optional[float]
+            The 60-day high of realized volatility. (provider: cboe)
+        iv60_annual_low : Optional[float]
+            The 60-day low of implied volatility. (provider: cboe)
+        hv60_annual_low : Optional[float]
+            The 60-day low of realized volatility. (provider: cboe)
+        iv90_annual_high : Optional[float]
+            The 90-day high of implied volatility. (provider: cboe)
+        hv90_annual_high : Optional[float]
+            The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/info",
+            **inputs,
+        )
+
+    @validate
+    def load(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        chart: bool = False,
+        provider: Optional[
+            Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
+        ] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
+        """Stock Historical price. Load stock data for a specific ticker.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        interval : Optional[str]
+            Time interval of the data to return.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'pol...
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
+            no default.
+        adjusted : Optional[bool]
+            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon); Adjust all OHLC data automatically. (provider: yfinance)
+        extended_hours : Optional[bool]
+            Extended trading hours during pre-market and after-hours.Only available for intraday data. (provider: alpha_vantage)
+        month : Optional[str]
+            Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
+        output_size : Optional[Literal['compact', 'full']]
+            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter is not specified, or the full intraday data for aspecific month in history if the month parameter is specified. (provider: alpha_vantage)
+        limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
+            Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon)
+        start_time : Optional[datetime.time]
+            Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        end_time : Optional[datetime.time]
+            Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        timezone : str
+            Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
+        source : Optional[Literal['realtime', 'delayed', 'nasdaq_basic']]
+            The source of the data. (provider: intrinio)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. (provider: polygon)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
+        back_adjust : bool
+            Attempt to adjust all the data automatically. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+
+        Returns
+        -------
+        OBBject
+            results : List[StockHistorical]
+                Serializable results.
+            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -128,27 +260,59 @@ class ROUTER_stocks(Container):
             The close price of the symbol.
         volume : Union[float, int]
             The volume of the symbol.
-        vwap : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
+        vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price of the symbol.
-        adj_close : Optional[Union[float]]
-            Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[Union[float]]
-            Unadjusted volume of the symbol. (provider: fmp)
-        change : Optional[Union[float]]
-            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
-        change_percent : Optional[Union[float]]
-            Change % in the price of the symbol. (provider: fmp)
-        label : Optional[Union[str]]
+        adj_close : Optional[Union[Annotated[float, Gt(gt=0)], float]]
+            The adjusted close price of the symbol. (provider: alpha_vantage, fmp); Adjusted closing price during the period. (provider: intrinio)
+        dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
+            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
+        split_coefficient : Optional[Annotated[float, Ge(ge=0)]]
+            Split coefficient for the corresponding date. (provider: alpha_vantage)
+        calls_volume : Optional[float]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[float]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[float]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        label : Optional[str]
             Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[Union[float]]
+        unadjusted_volume : Optional[float]
+            Unadjusted volume of the symbol. (provider: fmp)
+        change : Optional[float]
+            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
+        change_percent : Optional[float]
+            Change % in the price of the symbol. (provider: fmp)
+        change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        close_time : Optional[Union[datetime]]
+        close_time : Optional[datetime]
             The timestamp that represents the end of the interval span. (provider: intrinio)
-        interval : Optional[Union[str]]
+        interval : Optional[str]
             The data time frequency. (provider: intrinio)
-        average : Optional[Union[float]]
+        average : Optional[float]
             Average trade price of an individual stock during the interval. (provider: intrinio)
-        transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
+        intra_period : Optional[bool]
+            If true, the stock price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
+        adj_open : Optional[float]
+            Adjusted open price during the period. (provider: intrinio)
+        adj_high : Optional[float]
+            Adjusted high price during the period. (provider: intrinio)
+        adj_low : Optional[float]
+            Adjusted low price during the period. (provider: intrinio)
+        adj_volume : Optional[float]
+            Adjusted volume during the period. (provider: intrinio)
+        factor : Optional[float]
+            factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
+        split_ratio : Optional[float]
+            Ratio of the stock split, if a stock split occurred. (provider: intrinio)
+        dividend : Optional[float]
+            Dividend amount, if a dividend was paid. (provider: intrinio)
+        percent_change : Optional[float]
+            Percent change in the price of the symbol from the previous day. (provider: intrinio)
+        fifty_two_week_high : Optional[float]
+            52 week high price for the symbol. (provider: intrinio)
+        fifty_two_week_low : Optional[float]
+            52 week low price for the symbol. (provider: intrinio)
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
         """  # noqa: E501
 
@@ -158,10 +322,12 @@ class ROUTER_stocks(Container):
             },
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "interval": interval,
                 "start_date": start_date,
                 "end_date": end_date,
             },
             extra_params=kwargs,
+            chart=chart,
         )
 
         return self._run(
@@ -169,29 +335,32 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def multiples(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
+        chart: bool = False,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Get valuation multiples for a stock ticker.
+        """Stock Multiples. Valuation multiples for a stock ticker.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
-        limit : Union[int, None]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -199,9 +368,9 @@ class ROUTER_stocks(Container):
         Returns
         -------
         OBBject
-            results : Union[List[StockMultiples]]
+            results : List[StockMultiples]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -212,125 +381,125 @@ class ROUTER_stocks(Container):
 
         StockMultiples
         --------------
-        revenue_per_share_ttm : Optional[Union[float]]
+        revenue_per_share_ttm : Optional[float]
             Revenue per share calculated as trailing twelve months.
-        net_income_per_share_ttm : Optional[Union[float]]
+        net_income_per_share_ttm : Optional[float]
             Net income per share calculated as trailing twelve months.
-        operating_cash_flow_per_share_ttm : Optional[Union[float]]
+        operating_cash_flow_per_share_ttm : Optional[float]
             Operating cash flow per share calculated as trailing twelve months.
-        free_cash_flow_per_share_ttm : Optional[Union[float]]
+        free_cash_flow_per_share_ttm : Optional[float]
             Free cash flow per share calculated as trailing twelve months.
-        cash_per_share_ttm : Optional[Union[float]]
+        cash_per_share_ttm : Optional[float]
             Cash per share calculated as trailing twelve months.
-        book_value_per_share_ttm : Optional[Union[float]]
+        book_value_per_share_ttm : Optional[float]
             Book value per share calculated as trailing twelve months.
-        tangible_book_value_per_share_ttm : Optional[Union[float]]
+        tangible_book_value_per_share_ttm : Optional[float]
             Tangible book value per share calculated as trailing twelve months.
-        shareholders_equity_per_share_ttm : Optional[Union[float]]
+        shareholders_equity_per_share_ttm : Optional[float]
             Shareholders equity per share calculated as trailing twelve months.
-        interest_debt_per_share_ttm : Optional[Union[float]]
+        interest_debt_per_share_ttm : Optional[float]
             Interest debt per share calculated as trailing twelve months.
-        market_cap_ttm : Optional[Union[float]]
+        market_cap_ttm : Optional[float]
             Market capitalization calculated as trailing twelve months.
-        enterprise_value_ttm : Optional[Union[float]]
+        enterprise_value_ttm : Optional[float]
             Enterprise value calculated as trailing twelve months.
-        pe_ratio_ttm : Optional[Union[float]]
+        pe_ratio_ttm : Optional[float]
             Price-to-earnings ratio (P/E ratio) calculated as trailing twelve months.
-        price_to_sales_ratio_ttm : Optional[Union[float]]
+        price_to_sales_ratio_ttm : Optional[float]
             Price-to-sales ratio calculated as trailing twelve months.
-        pocf_ratio_ttm : Optional[Union[float]]
+        pocf_ratio_ttm : Optional[float]
             Price-to-operating cash flow ratio calculated as trailing twelve months.
-        pfcf_ratio_ttm : Optional[Union[float]]
+        pfcf_ratio_ttm : Optional[float]
             Price-to-free cash flow ratio calculated as trailing twelve months.
-        pb_ratio_ttm : Optional[Union[float]]
+        pb_ratio_ttm : Optional[float]
             Price-to-book ratio calculated as trailing twelve months.
-        ptb_ratio_ttm : Optional[Union[float]]
+        ptb_ratio_ttm : Optional[float]
             Price-to-tangible book ratio calculated as trailing twelve months.
-        ev_to_sales_ttm : Optional[Union[float]]
+        ev_to_sales_ttm : Optional[float]
             Enterprise value-to-sales ratio calculated as trailing twelve months.
-        enterprise_value_over_ebitda_ttm : Optional[Union[float]]
+        enterprise_value_over_ebitda_ttm : Optional[float]
             Enterprise value-to-EBITDA ratio calculated as trailing twelve months.
-        ev_to_operating_cash_flow_ttm : Optional[Union[float]]
+        ev_to_operating_cash_flow_ttm : Optional[float]
             Enterprise value-to-operating cash flow ratio calculated as trailing twelve months.
-        ev_to_free_cash_flow_ttm : Optional[Union[float]]
+        ev_to_free_cash_flow_ttm : Optional[float]
             Enterprise value-to-free cash flow ratio calculated as trailing twelve months.
-        earnings_yield_ttm : Optional[Union[float]]
+        earnings_yield_ttm : Optional[float]
             Earnings yield calculated as trailing twelve months.
-        free_cash_flow_yield_ttm : Optional[Union[float]]
+        free_cash_flow_yield_ttm : Optional[float]
             Free cash flow yield calculated as trailing twelve months.
-        debt_to_equity_ttm : Optional[Union[float]]
+        debt_to_equity_ttm : Optional[float]
             Debt-to-equity ratio calculated as trailing twelve months.
-        debt_to_assets_ttm : Optional[Union[float]]
+        debt_to_assets_ttm : Optional[float]
             Debt-to-assets ratio calculated as trailing twelve months.
-        net_debt_to_ebitda_ttm : Optional[Union[float]]
+        net_debt_to_ebitda_ttm : Optional[float]
             Net debt-to-EBITDA ratio calculated as trailing twelve months.
-        current_ratio_ttm : Optional[Union[float]]
+        current_ratio_ttm : Optional[float]
             Current ratio calculated as trailing twelve months.
-        interest_coverage_ttm : Optional[Union[float]]
+        interest_coverage_ttm : Optional[float]
             Interest coverage calculated as trailing twelve months.
-        income_quality_ttm : Optional[Union[float]]
+        income_quality_ttm : Optional[float]
             Income quality calculated as trailing twelve months.
-        dividend_yield_ttm : Optional[Union[float]]
+        dividend_yield_ttm : Optional[float]
             Dividend yield calculated as trailing twelve months.
-        dividend_yield_percentage_ttm : Optional[Union[float]]
+        dividend_yield_percentage_ttm : Optional[float]
             Dividend yield percentage calculated as trailing twelve months.
-        dividend_to_market_cap_ttm : Optional[Union[float]]
+        dividend_to_market_cap_ttm : Optional[float]
             Dividend to market capitalization ratio calculated as trailing twelve months.
-        dividend_per_share_ttm : Optional[Union[float]]
+        dividend_per_share_ttm : Optional[float]
             Dividend per share calculated as trailing twelve months.
-        payout_ratio_ttm : Optional[Union[float]]
+        payout_ratio_ttm : Optional[float]
             Payout ratio calculated as trailing twelve months.
-        sales_general_and_administrative_to_revenue_ttm : Optional[Union[float]]
+        sales_general_and_administrative_to_revenue_ttm : Optional[float]
             Sales general and administrative expenses-to-revenue ratio calculated as trailing twelve months.
-        research_and_development_to_revenue_ttm : Optional[Union[float]]
+        research_and_development_to_revenue_ttm : Optional[float]
             Research and development expenses-to-revenue ratio calculated as trailing twelve months.
-        intangibles_to_total_assets_ttm : Optional[Union[float]]
+        intangibles_to_total_assets_ttm : Optional[float]
             Intangibles-to-total assets ratio calculated as trailing twelve months.
-        capex_to_operating_cash_flow_ttm : Optional[Union[float]]
+        capex_to_operating_cash_flow_ttm : Optional[float]
             Capital expenditures-to-operating cash flow ratio calculated as trailing twelve months.
-        capex_to_revenue_ttm : Optional[Union[float]]
+        capex_to_revenue_ttm : Optional[float]
             Capital expenditures-to-revenue ratio calculated as trailing twelve months.
-        capex_to_depreciation_ttm : Optional[Union[float]]
+        capex_to_depreciation_ttm : Optional[float]
             Capital expenditures-to-depreciation ratio calculated as trailing twelve months.
-        stock_based_compensation_to_revenue_ttm : Optional[Union[float]]
+        stock_based_compensation_to_revenue_ttm : Optional[float]
             Stock-based compensation-to-revenue ratio calculated as trailing twelve months.
-        graham_number_ttm : Optional[Union[float]]
+        graham_number_ttm : Optional[float]
             Graham number calculated as trailing twelve months.
-        roic_ttm : Optional[Union[float]]
+        roic_ttm : Optional[float]
             Return on invested capital calculated as trailing twelve months.
-        return_on_tangible_assets_ttm : Optional[Union[float]]
+        return_on_tangible_assets_ttm : Optional[float]
             Return on tangible assets calculated as trailing twelve months.
-        graham_net_net_ttm : Optional[Union[float]]
+        graham_net_net_ttm : Optional[float]
             Graham net-net working capital calculated as trailing twelve months.
-        working_capital_ttm : Optional[Union[float]]
+        working_capital_ttm : Optional[float]
             Working capital calculated as trailing twelve months.
-        tangible_asset_value_ttm : Optional[Union[float]]
+        tangible_asset_value_ttm : Optional[float]
             Tangible asset value calculated as trailing twelve months.
-        net_current_asset_value_ttm : Optional[Union[float]]
+        net_current_asset_value_ttm : Optional[float]
             Net current asset value calculated as trailing twelve months.
-        invested_capital_ttm : Optional[Union[float]]
+        invested_capital_ttm : Optional[float]
             Invested capital calculated as trailing twelve months.
-        average_receivables_ttm : Optional[Union[float]]
+        average_receivables_ttm : Optional[float]
             Average receivables calculated as trailing twelve months.
-        average_payables_ttm : Optional[Union[float]]
+        average_payables_ttm : Optional[float]
             Average payables calculated as trailing twelve months.
-        average_inventory_ttm : Optional[Union[float]]
+        average_inventory_ttm : Optional[float]
             Average inventory calculated as trailing twelve months.
-        days_sales_outstanding_ttm : Optional[Union[float]]
+        days_sales_outstanding_ttm : Optional[float]
             Days sales outstanding calculated as trailing twelve months.
-        days_payables_outstanding_ttm : Optional[Union[float]]
+        days_payables_outstanding_ttm : Optional[float]
             Days payables outstanding calculated as trailing twelve months.
-        days_of_inventory_on_hand_ttm : Optional[Union[float]]
+        days_of_inventory_on_hand_ttm : Optional[float]
             Days of inventory on hand calculated as trailing twelve months.
-        receivables_turnover_ttm : Optional[Union[float]]
+        receivables_turnover_ttm : Optional[float]
             Receivables turnover calculated as trailing twelve months.
-        payables_turnover_ttm : Optional[Union[float]]
+        payables_turnover_ttm : Optional[float]
             Payables turnover calculated as trailing twelve months.
-        inventory_turnover_ttm : Optional[Union[float]]
+        inventory_turnover_ttm : Optional[float]
             Inventory turnover calculated as trailing twelve months.
-        roe_ttm : Optional[Union[float]]
+        roe_ttm : Optional[float]
             Return on equity calculated as trailing twelve months.
-        capex_per_share_ttm : Optional[Union[float]]
+        capex_per_share_ttm : Optional[float]
             Capital expenditures per share calculated as trailing twelve months."""  # noqa: E501
 
         inputs = filter_inputs(
@@ -342,6 +511,7 @@ class ROUTER_stocks(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
+            chart=chart,
         )
 
         return self._run(
@@ -349,68 +519,75 @@ class ROUTER_stocks(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def news(
         self,
-        symbols: typing_extensions.Annotated[
+        symbols: Annotated[
             str, OpenBBCustomParameter(description="Comma separated list of symbols.")
         ],
-        limit: typing_extensions.Annotated[
-            Union[typing_extensions.Annotated[int, Ge(ge=0)], None],
+        limit: Annotated[
+            Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="Number of results to return per page."),
         ] = 20,
-        provider: Union[Literal["benzinga", "fmp", "intrinio", "polygon"], None] = None,
-        **kwargs
+        chart: bool = False,
+        provider: Optional[
+            Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
+        ] = None,
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Get news for one or more stock tickers.
+        """Stock News. Get news for one or more stock tickers.
 
         Parameters
         ----------
         symbols : str
             Comma separated list of symbols.
-        limit : Union[typing_extensions.Annotated[int, Ge(ge=0)], None]
+        limit : Optional[Annotated[int, Ge(ge=0)]]
             Number of results to return per page.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon'], None]
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfina...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Optional[Union[str]]
+        date : Optional[str]
             Date of the news to retrieve. (provider: benzinga)
-        start_date : Optional[Union[str]]
+        start_date : Optional[str]
             Start date of the news to retrieve. (provider: benzinga)
-        end_date : Optional[Union[str]]
+        end_date : Optional[str]
             End date of the news to retrieve. (provider: benzinga)
-        updated_since : Optional[Union[int]]
+        updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
-        published_since : Optional[Union[int]]
+        published_since : Optional[int]
             Number of seconds since the news was published. (provider: benzinga)
-        sort : Optional[Union[Literal['id', 'created', 'updated']]]
+        sort : Optional[Literal['id', 'created', 'updated']]
             Key to sort the news by. (provider: benzinga)
-        order : Optional[Union[Literal['asc', 'desc']]]
+        order : Optional[Literal['asc', 'desc']]
             Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon)
-        isin : Optional[Union[str]]
+        isin : Optional[str]
             The ISIN of the news to retrieve. (provider: benzinga)
-        cusip : Optional[Union[str]]
+        cusip : Optional[str]
             The CUSIP of the news to retrieve. (provider: benzinga)
-        channels : Optional[Union[str]]
+        channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
-        topics : Optional[Union[str]]
+        topics : Optional[str]
             Topics of the news to retrieve. (provider: benzinga)
-        authors : Optional[Union[str]]
+        authors : Optional[str]
             Authors of the news to retrieve. (provider: benzinga)
-        content_types : Optional[Union[str]]
+        content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        published_utc : Optional[Union[str]]
+        page : Optional[int]
+            Page number of the results. Use in combination with limit. (provider: fmp)
+        published_utc : Optional[str]
             Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : Union[List[StockNews]]
+            results : List[StockNews]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon'], None]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -425,42 +602,50 @@ class ROUTER_stocks(Container):
             Published date of the news.
         title : str
             Title of the news.
-        image : Optional[Union[str]]
+        image : Optional[str]
             Image URL of the news.
-        text : Optional[Union[str]]
+        text : Optional[str]
             Text/body of the news.
         url : str
             URL of the news.
-        id : Optional[Union[str]]
+        id : Optional[str]
             ID of the news. (provider: benzinga); Intrinio ID for the article. (provider: intrinio); Article ID. (provider: polygon)
-        author : Optional[Union[str]]
+        author : Optional[str]
             Author of the news. (provider: benzinga); Author of the article. (provider: polygon)
-        teaser : Optional[Union[str]]
+        teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
-        images : Optional[Union[List[Dict[str, str]]]]
-            Images associated with the news. (provider: benzinga)
-        channels : Optional[Union[str]]
+        images : Optional[Union[List[Dict[str, str]], List[str], str]]
+            Images associated with the news. (provider: benzinga); URL to the images of the news. (provider: fmp)
+        channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
-        stocks : Optional[Union[str]]
+        stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
-        tags : Optional[Union[str]]
+        tags : Optional[str]
             Tags associated with the news. (provider: benzinga)
-        updated : Optional[Union[datetime]]
+        updated : Optional[datetime]
             None
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Ticker of the fetched news. (provider: fmp)
-        site : Optional[Union[str]]
+        site : Optional[str]
             Name of the news source. (provider: fmp)
-        amp_url : Optional[Union[str]]
+        amp_url : Optional[str]
             AMP URL. (provider: polygon)
-        image_url : Optional[Union[str]]
+        image_url : Optional[str]
             Image URL. (provider: polygon)
-        keywords : Optional[Union[List[str]]]
+        keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Optional[Union[openbb_polygon.models.stock_news.PolygonPublisher]]
-            Publisher of the article. (provider: polygon)
-        tickers : Optional[Union[List[str]]]
-            Tickers covered in the article. (provider: polygon)"""  # noqa: E501
+        publisher : Optional[Union[openbb_polygon.models.stock_news.PolygonPublisher, str]]
+            Publisher of the article. (provider: polygon, yfinance)
+        tickers : Optional[List[str]]
+            Tickers covered in the article. (provider: polygon)
+        uuid : Optional[str]
+            Unique identifier for the news article (provider: yfinance)
+        type : Optional[str]
+            Type of the news article (provider: yfinance)
+        thumbnail : Optional[List]
+            Thumbnail related data to the ticker news article. (provider: yfinance)
+        related_tickers : Optional[str]
+            Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -471,6 +656,7 @@ class ROUTER_stocks(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
+            chart=chart,
         )
 
         return self._run(
@@ -484,23 +670,23 @@ class ROUTER_stocks(Container):
 
         return stocks_options.ROUTER_stocks_options(command_runner=self._command_runner)
 
-    @validate_call
+    @validate
     def quote(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Comma separated list of symbols."),
         ] = None,
-        provider: Union[Literal["fmp", "intrinio"], None] = None,
-        **kwargs
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        **kwargs,
     ) -> OBBject[Union[List[Data], Data]]:
-        """Load stock data for a specific ticker.
+        """Stock Quote. Load stock data for a specific ticker.
 
         Parameters
         ----------
         symbol : str
             Comma separated list of symbols.
-        provider : Union[Literal['fmp', 'intrinio'], None]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -512,7 +698,7 @@ class ROUTER_stocks(Container):
         OBBject
             results : Union[List[StockQuote], StockQuote]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio'], None]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -523,29 +709,29 @@ class ROUTER_stocks(Container):
 
         StockQuote
         ----------
-        day_low : Optional[Union[float]]
+        day_low : Optional[float]
             Lowest price of the stock in the current trading day.
-        day_high : Optional[Union[float]]
+        day_high : Optional[float]
             Highest price of the stock in the current trading day.
-        date : Optional[Union[datetime]]
+        date : Optional[datetime]
             Timestamp of the stock quote.
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol of the company. (provider: fmp)
-        name : Optional[Union[str]]
+        name : Optional[str]
             Name of the company. (provider: fmp)
-        price : Optional[Union[float]]
+        price : Optional[float]
             Current trading price of the stock. (provider: fmp)
-        changes_percentage : Optional[Union[float]]
+        changes_percentage : Optional[float]
             Change percentage of the stock price. (provider: fmp)
-        change : Optional[Union[float]]
+        change : Optional[float]
             Change in the stock price. (provider: fmp)
-        year_high : Optional[Union[float]]
+        year_high : Optional[float]
             Highest price of the stock in the last 52 weeks. (provider: fmp)
-        year_low : Optional[Union[float]]
+        year_low : Optional[float]
             Lowest price of the stock in the last 52 weeks. (provider: fmp)
-        market_cap : Optional[Union[float]]
+        market_cap : Optional[float]
             Market cap of the company. (provider: fmp)
-        price_avg50 : Optional[Union[float]]
+        price_avg50 : Optional[float]
             50 days average price of the stock. (provider: fmp)
         price_avg200 : Optional[int]
             200 days average price of the stock. (provider: fmp)
@@ -553,63 +739,63 @@ class ROUTER_stocks(Container):
             Volume of the stock in the current trading day. (provider: fmp)
         avg_volume : Optional[int]
             Average volume of the stock in the last 10 trading days. (provider: fmp)
-        exchange : Optional[Union[str]]
+        exchange : Optional[str]
             Exchange the stock is traded on. (provider: fmp)
-        open : Optional[Union[float]]
+        open : Optional[float]
             Opening price of the stock in the current trading day. (provider: fmp)
-        previous_close : Optional[Union[float]]
+        previous_close : Optional[float]
             Previous closing price of the stock. (provider: fmp)
-        eps : Optional[Union[float]]
+        eps : Optional[float]
             Earnings per share of the stock. (provider: fmp)
-        pe : Optional[Union[float]]
+        pe : Optional[float]
             Price earnings ratio of the stock. (provider: fmp)
-        earnings_announcement : Optional[Union[str]]
+        earnings_announcement : Optional[str]
             Earnings announcement date of the stock. (provider: fmp)
         shares_outstanding : Optional[int]
             Number of shares outstanding of the stock. (provider: fmp)
-        last_price : Optional[Union[float]]
+        last_price : Optional[float]
             Price of the last trade. (provider: intrinio)
-        last_time : Optional[Union[datetime]]
+        last_time : Optional[datetime]
             Date and Time when the last trade occurred. (provider: intrinio)
-        last_size : Optional[Union[int]]
+        last_size : Optional[int]
             Size of the last trade. (provider: intrinio)
-        bid_price : Optional[Union[float]]
+        bid_price : Optional[float]
             Price of the top bid order. (provider: intrinio)
-        bid_size : Optional[Union[int]]
+        bid_size : Optional[int]
             Size of the top bid order. (provider: intrinio)
-        ask_price : Optional[Union[float]]
+        ask_price : Optional[float]
             Price of the top ask order. (provider: intrinio)
-        ask_size : Optional[Union[int]]
+        ask_size : Optional[int]
             Size of the top ask order. (provider: intrinio)
-        open_price : Optional[Union[float]]
+        open_price : Optional[float]
             Open price for the trading day. (provider: intrinio)
-        close_price : Optional[Union[float]]
+        close_price : Optional[float]
             Closing price for the trading day (IEX source only). (provider: intrinio)
-        high_price : Optional[Union[float]]
+        high_price : Optional[float]
             High Price for the trading day. (provider: intrinio)
-        low_price : Optional[Union[float]]
+        low_price : Optional[float]
             Low Price for the trading day. (provider: intrinio)
-        exchange_volume : Optional[Union[int]]
+        exchange_volume : Optional[int]
             Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
-        market_volume : Optional[Union[int]]
+        market_volume : Optional[int]
             Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
-        updated_on : Optional[Union[datetime]]
+        updated_on : Optional[datetime]
             Date and Time when the data was last updated. (provider: intrinio)
-        source : Optional[Union[str]]
+        source : Optional[str]
             Source of the data. (provider: intrinio)
-        listing_venue : Optional[Union[str]]
+        listing_venue : Optional[str]
             Listing venue where the trade took place (SIP source only). (provider: intrinio)
-        sales_conditions : Optional[Union[str]]
+        sales_conditions : Optional[str]
             Indicates any sales condition modifiers associated with the trade. (provider: intrinio)
-        quote_conditions : Optional[Union[str]]
+        quote_conditions : Optional[str]
             Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
-        market_center_code : Optional[Union[str]]
+        market_center_code : Optional[str]
             Market center character code. (provider: intrinio)
-        is_darkpool : Optional[Union[bool]]
+        is_darkpool : Optional[bool]
             Whether or not the current trade is from a darkpool. (provider: intrinio)
-        messages : Optional[Union[List[str]]]
+        messages : Optional[List[str]]
             Messages associated with the endpoint. (provider: intrinio)
-        security : Optional[Union[Dict[str, Any]]]
+        security : Optional[Dict[str, Any]]
             Security details related to the quote. (provider: intrinio)"""  # noqa: E501
 
         inputs = filter_inputs(
@@ -624,5 +810,70 @@ class ROUTER_stocks(Container):
 
         return self._run(
             "/stocks/quote",
+            **inputs,
+        )
+
+    @validate
+    def search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        is_symbol: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs,
+    ) -> OBBject[List[Data]]:
+        """Stock Search. Search for a company or stock ticker.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        is_symbol : bool
+            Whether to search by ticker symbol.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[StockSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        StockSearch
+        -----------
+        symbol : str
+            Symbol to get data for.
+        name : str
+            Name of the company.
+        dpm_name : Optional[str]
+            Name of the primary market maker. (provider: cboe)
+        post_station : Optional[str]
+            Post and station location on the CBOE trading floor. (provider: cboe)"""  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "is_symbol": is_symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/search",
             **inputs,
         )

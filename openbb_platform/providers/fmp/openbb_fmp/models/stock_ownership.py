@@ -13,7 +13,7 @@ from openbb_provider.standard_models.stock_ownership import (
     StockOwnershipData,
     StockOwnershipQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
@@ -22,7 +22,7 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """
 
-    @validator("date", pre=True, check_fields=True)
+    @field_validator("date", mode="before", check_fields=True)
     def time_validate(cls, v: str):  # pylint: disable=E021
         """Validate the date."""
         if v is None:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "0.1.0a2"
+version = "0.1.0a4"
 description = "OpenBB package with core functionality"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -18,9 +18,7 @@ python-jose = "^3.3.0"
 uuid7 = "^0.1.0"
 posthog = "^3.0.1"
 python-multipart = "^0.0.6"
-black = "^23.7.0"
-ruff = "0.0.256"
-openbb-provider = "^0.1.0a2"
+openbb-provider = "^0.1.0a3"
 
 [build-system]
 requires = ["poetry-core"]

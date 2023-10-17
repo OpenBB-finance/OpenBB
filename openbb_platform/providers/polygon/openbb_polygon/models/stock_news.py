@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class PolygonStockNewsQueryParams(StockNewsQueryParams):
@@ -29,13 +29,15 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default="desc", description="Sort order of the articles."
     )
 
-    @validator("limit", pre=True)
+    @field_validator("limit", mode="before")
     def limit_validator(cls, v: int) -> int:  # pylint: disable=E0213
         """Limit validator."""
         return min(v, 1000)
 
 
 class PolygonPublisher(BaseModel):
+    """PolygonPublisher data model."""
+
     favicon_url: str = Field(description="Favicon URL.")
     homepage_url: str = Field(description="Homepage URL.")
     logo_url: str = Field(description="Logo URL.")
@@ -43,7 +45,7 @@ class PolygonPublisher(BaseModel):
 
 
 class PolygonStockNewsData(StockNewsData):
-    """Source: https://polygon.io/docs/stocks/get_v2_reference_news"""
+    """Source: https://polygon.io/docs/stocks/get_v2_reference_news."""
 
     __alias_dict__ = {
         "url": "article_url",
@@ -77,7 +79,7 @@ class PolygonStockNewsFetcher(
         query: PolygonStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
@@ -90,6 +92,11 @@ class PolygonStockNewsFetcher(
                     query.model_dump(by_alias=True), ["published_utc"]
                 )
                 query_str += f"&published_utc.{condition}={date}"
+            else:
+                query_str = get_querystring(
+                    query.model_dump(by_alias=True), ["published_utc"]
+                )
+                query_str += f"&published_utc={date}"
 
         else:
             query_str = get_querystring(query.model_dump(by_alias=True), [])
@@ -100,6 +107,6 @@ class PolygonStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[Dict],
     ) -> List[PolygonStockNewsData]:
         return [PolygonStockNewsData.model_validate(d) for d in data]

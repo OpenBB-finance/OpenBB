@@ -6,9 +6,9 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from pydantic import validate_call
 from typing_extensions import Annotated
 
 
@@ -47,7 +47,7 @@ class ROUTER_stocks_fa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call
+    @validate
     def balance(
         self,
         symbol: Annotated[
@@ -56,23 +56,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Balance Sheet.
+        """Balance Sheet. Balance sheet statement.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['annual', 'quarter']
-            Period of the data to return.
+            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
@@ -266,7 +266,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def balance_growth(
         self,
         symbol: Annotated[
@@ -278,9 +278,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Balance Sheet Statement Growth.
+        """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
         Parameters
         ----------
@@ -410,7 +410,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cal(
         self,
         start_date: Annotated[
@@ -426,9 +426,9 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Show Dividend Calendar for a given start and end dates.
+        """Dividend Calendar. Show Dividend Calendar for a given start and end dates.
 
         Parameters
         ----------
@@ -490,7 +490,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash(
         self,
         symbol: Annotated[
@@ -499,23 +499,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Cash Flow Statement.
+        """Cash Flow Statement. Information about the cash flow statement.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['annual', 'quarter']
-            Period of the data to return.
+            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
@@ -689,7 +689,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def cash_growth(
         self,
         symbol: Annotated[
@@ -701,9 +701,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Cash Flow Statement Growth.
+        """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
         Parameters
         ----------
@@ -815,7 +815,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comp(
         self,
         symbol: Annotated[
@@ -823,9 +823,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Executive Compensation.
+        """Executive Compensation. Information about the executive compensation for a given company.
 
         Parameters
         ----------
@@ -894,7 +894,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def comsplit(
         self,
         start_date: Annotated[
@@ -910,9 +910,9 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Stock Split Calendar.
+        """Stock Split Calendar. Show Stock Split Calendar.
 
         Parameters
         ----------
@@ -968,7 +968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def divs(
         self,
         symbol: Annotated[
@@ -976,9 +976,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Historical Dividends.
+        """Historical Dividends. Historical dividends data for a given company.
 
         Parameters
         ----------
@@ -1035,7 +1035,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def earning(
         self,
         symbol: Annotated[
@@ -1047,9 +1047,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Earnings Calendar.
+        """Earnings Calendar. Earnings calendar for a given company.
 
         Parameters
         ----------
@@ -1113,7 +1113,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def emp(
         self,
         symbol: Annotated[
@@ -1121,9 +1121,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Number of Employees.
+        """Historical Employees. Historical number of employees.
 
         Parameters
         ----------
@@ -1184,7 +1184,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def est(
         self,
         symbol: Annotated[
@@ -1193,23 +1193,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Analyst Estimates.
+        """Analyst Estimates. Analyst stock recommendations.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['quarter', 'annual']
-            Period of the data to return.
+            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
@@ -1295,7 +1295,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def filings(
         self,
         symbol: Annotated[
@@ -1307,9 +1307,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Company Filings.
+        """Company Filings. Company filings data.
 
         Parameters
         ----------
@@ -1350,10 +1350,10 @@ class ROUTER_stocks_fa(Container):
             URL to the document.
         symbol : Optional[str]
             The ticker symbol of the company. (provider: fmp)
-        accepted_date : Optional[date]
-            Accepted date of the SEC filing. (provider: fmp)
         cik : Optional[str]
             CIK of the SEC filing. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Accepted date of the SEC filing. (provider: fmp)
         final_link : Optional[str]
             Final link of the SEC filing. (provider: fmp)"""  # noqa: E501
 
@@ -1373,7 +1373,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income(
         self,
         symbol: Annotated[
@@ -1382,23 +1382,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Income Statement.
+        """Income Statement. Report on a company's finanacial performance.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['annual', 'quarter']
-            Period of the data to return.
+            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
@@ -1572,7 +1572,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def income_growth(
         self,
         symbol: Annotated[
@@ -1585,12 +1585,12 @@ class ROUTER_stocks_fa(Container):
         ] = 10,
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Income Statement Growth.
+        """Income Statement Growth. Information about the growth of the company income statement.
 
         Parameters
         ----------
@@ -1599,7 +1599,7 @@ class ROUTER_stocks_fa(Container):
         limit : int
             The number of data entries to return.
         period : Literal['annual', 'quarter']
-            Period of the data to return.
+            Time period of the data to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1697,7 +1697,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins(
         self,
         symbol: Annotated[
@@ -1738,9 +1738,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Stock Insider Trading.
+        """Stock Insider Trading. Information about insider trading.
 
         Parameters
         ----------
@@ -1819,7 +1819,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ins_own(
         self,
         symbol: Annotated[
@@ -1835,9 +1835,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Institutional Ownership.
+        """Institutional Ownership. Institutional ownership data.
 
         Parameters
         ----------
@@ -1959,7 +1959,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def metrics(
         self,
         symbol: Annotated[
@@ -1968,23 +1968,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Key Metrics.
+        """Key Metrics. Key metrics for a given company.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Optional[Literal['annual', 'quarter']]
-            Period of the data to return.
+            Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
@@ -2150,7 +2150,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def mgmt(
         self,
         symbol: Annotated[
@@ -2158,9 +2158,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Key Executives.
+        """Key Executives. Key executives for a given company.
 
         Parameters
         ----------
@@ -2217,7 +2217,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def overview(
         self,
         symbol: Annotated[
@@ -2225,9 +2225,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[Data]:
-        """Company Overview.
+        """Company Overview. General information about a company.
 
         Parameters
         ----------
@@ -2342,7 +2342,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def own(
         self,
         symbol: Annotated[
@@ -2358,9 +2358,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Stock Ownership.
+        """Stock Ownership. Information about the company ownership.
 
         Parameters
         ----------
@@ -2487,7 +2487,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pt(
         self,
         symbol: Annotated[
@@ -2495,9 +2495,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[Data]:
-        """Price Target Consensus.
+        """Price Target Consensus. Price target consensus data.
 
         Parameters
         ----------
@@ -2550,7 +2550,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def pta(
         self,
         symbol: Annotated[
@@ -2558,9 +2558,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Price Target.
+        """Price Target. Price target data.
 
         Parameters
         ----------
@@ -2633,7 +2633,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def ratios(
         self,
         symbol: Annotated[
@@ -2642,23 +2642,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Extensive set of ratios over time.
+        """Extensive set of ratios over time. Financial ratios for a given company.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['annual', 'quarter']
-            Period of the data to return.
+            Time period of the data to return.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
@@ -2816,7 +2816,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revgeo(
         self,
         symbol: Annotated[
@@ -2825,23 +2825,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Revenue Geographic.
+        """Revenue Geographic. Geographic revenue data.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['quarter', 'annual']
-            Period of the data to return.
+            Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
         provider : Optional[Literal['fmp']]
@@ -2897,7 +2897,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def revseg(
         self,
         symbol: Annotated[
@@ -2906,23 +2906,23 @@ class ROUTER_stocks_fa(Container):
         ],
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Period of the data to return."),
+            OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Revenue Business Line.
+        """Revenue Business Line. Business line revenue data.
 
         Parameters
         ----------
         symbol : str
             Symbol to get data for.
         period : Literal['quarter', 'annual']
-            Period of the data to return.
+            Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
         provider : Optional[Literal['fmp']]
@@ -2968,7 +2968,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def shrs(
         self,
         symbol: Annotated[
@@ -2976,9 +2976,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Share Statistics.
+        """Share Statistics. Share statistics for a given company.
 
         Parameters
         ----------
@@ -3033,7 +3033,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def split(
         self,
         symbol: Annotated[
@@ -3041,9 +3041,9 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Historical Stock Splits.
+        """Historical Stock Splits. Historical stock splits data.
 
         Parameters
         ----------
@@ -3094,7 +3094,7 @@ class ROUTER_stocks_fa(Container):
             **inputs,
         )
 
-    @validate_call
+    @validate
     def transcript(
         self,
         symbol: Annotated[
@@ -3112,9 +3112,9 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = 1,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs
+        **kwargs,
     ) -> OBBject[List[Data]]:
-        """Earnings Call Transcript.
+        """Earnings Call Transcript. Earnings call transcript for a given company.
 
         Parameters
         ----------

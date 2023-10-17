@@ -8,7 +8,9 @@ import TabItem from '@theme/TabItem';
 
 # sofr
 
-Get United States yield curve.
+Secured Overnight Financing Rate.
+    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+    borrowing cash overnight collateralized by Treasury securities.
 
 ```python wordwrap
 sofr(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fred)
@@ -32,6 +34,9 @@ sofr(start_date: Union[date, str] = None, end_date: Union[date, str] = None, pro
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
+| provider | Literal['fred'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default. | fred | True |
 | period | Literal['overnight', '30_day', '90_day', '180_day', 'index'] | Period of SOFR rate. | overnight | True |
 </TabItem>
 

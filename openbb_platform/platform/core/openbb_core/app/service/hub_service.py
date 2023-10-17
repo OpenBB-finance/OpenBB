@@ -124,9 +124,9 @@ class HubService:
         raise HTTPException(status_code, detail)
 
     def _get_session_from_sdk_token(self, token: str) -> HubSession:
-        """Get session from SDK personal access token."""
+        """Get session from Platform personal access token."""
         if not token:
-            raise OpenBBError("SDK personal access token not found.")
+            raise OpenBBError("Platform personal access token not found.")
 
         self.check_token_expiration(token)
 
@@ -216,7 +216,7 @@ class HubService:
 
     @classmethod
     def hub2sdk(cls, settings: HubUserSettings) -> Credentials:
-        """Convert Hub user settings to SDK models."""
+        """Convert Hub user settings to Platform models."""
         credentials = Credentials(
             alpha_vantage_api_key=settings.features_keys.API_KEY_ALPHAVANTAGE,
             fred_api_key=settings.features_keys.API_FRED_KEY,
@@ -229,7 +229,7 @@ class HubService:
 
     @classmethod
     def sdk2hub(cls, credentials: Credentials) -> HubUserSettings:
-        """Convert SDK models to Hub user settings."""
+        """Convert Platform models to Hub user settings."""
 
         def get_cred(cred: str) -> Optional[str]:
             return getattr(credentials, cred, None)
@@ -257,6 +257,6 @@ class HubService:
                 options={"verify_signature": False, "verify_exp": True},
             )
         except ExpiredSignatureError as e:
-            raise OpenBBError("SDK personal access token expired.") from e
+            raise OpenBBError("Platform personal access token expired.") from e
         except JWTError as e:
-            raise OpenBBError("Failed to decode SDK token.") from e
+            raise OpenBBError("Failed to decode Platform token.") from e

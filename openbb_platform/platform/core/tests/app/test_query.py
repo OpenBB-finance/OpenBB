@@ -83,7 +83,9 @@ def test_filter_extra_params_wrong_param(query):
 
     extra_params = StockHistorical()
 
-    assert not query.filter_extra_params(extra_params, "fmp")
+    extra = query.filter_extra_params(extra_params, "fmp")
+    assert isinstance(extra, dict)
+    assert len(extra) == 1
 
 
 @pytest.fixture

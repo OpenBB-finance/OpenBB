@@ -2,7 +2,17 @@
 import importlib.util
 import inspect
 import os
-from typing import Any, Callable, Dict, List, Literal, Tuple, Union, get_type_hints
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Union,
+    get_type_hints,
+)
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
@@ -13,7 +23,9 @@ from extensions.tests.utils.integration_tests_generator import (
 )
 
 
-def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
+def get_integration_tests(
+    test_type: Literal["api", "python"], filter_charting_ext: Optional[bool] = True
+) -> List[Any]:
     """Get integration tests for the OpenBB Platform."""
     integration_tests: List[Any] = []
 
@@ -22,7 +34,7 @@ def get_integration_tests(test_type: Literal["api", "python"]) -> List[Any]:
     elif test_type == "api":
         file_end = "_api.py"
 
-    for extension in find_extensions():
+    for extension in find_extensions(filter_charting_ext):
         integration_folder = os.path.join(extension, "integration")
         for file in os.listdir(integration_folder):
             if file.endswith(file_end):
@@ -91,8 +103,8 @@ def check_missing_params(
     """Check if there are any missing params for a command."""
     missing_params = []
     if not processing:
-        for test_params in function_params:
-            if "provider" in test_params:
+        for i, test_params in enumerate(function_params):
+            if "provider" in test_params and i != 0:
                 provider = test_params["provider"]
                 if provider in command_params:
                     for expected_param in command_params[provider]["QueryParams"][

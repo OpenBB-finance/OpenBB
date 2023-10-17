@@ -17,6 +17,8 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import (
     Field,
     PositiveInt,
+    PrivateAttr,
+    model_validator,
 )
 
 
@@ -26,12 +28,9 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
+    interval: str = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
-    timespan: Literal[
-        "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="Timespan of the data.")
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )
@@ -42,6 +41,29 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
         default=True,
         description="Output time series is adjusted by historical split and dividend events.",
     )
+    _multiplier: PositiveInt = PrivateAttr(default=None)
+    _timespan: str = PrivateAttr(default=None)
+
+    @model_validator(mode="after")
+    @classmethod
+    def get_api_interval_params(cls, values: "PolygonStockHistoricalQueryParams"):
+        """Get the multiplier and timespan parameters for the Polygon API."""
+
+        intervals = {
+            "s": "second",
+            "m": "minute",
+            "h": "hour",
+            "d": "day",
+            "W": "week",
+            "M": "month",
+            "Q": "quarter",
+            "Y": "year",
+        }
+
+        values._multiplier = int(values.interval[:-1])
+        values._timespan = intervals[values.interval[-1]]
+
+        return values
 
 
 class PolygonStockHistoricalData(StockHistoricalData):
@@ -87,7 +109,7 @@ class PolygonStockHistoricalFetcher(
         query: PolygonStockHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         data: List = []
@@ -98,11 +120,12 @@ class PolygonStockHistoricalFetcher(
             results: List = []
 
             url = (
-                f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{query.multiplier}/{query.timespan}/"
+                "https://api.polygon.io/v2/aggs/ticker/"
+                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
+
             response = get_data(url, **kwargs)
 
             next_url = response.get("next_url", None)
@@ -116,7 +139,7 @@ class PolygonStockHistoricalFetcher(
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
-                if query.timespan not in ["minute", "hour"]:
+                if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
                 if "," in query.symbol:
                     r["symbol"] = symbol
@@ -129,7 +152,5 @@ class PolygonStockHistoricalFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[dict]) -> List[PolygonStockHistoricalData]:
-        transformed_data = [PolygonStockHistoricalData.model_validate(d) for d in data]
-        transformed_data.sort(key=lambda x: x.date)
-        return transformed_data
+    def transform_data(data: List[Dict]) -> List[PolygonStockHistoricalData]:
+        return [PolygonStockHistoricalData.model_validate(d) for d in data]

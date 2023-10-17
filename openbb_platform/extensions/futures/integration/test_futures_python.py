@@ -27,13 +27,13 @@ def obb(pytestconfig):
         (
             {
                 "interval": "1d",
-                "period": "1d",
+                "period": "max",
                 "prepost": True,
                 "adjust": True,
                 "back_adjust": True,
                 "provider": "yfinance",
                 "symbol": "ES",
-                "start_date": "2023-01-01",
+                "start_date": "2023-05-05",
                 "end_date": "2023-06-06",
                 "expiration": "2024-06",
             }
@@ -51,9 +51,9 @@ def test_futures_load(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "date": "2023-01-01"}),
-        ({"provider": "cboe", "symbol": "AAPL", "date": "2023-01-01"}),
-        ({"provider": "yfinance", "symbol": "AAPL", "date": "2023-01-01"}),
+        ({"symbol": "VX", "date": "2023-01-25"}),
+        ({"provider": "cboe", "symbol": "VXM", "date": "2023-01-25"}),
+        ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
 @pytest.mark.integration

@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Set, Union
 
-from pydantic import Field, field_validator, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -20,7 +20,7 @@ class AnalystEstimatesQueryParams(QueryParams):
     )
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

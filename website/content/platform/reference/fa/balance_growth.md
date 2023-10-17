@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # balance_growth
 
-Balance Sheet Statement Growth.
+Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
 ```python wordwrap
 balance_growth(symbol: Union[str, List[str]], limit: int = 10, provider: Literal[str] = fmp)

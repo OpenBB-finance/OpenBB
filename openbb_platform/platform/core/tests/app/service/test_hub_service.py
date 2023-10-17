@@ -41,7 +41,7 @@ def test_connect_with_email_password():
 
 
 def test_connect_with_sdk_token():
-    """Test connect with SDK personal access token."""
+    """Test connect with Platform personal access token."""
     mock_hub_session = MagicMock(spec=HubSession)
     with patch(
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
@@ -86,7 +86,7 @@ def test_get_session_from_email_password():
 
 
 def test_get_session_from_sdk_token():
-    """Test get session from SDK personal access token."""
+    """Test get session from Platform personal access token."""
 
     with patch(
         "openbb_core.app.service.hub_service.post",

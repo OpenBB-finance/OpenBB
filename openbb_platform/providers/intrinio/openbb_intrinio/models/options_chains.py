@@ -1,19 +1,22 @@
 """Intrinio Options Chains fetcher."""
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import (
+    date as dateType,
     datetime,
     timedelta,
 )
+from itertools import repeat
 from typing import Any, Dict, List, Optional
 
-from openbb_intrinio.utils.helpers import get_data_many
-from openbb_intrinio.utils.references import TICKER_EXCEPTIONS
+from dateutil import parser
+from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -22,7 +25,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
-    date: Optional[str] = Field(
+    date: Optional[dateType] = Field(
         description="Date for which the options chains are returned."
     )
 
@@ -30,20 +33,20 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
 class IntrinioOptionsChainsData(OptionsChainsData):
     """Intrinio Options Chains Data."""
 
-    __alias_dict__ = {"contract_symbol": "code", "symbol": "ticker"}
+    __alias_dict__ = {
+        "contract_symbol": "code",
+        "symbol": "ticker",
+        "eod_date": "date",
+        "option_type": "type",
+    }
 
-    @validator("expiration", "date", pre=True, check_fields=False)
+    @field_validator("expiration", "date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-        return datetime.strptime(v, "%Y-%m-%d")
-
-
-def get_weekday(date: str) -> str:
-    """Return the weekday date."""
-    strptime = datetime.strptime(date, "%Y-%m-%d")
-    if strptime.weekday() in [5, 6]:
-        date = (strptime - timedelta(days=strptime.weekday() - 4)).strftime("%Y-%m-%d")
-    return date
+        """Return the datetime object from the date string."""
+        # only pass it to the parser if it is not a datetime object
+        if isinstance(v, str):
+            return parser.parse(v)
 
 
 class IntrinioOptionsChainsFetcher(
@@ -59,6 +62,10 @@ class IntrinioOptionsChainsFetcher(
         now = datetime.now().date()
         if params.get("date") is None:
             transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        elif isinstance(params["date"], dateType):
+            transform_params["date"] = params["date"].strftime("%Y-%m-%d")
+        else:
+            transform_params["date"] = parser.parse(params["date"]).date()
 
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
@@ -70,36 +77,38 @@ class IntrinioOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+
+        data: List = []
         base_url = "https://api-v2.intrinio.com/options"
 
-        if query.symbol in TICKER_EXCEPTIONS:
-            query.symbol = f"${query.symbol}"
+        def get_options_chains(
+            expiration: str, data: List[IntrinioOptionsChainsData]
+        ) -> None:
+            """Return the data for the given expiration."""
+            url = (
+                f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
+                f"date={query.date}&api_key={api_key}"
+            )
+            response = get_data_many(url, "chain", **kwargs)
+            data.extend(response)
 
-        def get_expirations(date: str) -> List[str]:
-            """Return the expirations for the given date."""
+        def get_data(date: str) -> None:
+            """Fetch data for a given date using ThreadPoolExecutor."""
             url = (
                 f"{base_url}/expirations/{query.symbol}/eod?"
                 f"after={date}&api_key={api_key}"
             )
-            return get_data_many(url, "expirations", **kwargs)
+            expirations = get_data_many(url, "expirations", **kwargs)
 
-        def get_data(expirations: List[str]) -> List[Dict]:
-            """Return the data for the given expiration."""
-            data = []
-            for expiration in expirations:
-                url = (
-                    f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
-                    f"date={query.date}&api_key={api_key}"
-                )
-                response = get_data_many(url, "chain", **kwargs)
-                data.extend(response)
+            with ThreadPoolExecutor() as executor:
+                executor.map(get_options_chains, expirations, repeat(data))
 
-            return data
+        date = get_weekday(query.date)
+        get_data(date)
 
-        if len(data := get_data(get_expirations(get_weekday(query.date)))) == 0:
-            data = get_data(
-                get_expirations(get_weekday(query.date - timedelta(days=1)))
-            )
+        if not data:
+            date = get_weekday(query.date - timedelta(days=1))
+            get_data(date)
 
         return data
 

@@ -7,7 +7,6 @@ from openbb_core.app.model.obbject import OBBject
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -36,11 +35,11 @@ def obb(pytestconfig):
         ),
         (
             {
-                "interval": "1day",
+                "interval": "15min",
                 "provider": "fmp",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-03",
                 "timeseries": 1,
             }
         ),
@@ -65,16 +64,6 @@ def obb(pytestconfig):
                 "limit": 49999,
                 "adjusted": True,
                 "provider": "polygon",
-                "symbol": "BTCUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-            }
-        ),
-        (
-            {
-                "interval": "5m",
-                "period": "max",
-                "provider": "yfinance",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",

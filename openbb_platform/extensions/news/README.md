@@ -1,6 +1,6 @@
 # OpenBB News Extension
 
-This extension provides news for the OpenBB SDK.
+This extension provides news for the OpenBB Platform.
 
 ## Installation
 

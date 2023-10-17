@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
@@ -13,14 +13,13 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAP0rE2UAA2ySzU7rMBCFX8XyOkSO25AmO7pBSCwQAl1+LopMPE2HunaInUIv4t3vWG1FG7E9
-        5zsznhl/8TV4r1rwvHrma9WvINQN2AB9wgz6gLatN2AHSJhXBnzdOKsxoLM+Ycpq9j64AEcqUz0w
-        Z82WqY1Co14NsA8MS+aGnmkwaguaeezYAkCn/CXhRvlQdz02wKuskGkm91rANUlcCjk5E+WZPL/L
-        ykoUlZRpMZs88T3m8V9MCpHwV9QnlXbKDsgjoPxq3CpKO2ISCdeB/UHydJonvDHOwzi3xHZ5As7o
-        Pe7jGBOUhc9mqWwL9caZIc5Tnk+zWZkcln2Q7WBMwodOqwC6dva3wSdFKvNZHNzTNmMXjvAZ93B8
-        qUOt8b2I/jsIkRWMMcqMD3eInXwC8nVsc0UB9LUmr3PO8GqhjAfqAc3QY9jy6oujJpCEWrVvfftG
-        iYDNCnpSLy5urvnRLk6M6v4PeQtskYT5/FIIMS8f8wdJauPWnfNIDx35D7ePU/79/R8AAP//AwA8
-        qxWPwAIAAA==
+        H4sIADYrLWUAA3xRTU/CQBD9K5s5F7ItFLQ3OGhMPBij8TvN2h3KwLJbu1sQjf/daQQDNfE4782b
+        eTPvE1bovSrRQ/YEK1UvMeQF2oB1JAz5QLbM12gbjIRXBn1eOKspkLM+Espq8da4gAeoUDUKZ81W
+        qLUio14Nig2FuXBNLTQatUUtPFVihqj78BKBUT7kVU0FQhaPx/3ByQ4LtGIIEpkMerHsxaObOMni
+        NBum/dM0fYRdm6ePVikjeCW9HyT7u/qH5UL55RHZ1r+kq9AeekhGERTGeewam1M5/2PWbbpafC/m
+        ypaYr51p2ivGvGT33j1kG2MiaCqtAurc2f9P9fy/dgMQvreXH2azn9VNiLufGyljPBOCNd2o9rKj
+        2JnX7ZoLFpDPNXOVcwaymTIeeQcWTU1hC9knkOZGBnJVLupywYpAxRJrRieTq0s4+MMRkd3eMTej
+        khiYTs+llNPTh/Q+YbRwq8p5YqMd/v76YQhfX98AAAD//wMAZWV9XLICAAA=
     headers:
       Connection:
       - keep-alive
@@ -29,7 +28,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 19:07:41 GMT
+      - Mon, 16 Oct 2023 12:23:18 GMT
       Transfer-Encoding:
       - chunked
       Vary:

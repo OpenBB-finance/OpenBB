@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # earning
 
-Earnings Calendar.
+Earnings Calendar. Earnings calendar for a given company.
 
 ```python wordwrap
 earning(symbol: Union[str, List[str]], limit: int = 50, provider: Literal[str] = fmp)
@@ -63,11 +63,11 @@ OBBject
 | ---- | ---- | ----------- |
 | symbol | str | Symbol to get data for. |
 | date | date | The date of the data. |
-| eps | NonNegativeFloat | EPS of the earnings calendar. |
-| eps_estimated | NonNegativeFloat | Estimated EPS of the earnings calendar. |
+| eps | float | EPS of the earnings calendar. |
+| eps_estimated | float | Estimated EPS of the earnings calendar. |
 | time | str | Time of the earnings calendar. |
-| revenue | int | Revenue of the earnings calendar. |
-| revenue_estimated | int | Estimated revenue of the earnings calendar. |
+| revenue | float | Revenue of the earnings calendar. |
+| revenue_estimated | float | Estimated revenue of the earnings calendar. |
 | updated_from_date | date | Updated from date of the earnings calendar. |
 | fiscal_date_ending | date | Fiscal date ending of the earnings calendar. |
 </TabItem>
