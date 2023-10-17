@@ -1,14 +1,14 @@
 ---
 title: Basics
 sidebar_position: 1
-description: The OpenBB Platform is a modern investment research platform for everyone.  At its base, the Platform supplies core architecture and services for connecting data providers and extensions.  It is consumable as a Python client and Fast API.
+description: At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions.  It is consumable as a Python client and Fast API.
 keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client]
 ---
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Basics - Platform | OpenBB Docs" />
 
-The OpenBB Platform is a modern investment research platform for everyone.  At its base, the Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
 - Charting libraries and views
 - Data cleaning
