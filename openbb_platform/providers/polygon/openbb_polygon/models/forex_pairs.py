@@ -162,7 +162,9 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonForexPairsQueryParams,
         data: List[dict],
+        **kwargs: Any,
     ) -> List[PolygonForexPairsData]:
         """Transform the data into a list of PolygonForexPairsData."""
         return [PolygonForexPairsData.model_validate(d) for d in data]

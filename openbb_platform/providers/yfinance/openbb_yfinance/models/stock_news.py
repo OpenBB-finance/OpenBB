@@ -70,6 +70,8 @@ class YFinanceStockNewsFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceStockNewsQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceStockNewsData]:
         return [YFinanceStockNewsData.model_validate(d) for d in data]

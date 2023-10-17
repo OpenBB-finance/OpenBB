@@ -107,6 +107,8 @@ class PolygonStockNewsFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonStockNewsQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[PolygonStockNewsData]:
         return [PolygonStockNewsData.model_validate(d) for d in data]

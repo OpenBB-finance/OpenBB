@@ -175,7 +175,9 @@ class PolygonIncomeStatementFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonIncomeStatementQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[PolygonIncomeStatementData]:
         transformed_data = []
 
