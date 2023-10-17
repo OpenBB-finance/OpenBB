@@ -59,10 +59,9 @@ class FMPStockInsiderTradingFetcher(
             url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
             data.extend(get_data_many(url, **kwargs))
 
-        return data
+        return sorted(data, key=lambda x: x["filingDate"], reverse=True)
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
-        data = [FMPStockInsiderTradingData.model_validate(d) for d in data]
-        return sorted(data, key=lambda x: x.filing_date, reverse=True)
+        return [FMPStockInsiderTradingData.model_validate(d) for d in data]
