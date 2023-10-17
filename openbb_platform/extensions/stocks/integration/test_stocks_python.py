@@ -693,9 +693,9 @@ def test_stocks_options_chains(params, obb):
                 "end_time": time(12, 0, 0),
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
             }
         ),
         (
@@ -719,7 +719,7 @@ def test_stocks_options_chains(params, obb):
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
@@ -744,9 +744,9 @@ def test_stocks_options_chains(params, obb):
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
             }
         ),
         (
@@ -767,6 +767,9 @@ def test_stocks_options_chains(params, obb):
 )
 @pytest.mark.integration
 def test_stocks_load(params, obb):
+    if params.get("provider") == "alpha_vantage":
+        pytest.skip("skipping alpha_vantage")
+
     result = obb.stocks.load(**params)
     assert result
     assert isinstance(result, OBBject)

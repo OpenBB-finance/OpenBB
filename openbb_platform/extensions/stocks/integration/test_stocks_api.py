@@ -784,9 +784,9 @@ def test_stocks_options_chains(params, headers):
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
             }
         ),
         (
@@ -807,6 +807,8 @@ def test_stocks_options_chains(params, headers):
 )
 @pytest.mark.integration
 def test_stocks_load(params, headers):
+    if params.get("provider") == "alpha_vantage":
+        pytest.skip("Alpha Vantage is premium.")
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
