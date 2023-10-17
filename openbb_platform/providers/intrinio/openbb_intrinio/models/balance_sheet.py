@@ -33,9 +33,9 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
 
     __alias_dict__ = {
-        "cash_and_cash_equivalents": "cash_and_equivalents",
-        "marketable_securities": "short_term_investments",
-        "net_receivables": "note_and_lease_receivable",
+        "cash_and_cash_equivalents_at_carrying_value": "cash_and_equivalents",
+        "marketable_securities_current": "short_term_investments",
+        "accounts_receivable_net_current": "note_and_lease_receivable",
         "inventory": "inventory_net",
         "total_non_current_assets": "total_noncurrent_assets",
         "tax_payables": "other_taxes_payables",
