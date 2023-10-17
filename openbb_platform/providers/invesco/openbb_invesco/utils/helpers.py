@@ -2,11 +2,10 @@
 
 from datetime import timedelta
 from io import StringIO
-from typing import List, Literal
+from typing import Literal
 
 import numpy as np
 import pandas as pd
-import requests
 import requests_cache
 from openbb_provider.utils.helpers import make_request
 
