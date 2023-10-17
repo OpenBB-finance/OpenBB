@@ -152,5 +152,9 @@ class PolygonStockHistoricalFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[PolygonStockHistoricalData]:
+    def transform_data(
+        query: PolygonStockHistoricalQueryParams,
+        data: List[dict],
+        **kwargs: Any,
+    ) -> List[PolygonStockHistoricalData]:
         return [PolygonStockHistoricalData.model_validate(d) for d in data]

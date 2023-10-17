@@ -71,7 +71,9 @@ class FMPGlobalNewsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPGlobalNewsData]:
+    def transform_data(
+        query: FMPGlobalNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPGlobalNewsData]:
         """Return the transformed data."""
         for d in data:
             if isinstance(d["image"], str):

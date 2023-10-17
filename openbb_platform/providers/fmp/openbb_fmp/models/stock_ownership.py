@@ -68,7 +68,9 @@ class FMPStockOwnershipFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockOwnershipData]:
+    def transform_data(
+        query: FMPStockOwnershipQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPStockOwnershipData]:
         """Return the transformed data."""
         own = [FMPStockOwnershipData.model_validate(d) for d in data]
         own.sort(key=lambda x: x.filing_date, reverse=True)

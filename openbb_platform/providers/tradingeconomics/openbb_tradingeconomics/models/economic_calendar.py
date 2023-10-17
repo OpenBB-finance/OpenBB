@@ -101,6 +101,8 @@ class TEEarningsCalendarFetcher(
         return response.json()
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TEEarningsCalendarData]:
+    def transform_data(
+        query: TEEarningsCalendarQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[TEEarningsCalendarData]:
         """Return the transformed data."""
         return [TEEarningsCalendarData.model_validate(d) for d in data]
