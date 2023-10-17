@@ -3,6 +3,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_provider.utils.helpers import get_querystring
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_insider_trading import (
@@ -49,11 +50,20 @@ class FMPStockInsiderTradingFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(4, "insider-trading", api_key, query)
+        base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
 
-        return get_data_many(url, **kwargs)
+        data: List[Dict] = []
+
+        for page in range(4):
+            url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
+            data.extend(get_data_many(url, **kwargs))
+
+        return data
+
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
-        return [FMPStockInsiderTradingData.model_validate(d) for d in data]
+        data = [FMPStockInsiderTradingData.model_validate(d) for d in data]
+        return sorted(data, key=lambda x: x.filing_date, reverse=True)
