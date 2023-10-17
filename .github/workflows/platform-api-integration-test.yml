@@ -55,9 +55,9 @@ jobs:
             ./openbb_platform/providers/alpha_vantage \
             ./openbb_platform/providers/cboe \
             ./openbb_platform/providers/quandl \
-            ./openbb_platform/providers/fmp \
             ./openbb_platform/providers/yfinance \
-            ./openbb_platform/providers/intrinio \
+            ./openbb_platform/providers/oecd \
+            ./openbb_platform/extensions/charting \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
             ./openbb_platform/extensions/ta \
@@ -88,7 +88,9 @@ jobs:
               "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
               "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
-              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
+              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
+              "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
+              "fred_api_key": "${{ secrets.FRED_KEY }}",
             }
           }' > ~/.openbb_platform/user_settings.json
 
