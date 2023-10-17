@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/terminal/conda/conda-3-9-env.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
@@ -44,7 +44,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/terminal/conda/conda-3-9-env.yaml
           activate-environment: obb
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
@@ -54,14 +54,14 @@ jobs:
         run: |
           conda info
           pip list
-          build/conda/cleanup_artifacts.sh
+          build/terminal/conda/cleanup_artifacts.sh
           poetry install -E all -E installer
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
           pip list
 
       - name: Build Bundle
-        run: build/pyinstaller/build4mac.sh
+        run: build/terminal/pyinstaller/build4mac.sh
         shell: bash -l {0}
 
       - name: Creating Application Keychain
@@ -96,8 +96,8 @@ jobs:
           APPLE_SIGNING_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
         run: |
           security unlock-keychain -p $MACOS_INSTALLER_KEYCHAIN_PWD install.keychain
-          build/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
-          mv build/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
+          build/terminal/pyinstaller/macOS/build-macos.sh OpenBBTerminal 0.0.1
+          mv build/terminal/pyinstaller/macOS/target/pkg/OpenBBTerminalM1.pkg OpenBBTerminal.pkg
         shell: bash -l {0}
 
       - name: Deleting Previous Keychain
@@ -187,7 +187,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/terminal/conda/conda-3-9-env.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2.2.0
@@ -197,7 +197,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/terminal/conda/conda-3-9-env.yaml
           activate-environment: obb
           auto-activate-base: false
           use-only-tar-bz2: true # Needed for caching some reason
@@ -207,14 +207,14 @@ jobs:
         run: |
           conda info
           pip list
-          build/conda/cleanup_artifacts.sh
+          build/terminal/conda/cleanup_artifacts.sh
           poetry install -E all -E installer
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
           pip list
 
       - name: Build Bundle
-        run: build/pyinstaller/build4mac.sh
+        run: build/terminal/pyinstaller/build4mac.sh
         shell: bash -l {0}
 
       - name: Creating Application Keychain

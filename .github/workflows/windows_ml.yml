@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-windows-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-windows-3-9-${{ hashFiles('build/terminal/conda/conda-3-9-env.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -52,7 +52,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/terminal/conda/conda-3-9-env.yaml
           activate-environment: obb
           # Needed for caching
           use-only-tar-bz2: true
@@ -86,7 +86,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda info
-          build\conda\cleanup_artifacts.bat
+          build\terminal\conda\cleanup_artifacts.bat
           pip install docstring_parser
           poetry install -E all -E installer
 
@@ -98,7 +98,7 @@ jobs:
 
       - name: Run tests (Bash)
         env:
-            MPLBACKEND: Agg
+          MPLBACKEND: Agg
         shell: bash -l {0}
         run: pytest tests/ -m "not linux"
 

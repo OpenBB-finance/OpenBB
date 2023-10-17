@@ -30,7 +30,7 @@ jobs:
       - name: Set up Python & Create OpenBB Environment
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Create and start virtual environment
         run: |
@@ -40,7 +40,7 @@ jobs:
           python -m pip install -r requirements-full.txt --no-cache-dir
           python -m pip uninstall papermill -y
           python -m pip install git+https://github.com/nteract/papermill.git@main
-          python -m PyInstaller build/pyinstaller/terminal.spec --clean
+          python -m PyInstaller build/terminal/pyinstaller/terminal.spec --clean
           pwd
         shell: bash
 
@@ -55,7 +55,6 @@ jobs:
         with:
           name: OpenBB-Windows10-ENV
           path: release.zip
-
 
   Build-Exe:
     name: Windows10 Build-Exe
@@ -88,7 +87,7 @@ jobs:
       #   run: Remove-Item .\build\nsis\app\openbb_terminal\logs\ -Recurse
       - name: Build Exe File
         run: |
-          C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\nsis\setup.nsi
+          C:\'.\Program Files (x86)\'\nsis\makensis.exe .\build\terminal\nsis\setup.nsi
 
       # This should autosign the installer now - We really need to only do this when needed though. ON RELEASE
       - name: Sign Installer

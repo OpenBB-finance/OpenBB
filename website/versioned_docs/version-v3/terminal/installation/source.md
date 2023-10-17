@@ -217,7 +217,7 @@ cd OpenBBTerminal
 Create the environment by copying the code below into the command line and agreeing to the prompts.
 
 ```shell
-conda env create -n obb --file build/conda/conda-3-9-env.yaml
+conda env create -n obb --file build/terminal/conda/conda-3-9-env.yaml
 ```
 
 :::note
@@ -236,13 +236,13 @@ When the new environment is activated for the first time, it is required to clea
 On macOS and Linux do this by running this script (copy and paste the launch code):
 
 ```shell
-build/conda/cleanup_artifacts.sh
+build/terminal/conda/cleanup_artifacts.sh
 ```
 
 On Windows do this by running this script (copy and paste the launch code):
 
 ```shell
-build\conda\cleanup_artifacts.bat
+build\terminal\conda\cleanup_artifacts.bat
 ```
 
 :::

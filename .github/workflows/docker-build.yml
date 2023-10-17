@@ -32,8 +32,8 @@ jobs:
 
       - name: Building the Docker image
         run: |
-          source build/docker/compose.env
-          source build/docker/build.sh
+          source build/terminal/docker/compose.env
+          source build/terminal/docker/build.sh
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE_LATEST=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE_LATEST" >> $GITHUB_ENV
 

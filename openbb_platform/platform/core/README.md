@@ -26,8 +26,8 @@
     - [5.1 HTTPS](#51-https)
     - [5.2 Docker](#52-docker)
     - [5.3 Authentication](#53-authentication)
-        - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
-        - [5.3.2 Custom authentication](#532-custom-authentication)
+      - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
+      - [5.3.2 Custom authentication](#532-custom-authentication)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -454,7 +454,7 @@ We provide a `.dockerfile`` in OpenBB [repo](https://github.com/OpenBB-finance/O
 To build the image, you can run the following command from the repo root:
 
 ```bash
-docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
+docker build -f build/terminal/docker/api.dockerfile -t openbb-platform:latest .
 ```
 
 To run this newly-built image:

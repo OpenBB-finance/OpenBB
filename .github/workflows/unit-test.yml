@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Show output of previous step
-        run:  echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
+        run: echo "check-changes=${{ steps.check-changes.outputs.check-changes }}"
 
   base-test:
     name: Base Tests - Ubuntu-latest - Python 3.9
@@ -290,7 +290,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/terminal/conda/conda-3-9-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -301,7 +301,7 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/terminal/conda/conda-3-9-env.yaml
           activate-environment: testing
           # Needed for caching
           use-only-tar-bz2: true

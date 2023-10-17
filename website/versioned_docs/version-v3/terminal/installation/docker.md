@@ -84,7 +84,7 @@ Once downloaded you will open the program and accept all the defaults expect the
 Execute these commands:
 
 ```console
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/terminal/docker/docker-compose.yaml
 
 docker compose run openbb
 ```
@@ -161,7 +161,7 @@ IP=$(ifconfig | grep inet | grep -v "127.0.0.1" | awk '$1=="inet" {print $2}')
 Execute these commands:
 
 ```console
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/terminal/docker/docker-compose.yaml
 
 xhost +$IP
 docker compose run -e DISPLAY=$IP:0 openbb
@@ -216,8 +216,8 @@ Server:
 Execute these commands:
 
 ```console
-curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.yaml
-curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/docker-compose.x11.yaml
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/terminal/docker/docker-compose.yaml
+curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/build/docker/terminal/docker-compose.x11.yaml
 
 docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run openbb
 ```

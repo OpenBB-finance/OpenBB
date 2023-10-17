@@ -40,7 +40,7 @@ openbb_terminal/reports/templates/*.html
 website/functions
 *_sdk_audit.csv
 website/terminaltest
-!build/docker/compose.env
+!build/terminal/docker/compose.env
 openbb_terminal/core/plots/assets/plotly*.js
 .dccache
 *rome.json
