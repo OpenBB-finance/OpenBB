@@ -2,9 +2,9 @@
 
 
 from datetime import date, datetime, time
-from dateutil import parser
 from typing import List, Literal, Optional, Set, Union
 
+from dateutil import parser
 from pydantic import Field, field_validator, model_validator
 
 from openbb_provider.abstract.data import Data, StrictInt

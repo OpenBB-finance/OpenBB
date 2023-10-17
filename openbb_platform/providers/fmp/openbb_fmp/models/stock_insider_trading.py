@@ -3,13 +3,13 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_insider_trading import (
     StockInsiderTradingData,
     StockInsiderTradingQueryParams,
 )
+from openbb_provider.utils.helpers import get_querystring
 
 
 class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
@@ -60,7 +60,6 @@ class FMPStockInsiderTradingFetcher(
             data.extend(get_data_many(url, **kwargs))
 
         return data
-
 
     @staticmethod
     def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
