@@ -37,7 +37,7 @@ class StockInsiderTradingQueryParams(QueryParams):
     """Stock Insider Trading Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    transactionType: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
+    transaction_type: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
         default=["P-Purchase"], description="Type of the transaction."
     )
 
@@ -45,8 +45,8 @@ class StockInsiderTradingQueryParams(QueryParams):
     @classmethod
     def validate_transaction_type(cls, values: "StockInsiderTradingQueryParams"):
         """Validate the transaction type."""
-        if isinstance(values.transactionType, list):
-            values.transactionType = ",".join(values.transactionType)
+        if isinstance(values.transaction_type, list):
+            values.transaction_type = ",".join(values.transaction_type)
         return values
 
     @field_validator("symbol", mode="before", check_fields=False)
