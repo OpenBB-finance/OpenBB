@@ -85,8 +85,7 @@ class IntrinioBalanceSheetFetcher(
             data.append(get_data_one(url, **kwargs))
 
         elif query.period == "quarter":
-            # TODO: Fix quarter range after Intrinio's response
-            for quarter in range(1, 4):
+            for quarter in range(1, 5):
                 url = f"{base_url}/fundamentals/{url_params}-Q{quarter}/{statement_param}?api_key={api_key}"
                 data.append(get_data_one(url, **kwargs))
 
