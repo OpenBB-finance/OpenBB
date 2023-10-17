@@ -13,7 +13,7 @@ from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.helpers import to_snake_case
 from openbb_quandl.utils.series_ids import CFTC
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class QuandlCotQueryParams(QueryParams):
@@ -99,7 +99,7 @@ class QuandlCotData(Data):
         Columns in the response object will change according to the parameters and underlying asset.
     """
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
 

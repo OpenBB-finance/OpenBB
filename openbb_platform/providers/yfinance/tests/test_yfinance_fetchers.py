@@ -75,6 +75,7 @@ def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
+        "interval": "1d",
     }
 
     fetcher = YFinanceStockHistoricalFetcher()

@@ -657,158 +657,158 @@ def test_stocks_options_chains(params, headers):
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
                 "provider": "yfinance",
             }
         ),
         (
             {
-                "period": "intraday",
-                "interval": "60min",
                 "adjusted": True,
                 "extended_hours": True,
-                "month": "2023-03",
-                "outputsize": "full",
+                "month": "2023-01",
+                "output_size": "full",
+                "provider": "alpha_vantage",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
+                "interval": "1m",
+            }
+        ),
+        (
+            {
+                "adjusted": True,
+                "extended_hours": False,
+                "output_size": "full",
+                "month": "2023-01",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "function_": "TIME_SERIES_INTRADAY",
+                "interval": "1d",
             }
         ),
         (
             {
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
                 "interval": "1m",
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
             }
         ),
         (
             {
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
                 "interval": "1d",
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
             }
         ),
         (
             {
-                "interval": "1min",
+                "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
-                "timeseries": 1,
+                "interval": "1m",
             }
         ),
         (
             {
-                "interval": "1day",
+                "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "timeseries": 1,
+                "interval": "1d",
             }
         ),
         (
             {
                 "timezone": "UTC",
                 "source": "realtime",
-                "interval_size": "30m",
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-10-10",
-                "end_date": "2023-10-12",
                 "start_time": time(5, 30, 0),
                 "end_time": time(12, 0, 0),
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-02",
+                "interval": "1m",
             }
         ),
         (
             {
                 "timezone": "UTC",
                 "source": "realtime",
-                "interval_size": "60m",
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-10-10",
-                "end_date": "2023-10-12",
                 "start_time": time(5, 30, 0),
                 "end_time": time(12, 0, 0),
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
             }
         ),
         (
             {
-                "multiplier": 1,
-                "timespan": "minute",
                 "sort": "desc",
-                "limit": 49999,
-                "adjusted": True,
+                "limit": "49999",
+                "adjusted": "True",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-04",
+                "end_date": "2023-01-02",
+                "interval": "1m",
             }
         ),
         (
             {
-                "multiplier": 1,
-                "timespan": "day",
                 "sort": "desc",
-                "limit": 49999,
-                "adjusted": True,
+                "limit": "49999",
+                "adjusted": "True",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
             }
         ),
         (
             {
-                "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "actions": True,
-                "auto_adjust": True,
-                "back_adjust": True,
-                "progress": True,
+                "prepost": False,
+                "include": True,
+                "adjusted": False,
+                "back_adjust": False,
                 "ignore_tz": True,
-                "rounding": True,
-                "repair": True,
-                "keepna": True,
-                "group_by": "column",
                 "provider": "yfinance",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-08",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
             }
         ),
         (
             {
-                "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "actions": True,
-                "auto_adjust": True,
-                "back_adjust": True,
-                "progress": True,
+                "prepost": False,
+                "include": True,
+                "adjusted": False,
+                "back_adjust": False,
                 "ignore_tz": True,
-                "rounding": True,
-                "repair": True,
-                "keepna": True,
-                "group_by": "column",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
             }
         ),
     ],
 )
 @pytest.mark.integration
 def test_stocks_load(params, headers):
+    if params.get("provider") == "alpha_vantage":
+        pytest.skip("Alpha Vantage is premium.")
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

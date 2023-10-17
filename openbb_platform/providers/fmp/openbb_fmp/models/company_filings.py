@@ -10,7 +10,7 @@ from openbb_provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
@@ -37,7 +37,7 @@ class FMPCompanyFilingsData(CompanyFilingsData):
     accepted_date: datetime = Field(description="Accepted date of the SEC filing.")
     final_link: str = Field(description="Final link of the SEC filing.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

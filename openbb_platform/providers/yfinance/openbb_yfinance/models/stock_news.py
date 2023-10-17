@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 
@@ -34,15 +34,15 @@ class YFinanceStockNewsData(StockNewsData):
     )
     relatedTickers: str = Field(description="Tickers related to the news article.")
 
-    @validator("providerPublishTime", pre=True, check_fields=False)
+    @field_validator("providerPublishTime", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         return datetime.fromtimestamp(v)
 
-    @validator("relatedTickers", pre=True, check_fields=False)
+    @field_validator("relatedTickers", mode="before", check_fields=False)
     def related_tickers_string(cls, v):  # pylint: disable=E0213
         return ", ".join(v)
 
-    @validator("thumbnail", pre=True, check_fields=False)
+    @field_validator("thumbnail", mode="before", check_fields=False)
     def thumbnail_list(cls, v):  # pylint: disable=E0213
         return v["resolutions"]
 
