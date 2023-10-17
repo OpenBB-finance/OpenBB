@@ -156,5 +156,5 @@ class PolygonStockHistoricalFetcher(
         query: PolygonStockHistoricalQueryParams,
         data: List[dict],
         **kwargs: Any,
-        ) -> List[PolygonStockHistoricalData]:
+    ) -> List[PolygonStockHistoricalData]:
         return [PolygonStockHistoricalData.model_validate(d) for d in data]
