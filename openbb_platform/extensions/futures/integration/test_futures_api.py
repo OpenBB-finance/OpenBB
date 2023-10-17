@@ -24,12 +24,13 @@ def headers():
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "expiration": "2024-06",
+                "provider": "yfinance",
             }
         ),
         (
             {
                 "interval": "1d",
-                "period": "1d",
+                "period": "max",
                 "prepost": True,
                 "adjust": True,
                 "back_adjust": True,
@@ -56,9 +57,8 @@ def test_futures_load(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "date": "2023-01-01"}),
-        ({"provider": "cboe", "symbol": "AAPL", "date": "2023-01-01"}),
-        ({"provider": "yfinance", "symbol": "AAPL", "date": "2023-01-01"}),
+        ({"provider": "cboe", "symbol": "VXM", "date": "2023-01-25"}),
+        ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
 @pytest.mark.integration

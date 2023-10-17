@@ -16,6 +16,7 @@ from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
     StockHistoricalQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
 
@@ -26,9 +27,9 @@ class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://www.cboe.com/
     """
 
-    interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Data granularity.",
+    interval: Optional[Literal["1m", "1d"]] = Field(
         default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
 
 

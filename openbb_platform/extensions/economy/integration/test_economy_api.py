@@ -38,14 +38,25 @@ def test_economy_const(params, headers):
     [
         (
             {
-                "countries": ["portugal", "spain"],
+                "countries": "spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
-        )
+        ),
+        (
+            {
+                "countries": ["portugal", "spain"],
+                "units": "growth_same",
+                "frequency": "monthly",
+                "harmonized": True,
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fred",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -62,7 +73,14 @@ def test_economy_cpi(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "DJI", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
         (
             {
                 "interval": "1m",
@@ -123,18 +141,6 @@ def test_economy_cpi(params, headers):
                 "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1m",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
-                "provider": "yfinance",
-                "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -217,7 +223,6 @@ def test_economy_european_index_constituents(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         ({"europe": True, "provider": "cboe"}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
@@ -236,7 +241,7 @@ def test_economy_available_indices(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({})],
+    [({"provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_economy_risk(params, headers):
@@ -252,13 +257,13 @@ def test_economy_risk(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "DJ", "symbol": True}),
+        ({"query": "D", "symbol": True, "provider": "cboe"}),
         (
             {
                 "europe": True,
                 "provider": "cboe",
-                "query": "DJ",
-                "symbol": True,
+                "query": "A",
+                "symbol": False,
             }
         ),
     ],
@@ -276,7 +281,7 @@ def test_economy_index_search(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"region": "US"})],
+    [({"provider": "cboe", "region": "US"})],
 )
 @pytest.mark.integration
 def test_economy_index_snapshots(params, headers):
@@ -364,10 +369,11 @@ def test_economy_sp500_multiples(params, headers):
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "$GDP",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
+                "provider": "intrinio",
             }
         )
     ],
@@ -471,7 +477,18 @@ def test_economy_gdpforecast(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "country": "Portugal"})],
+    [
+        (
+            {
+                "provider": "tradingeconomics",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "portugal",
+                "group": "gdp",
+                "importance": "Low",
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_economy_econcal(params, headers):

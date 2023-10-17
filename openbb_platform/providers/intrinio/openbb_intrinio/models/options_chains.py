@@ -43,8 +43,10 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     @field_validator("expiration", "date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-        return parser.parse(v)
+        """Return the datetime object from the date string."""
+        # only pass it to the parser if it is not a datetime object
+        if isinstance(v, str):
+            return parser.parse(v)
 
 
 class IntrinioOptionsChainsFetcher(
@@ -60,6 +62,10 @@ class IntrinioOptionsChainsFetcher(
         now = datetime.now().date()
         if params.get("date") is None:
             transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+        elif isinstance(params["date"], dateType):
+            transform_params["date"] = params["date"].strftime("%Y-%m-%d")
+        else:
+            transform_params["date"] = parser.parse(params["date"]).date()
 
         return IntrinioOptionsChainsQueryParams(**transform_params)
 

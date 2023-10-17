@@ -47,7 +47,7 @@ from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump()
 
 
 @pytest.fixture(scope="module")
@@ -105,6 +105,7 @@ def test_fmp_stock_historical_fetcher(credentials=test_credentials):
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
+        "interval": "1d",
     }
 
     fetcher = FMPStockHistoricalFetcher()

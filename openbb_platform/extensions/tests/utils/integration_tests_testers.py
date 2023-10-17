@@ -103,8 +103,8 @@ def check_missing_params(
     """Check if there are any missing params for a command."""
     missing_params = []
     if not processing:
-        for test_params in function_params:
-            if "provider" in test_params:
+        for i, test_params in enumerate(function_params):
+            if "provider" in test_params and i != 0:
                 provider = test_params["provider"]
                 if provider in command_params:
                     for expected_param in command_params[provider]["QueryParams"][
