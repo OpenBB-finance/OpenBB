@@ -101,7 +101,7 @@ jobs:
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 10 seconds
-        run: sleep 10
+        run: sleep 30
 
       - name: Run API Integration Tests
         run: |
