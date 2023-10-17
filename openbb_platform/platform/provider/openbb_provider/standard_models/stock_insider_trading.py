@@ -1,7 +1,8 @@
 """Stock insider trading data model."""
 
 
-from datetime import date, datetime
+from datetime import date, datetime, time
+from dateutil import parser
 from typing import List, Literal, Optional, Set, Union
 
 from pydantic import Field, field_validator, model_validator
@@ -39,9 +40,6 @@ class StockInsiderTradingQueryParams(QueryParams):
     transactionType: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
         default=["P-Purchase"], description="Type of the transaction."
     )
-    page: Optional[int] = Field(
-        default=0, description="Page number of the data to fetch."
-    )
 
     @model_validator(mode="after")
     @classmethod
@@ -52,6 +50,7 @@ class StockInsiderTradingQueryParams(QueryParams):
         return values
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -85,22 +84,37 @@ class StockInsiderTradingData(Data):
     type_of_owner: str = Field(
         description="Type of owner of the stock insider trading."
     )
-    acquisition_or_disposition: str = Field(
+    acquisition_or_disposition: Optional[str] = Field(
+        default=None,
         description="Acquisition or disposition of the stock insider trading.",
     )
     form_type: str = Field(description="Form type of the stock insider trading.")
     securities_transacted: float = Field(
         description="Securities transacted of the stock insider trading."
     )
-    price: float = Field(description="Price of the stock insider trading.")
+    price: Optional[float] = Field(
+        default=None,
+        description="Price of the stock insider trading.",
+    )
     security_name: str = Field(
         description="Security name of the stock insider trading."
     )
     link: str = Field(description="Link of the stock insider trading.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)])
+
+    @field_validator("filing_date", mode="before", check_fields=False)
+    @classmethod
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        filing_date = parser.isoparse(str(v))
+
+        if filing_date.time() == time(0, 0):
+            return datetime.combine(filing_date.date(), time(0, 0, 0))
+        return filing_date
