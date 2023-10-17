@@ -10,7 +10,7 @@ from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, alias_generators
 
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -71,7 +71,7 @@ class IntrinioIncomeStatementFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        url_params = f"{query.symbol}-balance_sheet_statement-{query.year}"
+        url_params = f"{query.symbol}-income_statement-{query.year}"
         statement_param = f"{query.type}_financials"
 
         data = []
@@ -97,20 +97,15 @@ class IntrinioIncomeStatementFetcher(
         for item in data:
             sub_dict = {}
 
-            if "reported_financials" in item:
-                key = "reported_financials"
-                sub_tag = "xbrl_tag"
-            elif "standardized_financials" in item:
-                key = "standardized_financials"
-                sub_tag = "data_tag"
-
-            for sub_item in item[key]:
-                try:
-                    sub_dict[sub_item[sub_tag]["tag"]] = int(
-                        sub_item[sub_tag]["factor"] + str(sub_item["value"])
+            for sub_item in item.get(
+                "reported_financials", item.get("standardized_financials", [])
+            ):
+                key = alias_generators.to_snake(
+                    sub_item.get("xbrl_tag", sub_item.get("data_tag", {})).get(
+                        "tag", ""
                     )
-                except (ValueError, KeyError):
-                    sub_dict[sub_item[sub_tag]["tag"]] = int(sub_item["value"])
+                )
+                sub_dict[key] = int(sub_item["value"])
 
             sub_dict["date"] = item["fundamental"]["end_date"]
             sub_dict["period"] = item["fundamental"]["fiscal_period"]
