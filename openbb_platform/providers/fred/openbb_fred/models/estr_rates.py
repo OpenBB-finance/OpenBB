@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.estr_rates import ESTRData, ESTRQueryParams
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 ESTR_PARAMETER_TO_ID = {
     "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
@@ -40,7 +40,7 @@ class FREDESTRData(ESTRData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
@@ -70,6 +70,8 @@ class FREDESTRFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDESTRData]]]:
+    def transform_data(
+        query: FREDESTRQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDESTRData]]]:
         keys = ["date", "value"]
         return [FREDESTRData(**{k: x[k] for k in keys}) for x in data]

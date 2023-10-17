@@ -80,6 +80,8 @@ class FMPEarningsCalendarFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEarningsCalendarData]:
+    def transform_data(
+        query: FMPEarningsCalendarQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEarningsCalendarData]:
         """Return the transformed data."""
         return [FMPEarningsCalendarData.model_validate(d) for d in data]

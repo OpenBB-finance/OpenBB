@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.sofr_rates import SOFRData, SOFRQueryParams
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 SOFR_PARAMETER_TO_FRED_ID = {
     "overnight": "SOFR",
@@ -30,7 +30,7 @@ class FREDSOFRData(SOFRData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
@@ -60,6 +60,8 @@ class FREDSOFRFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDSOFRData]]]:
+    def transform_data(
+        query: FREDSOFRQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDSOFRData]]]:
         keys = ["date", "value"]
         return [FREDSOFRData(**{k: x[k] for k in keys}) for x in data]

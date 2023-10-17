@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-bmo"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "BMO extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -10,7 +10,7 @@ packages = [{ include = "openbb_bmo" }]
 python = "^3.8"
 requests-cache = "^1.1.0"
 random-user-agent = "^1.0.1"
-openbb-core = "^0.1.0a2"
+openbb-core = "^0.1.0a4"
 
 [build-system]
 requires = ["poetry-core"]

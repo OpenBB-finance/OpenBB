@@ -7,5 +7,5 @@ tradingeconomics_provider = Provider(
     website="https://tradingeconomics.com/",
     description="""Trading Economics""",
     required_credentials=["api_key"],
-    fetcher_dict={"EconCal": TEEarningsCalendarFetcher},
+    fetcher_dict={"EconomicCalendar": TEEarningsCalendarFetcher},
 )

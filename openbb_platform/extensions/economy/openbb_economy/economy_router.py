@@ -208,7 +208,7 @@ def gdpforecast(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EconCal")
+@router.command(model="EconomicCalendar")
 def econcal(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -25,7 +25,7 @@ class EuropeanIndexHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

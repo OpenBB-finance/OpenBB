@@ -63,8 +63,13 @@ def test_chart_stocks_load(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -82,8 +87,12 @@ def test_chart_stocks_multiples(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -101,8 +110,12 @@ def test_chart_stocks_news(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -132,8 +145,12 @@ def test_chart_ta_adx(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -152,8 +169,12 @@ def test_chart_ta_aroon(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -183,8 +204,12 @@ def test_chart_ta_ema(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -214,8 +239,12 @@ def test_chart_ta_hma(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -246,8 +275,12 @@ def test_chart_ta_macd(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -278,8 +311,12 @@ def test_chart_ta_rsi(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -309,8 +346,12 @@ def test_chart_ta_sma(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -340,8 +381,12 @@ def test_chart_ta_wma(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
 
 
 @pytest.mark.parametrize(
@@ -371,5 +416,9 @@ def test_chart_ta_zlma(params, headers):
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
-    assert result.json()["chart"]
-    assert list(result.json()["chart"].keys()) == ["content", "format"]
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]

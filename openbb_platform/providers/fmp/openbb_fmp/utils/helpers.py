@@ -190,3 +190,15 @@ def get_available_etfs(api_key: str) -> Dict:
         raise RuntimeError(f"Error in FMP request -> {r.text}")
 
     return r.json()
+
+
+def get_interval(value: str) -> str:
+    """Get the intervals for the FMP API."""
+
+    intervals = {
+        "m": "min",
+        "h": "hour",
+        "d": "day",
+    }
+
+    return f"{value[:-1]}{intervals[value[-1]]}"

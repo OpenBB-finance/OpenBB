@@ -13,9 +13,9 @@ from openbb_provider.standard_models.stock_historical import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
-from openbb_yfinance.utils.references import INTERVALS, PERIODS
+from openbb_yfinance.utils.references import PERIODS
 from pandas import Timestamp, to_datetime
-from pydantic import Field, validator
+from pydantic import Field, PrivateAttr, field_validator
 
 
 class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -24,40 +24,55 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
-    period: Optional[PERIODS] = Field(
-        default="max", description=QUERY_DESCRIPTIONS.get("period", "")
+    interval: Optional[
+        Literal[
+            "1m",
+            "2m",
+            "5m",
+            "15m",
+            "30m",
+            "60m",
+            "90m",
+            "1h",
+            "1d",
+            "5d",
+            "1W",
+            "1M",
+            "3M",
+        ]
+    ] = Field(
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
     prepost: bool = Field(
         default=False, description="Include Pre and Post market data."
     )
-    actions: bool = Field(default=True, description="Include actions.")
-    auto_adjust: bool = Field(
-        default=False, description="Adjust all OHLC data automatically."
+    include: bool = Field(
+        default=True, description="Include Dividends and Stock Splits in results."
+    )
+    adjusted: bool = Field(
+        default=False,
+        description="Adjust all OHLC data automatically.",
     )
     back_adjust: bool = Field(
         default=False, description="Attempt to adjust all the data automatically."
     )
-    progress: bool = Field(default=False, description="Show progress bar.")
     ignore_tz: bool = Field(
         default=True,
         description="When combining from different timezones, ignore that part of datetime.",
     )
-    rounding: bool = Field(default=True, description="Round to two decimal places?")
-    repair: bool = Field(
-        default=False,
-        description="Detect currency unit 100x mixups and attempt repair.",
-    )
-    keepna: bool = Field(default=False, description="Keep NaN rows returned by Yahoo?")
-    group_by: Literal["ticker", "column"] = Field(
-        default="column", description="Group by ticker or column."
-    )
+    _progress: bool = PrivateAttr(default=False)
+    _keepna: bool = PrivateAttr(default=False)
+    _period: Optional[PERIODS] = PrivateAttr(default="max")
+    _rounding: bool = PrivateAttr(default=True)
+    _repair: bool = PrivateAttr(default=False)
+    _group_by: Literal["ticker", "column"] = PrivateAttr(default="ticker")
 
 
 class YFinanceStockHistoricalData(StockHistoricalData):
     """YFinance Stock End of Day Data."""
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         if isinstance(v, Timestamp):
@@ -90,26 +105,32 @@ class YFinanceStockHistoricalFetcher(
     @staticmethod
     def extract_data(
         query: YFinanceStockHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the yfinance endpoint."""
+        if query.interval == "1W":
+            query.interval = "1wk"
+        elif query.interval == "1M":
+            query.interval = "1mo"
+        elif query.interval == "3M":
+            query.interval = "3mo"
+
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,
             end_date=query.end_date,
             interval=query.interval,
-            period=query.period,
+            period=query._period,
             prepost=query.prepost,
-            actions=query.actions,
-            auto_adjust=query.auto_adjust,
+            actions=query.include,
+            auto_adjust=query.adjusted,
             back_adjust=query.back_adjust,
-            progress=query.progress,
+            progress=query._progress,
             ignore_tz=query.ignore_tz,
-            keepna=query.keepna,
-            repair=query.repair,
-            rounding=query.rounding,
-            group_by=query.group_by,
+            keepna=query._keepna,
+            repair=query._repair,
+            rounding=query._rounding,
+            group_by=query._group_by,
         )
 
         if data.empty:
@@ -143,7 +164,9 @@ class YFinanceStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceStockHistoricalQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceStockHistoricalData]:
         """Transform the data to the standard format."""
 

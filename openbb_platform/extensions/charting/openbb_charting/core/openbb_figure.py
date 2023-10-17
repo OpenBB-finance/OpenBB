@@ -1222,7 +1222,9 @@ class OpenBBFigure(go.Figure):
 
         return super().to_html(*args, **kwargs)
 
-    def to_plotly_json(self, ndarray: bool = False) -> Dict[str, Any]:
+    def to_plotly_json(
+        self, ndarray: bool = False, np_nan: bool = False
+    ) -> Dict[str, Any]:
         """
         Convert figure to a JSON representation as a Python dict
 
@@ -1231,9 +1233,13 @@ class OpenBBFigure(go.Figure):
         ----------
         ndarray : `bool`, optional
             If the plotly json should contain np.ndarray, by default False
+
+        np_nan : `bool`, optional
+            If the plotly json should contain np.nan, by default False
         """
 
         def remove_ndarrays(data):
+            """Remove ndarrays from the plotly json."""
             if isinstance(data, dict):
                 for key, val in data.items():
                     if isinstance(val, np.ndarray):
@@ -1249,9 +1255,28 @@ class OpenBBFigure(go.Figure):
 
             return data
 
+        def remove_nan(data):
+            """Remove nan from the plotly json."""
+            if isinstance(data, dict):
+                for key, val in data.items():
+                    if isinstance(val, float) and np.isnan(val):
+                        data[key] = None
+                    elif isinstance(val, (dict, list)):
+                        data[key] = remove_nan(val)
+            elif isinstance(data, list):
+                for i, val in enumerate(data):
+                    if isinstance(val, float) and np.isnan(val):
+                        data[i] = None
+                    elif isinstance(val, (dict, list)):
+                        data[i] = remove_nan(val)
+
+            return data
+
         plotly_json = super().to_plotly_json()
         if not ndarray:
             plotly_json = remove_ndarrays(plotly_json)
+        if not np_nan:
+            plotly_json = remove_nan(plotly_json)
 
         return plotly_json
 

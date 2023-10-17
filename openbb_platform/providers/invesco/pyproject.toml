@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-invesco"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "Invesco extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_invesco" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests-cache = "^1.1.0"
-openbb-core = "^0.1.0a2"
+openbb-core = "^0.1.0a4"
 
 [build-system]
 requires = ["poetry-core"]

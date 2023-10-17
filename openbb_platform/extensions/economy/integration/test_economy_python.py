@@ -48,7 +48,7 @@ def test_economy_index_constituents(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_cpi(params):
+def test_economy_cpi(params, obb):
     result = obb.economy.cpi(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -60,7 +60,7 @@ def test_economy_cpi(params):
     [
         (
             {
-                "symbol": "DJI",
+                "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -131,18 +131,6 @@ def test_economy_cpi(params):
         ),
         (
             {
-                "interval": "5m",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
-                "provider": "yfinance",
-                "symbol": "DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "period": "max",
                 "prepost": True,
@@ -156,7 +144,7 @@ def test_economy_cpi(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_index(params):
+def test_economy_index(params, obb):
     result = obb.economy.index(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -194,7 +182,7 @@ def test_economy_index(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_european_index(params):
+def test_economy_european_index(params, obb):
     result = obb.economy.european_index(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -208,7 +196,7 @@ def test_economy_european_index(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_european_index_constituents(params):
+def test_economy_european_index_constituents(params, obb):
     result = obb.economy.european_index_constituents(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -225,7 +213,7 @@ def test_economy_european_index_constituents(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_available_indices(params):
+def test_economy_available_indices(params, obb):
     result = obb.economy.available_indices(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -239,7 +227,7 @@ def test_economy_available_indices(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_risk(params):
+def test_economy_risk(params, obb):
     result = obb.economy.risk(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -249,19 +237,19 @@ def test_economy_risk(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "DJ", "symbol": True}),
+        ({"query": "D", "symbol": True}),
         (
             {
                 "europe": True,
                 "provider": "cboe",
-                "query": "AA",
-                "symbol": True,
+                "query": "A",
+                "symbol": False,
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_economy_index_search(params):
+def test_economy_index_search(params, obb):
     result = obb.economy.index_search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -275,7 +263,7 @@ def test_economy_index_search(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_index_snapshots(params):
+def test_economy_index_snapshots(params, obb):
     result = obb.economy.index_snapshots(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -289,7 +277,7 @@ def test_economy_index_snapshots(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_cot_search(params):
+def test_economy_cot_search(params, obb):
     result = obb.economy.cot_search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -316,7 +304,7 @@ def test_economy_cot_search(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_cot(params):
+def test_economy_cot(params, obb):
     result = obb.economy.cot(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -338,7 +326,7 @@ def test_economy_cot(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_sp500_multiples(params):
+def test_economy_sp500_multiples(params, obb):
     result = obb.economy.sp500_multiples(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -351,7 +339,7 @@ def test_economy_sp500_multiples(params):
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "$GDP",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
@@ -360,7 +348,7 @@ def test_economy_sp500_multiples(params):
     ],
 )
 @pytest.mark.integration
-def test_economy_fred_index(params):
+def test_economy_fred_index(params, obb):
     result = obb.economy.fred_index(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -370,13 +358,13 @@ def test_economy_fred_index(params):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"units": "usd", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"units": "usd", "start_date": "2021-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states",
                 "provider": "oecd",
                 "units": "usd",
-                "start_date": "2023-01-01",
+                "start_date": "2021-01-01",
                 "end_date": "2023-06-06",
             }
         ),
@@ -424,7 +412,7 @@ def test_economy_gdpreal(params, obb):
             {
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
             }
         ),
@@ -434,7 +422,7 @@ def test_economy_gdpreal(params, obb):
                 "provider": "oecd",
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
             }
         ),
@@ -445,6 +433,30 @@ def test_economy_gdpforecast(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.gdpforecast(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "portugal",
+                "importance": "Low",
+                "group": "gdp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_econcal(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.econcal(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

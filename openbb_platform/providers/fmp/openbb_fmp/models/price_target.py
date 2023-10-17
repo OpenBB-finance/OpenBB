@@ -69,6 +69,8 @@ class FMPPriceTargetFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPPriceTargetData]:
+    def transform_data(
+        query: FMPPriceTargetQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPPriceTargetData]:
         """Return the transformed data."""
         return [FMPPriceTargetData.model_validate(d) for d in data]

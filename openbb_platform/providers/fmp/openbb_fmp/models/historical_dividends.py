@@ -63,6 +63,8 @@ class FMPHistoricalDividendsFetcher(
         return sorted(data, key=lambda x: x["date"])
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPHistoricalDividendsData]:
+    def transform_data(
+        query: FMPHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPHistoricalDividendsData]:
         """Return the transformed data."""
         return [FMPHistoricalDividendsData.model_validate(d) for d in data]

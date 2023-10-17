@@ -9,7 +9,7 @@ from openbb_provider.standard_models.fed_rates import (
     FEDData,
     FEDQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 FED_PARAMETER_TO_FRED_ID = {
     "monthly": "FEDFUNDS",
@@ -41,7 +41,7 @@ class FREDFEDData(FEDData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
@@ -69,6 +69,8 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDFEDData]]]:
+    def transform_data(
+        query: FREDFEDQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDFEDData]]]:
         keys = ["date", "value"]
         return [FREDFEDData(**{k: x[k] for k in keys}) for x in data]
