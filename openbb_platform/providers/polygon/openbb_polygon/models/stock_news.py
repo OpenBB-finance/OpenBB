@@ -10,7 +10,7 @@ from openbb_provider.standard_models.stock_news import (
     StockNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class PolygonStockNewsQueryParams(StockNewsQueryParams):
@@ -29,7 +29,7 @@ class PolygonStockNewsQueryParams(StockNewsQueryParams):
         default="desc", description="Sort order of the articles."
     )
 
-    @validator("limit", pre=True)
+    @field_validator("limit", mode="before")
     def limit_validator(cls, v: int) -> int:  # pylint: disable=E0213
         """Limit validator."""
         return min(v, 1000)

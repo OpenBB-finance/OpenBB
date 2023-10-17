@@ -9,7 +9,7 @@ packages = [{ include = "openbb_yfinance" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 yfinance="^0.2.27"
-openbb-core = "^0.1.0a2"
+openbb-core = "^0.1.0a4"
 
 [build-system]
 requires = ["poetry-core"]
