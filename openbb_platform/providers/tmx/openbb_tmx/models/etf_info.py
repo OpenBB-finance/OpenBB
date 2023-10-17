@@ -168,6 +168,6 @@ class TmxEtfInfoFetcher(
         return pd.DataFrame(results).transpose().to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxEtfInfoData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfInfoData]:
         """Return the transformed data."""
-        return [TmxEtfInfoData(**d) for d in data]
+        return [TmxEtfInfoData.model_validate(d) for d in data]

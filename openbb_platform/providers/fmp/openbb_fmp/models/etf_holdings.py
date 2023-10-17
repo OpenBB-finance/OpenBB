@@ -210,6 +210,7 @@ class FMPEtfHoldingsFetcher(
     @staticmethod
     def transform_data(
         data: List[Dict],
+        **kwargs: Any,
     ) -> FinalEtfHoldingsData:
         """Return the transformed data."""
         metadata = {}
@@ -232,9 +233,9 @@ class FMPEtfHoldingsFetcher(
                 .to_dict("records")
             )
 
-        results = [FMPEtfHoldingsData.parse_obj(d) for d in results]
-        data = FinalEtfHoldingsData()
-        data.holdings_data = results
-        data.extra_info = metadata
+        results = [FMPEtfHoldingsData.model_validate(d) for d in results]
+        output = FinalEtfHoldingsData()
+        output.holdings_data = results
+        output.extra_info = metadata
 
-        return data
+        return output

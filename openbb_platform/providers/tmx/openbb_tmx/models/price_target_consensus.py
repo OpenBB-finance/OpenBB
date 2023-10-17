@@ -122,6 +122,6 @@ class TmxPriceTargetConsensusFetcher(
             raise (e)
 
     @staticmethod
-    def transform_data(data: Dict) -> TmxPriceTargetConsensusData:
+    def transform_data(data: Dict, **kwargs: Any) -> TmxPriceTargetConsensusData:
         """Return the transformed data."""
         return TmxPriceTargetConsensusData.model_validate(data)

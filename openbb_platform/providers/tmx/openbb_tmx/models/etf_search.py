@@ -130,6 +130,6 @@ class TmxEtfSearchFetcher(
         return data.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxEtfSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfSearchData]:
         """Transform the data to the standard format."""
         return [TmxEtfSearchData.model_validate(d) for d in data]

@@ -292,6 +292,6 @@ class TmxStockInfoFetcher(
         return sorted(results, key=lambda x: x["percentChange"], reverse=True)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxStockInfoData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxStockInfoData]:
         """Return the transformed data."""
-        return [TmxStockInfoData(**d) for d in data]
+        return [TmxStockInfoData.model_validate(d) for d in data]

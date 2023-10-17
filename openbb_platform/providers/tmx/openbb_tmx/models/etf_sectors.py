@@ -92,6 +92,6 @@ class TmxEtfSectorsFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxEtfSectorsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfSectorsData]:
         """Return the transformed data."""
-        return [TmxEtfSectorsData(**d) for d in data]
+        return [TmxEtfSectorsData.model_validate(d) for d in data]

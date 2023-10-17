@@ -112,6 +112,6 @@ class BlackrockEtfSearchFetcher(
         return results.reset_index().fillna(value=0).to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BlackrockEtfSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[BlackrockEtfSearchData]:
         """Transform the data to the standard format."""
-        return [BlackrockEtfSearchData.parse_obj(d) for d in data]
+        return [BlackrockEtfSearchData.model_validate(d) for d in data]

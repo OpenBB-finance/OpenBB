@@ -45,6 +45,8 @@ class TmxAvailableIndicesFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxAvailableIndicesData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[TmxAvailableIndicesData]:
         """Transform the data to the standard format."""
         return [TmxAvailableIndicesData.model_validate(d) for d in data]

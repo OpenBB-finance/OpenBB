@@ -95,6 +95,7 @@ class InvescoEtfHistoricalNavFetcher(
     @staticmethod
     def transform_data(
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[InvescoEtfHistoricalNavData]:
         """Transform the data."""
         return [InvescoEtfHistoricalNavData.model_validate(d) for d in data]

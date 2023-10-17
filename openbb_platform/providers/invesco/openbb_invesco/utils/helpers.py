@@ -30,7 +30,9 @@ invesco_america_etf_holdings = requests_cache.CachedSession(
 
 COUNTRIES = Literal["america", "canada"]
 
-INFO_DATA_TYPE = Literal["performance", "nav_performance", "distributions", "holdings_summary"]
+INFO_DATA_TYPE = Literal[
+    "performance", "nav_performance", "distributions", "holdings_summary"
+]
 
 
 class America:
@@ -43,7 +45,11 @@ class America:
             "https://www.invesco.com/us/financial-products/etfs/performance/prices"
             "/main/performance/0?audienceType=Investor&action=download"
         )
-        r = invesco_america_products.get(url, timeout=5) if use_cache is True else make_request(url)
+        r = (
+            invesco_america_products.get(url, timeout=5)
+            if use_cache is True
+            else make_request(url)
+        )
 
         if r.status_code != 200:
             raise RuntimeError(f"HTTP Error -> {str(r.status_code)}")
@@ -79,13 +85,16 @@ class America:
 
     @staticmethod
     def get_etf_info(
-        symbol: str,
-        data_type: INFO_DATA_TYPE = "performance",
-        use_cache: bool = True
+        symbol: str, data_type: INFO_DATA_TYPE = "performance", use_cache: bool = True
     ) -> pd.DataFrame:
         """Gets a list of tables for a given ETF from HTML."""
 
-        data_type_dict = {"performance": 0, "nav_performance": -2, "distributions": 3, "holdings_summary": -4}
+        data_type_dict = {
+            "performance": 0,
+            "nav_performance": -2,
+            "distributions": 3,
+            "holdings_summary": -4,
+        }
 
         data = pd.DataFrame()
         symbols = America.get_all_etfs().Ticker.tolist()
@@ -94,7 +103,11 @@ class America:
             return pd.DataFrame()
 
         url = f"https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker={symbol}"
-        r = invesco_america_etf_info.get(url, timeout=5) if use_cache is True else make_request(url)
+        r = (
+            invesco_america_etf_info.get(url, timeout=5)
+            if use_cache is True
+            else make_request(url)
+        )
 
         if r.status_code != 200:
             raise RuntimeError(f"HTTP Error -> {str(r.status_code)}")
@@ -118,7 +131,7 @@ class America:
         data[0] = (
             data[0]
             .dropna(how="all")
-            .rename(columns={"Index History (%)" : "performance"})
+            .rename(columns={"Index History (%)": "performance"})
             .set_index("performance")
             .drop("Fund History (%)")
             .reset_index()
@@ -127,10 +140,8 @@ class America:
 
         return data[data_type_dict[data_type]]
 
-
     @staticmethod
     def get_historical_nav_discount(symbol: str):
-
         data = pd.DataFrame()
 
         symbols = America.get_all_etfs().Ticker.tolist()
@@ -145,8 +156,12 @@ class America:
             raise RuntimeError(f"HTTP Error -> {str(r.status_code)}")
 
         data = pd.read_csv(StringIO(r.content.decode())).dropna()
-        data["Date"] = pd.to_datetime(data["Date"], yearfirst=True).dt.strftime("%Y-%m-%d")
-        data = data.rename(columns = {" Premium/Discount": "Premium/Discount (%)"})
-        data["Premium/Discount (%)"] = data["Premium/Discount (%)"].astype(str).str.replace("%", "").astype(float)
+        data["Date"] = pd.to_datetime(data["Date"], yearfirst=True).dt.strftime(
+            "%Y-%m-%d"
+        )
+        data = data.rename(columns={" Premium/Discount": "Premium/Discount (%)"})
+        data["Premium/Discount (%)"] = (
+            data["Premium/Discount (%)"].astype(str).str.replace("%", "").astype(float)
+        )
 
         return data.sort_values(by="Date", ascending=True).to_dict("records")

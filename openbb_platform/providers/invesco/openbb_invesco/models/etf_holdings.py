@@ -217,6 +217,7 @@ class InvescoEtfHoldingsFetcher(
     @staticmethod
     def transform_data(
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[InvescoEtfHoldingsData]:
         """Transform the data."""
         return [InvescoEtfHoldingsData.model_validate(d) for d in data]

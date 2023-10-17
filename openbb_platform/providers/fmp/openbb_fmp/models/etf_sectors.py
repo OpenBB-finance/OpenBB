@@ -33,7 +33,9 @@ class FMPEtfSectorsData(EtfSectorsData):
         "real_estate": "Real Estate",
     }
 
-    other: Optional[float] = Field(description="Other Sector Weight.", alias="Other")
+    other: Optional[float] = Field(
+        default=None, description="Other Sector Weight.", alias="Other"
+    )
 
 
 class FMPEtfSectorsFetcher(
@@ -88,6 +90,6 @@ class FMPEtfSectorsFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEtfSectorsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPEtfSectorsData]:
         """Return the transformed data."""
-        return [FMPEtfSectorsData(**d) for d in data]
+        return [FMPEtfSectorsData.model_validate(d) for d in data]

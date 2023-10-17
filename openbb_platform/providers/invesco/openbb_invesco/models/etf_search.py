@@ -143,6 +143,6 @@ class InvescoEtfSearchFetcher(
         return results.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[InvescoEtfSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[InvescoEtfSearchData]:
         """Transform the data."""
         return [InvescoEtfSearchData.model_validate(d) for d in data]

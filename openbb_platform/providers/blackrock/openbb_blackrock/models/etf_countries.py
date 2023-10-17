@@ -79,6 +79,8 @@ class BlackrockEtfCountriesFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BlackrockEtfCountriesData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[BlackrockEtfCountriesData]:
         """Return the transformed data."""
         return [BlackrockEtfCountriesData(**d) for d in data]

@@ -173,6 +173,6 @@ class BlackrockEtfInfoFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BlackrockEtfInfoData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[BlackrockEtfInfoData]:
         """Transform the data to the standard format."""
-        return [BlackrockEtfInfoData.parse_obj(d) for d in data]
+        return [BlackrockEtfInfoData.model_validate(d) for d in data]

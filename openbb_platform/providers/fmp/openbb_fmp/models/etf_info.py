@@ -112,6 +112,6 @@ class FMPEtfInfoFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEtfInfoData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPEtfInfoData]:
         """Return the transformed data."""
-        return [FMPEtfInfoData(**d) for d in data]
+        return [FMPEtfInfoData.model_validate(d) for d in data]

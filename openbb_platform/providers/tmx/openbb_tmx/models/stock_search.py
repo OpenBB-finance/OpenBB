@@ -58,6 +58,6 @@ class TmxStockSearchFetcher(
         return results.reset_index(drop=True).astype(str).to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxStockSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxStockSearchData]:
         """Transform the data to the standard format."""
         return [TmxStockSearchData.model_validate(d) for d in data]

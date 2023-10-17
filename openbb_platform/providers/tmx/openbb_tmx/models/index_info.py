@@ -188,6 +188,6 @@ class TmxIndexInfoFetcher(Fetcher[TmxIndexInfoQueryParams, List[TmxIndexInfoData
         return data
 
     @staticmethod
-    def transform_data(data: Dict) -> List[TmxIndexInfoData]:
+    def transform_data(data: Dict, **kwargs: Any) -> List[TmxIndexInfoData]:
         """Transform the data."""
         return [TmxIndexInfoData.model_validate(data)]

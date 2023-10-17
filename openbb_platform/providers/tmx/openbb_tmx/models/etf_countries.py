@@ -73,6 +73,6 @@ class TmxEtfCountriesFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxEtfCountriesData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfCountriesData]:
         """Return the transformed data."""
-        return [TmxEtfCountriesData(**d) for d in data]
+        return [TmxEtfCountriesData.model_validate(d) for d in data]

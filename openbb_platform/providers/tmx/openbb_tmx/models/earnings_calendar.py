@@ -127,6 +127,8 @@ class TmxEarningsCalendarFetcher(
         return sorted(results, key=lambda x: x["date"], reverse=False)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxEarningsCalendarData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[TmxEarningsCalendarData]:
         """Return the transformed data."""
-        return [TmxEarningsCalendarData(**d) for d in data]
+        return [TmxEarningsCalendarData.model_validate(d) for d in data]

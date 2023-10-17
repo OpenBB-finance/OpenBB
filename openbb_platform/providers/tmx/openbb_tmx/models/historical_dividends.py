@@ -88,6 +88,8 @@ class TmxHistoricalDividendsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxHistoricalDividendsData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[TmxHistoricalDividendsData]:
         """Return the transformed data."""
-        return [TmxHistoricalDividendsData(**d) for d in data]
+        return [TmxHistoricalDividendsData.model_validate(d) for d in data]

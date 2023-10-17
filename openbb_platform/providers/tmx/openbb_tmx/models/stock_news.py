@@ -70,6 +70,6 @@ class TmxStockNewsFetcher(
         return sorted(results, key=lambda d: d["datetime"], reverse=True)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxStockNewsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxStockNewsData]:
         """Return the transformed data."""
-        return [TmxStockNewsData(**d) for d in data]
+        return [TmxStockNewsData.model_validate(d) for d in data]

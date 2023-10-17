@@ -84,6 +84,6 @@ class BmoEtfSearchFetcher(
         return results.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BmoEtfSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[BmoEtfSearchData]:
         """Transform the data."""
         return [BmoEtfSearchData.model_validate(d) for d in data]

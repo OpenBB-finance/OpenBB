@@ -68,6 +68,6 @@ class TmxIndexConstituentsFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List) -> List[TmxIndexConstituentsData]:
+    def transform_data(data: List, **kwargs) -> List[TmxIndexConstituentsData]:
         """Return the transformed data."""
         return [TmxIndexConstituentsData.model_validate(d) for d in data]

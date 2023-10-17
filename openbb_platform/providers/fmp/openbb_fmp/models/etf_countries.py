@@ -75,6 +75,6 @@ class FMPEtfCountriesFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEtfCountriesData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPEtfCountriesData]:
         """Return the transformed data."""
-        return [FMPEtfCountriesData(**d) for d in data]
+        return [FMPEtfCountriesData.model_validate(d) for d in data]

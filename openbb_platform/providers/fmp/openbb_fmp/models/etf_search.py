@@ -124,6 +124,6 @@ class FMPEtfSearchFetcher(
         return etfs.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPEtfSearchData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPEtfSearchData]:
         """Return the transformed data."""
-        return [FMPEtfSearchData(**d) for d in data]
+        return [FMPEtfSearchData.model_validate(d) for d in data]

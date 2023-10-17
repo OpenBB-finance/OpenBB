@@ -263,12 +263,14 @@ class BlackrockEtfHoldingsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: Tuple[List[Dict], Dict]) -> FinalEtfHoldingsData:
+    def transform_data(
+        data: Tuple[List[Dict], Dict], **kwargs: Any
+    ) -> FinalEtfHoldingsData:
         """Transform the data to the standard format."""
         holdings: List[Dict] = data[0]
         results = [BlackrockEtfHoldingsData.model_validate(d) for d in holdings]
         metadata = data[1]
-        data = FinalEtfHoldingsData()
-        data.holdings_data = results
-        data.extra_info = metadata
-        return data
+        output = FinalEtfHoldingsData()
+        output.holdings_data = results
+        output.extra_info = metadata
+        return output

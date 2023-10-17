@@ -123,6 +123,6 @@ class TmxCompanyFilingsFetcher(
             raise RuntimeError(_e, query.symbol.upper())
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxCompanyFilingsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxCompanyFilingsData]:
         """Return the transformed data."""
-        return [TmxCompanyFilingsData(**d) for d in data]
+        return [TmxCompanyFilingsData.model_validate(d) for d in data]

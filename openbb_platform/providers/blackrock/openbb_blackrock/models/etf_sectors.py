@@ -99,6 +99,8 @@ class BlackrockEtfSectorsFetcher(
         )
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BlackrockEtfSectorsData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[BlackrockEtfSectorsData]:
         """Return the transformed data."""
-        return [BlackrockEtfSectorsData(**d) for d in data]
+        return [BlackrockEtfSectorsData.model_validate(d) for d in data]

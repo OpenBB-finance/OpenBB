@@ -123,6 +123,7 @@ class BmoEtfHoldingsFetcher(
     @staticmethod
     def transform_data(
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[BmoEtfHoldingsData]:
         """Transform the data."""
         return [BmoEtfHoldingsData.model_validate(d) for d in data]

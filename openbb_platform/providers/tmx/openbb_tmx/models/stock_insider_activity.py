@@ -68,6 +68,8 @@ class TmxStockInsiderActivityFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[TmxStockInsiderActivityData]:
+    def transform_data(
+        data: List[Dict], **kwargs: Any
+    ) -> List[TmxStockInsiderActivityData]:
         """Transform the data."""
         return [TmxStockInsiderActivityData.model_validate(d) for d in data]
