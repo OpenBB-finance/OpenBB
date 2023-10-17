@@ -90,7 +90,7 @@ jobs:
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
               "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
-              "fred_api_key": "${{ secrets.FRED_KEY }}",
+              "fred_api_key": "${{ secrets.FRED_KEY }}"
             }
           }' > ~/.openbb_platform/user_settings.json
 
