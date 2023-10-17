@@ -83,7 +83,7 @@ jobs:
           touch ~/.openbb_platform/user_settings.json
           echo '{
             "credentials": {
-              "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
+              "benzinga_api_key": "${{ secrets.BENZINGA_API_KEY }}",
               "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
               "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
               "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
