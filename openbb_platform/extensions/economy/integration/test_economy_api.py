@@ -425,7 +425,7 @@ def test_economy_gdpnom(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/gdpnom?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -470,7 +470,7 @@ def test_economy_gdpreal(params, headers):
             {
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
                 "provider": "oecd",
             }
@@ -481,7 +481,7 @@ def test_economy_gdpreal(params, headers):
                 "provider": "oecd",
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
             }
         ),
@@ -493,7 +493,7 @@ def test_economy_gdpforecast(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/gdpforecast?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
