@@ -452,6 +452,8 @@ class DocstringGenerator:
         example += ">>> from openbb import obb\n"
         example += f">>> obb.{full_command_name}("
         for param_name, param_value in example_params.items():
+            if isinstance(param_value, str):
+                param_value = f'"{param_value}"'  # noqa: PLW2901
             example += f"{param_name}={param_value}, "
         if example_params:
             example = example[:-2] + ")\n\n"
