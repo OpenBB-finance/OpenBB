@@ -4,7 +4,7 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.helpers import get_data_one, get_quarter_range
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
@@ -57,7 +57,7 @@ class IntrinioIncomeStatementFetcher(
         transform_params = params
 
         if not params.get("year"):
-            transform_params["year"] = date.today().year - 1
+            transform_params["year"] = date.today().year
 
         return IntrinioIncomeStatementQueryParams(**transform_params)
 
@@ -81,8 +81,14 @@ class IntrinioIncomeStatementFetcher(
             data.append(get_data_one(url, **kwargs))
 
         elif query.period == "quarter":
-            for quarter in range(1, 5):
-                url = f"{base_url}/fundamentals/{url_params}-Q{quarter}/{statement_param}?api_key={api_key}"
+            quarter_range = get_quarter_range(query.year)
+
+            for quarter in quarter_range:
+                # TODO: Check back in sometime when Intrinio fixes their API/provides better documentation
+                if quarter == 4 and query.type == "reported":
+                    url = f"{base_url}/fundamentals/{url_params}-FY/{statement_param}?api_key={api_key}"
+                else:
+                    url = f"{base_url}/fundamentals/{url_params}-Q{quarter}/{statement_param}?api_key={api_key}"
                 data.append(get_data_one(url, **kwargs))
 
         return data
@@ -94,24 +100,27 @@ class IntrinioIncomeStatementFetcher(
         """Return the transformed data."""
 
         transformed_data = []
+        data_key = f"{query.type}_financials"
+        tag_key = "xbrl_tag" if query.type == "reported" else "data_tag"
 
         for item in data:
             sub_dict = {}
 
-            for sub_item in item.get(
-                "reported_financials", item.get("standardized_financials", [])
-            ):
-                key = alias_generators.to_snake(
-                    sub_item.get("xbrl_tag", sub_item.get("data_tag", {})).get(
-                        "tag", ""
-                    )
-                )
-                sub_dict[key] = int(sub_item["value"])
+            for sub_item in item[data_key]:
+                field_name = alias_generators.to_snake(sub_item[tag_key]["name"])
+                sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["fundamental"]["end_date"]
             sub_dict["period"] = item["fundamental"]["fiscal_period"]
             sub_dict["cik"] = item["fundamental"]["company"]["cik"]
             sub_dict["symbol"] = item["fundamental"]["company"]["ticker"]
+
+            # Intrinio does not return Q4 data in reported_financials endpoint
+            if (
+                query.period == "quarter"
+                and item["fundamental"]["fiscal_period"] == "FY"
+            ):
+                sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioIncomeStatementData(**sub_dict))
 
