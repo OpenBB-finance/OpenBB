@@ -11,7 +11,11 @@ test_locations = [
 def tests(session):
     session.install("poetry", "toml")
     session.run(
-        "python", "./openbb_platform/dev_install.py", "-e", "all", external=True
+        "python",
+        "./openbb_platform/dev_utils/dev_install.py",
+        "-e",
+        "all",
+        external=True,
     )
     session.install("pytest")
     session.install("pytest-cov")
