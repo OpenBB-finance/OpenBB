@@ -6,7 +6,7 @@ from pathlib import Path
 
 import toml
 
-PLATFORM_PATH = Path(__file__).parent.parent.resolve()
+PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
