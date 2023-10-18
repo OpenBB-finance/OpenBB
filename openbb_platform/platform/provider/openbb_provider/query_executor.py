@@ -72,7 +72,7 @@ class QueryExecutor:
             Query parameters, for example: {"symbol": "AAPL"}
         credentials : Optional[Dict[str, SecretStr]], optional
             Credentials for the provider, by default None
-            For example, {"fmp_api_key": "1234"}.
+            For example, {"fmp_api_key": SecretStr("1234")}.
 
         Returns
         -------
