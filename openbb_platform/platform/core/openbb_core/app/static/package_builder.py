@@ -400,7 +400,7 @@ class DocstringGenerator:
                 elif field.annotation == bool:
                     test_params[field_name] = True
                 elif get_origin(field.annotation) is Literal:
-                    test_params[field_name] = field.annotation.__args__[0]  # type: ignore
+                    test_params[field_name] = f'"{field.annotation.__args__[0]}"'  # type: ignore
 
         return test_params
 
