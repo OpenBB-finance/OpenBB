@@ -101,7 +101,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.ameribo)
+        >>> obb.fixedincome.ameribor()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -182,7 +182,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.est)
+        >>> obb.fixedincome.estr()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -263,7 +263,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.fe)
+        >>> obb.fixedincome.fed()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -342,7 +342,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.ior)
+        >>> obb.fixedincome.iorb()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -418,7 +418,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.projection)
+        >>> obb.fixedincome.projections()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -495,7 +495,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.sof)
+        >>> obb.fixedincome.sofr()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -575,7 +575,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.soni)
+        >>> obb.fixedincome.sonia()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -671,7 +671,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.treasur)
+        >>> obb.fixedincome.treasury()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -743,7 +743,7 @@ class ROUTER_fixedincome(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.fixedincome.ycr)
+        >>> obb.fixedincome.ycrv()
         """  # noqa: E501
 
         inputs = filter_inputs(

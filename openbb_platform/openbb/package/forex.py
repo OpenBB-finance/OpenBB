@@ -233,7 +233,7 @@ class ROUTER_forex(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.forex.pair)
+        >>> obb.forex.pairs()
         """  # noqa: E501
 
         inputs = filter_inputs(

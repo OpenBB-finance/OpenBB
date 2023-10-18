@@ -501,7 +501,7 @@ class ROUTER_stocks_fa(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.stocks.fa.ca)
+        >>> obb.stocks.fa.cal()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1003,7 +1003,7 @@ class ROUTER_stocks_fa(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.stocks.fa.comspli)
+        >>> obb.stocks.fa.comsplit()
         """  # noqa: E501
 
         inputs = filter_inputs(

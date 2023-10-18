@@ -115,7 +115,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.available_indice)
+        >>> obb.economy.available_indices()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -290,7 +290,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.co)
+        >>> obb.economy.cot()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -359,7 +359,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.cot_searc)
+        >>> obb.economy.cot_search()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -646,7 +646,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.econca)
+        >>> obb.economy.econcal()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1405,7 +1405,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.index_searc)
+        >>> obb.economy.index_search()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1552,7 +1552,7 @@ class ROUTER_economy(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.economy.ris)
+        >>> obb.economy.risk()
         """  # noqa: E501
 
         inputs = filter_inputs(

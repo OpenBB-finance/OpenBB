@@ -905,7 +905,7 @@ class ROUTER_stocks(Container):
         --------
 
         >>> from openbb import obb
-        >>> obb.stocks.searc)
+        >>> obb.stocks.search()
         """  # noqa: E501
 
         inputs = filter_inputs(
