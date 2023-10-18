@@ -145,9 +145,9 @@ class ROUTER_stocks_options(Container):
             Last trade timestamp of the option. (provider: cboe)
         dte : Optional[Union[int]]
             Days to expiration for the option. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.options.chains(symbol=AAPL)
         """  # noqa: E501

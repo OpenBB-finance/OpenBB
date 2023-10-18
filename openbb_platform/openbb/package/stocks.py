@@ -151,9 +151,9 @@ class ROUTER_stocks(Container):
             The 90-day high of implied volatility. (provider: cboe)
         hv90_annual_high : Optional[Union[float]]
             The 90-day high of realized volatility. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.info(symbol=AAPL)
         """  # noqa: E501
@@ -332,9 +332,9 @@ class ROUTER_stocks(Container):
             52 week low price for the symbol. (provider: intrinio)
         transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.load(symbol=AAPL, interval=1d)
         """  # noqa: E501
@@ -524,9 +524,9 @@ class ROUTER_stocks(Container):
             Return on equity calculated as trailing twelve months.
         capex_per_share_ttm : Optional[Union[float]]
             Capital expenditures per share calculated as trailing twelve months.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.multiples(symbol=AAPL, limit=100)
         """  # noqa: E501
@@ -675,9 +675,9 @@ class ROUTER_stocks(Container):
             Thumbnail related data to the ticker news article. (provider: yfinance)
         related_tickers : Optional[Union[str]]
             Tickers related to the news article. (provider: yfinance)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.news(symbols=AAPL,MSFT, limit=20)
         """  # noqa: E501
@@ -832,9 +832,9 @@ class ROUTER_stocks(Container):
             Messages associated with the endpoint. (provider: intrinio)
         security : Optional[Union[Dict[str, Any]]]
             Security details related to the quote. (provider: intrinio)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.quote(symbol=AAPL)
         """  # noqa: E501
@@ -904,9 +904,9 @@ class ROUTER_stocks(Container):
             Name of the primary market maker. (provider: cboe)
         post_station : Optional[Union[str]]
             Post and station location on the CBOE trading floor. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.search()
         """  # noqa: E501

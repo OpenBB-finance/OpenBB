@@ -131,9 +131,9 @@ class ROUTER_crypto(Container):
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.crypto.load(symbol=BTCUSD)
         """  # noqa: E501

@@ -124,9 +124,9 @@ class ROUTER_news(Container):
             Site of the news. (provider: fmp)
         company : Optional[Union[Dict[str, Any]]]
             Company details related to the news article. (provider: intrinio)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.news.globalnews(limit=20)
         """  # noqa: E501

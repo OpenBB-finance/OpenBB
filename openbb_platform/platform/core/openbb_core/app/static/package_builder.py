@@ -25,16 +25,15 @@ from typing import (
 
 import pandas as pd
 from importlib_metadata import entry_points
-from pydantic.fields import FieldInfo
-from pydantic_core import PydanticUndefined
-from starlette.routing import BaseRoute
-from typing_extensions import Annotated, _AnnotatedAlias
-
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.env import Env
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
+from starlette.routing import BaseRoute
+from typing_extensions import Annotated, _AnnotatedAlias
 
 
 class Console:
@@ -399,8 +398,12 @@ class DocstringGenerator:
                     test_params[field_name] = 1.0
                 elif field.annotation == bool:
                     test_params[field_name] = True
-                elif get_origin(field.annotation) is Literal:
-                    test_params[field_name] = field.annotation.__args__[0]  # type: ignore
+                elif get_origin(field.annotation) is Literal:  # type: ignore
+                    option = field.annotation.__args__[0]  # type: ignore
+                    if isinstance(option, str):
+                        test_params[field_name] = f'"{option}"'
+                    else:
+                        test_params[field_name] = option
 
         return test_params
 
@@ -443,11 +446,15 @@ class DocstringGenerator:
             example_params["symbol"] = "BTCUSD"
         elif "forex" in route[0] and "symbol" in example_params:
             example_params["symbol"] = "EURUSD"
+        elif "index" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "SPX"
 
-        example = "Example\n--------\n\n"
+        example = "\nExample\n-------\n"
         example += ">>> from openbb import obb\n"
         example += f">>> obb.{full_command_name}("
         for param_name, param_value in example_params.items():
+            if isinstance(param_value, str):
+                param_value = f'"{param_value}"'  # noqa: PLW2901
             example += f"{param_name}={param_value}, "
         if example_params:
             example = example[:-2] + ")\n\n"
