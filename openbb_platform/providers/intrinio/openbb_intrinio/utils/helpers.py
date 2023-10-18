@@ -127,3 +127,11 @@ def get_weekday(date: dateType) -> str:
     if date.weekday() in [5, 6]:
         return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
     return date.strftime("%Y-%m-%d")
+
+
+def get_quarter_range(year: int) -> List:
+    """Return the quarter range."""
+    cur_date = dateType.today()
+    if cur_date.year == year:
+        return list(range(1, (cur_date.month - 1) // 3 + 1))
+    return list(range(1, 5))
