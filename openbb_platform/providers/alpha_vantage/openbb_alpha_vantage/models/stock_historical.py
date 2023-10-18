@@ -169,7 +169,7 @@ class AVStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        data: Dict,
+        query: AVStockHistoricalQueryParams, data: Dict, **kwargs: Any
     ) -> List[AVStockHistoricalData]:
         """Transform the data to the standard format."""
         data = [
