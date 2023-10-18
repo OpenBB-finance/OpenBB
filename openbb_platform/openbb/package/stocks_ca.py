@@ -12,7 +12,11 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal
 from annotated_types import Ge, Le, Gt, Lt
+<<<<<<< Updated upstream
 from typing_extensions import Annotated
+=======
+import typing_extensions
+>>>>>>> Stashed changes
 from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
 
@@ -35,11 +39,11 @@ class ROUTER_stocks_ca(Container):
     @validate
     def peers(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[Data]:
         """Stock Peers. Company peers.
@@ -48,7 +52,7 @@ class ROUTER_stocks_ca(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -56,9 +60,9 @@ class ROUTER_stocks_ca(Container):
         Returns
         -------
         OBBject
-            results : StockPeers
+            results : Union[StockPeers]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Union[Literal['fmp'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

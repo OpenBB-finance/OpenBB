@@ -12,7 +12,11 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal
 from annotated_types import Ge, Le, Gt, Lt
+<<<<<<< Updated upstream
 from typing_extensions import Annotated
+=======
+import typing_extensions
+>>>>>>> Stashed changes
 from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
 

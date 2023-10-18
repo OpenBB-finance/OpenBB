@@ -12,7 +12,11 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal
 from annotated_types import Ge, Le, Gt, Lt
+<<<<<<< Updated upstream
 from typing_extensions import Annotated
+=======
+import typing_extensions
+>>>>>>> Stashed changes
 from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
 
@@ -68,7 +72,7 @@ class ROUTER_qa(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
         """Get the Kurtosis.
 
@@ -177,8 +181,8 @@ class ROUTER_qa(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
-        quantile_pct: Annotated[float, Ge(ge=0)] = 0.5,
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
+        quantile_pct: typing_extensions.Annotated[float, Ge(ge=0)] = 0.5,
     ) -> OBBject[List[Data]]:
         """Get Quantile.
 
@@ -217,7 +221,7 @@ class ROUTER_qa(Container):
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         rfr: float = 0.0,
-        window: Annotated[int, Gt(gt=0)] = 252,
+        window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
     ) -> OBBject[List[Data]]:
         """Get Sharpe Ratio.
 
@@ -255,7 +259,7 @@ class ROUTER_qa(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
         """Get Skewness.
 
@@ -291,7 +295,7 @@ class ROUTER_qa(Container):
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         target_return: float = 0.0,
-        window: Annotated[int, Gt(gt=0)] = 252,
+        window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
     ) -> OBBject[List[Data]]:
         """Get Sortino Ratio.
@@ -364,7 +368,7 @@ class ROUTER_qa(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
     ) -> OBBject[UnitRootModel]:
         """Get Unit Root Test.
