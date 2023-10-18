@@ -1,6 +1,8 @@
 """Query executor module."""
 from typing import Any, Dict, Optional, Type
 
+from pydantic import SecretStr
+
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
@@ -33,22 +35,29 @@ class QueryExecutor:
         return provider.fetcher_dict[model_name]
 
     @staticmethod
-    def verify_credentials(provider: Provider, credentials: Optional[Dict[str, str]]):
-        """Verify credentials to match provider requirements."""
+    def filter_credentials(
+        provider: Provider, credentials: Optional[Dict[str, SecretStr]]
+    ) -> Dict[str, str]:
+        """Filter credentials and check if they match provider requirements."""
         if provider.required_credentials is not None:
             if credentials is None:
                 credentials = {}
+
+            filtered_credentials = {}
             for c in provider.required_credentials:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
                     raise ProviderError(f"Missing credential '{c}'.")
+                filtered_credentials[c] = credential_value.get_secret_value()
+
+        return filtered_credentials
 
     def execute(
         self,
         provider_name: str,
         model_name: str,
         params: Dict[str, Any],
-        credentials: Optional[Dict[str, str]] = None,
+        credentials: Optional[Dict[str, SecretStr]] = None,
         **kwargs: Any,
     ) -> Any:
         """Execute query.
@@ -61,7 +70,7 @@ class QueryExecutor:
             Name of the model, for example: "StockHistorical".
         params : Dict[str, Any]
             Query parameters, for example: {"symbol": "AAPL"}
-        credentials : Optional[Dict[str, str]], optional
+        credentials : Optional[Dict[str, SecretStr]], optional
             Credentials for the provider, by default None
             For example, {"fmp_api_key": "1234"}.
 
@@ -71,10 +80,10 @@ class QueryExecutor:
             Query result.
         """
         provider = self.get_provider(provider_name)
-        self.verify_credentials(provider, credentials)
+        filtered_credentials = self.filter_credentials(provider, credentials)
         fetcher = self.get_fetcher(provider, model_name)
 
         try:
-            return fetcher.fetch_data(params, credentials, **kwargs)
+            return fetcher.fetch_data(params, filtered_credentials, **kwargs)
         except Exception as e:
             raise ProviderError(e) from e

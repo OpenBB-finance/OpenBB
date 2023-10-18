@@ -13,6 +13,7 @@ from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.env import Env
+from pydantic import SecretStr
 from requests import get, post, put
 
 
@@ -81,7 +82,6 @@ class HubService:
             hub_user_settings = self._get_user_settings(self._session)
             if hub_user_settings:
                 profile = Profile(
-                    active=True,
                     hub_session=self._session,
                 )
                 credentials = self.hub2sdk(hub_user_settings)
@@ -155,7 +155,7 @@ class HubService:
 
     def _post_logout(self, session: HubSession) -> bool:
         """Post logout."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -176,7 +176,7 @@ class HubService:
 
     def _get_user_settings(self, session: HubSession) -> HubUserSettings:
         """Get user settings."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -197,7 +197,7 @@ class HubService:
         self, session: HubSession, settings: HubUserSettings
     ) -> bool:
         """Put user settings."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -232,7 +232,10 @@ class HubService:
         """Convert Platform models to Hub user settings."""
 
         def get_cred(cred: str) -> Optional[str]:
-            return getattr(credentials, cred, None)
+            secret_str: Optional[SecretStr] = getattr(credentials, cred, None)
+            if secret_str:
+                return secret_str.get_secret_value()
+            return None
 
         features_keys = FeaturesKeys(
             API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
