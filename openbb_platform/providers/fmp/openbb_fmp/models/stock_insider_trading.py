@@ -69,7 +69,6 @@ class FMPStockInsiderTradingFetcher(
             page += 1
 
         return data[: query.limit]
-        # return sorted(data, key=lambda x: x["filingDate"], reverse=True)
 
     @staticmethod
     def transform_data(
