@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_futures(Container):
@@ -33,7 +45,7 @@ class ROUTER_futures(Container):
             OpenBBCustomParameter(description="Historical date to search curve for."),
         ] = None,
         provider: Optional[Literal["cboe", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Futures Historical Price. Futures historical data.
 
@@ -69,7 +81,13 @@ class ROUTER_futures(Container):
         price : Optional[float]
             The close price of the symbol.
         symbol : Optional[str]
-            The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501
+            The trading symbol for the tenor of future. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.futures.curve(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -111,7 +129,7 @@ class ROUTER_futures(Container):
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
         ] = None,
         provider: Optional[Literal["yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Futures Historical Price. Futures historical data.
 
@@ -167,7 +185,13 @@ class ROUTER_futures(Container):
         close : float
             The close price of the symbol.
         volume : float
-            The volume of the symbol."""  # noqa: E501
+            The volume of the symbol.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.futures.load(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

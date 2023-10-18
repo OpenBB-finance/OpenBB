@@ -1,16 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from annotated_types import Ge
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_stocks(Container):
@@ -49,7 +60,7 @@ class ROUTER_stocks(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Info. Get general price and performance metrics of a stock.
 
@@ -139,7 +150,13 @@ class ROUTER_stocks(Container):
         iv90_annual_high : Optional[float]
             The 90-day high of implied volatility. (provider: cboe)
         hv90_annual_high : Optional[float]
-            The 90-day high of realized volatility. (provider: cboe)"""  # noqa: E501
+            The 90-day high of realized volatility. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.info(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -183,7 +200,7 @@ class ROUTER_stocks(Container):
         provider: Optional[
             Literal["alpha_vantage", "cboe", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Historical price. Load stock data for a specific ticker.
 
@@ -314,6 +331,11 @@ class ROUTER_stocks(Container):
             52 week low price for the symbol. (provider: intrinio)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.load(symbol=AAPL, interval=1d)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -348,7 +370,7 @@ class ROUTER_stocks(Container):
         ] = 100,
         chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Multiples. Valuation multiples for a stock ticker.
 
@@ -500,7 +522,13 @@ class ROUTER_stocks(Container):
         roe_ttm : Optional[float]
             Return on equity calculated as trailing twelve months.
         capex_per_share_ttm : Optional[float]
-            Capital expenditures per share calculated as trailing twelve months."""  # noqa: E501
+            Capital expenditures per share calculated as trailing twelve months.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.multiples(symbol=AAPL, limit=100)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -533,7 +561,7 @@ class ROUTER_stocks(Container):
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "yfinance"]
         ] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock News. Get news for one or more stock tickers.
 
@@ -645,7 +673,13 @@ class ROUTER_stocks(Container):
         thumbnail : Optional[List]
             Thumbnail related data to the ticker news article. (provider: yfinance)
         related_tickers : Optional[str]
-            Tickers related to the news article. (provider: yfinance)"""  # noqa: E501
+            Tickers related to the news article. (provider: yfinance)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.news(symbols=AAPL,MSFT, limit=20)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -676,9 +710,9 @@ class ROUTER_stocks(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Comma separated list of symbols."),
-        ] = None,
+        ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[Union[List[Data], Data]]:
         """Stock Quote. Load stock data for a specific ticker.
 
@@ -796,7 +830,13 @@ class ROUTER_stocks(Container):
         messages : Optional[List[str]]
             Messages associated with the endpoint. (provider: intrinio)
         security : Optional[Dict[str, Any]]
-            Security details related to the quote. (provider: intrinio)"""  # noqa: E501
+            Security details related to the quote. (provider: intrinio)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.quote(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -822,7 +862,7 @@ class ROUTER_stocks(Container):
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         provider: Optional[Literal["cboe"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Search. Search for a company or stock ticker.
 
@@ -860,7 +900,13 @@ class ROUTER_stocks(Container):
         dpm_name : Optional[str]
             Name of the primary market maker. (provider: cboe)
         post_station : Optional[str]
-            Post and station location on the CBOE trading floor. (provider: cboe)"""  # noqa: E501
+            Post and station location on the CBOE trading floor. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.searc)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

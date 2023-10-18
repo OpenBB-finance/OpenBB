@@ -1,14 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_news(Container):
@@ -26,7 +39,7 @@ class ROUTER_news(Container):
             int, OpenBBCustomParameter(description="Number of articles to return.")
         ] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Global News. Global news data.
 
@@ -110,7 +123,13 @@ class ROUTER_news(Container):
         site : Optional[str]
             Site of the news. (provider: fmp)
         company : Optional[Dict[str, Any]]
-            Company details related to the news article. (provider: intrinio)"""  # noqa: E501
+            Company details related to the news article. (provider: intrinio)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.news.globalnews(limit=20)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

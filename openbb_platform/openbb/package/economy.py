@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_economy(Container):
@@ -98,7 +110,13 @@ class ROUTER_economy(Container):
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
         code : Optional[str]
-            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)"""  # noqa: E501
+            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.available_indice)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -167,7 +185,13 @@ class ROUTER_economy(Container):
         cik : int
             Central Index Key of the constituent company in the index.
         founded : Optional[Union[date, str]]
-            Founding year of the constituent company in the index."""  # noqa: E501
+            Founding year of the constituent company in the index.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.const(index=dowjones)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -261,7 +285,13 @@ class ROUTER_economy(Container):
                 Extra info.
 
         COT
-        ---"""  # noqa: E501
+        ---
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.co)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -324,7 +354,13 @@ class ROUTER_economy(Container):
         units : Optional[str]
             The units for one contract.
         symbol : Optional[str]
-            Trading symbol representing the underlying asset."""  # noqa: E501
+            Trading symbol representing the underlying asset.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.cot_searc)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -469,7 +505,13 @@ class ROUTER_economy(Container):
         date : Optional[date]
             The date of the data.
         value : Optional[float]
-            CPI value on the date."""  # noqa: E501
+            CPI value on the date.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.cpi(countries=['portugal', 'spain'], units=growth_same, frequency=monthly)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -599,7 +641,13 @@ class ROUTER_economy(Container):
         currency : Optional[str]
             Currency of the data.
         unit : Optional[str]
-            Unit of the data."""  # noqa: E501
+            Unit of the data.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.econca)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -686,7 +734,13 @@ class ROUTER_economy(Container):
         low : Optional[float]
             Low price for the interval. Only valid when interval is 1m. (provider: cboe)
         utc_datetime : Optional[datetime]
-            UTC datetime. Only valid when interval is 1m. (provider: cboe)"""  # noqa: E501
+            UTC datetime. Only valid when interval is 1m. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.european_index(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -771,7 +825,13 @@ class ROUTER_economy(Container):
         seqno : Optional[int]
             Sequence number of the last trade on the tape. (provider: cboe)
         asset_type : Optional[str]
-            Type of asset. (provider: cboe)"""  # noqa: E501
+            Type of asset. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.european_index_constituents(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -854,7 +914,13 @@ class ROUTER_economy(Container):
         date : date
             The date of the data.
         value : Optional[Annotated[float, Gt(gt=0)]]
-            Value of the index."""  # noqa: E501
+            Value of the index.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.fred_index(symbol=AAPL, limit=100)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -942,7 +1008,13 @@ class ROUTER_economy(Container):
         date : Optional[date]
             The date of the data.
         value : Optional[float]
-            Nominal GDP value on the date."""  # noqa: E501
+            Nominal GDP value on the date.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.gdpforecast(period=annual, type=real)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1022,7 +1094,13 @@ class ROUTER_economy(Container):
         date : Optional[date]
             The date of the data.
         value : Optional[float]
-            Nominal GDP value on the date."""  # noqa: E501
+            Nominal GDP value on the date.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.gdpnom(units=usd)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1101,7 +1179,13 @@ class ROUTER_economy(Container):
         date : Optional[date]
             The date of the data.
         value : Optional[float]
-            Nominal GDP value on the date."""  # noqa: E501
+            Nominal GDP value on the date.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.gdpreal(units=yoy)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1225,6 +1309,11 @@ class ROUTER_economy(Container):
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.index(symbol=AAPL)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1311,7 +1400,13 @@ class ROUTER_economy(Container):
         tick_frequency : Optional[str]
             Tick frequency for the index. Valid only for US indices. (provider: cboe)
         tick_period : Optional[str]
-            Tick period for the index. Valid only for US indices. (provider: cboe)"""  # noqa: E501
+            Tick period for the index. Valid only for US indices. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.index_searc)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1393,7 +1488,13 @@ class ROUTER_economy(Container):
         isin : Optional[str]
             ISIN code for the index. Valid only for European indices. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
-            Last trade timestamp for the index. (provider: cboe)"""  # noqa: E501
+            Last trade timestamp for the index. (provider: cboe)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.index_snapshots(region=US)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1446,7 +1547,13 @@ class ROUTER_economy(Container):
         total_equity_risk_premium : Optional[Annotated[float, Gt(gt=0)]]
             Total equity risk premium for the country.
         country_risk_premium : Optional[Annotated[float, Ge(ge=0)]]
-            Country-specific risk premium."""  # noqa: E501
+            Country-specific risk premium.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.ris)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1570,7 +1677,13 @@ class ROUTER_economy(Container):
         date : str
             The date data for the time series.
         value : float
-            The data value for the time series."""  # noqa: E501
+            The data value for the time series.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.economy.sp500_multiples(series_name=PE Ratio by Month, collapse=monthly)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

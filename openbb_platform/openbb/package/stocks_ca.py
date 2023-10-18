@@ -1,14 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_stocks_ca(Container):
@@ -59,7 +72,13 @@ class ROUTER_stocks_ca(Container):
         symbol : str
             Symbol representing the entity requested in the data.
         peers_list : List[str]
-            A list of stock peers based on sector, exchange and market cap."""  # noqa: E501
+            A list of stock peers based on sector, exchange and market cap.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.ca.peers(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

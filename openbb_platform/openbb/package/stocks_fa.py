@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_stocks_fa(Container):
@@ -63,7 +75,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet. Balance sheet statement.
 
@@ -247,7 +259,13 @@ class ROUTER_stocks_fa(Container):
         link : Optional[str]
             Link to the statement. (provider: fmp)
         final_link : Optional[str]
-            Link to the final statement. (provider: fmp)"""  # noqa: E501
+            Link to the final statement. (provider: fmp)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.balance(symbol=AAPL, period=annual, limit=12)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -278,7 +296,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
@@ -392,7 +410,13 @@ class ROUTER_stocks_fa(Container):
         growth_total_debt : float
             Growth rate of total debt.
         growth_net_debt : float
-            Growth rate of net debt."""  # noqa: E501
+            Growth rate of net debt.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.balance_growth(symbol=AAPL, limit=10)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -426,7 +450,7 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Dividend Calendar. Show Dividend Calendar for a given start and end dates.
 
@@ -472,7 +496,13 @@ class ROUTER_stocks_fa(Container):
         payment_date : Optional[date]
             Payment date of the dividend in the calendar.
         declaration_date : Optional[date]
-            Declaration date of the dividend in the calendar."""  # noqa: E501
+            Declaration date of the dividend in the calendar.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.ca)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -506,7 +536,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement. Information about the cash flow statement.
 
@@ -670,7 +700,13 @@ class ROUTER_stocks_fa(Container):
         link : Optional[str]
             Link to the statement. (provider: fmp)
         final_link : Optional[str]
-            Link to the final statement. (provider: fmp)"""  # noqa: E501
+            Link to the final statement. (provider: fmp)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.cash(symbol=AAPL, period=annual, limit=12)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -701,7 +737,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
@@ -797,7 +833,13 @@ class ROUTER_stocks_fa(Container):
         growth_capital_expenditure : float
             Growth rate of capital expenditure.
         growth_free_cash_flow : float
-            Growth rate of free cash flow."""  # noqa: E501
+            Growth rate of free cash flow.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.cash_growth(symbol=AAPL, limit=10)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -823,7 +865,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Executive Compensation. Information about the executive compensation for a given company.
 
@@ -877,7 +919,13 @@ class ROUTER_stocks_fa(Container):
         total : float
             Total compensation of the executive.
         url : str
-            URL of the filing data."""  # noqa: E501
+            URL of the filing data.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.comp(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -910,7 +958,7 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Split Calendar. Show Stock Split Calendar.
 
@@ -950,7 +998,13 @@ class ROUTER_stocks_fa(Container):
         numerator : float
             Numerator of the stock splits.
         denominator : float
-            Denominator of the stock splits."""  # noqa: E501
+            Denominator of the stock splits.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.comspli)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -976,7 +1030,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Dividends. Historical dividends data for a given company.
 
@@ -1018,7 +1072,13 @@ class ROUTER_stocks_fa(Container):
         payment_date : Optional[date]
             Payment date of the historical dividends.
         declaration_date : Optional[date]
-            Declaration date of the historical dividends."""  # noqa: E501
+            Declaration date of the historical dividends.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.divs(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1047,7 +1107,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Earnings Calendar. Earnings calendar for a given company.
 
@@ -1095,7 +1155,13 @@ class ROUTER_stocks_fa(Container):
         updated_from_date : Optional[date]
             Updated from date of the earnings calendar.
         fiscal_date_ending : date
-            Fiscal date ending of the earnings calendar."""  # noqa: E501
+            Fiscal date ending of the earnings calendar.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.earning(symbol=AAPL, limit=50)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1121,7 +1187,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Employees. Historical number of employees.
 
@@ -1167,7 +1233,13 @@ class ROUTER_stocks_fa(Container):
         employee_count : int
             Count of employees of the company.
         source : str
-            Source URL which retrieves this data for the company."""  # noqa: E501
+            Source URL which retrieves this data for the company.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.emp(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1192,7 +1264,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
@@ -1200,7 +1272,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Analyst Estimates. Analyst stock recommendations.
 
@@ -1276,7 +1348,13 @@ class ROUTER_stocks_fa(Container):
         number_analyst_estimated_revenue : int
             Number of analysts who estimated revenue.
         number_analysts_estimated_eps : int
-            Number of analysts who estimated EPS."""  # noqa: E501
+            Number of analysts who estimated EPS.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.est(symbol=AAPL, period=annual, limit=30)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1307,7 +1385,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Company Filings. Company filings data.
 
@@ -1355,7 +1433,13 @@ class ROUTER_stocks_fa(Container):
         accepted_date : Optional[datetime]
             Accepted date of the SEC filing. (provider: fmp)
         final_link : Optional[str]
-            Final link of the SEC filing. (provider: fmp)"""  # noqa: E501
+            Final link of the SEC filing. (provider: fmp)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.filings(symbol=AAPL, limit=100)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1389,7 +1473,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement. Report on a company's finanacial performance.
 
@@ -1553,7 +1637,13 @@ class ROUTER_stocks_fa(Container):
         nonoperating_income_loss : Optional[float]
             Nonoperating Income Loss (provider: polygon)
         preferred_stock_dividends_and_other_adjustments : Optional[float]
-            Preferred stock dividends and other adjustments (provider: polygon)"""  # noqa: E501
+            Preferred stock dividends and other adjustments (provider: polygon)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.income(symbol=AAPL, period=annual, limit=12)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1588,7 +1678,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement Growth. Information about the growth of the company income statement.
 
@@ -1678,7 +1768,13 @@ class ROUTER_stocks_fa(Container):
         growth_weighted_average_shs_out : float
             Growth rate of weighted average shares outstanding.
         growth_weighted_average_shs_out_dil : float
-            Growth rate of diluted weighted average shares outstanding."""  # noqa: E501
+            Growth rate of diluted weighted average shares outstanding.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.income_growth(symbol=AAPL, limit=10, period=annual)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1738,7 +1834,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Insider Trading. Information about insider trading.
 
@@ -1800,7 +1896,13 @@ class ROUTER_stocks_fa(Container):
         security_name : str
             Security name of the stock insider trading.
         link : str
-            Link of the stock insider trading."""  # noqa: E501
+            Link of the stock insider trading.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.ins(symbol=AAPL, transactionType=['P-Purchase'])
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -1835,7 +1937,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Institutional Ownership. Institutional ownership data.
 
@@ -1940,6 +2042,11 @@ class ROUTER_stocks_fa(Container):
             Put-call ratio on the previous reporting date.
         put_call_ratio_change : float
             Change in the put-call ratio between the current and previous reporting dates.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.ins_own(symbol=AAPL)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1975,7 +2082,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Key Metrics. Key metrics for a given company.
 
@@ -2131,7 +2238,13 @@ class ROUTER_stocks_fa(Container):
         capex_per_share : Optional[float]
             Capital expenditures per share
         calendar_year : Optional[int]
-            Calendar year. (provider: fmp)"""  # noqa: E501
+            Calendar year. (provider: fmp)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.metrics(symbol=AAPL, period=annual, limit=100)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2158,7 +2271,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Key Executives. Key executives for a given company.
 
@@ -2200,7 +2313,13 @@ class ROUTER_stocks_fa(Container):
         year_born : Optional[int]
             Birth year of the key executive.
         title_since : Optional[int]
-            Date the tile was held since."""  # noqa: E501
+            Date the tile was held since.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.mgmt(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2225,7 +2344,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[Data]:
         """Company Overview. General information about a company.
 
@@ -2325,7 +2444,13 @@ class ROUTER_stocks_fa(Container):
         is_adr : bool
             If the company is an ADR.
         is_fund : bool
-            If the company is a fund."""  # noqa: E501
+            If the company is a fund.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.overview(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2358,7 +2483,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Ownership. Information about the company ownership.
 
@@ -2468,7 +2593,13 @@ class ROUTER_stocks_fa(Container):
         change_in_performance : float
             Change in performance of the stock ownership.
         is_counted_for_performance : bool
-            Is the stock ownership counted for performance."""  # noqa: E501
+            Is the stock ownership counted for performance.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.own(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2495,7 +2626,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[Data]:
         """Price Target Consensus. Price target consensus data.
 
@@ -2533,7 +2664,13 @@ class ROUTER_stocks_fa(Container):
         target_consensus : Optional[float]
             Consensus target of the price target consensus.
         target_median : Optional[float]
-            Median target of the price target consensus."""  # noqa: E501
+            Median target of the price target consensus.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.pt(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2558,7 +2695,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Price Target. Price target data.
 
@@ -2616,7 +2753,13 @@ class ROUTER_stocks_fa(Container):
         previous_grade : Optional[str]
             Previous grade (provider: fmp)
         grading_company : Optional[str]
-            Grading company (provider: fmp)"""  # noqa: E501
+            Grading company (provider: fmp)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.pta(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2649,7 +2792,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Extensive set of ratios over time. Financial ratios for a given company.
 
@@ -2797,7 +2940,13 @@ class ROUTER_stocks_fa(Container):
         enterprise_value_multiple : Optional[float]
             Enterprise value multiple.
         price_fair_value : Optional[float]
-            Price fair value."""  # noqa: E501
+            Price fair value.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.ratios(symbol=AAPL, period=annual, limit=12)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2824,7 +2973,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
@@ -2832,7 +2981,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Revenue Geographic. Geographic revenue data.
 
@@ -2878,7 +3027,13 @@ class ROUTER_stocks_fa(Container):
         japan : Optional[int]
             Revenue from the the Japan segment.
         rest_of_asia_pacific : Optional[int]
-            Revenue from the the Rest of Asia Pacific segment."""  # noqa: E501
+            Revenue from the the Rest of Asia Pacific segment.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.revgeo(symbol=AAPL, period=annual, structure=flat)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2905,7 +3060,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
@@ -2913,7 +3068,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Revenue Business Line. Business line revenue data.
 
@@ -2949,7 +3104,13 @@ class ROUTER_stocks_fa(Container):
         date : date
             The date of the data.
         business_line : Dict[str, int]
-            Day level data containing the revenue of the business line."""  # noqa: E501
+            Day level data containing the revenue of the business line.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.revseg(symbol=AAPL, period=annual, structure=flat)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -2976,7 +3137,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Share Statistics. Share statistics for a given company.
 
@@ -3016,7 +3177,13 @@ class ROUTER_stocks_fa(Container):
         outstanding_shares : Optional[float]
             Total number of shares of a publicly-traded company.
         source : Optional[str]
-            Source of the received data."""  # noqa: E501
+            Source of the received data.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.shrs(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -3041,7 +3208,7 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Stock Splits. Historical stock splits data.
 
@@ -3077,7 +3244,13 @@ class ROUTER_stocks_fa(Container):
         numerator : float
             Numerator of the historical stock splits.
         denominator : float
-            Denominator of the historical stock splits."""  # noqa: E501
+            Denominator of the historical stock splits.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.split(symbol=AAPL)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -3112,7 +3285,7 @@ class ROUTER_stocks_fa(Container):
             ),
         ] = 1,
         provider: Optional[Literal["fmp"]] = None,
-        **kwargs,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Earnings Call Transcript. Earnings call transcript for a given company.
 
@@ -3154,7 +3327,13 @@ class ROUTER_stocks_fa(Container):
         date : datetime
             The date of the data.
         content : str
-            Content of the earnings call transcript."""  # noqa: E501
+            Content of the earnings call transcript.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.stocks.fa.transcript(symbol=AAPL, year=1, quarter=1)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

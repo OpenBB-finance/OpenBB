@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_forex(Container):
@@ -118,6 +130,11 @@ class ROUTER_forex(Container):
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.forex.load(symbol=EURUSD)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -211,7 +228,13 @@ class ROUTER_forex(Container):
         last_updated_utc : Optional[datetime]
             The last updated timestamp in UTC. (provider: polygon)
         delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC. (provider: polygon)"""  # noqa: E501
+            The delisted timestamp in UTC. (provider: polygon)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.forex.pair)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

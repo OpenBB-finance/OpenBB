@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Optional, Union
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
 from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_fixedincome(Container):
@@ -84,7 +96,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            AMERIBOR rate."""  # noqa: E501
+            AMERIBOR rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.ameribo)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -159,7 +177,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            ESTR rate."""  # noqa: E501
+            ESTR rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.est)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -234,7 +258,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            FED rate."""  # noqa: E501
+            FED rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.fe)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -307,7 +337,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            IORB rate."""  # noqa: E501
+            IORB rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.ior)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -377,7 +413,13 @@ class ROUTER_fixedincome(Container):
         range_low : Optional[float]
             Low projection of rates.
         central_tendency_low : Optional[float]
-            Central tendency of low projection of rates."""  # noqa: E501
+            Central tendency of low projection of rates.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.projection)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -448,7 +490,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            SOFR rate."""  # noqa: E501
+            SOFR rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.sof)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -522,7 +570,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Optional[float]
-            SONIA rate."""  # noqa: E501
+            SONIA rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.soni)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -612,7 +666,13 @@ class ROUTER_fixedincome(Container):
         year_20 : float
             20 year treasury rate.
         year_30 : float
-            30 year treasury rate."""  # noqa: E501
+            30 year treasury rate.
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.treasur)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -678,7 +738,13 @@ class ROUTER_fixedincome(Container):
         maturity : float
             Maturity of the treasury rate in years.
         rate : float
-            Associated rate given in decimal form (0.05 is 5%)"""  # noqa: E501
+            Associated rate given in decimal form (0.05 is 5%)
+        Example
+        --------
+
+        >>> from openbb import obb
+        >>> obb.fixedincome.ycr)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
