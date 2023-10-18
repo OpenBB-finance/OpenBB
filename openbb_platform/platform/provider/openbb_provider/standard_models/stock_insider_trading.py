@@ -5,7 +5,7 @@ from datetime import date, datetime, time
 from typing import List, Literal, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator, StrictInt
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
@@ -39,6 +39,10 @@ class StockInsiderTradingQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     transaction_type: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
         default=["P-Purchase"], description="Type of the transaction."
+    )
+    limit: StrictInt = Field(
+        default=100,
+        description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
 
     @model_validator(mode="after")

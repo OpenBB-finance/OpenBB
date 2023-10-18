@@ -59,15 +59,26 @@ class FMPStockInsiderTradingFetcher(
 
         data: List[Dict] = []
 
-        for page in range(4):
+        # for page in range(4):
+        #     url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
+        #     data.extend(get_data_many(url, **kwargs))
+
+        limit_reached = 0
+        page = 0
+
+        while limit_reached <= query.limit:
             url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
             data.extend(get_data_many(url, **kwargs))
+            limit_reached += len(data)
+            page += 1
 
-        return sorted(data, key=lambda x: x["filingDate"], reverse=True)
+        return data[:query.limit]
+        # return sorted(data, key=lambda x: x["filingDate"], reverse=True)
 
     @staticmethod
     def transform_data(
         query: FMPStockInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
+        data = sorted(data, key=lambda x: x["filingDate"], reverse=True)
         return [FMPStockInsiderTradingData.model_validate(d) for d in data]
