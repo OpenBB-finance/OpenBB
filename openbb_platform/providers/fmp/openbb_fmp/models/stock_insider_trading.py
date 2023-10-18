@@ -68,7 +68,7 @@ class FMPStockInsiderTradingFetcher(
             limit_reached += len(data)
             page += 1
 
-        return data[: query.limit]
+        return data[:query.limit]
 
     @staticmethod
     def transform_data(
