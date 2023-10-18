@@ -111,9 +111,9 @@ class ROUTER_economy(Container):
             Short name of the stock exchange where the index is listed. (provider: fmp)
         code : Optional[Union[str]]
             ID code for keying the index in the OpenBB Terminal. (provider: yfinance)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.available_indices()
         """  # noqa: E501
@@ -186,9 +186,9 @@ class ROUTER_economy(Container):
             Central Index Key of the constituent company in the index.
         founded : Optional[Union[date, str]]
             Founding year of the constituent company in the index.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.const(index=dowjones)
         """  # noqa: E501
@@ -286,9 +286,9 @@ class ROUTER_economy(Container):
 
         COT
         ---
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.cot()
         """  # noqa: E501
@@ -357,9 +357,9 @@ class ROUTER_economy(Container):
             The units for one contract.
         symbol : Optional[Union[str]]
             Trading symbol representing the underlying asset.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.cot_search()
         """  # noqa: E501
@@ -508,9 +508,9 @@ class ROUTER_economy(Container):
             The date of the data.
         value : Optional[Union[float]]
             CPI value on the date.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.cpi(countries=['portugal', 'spain'], units=growth_same, frequency=monthly)
         """  # noqa: E501
@@ -644,9 +644,9 @@ class ROUTER_economy(Container):
             Currency of the data.
         unit : Optional[Union[str]]
             Unit of the data.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.econcal()
         """  # noqa: E501
@@ -737,9 +737,9 @@ class ROUTER_economy(Container):
             Low price for the interval. Only valid when interval is 1m. (provider: cboe)
         utc_datetime : Optional[Union[datetime]]
             UTC datetime. Only valid when interval is 1m. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.european_index(symbol=AAPL)
         """  # noqa: E501
@@ -828,9 +828,9 @@ class ROUTER_economy(Container):
             Sequence number of the last trade on the tape. (provider: cboe)
         asset_type : Optional[Union[str]]
             Type of asset. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.european_index_constituents(symbol=AAPL)
         """  # noqa: E501
@@ -917,9 +917,9 @@ class ROUTER_economy(Container):
             The date of the data.
         value : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
             Value of the index.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.fred_index(symbol=AAPL, limit=100)
         """  # noqa: E501
@@ -1011,9 +1011,9 @@ class ROUTER_economy(Container):
             The date of the data.
         value : Optional[Union[float]]
             Nominal GDP value on the date.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.gdpforecast(period=annual, type=real)
         """  # noqa: E501
@@ -1097,9 +1097,9 @@ class ROUTER_economy(Container):
             The date of the data.
         value : Optional[Union[float]]
             Nominal GDP value on the date.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.gdpnom(units=usd)
         """  # noqa: E501
@@ -1182,9 +1182,9 @@ class ROUTER_economy(Container):
             The date of the data.
         value : Optional[Union[float]]
             Nominal GDP value on the date.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.gdpreal(units=yoy)
         """  # noqa: E501
@@ -1311,9 +1311,9 @@ class ROUTER_economy(Container):
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.index(symbol=AAPL)
         """  # noqa: E501
@@ -1405,9 +1405,9 @@ class ROUTER_economy(Container):
             Tick frequency for the index. Valid only for US indices. (provider: cboe)
         tick_period : Optional[Union[str]]
             Tick period for the index. Valid only for US indices. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.index_search()
         """  # noqa: E501
@@ -1493,9 +1493,9 @@ class ROUTER_economy(Container):
             ISIN code for the index. Valid only for European indices. (provider: cboe)
         last_trade_timestamp : Optional[Union[datetime]]
             Last trade timestamp for the index. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.index_snapshots(region=US)
         """  # noqa: E501
@@ -1552,9 +1552,9 @@ class ROUTER_economy(Container):
             Total equity risk premium for the country.
         country_risk_premium : Optional[Union[typing_extensions.Annotated[float, Ge(ge=0)]]]
             Country-specific risk premium.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.risk()
         """  # noqa: E501
@@ -1682,9 +1682,9 @@ class ROUTER_economy(Container):
             The date data for the time series.
         value : float
             The data value for the time series.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.economy.sp500_multiples(series_name=PE Ratio by Month, collapse=monthly)
         """  # noqa: E501

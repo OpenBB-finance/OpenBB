@@ -97,9 +97,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             AMERIBOR rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.ameribor()
         """  # noqa: E501
@@ -178,9 +178,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             ESTR rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.estr()
         """  # noqa: E501
@@ -259,9 +259,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             FED rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.fed()
         """  # noqa: E501
@@ -338,9 +338,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             IORB rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.iorb()
         """  # noqa: E501
@@ -414,9 +414,9 @@ class ROUTER_fixedincome(Container):
             Low projection of rates.
         central_tendency_low : Union[float]
             Central tendency of low projection of rates.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.projections()
         """  # noqa: E501
@@ -491,9 +491,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             SOFR rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.sofr()
         """  # noqa: E501
@@ -571,9 +571,9 @@ class ROUTER_fixedincome(Container):
             The date of the data.
         rate : Union[float]
             SONIA rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.sonia()
         """  # noqa: E501
@@ -667,9 +667,9 @@ class ROUTER_fixedincome(Container):
             20 year treasury rate.
         year_30 : float
             30 year treasury rate.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.treasury()
         """  # noqa: E501
@@ -739,9 +739,9 @@ class ROUTER_fixedincome(Container):
             Maturity of the treasury rate in years.
         rate : float
             Associated rate given in decimal form (0.05 is 5%)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.fixedincome.ycrv()
         """  # noqa: E501

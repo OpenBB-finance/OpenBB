@@ -82,9 +82,9 @@ class ROUTER_futures(Container):
             The close price of the symbol.
         symbol : Optional[Union[str]]
             The trading symbol for the tenor of future. (provider: cboe)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.futures.curve(symbol=AAPL)
         """  # noqa: E501
@@ -186,9 +186,9 @@ class ROUTER_futures(Container):
             The close price of the symbol.
         volume : float
             The volume of the symbol.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.futures.load(symbol=AAPL)
         """  # noqa: E501

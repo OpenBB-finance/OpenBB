@@ -130,9 +130,9 @@ class ROUTER_forex(Container):
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Union[typing_extensions.Annotated[int, Gt(gt=0)]]]
             Number of transactions for the symbol in the time period. (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.forex.load(symbol=EURUSD)
         """  # noqa: E501
@@ -231,9 +231,9 @@ class ROUTER_forex(Container):
             The last updated timestamp in UTC. (provider: polygon)
         delisted_utc : Optional[Union[datetime]]
             The delisted timestamp in UTC. (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.forex.pairs()
         """  # noqa: E501

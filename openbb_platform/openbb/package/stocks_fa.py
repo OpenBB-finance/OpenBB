@@ -260,9 +260,9 @@ class ROUTER_stocks_fa(Container):
             Link to the statement. (provider: fmp)
         final_link : Optional[Union[str]]
             Link to the final statement. (provider: fmp)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.balance(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
@@ -411,9 +411,9 @@ class ROUTER_stocks_fa(Container):
             Growth rate of total debt.
         growth_net_debt : float
             Growth rate of net debt.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.balance_growth(symbol=AAPL, limit=10)
         """  # noqa: E501
@@ -497,9 +497,9 @@ class ROUTER_stocks_fa(Container):
             Payment date of the dividend in the calendar.
         declaration_date : Optional[Union[date]]
             Declaration date of the dividend in the calendar.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.cal()
         """  # noqa: E501
@@ -701,9 +701,9 @@ class ROUTER_stocks_fa(Container):
             Link to the statement. (provider: fmp)
         final_link : Optional[Union[str]]
             Link to the final statement. (provider: fmp)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.cash(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
@@ -834,9 +834,9 @@ class ROUTER_stocks_fa(Container):
             Growth rate of capital expenditure.
         growth_free_cash_flow : float
             Growth rate of free cash flow.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.cash_growth(symbol=AAPL, limit=10)
         """  # noqa: E501
@@ -920,9 +920,9 @@ class ROUTER_stocks_fa(Container):
             Total compensation of the executive.
         url : str
             URL of the filing data.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.comp(symbol=AAPL)
         """  # noqa: E501
@@ -999,9 +999,9 @@ class ROUTER_stocks_fa(Container):
             Numerator of the stock splits.
         denominator : float
             Denominator of the stock splits.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.comsplit()
         """  # noqa: E501
@@ -1073,9 +1073,9 @@ class ROUTER_stocks_fa(Container):
             Payment date of the historical dividends.
         declaration_date : Optional[Union[date]]
             Declaration date of the historical dividends.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.divs(symbol=AAPL)
         """  # noqa: E501
@@ -1156,9 +1156,9 @@ class ROUTER_stocks_fa(Container):
             Updated from date of the earnings calendar.
         fiscal_date_ending : date
             Fiscal date ending of the earnings calendar.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.earning(symbol=AAPL, limit=50)
         """  # noqa: E501
@@ -1234,9 +1234,9 @@ class ROUTER_stocks_fa(Container):
             Count of employees of the company.
         source : str
             Source URL which retrieves this data for the company.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.emp(symbol=AAPL)
         """  # noqa: E501
@@ -1349,9 +1349,9 @@ class ROUTER_stocks_fa(Container):
             Number of analysts who estimated revenue.
         number_analysts_estimated_eps : int
             Number of analysts who estimated EPS.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.est(symbol=AAPL, period=annual, limit=30)
         """  # noqa: E501
@@ -1434,9 +1434,9 @@ class ROUTER_stocks_fa(Container):
             Accepted date of the SEC filing. (provider: fmp)
         final_link : Optional[Union[str]]
             Final link of the SEC filing. (provider: fmp)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.filings(symbol=AAPL, limit=100)
         """  # noqa: E501
@@ -1638,9 +1638,9 @@ class ROUTER_stocks_fa(Container):
             Nonoperating Income Loss (provider: polygon)
         preferred_stock_dividends_and_other_adjustments : Optional[Union[float]]
             Preferred stock dividends and other adjustments (provider: polygon)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.income(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
@@ -1769,9 +1769,9 @@ class ROUTER_stocks_fa(Container):
             Growth rate of weighted average shares outstanding.
         growth_weighted_average_shs_out_dil : float
             Growth rate of diluted weighted average shares outstanding.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.income_growth(symbol=AAPL, limit=10, period=annual)
         """  # noqa: E501
@@ -1897,9 +1897,9 @@ class ROUTER_stocks_fa(Container):
             Security name of the stock insider trading.
         link : str
             Link of the stock insider trading.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.ins(symbol=AAPL, transactionType=['P-Purchase'])
         """  # noqa: E501
@@ -2042,9 +2042,9 @@ class ROUTER_stocks_fa(Container):
             Put-call ratio on the previous reporting date.
         put_call_ratio_change : float
             Change in the put-call ratio between the current and previous reporting dates.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.ins_own(symbol=AAPL)
         """  # noqa: E501
@@ -2239,9 +2239,9 @@ class ROUTER_stocks_fa(Container):
             Capital expenditures per share
         calendar_year : Optional[int]
             Calendar year. (provider: fmp)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.metrics(symbol=AAPL, period=annual, limit=100)
         """  # noqa: E501
@@ -2314,9 +2314,9 @@ class ROUTER_stocks_fa(Container):
             Birth year of the key executive.
         title_since : Optional[int]
             Date the tile was held since.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.mgmt(symbol=AAPL)
         """  # noqa: E501
@@ -2445,9 +2445,9 @@ class ROUTER_stocks_fa(Container):
             If the company is an ADR.
         is_fund : bool
             If the company is a fund.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.overview(symbol=AAPL)
         """  # noqa: E501
@@ -2594,9 +2594,9 @@ class ROUTER_stocks_fa(Container):
             Change in performance of the stock ownership.
         is_counted_for_performance : bool
             Is the stock ownership counted for performance.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.own(symbol=AAPL)
         """  # noqa: E501
@@ -2665,9 +2665,9 @@ class ROUTER_stocks_fa(Container):
             Consensus target of the price target consensus.
         target_median : Optional[Union[float]]
             Median target of the price target consensus.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.pt(symbol=AAPL)
         """  # noqa: E501
@@ -2754,9 +2754,9 @@ class ROUTER_stocks_fa(Container):
             Previous grade (provider: fmp)
         grading_company : Optional[Union[str]]
             Grading company (provider: fmp)
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.pta(symbol=AAPL)
         """  # noqa: E501
@@ -2941,9 +2941,9 @@ class ROUTER_stocks_fa(Container):
             Enterprise value multiple.
         price_fair_value : Optional[Union[float]]
             Price fair value.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.ratios(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
@@ -3028,9 +3028,9 @@ class ROUTER_stocks_fa(Container):
             Revenue from the the Japan segment.
         rest_of_asia_pacific : Optional[int]
             Revenue from the the Rest of Asia Pacific segment.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.revgeo(symbol=AAPL, period=annual, structure=flat)
         """  # noqa: E501
@@ -3105,9 +3105,9 @@ class ROUTER_stocks_fa(Container):
             The date of the data.
         business_line : Dict[str, int]
             Day level data containing the revenue of the business line.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.revseg(symbol=AAPL, period=annual, structure=flat)
         """  # noqa: E501
@@ -3178,9 +3178,9 @@ class ROUTER_stocks_fa(Container):
             Total number of shares of a publicly-traded company.
         source : Optional[Union[str]]
             Source of the received data.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.shrs(symbol=AAPL)
         """  # noqa: E501
@@ -3245,9 +3245,9 @@ class ROUTER_stocks_fa(Container):
             Numerator of the historical stock splits.
         denominator : float
             Denominator of the historical stock splits.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.split(symbol=AAPL)
         """  # noqa: E501
@@ -3328,9 +3328,9 @@ class ROUTER_stocks_fa(Container):
             The date of the data.
         content : str
             Content of the earnings call transcript.
-        Example
-        --------
 
+        Example
+        -------
         >>> from openbb import obb
         >>> obb.stocks.fa.transcript(symbol=AAPL, year=1, quarter=1)
         """  # noqa: E501
