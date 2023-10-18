@@ -233,9 +233,7 @@ class HubService:
 
         def get_cred(cred: str) -> Optional[str]:
             secret_str: Optional[SecretStr] = getattr(credentials, cred, None)
-            if secret_str:
-                return secret_str.get_secret_value()
-            return None
+            return secret_str.get_secret_value() if secret_str else None
 
         features_keys = FeaturesKeys(
             API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
