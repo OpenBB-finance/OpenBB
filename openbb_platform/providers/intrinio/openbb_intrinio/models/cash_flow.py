@@ -24,6 +24,7 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default="reported", description="Type of the statement to be fetched."
     )
     year: Optional[int] = Field(
+        default=None,
         description="Year of the statement to be fetched.",
     )
 
@@ -117,7 +118,6 @@ class IntrinioCashFlowStatementFetcher(
         query: IntrinioCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
-
         transformed_data = []
         data_key = f"{query.type}_financials"
         tag_key = "xbrl_tag" if query.type == "reported" else "data_tag"
