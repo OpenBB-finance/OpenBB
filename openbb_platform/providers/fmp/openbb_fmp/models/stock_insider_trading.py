@@ -59,10 +59,6 @@ class FMPStockInsiderTradingFetcher(
 
         data: List[Dict] = []
 
-        # for page in range(4):
-        #     url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
-        #     data.extend(get_data_many(url, **kwargs))
-
         limit_reached = 0
         page = 0
 
@@ -72,7 +68,7 @@ class FMPStockInsiderTradingFetcher(
             limit_reached += len(data)
             page += 1
 
-        return data[:query.limit]
+        return data[: query.limit]
         # return sorted(data, key=lambda x: x["filingDate"], reverse=True)
 
     @staticmethod
