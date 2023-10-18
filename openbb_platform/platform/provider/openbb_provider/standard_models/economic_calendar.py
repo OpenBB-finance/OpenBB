@@ -5,9 +5,9 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams

@@ -2,9 +2,8 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-from dateutil import parser
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
