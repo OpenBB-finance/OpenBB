@@ -444,9 +444,12 @@ def test_economy_gdpforecast(params, obb):
             {
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "country": "portugal",
-                "importance": "Low",
-                "group": "gdp",
+                "country": "mexico,sweden",
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
             }
         ),
     ],

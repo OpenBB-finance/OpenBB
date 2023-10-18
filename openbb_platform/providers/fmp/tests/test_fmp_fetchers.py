@@ -14,6 +14,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
+from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -451,5 +452,14 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPFinancialRatiosFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = FMPEconomicCalendarFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
