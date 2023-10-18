@@ -66,9 +66,10 @@ jobs:
             pip uninstall -y openbb_provider
             cd openbb_platform/platform/core
             pip install -U .
-            cd ../provider/
+            cd -
+            cd openbb_platform/platform/provider
             pip install -U .
-            cd ../../../
+            cd -
             pip install -U pydantic
 
       - name: Populate System Setting Files
