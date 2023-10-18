@@ -50,7 +50,7 @@ openbb-econometrics = { path = "./extensions/econometrics", optional = true, dev
 
 
 def build():
-    """ Build the Platform package."""
+    """Build the Platform package."""
 
     original_pyproject = PYPROJECT.read_text()
 
@@ -73,6 +73,6 @@ def build():
     with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
         f.write(original_pyproject)
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     build()
