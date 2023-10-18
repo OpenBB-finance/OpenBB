@@ -58,7 +58,9 @@ class YFinanceFuturesCurveFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceFuturesCurveQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""
         return [
