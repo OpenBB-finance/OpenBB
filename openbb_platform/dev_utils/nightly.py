@@ -1,7 +1,8 @@
-import toml
-import sys
 import subprocess
+import sys
 from pathlib import Path
+
+import toml
 
 # from openbb_platform.dev_install import (
 #     PLATFORM_PATH,
