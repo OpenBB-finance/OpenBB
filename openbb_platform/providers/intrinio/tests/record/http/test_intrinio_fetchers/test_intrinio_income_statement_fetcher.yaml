@@ -9,33 +9,29 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2022-FY/reported_financials?api_key=MOCK_API_KEY
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-income_statement-2022-FY/reported_financials?api_key=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAD4rLWUAA7RY247bNhD9FUHoQwrIie6W3CfXuXTRza6xcbJpi8KgxfGaWJlSSMpYZ2Ggv9Hf
-        65d0KN/XTFJVjl9skTPiOaOZMyM/2gLKQiig4ynjhGeM5NLu/fFoP0xEPlbkzu492vWXPSBy1udU
-        f736VLEFyYEr2VcDIsSS8bsPJK/AdmxO5rAxtwinVqZ/wN4DTSYkx7O0FYUJU7hScfzq2ZWkeEEm
-        UgmS4cIU4YBjS3SH2sFz0KVUM7sXrBx7UR/Z84M4jN3689xFAzYHLlnBkQmv8nzlmOi8JeIeFJnk
-        8A6ySjDFQA4qIRDinsTeyJI7q1YEfCOBMI6SpgT6WVZUGM8byABjixivQJ0w2FpZYmfmWBxUKxKB
-        kUTiJWFTEhd8gXALsbyCA9Db1bbBDk04w7R5slwVHM+gsI/1aa58AE4LYfGCd2rbg4i3YxGZWAR+
-        N2ycMtdqBqIvJahT+PWela2XLVIbtYIdG5PE8/2gcaabEY8KRfJzIu6aEHtBFLrROdQFkyj7/gKT
-        GEn4btKcxFAUJQi1HCIWhdKvZb9ER3VUrFsrxyq1Xa35sLVsrzWpsYZ9z+u2yH7To1gXgC7fM6aU
-        55rgR2HoN9f7LyJfF8K5kZtbrdcNNnnUGPpTwOcAuW+n/oE2Rn43apzt2045JEtdj1/upOXa4Ah4
-        JoA2Q27soXHoeY2B14l7yciE5eYp5lja871lSwrG9hq7SdiYwqDur5m6ZWo2qKQq5ntGyxM+L2EK
-        uESxw+KcULV9Esb+2k1RMxuzmCNuPUMPCUriwSy828DkWe+0AWzsrGmaNAZ8WfC7EYj5S5icTo56
-        w8KCVC3Rmruq5zVXwK/l+PEwcL4cN7fTKGgZbaOMnyngxo6ZJmmUtlWW/9Y2zxZ839g8w9QLm8f+
-        6yROO+j5SBj7qBcmnuu1YPEU+/nwmluqixNk48Fd6x5T8/p/Ak61yDN+h8cc4T8wWv9f8MSsDZfA
-        xKUhgYK/U0V2Ly94llcUkfUpokBPLfOMXvABKRk+gmNGBbekdqspkZ0H6j+jHcatbO3kWD8gHPx4
-        uCOsGmHPilwH36QdXLbkjAjAwFRqhu/Dn4H+ZGHDisOuk8RJfXO8TMPACf1oa8ykrLA76s2iUlLh
-        D4TtYLuUJWSKLSBftgysufWHSdhYY27w9YdxoK+I4IhS4phVzaucKKDY51nGDsp0a2vBxvjFswNz
-        1M7a/seW3IzzQCdw4//zF80WXC2TmBilgJn2XADmE445l4WU+Dp1PR2Rh6NZc8eqWE9vh64Wq31f
-        PMvRuy1d4zTRwQbtNn6WdaHMipyCkPplUS2fylSdoRuLf/76u35RVG2T0ThhRG7cbdMmULC+TedA
-        dety+y70EqMgf+sd50/HnlacEi2sKE5IkVE8DtfGi4fbki7wVJQGBdpgnBVUg9vAHMsZgBrvttF0
-        ymRG8vESK083Zt0lNks4z7JC3/r1b2inlqW+EUqNdqbrQ4QaU7xaI3Ns4HRzbes7ddy044f1GTkW
-        9cFW0HGTjhuMfL/nhr0w0Er5OxoyOda1ITFcSlQYrarUTvTI1XM7bjRCPzfCmeh5FKXaVdcR4ctd
-        PPB6fPUxfvP5WoNn2T1O51h//eHlQTWWZQ4W1isu5cBw5Zfb98Nfb9y3w+v3yes3H38eBakmkLF7
-        3NSPJPBdLw3s1Wr1LwAAAP//AwCrrZi3YxcAAA==
+        H4sIAPPJL2UAA8yY4W/aOhDA/5UonzaJ9sUJSQjfaNfyqrcVtDJ1b9OETHKAtWBntoPoq/jf3zkE
+        QtWgNqWrVlWiOd/Z97s7X47e2xIyITUk4ynjlMeMpsrufr+3VxOZjjWd2d17u/iwP8MSeA6XUizO
+        BdeSxvqW6fl5rrRYgLxYxWmeMD7rKQX4m4zoym7ZnC4Aja9BW4qmoFA0oSmeZKSxhIRpFOUcP7p2
+        rhJ8oBNV7G53p+gNtGwFv3IoLEjLTiDTc7vrrVv2kqY5Cr2o7bkdp/g5dVCDLYArJjiS8DxN160/
+        Fcfd4bT3cEhAoqgeBxNDVwz/sJXU46EUSR7rgbwBuWQx9MxSy17AYgKyOP9kRmm21fu0ka9//LkB
+        8eoCEnaI+6rxKJefiMe5UHow7QuRqB5PSht1I9KkwjY6lpjWoCcwaUTerqts1/X8dtC0st/Wcb8u
+        Za5D2iF5+xp+W/SgFt11Qv/tq7UvhVK45bQgKFELobWgcsb4cRczrCtPEjphx23eeBVQGc8xQR+w
+        5aQiQyt9scrQFirft2oW5YmVVIpHZaxTm7HA9Q/U6mGKG0hTbIZ94CBpiiy9ZME4MydrtoRHOKV+
+        y5ptLAos+sDmKLKolsx3onZTskEGxh8+KxlUBTESGj0XWwULKo2Xe06cOtd94rUPXKNnuH7FY3xn
+        fcTqr5zfLVqsWD1yEqkdRQjBWSRs6va14OKh54/KZ6DnIEvH/3pXxv19y+Kgj+Rw6zhOPK9x3VQx
+        344QjOdIVMYdrc9gKiRs9HB6AHWxQreExKmCyrsrDQuFoYjN8CGK23LFNUhQex1tY2xNip2sTIol
+        M45Z+FhGx9Jm5yOD4h1ILnG8l4UFccucnuH9f9Ckh8+DaHytaicKEpUAjeoTdN2FMjPfq1wlv87T
+        KOo0D/YFlRzrRg1B3syphDOqWFx5XDxa7xi3EiwwKpWFtWkpo/l+n8EcsO//drsnOGrngeC04HuR
+        +x9YmuN3swqgFPw+hPAAAnkuwi2w2Rxd7C3x1s/gOjdTy2BanK0GuVYaX3zIeDAzBYo6zLJZfwKj
+        9j1PApf4UeA1qqgDPGUiHmHVp+pVmGrf8CTwXL9DokNMP1r2NOcJNZMTTQ0WS/BAlI0nt99+DSd4
+        KPqOrRcVxrFIjOubSz3eyVFnylRM0/EdjmRmunfdnQjLjwmz5+W/qKfvMrPD9r8Km91x2E1wK5Sj
+        JTlxohM3wBXgyZ7cLeTt4izT+x8sEefEDUeu23UINrZTpP2GikyNU1TC90NXyxyjlWfGaH9Xz5g6
+        /shpdx0fY3jqd0JjioAZ5Xe7gODz+Ppr0P9vYCBY/LMYwXu94ccqo70sS8HCToiiFBhK/r79Mvzn
+        s/NpOPjSuex/PRt5kQGI2U9cNJ3Lwy9CkWev1+v/AQAA//8DAIm9GJ9qEQAA
     headers:
       Connection:
       - keep-alive
@@ -44,7 +40,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 16 Oct 2023 12:23:26 GMT
+      - Wed, 18 Oct 2023 12:05:07 GMT
       Transfer-Encoding:
       - chunked
       Vary:
