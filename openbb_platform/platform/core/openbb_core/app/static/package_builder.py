@@ -25,15 +25,16 @@ from typing import (
 
 import pandas as pd
 from importlib_metadata import entry_points
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
+from starlette.routing import BaseRoute
+from typing_extensions import Annotated, _AnnotatedAlias
+
 from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.env import Env
-from pydantic.fields import FieldInfo
-from pydantic_core import PydanticUndefined
-from starlette.routing import BaseRoute
-from typing_extensions import Annotated, _AnnotatedAlias
 
 
 class Console:
