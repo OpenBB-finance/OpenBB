@@ -341,7 +341,7 @@ class ROUTER_economy(Container):
             **inputs,
         )
 
-    @validate
+    @validate(listify_params=["countries"])
     def cpi(
         self,
         countries: Annotated[
