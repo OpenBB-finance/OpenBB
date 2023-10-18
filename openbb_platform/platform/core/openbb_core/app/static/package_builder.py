@@ -399,8 +399,12 @@ class DocstringGenerator:
                     test_params[field_name] = 1.0
                 elif field.annotation == bool:
                     test_params[field_name] = True
-                elif get_origin(field.annotation) is Literal:
-                    test_params[field_name] = f'"{field.annotation.__args__[0]}"'  # type: ignore
+                elif get_origin(field.annotation) is Literal:  # type: ignore
+                    option = field.annotation.__args__[0]  # type: ignore
+                    if isinstance(option, str):
+                        test_params[field_name] = f'"{option}"'
+                    else:
+                        test_params[field_name] = option
 
         return test_params
 
