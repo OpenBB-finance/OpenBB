@@ -77,7 +77,7 @@ class ROUTER_stocks_ca(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.ca.peers(symbol=AAPL)
+        >>> obb.stocks.ca.peers(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(

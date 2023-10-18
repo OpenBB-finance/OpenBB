@@ -135,7 +135,7 @@ class ROUTER_crypto(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.crypto.load(symbol=BTCUSD)
+        >>> obb.crypto.load(symbol="BTCUSD")
         """  # noqa: E501
 
         inputs = filter_inputs(

@@ -134,7 +134,7 @@ class ROUTER_forex(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.forex.load(symbol=EURUSD)
+        >>> obb.forex.load(symbol="EURUSD")
         """  # noqa: E501
 
         inputs = filter_inputs(

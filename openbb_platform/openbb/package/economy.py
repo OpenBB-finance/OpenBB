@@ -190,7 +190,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.const(index=dowjones)
+        >>> obb.economy.const(index="dowjones")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -512,7 +512,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=['portugal', 'spain'], units=growth_same, frequency=monthly)
+        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -741,7 +741,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.european_index(symbol=AAPL)
+        >>> obb.economy.european_index(symbol="SPX")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -832,7 +832,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.european_index_constituents(symbol=AAPL)
+        >>> obb.economy.european_index_constituents(symbol="SPX")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -921,7 +921,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.fred_index(symbol=AAPL, limit=100)
+        >>> obb.economy.fred_index(symbol="SPX", limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1015,7 +1015,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdpforecast(period=annual, type=real)
+        >>> obb.economy.gdpforecast(period="annual", type="real")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1101,7 +1101,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdpnom(units=usd)
+        >>> obb.economy.gdpnom(units="usd")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1186,7 +1186,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdpreal(units=yoy)
+        >>> obb.economy.gdpreal(units="yoy")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1315,7 +1315,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.index(symbol=AAPL)
+        >>> obb.economy.index(symbol="SPX")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1497,7 +1497,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.index_snapshots(region=US)
+        >>> obb.economy.index_snapshots(region="US")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1686,7 +1686,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.sp500_multiples(series_name=PE Ratio by Month, collapse=monthly)
+        >>> obb.economy.sp500_multiples(series_name="PE Ratio by Month", collapse="monthly")
         """  # noqa: E501
 
         inputs = filter_inputs(

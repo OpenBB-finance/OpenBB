@@ -264,7 +264,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.balance(symbol=AAPL, period=annual, limit=12)
+        >>> obb.stocks.fa.balance(symbol="AAPL", period="annual", limit=12)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -415,7 +415,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.balance_growth(symbol=AAPL, limit=10)
+        >>> obb.stocks.fa.balance_growth(symbol="AAPL", limit=10)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -705,7 +705,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.cash(symbol=AAPL, period=annual, limit=12)
+        >>> obb.stocks.fa.cash(symbol="AAPL", period="annual", limit=12)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -838,7 +838,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.cash_growth(symbol=AAPL, limit=10)
+        >>> obb.stocks.fa.cash_growth(symbol="AAPL", limit=10)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -924,7 +924,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.comp(symbol=AAPL)
+        >>> obb.stocks.fa.comp(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1077,7 +1077,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.divs(symbol=AAPL)
+        >>> obb.stocks.fa.divs(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1160,7 +1160,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.earning(symbol=AAPL, limit=50)
+        >>> obb.stocks.fa.earning(symbol="AAPL", limit=50)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1238,7 +1238,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.emp(symbol=AAPL)
+        >>> obb.stocks.fa.emp(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1353,7 +1353,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.est(symbol=AAPL, period=annual, limit=30)
+        >>> obb.stocks.fa.est(symbol="AAPL", period="annual", limit=30)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1438,7 +1438,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.filings(symbol=AAPL, limit=100)
+        >>> obb.stocks.fa.filings(symbol="AAPL", limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1642,7 +1642,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.income(symbol=AAPL, period=annual, limit=12)
+        >>> obb.stocks.fa.income(symbol="AAPL", period="annual", limit=12)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1773,7 +1773,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.income_growth(symbol=AAPL, limit=10, period=annual)
+        >>> obb.stocks.fa.income_growth(symbol="AAPL", limit=10, period="annual")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1901,7 +1901,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.ins(symbol=AAPL, transactionType=['P-Purchase'])
+        >>> obb.stocks.fa.ins(symbol="AAPL", transactionType=['P-Purchase'])
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2046,7 +2046,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.ins_own(symbol=AAPL)
+        >>> obb.stocks.fa.ins_own(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2243,7 +2243,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.metrics(symbol=AAPL, period=annual, limit=100)
+        >>> obb.stocks.fa.metrics(symbol="AAPL", period="annual", limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2318,7 +2318,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.mgmt(symbol=AAPL)
+        >>> obb.stocks.fa.mgmt(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2449,7 +2449,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.overview(symbol=AAPL)
+        >>> obb.stocks.fa.overview(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2598,7 +2598,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.own(symbol=AAPL)
+        >>> obb.stocks.fa.own(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2669,7 +2669,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.pt(symbol=AAPL)
+        >>> obb.stocks.fa.pt(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2758,7 +2758,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.pta(symbol=AAPL)
+        >>> obb.stocks.fa.pta(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2945,7 +2945,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.ratios(symbol=AAPL, period=annual, limit=12)
+        >>> obb.stocks.fa.ratios(symbol="AAPL", period="annual", limit=12)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3032,7 +3032,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.revgeo(symbol=AAPL, period=annual, structure=flat)
+        >>> obb.stocks.fa.revgeo(symbol="AAPL", period="annual", structure="flat")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3109,7 +3109,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.revseg(symbol=AAPL, period=annual, structure=flat)
+        >>> obb.stocks.fa.revseg(symbol="AAPL", period="annual", structure="flat")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3182,7 +3182,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.shrs(symbol=AAPL)
+        >>> obb.stocks.fa.shrs(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3249,7 +3249,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.split(symbol=AAPL)
+        >>> obb.stocks.fa.split(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3332,7 +3332,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.transcript(symbol=AAPL, year=1, quarter=1)
+        >>> obb.stocks.fa.transcript(symbol="AAPL", year=1, quarter=1)
         """  # noqa: E501
 
         inputs = filter_inputs(

@@ -149,7 +149,7 @@ class ROUTER_stocks_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.options.chains(symbol=AAPL)
+        >>> obb.stocks.options.chains(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(

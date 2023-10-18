@@ -155,7 +155,7 @@ class ROUTER_stocks(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.info(symbol=AAPL)
+        >>> obb.stocks.info(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -336,7 +336,7 @@ class ROUTER_stocks(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.load(symbol=AAPL, interval=1d)
+        >>> obb.stocks.load(symbol="AAPL", interval="1d")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -528,7 +528,7 @@ class ROUTER_stocks(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.multiples(symbol=AAPL, limit=100)
+        >>> obb.stocks.multiples(symbol="AAPL", limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -679,7 +679,7 @@ class ROUTER_stocks(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.news(symbols=AAPL,MSFT, limit=20)
+        >>> obb.stocks.news(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -836,7 +836,7 @@ class ROUTER_stocks(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.quote(symbol=AAPL)
+        >>> obb.stocks.quote(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
