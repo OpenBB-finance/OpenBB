@@ -20,7 +20,7 @@ jobs:
 
       - name: OpenBBTerminal - Update version in pyproject.toml and Edit docs
         run: |
-          sed -i 's/name = ".*"/name = "openbb-terminal-nightly"/' pyproject.toml
+          sed -i 's /name = ".*"/name = "openbb-terminal-nightly"/'pyproject.toml
           sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d%H%M)\"/" pyproject.toml
           head pyproject.toml
           sed -i 's/pip install openbb-terminal/pip install openbb-terminal-nightly/g' ./website/pypi.md
@@ -54,14 +54,10 @@ jobs:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository-url: https://test.pypi.org/legacy/
 
-      - name: OpenBB Platform - Build a binary wheel and a source tarball
+      - name: OpenBB Platform - Create the dinamically wheel
         run: >-
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir openbb_platform/dist/
-          openbb_platform
+          python -m pip install poetry toml
+          python openbb_platform/dev_utils/nightly.py
 
       - name: Publish OpenBB Platform distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
