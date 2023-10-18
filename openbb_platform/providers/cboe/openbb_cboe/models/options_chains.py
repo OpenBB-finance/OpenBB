@@ -166,7 +166,9 @@ class CboeOptionsChainsFetcher(
 
     @staticmethod
     def transform_data(
+        query: CboeOptionsChainsQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
         return [CboeOptionsChainsData.model_validate(d) for d in data]
