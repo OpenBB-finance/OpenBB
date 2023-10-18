@@ -448,7 +448,7 @@ class DocstringGenerator:
         elif "forex" in route[0] and "symbol" in example_params:
             example_params["symbol"] = "EURUSD"
 
-        example = "Example\n--------\n\n"
+        example = "\nExample\n-------\n"
         example += ">>> from openbb import obb\n"
         example += f">>> obb.{full_command_name}("
         for param_name, param_value in example_params.items():
