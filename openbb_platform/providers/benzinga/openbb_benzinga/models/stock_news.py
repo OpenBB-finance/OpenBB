@@ -143,7 +143,7 @@ class BenzingaStockNewsFetcher(
         query: BenzingaStockNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         token = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
@@ -165,6 +165,8 @@ class BenzingaStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        data: Dict,
+        query: BenzingaStockNewsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[BenzingaStockNewsData]:
         return [BenzingaStockNewsData.model_validate(item) for item in data]

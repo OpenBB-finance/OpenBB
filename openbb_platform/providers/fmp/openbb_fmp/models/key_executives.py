@@ -58,6 +58,8 @@ class FMPKeyExecutivesFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPKeyExecutivesData]:
+    def transform_data(
+        query: FMPKeyExecutivesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPKeyExecutivesData]:
         """Return the transformed data."""
         return [FMPKeyExecutivesData.model_validate(d) for d in data]

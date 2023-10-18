@@ -25,7 +25,6 @@
 
 ### Checklist
 
-
 - [ ] I ensure I have self-reviewed my code.
 - [ ] I have commented/documented my code, particularly in hard-to-understand sections.
 - [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `hotfix/hotfix-name`.
@@ -65,7 +64,10 @@
   - [ ] Ensure the existing tests pass.
   - [ ] Ensure the new provider and/or fetcher is stable and usable.
   - [ ] If applicable, please add new tests for the provider and/or fetcher (see [CONTRIBUTING.md](/openbb_platform/CONTRIBUTING.md) to leverage semi-automated testing).
-
+- If a new provider or extension was added:
+  - [ ] Update the list of [Extensions](/openbb_platform/EXTENSIONS.md).
+  - [ ] Update the list of [Providers](/openbb_platform/PROVIDERS.md).
+  - [ ] If it's a community extension or provider, update the [integration tests GitHub Action workflow](/.github/workflows/platform-api-integration-test.yml).
 
 ### Checklist
 
@@ -74,6 +76,5 @@
 - [ ] I have adhered to the GitFlow naming convention and my branch name is in the format of `feature/feature-name` or `hotfix/hotfix-name`.
 - [ ] I ensure that I am following th [CONTRIBUTING guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
   - [ ] (If applicable) I have updated tests following [these guidelines](/openbb_platform/CONTRIBUTING.md#qa-your-extension).
-
 
 </details>

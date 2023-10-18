@@ -49,6 +49,8 @@ class FMPRiskPremiumFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPRiskPremiumData]:
+    def transform_data(
+        query: FMPRiskPremiumQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPRiskPremiumData]:
         """Return the transformed data."""
         return [FMPRiskPremiumData(**item) for item in data]

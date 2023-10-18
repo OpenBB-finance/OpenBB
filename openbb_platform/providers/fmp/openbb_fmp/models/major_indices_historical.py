@@ -21,6 +21,8 @@ class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/historical-index-price-api/
     """
 
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."
     )
@@ -89,21 +91,19 @@ class FMPMajorIndicesHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = (
-            get_querystring(query.model_dump(), ["symbol"])
-            .replace("start_date", "from")
-            .replace("end_date", "to")
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
         if query.interval == "1day":
-            url = f"{base_url}/historical-price-full/index/{url_params}"
+            url = f"{base_url}/historical-chart/1day/{query.symbol}?apikey={api_key}"
 
         return get_data_many(url, "historical", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPMajorIndicesHistoricalData]:
+    def transform_data(
+        query: FMPMajorIndicesHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPMajorIndicesHistoricalData]:
         """Return the transformed data."""
         return [FMPMajorIndicesHistoricalData.model_validate(d) for d in data]

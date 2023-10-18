@@ -3,8 +3,8 @@ import random
 from typing import Literal
 
 import pytest
-from extensions.econometrics.openbb_econometrics.utils import mock_multi_index_data
 from openbb_core.app.model.obbject import OBBject
+from openbb_econometrics.utils import mock_multi_index_data
 
 
 @pytest.fixture(scope="session")

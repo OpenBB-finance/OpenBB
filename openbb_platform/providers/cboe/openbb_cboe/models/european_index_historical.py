@@ -12,7 +12,7 @@ from openbb_provider.standard_models.european_index_historical import (
     EuropeanIndexHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class CboeEuropeanIndexHistoricalQueryParams(EuropeanIndexHistoricalQueryParams):
@@ -46,7 +46,7 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
         default=None, description="UTC datetime. Only valid when interval is 1m."
     )
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
         try:
@@ -140,6 +140,8 @@ class CboeEuropeanIndexHistoricalFetcher(
         return data.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexHistoricalData]:
+    def transform_data(
+        query: CboeEuropeanIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeEuropeanIndexHistoricalData]:
         """Transform the data to the standard format."""
         return [CboeEuropeanIndexHistoricalData.model_validate(d) for d in data]

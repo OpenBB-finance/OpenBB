@@ -11,6 +11,7 @@ def headers():
 @pytest.mark.parametrize(
     "params",
     [
+        ({"limit": 20, "provider": "benzinga"}),
         (
             {
                 "display": "full",
@@ -34,7 +35,7 @@ def headers():
         (
             {
                 "provider": "fmp",
-                "limit": 20,
+                "limit": 30,
             }
         ),
         (

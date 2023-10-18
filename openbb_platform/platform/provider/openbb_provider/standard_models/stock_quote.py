@@ -12,7 +12,7 @@ from openbb_provider.abstract.query_params import QueryParams
 class StockQuoteQueryParams(QueryParams):
     """Stock Quote query model."""
 
-    symbol: str = Field(default=None, description="Comma separated list of symbols.")
+    symbol: str = Field(description="Comma separated list of symbols.")
 
     @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):

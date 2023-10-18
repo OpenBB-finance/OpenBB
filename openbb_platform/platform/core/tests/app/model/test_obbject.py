@@ -22,6 +22,7 @@ def test_fields():
     assert "provider" in fields
     assert "warnings" in fields
     assert "chart" in fields
+    assert "extra" in fields
 
 
 def test_to_dataframe_no_results():

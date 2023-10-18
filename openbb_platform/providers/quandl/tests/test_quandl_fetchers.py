@@ -4,7 +4,7 @@ from openbb_quandl.models.cot import QuandlCotFetcher
 from openbb_quandl.models.cot_search import QuandlCotSearchFetcher
 from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump()
 
 
 @pytest.fixture(scope="module")

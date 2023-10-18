@@ -72,6 +72,9 @@ class YFinanceFuturesHistoricalFetcher(
             if params.get("end_date") is None:
                 transformed_params["end_date"] = now
 
+        else:
+            transformed_params = params
+
         return YFinanceFuturesHistoricalQueryParams(**transformed_params)
 
     @staticmethod
@@ -145,7 +148,9 @@ class YFinanceFuturesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceFuturesHistoricalQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[YFinanceFuturesHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceFuturesHistoricalData.model_validate(d) for d in data]

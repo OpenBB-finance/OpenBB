@@ -161,7 +161,8 @@ def build_api_wrapper(
         execute = partial(command_runner.run, path, user_settings)
         output: OBBject = execute(*args, **kwargs)
 
-        return validate_output(output)
+        output = validate_output(output)
+        return output
 
     return wrapper
 

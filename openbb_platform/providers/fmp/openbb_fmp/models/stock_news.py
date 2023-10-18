@@ -1,10 +1,8 @@
 """FMP Stock News fetcher."""
 
+from typing import Any, Dict, List, Optional, Union
 
-import math
-from typing import Any, Dict, List, Optional
-
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
@@ -20,6 +18,10 @@ class FMPStockNewsQueryParams(StockNewsQueryParams):
     """
 
     __alias_dict__ = {"symbols": "tickers"}
+    page: Optional[int] = Field(
+        default=0,
+        description="Page number of the results. Use in combination with limit.",
+    )
 
 
 class FMPStockNewsData(StockNewsData):
@@ -28,10 +30,13 @@ class FMPStockNewsData(StockNewsData):
     __alias_dict__ = {"date": "publishedDate"}
 
     symbol: str = Field(description="Ticker of the fetched news.")
-    image: Optional[str] = Field(
+    image: Optional[Union[List[str], str]] = Field(
         default=None, description="URL to the image of the news source."
     )
     site: str = Field(description="Name of the news source.")
+    images: Optional[Union[List[str], str]] = Field(
+        default=None, description="URL to the images of the news."
+    )
 
 
 class FMPStockNewsFetcher(
@@ -57,22 +62,18 @@ class FMPStockNewsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/stock_news"
-        querystring = get_querystring(query.dict(by_alias=True), [])
-
-        pages = math.ceil(query.limit / 20)
         data = []
+        url = f"{base_url}?page={query.page}&tickers={query.symbols}&limit={query.limit}&apikey={api_key}"
+        response = get_data_many(url, **kwargs)
 
-        for page in range(pages):
-            url = f"{base_url}?{querystring}&page={page}&apikey={api_key}"
-            response = get_data_many(url, **kwargs)
-            data.extend(response)
-
-        data = sorted(data, key=lambda x: x["publishedDate"], reverse=True)
-        data = data[: query.limit]
+        if len(response) > 0:
+            data = sorted(response, key=lambda x: x["publishedDate"], reverse=True)
 
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockNewsData]:
+    def transform_data(
+        query: FMPStockNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPStockNewsData]:
         """Return the transformed data."""
         return [FMPStockNewsData.model_validate(d) for d in data]

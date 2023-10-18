@@ -832,7 +832,7 @@ def ichimoku(
 def clenow(
     data: List[Data],
     index: str = "date",
-    target: str = "adj_close",
+    target: str = "close",
     period: PositiveInt = 90,
 ) -> OBBject[List[Data]]:
     """
@@ -845,7 +845,7 @@ def clenow(
     index : str, optional
         Index column name to use with `data`, by default "date".
     target : str, optional
-        Target column name, by default "adj_close".
+        Target column name, by default "close".
     period : PositiveInt, optional
         Number of periods for the momentum, by default 90.
 

@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Optional
+from typing import Dict, List, Optional
 
 from pydantic import Field, NonNegativeInt
 
@@ -23,6 +23,8 @@ class GlobalNewsData(Data):
 
     date: datetime = Field(description="Published date of the news.")
     title: str = Field(description="Title of the news.")
-    image: Optional[str] = Field(default=None, description="Image URL of the news.")
+    images: Optional[List[Dict[str, str]]] = Field(
+        default=None, description="Images associated with the news."
+    )
     text: Optional[str] = Field(default=None, description="Text/body of the news.")
     url: Optional[str] = Field(default=None, description="URL of the news.")

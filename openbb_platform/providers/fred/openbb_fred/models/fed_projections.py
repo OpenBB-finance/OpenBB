@@ -64,6 +64,8 @@ class FREDPROJECTIONFetcher(
         return processed
 
     @staticmethod
-    def transform_data(data: list) -> List[Dict[str, List[FREDPROJECTIONData]]]:
+    def transform_data(
+        query: FREDPROJECTIONQueryParams, data: list, **kwargs: Any
+    ) -> List[Dict[str, List[FREDPROJECTIONData]]]:
         keys = ["date"] + list(NAME_TO_ID_PROJECTION.keys())
         return [FREDPROJECTIONData(**{k: x[k] for k in keys}) for x in data]

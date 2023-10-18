@@ -38,7 +38,7 @@ class BiztocGlobalNewsData(GlobalNewsData):
     __alias_dict__ = {"date": "created", "text": "body", "site": "domain"}
 
     images: Optional[Dict[str, str]] = Field(
-        description="Images for the article.", alias="img", default=None
+        description="Images for the article.", alias="images", default=None
     )
     favicon: Optional[str] = Field(
         description="Icon image for the source of the article.", default=None
@@ -102,6 +102,6 @@ class BiztocGlobalNewsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[BiztocGlobalNewsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[BiztocGlobalNewsData]:
         """Transform the data to the standard format."""
         return [BiztocGlobalNewsData.model_validate(d) for d in data]
