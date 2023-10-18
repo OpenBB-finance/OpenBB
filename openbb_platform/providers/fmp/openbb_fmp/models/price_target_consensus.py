@@ -50,7 +50,9 @@ class FMPPriceTargetConsensusFetcher(
 
     @staticmethod
     def transform_data(
+        query: FMPPriceTargetConsensusQueryParams,
         data: Dict,
+        **kwargs: Any,
     ) -> FMPPriceTargetConsensusData:
         """Return the transformed data."""
         return FMPPriceTargetConsensusData.model_validate(data)

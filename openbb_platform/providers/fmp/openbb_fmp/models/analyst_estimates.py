@@ -51,6 +51,8 @@ class FMPAnalystEstimatesFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPAnalystEstimatesData]:
+    def transform_data(
+        query: FMPAnalystEstimatesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPAnalystEstimatesData]:
         """Return the transformed data."""
         return [FMPAnalystEstimatesData.model_validate(d) for d in data]

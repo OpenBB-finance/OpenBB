@@ -92,7 +92,9 @@ class IntrinioBalanceSheetFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioBalanceSheetData]:
+    def transform_data(
+        query: IntrinioBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioBalanceSheetData]:
         """Return the transformed data."""
         transformed_data = []
 

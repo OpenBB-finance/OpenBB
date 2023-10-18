@@ -52,6 +52,8 @@ class QuandlCotSearchFetcher(Fetcher[CotSearchQueryParams, List[QuandlCotSearchD
 
     @staticmethod
     def transform_data(
+        query: CotSearchQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[QuandlCotSearchData]:
         return [QuandlCotSearchData.model_validate(d) for d in data]

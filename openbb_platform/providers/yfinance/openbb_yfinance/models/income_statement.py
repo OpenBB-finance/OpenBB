@@ -63,6 +63,8 @@ class YFinanceIncomeStatementFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceIncomeStatementQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
         return [YFinanceIncomeStatementData.model_validate(d) for d in data]

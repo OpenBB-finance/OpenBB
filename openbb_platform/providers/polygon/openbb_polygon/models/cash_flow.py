@@ -131,7 +131,9 @@ class PolygonCashFlowStatementFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonCashFlowStatementQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[PolygonCashFlowStatementData]:
         transformed_data = []
 

@@ -107,7 +107,9 @@ class IntrinioCashFlowStatementFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioCashFlowStatementData]:
+    def transform_data(
+        query: IntrinioCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
 
         transformed_data = []

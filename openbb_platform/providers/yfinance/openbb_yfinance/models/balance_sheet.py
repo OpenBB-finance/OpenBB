@@ -71,6 +71,8 @@ class YFinanceBalanceSheetFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceBalanceSheetQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceBalanceSheetData]:
         return [YFinanceBalanceSheetData.model_validate(d) for d in data]

@@ -107,7 +107,9 @@ class YFinanceForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceForexHistoricalQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceForexHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceForexHistoricalData.model_validate(d) for d in data]
