@@ -12,11 +12,7 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal
 from annotated_types import Ge, Le, Gt, Lt
-<<<<<<< Updated upstream
 from typing_extensions import Annotated
-=======
-import typing_extensions
->>>>>>> Stashed changes
 from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
 
@@ -66,23 +62,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def balance(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet. Balance sheet statement.
@@ -95,55 +87,55 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key (CIK) of the company. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
+        year : Optional[int]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[Union[datetime.date]]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[Union[datetime.date]]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[Union[datetime.date]]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[Union[datetime.date]]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[Union[datetime.date]]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[Union[datetime.date]]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[Union[datetime.date]]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[Union[datetime.date]]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[Union[datetime.date]]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[Union[datetime.date]]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[Union[bool]]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Union[Literal['asc', 'desc']]]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Union[Literal['filing_date', 'period_of_report_date']]]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : Union[List[BalanceSheet]]
+            results : List[BalanceSheet]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -154,19 +146,19 @@ class ROUTER_stocks_fa(Container):
 
         BalanceSheet
         ------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the fetched statement.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
-        currency : Optional[Union[str]]
+        currency : Optional[str]
             Reporting currency.
-        filling_date : Optional[Union[date]]
+        filling_date : Optional[date]
             Filling date.
-        accepted_date : Optional[Union[datetime]]
+        accepted_date : Optional[datetime]
             Accepted date.
-        period : Optional[Union[str]]
+        period : Optional[str]
             Reporting period of the statement.
         cash_and_cash_equivalents : Optional[int]
             Cash and cash equivalents
@@ -264,9 +256,8 @@ class ROUTER_stocks_fa(Container):
             Total Debt (provider: fmp)
         net_debt : Optional[int]
             Net Debt (provider: fmp)
-        link : Optional[Union[str]]
+        link : Optional[str]
             Link to the statement. (provider: fmp)
-<<<<<<< Updated upstream
         final_link : Optional[str]
             Link to the final statement. (provider: fmp)
         Example
@@ -275,10 +266,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.balance(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
-=======
-        final_link : Optional[Union[str]]
-            Link to the final statement. (provider: fmp)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -300,19 +287,15 @@ class ROUTER_stocks_fa(Container):
     @validate
     def balance_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
@@ -323,7 +306,7 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -331,9 +314,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[BalanceSheetGrowth]]
+            results : List[BalanceSheetGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -344,7 +327,7 @@ class ROUTER_stocks_fa(Container):
 
         BalanceSheetGrowth
         ------------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -454,23 +437,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def cal(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Dividend Calendar. Show Dividend Calendar for a given start and end dates.
@@ -481,7 +460,7 @@ class ROUTER_stocks_fa(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : date
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -489,9 +468,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[DividendCalendar]]
+            results : List[DividendCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -508,15 +487,14 @@ class ROUTER_stocks_fa(Container):
             The date of the data.
         label : str
             Date in human readable form in the calendar.
-        adj_dividend : Optional[Union[float]]
+        adj_dividend : Optional[float]
             Adjusted dividend on a date in the calendar.
-        dividend : Optional[Union[float]]
+        dividend : Optional[float]
             Dividend amount in the calendar.
-        record_date : Optional[Union[date]]
+        record_date : Optional[date]
             Record date of the dividend in the calendar.
-        payment_date : Optional[Union[date]]
+        payment_date : Optional[date]
             Payment date of the dividend in the calendar.
-<<<<<<< Updated upstream
         declaration_date : Optional[date]
             Declaration date of the dividend in the calendar.
         Example
@@ -525,10 +503,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.cal()
         """  # noqa: E501
-=======
-        declaration_date : Optional[Union[date]]
-            Declaration date of the dividend in the calendar."""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -549,23 +523,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def cash(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement. Information about the cash flow statement.
@@ -578,55 +548,55 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key (CIK) of the company. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
+        year : Optional[int]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[Union[datetime.date]]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[Union[datetime.date]]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[Union[datetime.date]]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[Union[datetime.date]]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[Union[datetime.date]]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[Union[datetime.date]]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[Union[datetime.date]]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[Union[datetime.date]]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[Union[datetime.date]]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[Union[datetime.date]]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[Union[bool]]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Union[Literal['asc', 'desc']]]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Union[Literal['filing_date', 'period_of_report_date']]]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : Union[List[CashFlowStatement]]
+            results : List[CashFlowStatement]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -637,13 +607,13 @@ class ROUTER_stocks_fa(Container):
 
         CashFlowStatement
         -----------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the fetched statement.
-        period : Optional[Union[str]]
+        period : Optional[str]
             Reporting period of the statement.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         net_income : Optional[int]
             Net income.
@@ -701,11 +671,11 @@ class ROUTER_stocks_fa(Container):
             Net cash flow from financing activities.
         net_change_in_cash : Optional[int]
             Net increase (decrease) in cash, cash equivalents, and restricted cash
-        reported_currency : Optional[Union[str]]
+        reported_currency : Optional[str]
             Reported currency in the statement. (provider: fmp)
-        filling_date : Optional[Union[date]]
+        filling_date : Optional[date]
             Filling date. (provider: fmp)
-        accepted_date : Optional[Union[datetime]]
+        accepted_date : Optional[datetime]
             Accepted date. (provider: fmp)
         calendar_year : Optional[int]
             Calendar year. (provider: fmp)
@@ -727,9 +697,8 @@ class ROUTER_stocks_fa(Container):
             Capital expenditure. (provider: fmp)
         free_cash_flow : Optional[int]
             Free cash flow. (provider: fmp)
-        link : Optional[Union[str]]
+        link : Optional[str]
             Link to the statement. (provider: fmp)
-<<<<<<< Updated upstream
         final_link : Optional[str]
             Link to the final statement. (provider: fmp)
         Example
@@ -738,10 +707,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.cash(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
-=======
-        final_link : Optional[Union[str]]
-            Link to the final statement. (provider: fmp)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -763,19 +728,15 @@ class ROUTER_stocks_fa(Container):
     @validate
     def cash_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
@@ -786,7 +747,7 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -794,9 +755,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[CashFlowStatementGrowth]]
+            results : List[CashFlowStatementGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -807,7 +768,7 @@ class ROUTER_stocks_fa(Container):
 
         CashFlowStatementGrowth
         -----------------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -899,15 +860,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def comp(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Executive Compensation. Information about the executive compensation for a given company.
@@ -916,7 +873,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -924,9 +881,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[ExecutiveCompensation]]
+            results : List[ExecutiveCompensation]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -939,7 +896,7 @@ class ROUTER_stocks_fa(Container):
         ---------------------
         symbol : str
             Symbol to get data for.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key (CIK) of the company.
         filing_date : date
             Date of the filing.
@@ -988,34 +945,30 @@ class ROUTER_stocks_fa(Container):
     @validate
     def comsplit(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Split Calendar. Show Stock Split Calendar.
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1023,9 +976,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[StockSplitCalendar]]
+            results : List[StockSplitCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1072,15 +1025,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def divs(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Dividends. Historical dividends data for a given company.
@@ -1089,7 +1038,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1097,9 +1046,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[HistoricalDividends]]
+            results : List[HistoricalDividends]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1118,11 +1067,10 @@ class ROUTER_stocks_fa(Container):
             Adjusted dividend of the historical dividends.
         dividend : float
             Dividend of the historical dividends.
-        record_date : Optional[Union[date]]
+        record_date : Optional[date]
             Record date of the historical dividends.
-        payment_date : Optional[Union[date]]
+        payment_date : Optional[date]
             Payment date of the historical dividends.
-<<<<<<< Updated upstream
         declaration_date : Optional[date]
             Declaration date of the historical dividends.
         Example
@@ -1131,10 +1079,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.divs(symbol=AAPL)
         """  # noqa: E501
-=======
-        declaration_date : Optional[Union[date]]
-            Declaration date of the historical dividends."""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -1154,19 +1098,15 @@ class ROUTER_stocks_fa(Container):
     @validate
     def earning(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 50,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Earnings Calendar. Earnings calendar for a given company.
@@ -1175,9 +1115,9 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        limit : Union[int, None]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1185,9 +1125,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EarningsCalendar]]
+            results : List[EarningsCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1202,15 +1142,15 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         date : date
             The date of the data.
-        eps : Optional[Union[float]]
+        eps : Optional[float]
             EPS of the earnings calendar.
-        eps_estimated : Optional[Union[float]]
+        eps_estimated : Optional[float]
             Estimated EPS of the earnings calendar.
         time : str
             Time of the earnings calendar.
-        revenue : Optional[Union[float]]
+        revenue : Optional[float]
             Revenue of the earnings calendar.
-        revenue_estimated : Optional[Union[float]]
+        revenue_estimated : Optional[float]
             Estimated revenue of the earnings calendar.
         updated_from_date : Optional[date]
             Updated from date of the earnings calendar.
@@ -1242,15 +1182,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def emp(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Employees. Historical number of employees.
@@ -1259,7 +1195,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1267,9 +1203,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[HistoricalEmployees]]
+            results : List[HistoricalEmployees]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1323,27 +1259,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def est(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         period: Annotated[
-=======
-        period: typing_extensions.Annotated[
->>>>>>> Stashed changes
             Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Analyst Estimates. Analyst stock recommendations.
@@ -1356,7 +1284,7 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1364,9 +1292,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[AnalystEstimates]]
+            results : List[AnalystEstimates]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1448,19 +1376,15 @@ class ROUTER_stocks_fa(Container):
     @validate
     def filings(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Company Filings. Company filings data.
@@ -1469,23 +1393,23 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        limit : Union[int, None]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        type : Optional[Union[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10-D', '10-K', '10-M', '10-Q', '11-K', '12b-25', '13F', '13H', '144', '15', '15F', '17-H', '18', '18-K', '19b-4', '19b-4(e)', '19b-7', '2-E', '20-F', '24F-2', '25', '3', '4', '40-F', '5', '6-K', '7-M', '8-A', '8-K', '8-M', '9-M', 'ABS-15G', 'ABS-EE', 'ABS DD-15E', 'ADV', 'ADV-E', 'ADV-H', 'ADV-NR', 'ADV-W', 'ATS', 'ATS-N', 'ATS-R', 'BD', 'BD-N', 'BDW', 'C', 'CA-1', 'CB', 'CFPORTAL', 'CRS', 'CUSTODY', 'D', 'F-1', 'F-10', 'F-3', 'F-4', 'F-6', 'F-7', 'F-8', 'F-80', 'F-N', 'F-X', 'ID', 'MA', 'MA-I', 'MA-NR', 'MA-W', 'MSD', 'MSDW', 'N-14', 'N-17D-1', 'N-17f-1', 'N-17f-2', 'N-18f-1', 'N-1A', 'N-2', 'N-23c-3', 'N-27D-1', 'N-3', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6EI-1', 'N-6F', 'N-8A', 'N-8B-2', 'N-8B-4', 'N-8F', 'N-CEN']]]
+        type : Optional[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10-D', '10-K', '10-M', '10-Q', '11-K', '12b-25', '13F', '13H', '144', '15', '15F', '17-H', '18', '18-K', '19b-4', '19b-4(e)', '19b-7', '2-E', '20-F', '24F-2', '25', '3', '4', '40-F', '5', '6-K', '7-M', '8-A', '8-K', '8-M', '9-M', 'ABS-15G', 'ABS-EE', 'ABS DD-15E', 'ADV', 'ADV-E', 'ADV-H', 'ADV-NR', 'ADV-W', 'ATS', 'ATS-N', 'ATS-R', 'BD', 'BD-N', 'BDW', 'C', 'CA-1', 'CB', 'CFPORTAL', 'CRS', 'CUSTODY', 'D', 'F-1', 'F-10', 'F-3', 'F-4', 'F-6', 'F-7', 'F-8', 'F-80', 'F-N', 'F-X', 'ID', 'MA', 'MA-I', 'MA-NR', 'MA-W', 'MSD', 'MSDW', 'N-14', 'N-17D-1', 'N-17f-1', 'N-17f-2', 'N-18f-1', 'N-1A', 'N-2', 'N-23c-3', 'N-27D-1', 'N-3', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6EI-1', 'N-6F', 'N-8A', 'N-8B-2', 'N-8B-4', 'N-8F', 'N-CEN']]
             Type of the SEC filing form. (provider: fmp)
-        page : Optional[Union[int]]
+        page : Optional[int]
             Page number of the results. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : Union[List[CompanyFilings]]
+            results : List[CompanyFilings]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1502,13 +1426,12 @@ class ROUTER_stocks_fa(Container):
             Type of document.
         link : str
             URL to the document.
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             The ticker symbol of the company. (provider: fmp)
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             CIK of the SEC filing. (provider: fmp)
-        accepted_date : Optional[Union[datetime]]
+        accepted_date : Optional[datetime]
             Accepted date of the SEC filing. (provider: fmp)
-<<<<<<< Updated upstream
         final_link : Optional[str]
             Final link of the SEC filing. (provider: fmp)
         Example
@@ -1517,10 +1440,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.filings(symbol=AAPL, limit=100)
         """  # noqa: E501
-=======
-        final_link : Optional[Union[str]]
-            Final link of the SEC filing. (provider: fmp)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -1541,23 +1460,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def income(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
-=======
-        provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement. Report on a company's finanacial performance.
@@ -1570,55 +1485,55 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             The CIK of the company if no symbol is provided. (provider: fmp)
         type : Literal['reported', 'standardized']
             Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
+        year : Optional[int]
             Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
+        company_name : Optional[str]
             Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
+        company_name_search : Optional[str]
             Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
+        sic : Optional[str]
             The Standard Industrial Classification (SIC) of the company. (provider: polygon)
-        filing_date : Optional[Union[datetime.date]]
+        filing_date : Optional[datetime.date]
             Filing date of the financial statement. (provider: polygon)
-        filing_date_lt : Optional[Union[datetime.date]]
+        filing_date_lt : Optional[datetime.date]
             Filing date less than the given date. (provider: polygon)
-        filing_date_lte : Optional[Union[datetime.date]]
+        filing_date_lte : Optional[datetime.date]
             Filing date less than or equal to the given date. (provider: polygon)
-        filing_date_gt : Optional[Union[datetime.date]]
+        filing_date_gt : Optional[datetime.date]
             Filing date greater than the given date. (provider: polygon)
-        filing_date_gte : Optional[Union[datetime.date]]
+        filing_date_gte : Optional[datetime.date]
             Filing date greater than or equal to the given date. (provider: polygon)
-        period_of_report_date : Optional[Union[datetime.date]]
+        period_of_report_date : Optional[datetime.date]
             Period of report date of the financial statement. (provider: polygon)
-        period_of_report_date_lt : Optional[Union[datetime.date]]
+        period_of_report_date_lt : Optional[datetime.date]
             Period of report date less than the given date. (provider: polygon)
-        period_of_report_date_lte : Optional[Union[datetime.date]]
+        period_of_report_date_lte : Optional[datetime.date]
             Period of report date less than or equal to the given date. (provider: polygon)
-        period_of_report_date_gt : Optional[Union[datetime.date]]
+        period_of_report_date_gt : Optional[datetime.date]
             Period of report date greater than the given date. (provider: polygon)
-        period_of_report_date_gte : Optional[Union[datetime.date]]
+        period_of_report_date_gte : Optional[datetime.date]
             Period of report date greater than or equal to the given date. (provider: polygon)
-        include_sources : Optional[Union[bool]]
+        include_sources : Optional[bool]
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Optional[Union[Literal['asc', 'desc']]]
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Optional[Union[Literal['filing_date', 'period_of_report_date']]]
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
         -------
         OBBject
-            results : Union[List[IncomeStatement]]
+            results : List[IncomeStatement]
                 Serializable results.
-            provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1629,13 +1544,13 @@ class ROUTER_stocks_fa(Container):
 
         IncomeStatement
         ---------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             Date of the income statement.
-        period : Optional[Union[str]]
+        period : Optional[str]
             Period of the income statement.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             Central Index Key.
         revenue : Optional[int]
             Revenue.
@@ -1645,13 +1560,13 @@ class ROUTER_stocks_fa(Container):
             Gross profit.
         cost_and_expenses : Optional[int]
             Cost and expenses.
-        gross_profit_ratio : Optional[Union[float]]
+        gross_profit_ratio : Optional[float]
             Gross profit ratio.
         research_and_development_expenses : Optional[int]
             Research and development expenses.
         general_and_administrative_expenses : Optional[int]
             General and administrative expenses.
-        selling_and_marketing_expenses : Optional[Union[float]]
+        selling_and_marketing_expenses : Optional[float]
             Selling and marketing expenses.
         selling_general_and_administrative_expenses : Optional[int]
             Selling, general and administrative expenses.
@@ -1663,11 +1578,11 @@ class ROUTER_stocks_fa(Container):
             Depreciation and amortization.
         ebitda : Optional[int]
             Earnings before interest, taxes, depreciation and amortization.
-        ebitda_ratio : Optional[Union[float]]
+        ebitda_ratio : Optional[float]
             Earnings before interest, taxes, depreciation and amortization ratio.
         operating_income : Optional[int]
             Operating income.
-        operating_income_ratio : Optional[Union[float]]
+        operating_income_ratio : Optional[float]
             Operating income ratio.
         interest_income : Optional[int]
             Interest income.
@@ -1677,51 +1592,50 @@ class ROUTER_stocks_fa(Container):
             Total other income expenses net.
         income_before_tax : Optional[int]
             Income before tax.
-        income_before_tax_ratio : Optional[Union[float]]
+        income_before_tax_ratio : Optional[float]
             Income before tax ratio.
         income_tax_expense : Optional[int]
             Income tax expense.
         net_income : Optional[int]
             Net income.
-        net_income_ratio : Optional[Union[float]]
+        net_income_ratio : Optional[float]
             Net income ratio.
-        eps : Optional[Union[float]]
+        eps : Optional[float]
             Earnings per share.
-        eps_diluted : Optional[Union[float]]
+        eps_diluted : Optional[float]
             Earnings per share diluted.
         weighted_average_shares_outstanding : Optional[int]
             Weighted average shares outstanding.
         weighted_average_shares_outstanding_dil : Optional[int]
             Weighted average shares outstanding diluted.
-        link : Optional[Union[str]]
+        link : Optional[str]
             Link to the income statement.
-        final_link : Optional[Union[str]]
+        final_link : Optional[str]
             Final link to the income statement.
-        reported_currency : Optional[Union[str]]
+        reported_currency : Optional[str]
             Reporting currency. (provider: fmp)
-        filling_date : Optional[Union[date]]
+        filling_date : Optional[date]
             Filling date. (provider: fmp)
-        accepted_date : Optional[Union[datetime]]
+        accepted_date : Optional[datetime]
             Accepted date. (provider: fmp)
-        calendar_year : Optional[Union[int]]
+        calendar_year : Optional[int]
             Calendar year. (provider: fmp)
-        income_loss_from_continuing_operations_before_tax : Optional[Union[float]]
+        income_loss_from_continuing_operations_before_tax : Optional[float]
             Income/Loss From Continuing Operations After Tax (provider: polygon)
-        income_loss_from_continuing_operations_after_tax : Optional[Union[float]]
+        income_loss_from_continuing_operations_after_tax : Optional[float]
             Income (loss) from continuing operations after tax (provider: polygon)
-        benefits_costs_expenses : Optional[Union[float]]
+        benefits_costs_expenses : Optional[float]
             Benefits, costs and expenses (provider: polygon)
         net_income_loss_attributable_to_noncontrolling_interest : Optional[int]
             Net income (loss) attributable to noncontrolling interest (provider: polygon)
-        net_income_loss_attributable_to_parent : Optional[Union[float]]
+        net_income_loss_attributable_to_parent : Optional[float]
             Net income (loss) attributable to parent (provider: polygon)
-        net_income_loss_available_to_common_stockholders_basic : Optional[Union[float]]
+        net_income_loss_available_to_common_stockholders_basic : Optional[float]
             Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
-        participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[Union[float]]
+        participating_securities_distributed_and_undistributed_earnings_loss_basic : Optional[float]
             Participating Securities Distributed And Undistributed Earnings Loss Basic (provider: polygon)
-        nonoperating_income_loss : Optional[Union[float]]
+        nonoperating_income_loss : Optional[float]
             Nonoperating Income Loss (provider: polygon)
-<<<<<<< Updated upstream
         preferred_stock_dividends_and_other_adjustments : Optional[float]
             Preferred stock dividends and other adjustments (provider: polygon)
         Example
@@ -1730,10 +1644,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.income(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
-=======
-        preferred_stock_dividends_and_other_adjustments : Optional[Union[float]]
-            Preferred stock dividends and other adjustments (provider: polygon)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -1755,23 +1665,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def income_growth(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement Growth. Information about the growth of the company income statement.
@@ -1784,7 +1690,7 @@ class ROUTER_stocks_fa(Container):
             The number of data entries to return.
         period : Literal['annual', 'quarter']
             Time period of the data to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1792,9 +1698,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[IncomeStatementGrowth]]
+            results : List[IncomeStatementGrowth]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1805,7 +1711,7 @@ class ROUTER_stocks_fa(Container):
 
         IncomeStatementGrowth
         ---------------------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
@@ -1890,11 +1796,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def ins(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        transactionType: typing_extensions.Annotated[
+        transactionType: Annotated[
             Union[
                 List[
                     Literal[
@@ -1923,15 +1829,11 @@ class ROUTER_stocks_fa(Container):
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        page: typing_extensions.Annotated[
-            Union[int, None],
+        page: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Insider Trading. Information about insider trading.
@@ -1942,9 +1844,9 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', ...
             Type of the transaction.
-        page : Union[int, None]
+        page : Optional[int]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1952,9 +1854,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[StockInsiderTrading]]
+            results : List[StockInsiderTrading]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2022,23 +1924,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def ins_own(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        include_current_quarter: typing_extensions.Annotated[
-            Union[bool, None],
+        include_current_quarter: Annotated[
+            Optional[bool],
             OpenBBCustomParameter(description="Include current quarter data."),
         ] = False,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Institutional Ownership. Institutional ownership data.
@@ -2047,11 +1945,11 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        include_current_quarter : Union[bool, None]
+        include_current_quarter : Optional[bool]
             Include current quarter data.
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             A specific date to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2059,9 +1957,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[InstitutionalOwnership]]
+            results : List[InstitutionalOwnership]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2074,7 +1972,7 @@ class ROUTER_stocks_fa(Container):
         ----------------------
         symbol : str
             Symbol to get data for.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             CIK of the company.
         date : date
             The date of the data.
@@ -2171,23 +2069,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def metrics(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
-            Union[Literal["annual", "quarter"], None],
+        period: Annotated[
+            Optional[Literal["annual", "quarter"]],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
-            Union[int, None],
+        limit: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Key Metrics. Key metrics for a given company.
@@ -2196,23 +2090,23 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Union[Literal['annual', 'quarter'], None]
+        period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
-        limit : Union[int, None]
+        limit : Optional[int]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        with_ttm : Optional[Union[bool]]
+        with_ttm : Optional[bool]
             Include trailing twelve months (TTM) data. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : Union[List[KeyMetrics]]
+            results : List[KeyMetrics]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2223,125 +2117,125 @@ class ROUTER_stocks_fa(Container):
 
         KeyMetrics
         ----------
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Symbol to get data for.
         date : date
             The date of the data.
         period : str
             Period of the data.
-        revenue_per_share : Optional[Union[float]]
+        revenue_per_share : Optional[float]
             Revenue per share
-        net_income_per_share : Optional[Union[float]]
+        net_income_per_share : Optional[float]
             Net income per share
-        operating_cash_flow_per_share : Optional[Union[float]]
+        operating_cash_flow_per_share : Optional[float]
             Operating cash flow per share
-        free_cash_flow_per_share : Optional[Union[float]]
+        free_cash_flow_per_share : Optional[float]
             Free cash flow per share
-        cash_per_share : Optional[Union[float]]
+        cash_per_share : Optional[float]
             Cash per share
-        book_value_per_share : Optional[Union[float]]
+        book_value_per_share : Optional[float]
             Book value per share
-        tangible_book_value_per_share : Optional[Union[float]]
+        tangible_book_value_per_share : Optional[float]
             Tangible book value per share
-        shareholders_equity_per_share : Optional[Union[float]]
+        shareholders_equity_per_share : Optional[float]
             Shareholders equity per share
-        interest_debt_per_share : Optional[Union[float]]
+        interest_debt_per_share : Optional[float]
             Interest debt per share
-        market_cap : Optional[Union[float]]
+        market_cap : Optional[float]
             Market capitalization
-        enterprise_value : Optional[Union[float]]
+        enterprise_value : Optional[float]
             Enterprise value
-        pe_ratio : Optional[Union[float]]
+        pe_ratio : Optional[float]
             Price-to-earnings ratio (P/E ratio)
-        price_to_sales_ratio : Optional[Union[float]]
+        price_to_sales_ratio : Optional[float]
             Price-to-sales ratio
-        pocf_ratio : Optional[Union[float]]
+        pocf_ratio : Optional[float]
             Price-to-operating cash flow ratio
-        pfcf_ratio : Optional[Union[float]]
+        pfcf_ratio : Optional[float]
             Price-to-free cash flow ratio
-        pb_ratio : Optional[Union[float]]
+        pb_ratio : Optional[float]
             Price-to-book ratio
-        ptb_ratio : Optional[Union[float]]
+        ptb_ratio : Optional[float]
             Price-to-tangible book ratio
-        ev_to_sales : Optional[Union[float]]
+        ev_to_sales : Optional[float]
             Enterprise value-to-sales ratio
-        enterprise_value_over_ebitda : Optional[Union[float]]
+        enterprise_value_over_ebitda : Optional[float]
             Enterprise value-to-EBITDA ratio
-        ev_to_operating_cash_flow : Optional[Union[float]]
+        ev_to_operating_cash_flow : Optional[float]
             Enterprise value-to-operating cash flow ratio
-        ev_to_free_cash_flow : Optional[Union[float]]
+        ev_to_free_cash_flow : Optional[float]
             Enterprise value-to-free cash flow ratio
-        earnings_yield : Optional[Union[float]]
+        earnings_yield : Optional[float]
             Earnings yield
-        free_cash_flow_yield : Optional[Union[float]]
+        free_cash_flow_yield : Optional[float]
             Free cash flow yield
-        debt_to_equity : Optional[Union[float]]
+        debt_to_equity : Optional[float]
             Debt-to-equity ratio
-        debt_to_assets : Optional[Union[float]]
+        debt_to_assets : Optional[float]
             Debt-to-assets ratio
-        net_debt_to_ebitda : Optional[Union[float]]
+        net_debt_to_ebitda : Optional[float]
             Net debt-to-EBITDA ratio
-        current_ratio : Optional[Union[float]]
+        current_ratio : Optional[float]
             Current ratio
-        interest_coverage : Optional[Union[float]]
+        interest_coverage : Optional[float]
             Interest coverage
-        income_quality : Optional[Union[float]]
+        income_quality : Optional[float]
             Income quality
-        dividend_yield : Optional[Union[float]]
+        dividend_yield : Optional[float]
             Dividend yield
-        payout_ratio : Optional[Union[float]]
+        payout_ratio : Optional[float]
             Payout ratio
-        sales_general_and_administrative_to_revenue : Optional[Union[float]]
+        sales_general_and_administrative_to_revenue : Optional[float]
             Sales general and administrative expenses-to-revenue ratio
-        research_and_development_to_revenue : Optional[Union[float]]
+        research_and_development_to_revenue : Optional[float]
             Research and development expenses-to-revenue ratio
-        intangibles_to_total_assets : Optional[Union[float]]
+        intangibles_to_total_assets : Optional[float]
             Intangibles-to-total assets ratio
-        capex_to_operating_cash_flow : Optional[Union[float]]
+        capex_to_operating_cash_flow : Optional[float]
             Capital expenditures-to-operating cash flow ratio
-        capex_to_revenue : Optional[Union[float]]
+        capex_to_revenue : Optional[float]
             Capital expenditures-to-revenue ratio
-        capex_to_depreciation : Optional[Union[float]]
+        capex_to_depreciation : Optional[float]
             Capital expenditures-to-depreciation ratio
-        stock_based_compensation_to_revenue : Optional[Union[float]]
+        stock_based_compensation_to_revenue : Optional[float]
             Stock-based compensation-to-revenue ratio
-        graham_number : Optional[Union[float]]
+        graham_number : Optional[float]
             Graham number
-        roic : Optional[Union[float]]
+        roic : Optional[float]
             Return on invested capital
-        return_on_tangible_assets : Optional[Union[float]]
+        return_on_tangible_assets : Optional[float]
             Return on tangible assets
-        graham_net_net : Optional[Union[float]]
+        graham_net_net : Optional[float]
             Graham net-net working capital
-        working_capital : Optional[Union[float]]
+        working_capital : Optional[float]
             Working capital
-        tangible_asset_value : Optional[Union[float]]
+        tangible_asset_value : Optional[float]
             Tangible asset value
-        net_current_asset_value : Optional[Union[float]]
+        net_current_asset_value : Optional[float]
             Net current asset value
-        invested_capital : Optional[Union[float]]
+        invested_capital : Optional[float]
             Invested capital
-        average_receivables : Optional[Union[float]]
+        average_receivables : Optional[float]
             Average receivables
-        average_payables : Optional[Union[float]]
+        average_payables : Optional[float]
             Average payables
-        average_inventory : Optional[Union[float]]
+        average_inventory : Optional[float]
             Average inventory
-        days_sales_outstanding : Optional[Union[float]]
+        days_sales_outstanding : Optional[float]
             Days sales outstanding
-        days_payables_outstanding : Optional[Union[float]]
+        days_payables_outstanding : Optional[float]
             Days payables outstanding
-        days_of_inventory_on_hand : Optional[Union[float]]
+        days_of_inventory_on_hand : Optional[float]
             Days of inventory on hand
-        receivables_turnover : Optional[Union[float]]
+        receivables_turnover : Optional[float]
             Receivables turnover
-        payables_turnover : Optional[Union[float]]
+        payables_turnover : Optional[float]
             Payables turnover
-        inventory_turnover : Optional[Union[float]]
+        inventory_turnover : Optional[float]
             Inventory turnover
-        roe : Optional[Union[float]]
+        roe : Optional[float]
             Return on equity
-        capex_per_share : Optional[Union[float]]
+        capex_per_share : Optional[float]
             Capital expenditures per share
         calendar_year : Optional[int]
             Calendar year. (provider: fmp)
@@ -2372,15 +2266,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def mgmt(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Key Executives. Key executives for a given company.
@@ -2389,7 +2279,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2397,9 +2287,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[KeyExecutives]]
+            results : List[KeyExecutives]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2418,7 +2308,7 @@ class ROUTER_stocks_fa(Container):
             Pay of the key executive.
         currency_pay : str
             Currency of the pay.
-        gender : Optional[Union[str]]
+        gender : Optional[str]
             Gender of the key executive.
         year_born : Optional[int]
             Birth year of the key executive.
@@ -2449,15 +2339,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def overview(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[Data]:
         """Company Overview. General information about a company.
@@ -2466,7 +2352,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2474,9 +2360,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[CompanyOverview]
+            results : CompanyOverview
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2489,65 +2375,65 @@ class ROUTER_stocks_fa(Container):
         ---------------
         symbol : str
             Symbol to get data for.
-        price : Optional[Union[float]]
+        price : Optional[float]
             Price of the company.
-        beta : Optional[Union[float]]
+        beta : Optional[float]
             Beta of the company.
         vol_avg : Optional[int]
             Volume average of the company.
         mkt_cap : Optional[int]
             Market capitalization of the company.
-        last_div : Optional[Union[float]]
+        last_div : Optional[float]
             Last dividend of the company.
-        range : Optional[Union[str]]
+        range : Optional[str]
             Range of the company.
-        changes : Optional[Union[float]]
+        changes : Optional[float]
             Changes of the company.
-        company_name : Optional[Union[str]]
+        company_name : Optional[str]
             Company name of the company.
-        currency : Optional[Union[str]]
+        currency : Optional[str]
             Currency of the company.
-        cik : Optional[Union[str]]
+        cik : Optional[str]
             CIK of the company.
-        isin : Optional[Union[str]]
+        isin : Optional[str]
             ISIN of the company.
-        cusip : Optional[Union[str]]
+        cusip : Optional[str]
             CUSIP of the company.
-        exchange : Optional[Union[str]]
+        exchange : Optional[str]
             Exchange of the company.
-        exchange_short_name : Optional[Union[str]]
+        exchange_short_name : Optional[str]
             Exchange short name of the company.
-        industry : Optional[Union[str]]
+        industry : Optional[str]
             Industry of the company.
-        website : Optional[Union[str]]
+        website : Optional[str]
             Website of the company.
-        description : Optional[Union[str]]
+        description : Optional[str]
             Description of the company.
-        ceo : Optional[Union[str]]
+        ceo : Optional[str]
             CEO of the company.
-        sector : Optional[Union[str]]
+        sector : Optional[str]
             Sector of the company.
-        country : Optional[Union[str]]
+        country : Optional[str]
             Country of the company.
-        full_time_employees : Optional[Union[str]]
+        full_time_employees : Optional[str]
             Full time employees of the company.
-        phone : Optional[Union[str]]
+        phone : Optional[str]
             Phone of the company.
-        address : Optional[Union[str]]
+        address : Optional[str]
             Address of the company.
-        city : Optional[Union[str]]
+        city : Optional[str]
             City of the company.
-        state : Optional[Union[str]]
+        state : Optional[str]
             State of the company.
-        zip : Optional[Union[str]]
+        zip : Optional[str]
             Zip of the company.
-        dcf_diff : Optional[Union[float]]
+        dcf_diff : Optional[float]
             Discounted cash flow difference of the company.
-        dcf : Optional[Union[float]]
+        dcf : Optional[float]
             Discounted cash flow of the company.
-        image : Optional[Union[str]]
+        image : Optional[str]
             Image of the company.
-        ipo_date : Optional[Union[date]]
+        ipo_date : Optional[date]
             IPO date of the company.
         default_image : bool
             If the image is the default image.
@@ -2584,23 +2470,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def own(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        page: typing_extensions.Annotated[
-            Union[int, None],
+        page: Annotated[
+            Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Ownership. Information about the company ownership.
@@ -2609,11 +2491,11 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             A specific date to get data for.
-        page : Union[int, None]
+        page : Optional[int]
             Page number of the data to fetch.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2621,9 +2503,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[StockOwnership]]
+            results : List[StockOwnership]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2739,15 +2621,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def pt(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[Data]:
         """Price Target Consensus. Price target consensus data.
@@ -2756,7 +2634,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2764,9 +2642,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[PriceTargetConsensus]
+            results : PriceTargetConsensus
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2779,13 +2657,12 @@ class ROUTER_stocks_fa(Container):
         --------------------
         symbol : str
             Symbol to get data for.
-        target_high : Optional[Union[float]]
+        target_high : Optional[float]
             High target of the price target consensus.
-        target_low : Optional[Union[float]]
+        target_low : Optional[float]
             Low target of the price target consensus.
-        target_consensus : Optional[Union[float]]
+        target_consensus : Optional[float]
             Consensus target of the price target consensus.
-<<<<<<< Updated upstream
         target_median : Optional[float]
             Median target of the price target consensus.
         Example
@@ -2794,10 +2671,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.pt(symbol=AAPL)
         """  # noqa: E501
-=======
-        target_median : Optional[Union[float]]
-            Median target of the price target consensus."""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -2817,15 +2690,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def pta(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Price Target. Price target data.
@@ -2834,7 +2703,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2844,9 +2713,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[PriceTarget]]
+            results : List[PriceTarget]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2861,29 +2730,28 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         published_date : datetime
             Published date of the price target.
-        news_url : Optional[Union[str]]
+        news_url : Optional[str]
             News URL of the price target.
-        news_title : Optional[Union[str]]
+        news_title : Optional[str]
             News title of the price target.
-        analyst_name : Optional[Union[str]]
+        analyst_name : Optional[str]
             Analyst name.
-        analyst_company : Optional[Union[str]]
+        analyst_company : Optional[str]
             Analyst company.
-        price_target : Optional[Union[float]]
+        price_target : Optional[float]
             Price target.
-        adj_price_target : Optional[Union[float]]
+        adj_price_target : Optional[float]
             Adjusted price target.
-        price_when_posted : Optional[Union[float]]
+        price_when_posted : Optional[float]
             Price when posted.
-        news_publisher : Optional[Union[str]]
+        news_publisher : Optional[str]
             News publisher of the price target.
-        news_base_url : Optional[Union[str]]
+        news_base_url : Optional[str]
             News base URL of the price target.
-        new_grade : Optional[Union[str]]
+        new_grade : Optional[str]
             New grade (provider: fmp)
-        previous_grade : Optional[Union[str]]
+        previous_grade : Optional[str]
             Previous grade (provider: fmp)
-<<<<<<< Updated upstream
         grading_company : Optional[str]
             Grading company (provider: fmp)
         Example
@@ -2892,10 +2760,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.pta(symbol=AAPL)
         """  # noqa: E501
-=======
-        grading_company : Optional[Union[str]]
-            Grading company (provider: fmp)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -2915,23 +2779,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def ratios(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        period: typing_extensions.Annotated[
+        period: Annotated[
             Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        limit: typing_extensions.Annotated[
+        limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Extensive set of ratios over time. Financial ratios for a given company.
@@ -2944,19 +2804,19 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         limit : int
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        with_ttm : Optional[Union[bool]]
+        with_ttm : Optional[bool]
             Include trailing twelve months (TTM) data. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : Union[List[FinancialRatios]]
+            results : List[FinancialRatios]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2973,113 +2833,112 @@ class ROUTER_stocks_fa(Container):
             Date of the financial ratios.
         period : str
             Period of the financial ratios.
-        current_ratio : Optional[Union[float]]
+        current_ratio : Optional[float]
             Current ratio.
-        quick_ratio : Optional[Union[float]]
+        quick_ratio : Optional[float]
             Quick ratio.
-        cash_ratio : Optional[Union[float]]
+        cash_ratio : Optional[float]
             Cash ratio.
-        days_of_sales_outstanding : Optional[Union[float]]
+        days_of_sales_outstanding : Optional[float]
             Days of sales outstanding.
-        days_of_inventory_outstanding : Optional[Union[float]]
+        days_of_inventory_outstanding : Optional[float]
             Days of inventory outstanding.
-        operating_cycle : Optional[Union[float]]
+        operating_cycle : Optional[float]
             Operating cycle.
-        days_of_payables_outstanding : Optional[Union[float]]
+        days_of_payables_outstanding : Optional[float]
             Days of payables outstanding.
-        cash_conversion_cycle : Optional[Union[float]]
+        cash_conversion_cycle : Optional[float]
             Cash conversion cycle.
-        gross_profit_margin : Optional[Union[float]]
+        gross_profit_margin : Optional[float]
             Gross profit margin.
-        operating_profit_margin : Optional[Union[float]]
+        operating_profit_margin : Optional[float]
             Operating profit margin.
-        pretax_profit_margin : Optional[Union[float]]
+        pretax_profit_margin : Optional[float]
             Pretax profit margin.
-        net_profit_margin : Optional[Union[float]]
+        net_profit_margin : Optional[float]
             Net profit margin.
-        effective_tax_rate : Optional[Union[float]]
+        effective_tax_rate : Optional[float]
             Effective tax rate.
-        return_on_assets : Optional[Union[float]]
+        return_on_assets : Optional[float]
             Return on assets.
-        return_on_equity : Optional[Union[float]]
+        return_on_equity : Optional[float]
             Return on equity.
-        return_on_capital_employed : Optional[Union[float]]
+        return_on_capital_employed : Optional[float]
             Return on capital employed.
-        net_income_per_ebt : Optional[Union[float]]
+        net_income_per_ebt : Optional[float]
             Net income per EBT.
-        ebt_per_ebit : Optional[Union[float]]
+        ebt_per_ebit : Optional[float]
             EBT per EBIT.
-        ebit_per_revenue : Optional[Union[float]]
+        ebit_per_revenue : Optional[float]
             EBIT per revenue.
-        debt_ratio : Optional[Union[float]]
+        debt_ratio : Optional[float]
             Debt ratio.
-        debt_equity_ratio : Optional[Union[float]]
+        debt_equity_ratio : Optional[float]
             Debt equity ratio.
-        long_term_debt_to_capitalization : Optional[Union[float]]
+        long_term_debt_to_capitalization : Optional[float]
             Long term debt to capitalization.
-        total_debt_to_capitalization : Optional[Union[float]]
+        total_debt_to_capitalization : Optional[float]
             Total debt to capitalization.
-        interest_coverage : Optional[Union[float]]
+        interest_coverage : Optional[float]
             Interest coverage.
-        cash_flow_to_debt_ratio : Optional[Union[float]]
+        cash_flow_to_debt_ratio : Optional[float]
             Cash flow to debt ratio.
-        company_equity_multiplier : Optional[Union[float]]
+        company_equity_multiplier : Optional[float]
             Company equity multiplier.
-        receivables_turnover : Optional[Union[float]]
+        receivables_turnover : Optional[float]
             Receivables turnover.
-        payables_turnover : Optional[Union[float]]
+        payables_turnover : Optional[float]
             Payables turnover.
-        inventory_turnover : Optional[Union[float]]
+        inventory_turnover : Optional[float]
             Inventory turnover.
-        fixed_asset_turnover : Optional[Union[float]]
+        fixed_asset_turnover : Optional[float]
             Fixed asset turnover.
-        asset_turnover : Optional[Union[float]]
+        asset_turnover : Optional[float]
             Asset turnover.
-        operating_cash_flow_per_share : Optional[Union[float]]
+        operating_cash_flow_per_share : Optional[float]
             Operating cash flow per share.
-        free_cash_flow_per_share : Optional[Union[float]]
+        free_cash_flow_per_share : Optional[float]
             Free cash flow per share.
-        cash_per_share : Optional[Union[float]]
+        cash_per_share : Optional[float]
             Cash per share.
-        payout_ratio : Optional[Union[float]]
+        payout_ratio : Optional[float]
             Payout ratio.
-        operating_cash_flow_sales_ratio : Optional[Union[float]]
+        operating_cash_flow_sales_ratio : Optional[float]
             Operating cash flow sales ratio.
-        free_cash_flow_operating_cash_flow_ratio : Optional[Union[float]]
+        free_cash_flow_operating_cash_flow_ratio : Optional[float]
             Free cash flow operating cash flow ratio.
-        cash_flow_coverage_ratios : Optional[Union[float]]
+        cash_flow_coverage_ratios : Optional[float]
             Cash flow coverage ratios.
-        short_term_coverage_ratios : Optional[Union[float]]
+        short_term_coverage_ratios : Optional[float]
             Short term coverage ratios.
-        capital_expenditure_coverage_ratio : Optional[Union[float]]
+        capital_expenditure_coverage_ratio : Optional[float]
             Capital expenditure coverage ratio.
-        dividend_paid_and_capex_coverage_ratio : Optional[Union[float]]
+        dividend_paid_and_capex_coverage_ratio : Optional[float]
             Dividend paid and capex coverage ratio.
-        dividend_payout_ratio : Optional[Union[float]]
+        dividend_payout_ratio : Optional[float]
             Dividend payout ratio.
-        price_book_value_ratio : Optional[Union[float]]
+        price_book_value_ratio : Optional[float]
             Price book value ratio.
-        price_to_book_ratio : Optional[Union[float]]
+        price_to_book_ratio : Optional[float]
             Price to book ratio.
-        price_to_sales_ratio : Optional[Union[float]]
+        price_to_sales_ratio : Optional[float]
             Price to sales ratio.
-        price_earnings_ratio : Optional[Union[float]]
+        price_earnings_ratio : Optional[float]
             Price earnings ratio.
-        price_to_free_cash_flows_ratio : Optional[Union[float]]
+        price_to_free_cash_flows_ratio : Optional[float]
             Price to free cash flows ratio.
-        price_to_operating_cash_flows_ratio : Optional[Union[float]]
+        price_to_operating_cash_flows_ratio : Optional[float]
             Price to operating cash flows ratio.
-        price_cash_flow_ratio : Optional[Union[float]]
+        price_cash_flow_ratio : Optional[float]
             Price cash flow ratio.
-        price_earnings_to_growth_ratio : Optional[Union[float]]
+        price_earnings_to_growth_ratio : Optional[float]
             Price earnings to growth ratio.
-        price_sales_ratio : Optional[Union[float]]
+        price_sales_ratio : Optional[float]
             Price sales ratio.
-        dividend_yield : Optional[Union[float]]
+        dividend_yield : Optional[float]
             Dividend yield.
-        enterprise_value_multiple : Optional[Union[float]]
+        enterprise_value_multiple : Optional[float]
             Enterprise value multiple.
-<<<<<<< Updated upstream
         price_fair_value : Optional[float]
             Price fair value.
         Example
@@ -3088,10 +2947,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.ratios(symbol=AAPL, period=annual, limit=12)
         """  # noqa: E501
-=======
-        price_fair_value : Optional[Union[float]]
-            Price fair value."""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -3113,27 +2968,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def revgeo(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         period: Annotated[
-=======
-        period: typing_extensions.Annotated[
->>>>>>> Stashed changes
             Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        structure: typing_extensions.Annotated[
+        structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Revenue Geographic. Geographic revenue data.
@@ -3146,7 +2993,7 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3154,9 +3001,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[RevenueGeographic]]
+            results : List[RevenueGeographic]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3208,27 +3055,19 @@ class ROUTER_stocks_fa(Container):
     @validate
     def revseg(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         period: Annotated[
-=======
-        period: typing_extensions.Annotated[
->>>>>>> Stashed changes
             Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        structure: typing_extensions.Annotated[
+        structure: Annotated[
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Revenue Business Line. Business line revenue data.
@@ -3241,7 +3080,7 @@ class ROUTER_stocks_fa(Container):
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3249,9 +3088,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[RevenueBusinessLine]]
+            results : List[RevenueBusinessLine]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3293,15 +3132,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def shrs(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Share Statistics. Share statistics for a given company.
@@ -3310,7 +3145,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3318,9 +3153,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[ShareStatistics]]
+            results : List[ShareStatistics]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3333,15 +3168,14 @@ class ROUTER_stocks_fa(Container):
         ---------------
         symbol : str
             Symbol to get data for.
-        date : Optional[Union[date]]
+        date : Optional[date]
             A specific date to get data for.
-        free_float : Optional[Union[float]]
+        free_float : Optional[float]
             Percentage of unrestricted shares of a publicly-traded company.
-        float_shares : Optional[Union[float]]
+        float_shares : Optional[float]
             Number of shares available for trading by the general public.
-        outstanding_shares : Optional[Union[float]]
+        outstanding_shares : Optional[float]
             Total number of shares of a publicly-traded company.
-<<<<<<< Updated upstream
         source : Optional[str]
             Source of the received data.
         Example
@@ -3350,10 +3184,6 @@ class ROUTER_stocks_fa(Container):
         >>> from openbb import obb
         >>> obb.stocks.fa.shrs(symbol=AAPL)
         """  # noqa: E501
-=======
-        source : Optional[Union[str]]
-            Source of the received data."""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
@@ -3373,15 +3203,11 @@ class ROUTER_stocks_fa(Container):
     @validate
     def split(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Stock Splits. Historical stock splits data.
@@ -3390,7 +3216,7 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3398,9 +3224,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[HistoricalStockSplits]]
+            results : List[HistoricalStockSplits]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -3444,25 +3270,21 @@ class ROUTER_stocks_fa(Container):
     @validate
     def transcript(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        year: typing_extensions.Annotated[
+        year: Annotated[
             int,
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        quarter: typing_extensions.Annotated[
+        quarter: Annotated[
             int,
             OpenBBCustomParameter(
                 description="Quarter of the earnings call transcript."
             ),
         ] = 1,
-<<<<<<< Updated upstream
         provider: Optional[Literal["fmp"]] = None,
-=======
-        provider: Union[Literal["fmp"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Earnings Call Transcript. Earnings call transcript for a given company.
@@ -3475,7 +3297,7 @@ class ROUTER_stocks_fa(Container):
             Year of the earnings call transcript.
         quarter : int
             Quarter of the earnings call transcript.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -3483,9 +3305,9 @@ class ROUTER_stocks_fa(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EarningsCallTranscript]]
+            results : List[EarningsCallTranscript]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

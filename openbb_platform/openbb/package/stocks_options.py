@@ -12,11 +12,7 @@ from inspect import Parameter
 import typing
 from typing import List, Dict, Union, Optional, Literal
 from annotated_types import Ge, Le, Gt, Lt
-<<<<<<< Updated upstream
 from typing_extensions import Annotated
-=======
-import typing_extensions
->>>>>>> Stashed changes
 from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
 
@@ -39,15 +35,11 @@ class ROUTER_stocks_options(Container):
     @validate
     def chains(
         self,
-        symbol: typing_extensions.Annotated[
+        symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-<<<<<<< Updated upstream
         provider: Optional[Literal["cboe", "intrinio"]] = None,
-=======
-        provider: Union[Literal["cboe", "intrinio"], None] = None,
->>>>>>> Stashed changes
         **kwargs
     ) -> OBBject[List[Data]]:
         """Get the complete options chain for a ticker.
@@ -56,19 +48,19 @@ class ROUTER_stocks_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Union[Literal['cboe', 'intrinio'], None]
+        provider : Optional[Literal['cboe', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
-        date : Optional[Union[datetime.date]]
+        date : Optional[datetime.date]
             Date for which the options chains are returned. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : Union[List[OptionsChains]]
+            results : List[OptionsChains]
                 Serializable results.
-            provider : Union[Literal['cboe', 'intrinio'], None]
+            provider : Optional[Literal['cboe', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -81,7 +73,7 @@ class ROUTER_stocks_options(Container):
         -------------
         contract_symbol : str
             Contract symbol for the option.
-        symbol : Optional[Union[str]]
+        symbol : Optional[str]
             Underlying symbol for the option.
         expiration : date
             Expiration date of the contract.
@@ -89,69 +81,68 @@ class ROUTER_stocks_options(Container):
             Strike price of the contract.
         option_type : str
             Call or Put.
-        eod_date : Optional[Union[date]]
+        eod_date : Optional[date]
             Date for which the options chains are returned.
-        close : Optional[Union[float]]
+        close : Optional[float]
             Close price for the option that day.
-        close_bid : Optional[Union[float]]
+        close_bid : Optional[float]
             The closing bid price for the option that day.
-        close_ask : Optional[Union[float]]
+        close_ask : Optional[float]
             The closing ask price for the option that day.
-        volume : Optional[Union[float]]
+        volume : Optional[float]
             Current trading volume on the contract.
-        open : Optional[Union[float]]
+        open : Optional[float]
             Opening price of the option.
-        open_bid : Optional[Union[float]]
+        open_bid : Optional[float]
             The opening bid price for the option that day.
-        open_ask : Optional[Union[float]]
+        open_ask : Optional[float]
             The opening ask price for the option that day.
-        open_interest : Optional[Union[float]]
+        open_interest : Optional[float]
             Open interest on the contract.
-        high : Optional[Union[float]]
+        high : Optional[float]
             High price of the option.
-        low : Optional[Union[float]]
+        low : Optional[float]
             Low price of the option.
-        mark : Optional[Union[float]]
+        mark : Optional[float]
             The mid-price between the latest bid-ask spread.
-        ask_high : Optional[Union[float]]
+        ask_high : Optional[float]
             The highest ask price for the option that day.
-        ask_low : Optional[Union[float]]
+        ask_low : Optional[float]
             The lowest ask price for the option that day.
-        bid_high : Optional[Union[float]]
+        bid_high : Optional[float]
             The highest bid price for the option that day.
-        bid_low : Optional[Union[float]]
+        bid_low : Optional[float]
             The lowest bid price for the option that day.
-        implied_volatility : Optional[Union[float]]
+        implied_volatility : Optional[float]
             Implied volatility of the option.
-        delta : Optional[Union[float]]
+        delta : Optional[float]
             Delta of the option.
-        gamma : Optional[Union[float]]
+        gamma : Optional[float]
             Gamma of the option.
-        theta : Optional[Union[float]]
+        theta : Optional[float]
             Theta of the option.
-        vega : Optional[Union[float]]
+        vega : Optional[float]
             Vega of the option.
-        bid_size : Optional[Union[int]]
+        bid_size : Optional[int]
             Bid size for the option. (provider: cboe)
-        ask_size : Optional[Union[int]]
+        ask_size : Optional[int]
             Ask size for the option. (provider: cboe)
-        theoretical : Optional[Union[float]]
+        theoretical : Optional[float]
             Theoretical value of the option. (provider: cboe)
-        last_trade_price : Optional[Union[float]]
+        last_trade_price : Optional[float]
             Last trade price of the option. (provider: cboe)
-        tick : Optional[Union[str]]
+        tick : Optional[str]
             Whether the last tick was up or down in price. (provider: cboe)
-        prev_close : Optional[Union[float]]
+        prev_close : Optional[float]
             Previous closing price of the option. (provider: cboe)
-        change : Optional[Union[float]]
+        change : Optional[float]
             Change in  price of the option. (provider: cboe)
-        change_percent : Optional[Union[float]]
+        change_percent : Optional[float]
             Change, in percent, of the option. (provider: cboe)
-        rho : Optional[Union[float]]
+        rho : Optional[float]
             Rho of the option. (provider: cboe)
-        last_trade_timestamp : Optional[Union[datetime]]
+        last_trade_timestamp : Optional[datetime]
             Last trade timestamp of the option. (provider: cboe)
-<<<<<<< Updated upstream
         dte : Optional[int]
             Days to expiration for the option. (provider: cboe)
         Example
@@ -160,10 +151,6 @@ class ROUTER_stocks_options(Container):
         >>> from openbb import obb
         >>> obb.stocks.options.chains(symbol=AAPL)
         """  # noqa: E501
-=======
-        dte : Optional[Union[int]]
-            Days to expiration for the option. (provider: cboe)"""  # noqa: E501
->>>>>>> Stashed changes
 
         inputs = filter_inputs(
             provider_choices={
