@@ -48,19 +48,19 @@ jobs:
       #     --outdir dist/
       #     .
 
-      - name: Publish OpenBBTerminal distribution 📦 to Test PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: dist/
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
+      # - name: OpenBBTerminal - Publish distribution 📦 to Test PyPI
+      #   uses: pypa/gh-action-pypi-publish@release/v1
+      #   with:
+      #     packages-dir: dist/
+      #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+      #     repository-url: https://test.pypi.org/legacy/
 
-      - name: OpenBB Platform - Create the dinamically wheel
+      - name: OpenBB Platform - Create the dinamically generated wheel
         run: >-
           python -m pip install poetry toml
           python openbb_platform/dev_utils/nightly.py
 
-      - name: Publish OpenBB Platform distribution 📦 to Test PyPI
+      - name: OpenBB Platform - Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: openbb_platform/dist/
