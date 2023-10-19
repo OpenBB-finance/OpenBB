@@ -138,7 +138,7 @@ class PolygonBalanceSheetFetcher(
 
         base_url = "https://api.polygon.io/vX/reference/financials"
         query.period = "quarterly" if query.period == "quarter" else query.period
-        query_string = get_querystring(query.model_dump(), [])
+        query_string = get_querystring(query.model_dump(by_alias=True), [])
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
         data = get_data(request_url, **kwargs)["results"]
 
