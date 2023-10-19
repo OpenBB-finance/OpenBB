@@ -29,7 +29,7 @@ class ROUTER_stocks_ca(Container):
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[Data]:
-        """Company peers.
+        """Stock Peers. Company peers.
 
         Parameters
         ----------
@@ -59,7 +59,13 @@ class ROUTER_stocks_ca(Container):
         symbol : str
             Symbol representing the entity requested in the data.
         peers_list : List[str]
-            A list of stock peers based on sector, exchange and market cap."""  # noqa: E501
+            A list of stock peers based on sector, exchange and market cap.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.stocks.ca.peers(symbol="AAPL")
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

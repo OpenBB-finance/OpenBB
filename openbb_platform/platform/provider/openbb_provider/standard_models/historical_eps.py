@@ -1,13 +1,11 @@
 """Historical EPS data model."""
 
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -19,7 +17,7 @@ class HistoricalEpsQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
@@ -32,7 +30,7 @@ class HistoricalEpsData(Data):
     """Historical Earnings Per Share Data."""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     announce_time: Optional[str] = Field(
         default=None, description="Timing of the earnings announcement."
     )
@@ -43,7 +41,7 @@ class HistoricalEpsData(Data):
         default=None, description="Estimated EPS for the earnings date."
     )
 
-    @validator("date", pre=True, check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))

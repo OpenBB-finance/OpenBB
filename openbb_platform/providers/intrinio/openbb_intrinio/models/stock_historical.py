@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import INTERVALS, TIMEZONES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_historical import (
     StockHistoricalData,
@@ -13,7 +12,7 @@ from openbb_provider.standard_models.stock_historical import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field
+from pydantic import Field, PrivateAttr, model_validator
 
 
 class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
@@ -22,28 +21,53 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
 
-    __alias_dict__ = {"limit": "page_size"}
-
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
     )
-    timezone: Optional[TIMEZONES] = Field(
-        default="UTC", description="Returns trading times in this timezone."
+    interval: Literal[
+        "1m", "5m", "10m", "15m", "30m", "60m", "1h", "1d", "1W", "1M", "1Q", "1Y"
+    ] = Field(default="1d", description=QUERY_DESCRIPTIONS.get("interval", ""))
+    start_time: Optional[time] = Field(
+        default=None,
+        description="Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'.",
+    )
+    end_time: Optional[time] = Field(
+        default=None,
+        description="Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.",
+    )
+    timezone: str = Field(
+        default="UTC",
+        description="Timezone of the data, in the IANA format (Continent/City).",
     )
     source: Optional[Literal["realtime", "delayed", "nasdaq_basic"]] = Field(
         default="realtime", description="The source of the data."
     )
-    start_time: Optional[time] = Field(
-        default=None,
-        description="Return intervals starting at the specified time on the `start_date` formatted as 'hh:mm:ss'.",
+    _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(
+        default=None
     )
-    end_time: Optional[time] = Field(
-        default=None,
-        description="Return intervals stopping at the specified time on the `end_date` formatted as 'hh:mm:ss'.",
-    )
-    interval_size: Optional[INTERVALS] = Field(
-        default="60m", description=QUERY_DESCRIPTIONS.get("frequency", "")
-    )
+    _frequency: Literal[
+        "daily", "weekly", "monthly", "quarterly", "yearly"
+    ] = PrivateAttr(default=None)
+
+    @model_validator(mode="after")
+    @classmethod
+    def set_time_params(cls, values: "IntrinioStockHistoricalQueryParams"):
+        """Set the default start & end date and time params for Intrinio API."""
+
+        frequency_dict = {
+            "1d": "daily",
+            "1W": "weekly",
+            "1M": "monthly",
+            "1Q": "quarterly",
+            "1Y": "yearly",
+        }
+
+        if values.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]:
+            values._interval_size = values.interval
+        elif values.interval in ["1d", "1W", "1M", "1Q", "1Y"]:
+            values._frequency = frequency_dict[values.interval]
+
+        return values
 
 
 class IntrinioStockHistoricalData(StockHistoricalData):
@@ -56,7 +80,9 @@ class IntrinioStockHistoricalData(StockHistoricalData):
         description="The timestamp that represents the end of the interval span.",
     )
     interval: Optional[str] = Field(
-        default=None, description="The data time frequency."
+        default=None,
+        description="The data time frequency.",
+        alias="frequency",
     )
     average: Optional[float] = Field(
         default=None,
@@ -65,6 +91,59 @@ class IntrinioStockHistoricalData(StockHistoricalData):
     change: Optional[float] = Field(
         default=None,
         description="Change in the price of the symbol from the previous day.",
+    )
+    intra_period: Optional[bool] = Field(
+        default=None,
+        description="If true, the stock price represents an unfinished period "
+        "(be it day, week, quarter, month, or year), meaning that the close "
+        "price is the latest price available, not the official close price "
+        "for the period",
+        alias="intraperiod",
+    )
+    adj_open: Optional[float] = Field(
+        default=None,
+        description="Adjusted open price during the period.",
+    )
+    adj_high: Optional[float] = Field(
+        default=None,
+        description="Adjusted high price during the period.",
+    )
+    adj_low: Optional[float] = Field(
+        default=None,
+        description="Adjusted low price during the period.",
+    )
+    adj_close: Optional[float] = Field(
+        default=None,
+        description="Adjusted closing price during the period.",
+    )
+    adj_volume: Optional[float] = Field(
+        default=None,
+        description="Adjusted volume during the period.",
+    )
+    factor: Optional[float] = Field(
+        default=None,
+        description="factor by which to multiply stock prices before this "
+        "date, in order to calculate historically-adjusted stock prices.",
+    )
+    split_ratio: Optional[float] = Field(
+        default=None,
+        description="Ratio of the stock split, if a stock split occurred.",
+    )
+    dividend: Optional[float] = Field(
+        default=None,
+        description="Dividend amount, if a dividend was paid.",
+    )
+    percent_change: Optional[float] = Field(
+        default=None,
+        description="Percent change in the price of the symbol from the previous day.",
+    )
+    fifty_two_week_high: Optional[float] = Field(
+        default=None,
+        description="52 week high price for the symbol.",
+    )
+    fifty_two_week_low: Optional[float] = Field(
+        default=None,
+        description="52 week low price for the symbol.",
     )
 
 
@@ -105,32 +184,39 @@ class IntrinioStockHistoricalFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
-        base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-        url = (
-            f"{base_url}/securities/{query.symbol}/prices/intervals"
-            f"?{query_str}&api_key={api_key}"
+        base_url = f"https://api-v2.intrinio.com/securities/{query.symbol}/prices"
+
+        if query._interval_size:
+            base_url += f"/intervals?interval_size={query._interval_size}"
+            data_key = "intervals"
+        elif query._frequency:
+            base_url += f"?frequency={query._frequency}"
+            data_key = "stock_prices"
+
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "interval"]
         )
+        url = f"{base_url}&{query_str}&api_key={api_key}"
 
         data = get_data_one(url, **kwargs)
-
         next_page = data.get("next_page", None)
-        data = data.get("intervals", [])
+        data = data.get(data_key, [])
 
         while next_page:
-            query_str = get_querystring(query.dict(by_alias=True), ["symbol"])
-            url = (
-                f"{base_url}/securities/{query.symbol}/prices/intervals"
-                f"?{query_str}&next_page={next_page}&api_key={api_key}"
+            query_str = get_querystring(
+                query.model_dump(by_alias=True), ["symbol", "interval"]
             )
+            url = f"{base_url}&{query_str}&next_page={next_page}&api_key={api_key}"
             temp_data = get_data_one(url, **kwargs)
 
             next_page = temp_data.get("next_page", None)
-            data.extend(temp_data.get("intervals", []))
+            data.extend(temp_data.get(data_key, []))
 
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioStockHistoricalData]:
+    def transform_data(
+        query: IntrinioStockHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioStockHistoricalData]:
         """Return the transformed data."""
         return [IntrinioStockHistoricalData.model_validate(d) for d in data]

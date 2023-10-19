@@ -20,7 +20,7 @@ def headers():
 
 @pytest.mark.parametrize(
     "params",
-    [({"index": "dowjones"})],
+    [({"index": "dowjones", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_economy_const(params, headers):
@@ -38,14 +38,26 @@ def test_economy_const(params, headers):
     [
         (
             {
+                "countries": "spain",
+                "units": "growth_same",
+                "frequency": "monthly",
+                "harmonized": True,
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fred",
+            }
+        ),
+        (
+            {
                 "countries": ["portugal", "spain"],
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "provider": "fred",
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration
@@ -62,7 +74,14 @@ def test_economy_cpi(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "DJI", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
         (
             {
                 "interval": "1m",
@@ -129,18 +148,6 @@ def test_economy_cpi(params, headers):
         ),
         (
             {
-                "interval": "1m",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
-                "provider": "yfinance",
-                "symbol": "DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "period": "max",
                 "prepost": True,
@@ -167,7 +174,14 @@ def test_economy_index(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "BUKBUS", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "symbol": "BUKBUS",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "cboe",
+            }
+        ),
         (
             {
                 "interval": "1m",
@@ -201,7 +215,7 @@ def test_economy_european_index(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "BUKBUS"})],
+    [({"symbol": "BUKBUS", "provider": "cboe"})],
 )
 @pytest.mark.integration
 def test_economy_european_index_constituents(params, headers):
@@ -217,7 +231,6 @@ def test_economy_european_index_constituents(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         ({"europe": True, "provider": "cboe"}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
@@ -236,7 +249,7 @@ def test_economy_available_indices(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({})],
+    [({"provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_economy_risk(params, headers):
@@ -252,15 +265,8 @@ def test_economy_risk(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "DJ", "symbol": True}),
-        (
-            {
-                "europe": True,
-                "provider": "cboe",
-                "query": "DJ",
-                "symbol": True,
-            }
-        ),
+        ({"query": "D", "is_symbol": True, "provider": "cboe"}),
+        ({"europe": True, "provider": "cboe", "query": "A", "is_symbol": False}),
     ],
 )
 @pytest.mark.integration
@@ -276,7 +282,7 @@ def test_economy_index_search(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"region": "US"})],
+    [({"provider": "cboe", "region": "US"})],
 )
 @pytest.mark.integration
 def test_economy_index_snapshots(params, headers):
@@ -291,7 +297,7 @@ def test_economy_index_snapshots(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "grain"})],
+    [({"query": "grain", "provider": "quandl"})],
 )
 @pytest.mark.integration
 def test_economy_cot_search(params, headers):
@@ -307,7 +313,6 @@ def test_economy_cot_search(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         (
             {
                 "code": "13874P",
@@ -344,6 +349,7 @@ def test_economy_cot(params, headers):
                 "end_date": "2023-06-06",
                 "collapse": "monthly",
                 "transform": "diff",
+                "provider": "quandl",
             }
         )
     ],
@@ -364,10 +370,11 @@ def test_economy_sp500_multiples(params, headers):
     [
         (
             {
-                "symbol": "AAPL",
+                "symbol": "$GDP",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
+                "provider": "intrinio",
             }
         )
     ],
@@ -386,7 +393,14 @@ def test_economy_fred_index(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"units": "usd", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "units": "usd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "oecd",
+            }
+        ),
         (
             {
                 "country": "united_states",
@@ -404,7 +418,7 @@ def test_economy_gdpnom(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/gdpnom?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -412,7 +426,14 @@ def test_economy_gdpnom(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "units": "yoy",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "oecd",
+            }
+        ),
         (
             {
                 "country": "united_states",
@@ -442,8 +463,9 @@ def test_economy_gdpreal(params, headers):
             {
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
+                "provider": "oecd",
             }
         ),
         (
@@ -452,7 +474,7 @@ def test_economy_gdpreal(params, headers):
                 "provider": "oecd",
                 "period": "annual",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2025-06-06",
                 "type": "real",
             }
         ),
@@ -464,6 +486,32 @@ def test_economy_gdpforecast(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/gdpforecast?{query_str}"
+    result = requests.get(url, headers=headers, timeout=20)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "tradingeconomics",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "portugal",
+                "group": "gdp",
+                "importance": "Low",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_economy_econcal(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/econcal?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

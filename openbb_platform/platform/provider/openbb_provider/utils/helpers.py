@@ -22,10 +22,22 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     str
         The querystring.
     """
-    for item in exclude:
-        items.pop(item)
-    params = {k: v for k, v in items.items() if v is not None}
-    return "&".join([f"{k}={v}" for k, v in params.items()])
+    for key in exclude:
+        items.pop(key, None)
+
+    query_items = []
+    for key, value in items.items():
+        if value is None:
+            continue
+        if isinstance(value, list):
+            for item in value:
+                query_items.append(f"{key}={item}")
+        else:
+            query_items.append(f"{key}={value}")
+
+    querystring = "&".join(query_items)
+
+    return f"{querystring}" if querystring else ""
 
 
 def get_user_agent() -> str:
@@ -110,8 +122,9 @@ def to_snake_case(string: str) -> str:
 
 
 def to_camel_case(string: str):
-    """Convert a string to camel case. If all characters are lower case we return title
-    version of the string.
+    """Convert a string to camel case.
+
+    If all characters are lower case we return title version of the string.
 
     Examples
     --------

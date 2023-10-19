@@ -1,15 +1,15 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 
 
 class HubSession(BaseModel):
-    access_token: str
-    token_type: str
-    user_uuid: str
-    email: str
     username: Optional[str] = None
+    email: str
     primary_usage: str
+    user_uuid: str
+    token_type: str
+    access_token: SecretStr
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}\n\n" + "\n".join(

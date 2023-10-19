@@ -157,6 +157,8 @@ class FMPIncomeStatementFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPIncomeStatementData]:
+    def transform_data(
+        query: FMPIncomeStatementQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPIncomeStatementData]:
         """Return the transformed data."""
         return [FMPIncomeStatementData.model_validate(d) for d in data]

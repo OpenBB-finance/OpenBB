@@ -93,13 +93,15 @@ class CboeIndexSearchFetcher(
         if query.europe is False:
             symbols = get_cboe_index_directory().reset_index()
 
-        target = "name" if not query.symbol else "symbol"
+        target = "name" if not query.is_symbol else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx]
 
         return result.to_dict("records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeIndexSearchData]:
+    def transform_data(
+        query: CboeIndexSearchQueryParams, data: dict, **kwargs: Any
+    ) -> List[CboeIndexSearchData]:
         """Transform the data to the standard format."""
         return [CboeIndexSearchData.model_validate(d) for d in data]

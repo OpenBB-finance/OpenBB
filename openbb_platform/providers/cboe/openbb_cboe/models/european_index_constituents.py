@@ -11,7 +11,7 @@ from openbb_provider.standard_models.european_index_constituents import (
     EuropeanIndexConstituentsQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 
 class CboeEuropeanIndexConstituentsQueryParams(EuropeanIndexConstituentsQueryParams):
@@ -52,7 +52,7 @@ class CboeEuropeanIndexConstituentsData(EuropeanIndexConstituentsData):
         default=None, description="Type of asset.", alias="type"
     )
 
-    @validator("last_trade_timestamp", pre=True, check_fields=False)
+    @field_validator("last_trade_timestamp", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
 
@@ -112,7 +112,9 @@ class CboeEuropeanIndexConstituentsFetcher(
         return data.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[CboeEuropeanIndexConstituentsData]:
+    def transform_data(
+        query: CboeEuropeanIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeEuropeanIndexConstituentsData]:
         """Transform the data to the standard format"""
 
         return [CboeEuropeanIndexConstituentsData.model_validate(d) for d in data]

@@ -2,7 +2,6 @@
 # ruff: noqa: S101
 # pylint: disable=E1101
 
-
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from openbb_provider.abstract.data import Data
@@ -39,7 +38,7 @@ class Fetcher(Generic[Q, R]):
         raise NotImplementedError
 
     @staticmethod
-    def transform_data(data: Any) -> R:
+    def transform_data(query: Q, data: Any, **kwargs) -> R:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -53,7 +52,7 @@ class Fetcher(Generic[Q, R]):
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
-        return cls.transform_data(data=data)
+        return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
     def query_params_type(self) -> Q:
@@ -83,7 +82,7 @@ class Fetcher(Generic[Q, R]):
     @classmethod
     def test(
         cls,
-        test_params: Dict[str, Any],
+        params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs,
     ) -> None:
@@ -91,23 +90,26 @@ class Fetcher(Generic[Q, R]):
 
         This method will test each stage of the fetcher TET (Transform, Extract, Transform).
 
-        Args
-        ----
-            test_params: The params to test the fetcher with.
-            credentials: The credentials to test the fetcher with.
+        Parameters
+        ----------
+        params : Dict[str, Any]
+            The params to test the fetcher with.
+        credentials : Optional[Dict[str, str]], optional
+            The credentials to test the fetcher with, by default None.
 
         Raises
         ------
-            AssertionError: If any of the tests fail.
+        AssertionError
+            If any of the tests fail.
         """
-        query = cls.transform_query(params=test_params)
+        query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
-        transformed_data = cls.transform_data(data=data)
+        transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
         # Query Assertions
         assert query
         assert issubclass(type(query), cls.query_params_type)
-        assert all(getattr(query, key) == value for key, value in test_params.items())
+        assert all(getattr(query, key) == value for key, value in params.items())
 
         # Data Assertions
         assert data

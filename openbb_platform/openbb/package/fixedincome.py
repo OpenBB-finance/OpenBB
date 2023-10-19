@@ -47,6 +47,7 @@ class ROUTER_fixedincome(Container):
         **kwargs
     ) -> OBBject[List[Data]]:
         """
+            Ameribor.
             Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
             short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
             American Financial Exchange (AFX).
@@ -83,7 +84,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            AMERIBOR rate."""  # noqa: E501
+            AMERIBOR rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.ameribor()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -120,6 +127,7 @@ class ROUTER_fixedincome(Container):
         **kwargs
     ) -> OBBject[List[Data]]:
         """
+            Euro Short-Term Rate.
             The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
             the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
             the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
@@ -157,7 +165,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            ESTR rate."""  # noqa: E501
+            ESTR rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.estr()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -194,6 +208,7 @@ class ROUTER_fixedincome(Container):
         **kwargs
     ) -> OBBject[List[Data]]:
         """
+            Fed Funds Rate.
             Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
             United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
@@ -231,7 +246,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            FED rate."""  # noqa: E501
+            FED rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.fed()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -268,6 +289,7 @@ class ROUTER_fixedincome(Container):
         **kwargs
     ) -> OBBject[List[Data]]:
         """
+            Interest on Reserve Balances.
             Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
             domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
             United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
@@ -303,7 +325,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            IORB rate."""  # noqa: E501
+            IORB rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.iorb()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -326,9 +354,11 @@ class ROUTER_fixedincome(Container):
         self, provider: Union[Literal["fred"], None] = None, **kwargs
     ) -> OBBject[List[Data]]:
         """
-            Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-            domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-            United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+            Fed Funds Rate Projections.
+            The projections for the federal funds rate are the value of the midpoint of the
+            projected appropriate target range for the federal funds rate or the projected
+            appropriate target level for the federal funds rate at the end of the specified
+            calendar year or over the longer run.
 
 
         Parameters
@@ -371,7 +401,13 @@ class ROUTER_fixedincome(Container):
         range_low : Union[float]
             Low projection of rates.
         central_tendency_low : Union[float]
-            Central tendency of low projection of rates."""  # noqa: E501
+            Central tendency of low projection of rates.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.projections()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -404,7 +440,11 @@ class ROUTER_fixedincome(Container):
         provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Get United States yield curve.
+        """
+            Secured Overnight Financing Rate.
+            The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+            borrowing cash overnight collateralized by Treasury securities.
+
 
         Parameters
         ----------
@@ -438,7 +478,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            SOFR rate."""  # noqa: E501
+            SOFR rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.sofr()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -475,6 +521,7 @@ class ROUTER_fixedincome(Container):
         **kwargs
     ) -> OBBject[List[Data]]:
         """
+            Sterling Overnight Index Average.
             SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
             transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
             financial institutions and other institutional investors.
@@ -511,7 +558,13 @@ class ROUTER_fixedincome(Container):
         date : date
             The date of the data.
         rate : Union[float]
-            SONIA rate."""  # noqa: E501
+            SONIA rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.sonia()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -547,7 +600,7 @@ class ROUTER_fixedincome(Container):
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Get treasury rates.
+        """Treasury Rates. Treasury rates data.
 
         Parameters
         ----------
@@ -601,7 +654,13 @@ class ROUTER_fixedincome(Container):
         year_20 : float
             20 year treasury rate.
         year_30 : float
-            30 year treasury rate."""  # noqa: E501
+            30 year treasury rate.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.treasury()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -625,7 +684,7 @@ class ROUTER_fixedincome(Container):
         date: typing_extensions.Annotated[
             Union[datetime.date, None],
             OpenBBCustomParameter(
-                description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
+                description="A specific date to get data for. Defaults to the most recent FRED entry."
             ),
         ] = None,
         inflation_adjusted: typing_extensions.Annotated[
@@ -635,12 +694,12 @@ class ROUTER_fixedincome(Container):
         provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Get United States yield curve.
+        """US Yield Curve. Get United States yield curve.
 
         Parameters
         ----------
         date : Union[datetime.date, None]
-            Date to get Yield Curve data.  Defaults to the most recent FRED entry.
+            A specific date to get data for. Defaults to the most recent FRED entry.
         inflation_adjusted : Union[bool, None]
             Get inflation adjusted rates.
         provider : Union[Literal['fred'], None]
@@ -667,7 +726,13 @@ class ROUTER_fixedincome(Container):
         maturity : float
             Maturity of the treasury rate in years.
         rate : float
-            Associated rate given in decimal form (0.05 is 5%)"""  # noqa: E501
+            Associated rate given in decimal form (0.05 is 5%)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.ycrv()
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

@@ -50,6 +50,8 @@ class YFinanceAvailableIndicesFetcher(
         return indices.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[YFinanceAvailableIndicesData]:
+    def transform_data(
+        query: YFinanceAvailableIndicesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[YFinanceAvailableIndicesData]:
         """Return the transformed data."""
         return [YFinanceAvailableIndicesData.model_validate(d) for d in data]

@@ -23,17 +23,20 @@ class ROUTER_news(Container):
     def globalnews(
         self,
         limit: typing_extensions.Annotated[
-            int, OpenBBCustomParameter(description="Number of articles to return.")
+            int,
+            OpenBBCustomParameter(
+                description="The number of data entries to return. Here its the no. of articles to return."
+            ),
         ] = 20,
         provider: Union[Literal["benzinga", "fmp", "intrinio"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Global News.
+        """Global News. Global news data.
 
         Parameters
         ----------
         limit : int
-            Number of articles to return.
+            The number of data entries to return. Here its the no. of articles to return.
         provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
@@ -84,11 +87,11 @@ class ROUTER_news(Container):
         GlobalNews
         ----------
         date : datetime
-            Published date of the news.
+            The date of the data. Here it is the published date of the news.
         title : str
             Title of the news.
-        image : Optional[Union[str]]
-            Image URL of the news.
+        images : Optional[Union[List[Dict[str, str]]]]
+            Images associated with the news.
         text : Optional[Union[str]]
             Text/body of the news.
         url : Optional[Union[str]]
@@ -99,8 +102,6 @@ class ROUTER_news(Container):
             Author of the news. (provider: benzinga)
         teaser : Optional[Union[str]]
             Teaser of the news. (provider: benzinga)
-        images : Optional[Union[List[Dict[str, str]]]]
-            Images associated with the news. (provider: benzinga)
         channels : Optional[Union[str]]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[Union[str]]
@@ -112,7 +113,13 @@ class ROUTER_news(Container):
         site : Optional[Union[str]]
             Site of the news. (provider: fmp)
         company : Optional[Union[Dict[str, Any]]]
-            Company details related to the news article. (provider: intrinio)"""  # noqa: E501
+            Company details related to the news article. (provider: intrinio)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.news.globalnews(limit=20)
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

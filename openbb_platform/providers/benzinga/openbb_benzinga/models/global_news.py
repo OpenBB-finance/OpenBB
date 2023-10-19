@@ -89,9 +89,6 @@ class BenzingaGlobalNewsData(GlobalNewsData):
     id: str = Field(description="ID of the news.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
-    images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="Images associated with the news."
-    )
     channels: Optional[str] = Field(
         default=None,
         description="Channels associated with the news.",
@@ -141,7 +138,7 @@ class BenzingaGlobalNewsFetcher(
         query: BenzingaGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[dict]:
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
 
@@ -162,6 +159,8 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
+        query: BenzingaGlobalNewsQueryParams,
         data: List[dict],
+        **kwargs: Any,
     ) -> List[BenzingaGlobalNewsData]:
         return [BenzingaGlobalNewsData.model_validate(item) for item in data]

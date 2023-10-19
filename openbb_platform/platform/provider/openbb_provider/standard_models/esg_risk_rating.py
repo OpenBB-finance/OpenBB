@@ -3,11 +3,11 @@
 
 from typing import List, Literal, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class ESGRiskRatingQueryParams(QueryParams):
@@ -15,7 +15,7 @@ class ESGRiskRatingQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -26,7 +26,7 @@ class ESGRiskRatingQueryParams(QueryParams):
 class ESGRiskRatingData(Data):
     """ESG Risk Rating data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description="CIK of the company.")
     company_name: str = Field(description="Company name of the company.")
     industry: str = Field(description="Industry of the company.")
@@ -36,7 +36,7 @@ class ESGRiskRatingData(Data):
     ] = Field(description="ESG risk rating of the company.")
     industry_rank: str = Field(description="Industry rank of the company.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

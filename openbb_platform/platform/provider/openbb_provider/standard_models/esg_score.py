@@ -7,11 +7,11 @@ from datetime import (
 )
 from typing import List, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class ESGScoreQueryParams(QueryParams):
@@ -19,7 +19,7 @@ class ESGScoreQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -30,12 +30,12 @@ class ESGScoreQueryParams(QueryParams):
 class ESGScoreData(Data):
     """ESG Score data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description="CIK of the company.")
     company_name: str = Field(description="Company name of the company.")
     form_type: str = Field(description="Form type of the company.")
     accepted_date: datetime = Field(description="Accepted date of the company.")
-    date: dateType = Field(description="Date of the fetched score.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     environmental_score: float = Field(
         description="Environmental score of the company."
     )
@@ -44,7 +44,7 @@ class ESGScoreData(Data):
     esg_score: float = Field(description="ESG score of the company.")
     url: str = Field(description="URL of the company.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

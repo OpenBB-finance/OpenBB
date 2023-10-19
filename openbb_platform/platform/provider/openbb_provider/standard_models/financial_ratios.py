@@ -3,11 +3,11 @@
 
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class FinancialRatiosQueryParams(QueryParams):
@@ -21,7 +21,7 @@ class FinancialRatiosQueryParams(QueryParams):
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -32,8 +32,8 @@ class FinancialRatiosQueryParams(QueryParams):
 class FinancialRatiosData(Data):
     """Financial ratios data model."""
 
-    symbol: str = Field(description="Symbol of the company.")
-    date: str = Field(description="Date of the financial ratios.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    date: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period of the financial ratios.")
     current_ratio: Optional[float] = Field(default=None, description="Current ratio.")
     quick_ratio: Optional[float] = Field(default=None, description="Quick ratio.")

@@ -4,11 +4,11 @@
 from datetime import date
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class CompanyOverviewQueryParams(QueryParams):
@@ -16,7 +16,7 @@ class CompanyOverviewQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -30,7 +30,7 @@ class CompanyOverviewData(Data):
     Returns the profile of a given company.
     """
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     price: Optional[float] = Field(default=None, description="Price of the company.")
     beta: Optional[float] = Field(default=None, description="Beta of the company.")
     vol_avg: Optional[StrictInt] = Field(
@@ -95,7 +95,7 @@ class CompanyOverviewData(Data):
     is_adr: bool = Field(description="If the company is an ADR.")
     is_fund: bool = Field(description="If the company is a fund.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

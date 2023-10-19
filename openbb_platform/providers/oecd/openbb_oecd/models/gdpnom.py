@@ -75,5 +75,7 @@ class OECDGDPNomFetcher(Fetcher[OECDGDPNomQueryParams, List[OECDGDPNomData]]):
         return data_df.to_dict(orient="records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[OECDGDPNomData]:
+    def transform_data(
+        query: OECDGDPNomQueryParams, data: dict, **kwargs: Any
+    ) -> List[OECDGDPNomData]:
         return [OECDGDPNomData.model_validate(d) for d in data]

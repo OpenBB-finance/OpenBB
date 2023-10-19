@@ -4,6 +4,7 @@ from typing import Literal
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
+from openbb_econometrics.utils import mock_multi_index_data
 
 
 @pytest.fixture(scope="session")
@@ -25,7 +26,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = openbb.obb.stocks.load(
         symbol=symbol, provider=provider
@@ -77,11 +78,11 @@ def test_econometrics_corr(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
             "stocks",
         ),
         (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
             "crypto",
         ),
     ],
@@ -99,15 +100,22 @@ def test_econometrics_ols(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params",
+    "params, data_type",
     [
-        ({"data": "", "y_column": "close", "x_columns": ["date"]}),
-        ({"data": "", "y_column": "close", "x_columns": ["date"]}),
+        (
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
+            "stocks",
+        ),
+        (
+            {"data": "", "y_column": "close", "x_columns": ["high"]},
+            "crypto",
+        ),
     ],
 )
 @pytest.mark.integration
-def test_econometrics_ols_summary(params, obb):
+def test_econometrics_ols_summary(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
 
     result = obb.econometrics.ols_summary(**params)
     assert result
@@ -261,23 +269,17 @@ def test_econometrics_unitroot(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelre(params, data_type, obb):
+def test_econometrics_panelre(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelre(**params)
     assert result
@@ -286,23 +288,17 @@ def test_econometrics_panelre(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelbols(params, data_type, obb):
+def test_econometrics_panelbols(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelbols(**params)
     assert result
@@ -311,23 +307,17 @@ def test_econometrics_panelbols(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelpols(params, data_type, obb):
+def test_econometrics_panelpols(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelpols(**params)
     assert result
@@ -336,23 +326,17 @@ def test_econometrics_panelpols(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelols(params, data_type, obb):
+def test_econometrics_panelols(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelols(**params)
     assert result
@@ -361,23 +345,17 @@ def test_econometrics_panelols(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelfd(params, data_type, obb):
+def test_econometrics_panelfd(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelfd(**params)
     assert result
@@ -386,23 +364,17 @@ def test_econometrics_panelfd(params, data_type, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "stocks",
-        ),
-        (
-            {"data": "", "y_column": "close", "x_columns": ["date"]},
-            "crypto",
-        ),
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelfmac(params, data_type, obb):
+def test_econometrics_panelfmac(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_data(data_type)
+    params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panelfmac(**params)
     assert result

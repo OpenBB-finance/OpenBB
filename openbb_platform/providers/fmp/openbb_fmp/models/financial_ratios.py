@@ -90,6 +90,8 @@ class FMPFinancialRatiosFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPFinancialRatiosData]:
+    def transform_data(
+        query: FMPFinancialRatiosQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPFinancialRatiosData]:
         """Return the transformed data."""
         return [FMPFinancialRatiosData.model_validate(d) for d in data]

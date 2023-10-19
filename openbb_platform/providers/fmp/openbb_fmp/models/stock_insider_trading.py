@@ -54,6 +54,8 @@ class FMPStockInsiderTradingFetcher(
         return get_data_many(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockInsiderTradingData]:
+    def transform_data(
+        query: FMPStockInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPStockInsiderTradingData]:
         """Return the transformed data."""
         return [FMPStockInsiderTradingData.model_validate(d) for d in data]

@@ -8,6 +8,7 @@ from typing_extensions import Annotated
 
 
 def check_int(v: int) -> int:
+    """Check if the value is an int."""
     try:
         return int(v)
     except ValueError as exc:

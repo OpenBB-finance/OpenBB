@@ -35,8 +35,12 @@ class CboeOptionsChainsData(OptionsChainsData):
     open: float = Field(description="Opening price of the option.")
     high: float = Field(description="High price of the option.")
     low: float = Field(description="Low price of the option.")
-    last_trade_price: float = Field(description="Last trade price of the option.")
-    tick: str = Field(description="Whether the last tick was up or down in price.")
+    last_trade_price: Optional[float] = Field(
+        description="Last trade price of the option.", default=None
+    )
+    tick: Optional[str] = Field(
+        description="Whether the last tick was up or down in price.", default=None
+    )
     prev_close: float = Field(description="Previous closing price of the option.")
     change: float = Field(description="Change in  price of the option.")
     change_percent: float = Field(description="Change, in percent, of the option.")
@@ -46,8 +50,8 @@ class CboeOptionsChainsData(OptionsChainsData):
     vega: float = Field(description="Vega of the option.")
     theta: float = Field(description="Theta of the option.")
     rho: float = Field(description="Rho of the option.")
-    last_trade_timestamp: datetime = Field(
-        description="Last trade timestamp of the option."
+    last_trade_timestamp: Optional[datetime] = Field(
+        description="Last trade timestamp of the option.", default=None
     )
     dte: int = Field(description="Days to expiration for the option.")
 
@@ -78,7 +82,6 @@ class CboeOptionsChainsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint"""
-
         symbol = query.symbol.upper()
 
         INDEXES = get_cboe_index_directory()
@@ -144,7 +147,11 @@ class CboeOptionsChainsFetcher(
         temp_ = (temp - now).days + 1
         quotes["dte"] = temp_
 
-        quotes["last_trade_timestamp"] = pd.to_datetime(quotes["last_trade_timestamp"])
+        quotes["last_trade_timestamp"] = (
+            pd.to_datetime(quotes["last_trade_timestamp"], format="%Y-%m-%dT%H:%M:%S")
+            .fillna(value="-")
+            .replace("-", None)
+        )
         quotes = quotes.set_index(
             keys=["expiration", "strike", "option_type"]
         ).sort_index()
@@ -159,7 +166,9 @@ class CboeOptionsChainsFetcher(
 
     @staticmethod
     def transform_data(
+        query: CboeOptionsChainsQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[CboeOptionsChainsData]:
         """Transform the data to the standard format"""
         return [CboeOptionsChainsData.model_validate(d) for d in data]

@@ -19,7 +19,8 @@ class ForexHistoricalQueryParams(QueryParams):
     """Forex end of day Query."""
 
     symbol: str = Field(
-        description="Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format."
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " Can use CURR1-CURR2 or CURR1CURR2 format."
     )
     start_date: Optional[dateType] = Field(
         default=None,
