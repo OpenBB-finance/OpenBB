@@ -76,4 +76,4 @@ def test_to_camel_case():
     assert to_camel_case("some_field") == "someField"
     assert to_camel_case("alreadyCamelCase") == "alreadyCamelCase"
     assert to_camel_case("close") == "Close"
-    assert to_camel_case("") == ""
+    assert not to_camel_case("")

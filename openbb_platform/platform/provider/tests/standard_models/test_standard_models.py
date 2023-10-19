@@ -50,9 +50,8 @@ def test_standard_models(standard_model):
                     f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
                     f"Please modify or change the field name to a non-reserved name."
                 )
-        else:
-            if name in DATA_DESCRIPTIONS:
-                assert field.description == DATA_DESCRIPTIONS[name], (
-                    f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
-                    f"Please modify or change the field name to a non-reserved name."
-                )
+        elif name in DATA_DESCRIPTIONS:
+            assert field.description == DATA_DESCRIPTIONS[name], (
+                f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
+                f"Please modify or change the field name to a non-reserved name."
+            )
