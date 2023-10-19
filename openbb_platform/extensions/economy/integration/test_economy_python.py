@@ -242,7 +242,7 @@ def test_economy_risk(params, obb):
                 "europe": True,
                 "provider": "cboe",
                 "query": "A",
-                "symbol": False,
+                "is_symbol": False,
             }
         ),
     ],

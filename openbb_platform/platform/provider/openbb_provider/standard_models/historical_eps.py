@@ -1,17 +1,14 @@
 """Historical EPS data model."""
 
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class HistoricalEpsQueryParams(QueryParams):
@@ -32,7 +29,7 @@ class HistoricalEpsData(Data):
     """Historical Earnings Per Share Data."""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     announce_time: Optional[str] = Field(
         default=None, description="Timing of the earnings announcement."
     )

@@ -4,11 +4,10 @@
 from datetime import date as dateType
 from typing import Optional
 
-from pydantic import Field
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field
 
 
 class StockSplitCalendarQueryParams(QueryParams):
@@ -25,8 +24,8 @@ class StockSplitCalendarQueryParams(QueryParams):
 class StockSplitCalendarData(Data):
     """Stock Split Calendar data."""
 
-    date: dateType = Field(description="Date of the stock splits.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the stock splits.")
-    symbol: str = Field(description="Symbol of the company.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     numerator: float = Field(description="Numerator of the stock splits.")
     denominator: float = Field(description="Denominator of the stock splits.")

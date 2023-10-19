@@ -4,11 +4,10 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class InstitutionalOwnershipQueryParams(QueryParams):
@@ -33,7 +32,7 @@ class InstitutionalOwnershipQueryParams(QueryParams):
 class InstitutionalOwnershipData(Data):
     """Institutional Ownership Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(default=None, description="CIK of the company.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     investors_holding: int = Field(description="Number of investors holding the stock.")

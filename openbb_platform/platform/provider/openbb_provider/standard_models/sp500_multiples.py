@@ -2,10 +2,10 @@
 
 from typing import Literal, Optional
 
-from pydantic import Field
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field
 
 
 class SP500MultiplesQueryParams(QueryParams):
@@ -53,10 +53,10 @@ class SP500MultiplesQueryParams(QueryParams):
         default="PE Ratio by Month",
     )
     start_date: Optional[str] = Field(
-        description="The start date of the time series. Format: YYYY-MM-DD", default=""
+        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=""
     )
     end_date: Optional[str] = Field(
-        description="The end date of the time series. Format: YYYY-MM-DD", default=""
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=""
     )
     collapse: Optional[
         Literal["daily", "weekly", "monthly", "quarterly", "annual"]
@@ -73,5 +73,5 @@ class SP500MultiplesQueryParams(QueryParams):
 class SP500MultiplesData(Data):
     """SP500 Multiples Data."""
 
-    date: str = Field(description="The date data for the time series.")
+    date: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     value: float = Field(description="The data value for the time series.")

@@ -4,11 +4,10 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class IncomeStatementGrowthQueryParams(QueryParams):
@@ -32,7 +31,7 @@ class IncomeStatementGrowthData(Data):
     """Income Statement Growth Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period the statement is returned for.")
@@ -112,4 +111,5 @@ class IncomeStatementGrowthData(Data):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None

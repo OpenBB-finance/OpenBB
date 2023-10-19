@@ -4,11 +4,10 @@
 from datetime import date, datetime
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, field_validator, model_validator
-
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator, model_validator
 
 TRANSACTION_TYPES = Literal[
     "A-Award",
@@ -62,7 +61,7 @@ class StockInsiderTradingQueryParams(QueryParams):
 class StockInsiderTradingData(Data):
     """Stock Insider Trading Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     filing_date: datetime = Field(
         description="Filing date of the stock insider trading."
     )

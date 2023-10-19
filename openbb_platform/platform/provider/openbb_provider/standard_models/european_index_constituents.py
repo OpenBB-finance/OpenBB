@@ -3,11 +3,10 @@
 
 from typing import List, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class EuropeanIndexConstituentsQueryParams(QueryParams):
@@ -26,7 +25,10 @@ class EuropeanIndexConstituentsQueryParams(QueryParams):
 class EuropeanIndexConstituentsData(Data):
     """European Index Constituents data."""
 
-    symbol: str = Field(description="Symbol of the constituent company in the index.")
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", "")
+        + " The symbol is the constituent company in the index."
+    )
     price: float = Field(
         description="Current price of the constituent company in the index."
     )

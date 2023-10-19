@@ -3,11 +3,10 @@
 
 from typing import List, Literal, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class ESGRiskRatingQueryParams(QueryParams):
@@ -26,7 +25,7 @@ class ESGRiskRatingQueryParams(QueryParams):
 class ESGRiskRatingData(Data):
     """ESG Risk Rating data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description="CIK of the company.")
     company_name: str = Field(description="Company name of the company.")
     industry: str = Field(description="Industry of the company.")

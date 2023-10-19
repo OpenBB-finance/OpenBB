@@ -3,16 +3,19 @@
 from datetime import datetime
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class StockQuoteQueryParams(QueryParams):
     """Stock Quote query model."""
 
-    symbol: str = Field(description="Comma separated list of symbols.")
+    symbol: str = Field(
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " In this case, the comma separated list of symbols."
+    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
@@ -34,5 +37,5 @@ class StockQuoteData(Data):
         description="Highest price of the stock in the current trading day.",
     )
     date: Optional[datetime] = Field(
-        description="Timestamp of the stock quote.", default=None
+        description=DATA_DESCRIPTIONS.get("date", ""), default=None
     )

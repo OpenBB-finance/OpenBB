@@ -2,11 +2,10 @@
 from datetime import date as dateType
 from typing import Literal, Optional
 
-from pydantic import Field
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field
 
 
 class GDPForecastQueryParams(QueryParams):
@@ -14,7 +13,8 @@ class GDPForecastQueryParams(QueryParams):
 
     period: Literal["quarter", "annual"] = Field(
         default="annual",
-        description="Units for nominal GDP period.  Either quarter or annual.",
+        description=QUERY_DESCRIPTIONS.get("period", "")
+        + " Units for nominal GDP period. Either quarter or annual.",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")

@@ -4,11 +4,10 @@
 from datetime import date as dateType
 from typing import List, Literal, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class AnalystEstimatesQueryParams(QueryParams):
@@ -31,8 +30,8 @@ class AnalystEstimatesQueryParams(QueryParams):
 class AnalystEstimatesData(Data):
     """Analyst estimates data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    date: dateType = Field(description=QUERY_DESCRIPTIONS.get("date", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     estimated_revenue_low: StrictInt = Field(description="Estimated revenue low.")
     estimated_revenue_high: StrictInt = Field(description="Estimated revenue high.")
     estimated_revenue_avg: StrictInt = Field(description="Estimated revenue average.")

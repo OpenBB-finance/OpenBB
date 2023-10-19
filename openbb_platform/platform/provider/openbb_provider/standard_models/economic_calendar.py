@@ -1,17 +1,13 @@
 """Economic Calendar Standard Model"""
 
 
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType, datetime
 from typing import List, Literal, Optional, Union
-
-from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class EconomicCalendarQueryParams(QueryParams):
@@ -61,7 +57,7 @@ class EconomicCalendarData(Data):
     """Economic calendar Data."""
 
     date: Optional[datetime] = Field(
-        default=None, description="Date and time of event."
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     country: Optional[str] = Field(default=None, description="Country of event.")
     category: Optional[str] = Field(default=None, description="Category of event.")

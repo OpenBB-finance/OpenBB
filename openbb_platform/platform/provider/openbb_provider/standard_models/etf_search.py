@@ -2,10 +2,10 @@
 
 from typing import Optional
 
-from pydantic import Field
-
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
+from pydantic import Field
 
 
 class EtfSearchQueryParams(QueryParams):
@@ -17,5 +17,5 @@ class EtfSearchQueryParams(QueryParams):
 class EtfSearchData(Data):
     """ETF Search Data."""
 
-    symbol: str = Field(description="The exchange ticker symbol for the ETF.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: Optional[str] = Field(description="Name of the ETF.", default=None)

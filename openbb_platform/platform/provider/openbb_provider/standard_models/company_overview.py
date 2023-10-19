@@ -4,11 +4,10 @@
 from datetime import date
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, field_validator
-
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class CompanyOverviewQueryParams(QueryParams):
@@ -30,7 +29,7 @@ class CompanyOverviewData(Data):
     Returns the profile of a given company.
     """
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     price: Optional[float] = Field(default=None, description="Price of the company.")
     beta: Optional[float] = Field(default=None, description="Beta of the company.")
     vol_avg: Optional[StrictInt] = Field(
