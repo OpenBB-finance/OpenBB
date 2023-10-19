@@ -18,5 +18,5 @@ def test_credentials():
         )
 
         assert isinstance(creds, Credentials)
-        assert creds.benzinga_api_key == "mock_benzinga_api_key"
-        assert creds.polygon_api_key == "mock_polygon_api_key"
+        assert creds.benzinga_api_key.get_secret_value() == "mock_benzinga_api_key"
+        assert creds.polygon_api_key.get_secret_value() == "mock_polygon_api_key"
