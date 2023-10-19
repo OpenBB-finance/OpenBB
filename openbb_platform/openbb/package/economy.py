@@ -1,27 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_economy(Container):
@@ -171,7 +159,7 @@ class ROUTER_economy(Container):
         MajorIndicesConstituents
         ------------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         name : str
             Name of the constituent company in the index.
         sector : str
@@ -356,7 +344,7 @@ class ROUTER_economy(Container):
         units : Optional[Union[str]]
             The units for one contract.
         symbol : Optional[Union[str]]
-            Trading symbol representing the underlying asset.
+            Symbol representing the entity requested in the data.
 
         Example
         -------
@@ -615,7 +603,7 @@ class ROUTER_economy(Container):
         EconomicCalendar
         ----------------
         date : Optional[Union[datetime]]
-            Date and time of event.
+            The date of the data.
         country : Optional[Union[str]]
             Country of event.
         category : Optional[Union[str]]
@@ -799,7 +787,7 @@ class ROUTER_economy(Container):
         EuropeanIndexConstituents
         -------------------------
         symbol : str
-            Symbol of the constituent company in the index.
+            Symbol representing the entity requested in the data. The symbol is the constituent company in the index.
         price : float
             Current price of the constituent company in the index.
         open : float
@@ -948,7 +936,7 @@ class ROUTER_economy(Container):
         period: typing_extensions.Annotated[
             Literal["quarter", "annual"],
             OpenBBCustomParameter(
-                description="Units for nominal GDP period.  Either quarter or annual."
+                description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual."
             ),
         ] = "annual",
         start_date: typing_extensions.Annotated[
@@ -977,7 +965,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         period : Literal['quarter', 'annual']
-            Units for nominal GDP period.  Either quarter or annual.
+            Time period of the data to return. Units for nominal GDP period. Either quarter or annual.
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
@@ -1042,7 +1030,7 @@ class ROUTER_economy(Container):
         units: typing_extensions.Annotated[
             Literal["usd", "usd_cap"],
             OpenBBCustomParameter(
-                description="Units to get nominal GDP in.  Either usd or usd_cap indicating per capita."
+                description="The data units. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
             ),
         ] = "usd",
         start_date: typing_extensions.Annotated[
@@ -1065,7 +1053,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         units : Literal['usd', 'usd_cap']
-            Units to get nominal GDP in.  Either usd or usd_cap indicating per capita.
+            The data units. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
@@ -1127,7 +1115,7 @@ class ROUTER_economy(Container):
         units: typing_extensions.Annotated[
             Literal["idx", "qoq", "yoy"],
             OpenBBCustomParameter(
-                description="Units to get real GDP in. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
+                description="The data units. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
             ),
         ] = "yoy",
         start_date: typing_extensions.Annotated[
@@ -1150,7 +1138,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         units : Literal['idx', 'qoq', 'yoy']
-            Units to get real GDP in. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
+            The data units. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
@@ -1341,8 +1329,8 @@ class ROUTER_economy(Container):
         query: typing_extensions.Annotated[
             str, OpenBBCustomParameter(description="Search query.")
         ] = "",
-        symbol: typing_extensions.Annotated[
-            Union[bool, List[str]],
+        is_symbol: typing_extensions.Annotated[
+            bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         provider: Union[Literal["cboe"], None] = None,
@@ -1354,7 +1342,7 @@ class ROUTER_economy(Container):
         ----------
         query : str
             Search query.
-        symbol : bool
+        is_symbol : bool
             Whether to search by ticker symbol.
         provider : Union[Literal['cboe'], None]
             The provider to use for the query, by default None.
@@ -1380,7 +1368,7 @@ class ROUTER_economy(Container):
         IndexSearch
         -----------
         symbol : str
-            Symbol of the index.
+            Symbol representing the entity requested in the data.
         name : str
             Name of the index.
         isin : Optional[Union[str]]
@@ -1418,7 +1406,7 @@ class ROUTER_economy(Container):
             },
             standard_params={
                 "query": query,
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "is_symbol": is_symbol,
             },
             extra_params=kwargs,
         )
@@ -1468,7 +1456,7 @@ class ROUTER_economy(Container):
         IndexSnapshots
         --------------
         symbol : str
-            Symbol of the index.
+            Symbol representing the entity requested in the data.
         name : Optional[Union[str]]
             Name of the index.
         currency : Optional[Union[str]]
@@ -1476,13 +1464,13 @@ class ROUTER_economy(Container):
         price : Optional[Union[float]]
             Current price of the index.
         open : Optional[Union[float]]
-            Opening price of the index.
+            The open price of the symbol.
         high : Optional[Union[float]]
-            Highest price of the index.
+            The high price of the symbol.
         low : Optional[Union[float]]
-            Lowest price of the index.
+            The low price of the symbol.
         close : Optional[Union[float]]
-            Closing price of the index.
+            The close price of the symbol.
         prev_close : Optional[Union[float]]
             Previous closing price of the index.
         change : Optional[Union[float]]
@@ -1621,13 +1609,13 @@ class ROUTER_economy(Container):
         start_date: typing_extensions.Annotated[
             Union[str, None],
             OpenBBCustomParameter(
-                description="The start date of the time series. Format: YYYY-MM-DD"
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = "",
         end_date: typing_extensions.Annotated[
             Union[str, None],
             OpenBBCustomParameter(
-                description="The end date of the time series. Format: YYYY-MM-DD"
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = "",
         collapse: typing_extensions.Annotated[
@@ -1650,9 +1638,9 @@ class ROUTER_economy(Container):
         series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
             The name of the series. Defaults to 'PE Ratio by Month'.
         start_date : Union[str, None]
-            The start date of the time series. Format: YYYY-MM-DD
+            Start date of the data, in YYYY-MM-DD format.
         end_date : Union[str, None]
-            The end date of the time series. Format: YYYY-MM-DD
+            End date of the data, in YYYY-MM-DD format.
         collapse : Union[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'...
             Collapse the frequency of the time series.
         transform : Union[Literal['diff', 'rdiff', 'cumul', 'normalize'], None]
@@ -1679,7 +1667,7 @@ class ROUTER_economy(Container):
         SP500Multiples
         --------------
         date : str
-            The date data for the time series.
+            The date of the data.
         value : float
             The data value for the time series.
 

@@ -1,27 +1,16 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from annotated_types import Ge
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_stocks(Container):
@@ -90,19 +79,19 @@ class ROUTER_stocks(Container):
         StockInfo
         ---------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         name : str
             Name associated with the ticker symbol.
         price : Optional[Union[float]]
             Last transaction price.
         open : Optional[Union[float]]
-            Opening price of the stock.
+            The open price of the symbol.
         high : Optional[Union[float]]
-            High price of the current trading day.
+            The high price of the symbol.
         low : Optional[Union[float]]
-            Low price of the current trading day.
+            The low price of the symbol.
         close : Optional[Union[float]]
-            Closing price of the most recent trading day.
+            The close price of the symbol.
         change : Optional[Union[float]]
             Change in price over the current trading period.
         change_percent : Optional[Union[float]]
@@ -552,11 +541,14 @@ class ROUTER_stocks(Container):
     def news(
         self,
         symbols: typing_extensions.Annotated[
-            str, OpenBBCustomParameter(description="Comma separated list of symbols.")
+            str,
+            OpenBBCustomParameter(
+                description=" Here it is a separated list of symbols."
+            ),
         ],
         limit: typing_extensions.Annotated[
             Union[typing_extensions.Annotated[int, Ge(ge=0)], None],
-            OpenBBCustomParameter(description="Number of results to return per page."),
+            OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
         chart: bool = False,
         provider: Union[
@@ -569,9 +561,9 @@ class ROUTER_stocks(Container):
         Parameters
         ----------
         symbols : str
-            Comma separated list of symbols.
+             Here it is a separated list of symbols.
         limit : Union[typing_extensions.Annotated[int, Ge(ge=0)], None]
-            Number of results to return per page.
+            The number of data entries to return.
         chart : bool
             Whether to create a chart or not, by default False.
         provider : Union[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'yfinance...
@@ -628,7 +620,7 @@ class ROUTER_stocks(Container):
         StockNews
         ---------
         date : datetime
-            Published date of the news.
+            The date of the data. Here it is the date of the news.
         title : str
             Title of the news.
         image : Optional[Union[str]]
@@ -710,7 +702,9 @@ class ROUTER_stocks(Container):
         self,
         symbol: typing_extensions.Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Comma separated list of symbols."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. In this case, the comma separated list of symbols."
+            ),
         ],
         provider: Union[Literal["fmp", "intrinio"], None] = None,
         **kwargs
@@ -720,7 +714,7 @@ class ROUTER_stocks(Container):
         Parameters
         ----------
         symbol : str
-            Comma separated list of symbols.
+            Symbol to get data for. In this case, the comma separated list of symbols.
         provider : Union[Literal['fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -749,7 +743,7 @@ class ROUTER_stocks(Container):
         day_high : Optional[Union[float]]
             Highest price of the stock in the current trading day.
         date : Optional[Union[datetime]]
-            Timestamp of the stock quote.
+            The date of the data.
         symbol : Optional[Union[str]]
             Symbol of the company. (provider: fmp)
         name : Optional[Union[str]]
@@ -897,7 +891,7 @@ class ROUTER_stocks(Container):
         StockSearch
         -----------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         name : str
             Name of the company.
         dpm_name : Optional[Union[str]]
