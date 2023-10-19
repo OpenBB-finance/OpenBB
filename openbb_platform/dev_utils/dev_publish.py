@@ -1,4 +1,5 @@
-import os
+import subprocess
+import sys
 from pathlib import Path
 
 repo_dir = Path(__file__).parent.parent
@@ -18,42 +19,51 @@ providers = [x for x in providers_dir.iterdir() if x.is_dir()]
 # openbb
 openbb_dir = repo_dir / "openbb_platform"
 
-VERSION_BUMP_CMD = "poetry version prerelease"
-PUBLISH_CMD = "poetry publish --build"
-
-raise Exception(
-    "If you're ar running this script for the first time,"
-    "ensure you have changed `VERSION` on System Settings "
-    "before you publish the `openbb-core` package to Pypi."
-)
+CMD = [sys.executable, "-m", "poetry"]
+VERSION_BUMP_CMD = ["version", "prerelease"]
+PUBLISH_CMD = ["publish", "--build"]
 
 
 def run_cmds(directory: Path):
+    """Run the commands for publishing"""
     print(f"Publishing: {directory.name}")  # noqa: T201
-    os.chdir(directory)
-    os.system(VERSION_BUMP_CMD)  # noqa: S605
-    os.system(PUBLISH_CMD)  # noqa: S605
+
+    subprocess.run(CMD + VERSION_BUMP_CMD, cwd=directory, check=True)  # noqa: S603
+    subprocess.run(CMD + PUBLISH_CMD, cwd=directory, check=True)  # noqa: S603
 
 
-# provider
-run_cmds(provider_dir)
+def publish():
+    """Publish the Platform to PyPi"""
 
-# core
-run_cmds(core_dir)
+    # provider
+    run_cmds(provider_dir)
 
-# extensions
-for extension in extensions:
-    if extension.name in ["__pycache__", "tests"]:
-        continue
+    # core
+    run_cmds(core_dir)
 
-    run_cmds(extension)
+    # extensions
+    for extension in extensions:
+        if extension.name in ["__pycache__", "tests"]:
+            continue
 
-# providers
-for provider in providers:
-    if provider.name in ["__pycache__", "tests"]:
-        continue
+        run_cmds(extension)
 
-    run_cmds(provider)
+    # providers
+    for provider in providers:
+        if provider.name in ["__pycache__", "tests"]:
+            continue
 
-# openbb
-run_cmds(openbb_dir)
+        run_cmds(provider)
+
+    # openbb
+    run_cmds(openbb_dir)
+
+
+if __name__ == "__main__":
+    raise Exception(
+        "If you're ar running this script for the first time,"
+        "ensure you have changed `VERSION` on System Settings "
+        "before you publish the `openbb-core` package to Pypi."
+    )
+
+    publish()
