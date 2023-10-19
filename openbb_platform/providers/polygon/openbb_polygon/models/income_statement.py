@@ -24,7 +24,7 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker"}
 
-    period: Literal["annual", "quarter", "ttm"] = Field(
+    period: Literal["annual", "quarter"] = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
         alias="timeframe",
