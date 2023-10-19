@@ -4,10 +4,11 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
+from pydantic import Field, NonNegativeInt, field_validator
+
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-from pydantic import Field, NonNegativeInt, field_validator
 
 
 class IncomeStatementQueryParams(QueryParams):

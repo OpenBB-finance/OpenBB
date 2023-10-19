@@ -1,14 +1,18 @@
 """Major indices aggregate end of day price data model."""
 
 
-from datetime import date as dateType, datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
+from pydantic import Field, StrictFloat, StrictInt, field_validator
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
-from pydantic import Field, StrictFloat, StrictInt, field_validator
 
 
 class MajorIndicesHistoricalQueryParams(QueryParams):
