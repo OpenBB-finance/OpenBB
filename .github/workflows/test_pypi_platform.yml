@@ -39,21 +39,21 @@ jobs:
           build
           --user
 
-      # - name: OpenBBTerminal - Build a binary wheel and a source tarball
-      #   run: >-
-      #     python -m
-      #     build
-      #     --sdist
-      #     --wheel
-      #     --outdir dist/
-      #     .
+      - name: OpenBBTerminal - Build a binary wheel and a source tarball
+        run: >-
+          python -m
+          build
+          --sdist
+          --wheel
+          --outdir dist/
+          .
 
-      # - name: OpenBBTerminal - Publish distribution 📦 to Test PyPI
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     packages-dir: dist/
-      #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-      #     repository-url: https://test.pypi.org/legacy/
+      - name: OpenBBTerminal - Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN_OBB_TERMINAL_NIGHTLY }}
+          repository-url: https://test.pypi.org/legacy/
 
       - name: OpenBB Platform - Create the dinamically generated wheel
         run: |
