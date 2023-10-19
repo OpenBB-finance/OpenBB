@@ -121,7 +121,9 @@ class YFinanceMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceMajorIndicesHistoricalQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[YFinanceMajorIndicesHistoricalData]:
         """Transform the data to the standard format."""
         return [YFinanceMajorIndicesHistoricalData.model_validate(d) for d in data]

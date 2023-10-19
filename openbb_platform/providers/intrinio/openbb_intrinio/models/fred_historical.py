@@ -100,6 +100,8 @@ class IntrinioFredHistoricalFetcher(
         return data.get("historical_data", [])
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioFredHistoricalData]:
+    def transform_data(
+        query: IntrinioFredHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioFredHistoricalData]:
         """Return the transformed data."""
         return [IntrinioFredHistoricalData.model_validate(d) for d in data]

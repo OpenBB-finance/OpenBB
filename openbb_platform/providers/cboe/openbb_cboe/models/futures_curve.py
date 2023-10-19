@@ -63,6 +63,8 @@ class CboeFuturesCurveFetcher(
 
     @staticmethod
     def transform_data(
+        query: CboeFuturesCurveQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[CboeFuturesCurveData]:
         return [CboeFuturesCurveData.model_validate(d) for d in data]

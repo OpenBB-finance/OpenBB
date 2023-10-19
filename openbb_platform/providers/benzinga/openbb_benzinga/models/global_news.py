@@ -138,7 +138,7 @@ class BenzingaGlobalNewsFetcher(
         query: BenzingaGlobalNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[dict]:
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
 
@@ -159,6 +159,8 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
+        query: BenzingaGlobalNewsQueryParams,
         data: List[dict],
+        **kwargs: Any,
     ) -> List[BenzingaGlobalNewsData]:
         return [BenzingaGlobalNewsData.model_validate(item) for item in data]
