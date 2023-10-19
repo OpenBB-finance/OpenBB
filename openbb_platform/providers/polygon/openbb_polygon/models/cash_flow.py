@@ -23,8 +23,8 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker"}
 
-    period: Literal["annual", "quarter", "ttm"] = Field(
-        default="annual",
+    period: Optional[Literal["annual", "quarter", "ttm"]] = Field(
+        default="quarter",
         description=QUERY_DESCRIPTIONS.get("period", ""),
         alias="timeframe",
     )

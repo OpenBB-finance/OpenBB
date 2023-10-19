@@ -10,6 +10,7 @@ from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, alias_generators
 
 
@@ -20,6 +21,10 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="quarter",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
     type: Literal["reported", "standardized"] = Field(
         default="reported", description="Type of the statement to be fetched."
     )
