@@ -1,27 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
-import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_stocks_options(Container):
@@ -74,7 +61,7 @@ class ROUTER_stocks_options(Container):
         contract_symbol : str
             Contract symbol for the option.
         symbol : Optional[Union[str]]
-            Underlying symbol for the option.
+            Symbol representing the entity requested in the data. Here its the underlying symbol for the option.
         expiration : date
             Expiration date of the contract.
         strike : float
@@ -84,15 +71,15 @@ class ROUTER_stocks_options(Container):
         eod_date : Optional[Union[date]]
             Date for which the options chains are returned.
         close : Optional[Union[float]]
-            Close price for the option that day.
+            The close price of the symbol.
         close_bid : Optional[Union[float]]
             The closing bid price for the option that day.
         close_ask : Optional[Union[float]]
             The closing ask price for the option that day.
         volume : Optional[Union[float]]
-            Current trading volume on the contract.
+            The volume of the symbol.
         open : Optional[Union[float]]
-            Opening price of the option.
+            The open price of the symbol.
         open_bid : Optional[Union[float]]
             The opening bid price for the option that day.
         open_ask : Optional[Union[float]]
@@ -100,9 +87,9 @@ class ROUTER_stocks_options(Container):
         open_interest : Optional[Union[float]]
             Open interest on the contract.
         high : Optional[Union[float]]
-            High price of the option.
+            The high price of the symbol.
         low : Optional[Union[float]]
-            Low price of the option.
+            The low price of the symbol.
         mark : Optional[Union[float]]
             The mid-price between the latest bid-ask spread.
         ask_high : Optional[Union[float]]

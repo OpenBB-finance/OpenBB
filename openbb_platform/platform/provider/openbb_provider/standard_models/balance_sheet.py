@@ -11,7 +11,7 @@ from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class BalanceSheetQueryParams(QueryParams):
@@ -37,9 +37,9 @@ class BalanceSheetData(Data):
     """Balance Sheet Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    date: dateType = Field(description="Date of the fetched statement.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     cik: Optional[str] = Field(
         default=None, description="Central Index Key (CIK) of the company."
     )

@@ -14,7 +14,8 @@ class GDPNomQueryParams(QueryParams):
 
     units: Literal["usd", "usd_cap"] = Field(
         default="usd",
-        description="Units to get nominal GDP in.  Either usd or usd_cap indicating per capita.",
+        description=QUERY_DESCRIPTIONS.get("units", "")
+        + " Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")

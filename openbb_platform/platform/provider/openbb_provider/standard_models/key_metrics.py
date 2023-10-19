@@ -34,7 +34,7 @@ class KeyMetricsData(Data):
     """Key Metrics Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period of the data.")

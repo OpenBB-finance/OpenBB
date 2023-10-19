@@ -17,7 +17,7 @@ class FuturesCurveQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
         default=None,
-        description="Historical date to search curve for.",
+        description=QUERY_DESCRIPTIONS.get("date", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)

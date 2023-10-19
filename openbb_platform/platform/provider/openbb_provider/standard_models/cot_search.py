@@ -6,10 +6,11 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class CotSearchQueryParams(QueryParams):
-    """Commitment of Traders Reports Search Query Params"""
+    """Commitment of Traders Reports Search Query Params."""
 
     query: str = Field(description="Search query.", default="")
 
@@ -29,5 +30,5 @@ class CotSearchData(Data):
         default=None, description="The units for one contract."
     )
     symbol: Optional[str] = Field(
-        default=None, description="Trading symbol representing the underlying asset."
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
