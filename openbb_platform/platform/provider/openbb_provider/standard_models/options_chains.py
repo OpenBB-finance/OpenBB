@@ -7,7 +7,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class OptionsChainsQueryParams(QueryParams):
@@ -28,7 +28,9 @@ class OptionsChainsData(Data):
 
     contract_symbol: str = Field(description="Contract symbol for the option.")
     symbol: Optional[str] = Field(
-        description="Underlying symbol for the option.", default=None
+        description=DATA_DESCRIPTIONS.get("symbol", "")
+        + " Here its the underlying symbol for the option.",
+        default=None,
     )
     expiration: dateType = Field(description="Expiration date of the contract.")
     strike: float = Field(description="Strike price of the contract.")
@@ -37,7 +39,7 @@ class OptionsChainsData(Data):
         default=None, description="Date for which the options chains are returned."
     )
     close: Optional[float] = Field(
-        default=None, description="Close price for the option that day."
+        default=None, description=DATA_DESCRIPTIONS.get("close", "")
     )
     close_bid: Optional[float] = Field(
         default=None, description="The closing bid price for the option that day."
@@ -46,10 +48,10 @@ class OptionsChainsData(Data):
         default=None, description="The closing ask price for the option that day."
     )
     volume: Optional[float] = Field(
-        default=None, description="Current trading volume on the contract."
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
     open: Optional[float] = Field(
-        default=None, description="Opening price of the option."
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
     open_bid: Optional[float] = Field(
         default=None, description="The opening bid price for the option that day."
@@ -60,8 +62,12 @@ class OptionsChainsData(Data):
     open_interest: Optional[float] = Field(
         default=None, description="Open interest on the contract."
     )
-    high: Optional[float] = Field(default=None, description="High price of the option.")
-    low: Optional[float] = Field(default=None, description="Low price of the option.")
+    high: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
     mark: Optional[float] = Field(
         default=None, description="The mid-price between the latest bid-ask spread."
     )

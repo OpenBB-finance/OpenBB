@@ -32,7 +32,7 @@ class IncomeStatementGrowthData(Data):
     """Income Statement Growth Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period the statement is returned for.")
@@ -112,4 +112,5 @@ class IncomeStatementGrowthData(Data):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
