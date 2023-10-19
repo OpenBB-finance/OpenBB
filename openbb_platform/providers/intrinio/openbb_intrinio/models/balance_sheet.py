@@ -10,6 +10,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, alias_generators
 
 
@@ -20,11 +21,15 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="quarter",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
     type: Literal["reported", "standardized"] = Field(
         default="reported", description="Type of the statement to be fetched."
     )
     year: Optional[int] = Field(
-        default=None,
+        default=date.today().year,
         description="Year of the statement to be fetched.",
     )
 
@@ -58,12 +63,7 @@ class IntrinioBalanceSheetFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioBalanceSheetQueryParams:
         """Transform the query params."""
-        transform_params = params
-
-        if not params.get("year"):
-            transform_params["year"] = date.today().year
-
-        return IntrinioBalanceSheetQueryParams(**transform_params)
+        return IntrinioBalanceSheetQueryParams(**params)
 
     @staticmethod
     def extract_data(
