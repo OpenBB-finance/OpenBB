@@ -2,7 +2,7 @@
 
 
 from datetime import date as dateType
-from typing import List, Literal, Optional, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, NonNegativeInt, StrictFloat, field_validator
 
@@ -15,8 +15,9 @@ class IncomeStatementQueryParams(QueryParams):
     """Income Statement Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["annual", "quarter"] = Field(
-        default="quarter", description=QUERY_DESCRIPTIONS.get("period", "")
+    period: Optional[str] = Field(
+        default="quarter",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
     )
     limit: NonNegativeInt = Field(
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
