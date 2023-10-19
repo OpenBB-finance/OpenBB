@@ -1,6 +1,9 @@
 name: Deploy the OpenBB Platform and the OpenBBTerminal to Test PyPI
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - feature/v4-pypi
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
