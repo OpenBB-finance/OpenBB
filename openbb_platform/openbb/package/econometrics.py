@@ -1,15 +1,26 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Dict, List, Literal, Union
-
-import pandas
-from annotated_types import Gt
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
-from typing_extensions import Annotated
+import openbb_core.app.model.obbject
+import typing
 
 
 class ROUTER_econometrics(Container):
@@ -39,7 +50,7 @@ class ROUTER_econometrics(Container):
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_columns: List[str],
-        lags: Annotated[int, Gt(gt=0)] = 1,
+        lags: typing_extensions.Annotated[int, Gt(gt=0)] = 1,
     ) -> OBBject[Data]:
         """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
@@ -168,7 +179,7 @@ class ROUTER_econometrics(Container):
         data: Union[List[Data], pandas.DataFrame],
         y_column: str,
         x_column: str,
-        lag: Annotated[int, Gt(gt=0)] = 3,
+        lag: typing_extensions.Annotated[int, Gt(gt=0)] = 3,
     ) -> OBBject[Data]:
         """Perform Granger causality test to determine if X "causes" y.
 
