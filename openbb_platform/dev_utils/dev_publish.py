@@ -2,7 +2,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-repo_dir = Path(__file__).parent.parent
+repo_dir = Path(__file__).parent.parent.parent
 
 # core and provider
 core_dir = repo_dir / "openbb_platform/platform/core"
