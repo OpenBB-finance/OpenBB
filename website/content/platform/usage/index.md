@@ -136,6 +136,20 @@ os.environ["OPENBB_DEBUG_MODE"] = "True"
 from openbb import obb
 ```
 
+### Proxy Networks
+
+An environment variable can be set, in the `.env` file, to direct the Requests library to a specific address and port.
+
+```env
+HTTP_PROXY="<ADDRESS>" or HTTPS_PROXY="<ADDRESS>”
+```
+
+For example:
+
+```env
+HTTP_PROXY="http://10.10.10.10:8000"
+```
+
 ## User Settings
 
 User settings can be set from the Python interface directly.
