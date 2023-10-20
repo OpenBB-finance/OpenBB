@@ -203,5 +203,6 @@ class SecStockFtdFetcher(
     @staticmethod
     def transform_data(
         data: List[Dict],
+        **kwargs: Any
     ) -> List[SecStockFtdData]:
         return [SecStockFtdData.model_validate(d) for d in data]

@@ -61,6 +61,6 @@ class SecStockSearchFetcher(
         return companies[results].astype(str).to_dict("records")
 
     @staticmethod
-    def transform_data(data: Dict) -> List[SecStockSearchData]:
+    def transform_data(data: Dict, **kwargs: Any) -> List[SecStockSearchData]:
         """Transform the data to the standard format."""
         return [SecStockSearchData.model_validate(d) for d in data]

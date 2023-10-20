@@ -220,6 +220,6 @@ class SecCompanyFilingsFetcher(
         return filings.replace("N/A", None).replace("", None).to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[SecCompanyFilingsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecCompanyFilingsData]:
         """Transforms the data."""
         return [SecCompanyFilingsData.model_validate(d) for d in data]
