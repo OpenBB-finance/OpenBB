@@ -1,6 +1,6 @@
 """SEC Helpers module"""
-from datetime import timedelta
-from typing import Literal
+from datetime import datetime, timedelta
+from typing import Dict, Literal, Optional
 
 import pandas as pd
 import requests
@@ -9,12 +9,21 @@ import requests_cache
 sec_session_companies = requests_cache.CachedSession(
     "OpenBB_SEC_Companies", expire_after=timedelta(days=7), use_cache_dir=True
 )
+sec_session_frames = requests_cache.CachedSession(
+    "OpenBB_SEC_Frames", expire_after=timedelta(days=30), use_cache_dir=True
+)
 
+QUARTERS = Literal[1, 2, 3, 4]
 
 SEC_HEADERS = {
     "User-Agent": "my real company name definitelynot@fakecompany.com",
     "Accept-Encoding": "gzip, deflate",
     "Host": "www.sec.gov",
+}
+
+HEADERS = {
+    "User-Agent": "my real company name definitelynot@fakecompany.com",
+    "Accept-Encoding": "gzip, deflate",
 }
 
 
@@ -384,6 +393,9 @@ FORM_TYPES = Literal[
 ]
 
 
+TAXONOMIES = Literal["us-gaap", "dei", "ifrs-full", "srt"]
+
+
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     """Gets all company names, tickers, and CIK numbers registered with the SEC.
     Companies are sorted by market cap.
@@ -503,3 +515,86 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
             ] = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a_0.zip"
 
     return ftd_urls
+
+
+def get_frame(
+    year: int,
+    quarter: Optional[QUARTERS] = None,
+    taxonomy: Optional[TAXONOMIES] = "us-gaap",
+    units: str = "USD",
+    fact: str = "Revenues",
+    use_cache: bool = True,
+) -> Dict:
+    """
+    The xbrl/frames API aggregates one fact for each reporting entity
+    that is last filed that most closely fits the calendrical period requested.
+
+    This API supports for annual, quarterly and instantaneous data:
+
+    https://data.sec.gov/api/xbrl/frames/us-gaap/AccountsPayableCurrent/USD/CY2019Q1I.json
+
+    Where the units of measure specified in the XBRL contains a numerator and a denominator,
+    these are separated by “-per-” such as “USD-per-shares”. Note that the default unit in XBRL is “pure”.
+
+    CY####Q# for quarterly data (duration 91 days +/- 30 days).
+    Because company financial calendars can start and end on any month or day and even change in length from quarter to
+    quarter according to the day of the week, the frame data is assembled by the dates that best align with a calendar
+    quarter or year. Data users should be mindful different reporting start and end dates for facts contained in a frame.
+
+    Example facts:
+    Revenues
+    CostOfRevenue
+    DividendsCash
+    DistributedEarnings
+    AccountsPayableCurrent
+    """
+
+    url = f"https://data.sec.gov/api/xbrl/frames/{taxonomy}/{fact}/{units}/CY{year}"
+
+    url = url + ".json" if quarter is None else url + f"Q{quarter}.json"
+
+    r = (
+        requests.get(url, headers=HEADERS, timeout=5)
+        if use_cache is False
+        else sec_session_frames.get(url, headers=HEADERS, timeout=5)
+    )
+
+    if r.status_code != 200:
+        raise RuntimeError(f"Request failed with status code {r.status_code}")
+
+    response = r.json()
+
+    data = sorted(response["data"], key=lambda x: x["val"], reverse=True)
+    metadata = {
+        "frame": response["ccp"],
+        "tag": response["tag"],
+        "label": response["label"],
+        "description": response["description"],
+        "taxonomy": response["taxonomy"],
+        "unit": response["uom"],
+        "count": response["pts"],
+    }
+
+    results = {"metadata": metadata, "data": data}
+
+    return results
+
+
+def get_concept_labels(
+    taxonomy: Optional[TAXONOMIES] = "us-gaap", year: Optional[int] = None
+) -> pd.DataFrame:
+    if year is None:
+        year = datetime.now().year
+
+    url = f"https://xbrl.fasb.org/us-gaap/{year}/elts/{taxonomy}-{year}.xsd"
+
+    r = sec_session_frames.get(url, headers=HEADERS, timeout=5)
+
+    if r.status_code != 200:
+        raise RuntimeError(f"Request failed with status code {r.status_code}")
+
+    response = pd.read_xml(r.content.decode())[
+        ["id", "name", "type", "periodType", "domain"]
+    ].dropna(how="all")
+
+    return response
