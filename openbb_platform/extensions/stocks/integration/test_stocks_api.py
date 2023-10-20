@@ -1,4 +1,3 @@
-import base64
 from datetime import time
 
 import pytest
