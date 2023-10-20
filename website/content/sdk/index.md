@@ -33,7 +33,7 @@ description: The OpenBB Documentation provides guidance on how to use the OpenBB
 
 import Card from "@site/src/components/General/Card";
 
-# OpenBB SDK
+# Introduction
 
 OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal. You will have the necessary building blocks to create your own financial tools and applications, whether that be a visualization dashboard or a custom report on Jupyter Notebook.
 

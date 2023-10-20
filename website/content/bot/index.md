@@ -20,7 +20,7 @@ description: OpenBB Bot is a chatting bot for investment research that provides 
 
 import Card from "@site/src/components/General/Card";
 
-# OpenBB Bot
+# Introduction
 
 OpenBB Bot is a chatting bot for Discord and Telegram which provides access to high quality financial data for both individual investors and online communities.
 

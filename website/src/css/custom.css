@@ -455,3 +455,33 @@ details summary {
 .theme-doc-version-badge {
   margin-bottom: 20px !important;
 }
+
+
+.sidebar-divider {
+  border-top: 1px solid var(--ifm-color-gray-200);
+  display: block;
+  margin: 0.5rem 0 0.25rem 1rem;
+}
+
+html[data-theme='dark'] .sidebar-divider {
+  border-top: 1px solid var(--ifm-color-gray-800);
+}
+
+.sidebar-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ifm-color-gray-600);
+}
+
+html[data-theme='dark'] .sidebar-divider {
+  color: var(--ifm-color-gray-200);
+}
+
+@media only screen and (max-width: 998px) {
+  .sidebar-title,
+  .powered-by-banner {
+    margin-left: 1rem;
+  }
+}

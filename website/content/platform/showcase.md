@@ -11,11 +11,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
-This page contains a list of projects that use the OpenBB Platform.
-
-If you have a project that uses the OpenBB Platform, please contact us via [Discord](https://discord.com/invite/Up2QGbMKHY) or [hello@openbb.co](mailto:hello@openbb.co).
-
----
+## Coming Soon
 
 ---
 
