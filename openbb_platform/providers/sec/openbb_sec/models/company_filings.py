@@ -210,6 +210,9 @@ class SecCompanyFilingsFetcher(
         filings["filingDetailUrl"] = (
             base_url + filings["accessionNumber"] + "-index.htm"
         )
+        filings["xml"] = (
+            base_url + filings["accessionNumber"] + "/primary_doc.xml"
+        ).str.replace("-", "")
 
         if "type" in query.model_dump() and query.type is not None:
             filings = filings[filings["form"].str.contains(query.type, case=False)]
