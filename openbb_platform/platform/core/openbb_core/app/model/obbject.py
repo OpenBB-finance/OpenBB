@@ -1,6 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from numpy import ndarray
@@ -14,10 +14,11 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
 
-try:
-    from polars import DataFrame as PolarsDataFrame  # type: ignore
-except ImportError:
-    PolarsDataFrame = Any
+if TYPE_CHECKING:
+    try:
+        from polars import DataFrame as PolarsDataFrame
+    except ImportError:
+        PolarsDataFrame = None
 
 T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
@@ -168,14 +169,14 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> PolarsDataFrame:
+    def to_polars(self) -> "PolarsDataFrame":
         """Convert results field to polars dataframe."""
         try:
-            from polars import from_pandas  # type: ignore
-        except ImportError:
+            from polars import from_pandas  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
             raise ImportError(
                 "Please install polars: `pip install polars`  to use this function."
-            )
+            ) from exc
 
         return from_pandas(self.to_dataframe().reset_index())
 
