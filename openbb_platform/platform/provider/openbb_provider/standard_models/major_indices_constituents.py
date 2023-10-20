@@ -8,7 +8,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class MajorIndicesConstituentsQueryParams(QueryParams):
@@ -23,7 +23,7 @@ class MajorIndicesConstituentsQueryParams(QueryParams):
 class MajorIndicesConstituentsData(Data):
     """Major Indices Constituents Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name of the constituent company in the index.")
     sector: str = Field(
         description="Sector the constituent company in the index belongs to."

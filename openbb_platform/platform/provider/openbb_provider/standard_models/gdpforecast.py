@@ -14,7 +14,8 @@ class GDPForecastQueryParams(QueryParams):
 
     period: Literal["quarter", "annual"] = Field(
         default="annual",
-        description="Units for nominal GDP period.  Either quarter or annual.",
+        description=QUERY_DESCRIPTIONS.get("period", "")
+        + " Units for nominal GDP period. Either quarter or annual.",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")

@@ -47,7 +47,7 @@ class StockOwnershipData(Data):
         ...,
         description="Investor name of the stock ownership.",
     )
-    symbol: str = Field(description="Symbol of the stock ownership.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     security_name: str = Field(
         ...,
         description="Security name of the stock ownership.",

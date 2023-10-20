@@ -34,7 +34,7 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 class EarningsCallTranscriptData(Data):
     """Earnings call transcript Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     quarter: int = Field(description="Quarter of the earnings call transcript.")
     year: int = Field(description="Year of the earnings call transcript.")
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

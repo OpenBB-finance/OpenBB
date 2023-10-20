@@ -1,9 +1,7 @@
 """Historical EPS data model."""
 
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
@@ -32,7 +30,7 @@ class HistoricalEpsData(Data):
     """Historical Earnings Per Share Data."""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     announce_time: Optional[str] = Field(
         default=None, description="Timing of the earnings announcement."
     )

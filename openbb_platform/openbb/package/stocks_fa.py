@@ -1,27 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_stocks_fa(Container):
@@ -147,9 +135,9 @@ class ROUTER_stocks_fa(Container):
         BalanceSheet
         ------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
-            Date of the fetched statement.
+            The date of the data.
         cik : Optional[Union[str]]
             Central Index Key (CIK) of the company.
         currency : Optional[Union[str]]
@@ -328,7 +316,7 @@ class ROUTER_stocks_fa(Container):
         BalanceSheetGrowth
         ------------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         period : str
@@ -482,7 +470,7 @@ class ROUTER_stocks_fa(Container):
         DividendCalendar
         ----------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         label : str
@@ -608,9 +596,9 @@ class ROUTER_stocks_fa(Container):
         CashFlowStatement
         -----------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
-            Date of the fetched statement.
+            The date of the data.
         period : Optional[Union[str]]
             Reporting period of the statement.
         cik : Optional[Union[str]]
@@ -769,7 +757,7 @@ class ROUTER_stocks_fa(Container):
         CashFlowStatementGrowth
         -----------------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         period : str
@@ -895,7 +883,7 @@ class ROUTER_stocks_fa(Container):
         ExecutiveCompensation
         ---------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         cik : Optional[Union[str]]
             Central Index Key (CIK) of the company.
         filing_date : date
@@ -990,11 +978,11 @@ class ROUTER_stocks_fa(Container):
         StockSplitCalendar
         ------------------
         date : date
-            Date of the stock splits.
+            The date of the data.
         label : str
             Label of the stock splits.
         symbol : str
-            Symbol of the company.
+            Symbol representing the entity requested in the data.
         numerator : float
             Numerator of the stock splits.
         denominator : float
@@ -1060,7 +1048,7 @@ class ROUTER_stocks_fa(Container):
         HistoricalDividends
         -------------------
         date : date
-            Date of the historical dividends.
+            The date of the data.
         label : str
             Label of the historical dividends.
         adj_dividend : float
@@ -1139,7 +1127,7 @@ class ROUTER_stocks_fa(Container):
         EarningsCalendar
         ----------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         eps : Optional[Union[float]]
@@ -1217,7 +1205,7 @@ class ROUTER_stocks_fa(Container):
         HistoricalEmployees
         -------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         cik : int
             CIK of the company to retrieve the historical employees of.
         acceptance_time : datetime
@@ -1306,9 +1294,9 @@ class ROUTER_stocks_fa(Container):
         AnalystEstimates
         ----------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
-            A specific date to get data for.
+            The date of the data.
         estimated_revenue_low : int
             Estimated revenue low.
         estimated_revenue_high : int
@@ -1421,7 +1409,7 @@ class ROUTER_stocks_fa(Container):
         CompanyFilings
         --------------
         date : date
-            The date of the filing.
+            The date of the data. In this case, it is the date of the filing.
         type : str
             Type of document.
         link : str
@@ -1545,9 +1533,9 @@ class ROUTER_stocks_fa(Container):
         IncomeStatement
         ---------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
-            Date of the income statement.
+            The date of the data. In this case, the date of the income statement.
         period : Optional[Union[str]]
             Period of the income statement.
         cik : Optional[Union[str]]
@@ -1712,7 +1700,7 @@ class ROUTER_stocks_fa(Container):
         IncomeStatementGrowth
         ---------------------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         period : str
@@ -1868,7 +1856,7 @@ class ROUTER_stocks_fa(Container):
         StockInsiderTrading
         -------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         filing_date : datetime
             Filing date of the stock insider trading.
         transaction_date : date
@@ -1971,7 +1959,7 @@ class ROUTER_stocks_fa(Container):
         InstitutionalOwnership
         ----------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         cik : Optional[Union[str]]
             CIK of the company.
         date : date
@@ -2118,7 +2106,7 @@ class ROUTER_stocks_fa(Container):
         KeyMetrics
         ----------
         symbol : Optional[Union[str]]
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : date
             The date of the data.
         period : str
@@ -2374,7 +2362,7 @@ class ROUTER_stocks_fa(Container):
         CompanyOverview
         ---------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         price : Optional[Union[float]]
             Price of the company.
         beta : Optional[Union[float]]
@@ -2525,7 +2513,7 @@ class ROUTER_stocks_fa(Container):
         investor_name : str
             Investor name of the stock ownership.
         symbol : str
-            Symbol of the stock ownership.
+            Symbol representing the entity requested in the data.
         security_name : str
             Security name of the stock ownership.
         type_of_security : str
@@ -2656,7 +2644,7 @@ class ROUTER_stocks_fa(Container):
         PriceTargetConsensus
         --------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         target_high : Optional[Union[float]]
             High target of the price target consensus.
         target_low : Optional[Union[float]]
@@ -2727,7 +2715,7 @@ class ROUTER_stocks_fa(Container):
         PriceTarget
         -----------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         published_date : datetime
             Published date of the price target.
         news_url : Optional[Union[str]]
@@ -2828,9 +2816,9 @@ class ROUTER_stocks_fa(Container):
         FinancialRatios
         ---------------
         symbol : str
-            Symbol of the company.
+            Symbol representing the entity requested in the data.
         date : str
-            Date of the financial ratios.
+            The date of the data.
         period : str
             Period of the financial ratios.
         current_ratio : Optional[Union[float]]
@@ -3167,9 +3155,9 @@ class ROUTER_stocks_fa(Container):
         ShareStatistics
         ---------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         date : Optional[Union[date]]
-            A specific date to get data for.
+            The date of the data.
         free_float : Optional[Union[float]]
             Percentage of unrestricted shares of a publicly-traded company.
         float_shares : Optional[Union[float]]
@@ -3319,7 +3307,7 @@ class ROUTER_stocks_fa(Container):
         EarningsCallTranscript
         ----------------------
         symbol : str
-            Symbol to get data for.
+            Symbol representing the entity requested in the data.
         quarter : int
             Quarter of the earnings call transcript.
         year : int

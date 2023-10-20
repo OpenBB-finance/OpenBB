@@ -30,7 +30,7 @@ class EarningsCalendarQueryParams(QueryParams):
 class EarningsCalendarData(Data):
     """Earnings calendar Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     eps: Optional[float] = Field(
         default=None, description="EPS of the earnings calendar."

@@ -122,8 +122,9 @@ def to_snake_case(string: str) -> str:
 
 
 def to_camel_case(string: str):
-    """Convert a string to camel case. If all characters are lower case we return title
-    version of the string.
+    """Convert a string to camel case.
+
+    If all characters are lower case we return title version of the string.
 
     Examples
     --------

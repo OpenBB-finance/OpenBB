@@ -1,27 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
 import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_fixedincome(Container):
@@ -696,7 +684,7 @@ class ROUTER_fixedincome(Container):
         date: typing_extensions.Annotated[
             Union[datetime.date, None],
             OpenBBCustomParameter(
-                description="Date to get Yield Curve data.  Defaults to the most recent FRED entry."
+                description="A specific date to get data for. Defaults to the most recent FRED entry."
             ),
         ] = None,
         inflation_adjusted: typing_extensions.Annotated[
@@ -711,7 +699,7 @@ class ROUTER_fixedincome(Container):
         Parameters
         ----------
         date : Union[datetime.date, None]
-            Date to get Yield Curve data.  Defaults to the most recent FRED entry.
+            A specific date to get data for. Defaults to the most recent FRED entry.
         inflation_adjusted : Union[bool, None]
             Get inflation adjusted rates.
         provider : Union[Literal['fred'], None]

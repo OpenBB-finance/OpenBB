@@ -26,7 +26,10 @@ class EuropeanIndexConstituentsQueryParams(QueryParams):
 class EuropeanIndexConstituentsData(Data):
     """European Index Constituents data."""
 
-    symbol: str = Field(description="Symbol of the constituent company in the index.")
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", "")
+        + " The symbol is the constituent company in the index."
+    )
     price: float = Field(
         description="Current price of the constituent company in the index."
     )

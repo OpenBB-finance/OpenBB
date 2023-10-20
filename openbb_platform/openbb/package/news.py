@@ -1,27 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
-import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
+from typing import List, Literal, Union
+
 import typing_extensions
-from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_news(Container):
@@ -36,7 +23,10 @@ class ROUTER_news(Container):
     def globalnews(
         self,
         limit: typing_extensions.Annotated[
-            int, OpenBBCustomParameter(description="Number of articles to return.")
+            int,
+            OpenBBCustomParameter(
+                description="The number of data entries to return. Here its the no. of articles to return."
+            ),
         ] = 20,
         provider: Union[Literal["benzinga", "fmp", "intrinio"], None] = None,
         **kwargs
@@ -46,7 +36,7 @@ class ROUTER_news(Container):
         Parameters
         ----------
         limit : int
-            Number of articles to return.
+            The number of data entries to return. Here its the no. of articles to return.
         provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
@@ -97,7 +87,7 @@ class ROUTER_news(Container):
         GlobalNews
         ----------
         date : datetime
-            Published date of the news.
+            The date of the data. Here it is the published date of the news.
         title : str
             Title of the news.
         images : Optional[Union[List[Dict[str, str]]]]
