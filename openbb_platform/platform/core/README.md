@@ -17,6 +17,7 @@
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
       - [System settings](#system-settings)
+      - [Preferences](#preferences)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
@@ -26,8 +27,8 @@
     - [5.1 HTTPS](#51-https)
     - [5.2 Docker](#52-docker)
     - [5.3 Authentication](#53-authentication)
-        - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
-        - [5.3.2 Custom authentication](#532-custom-authentication)
+      - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
+      - [5.3.2 Custom authentication](#532-custom-authentication)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
@@ -256,6 +257,31 @@ Check your system settings.
 from openbb import obb
 
 obb.system
+```
+
+#### Preferences
+
+Check your preferences by adjusting the `user_settings.json` file inside your home directory.
+
+The default preferences are:
+
+```json
+{
+    "data_directory": "~/.openbb_platform", // Where to store data
+    "export_directory": "~/.openbb_platform/exports", // Where to store exports
+    "user_styles_directory": "~/.openbb_platform/styles/user", // Where to store user styles
+    "charting_extension": "openbb_charting", // Charting extension to use
+    "chart_style": "dark", // Chart style to use (dark or light)
+    "plot_enable_pywry": true, // Whether to enable PyWry
+    "plot_pywry_width": 1400, // PyWry width
+    "plot_pywry_height": 762, // PyWry height
+    "plot_open_export": false, // Whether to open plot image exports after they are created
+    "table_style": "dark", // Table style to use (dark or light)
+    "request_timeout": 15, // Request timeout
+    "metadata": true, // Whether to include metadata in the output
+    "output_type": "OBBject" // Our default output type (OBBject, dataframe, polars, numpy, dict, chart)
+}
+
 ```
 
 #### Coverage
