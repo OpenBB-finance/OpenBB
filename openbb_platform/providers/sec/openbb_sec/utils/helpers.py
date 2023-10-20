@@ -452,6 +452,19 @@ def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
     return df
 
 
+def get_mf_and_etf_map() -> pd.DataFrame:
+    """Returns the CIK number of a ticker symbol for querying the SEC API."""
+
+    symbols = pd.DataFrame()
+
+    url = "https://www.sec.gov/files/company_tickers_mf.json"
+    r = sec_session_companies.get(url, headers=SEC_HEADERS, timeout=5)
+    if r.status_code == 200:
+        symbols = pd.DataFrame(data=r.json()["data"], columns=r.json()["fields"])
+
+    return symbols
+
+
 def search_institutions(keyword: str) -> pd.DataFrame:
     """Search for an institution by name.  It is case-insensitive."""
     institutions = get_all_ciks()
@@ -466,7 +479,9 @@ def symbol_map(symbol: str, use_cache: bool = True) -> str:
     symbols = get_all_companies(use_cache=use_cache)
 
     if symbol not in symbols["symbol"].to_list():
-        return ""
+        symbols = get_mf_and_etf_map().astype(str)
+        if symbol not in symbols["symbol"].to_list():
+            return ""
 
     cik = symbols[symbols["symbol"] == symbol]["cik"].iloc[0]
     cik_: str = ""
