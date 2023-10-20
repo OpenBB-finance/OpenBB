@@ -64,8 +64,10 @@ class FMPCompanyOverviewFetcher(
         return get_data_one(url, **kwargs)
 
     @staticmethod
-    def transform_data(  # type: ignore
+    def transform_data(
+        query: FMPCompanyOverviewQueryParams,
         data: Dict,
+        **kwargs: Any,
     ) -> FMPCompanyOverviewData:
         """Return the transformed data."""
         return FMPCompanyOverviewData.model_validate(data)

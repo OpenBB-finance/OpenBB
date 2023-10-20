@@ -100,7 +100,7 @@ Populate this file with the following template and replace the values with your 
 The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
 
 ```bash
-uvicorn openbb_core.api.rest_api:app
+uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.

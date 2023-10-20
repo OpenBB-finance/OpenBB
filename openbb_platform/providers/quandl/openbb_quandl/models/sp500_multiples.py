@@ -61,7 +61,9 @@ class QuandlSP500MultiplesFetcher(
 
     @staticmethod
     def transform_data(
+        query: QuandlSP500MultiplesQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[QuandlSP500MultiplesData]:
         """Parse data into the QuandlSP500MultiplesData format."""
         return [QuandlSP500MultiplesData.model_validate(d) for d in data]

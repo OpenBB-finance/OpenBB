@@ -8,7 +8,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class HistoricalDividendsQueryParams(QueryParams):
@@ -27,7 +27,7 @@ class HistoricalDividendsQueryParams(QueryParams):
 class HistoricalDividendsData(Data):
     """Historical dividends data."""
 
-    date: dateType = Field(description="Date of the historical dividends.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the historical dividends.")
     adj_dividend: float = Field(
         description="Adjusted dividend of the historical dividends."

@@ -7,6 +7,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class SectorPEQueryParams(QueryParams):
@@ -17,7 +18,7 @@ class SectorPEData(Data):
     """Sector Price to Earnings Ratio Data."""
 
     date: Optional[dateType] = Field(
-        description="The date of the P/E ratio.", default=None
+        description=DATA_DESCRIPTIONS.get("date", ""), default=None
     )
     exchange: Optional[str] = Field(
         default=None, description="The exchange where the data is from."

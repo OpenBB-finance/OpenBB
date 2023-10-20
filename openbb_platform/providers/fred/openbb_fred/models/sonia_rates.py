@@ -70,6 +70,8 @@ class FREDSONIAFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDSONIAData]]]:
+    def transform_data(
+        query: FREDSONIAQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDSONIAData]]]:
         keys = ["date", "value"]
         return [FREDSONIAData(**{k: x[k] for k in keys}) for x in data]

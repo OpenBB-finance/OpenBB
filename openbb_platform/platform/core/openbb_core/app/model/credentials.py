@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Tuple
 
-from pydantic import ConfigDict, create_model
+from pydantic import ConfigDict, SecretStr, create_model
 
 from openbb_core.app.provider_interface import ProviderInterface
 
@@ -15,7 +15,7 @@ def format_map(
     """Format credentials map to be used in the Credentials model"""
     formatted: Dict[str, Tuple[object, None]] = {}
     for c in required_credentials:
-        formatted[c] = (Optional[str], None)
+        formatted[c] = (Optional[SecretStr], None)
 
     return formatted
 

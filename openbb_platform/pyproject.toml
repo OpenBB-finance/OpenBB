@@ -27,6 +27,7 @@ openbb-stocks = "^0.1.0a3"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a3", optional = true }
+openbb-biztoc = { version = "^0.1.0a3", optional = true }
 openbb-cboe = { version = "^0.1.0a3", optional = true }
 openbb-quandl = { version = "^0.1.0a3", optional = true }
 openbb-yfinance = { version = "^0.1.0a3", optional = true }
@@ -40,6 +41,7 @@ openbb-econometrics = { version = "^0.1.0a3", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
+biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
 quandl = ["openbb-quandl"]
 sec = ["openbb-sec"]
@@ -52,6 +54,7 @@ econometrics = ["openbb-econometrics"]
 
 all = [
     "openbb-alpha-vantage",
+    "openbb-biztoc",
     "openbb-cboe",
     "openbb-quandl",
     "openbb-sec",

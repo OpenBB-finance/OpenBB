@@ -6,6 +6,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class MarketMoversQueryParams(QueryParams):
@@ -15,7 +16,7 @@ class MarketMoversQueryParams(QueryParams):
 class MarketMoversData(Data):
     """Market Movers Data."""
 
-    symbol: str = Field(description="The ticker symbol.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: Optional[str] = Field(
         default=None, description="The name associated with the ticker."
     )

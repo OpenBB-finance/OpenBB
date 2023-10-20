@@ -25,7 +25,7 @@ class DividendCalendarQueryParams(QueryParams):
 class DividendCalendarData(Data):
     """Dividend Calendar Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     label: str = Field(description="Date in human readable form in the calendar.")
     adj_dividend: Optional[float] = Field(

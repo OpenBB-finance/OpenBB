@@ -101,6 +101,8 @@ class PolygonMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonMajorIndicesHistoricalQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[PolygonMajorIndicesHistoricalData]:
         return [PolygonMajorIndicesHistoricalData.model_validate(d) for d in data]

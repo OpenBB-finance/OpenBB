@@ -11,7 +11,7 @@ from pydantic import Field, NonNegativeFloat, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class ExecutiveCompensationQueryParams(QueryParams):
@@ -30,7 +30,7 @@ class ExecutiveCompensationQueryParams(QueryParams):
 class ExecutiveCompensationData(Data):
     """Return Executive Compensation Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(
         default=None, description="Central Index Key (CIK) of the company."
     )

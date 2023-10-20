@@ -1512,6 +1512,55 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     return False, True
 
 
+def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
+    """Saves a Pandas DataFrame to an Excel file.
+
+    Args:
+        df: A Pandas DataFrame.
+        saved_path: The path to the Excel file to save to.
+        sheet_name: The name of the sheet to save the DataFrame to.
+        start_row: The row number to start writing the DataFrame at.
+        index: Whether to write the DataFrame index to the Excel file.
+        header: Whether to write the DataFrame header to the Excel file.
+    """
+
+    overwrite_options = {
+        "o": "replace",
+        "a": "overlay",
+        "n": "new",
+    }
+
+    if not saved_path.exists():
+        with pd.ExcelWriter(saved_path, engine="openpyxl") as writer:
+            df.to_excel(writer, sheet_name=sheet_name, index=index, header=header)
+
+    else:
+        with pd.ExcelFile(saved_path) as reader:
+            overwrite_option = "n"
+            if sheet_name in reader.sheet_names:
+                overwrite_option = input(
+                    "\nSheet already exists. Overwrite/Append/New? [o/a/n]: "
+                ).lower()
+                start_row = 0
+                if overwrite_option == "a":
+                    existing_df = pd.read_excel(saved_path, sheet_name=sheet_name)
+                    start_row = existing_df.shape[0] + 1
+
+            with pd.ExcelWriter(
+                saved_path,
+                mode="a",
+                if_sheet_exists=overwrite_options[overwrite_option],
+                engine="openpyxl",
+            ) as writer:
+                df.to_excel(
+                    writer,
+                    sheet_name=sheet_name,
+                    startrow=start_row,
+                    index=index,
+                    header=False if overwrite_option == "a" else header,
+                )
+
+
 # This is a false positive on pylint and being tracked in pylint #3060
 # pylint: disable=abstract-class-instantiated
 def export_data(
@@ -1600,25 +1649,9 @@ def export_data(
                         index=True,
                         header=True,
                     )
-
-                elif saved_path.exists():
-                    with pd.ExcelWriter(
-                        saved_path,
-                        mode="a",
-                        if_sheet_exists="new",
-                        engine="openpyxl",
-                    ) as writer:
-                        df.to_excel(
-                            writer, sheet_name=sheet_name, index=True, header=True
-                        )
                 else:
-                    with pd.ExcelWriter(
-                        saved_path,
-                        engine="openpyxl",
-                    ) as writer:
-                        df.to_excel(
-                            writer, sheet_name=sheet_name, index=True, header=True
-                        )
+                    save_to_excel(df, saved_path, sheet_name)
+
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 if figure is None:
                     console.print("No plot to export.")

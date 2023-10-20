@@ -50,7 +50,9 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[Dict[str, List[FREDCPIData
         return series_dict
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDCPIData]]]:
+    def transform_data(
+        query: FREDCPIQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDCPIData]]]:
         for key, value in data.items():
             data[key] = [
                 FREDCPIData(date=x["date"], value=x["value"])

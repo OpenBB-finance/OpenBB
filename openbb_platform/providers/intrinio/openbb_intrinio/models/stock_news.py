@@ -71,7 +71,9 @@ class IntrinioStockNewsFetcher(
         return get_data_many(url, "news", **kwargs)
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[IntrinioStockNewsData]:
+    def transform_data(
+        query: IntrinioStockNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioStockNewsData]:
         """Return the transformed data."""
 
         return [IntrinioStockNewsData.model_validate(d) for d in data]

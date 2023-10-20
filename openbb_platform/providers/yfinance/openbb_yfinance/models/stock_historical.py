@@ -164,7 +164,9 @@ class YFinanceStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: YFinanceStockHistoricalQueryParams,
         data: List[Dict],
+        **kwargs: Any,
     ) -> List[YFinanceStockHistoricalData]:
         """Transform the data to the standard format."""
 
