@@ -831,11 +831,11 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 <details>
 <summary>Instructions</summary>
 
-Go to: https://ultimainsights.ai/
+Go to: https://ultimainsights.ai/openbb
 
 ![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
 
-Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
+Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://ultimainsights.ai/openbb) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
 
 ```console
 /keys/ultima REPLACE_WITH_KEY
