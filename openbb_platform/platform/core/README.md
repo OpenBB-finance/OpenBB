@@ -313,6 +313,8 @@ obb.account.refresh()
 obb.account.logout()
 ```
 
+> Note: credentials are stored as Pydantic `SecretStr` objects. This means that they will be masked when printed or displayed in a Jupyter Notebook. To get the actual value, use `obb.user.credentials.polygon_api_key.get_secret_value()`.
+
 ### 4.1.4. Command execution
 
 How do we execute commands?
