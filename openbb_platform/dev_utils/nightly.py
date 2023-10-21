@@ -3,20 +3,20 @@ import sys
 from typing import Any, Dict
 
 import toml
-from dev_utils.dev_install import PLATFORM_PATH
+from dev_utils.dev_install import PLATFORM_PATH, PYPROJECT
 
-PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 SUB_PACKAGES = {}
+DEPENDENCIES: Dict[str, Any] = {}
 PLUGINS = {"openbb_core_extension": {}, "openbb_provider_extension": {}}
+CMD = [sys.executable, "-m", "poetry", "build"]
+
 
 PYPROJECT_TOML = toml.load(PYPROJECT)
 POETRY_DICT: Dict[str, dict] = PYPROJECT_TOML["tool"]["poetry"]
-DEPENDENCIES: Dict[str, Any] = {}
-
-original_pyproject = PYPROJECT.read_text()
 POETRY_DICT.pop("extras", None)
 
-CMD = [sys.executable, "-m", "poetry", "build"]
+
+original_pyproject = PYPROJECT.read_text()
 
 
 def gather_metadata(sub_path: str):
