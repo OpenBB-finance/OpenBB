@@ -185,6 +185,21 @@ Notably, `obb.user.defaults`, defines default providers for any command.  They a
                 "provider": "benzinga"
             }
         }
+    },
+    {
+        "data_directory": "~/.openbb_platform", // Where to store data
+        "export_directory": "~/.openbb_platform/exports", // Where to store exports
+        "user_styles_directory": "~/.openbb_platform/styles/user", // Where to store user styles
+        "charting_extension": "openbb_charting", // Charting extension to use
+        "chart_style": "dark", // Chart style to use (dark or light)
+        "plot_enable_pywry": true, // Whether to enable PyWry
+        "plot_pywry_width": 1400, // PyWry width
+        "plot_pywry_height": 762, // PyWry height
+        "plot_open_export": false, // Whether to open plot image exports after they are created
+        "table_style": "dark", // Table style to use (dark or light)
+        "request_timeout": 15, // Request timeout
+        "metadata": true, // Whether to include metadata in the output
+        "output_type": "OBBject" // Our default output type (OBBject, dataframe, polars, numpy, dict, chart)
     }
 }
 ```

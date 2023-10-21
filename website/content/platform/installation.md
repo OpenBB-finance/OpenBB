@@ -21,6 +21,58 @@ Installing packages directly to the system Python or `base` environment is not r
 pip install poetry toml
 ```
 
+## PyPI
+
+Install from PyPI with:
+
+```console
+pip install openbb==4.0.0a3
+```
+
+:::note
+While still under active development, the version number is required to install the core OpenBB Platform.
+:::
+
+To install all of the extensions and providers:
+
+```console
+pip install openbb[all]==4.0.0a3
+```
+
+To install a single extension:
+
+```console
+pip install openbb[charting]==4.0.0a3
+```
+
+```console
+pip install openbb[ta]==4.0.0a3
+```
+
+Import the package with:
+
+```console
+from openbb import obb
+```
+
+## Docker
+
+OpenBB supplies a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
+
+Run the following command from the repo root to build the image:
+
+```bash
+docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
+```
+
+To run it with:
+
+```bash
+docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
+```
+
+This will mount the local `~/.openbb_platform` directory into the Docker container to use with the API keys and preferences from there, and it will expose the API on port `8000`.
+
 ## Source
 
 To build the OpenBB Platform from the source code, first install `git`:
@@ -85,4 +137,3 @@ Start the REST API with:
 ```console
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
-
