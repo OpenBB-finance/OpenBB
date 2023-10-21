@@ -14,12 +14,6 @@ from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
 
-if TYPE_CHECKING:
-    try:
-        from polars import DataFrame as PolarsDataFrame
-    except ImportError:
-        PolarsDataFrame = None
-
 T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
 
@@ -169,23 +163,18 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
-    def to_polars(self) -> "PolarsDataFrame":
-        """Convert results field to polars dataframe."""
-        try:
-            from polars import from_pandas  # pylint: disable=import-outside-toplevel
-        except ImportError as exc:
-            raise ImportError(
-                "Please install polars: `pip install polars`  to use this function."
-            ) from exc
-
-        return from_pandas(self.to_dataframe().reset_index())
-
     def to_numpy(self) -> ndarray:
         """Convert results field to numpy array."""
         return self.to_dataframe().reset_index().to_numpy()
 
-    def to_dict(self) -> Dict[str, List]:
+    def to_dict(self, orient: str = "") -> Dict[str, List]:
         """Convert results field to list of values.
+
+        Parameters
+        ----------
+        orient : str, optional
+            Value to pass to `.to_dict()` method
+
 
         Returns
         -------
@@ -205,6 +194,8 @@ class OBBject(Tagged, Generic[T]):
             return results
 
         df = self.to_dataframe().reset_index()  # type: ignore
+        if orient:
+            return df.to_dict(orient=orient)
         results = {}
         for field in df.columns:
             f = df[field].tolist()
@@ -215,6 +206,10 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
 
         return results
+
+    def to_records(self) -> List[Dict]:
+        """Convert results field to list of dictionaries."""
+        return self.model_dump()["results"]
 
     def to_chart(self, **kwargs):
         """
