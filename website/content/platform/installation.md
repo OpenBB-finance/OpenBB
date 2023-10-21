@@ -65,7 +65,7 @@ Run the following command from the repo root to build the image:
 docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
 ```
 
-To run it with:
+To run it:
 
 ```bash
 docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
