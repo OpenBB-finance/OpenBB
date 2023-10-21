@@ -6,7 +6,7 @@ import toml
 from dev_utils.dev_install import PLATFORM_PATH
 
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
-SUB_PACKAGES = {"platform": {}, "providers": {}, "extensions": {}}
+SUB_PACKAGES = {}
 PLUGINS = {"openbb_core_extension": {}, "openbb_provider_extension": {}}
 
 PYPROJECT_TOML = toml.load(PYPROJECT)
@@ -36,14 +36,12 @@ def gather_metadata(sub_path: str):
             PLUGINS[extension].update(poetry_dict.get("plugins", {}).get(extension, {}))
 
         DEPENDENCIES.update(pyproject_toml["tool"]["poetry"]["dependencies"])
-        SUB_PACKAGES[sub_path][package_name] = path.relative_to(
-            PLATFORM_PATH
-        ).parent.as_posix()
+        SUB_PACKAGES[package_name] = path.relative_to(PLATFORM_PATH).parent.as_posix()
 
 
 def build():
     """Build the Platform package."""
-    for sub_path in SUB_PACKAGES:
+    for sub_path in ["platform", "providers", "extensions"]:
         gather_metadata(sub_path)
 
     # need to pop these from the dependencies
@@ -51,11 +49,8 @@ def build():
     DEPENDENCIES.pop("openbb-provider", None)
 
     # add the sub packages
-    for sub_path in list(SUB_PACKAGES.keys()):
-        for package_name, path in SUB_PACKAGES[sub_path].items():
-            POETRY_DICT["packages"].append(
-                {"include": package_name, "from": f"./{path}"}
-            )
+    for package_name, path in SUB_PACKAGES.items():
+        POETRY_DICT["packages"].append({"include": package_name, "from": f"./{path}"})
 
     # add the plugins extensions
     for extension, plugins in PLUGINS.items():
