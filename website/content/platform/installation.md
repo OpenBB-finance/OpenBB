@@ -137,3 +137,40 @@ Start the REST API with:
 ```console
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
+
+### Documentation
+
+The documentation and packages are kept in the `/website` folder, at the base of the repository.  Navigate there to install the dependencies and start the development server.
+
+#### Node.js
+
+- [Node.js](https://nodejs.org/en/) >= 16.13.0
+  To check if Node.js installed, run this command:
+
+```bash
+node --version # should be v16.13.0 or higher
+```
+
+#### Install Dependencies
+
+```bash
+npm install
+```
+
+#### Start Development Server
+
+```bash
+npm start
+```
+
+This starts a local development server at: [http://localhost:3000](http://localhost:3000)
+
+Most changes are reflected live without having to restart the server.
+
+#### Build
+
+```bash
+npm run build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service. OpenBB uses Github Pages to host our website, it's deployed in the `gh-pages` branch.
