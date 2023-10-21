@@ -1,6 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import TYPE_CHECKING, Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from numpy import ndarray
