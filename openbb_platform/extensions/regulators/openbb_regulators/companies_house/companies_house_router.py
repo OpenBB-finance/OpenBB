@@ -1,4 +1,5 @@
 # pylint: disable=W0613:unused-argument
+# ruff: noqa: F401
 """Companies House Router."""
 
 from openbb_core.app.model.command_context import CommandContext

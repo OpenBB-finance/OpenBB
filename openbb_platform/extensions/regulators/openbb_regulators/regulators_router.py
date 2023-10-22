@@ -1,4 +1,5 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
+# ruff: noqa: F401
 """Regulators Router."""
 
 
