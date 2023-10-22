@@ -11,7 +11,6 @@ from openbb_provider.standard_models.stock_search import (
 from openbb_sec.utils.helpers import (
     get_all_companies,
     get_mf_and_etf_map,
-    search_institutions,
 )
 from pandas import DataFrame
 from pydantic import Field
@@ -26,10 +25,6 @@ class SecStockSearchQueryParams(StockSearchQueryParams):
     is_fund: bool = Field(
         default=False,
         description="Whether to direct the search to the list of mutual funds and ETFs.",
-    )
-    is_institution: bool = Field(
-        default=False,
-        description="Whether to direct the search to the list of institutions.",
     )
     use_cache: bool = Field(
         default=True,
@@ -76,7 +71,7 @@ class SecStockSearchFetcher(
                 | companies["symbol"].str.contains(query.query, case=False)
             ]
 
-        if query.is_fund is False and query.is_institution is False:
+        if query.is_fund is False:
             companies = get_all_companies(use_cache=query.use_cache)
 
             results = companies[
@@ -84,9 +79,6 @@ class SecStockSearchFetcher(
                 | companies["symbol"].str.contains(query.query, case=False)
                 | companies["cik"].str.contains(query.query, case=False)
             ]
-
-        if query.is_institution is True:
-            results = search_institutions(query.query, use_cache=query.use_cache)
 
         return results.astype(str).to_dict("records")
 
