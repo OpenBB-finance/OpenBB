@@ -222,7 +222,7 @@ def get_schema_filelist(query: str = "", url: str = "") -> List:
     results: List = []
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
-    _url = url+"/" if query else _url
+    _url = url + "/" if query else _url
     r = sec_session_frames.get(_url, headers=HEADERS, timeout=5)
 
     if r.status_code != 200:

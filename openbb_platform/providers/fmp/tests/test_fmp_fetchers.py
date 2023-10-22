@@ -61,6 +61,15 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+def test_fmp_company_filings_fetcher(credentials=test_credentials):
+    params = {"symbol": "MSFT", "limit": 100}
+
+    fetcher = FMPCompanyFilingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "BTCUSD",
@@ -343,15 +352,6 @@ def test_fmp_key_metrics_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPKeyMetricsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_fmp_company_filings_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = FMPCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
