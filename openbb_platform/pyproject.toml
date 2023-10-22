@@ -23,6 +23,7 @@ openbb-economy = "^0.1.0a3"
 openbb-forex = "^0.1.0a3"
 openbb-fixedincome = "^0.1.0a3"
 openbb-news = "^0.1.0a3"
+openbb-regulators = "^0.1.0a3"
 openbb-stocks = "^0.1.0a3"
 
 # Community dependencies

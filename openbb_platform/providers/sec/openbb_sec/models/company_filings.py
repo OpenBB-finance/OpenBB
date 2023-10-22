@@ -15,13 +15,9 @@ from openbb_provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from openbb_sec.utils.helpers import FORM_TYPES, symbol_map
+from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
+from openbb_sec.utils.helpers import symbol_map
 from pydantic import Field
-
-HEADERS = {
-    "User-Agent": "my real company name definitelynot@fakecompany.com",
-    "Accept-Encoding": "gzip, deflate",
-}
 
 sec_session_company_filings = requests_cache.CachedSession(
     "OpenBB_SEC_COMPANY_FILINGS", expire_after=timedelta(days=1), use_cache_dir=True
@@ -120,6 +116,9 @@ class SecCompanyFilingsData(CompanyFilingsData):
         default=None,
         alias="filingDetailUrl",
     )
+    xml: Optional[str] = Field(
+        description="The URL to the primary XML document.", default=None
+    )
 
 
 class SecCompanyFilingsFetcher(
@@ -142,11 +141,12 @@ class SecCompanyFilingsFetcher(
 
         filings = pd.DataFrame()
 
-        if query.symbol:
+        if query.symbol and not query.cik:
             query.cik = symbol_map(query.symbol.lower(), use_cache=query.use_cache)
             if not query.cik:
                 return []
-
+        if query.cik is None:
+            return []
         if len(query.cik) != 10:
             cik_: str = ""
             temp = 10 - len(query.cik)
@@ -210,12 +210,8 @@ class SecCompanyFilingsFetcher(
         filings["filingDetailUrl"] = (
             base_url + filings["accessionNumber"] + "-index.htm"
         )
-        filings["xml"] = (
-            base_url + filings["accessionNumber"] + "/primary_doc.xml"
-        ).str.replace("-", "")
-
         if "type" in query.model_dump() and query.type is not None:
-            filings = filings[filings["form"].str.contains(query.type, case=False)]
+            filings = filings[filings["form"] == query.type]
 
         if "limit" in query.model_dump():
             filings = filings.head(query.limit) if query.limit != 0 else filings

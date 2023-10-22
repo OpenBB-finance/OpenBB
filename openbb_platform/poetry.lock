@@ -1628,6 +1628,19 @@ openbb-core = ">=0.1.0a2,<0.2.0"
 quandl = ">=3.7.0"
 
 [[package]]
+name = "openbb-regulators"
+version = "0.1.0a3"
+description = "Markets and Agency Regulators extension for OpenBB"
+optional = false
+python-versions = "*"
+files = []
+develop = true
+
+[package.source]
+type = "directory"
+url = "extensions/regulators"
+
+[[package]]
 name = "openbb-sec"
 version = "0.1.0a3"
 description = "SEC extension for OpenBB"
@@ -2298,15 +2311,15 @@ files = [
 
 [[package]]
 name = "pywry"
-version = "0.6.1"
+version = "0.6.2"
 description = ""
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "pywry-0.6.1-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ce0250bf88bd795bc2751daae162f03e9c3f64a2c0275edf4b376c180090154b"},
-    {file = "pywry-0.6.1-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:8f7dba93babc10eb49682dc8811afe5a9f108772e6a09457173b9c2b30f00e41"},
-    {file = "pywry-0.6.1-py3-none-win_amd64.whl", hash = "sha256:537381db5ec246a99e583260613f20a1a2b92829e53e2faa393537f1edc71476"},
-    {file = "pywry-0.6.1.tar.gz", hash = "sha256:0ef6a303d1c90db15e9ac62c337fa0b050dd73d3ece5005a96a97576fdc524ed"},
+    {file = "pywry-0.6.2-py3-none-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:45d6bb827bf76b2532a9d70b539209d70f37dfb13e9862549b7bff8500ad2495"},
+    {file = "pywry-0.6.2-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:1d9ffd826a3a08c132843340e6d896efb7b972b301d045e3239a7dc08d9cac2f"},
+    {file = "pywry-0.6.2-py3-none-win_amd64.whl", hash = "sha256:4f0e5b502555ee8b8e799baeaebe63243a84b7ce51df01a1c439dbc4e8227b9e"},
+    {file = "pywry-0.6.2.tar.gz", hash = "sha256:9bd88c36ab0860728d9e64360010f8abcede43645656030e4a63e69e81a98c95"},
 ]
 
 [package.dependencies]
@@ -3449,7 +3462,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-futures", "openbb-oecd", "openbb-qa", "openbb-quandl", "openbb-sec", "openbb-ta", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-econometrics", "openbb-futures", "openbb-qa", "openbb-quandl", "openbb-sec", "openbb-ta", "openbb-yfinance"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
@@ -3465,4 +3478,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "ae7575359a4657ad0c34ab7209e9469d54af78b1e57e8e338aee1e6d0fe0620f"
+content-hash = "709caf32267a1df46ea82cebe68699f4f971a2a5ba915d6b3bdec9ba7e9bbd8e"
