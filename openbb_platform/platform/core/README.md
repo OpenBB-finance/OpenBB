@@ -18,6 +18,7 @@
       - [User settings](#user-settings)
       - [System settings](#system-settings)
       - [Preferences](#preferences)
+        - [Available preferences and its descriptions](#available-preferences-and-its-descriptions)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
@@ -261,28 +262,44 @@ obb.system
 
 #### Preferences
 
-Check your preferences by adjusting the `user_settings.json` file inside your home directory.
+Check your preferences by adjusting the `user_settings.json` file inside your **home** directory.
+If you want to proceed witht the default settings, you don't have to touch this file.
 
-The default preferences are:
+Here is an example of how your `user_settings.json` file can look like:
 
 ```json
 {
-    "data_directory": "~/.openbb_platform", // Where to store data
-    "export_directory": "~/.openbb_platform/exports", // Where to store exports
-    "user_styles_directory": "~/.openbb_platform/styles/user", // Where to store user styles
-    "charting_extension": "openbb_charting", // Charting extension to use
-    "chart_style": "dark", // Chart style to use (dark or light)
-    "plot_enable_pywry": true, // Whether to enable PyWry
-    "plot_pywry_width": 1400, // PyWry width
-    "plot_pywry_height": 762, // PyWry height
-    "plot_open_export": false, // Whether to open plot image exports after they are created
-    "table_style": "dark", // Table style to use (dark or light)
-    "request_timeout": 15, // Request timeout
-    "metadata": true, // Whether to include metadata in the output
-    "output_type": "OBBject" // Our default output type (OBBject, dataframe, polars, numpy, dict, chart)
+    "chart_style": "light",
+    "table_style": "light",
+    "plot_enable_pywry": true,
+    "plot_pywry_width": 800,
+    "plot_pywry_height": 800,
+    "request_timeout": 30,
+    "metadata": false,
+    "output_type": "dataframe"
 }
-
 ```
+
+> Note that the user preferences shouldn't be confused with environment variables.
+
+##### Available preferences and its descriptions
+
+|Preference           |Default                         |Description                                                                                                                                                                                                                                                                                                                  |
+|---------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|data_directory       |/home/OpenBBUserData            |When launching the application for the first time  this directory will be created. It serves as the default location where the application stores usage artifacts  such as logs and exports.                                                                                                                                 |
+|export_directory     |/home/OpenBBUserData/exports    |The OpenBB Charting Extension provides the capability to export images in various formats. This is the directory where it attempts to save such exports.                                                                                                                                                             |
+|user_styles_directory|/home/OpenBBUserData/styles/user|The OpenBB Charting Extension supports custom stylization. This directory is the location where it looks for user-defined styles. If no user styles are found in this directory  the application will proceed with the default styles.                                                                               |
+|charting_extension   |openbb_charting                 |Name of the charting extension to be used with the application.                                                                                                                                                                                                                                                              |
+|chart_style          |dark                            |The default color style to use with the OpenBB Charting Extension plots. Options include "dark" and "light".                                                                                                                                                                                                                 |
+|plot_enable_pywry    |True                            |Whether the application should enable PyWry. If PyWry is disabled  the image will open in your default browser  otherwise  it will be displayed within your editor or in a separate PyWry window.                                                                                                                            |
+|plot_pywry_width     |1400                            |PyWry window width.                                                                                                                                                                                                                                                                                                          |
+|plot_pywry_height    |762                             |PyWry window height.                                                                                                                                                                                                                                                                                                         |
+|plot_open_export     |False                           |Controls whether the "Save As" window should pop up as soon as the image is displayed.                                                                                                                                                                                                                                       |
+|table_style          |dark                            |The default color style to use with the OpenBB Charting Extension tables. Options are "dark" and "light".                                                                                                                                                                                                                    |
+|request_timeout      |15                              |Specifies the timeout duration for HTTP requests.                                                                                                                                                                                                                                                                            |
+|metadata             |True                            |Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.|
+|output_type          |OBBject                         |Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe`, `numpy`  or `polars`  will render the application's API non-functional.                                                                        |
+
 
 #### Coverage
 
