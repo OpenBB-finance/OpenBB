@@ -16,7 +16,9 @@ from openbb_yfinance.models.major_indices_historical import (
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
