@@ -1,5 +1,5 @@
 """SEC Helpers module"""
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -158,9 +158,10 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
 def get_frame(
     year: int,
     quarter: Optional[QUARTERS] = None,
-    taxonomy: Optional[TAXONOMIES] = "us-gaap",
+    taxonomy: TAXONOMIES = "us-gaap",
     units: str = "USD",
     fact: str = "Revenues",
+    instantaneous: bool = False,
     use_cache: bool = True,
 ) -> Dict:
     """
@@ -181,16 +182,35 @@ def get_frame(
 
     Example facts:
     Revenues
+    GrossProfit
     CostOfRevenue
     DividendsCash
     DistributedEarnings
     AccountsPayableCurrent
+    OperatingExpenses
+    OperatingIncomeLoss
+    NoninterestIncome
+    InterestAndDebtExpense
+    IncomeTaxExpenseBenefit
+    NetIncomeLoss
+
+    Facts where units are, "shares":
+    WeightedAverageNumberOfDilutedSharesOutstanding
+
+    Refer to this page: https://www.xbrlsite.com/2015/fro/us-gaap/html/ReportFrames/fac_ModelStructure.html
     """
+
+    if fact in ["WeightedAverageNumberOfDilutedSharesOutstanding"]:
+        units = "shares"
 
     url = f"https://data.sec.gov/api/xbrl/frames/{taxonomy}/{fact}/{units}/CY{year}"
 
-    url = url + ".json" if quarter is None else url + f"Q{quarter}.json"
+    if quarter:
+        url = url + f"Q{quarter}"
 
+    if instantaneous:
+        url = url + "I"
+    url = url + ".json"
     r = (
         requests.get(url, headers=HEADERS, timeout=5)
         if use_cache is False
