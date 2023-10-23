@@ -73,6 +73,20 @@ def symbol_map(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="RssLitigation")
+def rss_litigation(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    The RSS feed provides links to litigation releases concerning civil lawsuits brought
+    by the Commission in federal court.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
 # @router.command(model="NPort")
 # def peers(
 #    cc: CommandContext,

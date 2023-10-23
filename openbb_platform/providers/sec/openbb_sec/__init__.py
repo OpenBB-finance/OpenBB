@@ -3,6 +3,7 @@ from openbb_provider.abstract.provider import Provider
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
+from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
 from openbb_sec.models.stock_search import SecStockSearchFetcher
@@ -22,5 +23,6 @@ sec_provider = Provider(
         "StockFTD": SecStockFtdFetcher,
         "StockSearch": SecStockSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
+        "RssLitigation": SecRssLitigationFetcher,
     },
 )

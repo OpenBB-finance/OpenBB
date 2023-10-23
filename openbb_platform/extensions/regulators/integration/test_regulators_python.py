@@ -70,3 +70,15 @@ def test_regulators_sec_symbol_map(params, obb):
     assert isinstance(result, OBBject)
     assert hasattr(result.results, "symbol")
     assert isinstance(result.results.symbol, str)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({})],
+)
+@pytest.mark.integration
+def test_regulators_sec_rss_litigation(params, obb):
+    result = obb.regulators.sec.rss_litigation(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
