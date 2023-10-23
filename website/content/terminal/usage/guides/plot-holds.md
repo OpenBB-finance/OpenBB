@@ -49,7 +49,7 @@ To show the impact of the `--sameaxis` argument, we can run the previous command
 
 A chart is often only as good as its labelling.  On the previous example, we can see that the legends reflected the command paths that were used, but not the arguments.  If we added gdp of a second country, we would not be able to tell which line is which country.  In order to avoid this confusion, when the hold state is on, every function comes with a `--legend` argument.  This will pass the users desired label into the chart legend.  When the chart is displayed, the legends will display.  If a command is run without the --legend argument, it will default to using the command location as previously shown.  In rare cases, a legend may not appear due to it not being defined in the functions `view` file.  In this case, please raise a GitHub issue so the team can address it.
 
-An additional customization is the ability to add a custom title to the chart.  This can be specified by adding the `--title`` argument to the hold off functionality.  To show off these capabilities, we can use an example of plotting income statement items for different companies.  In this example, we can look at FAANG companies and plot their revenues on the same axis.  This example will show the previous 40 quarters.
+An additional customization is the ability to add a custom title to the chart.  This can be specified by adding the `--title` argument to the hold off functionality.  To show off these capabilities, we can use an example of plotting income statement items for different companies.  In this example, we can look at FAANG companies and plot their revenues on the same axis.  This example will show the previous 40 quarters.
 
 ```
 2023 Jul 19, 15:31 [openbb_coo] 🦋 /stocks/fa/ $ hold on --sameaxis
@@ -83,7 +83,6 @@ hold off--title FAANG Revenues 10 Year
 </details>
 
 ## Known Issues
-
 
 Unfortunately, there are some known issues with the hold functionality.  These are being worked on, and will be addressed in future releases.  The following are known issues:
 

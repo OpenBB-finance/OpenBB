@@ -44,8 +44,8 @@ build financial applications and reports."
 
 ## Getting Started
 
-- [Installation](platform/installation.md)
-- [Basics](platform/usage/index.md)
+- [Installation](platform/installation)
+- [Basics](platform/usage)
 
 ### Using OpenBB Platform
 
@@ -53,7 +53,8 @@ Coming soon
 
 ### Platform Reference
 
-Coming soon
+- [Function reference](platform/reference)
+- [Models reference](/data_models/)
 
 ### Showcase
 
