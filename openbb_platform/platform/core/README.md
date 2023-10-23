@@ -263,7 +263,7 @@ obb.system
 #### Preferences
 
 Check your preferences by adjusting the `user_settings.json` file inside your **home** directory.
-If you want to proceed witht the default settings, you don't have to touch this file.
+If you want to proceed with the default settings, you don't have to touch this file.
 
 Here is an example of how your `user_settings.json` file can look like:
 
