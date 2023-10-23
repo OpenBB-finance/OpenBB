@@ -2,22 +2,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-repo_dir = Path(__file__).parent.parent.parent
+from dev_utils.dev_install import PLATFORM_PATH
 
-# core and provider
-core_dir = repo_dir / "openbb_platform/platform/core"
-provider_dir = repo_dir / "openbb_platform/platform/provider"
-
-# extensions
-extensions_dir = repo_dir / "openbb_platform/extensions"
-extensions = [x for x in extensions_dir.iterdir() if x.is_dir()]
-
-# providers
-providers_dir = repo_dir / "openbb_platform/providers"
-providers = [x for x in providers_dir.iterdir() if x.is_dir()]
-
-# openbb
-openbb_dir = repo_dir / "openbb_platform"
+SUB_PACKAGES = ["platform/provider", "platform/core", "extensions", "providers"]
 
 CMD = [sys.executable, "-m", "poetry"]
 VERSION_BUMP_CMD = ["version", "prerelease"]
@@ -34,29 +21,12 @@ def run_cmds(directory: Path):
 
 def publish():
     """Publish the Platform to PyPi"""
-
-    # provider
-    run_cmds(provider_dir)
-
-    # core
-    run_cmds(core_dir)
-
-    # extensions
-    for extension in extensions:
-        if extension.name in ["__pycache__", "tests"]:
-            continue
-
-        run_cmds(extension)
-
-    # providers
-    for provider in providers:
-        if provider.name in ["__pycache__", "tests"]:
-            continue
-
-        run_cmds(provider)
+    for sub_path in SUB_PACKAGES:
+        for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
+            run_cmds(path.parent)
 
     # openbb
-    run_cmds(openbb_dir)
+    run_cmds(PLATFORM_PATH)
 
 
 if __name__ == "__main__":
