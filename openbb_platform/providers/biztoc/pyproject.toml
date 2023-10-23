@@ -16,4 +16,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_provider_extension"]
-cboe = "openbb_biztoc:biztoc_provider"
+biztoc = "openbb_biztoc:biztoc_provider"
