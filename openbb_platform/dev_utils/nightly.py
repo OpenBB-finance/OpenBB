@@ -1,9 +1,12 @@
 import subprocess
 import sys
+from pathlib import Path
 from typing import Any, Dict
 
 import toml
-from dev_utils.dev_install import PLATFORM_PATH, PYPROJECT
+
+PLATFORM_PATH = Path(__file__).parent.parent.resolve()
+PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
 SUB_PACKAGES = {}
 DEPENDENCIES: Dict[str, Any] = {}
