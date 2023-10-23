@@ -196,8 +196,6 @@ def get_frame(
 
     Facts where units are, "shares":
     WeightedAverageNumberOfDilutedSharesOutstanding
-
-    Refer to this page: https://www.xbrlsite.com/2015/fro/us-gaap/html/ReportFrames/fac_ModelStructure.html
     """
 
     if fact in ["WeightedAverageNumberOfDilutedSharesOutstanding"]:
