@@ -6,6 +6,7 @@ from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
 from openbb_sec.models.stock_search import SecStockSearchFetcher
+from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 
@@ -18,6 +19,15 @@ def vcr_config():
             None,
         ],
     }
+
+
+@pytest.mark.record_http
+def test_sec_symbol_map_fetcher(credentials=test_credentials):
+    params = {"query": "0000909832"}
+
+    fetcher = SecSymbolMapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

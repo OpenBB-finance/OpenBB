@@ -26,7 +26,6 @@ def test_regulators_sec_cik_map(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert hasattr(result.results, "cik")
-    assert hasattr(result.results, "symbol")
     assert isinstance(result.results.cik, str)
 
 
@@ -55,3 +54,19 @@ def test_regulators_sec_schema_files(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results.files) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"query": "0000909832"}),
+        ({"query": "0001067983"}),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_symbol_map(params, obb):
+    result = obb.regulators.sec.symbol_map(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert hasattr(result.results, "symbol")
+    assert isinstance(result.results.symbol, str)

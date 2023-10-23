@@ -115,6 +115,32 @@ def symbol_map(symbol: str, use_cache: bool = True) -> str:
     return str(cik_ + cik)
 
 
+def cik_map(cik: int) -> str:
+    """
+    Converts a CIK number to a ticker symbol.  Enter CIK as an integer with no leading zeros.
+
+    Function is not meant for funds.
+
+    Parameters
+    ----------
+    cik : int
+        The CIK number to convert to a ticker symbol.
+
+    Returns
+    -------
+    str: The ticker symbol associated with the CIK number.
+    """
+    _cik = str(cik)
+    symbol = ""
+    companies = get_all_companies().astype(str)
+    if _cik in companies["cik"].to_list():
+        symbol = companies[companies["cik"] == _cik]["symbol"].iloc[0]
+    else:
+        return f"Error: CIK, {cik}, does not have a unique ticker."
+
+    return symbol
+
+
 def catching_diff_url_formats(ftd_urls: list) -> list:
     """Catches if URL for SEC data is one of the few URLS that are not in the
     standard format. Catches are for either specific date ranges that have a different

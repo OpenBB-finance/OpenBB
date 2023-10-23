@@ -59,6 +59,20 @@ def schema_files(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="SymbolMap")
+def symbol_map(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Get the ticker symbol corresponding to a company's CIK. Enter the CIK as a string, e.g. '0001067983'.
+    This function is not intended for funds.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
 # @router.command(model="NPort")
 # def peers(
 #    cc: CommandContext,

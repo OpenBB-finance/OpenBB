@@ -6,6 +6,7 @@ from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
 from openbb_sec.models.stock_search import SecStockSearchFetcher
+from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
 sec_provider = Provider(
     name="sec",
@@ -15,10 +16,11 @@ sec_provider = Provider(
     fetcher_dict={
         "CikMap": SecCikMapFetcher,
         "CompanyFilings": SecCompanyFilingsFetcher,
+        "Filings": SecCompanyFilingsFetcher,
         "InstitutionsSearch": SecInstitutionsSearchFetcher,
         "SchemaFiles": SecSchemaFilesFetcher,
         "StockFTD": SecStockFtdFetcher,
         "StockSearch": SecStockSearchFetcher,
-        "Filings": SecCompanyFilingsFetcher,
+        "SymbolMap": SecSymbolMapFetcher,
     },
 )

@@ -42,7 +42,7 @@ class SecCikMapFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
-        results = {"symbol": query.symbol, "cik": symbol_map(query.symbol)}
+        results = {"cik": symbol_map(query.symbol)}
         if results == {}:
             return {"Error": "Symbol not found."}
         return results
