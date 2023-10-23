@@ -565,6 +565,19 @@ requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
 
 [[package]]
+name = "openbb-regulators"
+version = "0.1.0a3"
+description = "Markets and Agency Regulators extension for OpenBB"
+optional = false
+python-versions = "*"
+files = []
+develop = true
+
+[package.source]
+type = "directory"
+url = "../../extensions/regulators"
+
+[[package]]
 name = "pandas"
 version = "2.0.3"
 description = "Powerful data structures for data analysis, time series, and statistics"
@@ -1538,4 +1551,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "274597ace6fccff28ca22016cd4b3d63270416678ed68bccb80310a646b86788"
+content-hash = "ede48fbc29873aee99eaa4492bff755176eee42d0c513b4eedb932eadce8bc7c"
