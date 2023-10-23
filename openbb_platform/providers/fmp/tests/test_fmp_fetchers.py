@@ -47,7 +47,9 @@ from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")

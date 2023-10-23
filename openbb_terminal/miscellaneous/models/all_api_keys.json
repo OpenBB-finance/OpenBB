@@ -3,7 +3,7 @@
       "name": "API_ULTIMA_KEY",
       "source": "Ultima Insights",
       "link": "https://www.ultimainsights.ai/",
-      "markdown": "Go to: https://ultimainsights.ai/\n\n![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)\n\nClick on, \"Get Started\", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click \"Generate Key\"."
+      "markdown": "Go to: https://ultimainsights.ai/openbb\n\n![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)\n\nClick on, \"Get Started\", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click \"Generate Key\"."
     },
     {
       "name": "API_KEY_ALPHAVANTAGE",
