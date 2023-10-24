@@ -2,6 +2,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
+from dateutil import parser
 from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
@@ -91,15 +92,10 @@ class CPIQueryParams(QueryParams):
 class CPIData(Data):
     """CPI data."""
 
-    date: Optional[dateType] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("date")
-    )
-    value: Optional[float] = Field(default=None, description="CPI value on the date.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
 
-    @field_validator("value", mode="before")
+    @field_validator("date", mode="before")
     @classmethod
-    def value_validate(cls, v: str):  # pylint: disable=E0213
-        """Validate value."""
-        if v == ".":
-            return 0.0
-        return float(v)
+    def date_validate(cls, v):
+        """Validate date."""
+        return parser.isoparse(v)
