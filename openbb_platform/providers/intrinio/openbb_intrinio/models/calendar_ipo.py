@@ -42,15 +42,16 @@ class IntrinioCalendarIpoData(CalendarIpoData):
 
     status: Optional[IPO_STATUS] = Field(
         description="""
-        The status of the IPO. Upcoming IPOs have not taken place yet but are expected to. Priced IPOs have taken place.
-        Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
+            The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
+            Priced IPOs have taken place.
+            Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
         """,
         default=None,
     )
     exchange: Optional[str] = Field(
         description="""
-        The acronym of the stock exchange that the company is going to trade publicly on.
-        Typically NYSE or NASDAQ."
+            The acronym of the stock exchange that the company is going to trade publicly on.
+            Typically NYSE or NASDAQ.
         """,
         default=None,
     )
@@ -63,17 +64,17 @@ class IntrinioCalendarIpoData(CalendarIpoData):
     )
     share_price_lowest: Optional[float] = Field(
         description="""
-        The expected lowest price per share at which the IPO will be offered.
-        Before an IPO is priced, companies typically provide a range of prices per share at which
-        they expect to offer the IPO (typically available for upcoming IPOs).
+            The expected lowest price per share at which the IPO will be offered.
+            Before an IPO is priced, companies typically provide a range of prices per share at which
+            they expect to offer the IPO (typically available for upcoming IPOs).
         """,
         default=None,
     )
     share_price_highest: Optional[float] = Field(
         description="""
-        The expected highest price per share at which the IPO will be offered.
-        Before an IPO is priced, companies typically provide a range of prices per share at which
-        they expect to offer the IPO (typically available for upcoming IPOs).
+            The expected highest price per share at which the IPO will be offered.
+            Before an IPO is priced, companies typically provide a range of prices per share at which
+            they expect to offer the IPO (typically available for upcoming IPOs).
         """,
         default=None,
     )
@@ -111,7 +112,7 @@ class IntrinioCalendarIpoData(CalendarIpoData):
         default=None,
     )
     close_price: Optional[float] = Field(
-        description=" 	The closing price at the end of the first trading day (only available for priced IPOs).",
+        description="The closing price at the end of the first trading day (only available for priced IPOs).",
         default=None,
     )
     volume: Optional[int] = Field(
