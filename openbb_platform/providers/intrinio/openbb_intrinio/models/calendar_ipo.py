@@ -61,7 +61,7 @@ class IntrinioCalendarIpoData(CalendarIpoData):
     share_price: Optional[float] = Field(
         description="The price per share at which the IPO was offered.", default=None
     )
-    share_price_lower: Optional[float] = Field(
+    share_price_lowest: Optional[float] = Field(
         description="""
         The expected lowest price per share at which the IPO will be offered.
         Before an IPO is priced, companies typically provide a range of prices per share at which
