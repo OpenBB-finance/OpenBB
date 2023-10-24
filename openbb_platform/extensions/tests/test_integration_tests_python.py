@@ -4,6 +4,7 @@ from openbb_core.app.charting_service import ChartingService
 from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
+    check_wrong_integration_test_params,
     get_integration_tests,
     get_module_functions,
 )
@@ -28,9 +29,13 @@ def test_python_interface_integration_test_params() -> None:
     run_test("python", check_missing_integration_test_params)
 
 
+def test_python_interface_wrong_integration_test_params() -> None:
+    """Test if there are any wrong params for integration tests."""
+    run_test("python", check_wrong_integration_test_params)
+
+
 def test_charting_extension_function_coverage() -> None:
     """Test if all charting extension functions are covered by integration tests."""
-
     functions = ChartingService.get_implemented_charting_functions()
     test_names = [f"test_chart_{func}" for func in functions]
     integration_tests_modules = get_integration_tests(
