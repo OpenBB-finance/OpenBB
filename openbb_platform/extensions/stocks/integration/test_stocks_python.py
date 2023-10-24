@@ -896,3 +896,29 @@ def test_stocks_info(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, obb):
+    result = obb.stocks.calendar_ipo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

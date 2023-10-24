@@ -97,3 +97,14 @@ def info(
 ) -> OBBject[BaseModel]:
     """Stock Info. Get general price and performance metrics of a stock."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CalendarIpo")
+def calendar_ipo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical IPO Calendar."""
+    return OBBject(results=Query(**locals()).execute())
