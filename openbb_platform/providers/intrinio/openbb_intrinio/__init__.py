@@ -23,11 +23,11 @@ intrinio_provider = Provider(
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CashFlowStatement": IntrinioCashFlowStatementFetcher,
+        "CalendarIpo": IntrinioCalendarIpoFetcher,
         "ForexPairs": IntrinioForexPairsFetcher,
         "FredHistorical": IntrinioFredHistoricalFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
-        "CalendarIpo": IntrinioCalendarIpoFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "StockHistorical": IntrinioStockHistoricalFetcher,
         "StockNews": IntrinioStockNewsFetcher,
