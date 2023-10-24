@@ -20,7 +20,9 @@ from openbb_cboe.models.stock_info import CboeStockInfoFetcher
 from openbb_cboe.models.stock_search import CboeStockSearchFetcher
 from openbb_core.app.service.user_service import UserService
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")

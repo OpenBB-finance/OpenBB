@@ -14,7 +14,9 @@ from openbb_polygon.models.major_indices_historical import (
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
