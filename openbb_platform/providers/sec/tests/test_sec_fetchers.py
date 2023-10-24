@@ -5,6 +5,7 @@ from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
+from openbb_sec.models.sic_search import SecSicSearchFetcher
 from openbb_sec.models.stock_ftd import SecStockFtdFetcher
 from openbb_sec.models.stock_search import SecStockSearchFetcher
 from openbb_sec.models.symbol_map import SecSymbolMapFetcher
@@ -20,6 +21,15 @@ def vcr_config():
             None,
         ],
     }
+
+
+@pytest.mark.record_http
+def test_sec_sic_search_fetcher(credentials=test_credentials):
+    params = {"query": "oil", "use_cache": False}
+
+    fetcher = SecSicSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

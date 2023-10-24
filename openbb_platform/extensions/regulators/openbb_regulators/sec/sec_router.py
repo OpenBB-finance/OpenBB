@@ -87,6 +87,17 @@ def rss_litigation(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="SicSearch")
+def sic_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fuzzy search for Industry Titles, Reporting Office, and SIC Codes."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 # @router.command(model="NPort")
 # def peers(
 #    cc: CommandContext,

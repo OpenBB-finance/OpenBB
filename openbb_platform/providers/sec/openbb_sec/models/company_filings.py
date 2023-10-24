@@ -147,6 +147,8 @@ class SecCompanyFilingsFetcher(
                 return []
         if query.cik is None:
             return []
+
+        # The leading 0s need to be inserted but are typically removed from the data to store as an integer.
         if len(query.cik) != 10:
             cik_: str = ""
             temp = 10 - len(query.cik)
@@ -195,7 +197,12 @@ class SecCompanyFilingsFetcher(
             "isXBRL",
             "size",
         ]
-        filings = pd.DataFrame(filings, columns=cols).fillna(value="N/A").astype(str)
+        filings = (
+            pd.DataFrame(filings, columns=cols)
+            .fillna(value="N/A")
+            .replace("N/A", None)
+            .astype(str)
+        )
         filings = filings.sort_values(by=["reportDate", "filingDate"], ascending=False)
         base_url = f"https://www.sec.gov/Archives/edgar/data/{query.cik}/"
         filings["primaryDocumentUrl"] = (
@@ -216,7 +223,7 @@ class SecCompanyFilingsFetcher(
         if "limit" in query.model_dump():
             filings = filings.head(query.limit) if query.limit != 0 else filings
 
-        return filings.replace("N/A", None).replace("", None).to_dict("records")
+        return filings.to_dict("records")
 
     @staticmethod
     def transform_data(data: List[Dict], **kwargs: Any) -> List[SecCompanyFilingsData]:

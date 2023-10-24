@@ -82,3 +82,15 @@ def test_regulators_sec_rss_litigation(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"query": "oil", "use_cache": False})],
+)
+@pytest.mark.integration
+def test_regulators_sec_sic_search(params, obb):
+    result = obb.regulators.sec.sic_search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
