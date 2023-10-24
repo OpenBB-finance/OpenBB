@@ -826,16 +826,16 @@ Click on, "Open Account", to start the sign-up process. After the account has be
 
 ### Ultima Insights
 
-> Ultima Insights' News Monitor is a platform that harnesses the power of GPT + LLMs to help deliver better, more relevant news to investors. We help find the news & tell you why it's important before it's on the front page of Bloomberg.
+> Ultima Insights offers tools such as the SEC Filing Analyst, Company news monitoring, Industry event watch, and Earnings Call Roundup for comprehensive investment monitoring. It incorporates daily Wall Street-level Qualitative analysis into OpenBB to keep users updated. The News curation system, powered by GPT + LLMs technology, presents relevant news to investors, often before it appears on platforms like Bloomberg. Ultima aims to provide timely and significant information for its users.
 
 <details>
 <summary>Instructions</summary>
 
-Go to: https://ultimainsights.ai/
+Go to: https://ultimainsights.ai/openbb
 
 ![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)
 
-Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
+Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://ultimainsights.ai/openbb) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
 
 ```console
 /keys/ultima REPLACE_WITH_KEY
