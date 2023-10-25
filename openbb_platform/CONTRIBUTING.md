@@ -10,8 +10,6 @@
         - [Standard Data Example](#standard-data-example)
       - [What is an extension?](#what-is-an-extension)
         - [Types of extensions](#types-of-extensions)
-  - [Contributor Guidelines](#contributor-guidelines)
-    - [What is Expected from a Contribution?](#what-is-expected-from-a-contribution)
   - [Developer Guidelines](#developer-guidelines)
     - [What is Expected from a Developer?](#what-is-expected-from-a-developer)
     - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
@@ -22,17 +20,19 @@
         - [Create Data Output model](#create-data-output-model)
         - [Build the Fetcher](#build-the-fetcher)
       - [Make the provider visible](#make-the-provider-visible)
-    - [How to add custom data source?](#how-to-add-custom-data-source)
+    - [How to add custom data sources?](#how-to-add-custom-data-sources)
       - [OpenBB Platform commands](#openbb-platform-commands)
-    - [QA your extension](#qa-your-extension)
-      - [Unit tests](#unit-tests)
-      - [Integration tests](#integration-tests)
-      - [Import time](#import-time)
     - [Sharing your extension](#sharing-your-extension)
       - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
         - [Setup](#setup)
         - [Release](#release)
         - [Publish](#publish)
+  - [Contributor Guidelines](#contributor-guidelines)
+    - [What is Expected from a Contribution?](#what-is-expected-from-a-contribution)
+    - [Quality Assurance](#quality-assurance)
+      - [Unit tests](#unit-tests)
+      - [Integration tests](#integration-tests)
+      - [Import time](#import-time)
 - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
   - [Manage environment and dependencies](#manage-environment-and-dependencies)
   - [Manage extensions](#manage-extensions)
@@ -167,23 +167,11 @@ If your extension is of high quality and you think that it would be a good commu
 
 We encourage independent extensions to be shared with the community by publishing them to PyPI.
 
-## Contributor Guidelines
-
-### What is Expected from a Contribution?
-
-- **Code Quality**: Ensure that your code, whether for core functionalities or extensions, is clean, efficient, and adheres to the OpenBB Platform's standards. Properly comment your code to make it understandable to other contributors.
-
-- **Documentation**: When adding new features or making changes, especially to extensions, ensure they are accompanied by comprehensive documentation. This helps in maintaining the consistency and clarity of the OpenBB Platform.
-
-- **Testing**: Before submitting any contribution, test thoroughly to ensure you're not introducing regressions or new bugs. This applies to both core functionalities and extensions.
-
-- **Commit Messages**: Use clear and concise commit messages that provide a brief description of the changes. This aids in the understanding and tracking of project history.
-
 ## Developer Guidelines
 
 ### What is Expected from a Developer?
 
-- **Core Contributions**: Developers play a crucial role in enhancing the core functionalities of the OpenBB Platform. Your contributions should prioritize stability, scalability, and compatibility with various extensions.
+- **Core Contributions**: Developers play a crucial role in enhancing existing functionalities and adding new ones to the OpenBB Platform. Your contributions should prioritize stability, scalability, and compatibility with various extensions.
 
 - **Documentation**: While feature documentation is essential, developers are also responsible for maintaining architectural and design documentation. This ensures that the foundational aspects of the OpenBB Platform are well-understood by all contributors.
 
@@ -343,7 +331,7 @@ If the provider does not require any credentials, you can remove that parameter.
 
 After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
 
-### How to add custom data source?
+### How to add custom data sources?
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
@@ -413,9 +401,68 @@ Let's break it down:
 
 You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
 
-### QA your extension
+### Sharing your extension
 
-We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
+We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
+
+#### Publish your extension to PyPI
+
+To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
+
+##### Setup
+
+Create an account and get an API token from <https://pypi.org/manage/account/token/>
+Store the token with
+
+```bash
+poetry config pypi-token.pypi pypi-YYYYYYYY
+```
+
+##### Release
+
+`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
+
+```bash
+poetry build
+```
+
+This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
+
+If you want to test your package locally you can do it with
+
+```bash
+pip install dist/openbb_[FILE_NAME].whl
+```
+
+##### Publish
+
+To publish your package to PyPI run:
+
+```bash
+poetry publish
+```
+
+Now, you can pip install your package from PyPI with:
+
+```bash
+pip install openbb-some_ext
+```
+
+## Contributor Guidelines
+
+### What is Expected from a Contribution?
+
+- **Code Quality**: Ensure that your code, whether for core functionalities or extensions, is clean, efficient, and adheres to the OpenBB Platform's standards. Properly comment your code to make it understandable to other contributors.
+
+- **Documentation**: When adding new features or making changes, especially to extensions, ensure they are accompanied by comprehensive documentation. This helps in maintaining the consistency and clarity of the OpenBB Platform.
+
+- **Testing**: Before submitting any contribution, test thoroughly to ensure you're not introducing regressions or new bugs. This applies to both core functionalities and extensions.
+
+- **Commit Messages**: Use clear and concise commit messages that provide a brief description of the changes. This aids in the understanding and tracking of project history.
+
+### Quality Assurance
+
+We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 
 Primarily, we have tools that semi-automate the creation of unit and integration tests.
 
@@ -501,53 +548,6 @@ following commands from `openbb_platform` directory:
 pip install tuna
 python -X importtime openbb/__init__.py 2> import.log
 tuna import.log
-```
-
-### Sharing your extension
-
-We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
-
-#### Publish your extension to PyPI
-
-To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
-
-##### Setup
-
-Create an account and get an API token from <https://pypi.org/manage/account/token/>
-Store the token with
-
-```bash
-poetry config pypi-token.pypi pypi-YYYYYYYY
-```
-
-##### Release
-
-`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
-
-```bash
-poetry build
-```
-
-This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
-
-If you want to test your package locally you can do it with
-
-```bash
-pip install dist/openbb_[FILE_NAME].whl
-```
-
-##### Publish
-
-To publish your package to PyPI run:
-
-```bash
-poetry publish
-```
-
-Now, you can pip install your package from PyPI with:
-
-```bash
-pip install openbb-some_ext
 ```
 
 # How to contribute to the OpenBB Platform?
