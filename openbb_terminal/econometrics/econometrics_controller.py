@@ -491,7 +491,9 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
-                    sheet_name=" ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
         console.print()
