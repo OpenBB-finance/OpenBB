@@ -48,14 +48,14 @@ def test_standard_models(standard_model):
             if name in QUERY_DESCRIPTIONS:
                 assert QUERY_DESCRIPTIONS[name] in field.description, (
                     f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
-                    f"Please modify or change the field name to a non-reserved name."
+                    f"Please modify the description or change the field name to a non-reserved name."
                     f"To get a full list of reserved descriptions, navigate to openbb_provider.utils.descriptions.py"
                     f"You can also add extra information to the existing reserved field description in your model."
                 )
         elif name in DATA_DESCRIPTIONS:
             assert DATA_DESCRIPTIONS[name] in field.description, (
                 f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
-                f"Please modify or change the field name to a non-reserved name."
+                f"Please modify the description or change the field name to a non-reserved name."
                 f"To get a full list of reserved descriptions, navigate to openbb_provider.utils.descriptions.py"
                 f"You can also add extra information to the existing reserved field description in your model."
             )
