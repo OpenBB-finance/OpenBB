@@ -67,10 +67,9 @@ jobs:
             pip uninstall -y openbb_provider
             cd openbb_platform/platform/core
             pip install -U .
-            cd -
-            cd openbb_platform/platform/provider
+            cd ../provider/
             pip install -U .
-            cd -
+            cd ../../../
             pip install -U pydantic
 
       - name: Populate System Setting Files
@@ -103,8 +102,8 @@ jobs:
           pip list
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
-      - name: Wait for 10 seconds
-        run: sleep 30
+      - name: Wait for 42 seconds
+        run: sleep 42
 
       - name: Run API Integration Tests
         run: |
