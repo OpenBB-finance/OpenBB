@@ -14,18 +14,18 @@
     - [What is Expected of a Contribution?](#what-is-expected-of-a-contribution)
   - [Developer Guidelines](#developer-guidelines)
     - [What is Expected from a Developer?](#what-is-expected-from-a-developer)
-- [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
-  - [Add a custom data source](#add-a-custom-data-source)
-    - [OpenBB Platform commands](#openbb-platform-commands)
-  - [QA your extension](#qa-your-extension)
-    - [Unit tests](#unit-tests)
-    - [Integration tests](#integration-tests)
-    - [Import time](#import-time)
-  - [Sharing your extension](#sharing-your-extension)
-    - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
-      - [Setup](#setup)
-      - [Release](#release)
-      - [Publish](#publish)
+    - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
+    - [Add a custom data source](#add-a-custom-data-source)
+      - [OpenBB Platform commands](#openbb-platform-commands)
+    - [QA your extension](#qa-your-extension)
+      - [Unit tests](#unit-tests)
+      - [Integration tests](#integration-tests)
+      - [Import time](#import-time)
+    - [Sharing your extension](#sharing-your-extension)
+      - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
+        - [Setup](#setup)
+        - [Release](#release)
+        - [Publish](#publish)
 - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
   - [Manage environment and dependencies](#manage-environment-and-dependencies)
   - [Add a new data point](#add-a-new-data-point)
@@ -195,7 +195,7 @@ We encourage independent extensions to be shared with the community by publishin
 
 - **Collaboration**: Work closely with both contributors and other developers. Engage in discussions, code reviews, and planning sessions to ensure the OpenBB Platform's technical vision is consistently maintained.
 
-# How to build OpenBB extensions?
+### How to build OpenBB extensions?
 
 We have a Cookiecutter template that will help you get started. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
 
@@ -212,7 +212,7 @@ The high level steps are:
 - QA your extension
 - Share your extension with the community
 
-## Add a custom data source
+### Add a custom data source
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
@@ -244,7 +244,7 @@ Any command, that uses the `Fetcher` class you've just defined, will be calling 
 
 If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
 
-### OpenBB Platform commands
+#### OpenBB Platform commands
 
 The OpenBB Platform will enable you to query and output your data in a very simple way.
 
@@ -282,7 +282,7 @@ Let's break it down:
 
 You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
 
-## QA your extension
+### QA your extension
 
 We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 
@@ -290,7 +290,7 @@ Primarily, we have tools that semi-automate the creation of unit and integration
 
 > The QA tools are still in development and we are constantly improving them.
 
-### Unit tests
+#### Unit tests
 
 Each `Fetcher` comes equipped with a `test` method that will ensure that it is implemented correctly and that it is returning the expected data. It also ensures that all types are correct and that the data is valid.
 
@@ -313,7 +313,7 @@ pytest <path_to_the_unit_test_file> --record=all
 
 > Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 
-### Integration tests
+#### Integration tests
 
 The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface. For this, we have two scripts that will help you generate the integration tests.
 
@@ -357,7 +357,7 @@ pytest openbb_platform -m integration
 pytest openbb_platform
 ```
 
-### Import time
+#### Import time
 
 We aim to have a short import time for the package. To measure that we use `tuna`.
 
@@ -372,15 +372,15 @@ python -X importtime openbb/__init__.py 2> import.log
 tuna import.log
 ```
 
-## Sharing your extension
+### Sharing your extension
 
 We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
 
-### Publish your extension to PyPI
+#### Publish your extension to PyPI
 
 To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
 
-#### Setup
+##### Setup
 
 Create an account and get an API token from <https://pypi.org/manage/account/token/>
 Store the token with
@@ -389,7 +389,7 @@ Store the token with
 poetry config pypi-token.pypi pypi-YYYYYYYY
 ```
 
-#### Release
+##### Release
 
 `cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
 
@@ -405,7 +405,7 @@ If you want to test your package locally you can do it with
 pip install dist/openbb_[FILE_NAME].whl
 ```
 
-#### Publish
+##### Publish
 
 To publish your package to PyPI run:
 
