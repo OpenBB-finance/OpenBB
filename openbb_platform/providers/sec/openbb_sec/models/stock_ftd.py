@@ -69,12 +69,11 @@ class SecStockFtdFetcher(
             )
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(lambda url: results.extend(download_zip_file(url)), urls)
+            executor.map(
+                lambda url: results.extend(download_zip_file(url, symbol)), urls
+            )
 
         results = sorted(results, key=lambda d: d["date"], reverse=True)
-
-        if symbol:
-            results = [d for d in results if "symbol" in d and d["symbol"] == symbol]
 
         return results
 

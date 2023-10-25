@@ -1,7 +1,8 @@
 """SEC Helpers module"""
 
 from datetime import timedelta
-from io import BytesIO
+from io import BytesIO, StringIO
+from zipfile import ZipFile
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -242,13 +243,26 @@ def get_schema_filelist(query: str = "", url: str = "") -> List:
     return results
 
 
-def download_zip_file(url) -> List[Dict]:
+def download_zip_file(url, symbol: Optional[str] = None) -> List[Dict]:
     """Download a list of files from URLs."""
     results = pd.DataFrame()
     r = sec_session_frames.get(url, timeout=5, headers=HEADERS)
     if r.status_code == 200:
-        data = pd.read_csv(BytesIO(r.content), compression="zip", sep="|")
-        results = data.iloc[:-2]
+        try:
+            data = pd.read_csv(BytesIO(r.content), compression="zip", sep="|")
+            results = data.iloc[:-2]
+        except ValueError:
+            zip_file = ZipFile(BytesIO(r.content))
+            file_list = [d.filename for d in zip_file.infolist()]
+            for item in file_list:
+                _file = pd.read_csv(
+                    zip_file.open(item),
+                    encoding="ISO-8859-1",
+                    sep="|",
+                    low_memory=False,
+                    on_bad_lines="skip",
+                )
+                results = pd.concat([results, _file.iloc[:-2]])
         if "SETTLEMENT DATE" in results.columns:
             results = results.rename(
                 columns={
@@ -260,9 +274,17 @@ def download_zip_file(url) -> List[Dict]:
                     "DESCRIPTION": "description",
                 }
             )
-            results["date"] = pd.to_datetime(results["date"])
+            if symbol is not None:
+                results = results[results["symbol"] == symbol]
+            results["date"] = pd.to_datetime(results["date"], format="%Y%m%d").dt.date
+            results["price"] = results["price"].mask(
+                results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True)
+                == False,  # noqa
+                None,
+            )
+            results["price"] = results["price"].astype(float)
 
-    return results.to_dict("records")
+    return results.reset_index(drop=True).to_dict("records")
 
 
 def get_ftd_urls() -> Dict:
