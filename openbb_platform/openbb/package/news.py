@@ -1,14 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Union
-
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_news(Container):
@@ -28,7 +41,7 @@ class ROUTER_news(Container):
                 description="The number of data entries to return. Here its the no. of articles to return."
             ),
         ] = 20,
-        provider: Union[Literal["benzinga", "fmp", "intrinio"], None] = None,
+        provider: Union[Literal["benzinga", "biztoc", "fmp", "intrinio"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Global News. Global news data.
@@ -37,7 +50,7 @@ class ROUTER_news(Container):
         ----------
         limit : int
             The number of data entries to return. Here its the no. of articles to return.
-        provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
+        provider : Union[Literal['benzinga', 'biztoc', 'fmp', 'intrinio'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -69,13 +82,21 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[Union[str]]
             Content types of the news to retrieve. (provider: benzinga)
+        filter : Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag']
+            Filter by type of news. (provider: biztoc)
+        source : str
+            Filter by a specific publisher. Only valid when filter is set to source. (provider: biztoc)
+        tag : Optional[Union[str]]
+            Tag, topic, to filter articles by. Only valid when filter is set to tag. (provider: biztoc)
+        term : Optional[Union[str]]
+            Search term to filter articles by. This overrides all other filters. (provider: biztoc)
 
         Returns
         -------
         OBBject
             results : Union[List[GlobalNews]]
                 Serializable results.
-            provider : Union[Literal['benzinga', 'fmp', 'intrinio'], None]
+            provider : Union[Literal['benzinga', 'biztoc', 'fmp', 'intrinio'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -97,7 +118,7 @@ class ROUTER_news(Container):
         url : Optional[Union[str]]
             URL of the news.
         id : Optional[Union[str]]
-            ID of the news. (provider: benzinga); Article ID. (provider: intrinio)
+            ID of the news. (provider: benzinga); Unique Article ID. (provider: biztoc); Article ID. (provider: intrinio)
         author : Optional[Union[str]]
             Author of the news. (provider: benzinga)
         teaser : Optional[Union[str]]
@@ -106,10 +127,14 @@ class ROUTER_news(Container):
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[Union[str]]
             Stocks associated with the news. (provider: benzinga)
-        tags : Optional[Union[str]]
-            Tags associated with the news. (provider: benzinga)
+        tags : Optional[Union[str, List[str]]]
+            Tags associated with the news. (provider: benzinga); Tags for the article. (provider: biztoc)
         updated : Optional[Union[datetime]]
             None
+        favicon : Optional[Union[str]]
+            Icon image for the source of the article. (provider: biztoc)
+        score : Optional[Union[float]]
+            Search relevance score for the article. (provider: biztoc)
         site : Optional[Union[str]]
             Site of the news. (provider: fmp)
         company : Optional[Union[Dict[str, Any]]]
