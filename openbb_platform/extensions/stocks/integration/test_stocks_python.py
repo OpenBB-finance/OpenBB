@@ -364,9 +364,7 @@ def test_stocks_fa_income_growth(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "transactionType": ["P-Purchase"],
-                "reportingCik": 1,
-                "companyCik": 1,
+                "transactionType": "P-Purchase",
                 "page": 1,
             }
         ),
