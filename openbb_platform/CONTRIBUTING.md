@@ -2,20 +2,27 @@
 # Contributing to the OpenBB Platform
 
 - [Contributing to the OpenBB Platform](#contributing-to-the-openbb-platform)
-- [Introduction](#introduction)
-  - [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
-    - [What is the Standardization Framework?](#what-is-the-standardization-framework)
-      - [Standardization Caveats](#standardization-caveats)
-      - [Standard QueryParams Example](#standard-queryparams-example)
-      - [Standard Data Example](#standard-data-example)
-    - [What is an extension?](#what-is-an-extension)
-      - [Types of extensions](#types-of-extensions)
+  - [Introduction](#introduction)
+    - [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
+      - [What is the Standardization Framework?](#what-is-the-standardization-framework)
+        - [Standardization Caveats](#standardization-caveats)
+        - [Standard QueryParams Example](#standard-queryparams-example)
+        - [Standard Data Example](#standard-data-example)
+      - [What is an extension?](#what-is-an-extension)
+        - [Types of extensions](#types-of-extensions)
   - [Contributor Guidelines](#contributor-guidelines)
-    - [What is Expected of a Contribution?](#what-is-expected-of-a-contribution)
+    - [What is Expected from a Contribution?](#what-is-expected-from-a-contribution)
   - [Developer Guidelines](#developer-guidelines)
     - [What is Expected from a Developer?](#what-is-expected-from-a-developer)
     - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
-    - [Add a custom data source](#add-a-custom-data-source)
+    - [How to add a new data point?](#how-to-add-a-new-data-point)
+      - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
+      - [Check if the standard model exists](#check-if-the-standard-model-exists)
+        - [Create Query Parameters model](#create-query-parameters-model)
+        - [Create Data Output model](#create-data-output-model)
+        - [Build the Fetcher](#build-the-fetcher)
+      - [Make the provider visible](#make-the-provider-visible)
+    - [How to add custom data source?](#how-to-add-custom-data-source)
       - [OpenBB Platform commands](#openbb-platform-commands)
     - [QA your extension](#qa-your-extension)
       - [Unit tests](#unit-tests)
@@ -28,27 +35,20 @@
         - [Publish](#publish)
 - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
   - [Manage environment and dependencies](#manage-environment-and-dependencies)
-  - [Add a new data point](#add-a-new-data-point)
-    - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
-      - [Check if the standard model exists](#check-if-the-standard-model-exists)
-      - [Create Query Parameters model](#create-query-parameters-model)
-      - [Create Data Output model](#create-data-output-model)
-      - [Build the Fetcher](#build-the-fetcher)
-    - [Make the provider visible](#make-the-provider-visible)
   - [Manage extensions](#manage-extensions)
     - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
   - [How to create a PR?](#how-to-create-a-pr)
     - [Install pre-commit hooks](#install-pre-commit-hooks)
     - [Branch Naming Conventions](#branch-naming-conventions)
 
-# Introduction
+## Introduction
 
 This document provides guidelines for contributing to the OpenBB Platform. We differentiate between two types of contributors:
 
 1. **Developers**: Those who are building new features or extensions for the OpenBB Platform.
 2. **Contributors**: Those who contribute to the existing codebase, such as fixing bugs or improving documentation.
 
-## Quick look into the OpenBB Platform
+### Quick look into the OpenBB Platform
 
 The OpenBB Platform is built by the Open-Source community and is characterized by its core and extensions. The core handles data integration and standardization, while the extensions enable customization and advanced functionalities. The OpenBB Platform is designed to be used both from a Python interface and a REST API.
 
@@ -90,7 +90,7 @@ Before moving forward, please take a look at the high-level view of the OpenBB P
   <img alt="OpenBB Platform High-Level Architecture" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
 </picture>
 
-### What is the Standardization Framework?
+#### What is the Standardization Framework?
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
@@ -108,7 +108,7 @@ The standard models are defined under the `/OpenBBTerminal/openbb_platform/platf
 
 They define the [`QueryParams`](platform/provider/openbb_provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
-#### Standardization Caveats
+##### Standardization Caveats
 
 The standardization framework is a very powerful tool, but it has some caveats that you should be aware of:
 
@@ -116,7 +116,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 - When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them. (e.g. `o` -> `open`)
 - The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the OpenBB Platform.
 
-#### Standard QueryParams Example
+##### Standard QueryParams Example
 
 ```python
 class StockHistoricalQueryParams(QueryParams):
@@ -134,7 +134,7 @@ The `QueryParams` is an abstract class that just tells us that we are dealing wi
 
 The OpenBB Platform dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
 
-#### Standard Data Example
+##### Standard Data Example
 
 ```python
 class StockHistoricalData(Data):
@@ -151,11 +151,11 @@ class StockHistoricalData(Data):
 
 The `Data` class is an abstract class that tells us the expected output data. Here we can see a `vwap` field that is `Optional`. This is because not all providers share this field while it is shared between two or more providers.
 
-### What is an extension?
+#### What is an extension?
 
 An extension adds functionality to the OpenBB Platform. It can be a new data source, a new command, a new visualization, etc.
 
-#### Types of extensions
+##### Types of extensions
 
 We primarily have 3 types of extensions:
 
@@ -169,7 +169,7 @@ We encourage independent extensions to be shared with the community by publishin
 
 ## Contributor Guidelines
 
-### What is Expected of a Contribution?
+### What is Expected from a Contribution?
 
 - **Code Quality**: Ensure that your code, whether for core functionalities or extensions, is clean, efficient, and adheres to the OpenBB Platform's standards. Properly comment your code to make it understandable to other contributors.
 
@@ -212,7 +212,138 @@ The high level steps are:
 - QA your extension
 - Share your extension with the community
 
-### Add a custom data source
+### How to add a new data point?
+
+In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_provider/standard_models) model.
+
+#### Identify which type of data you want to add
+
+In this example, we'll be adding OHLC stock data that is used by the `obb.stocks.load` command.
+
+Note that, if no command exists for your data, we need to add one under the right router.
+Each router is categorized under different extensions (stocks, forex, crypto, etc.).
+
+#### Check if the standard model exists
+
+Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
+
+In this case, it's `StockHistorical` which can be found inside the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
+
+If the standard model doesn't exist:
+
+- you won't need to inherit from it in the next steps.
+- all your provider query parameters will be under the `**kwargs` in the python interface.
+- it might not work out-of-the box with other extensions that follow standardization e.g. the `charting` extension
+
+##### Create Query Parameters model
+
+Query Parameters are the parameters that are passed to the API endpoint in order to make the request.
+
+For the `StockHistorical` example, this would look like the following:
+
+```python
+
+class <ProviderName>StockHistoricalQueryParams(StockHistoricalQueryParams):
+    """<ProviderName> Stock Historical Query.
+
+    Source: https://www.<provider_name>.co/documentation/
+    """
+
+    # provider specific query parameters if any
+
+```
+
+##### Create Data Output model
+
+The data output is the data that is returned by the API endpoint.
+For the `StockHistorical` example, this would look like the following:
+
+```python
+
+class <ProviderName>StockHistoricalData(StockHistoricalData):
+    """<ProviderName> Stock End of Day Data.
+
+    Source: https://www.<provider_name>.co/documentation/
+    """
+
+    # provider specific data output fields if any
+
+```
+
+> Note that, since `StockHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
+
+##### Build the Fetcher
+
+The `Fetcher` class is responsible for making the request to the API endpoint and providing the output.
+
+It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
+
+For the `StockHistorical` example, this would look like the following:
+
+```python
+class <ProviderName>StockHistoricalFetcher(
+    Fetcher[
+        <ProviderName>StockHistoricalQueryParams,
+        List[<ProviderName>StockHistoricalData],
+    ]
+):
+    """Transform the query, extract and transform the data."""
+
+    @staticmethod
+    def transform_query(params: Dict[str, Any]) -> <ProviderName>StockHistoricalQueryParams:
+        """Transform the query parameters."""
+
+        return <ProviderName>StockHistoricalQueryParams(**transformed_params)
+
+    @staticmethod
+    def extract_data(
+        query: <ProviderName>StockHistoricalQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> dict:
+        """Return the raw data from the endpoint."""
+
+        obtained_data = my_request(query, credentials, **kwargs)
+
+        return obtained_data
+
+    @staticmethod
+    def transform_data(
+        data: dict,
+    ) -> List[<ProviderName>StockHistoricalData]:
+        """Transform the data to the standard format."""
+
+        return [<ProviderName>StockHistoricalData.model_validate(d) for d in data]
+```
+
+> Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**.
+
+#### Make the provider visible
+
+In order to make the new provider visible to the OpenBB Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
+
+```python
+"""<Provider Name> Provider module."""
+from openbb_provider.abstract.provider import Provider
+
+from openbb_<provider_name>.models.stock_eod import <ProviderName>StockHistoricalFetcher
+
+<provider_name>_provider = Provider(
+    name="<provider_name>",
+    website="<URL to the provider website>",
+    description="Provider description goes here",
+    required_credentials=["api_key"],
+    fetcher_dict={
+        "StockHistorical": <ProviderName>StockHistoricalFetcher,
+    },
+)
+```
+
+If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `required_credentials` list.
+
+After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
+
+### How to add custom data source?
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
@@ -480,137 +611,6 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
   ```
 
   > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
-
-## Add a new data point
-
-In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_provider/standard_models) model.
-
-### Identify which type of data you want to add
-
-In this example, we'll be adding OHLC stock data that is used by the `obb.stocks.load` command.
-
-Note that, if no command exists for your data, we need to add one under the right router.
-Each router is categorized under different extensions (stocks, forex, crypto, etc.).
-
-#### Check if the standard model exists
-
-Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
-
-In this case, it's `StockHistorical` which can be found inside the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
-
-If the standard model doesn't exist:
-
-- you won't need to inherit from it in the next steps.
-- all your provider query parameters will be under the `**kwargs` in the python interface.
-- it might not work out-of-the box with other extensions that follow standardization e.g. the `charting` extension
-
-#### Create Query Parameters model
-
-Query Parameters are the parameters that are passed to the API endpoint in order to make the request.
-
-For the `StockHistorical` example, this would look like the following:
-
-```python
-
-class <ProviderName>StockHistoricalQueryParams(StockHistoricalQueryParams):
-    """<ProviderName> Stock Historical Query.
-
-    Source: https://www.<provider_name>.co/documentation/
-    """
-
-    # provider specific query parameters if any
-
-```
-
-#### Create Data Output model
-
-The data output is the data that is returned by the API endpoint.
-For the `StockHistorical` example, this would look like the following:
-
-```python
-
-class <ProviderName>StockHistoricalData(StockHistoricalData):
-    """<ProviderName> Stock End of Day Data.
-
-    Source: https://www.<provider_name>.co/documentation/
-    """
-
-    # provider specific data output fields if any
-
-```
-
-> Note that, since `StockHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
-
-#### Build the Fetcher
-
-The `Fetcher` class is responsible for making the request to the API endpoint and providing the output.
-
-It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
-
-For the `StockHistorical` example, this would look like the following:
-
-```python
-class <ProviderName>StockHistoricalFetcher(
-    Fetcher[
-        <ProviderName>StockHistoricalQueryParams,
-        List[<ProviderName>StockHistoricalData],
-    ]
-):
-    """Transform the query, extract and transform the data."""
-
-    @staticmethod
-    def transform_query(params: Dict[str, Any]) -> <ProviderName>StockHistoricalQueryParams:
-        """Transform the query parameters."""
-
-        return <ProviderName>StockHistoricalQueryParams(**transformed_params)
-
-    @staticmethod
-    def extract_data(
-        query: <ProviderName>StockHistoricalQueryParams,
-        credentials: Optional[Dict[str, str]],
-        **kwargs: Any,
-    ) -> dict:
-        """Return the raw data from the endpoint."""
-
-        obtained_data = my_request(query, credentials, **kwargs)
-
-        return obtained_data
-
-    @staticmethod
-    def transform_data(
-        data: dict,
-    ) -> List[<ProviderName>StockHistoricalData]:
-        """Transform the data to the standard format."""
-
-        return [<ProviderName>StockHistoricalData.model_validate(d) for d in data]
-```
-
-> Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**.
-
-### Make the provider visible
-
-In order to make the new provider visible to the OpenBB Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
-
-```python
-"""<Provider Name> Provider module."""
-from openbb_provider.abstract.provider import Provider
-
-from openbb_<provider_name>.models.stock_eod import <ProviderName>StockHistoricalFetcher
-
-<provider_name>_provider = Provider(
-    name="<provider_name>",
-    website="<URL to the provider website>",
-    description="Provider description goes here",
-    required_credentials=["api_key"],
-    fetcher_dict={
-        "StockHistorical": <ProviderName>StockHistoricalFetcher,
-    },
-)
-```
-
-If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `required_credentials` list.
-
-After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
 
 ## Manage extensions
 
