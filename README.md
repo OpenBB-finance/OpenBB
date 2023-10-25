@@ -12,32 +12,35 @@
   <img src="https://github.com/codespaces/badge.svg" height="20" />
 </a>
 
-OpenBB is committed to building the future of investment research by focusing on an open-source infrastructure accessible to everyone, everywhere.
+The first financial terminal that is free and fully open source. With over 600 commands, the terminal has access to equity, options, crypto, forex, macro economy, fixed income, alternative datasets, and more.
+
+Sign up to the [OpenBB Hub](https://my.openbb.co/login) to use our Windows or MacOS installers to get started.
+
+<a href="https://www.youtube.com/playlist?list=PLXcRIKcHAUP45_ZZCxxvPyXFKHdq9kM8T">
+  <p align="center">Getting started with the OpenBB Terminal</p>
+</a>
 
 <p align="center">
-
   <p align="center">
-     <a href="https://www.youtube.com/watch?v=fqGPK8OVHLk" rel="OpenBB Terminal Demo">
+     <a href="https://www.youtube.com/playlist?list=PLXcRIKcHAUP45_ZZCxxvPyXFKHdq9kM8T" rel="OpenBB Terminal Demo">
         <img src="images/openbb_terminal_illustration.gif" alt="OpenBB Terminal Illustration" width="100%"/>
      </a>
-     <p align="center">Click on the GIF above for a DEMO</p>
   </p>
-
   <p align="center">
     <a href="https://docs.openbb.co/terminal/installation">
-      <strong>≪  GETTING STARTED</strong>
+      <strong>≪  INSTALL</strong>
+    </a>
+    &nbsp · &nbsp
+    <a href="https://my.openbb.co/app/terminal/data">
+      <strong>DATA</strong>
+    </a>
+    &nbsp · &nbsp
+    <a href="https://my.openbb.co/app/terminal/features">
+      <strong>SEE FEATURES</strong>
     </a>
     &nbsp · &nbsp
     <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/master/CONTRIBUTING.md">
-      <strong>CONTRIBUTING</strong>
-    </a>
-    &nbsp · &nbsp
-    <a href="https://openbb.co/docs">
-      <strong>DOCUMENTATION</strong>
-    </a>
-    &nbsp · &nbsp
-    <a href="https://docs.openbb.co/terminal">
-      <strong>SEE FEATURES »</strong>
+      <strong>CONTRIBUTING »</strong>
     </a>
   </p>
 </p>

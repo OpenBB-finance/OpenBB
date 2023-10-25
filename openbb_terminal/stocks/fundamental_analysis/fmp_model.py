@@ -647,7 +647,7 @@ def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = False) -> pd.Dat
     """
     # iloc will fail if number is greater than number of columns
     num = min(num, data.shape[1])
-    data = data.iloc[:, 0:num]
+    data = data.iloc[:, 0:num].copy()
 
     if mask:
         data = data.mask(data.astype(object).eq(num * ["None"])).dropna()
