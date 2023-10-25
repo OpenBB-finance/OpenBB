@@ -1,6 +1,9 @@
 """Stocks Fails to Deliver Data Model."""
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
 from pydantic import Field, field_validator
@@ -24,8 +27,31 @@ class StockFtdQueryParams(QueryParams):
 class StockFtdData(Data):
     """Stock FTD Data."""
 
-    settlement_date: dateType = Field(description="The settlement date of the fail.")
-    quantity: int = Field(description="The quantity of fails.")
-    price: Optional[float] = Field(
-        description="The price on the day of the fail.", default=None
+    date: Optional[dateType] = Field(
+        description="The settlement date of the fail.", default=None
     )
+    symbol: Optional[str] = Field(
+        description="The ticker symbol of the Security.",
+        default=None,
+    )
+    cusip: Optional[str] = Field(
+        description="CUSIP of the Security.",
+        default=None,
+    )
+    quantity: Optional[int] = Field(
+        description="The number of fails on that settlement date.",
+        default=None,
+    )
+    price: Optional[float] = Field(
+        description="The price at the previous closing price from the settlement date.",
+        default=None,
+    )
+    description: Optional[str] = Field(
+        description="The description of the Security.",
+        default=None,
+    )
+
+    @field_validator("date", mode="before")
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return the date as a datetime object."""
+        return datetime.strftime(v, "%Y-%m-%d")

@@ -909,7 +909,7 @@ def test_stocks_info(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "limit": 3}),
     ],
 )
 @pytest.mark.integration

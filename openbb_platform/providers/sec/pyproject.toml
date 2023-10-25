@@ -10,7 +10,6 @@ packages = [{ include = "openbb_sec" }]
 python = "^3.8"
 openbb-core = "^0.1.0a4"
 openbb-regulators="^0.1.0a3"
-beautifulsoup4 = "^4.12.2"
 requests-cache = "^1.1.0"
 xmltodict = "^0.13.0"
 

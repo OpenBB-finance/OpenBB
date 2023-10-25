@@ -1,5 +1,7 @@
 """SEC Helpers module"""
+
 from datetime import timedelta
+from io import BytesIO
 from typing import Dict, List, Optional
 
 import pandas as pd
@@ -141,46 +143,6 @@ def cik_map(cik: int) -> str:
     return symbol
 
 
-def catching_diff_url_formats(ftd_urls: list) -> list:
-    """Catches if URL for SEC data is one of the few URLS that are not in the
-    standard format. Catches are for either specific date ranges that have a different
-    format or singular URLs that have a different format.
-
-    Parameters
-    ----------
-    ftd_urls : list
-        list of urls of sec data
-
-    Returns
-    -------
-    list
-        list of ftd urls
-    """
-    feb_mar_apr_catch = ["202002", "202003", "202004"]
-    for i, ftd_url in enumerate(ftd_urls):
-        # URLs with dates prior to the first half of June 2017 have different formats
-        if int(ftd_url[58:64]) < 201706 or "201706a" in ftd_url:
-            ftd_urls[i] = ftd_url.replace(
-                "fails-deliver-data",
-                "frequently-requested-foia-document-fails-deliver-data",
-            )
-        # URLs between february, march, and april of 2020 have different formats
-        elif any(x in ftd_urls[i] for x in feb_mar_apr_catch):
-            ftd_urls[i] = ftd_url.replace(
-                "data/fails-deliver-data", "node/add/data_distribution"
-            )
-        # First half of october 2019 has a different format
-        elif (
-            ftd_url
-            == "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a.zip"
-        ):
-            ftd_urls[
-                i
-            ] = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a_0.zip"
-
-    return ftd_urls
-
-
 def get_frame(
     year: int,
     quarter: Optional[QUARTERS] = None,
@@ -276,5 +238,57 @@ def get_schema_filelist(query: str = "", url: str = "") -> List:
     if len(data) > 0:
         data.iloc[0] = url if not query else url + "/"
         results = data.to_list()
+
+    return results
+
+
+def download_zip_file(url) -> List[Dict]:
+    """Download a list of files from URLs."""
+    results = pd.DataFrame()
+    r = sec_session_frames.get(url, timeout=5, headers=HEADERS)
+    if r.status_code == 200:
+        data = pd.read_csv(BytesIO(r.content), compression="zip", sep="|")
+        results = data.iloc[:-2]
+        if "SETTLEMENT DATE" in results.columns:
+            results = results.rename(
+                columns={
+                    "SETTLEMENT DATE": "date",
+                    "SYMBOL": "symbol",
+                    "CUSIP": "cusip",
+                    "QUANTITY (FAILS)": "quantity",
+                    "PRICE": "price",
+                    "DESCRIPTION": "description",
+                }
+            )
+            results["date"] = pd.to_datetime(results["date"])
+
+    return results.to_dict("records")
+
+
+def get_ftd_urls() -> Dict:
+    """Get Fails-to-Deliver Data URLs."""
+
+    results = {}
+    position = None
+    key = "title"
+    value = "Fails-to-Deliver Data"
+
+    r = requests.get("https://www.sec.gov/data.json", timeout=5)
+    if r.status_code != 200:
+        raise RuntimeError(f"Request failed with status code {str(r.status_code)}")
+    data = r.json()["dataset"]
+
+    for index, d in enumerate(data):
+        if key in d and d[key] == value:
+            position = index
+            break
+    if position is not None:
+        fails = data[position]["distribution"]
+        key = "downloadURL"
+        urls = list(map(lambda d: d[key], filter(lambda d: key in d, fails)))
+        dates = [d[-11:-4] for d in urls]
+        ftd_urls = pd.Series(index=dates, data=urls)
+        ftd_urls.index = ftd_urls.index.str.replace("_", "")
+        results = ftd_urls.to_dict()
 
     return results

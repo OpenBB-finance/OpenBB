@@ -958,7 +958,7 @@ def test_stocks_info(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "AAPL", "limit": 3})],
 )
 @pytest.mark.integration
 def test_stocks_ftd(params, headers):
