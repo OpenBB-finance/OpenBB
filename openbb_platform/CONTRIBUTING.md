@@ -1,11 +1,15 @@
 
-- [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
-  - [What is the Standardization Framework?](#what-is-the-standardization-framework)
-    - [Standardization Caveats](#standardization-caveats)
-    - [Standard QueryParams Example](#standard-queryparams-example)
-    - [Standard Data Example](#standard-data-example)
-  - [What is an extension?](#what-is-an-extension)
-    - [Types of extensions](#types-of-extensions)
+# Contributing to the OpenBB Platform
+
+- [Contributing to the OpenBB Platform](#contributing-to-the-openbb-platform)
+- [Introduction](#introduction)
+  - [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
+    - [What is the Standardization Framework?](#what-is-the-standardization-framework)
+      - [Standardization Caveats](#standardization-caveats)
+      - [Standard QueryParams Example](#standard-queryparams-example)
+      - [Standard Data Example](#standard-data-example)
+    - [What is an extension?](#what-is-an-extension)
+      - [Types of extensions](#types-of-extensions)
 - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
   - [Add a custom data source](#add-a-custom-data-source)
     - [OpenBB Platform commands](#openbb-platform-commands)
@@ -33,7 +37,14 @@
     - [Install pre-commit hooks](#install-pre-commit-hooks)
     - [Branch Naming Conventions](#branch-naming-conventions)
 
-# Quick look into the OpenBB Platform
+# Introduction
+
+This document provides guidelines for contributing to the OpenBB Platform. We differentiate between two types of contributors:
+
+1. **Developers**: Those who are building new features or extensions for the OpenBB Platform.
+2. **Contributors**: Those who contribute to the existing codebase, such as fixing bugs or improving documentation.
+
+## Quick look into the OpenBB Platform
 
 The OpenBB Platform is built by the Open-Source community and is characterized by its core and extensions. The core handles data integration and standardization, while the extensions enable customization and advanced functionalities. The OpenBB Platform is designed to be used both from a Python interface and a REST API.
 
@@ -75,7 +86,7 @@ Before moving forward, please take a look at the high-level view of the OpenBB P
   <img alt="OpenBB Platform High-Level Architecture" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/74266147/c9a5a92a-28b6-4257-aefc-deaebe635c6a">
 </picture>
 
-## What is the Standardization Framework?
+### What is the Standardization Framework?
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
@@ -93,7 +104,7 @@ The standard models are defined under the `/OpenBBTerminal/openbb_platform/platf
 
 They define the [`QueryParams`](platform/provider/openbb_provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
-### Standardization Caveats
+#### Standardization Caveats
 
 The standardization framework is a very powerful tool, but it has some caveats that you should be aware of:
 
@@ -101,7 +112,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 - When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them. (e.g. `o` -> `open`)
 - The standard models are created and maintained by the OpenBB team. If you want to add a new field to a standard model, you'll need to open a PR to the OpenBB Platform.
 
-### Standard QueryParams Example
+#### Standard QueryParams Example
 
 ```python
 class StockHistoricalQueryParams(QueryParams):
@@ -119,7 +130,7 @@ The `QueryParams` is an abstract class that just tells us that we are dealing wi
 
 The OpenBB Platform dynamically knows where the standard models begin in the inheritance tree, so you don't need to worry about it.
 
-### Standard Data Example
+#### Standard Data Example
 
 ```python
 class StockHistoricalData(Data):
@@ -136,11 +147,11 @@ class StockHistoricalData(Data):
 
 The `Data` class is an abstract class that tells us the expected output data. Here we can see a `vwap` field that is `Optional`. This is because not all providers share this field while it is shared between two or more providers.
 
-## What is an extension?
+### What is an extension?
 
 An extension adds functionality to the OpenBB Platform. It can be a new data source, a new command, a new visualization, etc.
 
-### Types of extensions
+#### Types of extensions
 
 We primarily have 3 types of extensions:
 
