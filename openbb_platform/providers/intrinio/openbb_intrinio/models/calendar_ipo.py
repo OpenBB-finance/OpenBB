@@ -27,18 +27,22 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
     status: Optional[IPO_STATUS] = Field(
         description="Status of the IPO. [upcoming, priced, or withdrawn]", default=None
     )
-    offer_amount_greater_than: Optional[int] = Field(
+    min_value: Optional[int] = Field(
         description="Return IPOs with an offer dollar amount greater than the given amount.",
         default=None,
+        alias="offer_amount_greater_than",
     )
-    offer_amount_less_than: Optional[int] = Field(
+    max_value: Optional[int] = Field(
         description="Return IPOs with an offer dollar amount less than the given amount.",
         default=None,
+        alias="offer_amount_less_than",
     )
 
 
 class IntrinioCalendarIpoData(CalendarIpoData):
     """Intrinio IPO Calendar Data."""
+
+    __alias_dict__ = {"symbol": "ticker", "ipo_date": "date"}
 
     status: Optional[IPO_STATUS] = Field(
         description="""
@@ -102,7 +106,7 @@ class IntrinioCalendarIpoData(CalendarIpoData):
     )
     sec_report_url: Optional[str] = Field(
         description="""
-            The IRL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
+            The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
             which is required to be filed before an IPO takes place.
         """,
         default=None,

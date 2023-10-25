@@ -10,25 +10,23 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class CalendarIpoQueryParams(QueryParams):
     """IPO Calendar Query Params."""
 
     symbol: Optional[str] = Field(
-        description="Return IPOs with the given ticker (typically the IPO for the company).",
-        default=None,
+        description=QUERY_DESCRIPTIONS.get("symbol", ""), default=None
     )
     start_date: Optional[dateType] = Field(
-        description="Return IPOs on or after the given date.",
-        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
     )
     end_date: Optional[dateType] = Field(
-        description="Return IPOs on or before the given date.", default=None
+        description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
     limit: Optional[int] = Field(
-        description="Limit the number of results returned by most recent.",
-        default=300,
+        description=QUERY_DESCRIPTIONS.get("limit", ""), default=300
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -50,17 +48,16 @@ class CalendarIpoQueryParams(QueryParams):
 class CalendarIpoData(Data):
     """IPO Calendar Data."""
 
-    date: Optional[dateType] = Field(
+    ipo_date: Optional[dateType] = Field(
         description="The date of the IPO, when the stock first trades on a major exchange.",
         default=None,
     )
     symbol: Optional[str] = Field(
-        description="The ticker under which the Company will be traded after the IPO takes place.",
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
         default=None,
-        alias="ticker",
     )
 
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @field_validator("ipo_date", mode="before", check_fields=False)
+    def ipo_date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
