@@ -32,23 +32,6 @@ import Card from "@site/src/components/General/Card";
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data. We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
-Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
-
----
-
-**The OpenBB Terminal is Free and Open-Source (FOSS)**
-
-<div className="grid-child">
-
-[![Stargazers][stars-shield]][stars-url] [![Forks][forks-shield]][forks-url]
-[![Contributors][contributors-shield]][contributors-url]
-[![MIT License][license-shield]][license-url]
-[![Twitter][twitter-shield]][twitter-url]
-
-</div>
-
----
-
 <Card
 	title="Why Free?"
 	description="We believe that everyone should be able to have the same tooling to do
@@ -79,27 +62,4 @@ Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/O
 	investment research platform."
  />
 
----
-
-Want to learn how to install the OpenBB Terminal? Check out our [Installation](/terminal/installation) guide.
-
-Want to know how to import and export data? Check out our [Data Import/Export](/terminal/usage/guides/data)
-
-Looking for personalized routines? Check out our [User Routines](/terminal/usage/guides/scripts-and-routines)
-
-[contributors-shield]: https://img.shields.io/github/contributors/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[contributors-url]: https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[forks-url]: https://github.com/OpenBB-finance/OpenBBTerminal/network/members
-[stars-shield]: https://img.shields.io/github/stars/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[stars-url]: https://github.com/OpenBB-finance/OpenBBTerminal/stargazers
-[issues-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge&color=blue
-[issues-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues
-[bugs-open-shield]: https://img.shields.io/github/issues/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=yellow
-[bugs-open-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aopen
-[bugs-closed-shield]: https://img.shields.io/github/issues-closed/OpenBB-finance/OpenBBTerminal/bug.svg?style=for-the-badge&color=success
-[bugs-closed-url]: https://github.com/OpenBB-finance/OpenBBTerminal/issues?q=is%3Aissue+label%3Abug+is%3Aclosed
-[license-shield]: https://img.shields.io/github/license/OpenBB-finance/OpenBBTerminal.svg?style=for-the-badge
-[license-url]: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE
-[twitter-shield]: https://img.shields.io/twitter/follow/openbb_finance?style=for-the-badge&color=blue
-[twitter-url]: https://twitter.com/openbb_finance
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).

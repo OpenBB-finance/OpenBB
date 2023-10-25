@@ -1,6 +1,6 @@
 ---
-title: Setting API Keys
-sidebar_position: 1
+title: API Keys
+sidebar_position: 2
 description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB Terminal.
 keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, whale alert]
 ---
@@ -9,15 +9,20 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Setting API Keys - Terminal | OpenBB Docs" />
 
-API (Application Programming Interface) keys are access credentials for obtaining data from a particular source. They are a string of random characters assigned, by the data provider, to an individual account. Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the Terminal from the `/keys` menu with the syntax as described in the sections below. Adding the `-h` argument to the command will also display the expected inputs. For example,
+API (Application Programming Interface) keys are access credentials for obtaining data from a particular data vendor. They are a string of random characters assigned, by the data provider, to an individual account.
+
+## Setting API keys through Hub (easy)
+
+Add instructions here
+
+
+## Setting API keys through Terminal
+
+Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer). Each source is entered into the Terminal from the `/keys` menu with the syntax as described in the sections below. Adding the `-h` argument to the command will also display the expected inputs. For example,
 
 ```console
-/keys/reddit -h
-```
+(🦋) /keys/ $ reddit -h
 
-Displays:
-
-```console
 usage: reddit [-i CLIENT_ID] [-s CLIENT_SECRET] [-u USERNAME] [-p PASSWORD] [-a USER_AGENT [USER_AGENT ...]] [-h]
 
 Set Reddit API key.
@@ -39,13 +44,13 @@ options:
 In order to set the API key in the terminal, after obtaining the correct information from reddit, one would enter into the terminal:
 
 ```console
-reddit -i <YOUR-CLIENT-ID> -s <YOUR-CLIENT-SECRET> -u <USERNAME> -p <PASSWORD> -a <USER-AGENT>
+(🦋) /keys/ $ reddit -i <YOUR-CLIENT-ID> -s <YOUR-CLIENT-SECRET> -u <USERNAME> -p <PASSWORD> -a <USER-AGENT>
 ```
 
 A message similar to the one below will be printed when a function requesting data from an API is called but the key has not yet been entered.
 
 ```console
-/stocks/fa/ $ rot
+(🦋) /stocks/fa/ $ rot
 
 API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under keys menu.
 ```
@@ -53,12 +58,17 @@ API_FINNHUB_KEY not defined. Set API Keys in ~/.openbb_terminal/.env or under ke
 The menu also provides a method for testing the validity of a key upon entry. It can be easy to copy & paste the string with a missing character; so, if the test fails, check that the values were correctly recorded with the command:
 
 ```console
-mykeys --show
+(🦋) /keys/ $ mykeys --show
 ```
 
-**We recommend gradually obtaining keys, when the use of a specific function requires it.**
+:::note
+OpenBB recommends users to gradually obtaining API keys from data vendors based on their needs.
 
-## Instructions by Source
+In addition by accessing our [data vendor affiliate program](https://my.openbb.co/app/hub/affiliate) you can get discounts upon sign-up.
+:::
+
+
+## Supported data vendors
 
 This section covers all API keys listed above and include detailed instructions how to obtain each API key. By clicking on each name, the section will expand and instructions are provided.
 

@@ -1,13 +1,16 @@
 ---
-sidebar_position: 7
-title: Plot Hold
-description: Learn how to use the `hold` functionality to overlay multiple datasets onto the same axes.
-keywords: [openbb, openbb terminal, charting, matlab, hold, hodl, plotting, comparison]
+title: Hold on command
+sidebar_position: 9
+description: Provides a brief overview of how to interact with the OpenBB Terminal
+keywords: [finance, terminal, command line interface, cli, menu, commands]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<HeadTitle title="Plot Hold - Terminal | OpenBB Docs" />
+<TutorialVideo youtubeLink="https://www.youtube.com/embed/GZ20uk4o2Nk?si=vxeA-CxSUq85R_zj" />
+
+
+## Plot Hold
 
 As of OpenBB Terminal v3.2.0, the `hold` functionality is available to allow users to overlay multiple datasets onto the same axes. This is useful for comparing datasets, or for plotting multiple datasets that share the same x-axis.  This guide will walk through the functionalities and the recommended workflow.
 

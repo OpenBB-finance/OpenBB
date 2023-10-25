@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title: Scripts & Routines
 description: Learn how to set up and maintain scripts and routines in the OpenBB Terminal. These operations will help automate processes and repetitive tasks to save time and effort.
 keywords: [scripts, routines, .do file, stata, spss, r studio, python, automation, data collection, aggregation, script, routine, openbb terminal, tasks, processes]
