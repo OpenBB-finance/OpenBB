@@ -1,9 +1,9 @@
 """SEC Helpers module"""
 
 from datetime import timedelta
-from io import BytesIO, StringIO
-from zipfile import ZipFile
+from io import BytesIO
 from typing import Dict, List, Optional
+from zipfile import ZipFile
 
 import pandas as pd
 import requests
