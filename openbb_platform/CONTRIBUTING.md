@@ -11,7 +11,7 @@
       - [What is an extension?](#what-is-an-extension)
         - [Types of extensions](#types-of-extensions)
   - [Developer Guidelines](#developer-guidelines)
-    - [What is Expected from a Developer?](#what-is-expected-from-a-developer)
+    - [Expectations for Developers](#expectations-for-developers)
     - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
     - [How to add a new data point?](#how-to-add-a-new-data-point)
       - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
@@ -23,7 +23,7 @@
     - [How to add custom data sources?](#how-to-add-custom-data-sources)
       - [OpenBB Platform commands](#openbb-platform-commands)
   - [Contributor Guidelines](#contributor-guidelines)
-    - [What is Expected from a Contribution?](#what-is-expected-from-a-contribution)
+    - [Expectations for Contributors](#expectations-for-contributors)
     - [Quality Assurance](#quality-assurance)
       - [Unit tests](#unit-tests)
       - [Integration tests](#integration-tests)
@@ -178,19 +178,28 @@ We encourage independent extensions to be shared with the community by publishin
 
 ## Developer Guidelines
 
-### What is Expected from a Developer?
+### Expectations for Developers
 
-- **Core Contributions**: Developers play a crucial role in enhancing existing functionalities and adding new ones to the OpenBB Platform. Your contributions should prioritize stability, scalability, and compatibility with various extensions.
+1. Use Cases:
+   - Ensure that your extensions or features align with the broader goals of the application.
+   - Understand that the OpenBB Platform is designed to be foundational; build in a way that complements and doesn't conflict with its core functionalities.
 
-- **Documentation**: While feature documentation is essential, developers are also responsible for maintaining architectural and design documentation. This ensures that the foundational aspects of the OpenBB Platform are well-understood by all contributors.
+2. Documentation:
+   - Provide clear and comprehensive documentation for any new feature or extension you develop.
 
-- **Code Quality**: Ensure that the foundational code is not just functional, but also optimized and maintainable. Regular code reviews should be a norm to maintain a high standard of code quality.
+3. Code Quality:
+   - Adhere to the coding standards and conventions of the OpenBB Platform.
+   - Ensure your code is maintainable, well-organized, and commented where necessary.
 
-- **Testing**: Developers should ensure that the core functionalities of the OpenBB Platform have rigorous tests. This involves not only unit tests but also integration tests.
+4. Testing:
+   - Thoroughly test any new feature or extension to ensure it works as expected.
 
-- **Performance**: Any core code added should be performance-centric. It's essential to keep the OpenBB Platform responsive and efficient, ensuring a positive user experience.
+5. Performance:
+   - Ensure that your extensions or features do not adversely affect the performance of the OpenBB Platform.
+   - Optimize for scalability, especially if you anticipate high demand for your feature.
 
-- **Collaboration**: Work closely with both contributors and other developers. Engage in discussions, code reviews, and planning sessions to ensure the OpenBB Platform's technical vision is consistently maintained.
+6. Collaboration:
+   - Engage with the OpenBB community to gather feedback on your developments.
 
 ### How to build OpenBB extensions?
 
@@ -412,15 +421,30 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 ## Contributor Guidelines
 
-### What is Expected from a Contribution?
+### Expectations for Contributors
 
-- **Code Quality**: Ensure that your code, whether for core functionalities or extensions, is clean, efficient, and adheres to the OpenBB Platform's standards. Properly comment your code to make it understandable to other contributors.
+1. Use Cases:
+   - Ensure that your contributions directly enhance the OpenBB Platform's functionality or extension ecosystem.
 
-- **Documentation**: When adding new features or making changes, especially to extensions, ensure they are accompanied by comprehensive documentation. This helps in maintaining the consistency and clarity of the OpenBB Platform.
+2. Documentation:
+   - All code contributions should come with relevant documentation, including the purpose of the contribution, how it works, and any changes it makes to existing functionalities.
+   - Update any existing documentation if your contribution alters the behavior of the OpenBB Platform.
 
-- **Testing**: Before submitting any contribution, test thoroughly to ensure you're not introducing regressions or new bugs. This applies to both core functionalities and extensions.
+3. Code Quality:
+   - Your code should adhere strictly to the OpenBB Platform's coding standards and conventions.
+   - Ensure clarity, maintainability, and proper organization in your code.
 
-- **Commit Messages**: Use clear and concise commit messages that provide a brief description of the changes. This aids in the understanding and tracking of project history.
+4. Testing:
+   - All contributions must be thoroughly tested to avoid introducing bugs to the OpenBB Platform.
+   - Contributions should include relevant automated tests (unit and integration), and any new feature should come with its test cases.
+
+5. Performance:
+   - Your contributions should be optimized for performance and should not degrade the overall efficiency of the OpenBB Platform.
+   - Address any potential bottlenecks and ensure scalability.
+
+6. Collaboration:
+   - Engage actively with the OpenBB development team to ensure that your contributions align with the platform's roadmap and standards.
+   - Welcome feedback and be open to making revisions based on reviews and suggestions from the community.
 
 ### Quality Assurance
 
