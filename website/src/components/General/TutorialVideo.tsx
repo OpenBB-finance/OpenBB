@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { Toggle } from "typescript-toggle";
 
 export default function TutorialVideo(
     {
@@ -8,18 +9,29 @@ export default function TutorialVideo(
         youtubeLink: string,
         videoLegend?: string
     }) {
+
+    const [isOn, setIsOn] = useState(true);
+
     return (
         <div style={{textAlign: 'center'}}>
-            <button onClick={() => {
-                const x = document.getElementById(youtubeLink);
-                if (x.style.display === 'none') {
-                x.style.display = 'block';
-                } else {
-                x.style.display = 'none';
-                }
-            }}>
-                {videoLegend}
-            </button>
+            <div className="flex flex-row items-center justify-center">
+                <p className="mr-2">{videoLegend}</p>
+                <div style={{transform: 'scale(0.7)'}}>
+                    <Toggle
+                        isOn={isOn}
+                        handleChange={() => {
+                            const x = document.getElementById(youtubeLink);
+                            if (x.style.display === 'none') {
+                                x.style.display = 'block';
+                                setIsOn(true);
+                            } else {
+                                x.style.display = 'none';
+                                setIsOn(false);
+                            }
+                        }}
+                    />
+                </div>
+            </div>
             <iframe
                 id={youtubeLink} // this makes it so that the ID is unique and I can have to vids per page
                 width="560"
