@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import List, Literal, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -25,9 +25,9 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    importance: Literal["Low", "Medium", "High"] = Field(
-        default="High",
-        description="Importance of the event.",
+    importance: Literal[1, 2, 3] = Field(
+        default=3,
+        description="Importance of the event. (1-Low, 2-Medium, 3-High)",
     )
     group: Optional[
         Literal[
@@ -51,12 +51,6 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description="Country of the event",
     )
-
-    @field_validator("importance")
-    @classmethod
-    def importance_to_number(cls, v):
-        string_to_value = {"Low": 1, "Medium": 2, "High": 3}
-        return string_to_value[v]
 
 
 class EconomicCalendarData(Data):
