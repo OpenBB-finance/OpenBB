@@ -83,6 +83,8 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
           routeBasePath: "/",
           path: "content",
           remarkPlugins: [math],
@@ -116,7 +118,6 @@ const config = {
         contextualSearch: false,
       },
     }),
-
   stylesheets: [
     {
       href: "/katex/katex.min.css",
