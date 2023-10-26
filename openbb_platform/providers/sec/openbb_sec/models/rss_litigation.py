@@ -20,7 +20,7 @@ class SecRssLitigationQueryParams(QueryParams):
 class SecRssLitigationData(Data):
     """SEC RSS Feed for Litigation Releases."""
 
-    date: datetime = Field(description="The date of the release.")
+    published: datetime = Field(description="The date of publication.", alias="date")
     title: str = Field(description="The title of the release.")
     summary: str = Field(description="Short summary of the release.")
     id: str = Field(description="The identifier associated with the release.")

@@ -10,7 +10,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class StockFtdQueryParams(QueryParams):
@@ -27,11 +27,11 @@ class StockFtdQueryParams(QueryParams):
 class StockFtdData(Data):
     """Stock FTD Data."""
 
-    date: Optional[dateType] = Field(
+    settlement_date: Optional[dateType] = Field(
         description="The settlement date of the fail.", default=None
     )
     symbol: Optional[str] = Field(
-        description="The ticker symbol of the Security.",
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
         default=None,
     )
     cusip: Optional[str] = Field(
@@ -51,7 +51,7 @@ class StockFtdData(Data):
         default=None,
     )
 
-    @field_validator("date", mode="before")
+    @field_validator("settlement_date", mode="before")
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strftime(v, "%Y-%m-%d")

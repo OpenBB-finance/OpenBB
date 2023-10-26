@@ -15,6 +15,7 @@ from openbb_provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
 from openbb_sec.utils.helpers import symbol_map
 from pydantic import Field
@@ -28,7 +29,8 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     """SEC Company Filings Query Params."""
 
     symbol: Optional[str] = Field(
-        description="Lookup filings by ticker symbol.", default=None
+        description=QUERY_DESCRIPTIONS.get("symbol", ""),
+        default=None,
     )
     cik: Optional[Union[str, int]] = Field(
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
