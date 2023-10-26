@@ -1,6 +1,6 @@
 ---
 title: Extensions in the OpenBB Platform
-sidebar_position: 2
+sidebar_position: 3
 description: Learn about the Extensions inside the OpenBB Platform.
 keywords: [openbb platform, introduction, extensions, contributing, documentation]
 ---

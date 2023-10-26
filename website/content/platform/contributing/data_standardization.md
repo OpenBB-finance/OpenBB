@@ -1,6 +1,6 @@
 ---
 title: Data Standardization
-sidebar_position: 1
+sidebar_position: 2
 description: Learn what is data standardization and how does it work inside the OpenBB Platform.
 keywords: [openbb platform, introduction, data standardization, contributing, documentation]
 ---

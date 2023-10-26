@@ -1,5 +1,5 @@
 ---
-title: Extension Development
+title: Cookie Cutter
 sidebar_position: 1
 description: Learn how to develop Extensions inside the OpenBB Platform.
 keywords: [openbb platform, introduction, extensions, contributing, documentation]

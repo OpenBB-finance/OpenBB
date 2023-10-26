@@ -1,5 +1,5 @@
 ---
-title: OpenBB Platform - An Introduction
+title: Introduction
 sidebar_position: 1
 description: Learn how to contribute to the OpenBB Platform.
 keywords: [openbb platform, introduction, contributing, documentation]

@@ -9,7 +9,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Installation - Platform | OpenBB Docs" />
 
-## Virtual Environment
+## Supported environments
+
+### Venv
 
 The OpenBB Platform is installed within a Python virtual environment.  It is compatible with versions of Python between 3.8 and 3.11, inclusively.  Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
 
@@ -21,7 +23,7 @@ Installing packages directly to the system Python or `base` environment is not r
 pip install poetry toml
 ```
 
-## PyPI
+### PyPI
 
 Install from PyPI with:
 
@@ -55,7 +57,7 @@ Import the package with:
 from openbb import obb
 ```
 
-## Docker
+### Docker
 
 OpenBB supplies a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
 
@@ -73,7 +75,7 @@ docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb
 
 This will mount the local `~/.openbb_platform` directory into the Docker container to use with the API keys and preferences from there, and it will expose the API on port `8000`.
 
-## Source
+### Source
 
 To build the OpenBB Platform from the source code, first install `git`:
 
@@ -138,7 +140,7 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### Documentation
+## Documentation
 
 The documentation and packages are kept in the `/website` folder, at the base of the repository.  Navigate there to install the dependencies and start the development server.
 

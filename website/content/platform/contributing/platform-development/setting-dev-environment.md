@@ -1,5 +1,5 @@
 ---
-title: OpenBB Platform Development
+title: Setting up dev environment
 sidebar_position: 1
 description: Introduction to the OpenBB Platform.
 keywords: [openbb platform, introduction, development, contributing, documentation]

@@ -24,38 +24,8 @@ OpenBB Platform is created and maintained by the OpenBB team together with the c
 
 Developing and maintaining a full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be this way. By taking advantage of OpenBB Platform with its out-of-the-box data connectors and library of extensions, you can focus on designing and building your financial reports and applications.
 
----
-
-<Card
-	type="platform"
-	title="What is the OpenBB Platform?"
-	description="The OpenBB Platform is a Python library that provides you with a set of tools to access
-financial data and perform financial analysis."
- />
-
-<Card
-	type="platform"
-	title="Who uses it?"
-	description="The OpenBB Platform is used by financial analysts, data scientists, and developers to
-build financial applications and reports."
- />
+TODO: Add image
 
 ---
 
-## Getting Started
-
-- [Installation](platform/installation)
-- [Basics](platform/usage)
-
-### Using OpenBB Platform
-
-Coming soon
-
-### Platform Reference
-
-- [Function reference](platform/reference)
-- [Models reference](/data_models/)
-
-### Showcase
-
-Coming soon
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
