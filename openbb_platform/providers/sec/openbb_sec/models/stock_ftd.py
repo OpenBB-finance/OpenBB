@@ -3,13 +3,10 @@
 import concurrent.futures
 from typing import Any, Dict, List, Optional
 
-import requests_cache
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_ftd import StockFtdData, StockFtdQueryParams
 from openbb_sec.utils.helpers import download_zip_file, get_ftd_urls
 from pydantic import Field
-
-sec_session_ftd = requests_cache.CachedSession("OpenBB_SEC_FTD", use_cache_dir=True)
 
 
 class SecStockFtdQueryParams(StockFtdQueryParams):

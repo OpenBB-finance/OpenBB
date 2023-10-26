@@ -16,6 +16,7 @@ sec_session_companies = requests_cache.CachedSession(
 sec_session_frames = requests_cache.CachedSession(
     "OpenBB_SEC_Frames", expire_after=timedelta(days=30), use_cache_dir=True
 )
+sec_session_ftd = requests_cache.CachedSession("OpenBB_SEC_FTD", use_cache_dir=True)
 
 
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
@@ -230,7 +231,7 @@ def get_schema_filelist(query: str = "", url: str = "") -> List:
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
     _url = url + "/" if query else _url
-    r = sec_session_frames.get(_url, headers=HEADERS, timeout=5)
+    r = sec_session_companies.get(_url, headers=HEADERS, timeout=5)
 
     if r.status_code != 200:
         raise RuntimeError(f"Request failed with status code {r.status_code}")
@@ -246,7 +247,7 @@ def get_schema_filelist(query: str = "", url: str = "") -> List:
 def download_zip_file(url, symbol: Optional[str] = None) -> List[Dict]:
     """Download a list of files from URLs."""
     results = pd.DataFrame()
-    r = sec_session_frames.get(url, timeout=5, headers=HEADERS)
+    r = sec_session_ftd.get(url, timeout=5, headers=HEADERS)
     if r.status_code == 200:
         try:
             data = pd.read_csv(BytesIO(r.content), compression="zip", sep="|")
