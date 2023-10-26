@@ -52,6 +52,8 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
     for extension in extensions:
         extension_name = extension.name
         test_file_name = f"test_{extension_name}_python.py"
+        if not (extension / "integration").exists():
+            (extension / "integration").mkdir()
         test_file = extension / "integration" / test_file_name
         if not test_file.exists():
             with open(test_file, "w", encoding="utf-8", newline="\n") as f:
@@ -60,15 +62,19 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+
 @pytest.fixture(scope="session")
-def obb(pytestconfig):
+def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
-    '''
+
+
+# pylint: disable=redefined-outer-name
+'''
                 )
 
 
@@ -163,9 +169,7 @@ def test_exists(command_name: str, path: str):
 
 def write_to_file_w_template(test_file, params_list, full_command, test_name, extra=""):
     """Write to file with template."""
-    params = ""
-    for test_params in params_list:
-        params += f"({test_params}),\n"
+    params = ",\n".join(f"({test_params})" for test_params in params_list)
 
     if not test_exists(command_name=full_command, path=test_file):
         with open(test_file, "a", encoding="utf-8", newline="\n") as f:
@@ -270,7 +274,7 @@ def write_commands_integration_tests() -> None:
 
 def write_charting_extension_integration_tests():
     """Write charting extension integration tests."""
-    import openbb_charting  # pylint: disable=W0611
+    import openbb_charting  # pylint: disable=import-outside-toplevel
 
     functions = ChartingService.get_implemented_charting_functions()
 
