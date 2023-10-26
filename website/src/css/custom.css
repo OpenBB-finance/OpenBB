@@ -485,3 +485,9 @@ html[data-theme='dark'] .sidebar-divider {
     margin-left: 1rem;
   }
 }
+
+.theme-edit-this-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
