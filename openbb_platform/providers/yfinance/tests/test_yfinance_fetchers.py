@@ -160,7 +160,7 @@ def test_y_finance_available_indices_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "AAPL",
+        "symbol": "IOO",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
     }
