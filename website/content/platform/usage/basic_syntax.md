@@ -34,10 +34,14 @@ source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 
 ```
 
 :::note
-Examples below assume that the Python interface has been imported in the current session.
+Examples below assume that the Python interface has been imported in the current session, and/or the Fast API has been started.
 
 ```python
 from openbb import obb
+```
+
+```python
+uvicorn openbb_core.api.rest_api:app
 ```
 
 :::
@@ -94,7 +98,6 @@ quotes = obb.stocks.quote("td,schw,jpm,ms", provider="fmp")
 
 ```python
 import requests
-uvicorn openbb_core.api.rest_api:app
 r = requests.get("http://127.0.0.1:8000/api/v1/stocks/quote?provider=fmp&symbol=td,schw,ms,jpm")
 r.json()
 ```
@@ -121,7 +124,6 @@ To accomplish this same task through the Fast API, convert the list to a comma-s
 
 ```python
 import requests
-uvicorn openbb_core.api.rest_api:app
 symbol="spgi"
 r = requests.get(f"http://127.0.0.1:8000/api/v1/stocks/ca/peers?provider=fmp&symbol={symbol}")
 symbols_list = r.json()["results"]["peers_list"]+[symbol]
@@ -150,7 +152,6 @@ historical_prices = obb.stocks.load(symbol, start_date=start, end_date=end, prov
 
 ```python
 import requests
-uvicorn openbb_core.api.rest_api:app
 response = requests.get(f"http://127.0.0.1:8000/api/v1/stocks/load?provider=fmp&symbol={symbol}&start_date={start}&end_date={end}")
 response.json()
 ```
