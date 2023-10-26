@@ -25,8 +25,8 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    importance: Optional[Literal["Low", "Medium", "High"]] = Field(
-        default=None,
+    importance: Literal["Low", "Medium", "High"] = Field(
+        default="High",
         description="Importance of the event.",
     )
     group: Optional[
