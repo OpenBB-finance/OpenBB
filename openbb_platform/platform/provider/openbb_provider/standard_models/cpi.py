@@ -73,10 +73,19 @@ class CPIQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("countries")
     )
     units: CPI_UNITS = Field(
-        default="growth_same", description=QUERY_DESCRIPTIONS.get("units")
+        default="growth_same",
+        description=QUERY_DESCRIPTIONS.get("units", "")
+        + """
+    Options:
+    - `growth_previous`: growth from the previous period
+    - `growth_same`: growth from the same period in the previous year
+    - `index_2015`: index with base year 2015.""",
     )
     frequency: CPI_FREQUENCY = Field(
-        default="monthly", description=QUERY_DESCRIPTIONS.get("frequency")
+        default="monthly",
+        description=QUERY_DESCRIPTIONS.get("frequency", "")
+        + """
+    Options: `monthly`, `quarter`, and `annual`.""",
     )
     harmonized: bool = Field(
         default=False, description="Whether you wish to obtain harmonized data."
