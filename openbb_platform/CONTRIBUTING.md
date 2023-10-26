@@ -22,17 +22,17 @@
       - [Make the provider visible](#make-the-provider-visible)
     - [How to add custom data sources?](#how-to-add-custom-data-sources)
       - [OpenBB Platform commands](#openbb-platform-commands)
-    - [Sharing your extension](#sharing-your-extension)
-      - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
-        - [Setup](#setup)
-        - [Release](#release)
-        - [Publish](#publish)
   - [Contributor Guidelines](#contributor-guidelines)
     - [What is Expected from a Contribution?](#what-is-expected-from-a-contribution)
     - [Quality Assurance](#quality-assurance)
       - [Unit tests](#unit-tests)
       - [Integration tests](#integration-tests)
       - [Import time](#import-time)
+    - [Sharing your extension](#sharing-your-extension)
+      - [Publish your extension to PyPI](#publish-your-extension-to-pypi)
+        - [Setup](#setup)
+        - [Release](#release)
+        - [Publish](#publish)
 - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
   - [Manage environment and dependencies](#manage-environment-and-dependencies)
   - [Manage extensions](#manage-extensions)
@@ -410,53 +410,6 @@ Let's break it down:
 
 You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
 
-### Sharing your extension
-
-We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
-
-#### Publish your extension to PyPI
-
-To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
-
-##### Setup
-
-Create an account and get an API token from <https://pypi.org/manage/account/token/>
-Store the token with
-
-```bash
-poetry config pypi-token.pypi pypi-YYYYYYYY
-```
-
-##### Release
-
-`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
-
-```bash
-poetry build
-```
-
-This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
-
-If you want to test your package locally you can do it with
-
-```bash
-pip install dist/openbb_[FILE_NAME].whl
-```
-
-##### Publish
-
-To publish your package to PyPI run:
-
-```bash
-poetry publish
-```
-
-Now, you can pip install your package from PyPI with:
-
-```bash
-pip install openbb-some_ext
-```
-
 ## Contributor Guidelines
 
 ### What is Expected from a Contribution?
@@ -557,6 +510,53 @@ following commands from `openbb_platform` directory:
 pip install tuna
 python -X importtime openbb/__init__.py 2> import.log
 tuna import.log
+```
+
+### Sharing your extension
+
+We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
+
+#### Publish your extension to PyPI
+
+To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
+
+##### Setup
+
+Create an account and get an API token from <https://pypi.org/manage/account/token/>
+Store the token with
+
+```bash
+poetry config pypi-token.pypi pypi-YYYYYYYY
+```
+
+##### Release
+
+`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
+
+```bash
+poetry build
+```
+
+This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
+
+If you want to test your package locally you can do it with
+
+```bash
+pip install dist/openbb_[FILE_NAME].whl
+```
+
+##### Publish
+
+To publish your package to PyPI run:
+
+```bash
+poetry publish
+```
+
+Now, you can pip install your package from PyPI with:
+
+```bash
+pip install openbb-some_ext
 ```
 
 # How to contribute to the OpenBB Platform?
