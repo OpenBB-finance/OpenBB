@@ -80,7 +80,7 @@ def extend_obbject(name: str, required_credentials: List[str]) -> Callable:
     Parameters
     ----------
     name : str
-        Name of the extension.
+        Name of the accessor.
 
     required_credentials : List[str]
         List of required credentials.
