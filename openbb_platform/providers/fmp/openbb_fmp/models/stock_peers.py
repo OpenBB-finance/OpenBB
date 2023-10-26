@@ -54,4 +54,5 @@ class FMPStockPeersFetcher(
         query: FMPStockPeersQueryParams, data: dict, **kwargs: Any
     ) -> FMPStockPeersData:
         """Return the transformed data."""
+        data.pop("symbol")
         return FMPStockPeersData.model_validate(data)
