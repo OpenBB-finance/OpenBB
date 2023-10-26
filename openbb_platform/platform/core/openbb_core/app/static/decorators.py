@@ -92,15 +92,18 @@ def extend_obbject(name: str, required_credentials: List[str]) -> Callable:
 
     Example
     -------
-    @extend_obbject(name="useless", required_credentials=["api_key"])
-    class Useless:
-        def __init__(self, obbject):
-            self._obbject = obbject
-
-        def hello(self) -> str:
-            cred = self._obbject._credentials.model_dump(mode="json")["useless_api_key"]
+    @extend_obbject(name="useless", required_credentials=["api_key"]
+    class Useless
+        def __init__(self, obbject)
+            self._obbject = obbj
+        def hello(self) -> str
+            cred = self._obbject._credentials.model_dump(mode="json")["useless_api_key"
             return f"Hi, I'm {self.__class__.__name__}, this is my credential: {cred}!"
 
+    >>> from openbb import obb
+    >>> obbject = obb.stocks.load("AAPL")
+    >>> obbject.useless.hello()
+    Hi, I'm Useless, this is my credential: None!
     """
     formatted_creds = [f"{name}_{c}" for c in required_credentials]
     # pylint: disable=protected-access
