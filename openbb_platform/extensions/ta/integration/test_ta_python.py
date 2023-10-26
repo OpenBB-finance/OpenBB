@@ -611,6 +611,24 @@ def test_ta_adx(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
+        ({"data": "", "index": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "date", "offset": "5"}, "crypto"),
+    ],
+)
+@pytest.mark.integration
+def test_ta_ad(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.ta.ad(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params, data_type",
+    [
         (
             {
                 "data": "",

@@ -1,7 +1,24 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
+from openbb_core.app.static.decorators import validate
+
+from openbb_core.app.static.filters import filter_inputs
+
+from openbb_provider.abstract.data import Data
 
 
 class Extensions(Container):
@@ -21,28 +38,19 @@ Routers:
 
 Extensions:
     - crypto@0.1.0a3
-    - econometrics@0.1.0a3
     - economy@0.1.0a3
     - fixedincome@0.1.0a3
     - forex@0.1.0a3
-    - futures@0.1.0a3
     - news@0.1.0a3
-    - openbb_charting@0.1.0a3
-    - qa@0.1.0a3
     - stocks@0.1.0a3
-    - ta@0.1.0a3
 
     - alpha_vantage@0.1.0a3
     - benzinga@0.1.0a3
-    - cboe@0.1.0a3
     - fmp@0.1.0a3
     - fred@0.1.0a3
     - intrinio@0.1.0a3
-    - oecd@0.1.0a3
-    - polygon@0.1.0a3
-    - quandl@0.1.0a3
     - tradingeconomics@0.1.0a3
-    - yfinance@0.1.0a3    """
+    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
