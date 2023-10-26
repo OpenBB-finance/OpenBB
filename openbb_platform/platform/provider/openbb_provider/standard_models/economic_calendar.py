@@ -25,24 +25,26 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    importance: Literal["Low", "Medium", "High"] = Field(
+    importance: Optional[Literal["Low", "Medium", "High"]] = Field(
         default=None,
         description="Importance of the event.",
     )
-    group: Literal[
-        "interest rate",
-        "inflation",
-        "bonds",
-        "consumer",
-        "gdp",
-        "government",
-        "housing",
-        "labour",
-        "markets",
-        "money",
-        "prices",
-        "trade",
-        "business",
+    group: Optional[
+        Literal[
+            "interest rate",
+            "inflation",
+            "bonds",
+            "consumer",
+            "gdp",
+            "government",
+            "housing",
+            "labour",
+            "markets",
+            "money",
+            "prices",
+            "trade",
+            "business",
+        ]
     ] = Field(default=None, description="Grouping of events")
     # TODO: Probably want to figure out the list we can use.
     country: Optional[Union[str, List[str]]] = Field(
