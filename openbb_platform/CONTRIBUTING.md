@@ -33,13 +33,13 @@
         - [Setup](#setup)
         - [Release](#release)
         - [Publish](#publish)
-- [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
-  - [Manage environment and dependencies](#manage-environment-and-dependencies)
-  - [Manage extensions](#manage-extensions)
-    - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
-  - [How to create a PR?](#how-to-create-a-pr)
-    - [Install pre-commit hooks](#install-pre-commit-hooks)
-    - [Branch Naming Conventions](#branch-naming-conventions)
+    - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
+      - [Manage environment and dependencies](#manage-environment-and-dependencies)
+      - [Manage extensions](#manage-extensions)
+        - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
+      - [How to create a PR?](#how-to-create-a-pr)
+        - [Install pre-commit hooks](#install-pre-commit-hooks)
+        - [Branch Naming Conventions](#branch-naming-conventions)
 
 ## Introduction
 
@@ -423,6 +423,8 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](#developer-guidelines). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
 
+There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#how-to-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#how-to-build-openbb-extensions), fix a bug, improve or create documentation, etc.
+
 ### Expectations for Contributors
 
 1. Use Cases:
@@ -585,13 +587,9 @@ Now, you can pip install your package from PyPI with:
 pip install openbb-some_ext
 ```
 
-# How to contribute to the OpenBB Platform?
+### How to contribute to the OpenBB Platform?
 
-There are many ways to contribute to the OpenBB Platform. You can add a new data point, add a new command, add a new visualization, add a new extension, fix a bug etc.
-
-In this document, we'll be focusing on adding a new data point to the OpenBB Platform.
-
-## Manage environment and dependencies
+#### Manage environment and dependencies
 
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 
@@ -647,7 +645,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 
   > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
 
-## Manage extensions
+#### Manage extensions
 
 To install an extension hosted on PyPI, use the `pip install <extension>` command.
 
@@ -665,7 +663,7 @@ openbb-extension = { path = "<relative-path-to-the-extension>", develop = true }
 
 Now you can use the `python dev_install.py [-e]` command to install the local extension.
 
-### Add an extension as a dependency
+##### Add an extension as a dependency
 
 To add the `openbb-qa` extension as a dependency, you'll need to add it to the `pyproject.toml` file:
 
@@ -676,7 +674,7 @@ openbb-qa = "^0.0.0a2"
 
 Then you can follow the same process as above to install the extension.
 
-## How to create a PR?
+#### How to create a PR?
 
 To create a PR to the OpenBB Platform, you'll need to fork the repository and create a new branch.
 
@@ -690,11 +688,11 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
 
-### Install pre-commit hooks
+##### Install pre-commit hooks
 
 To install pre-commit hooks, run `pre-commit install` in the root of the repository.
 
-### Branch Naming Conventions
+##### Branch Naming Conventions
 
 The accepted branch naming conventions are:
 
