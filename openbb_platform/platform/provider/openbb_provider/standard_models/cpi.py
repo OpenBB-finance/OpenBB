@@ -73,7 +73,9 @@ class CPIQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("countries")
     )
     units: CPI_UNITS = Field(
-        default="growth_same", description=QUERY_DESCRIPTIONS.get("units")
+        default="growth_same",
+        description=("Units to fetch data for. Choose between "
+                     "'growth_previous', 'growth_same', 'index_2015'")
     )
     frequency: CPI_FREQUENCY = Field(
         default="monthly", description=QUERY_DESCRIPTIONS.get("frequency")
