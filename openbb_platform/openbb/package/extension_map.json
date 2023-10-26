@@ -1,28 +1,19 @@
 {
     "openbb_core_extension": [
         "crypto@0.1.0a3",
-        "econometrics@0.1.0a3",
         "economy@0.1.0a3",
-        "fixedincome@0.1.0a3",
         "forex@0.1.0a3",
-        "futures@0.1.0a3",
+        "fixedincome@0.1.0a3",
         "news@0.1.0a3",
-        "openbb_charting@0.1.0a3",
-        "qa@0.1.0a3",
-        "stocks@0.1.0a3",
-        "ta@0.1.0a3"
+        "stocks@0.1.0a3"
     ],
     "openbb_provider_extension": [
-        "alpha_vantage@0.1.0a3",
         "benzinga@0.1.0a3",
-        "cboe@0.1.0a3",
         "fmp@0.1.0a3",
         "fred@0.1.0a3",
         "intrinio@0.1.0a3",
-        "oecd@0.1.0a3",
         "polygon@0.1.0a3",
-        "quandl@0.1.0a3",
-        "tradingeconomics@0.1.0a3",
-        "yfinance@0.1.0a3"
+        "alpha_vantage@0.1.0a3",
+        "tradingeconomics@0.1.0a3"
     ]
 }
