@@ -546,9 +546,11 @@ class ROUTER_economy(Container):
             ),
         ] = None,
         importance: typing_extensions.Annotated[
-            Literal["Low", "Medium", "High"],
-            OpenBBCustomParameter(description="Importance of the event."),
-        ] = "High",
+            Literal[1, 2, 3],
+            OpenBBCustomParameter(
+                description="Importance of the event. (1-Low, 2-Medium, 3-High)"
+            ),
+        ] = 3,
         group: typing_extensions.Annotated[
             Union[
                 Literal[
@@ -585,8 +587,8 @@ class ROUTER_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        importance : Literal['Low', 'Medium', 'High']
-            Importance of the event.
+        importance : Literal[1, 2, 3]
+            Importance of the event. (1-Low, 2-Medium, 3-High)
         group : Union[Literal['interest rate', 'inflation', 'bonds', 'consumer', ...
             Grouping of events
         country : Union[List[str], str, None]
@@ -646,7 +648,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.econcal(importance="High")
+        >>> obb.economy.econcal(importance=3)
         """  # noqa: E501
 
         inputs = filter_inputs(
