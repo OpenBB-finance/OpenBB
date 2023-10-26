@@ -3,7 +3,7 @@
 import json
 from datetime import date as dateType
 from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
@@ -79,7 +79,7 @@ def create_url(
     version: int,
     endpoint: str,
     api_key: Optional[str],
-    query: Optional[BaseModel] = None,
+    query: Optional[Union[BaseModel, Dict]] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
     """Return a URL for the FMP API.
@@ -102,7 +102,9 @@ def create_url(
     str
         The querystring.
     """
-    the_dict = {} if not query else query.model_dump()
+    the_dict = {}
+    if query:
+        the_dict = query.model_dump() if isinstance(query, BaseModel) else query
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
@@ -169,7 +171,6 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
 
 def get_interval(value: str) -> str:
     """Get the intervals for the FMP API."""
-
     intervals = {
         "m": "min",
         "h": "hour",
