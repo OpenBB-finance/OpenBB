@@ -1,15 +1,27 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Union
-
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_economy(Container):
@@ -428,11 +440,15 @@ class ROUTER_economy(Container):
         ],
         units: typing_extensions.Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(description="The data units."),
+            OpenBBCustomParameter(
+                description="The unit of measurement for the CPI data.\n    Options:\n    - `growth_previous`: growth from the previous period\n    - `growth_same`: growth from the same period in the previous year\n    - `index_2015`: index with base year 2015."
+            ),
         ] = "growth_same",
         frequency: typing_extensions.Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(description="The data time frequency."),
+            OpenBBCustomParameter(
+                description="The frequency of the data points; options include `monthly`, `quarter`, and `annual`"
+            ),
         ] = "monthly",
         harmonized: typing_extensions.Annotated[
             bool,
@@ -462,9 +478,13 @@ class ROUTER_economy(Container):
         countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgar...
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
-            The data units.
+            The unit of measurement for the CPI data.
+            Options:
+            - `growth_previous`: growth from the previous period
+            - `growth_same`: growth from the same period in the previous year
+            - `index_2015`: index with base year 2015.
         frequency : Literal['monthly', 'quarter', 'annual']
-            The data time frequency.
+            The frequency of the data points; options include `monthly`, `quarter`, and `annual`
         harmonized : bool
             Whether you wish to obtain harmonized data.
         start_date : Union[datetime.date, None]
@@ -492,10 +512,8 @@ class ROUTER_economy(Container):
 
         CPI
         ---
-        date : Optional[Union[date]]
+        date : date
             The date of the data.
-        value : Optional[Union[float]]
-            CPI value on the date.
 
         Example
         -------
@@ -1030,7 +1048,7 @@ class ROUTER_economy(Container):
         units: typing_extensions.Annotated[
             Literal["usd", "usd_cap"],
             OpenBBCustomParameter(
-                description="The data units. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
+                description="The unit of measurement for the CPI data.\n    Options:\n    - `growth_previous`: growth from the previous period\n    - `growth_same`: growth from the same period in the previous year\n    - `index_2015`: index with base year 2015. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
             ),
         ] = "usd",
         start_date: typing_extensions.Annotated[
@@ -1053,7 +1071,11 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         units : Literal['usd', 'usd_cap']
-            The data units. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.
+            The unit of measurement for the CPI data.
+            Options:
+            - `growth_previous`: growth from the previous period
+            - `growth_same`: growth from the same period in the previous year
+            - `index_2015`: index with base year 2015. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
@@ -1115,7 +1137,7 @@ class ROUTER_economy(Container):
         units: typing_extensions.Annotated[
             Literal["idx", "qoq", "yoy"],
             OpenBBCustomParameter(
-                description="The data units. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
+                description="The unit of measurement for the CPI data.\n    Options:\n    - `growth_previous`: growth from the previous period\n    - `growth_same`: growth from the same period in the previous year\n    - `index_2015`: index with base year 2015. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
             ),
         ] = "yoy",
         start_date: typing_extensions.Annotated[
@@ -1138,7 +1160,11 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         units : Literal['idx', 'qoq', 'yoy']
-            The data units. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
+            The unit of measurement for the CPI data.
+            Options:
+            - `growth_previous`: growth from the previous period
+            - `growth_same`: growth from the same period in the previous year
+            - `index_2015`: index with base year 2015. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)
         start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
