@@ -82,10 +82,9 @@ class Credentials(_Credentials):
 
             if f_annotation:
                 new_annotations[f_name] = f_annotation
-
-            new_fields[f_name] = FieldInfo.from_annotated_attribute(
-                annotation=f_annotation, default=f_value
-            )
+                new_fields[f_name] = FieldInfo.from_annotated_attribute(
+                    annotation=f_annotation, default=f_value
+                )
 
             if hasattr(cls, f_name):
                 raise ValueError(f"Attribute '{f_name}' is already defined.")
@@ -94,7 +93,6 @@ class Credentials(_Credentials):
         cls.model_fields.update(new_fields)
         cls.__annotations__.update(new_annotations)
         cls.model_rebuild(force=True)
-
 
     def show(self):
         """Unmask credentials and print them"""
