@@ -27,6 +27,7 @@ openbb-oecd = { path = "./providers/oecd", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-forex = { path = "./extensions/forex", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
