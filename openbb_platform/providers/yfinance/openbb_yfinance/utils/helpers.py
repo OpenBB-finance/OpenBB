@@ -8,9 +8,8 @@ from pathlib import Path
 from typing import Any, Literal, Optional, Union
 
 import pandas as pd
-from dateutil.relativedelta import relativedelta
-
 import yfinance as yf
+from dateutil.relativedelta import relativedelta
 
 from .references import MONTHS
 
