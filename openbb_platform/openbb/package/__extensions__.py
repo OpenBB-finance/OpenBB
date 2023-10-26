@@ -34,6 +34,7 @@ Extensions:
 
     - alpha_vantage@0.1.0a3
     - benzinga@0.1.0a3
+    - biztoc@0.1.0a3
     - cboe@0.1.0a3
     - fmp@0.1.0a3
     - fred@0.1.0a3
