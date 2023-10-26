@@ -27,3 +27,14 @@ def search(
     An empty query returns the full list of ETFs from the provider.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfHistorical")
+def historical(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """ETF Historical Market Price."""
+    return OBBject(results=Query(**locals()).execute())
