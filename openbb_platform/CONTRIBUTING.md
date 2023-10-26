@@ -421,6 +421,8 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 ## Contributor Guidelines
 
+The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](#developer-guidelines). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
+
 ### Expectations for Contributors
 
 1. Use Cases:
