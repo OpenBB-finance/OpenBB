@@ -1,6 +1,6 @@
 ---
 title: Charting Extension
-sidebar_position: 3
+sidebar_position: 4
 description: The OpenBB Charting Extension.
 keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client]
 ---
