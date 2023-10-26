@@ -1,6 +1,17 @@
 """The OBBject."""
 from re import sub
-from typing import TYPE_CHECKING, Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Dict,
+    Generic,
+    List,
+    Literal,
+    Optional,
+    Set,
+    TypeVar,
+)
 
 import pandas as pd
 from numpy import ndarray
@@ -47,6 +58,8 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
+    _credentials: BaseModel
+    _accessors: ClassVar[Set[str]] = set()
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
