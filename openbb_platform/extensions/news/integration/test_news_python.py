@@ -50,6 +50,15 @@ def obb(pytestconfig):
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "biztoc",
+                "filter": "tag",
+                "tag": "federalreserve",
+                "source": "bloomberg",
+                "term": "MSFT",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
