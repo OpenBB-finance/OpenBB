@@ -1,6 +1,6 @@
 ---
-title: generic
-sidebar_position: 1
+title: FAQs
+sidebar_position: 5
 description: Here we answer frequently asked questions about the OpenBB Bot from our users and community.
 keywords:
   [

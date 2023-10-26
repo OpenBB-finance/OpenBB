@@ -1,6 +1,6 @@
 ---
 title: Telegram
-sidebar_position: 3
+sidebar_position: 2
 description: Understand the basics for getting started and running the OpenBB Boton Telegram.
 keywords: [telegram, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
@@ -8,8 +8,6 @@ keywords: [telegram, how to, explanation, openbb bot, openbb, guide, bot guide, 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Telegram - Bot | OpenBB Docs" />
-
-## Getting Started with Telegram
 
 Now that you have added the bot to your Telegram server you can get started with running commands.
 

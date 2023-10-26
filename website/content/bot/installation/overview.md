@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Overview
 sidebar_position: 1
 description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram, slack]
@@ -7,7 +7,7 @@ keywords: [installation, install, install openbb bot, guide, how to, explanation
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation - Bot | OpenBB Docs" />
+<HeadTitle title="Overview - Bot | OpenBB Docs" />
 
 import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";

@@ -1,6 +1,6 @@
 ---
 title: Discord
-sidebar_position: 2
+sidebar_position: 1
 description: Understand the basics for getting started and running the OpenBB Boton Discord.
 keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
@@ -8,8 +8,6 @@ keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide, c
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Discord - Bot | OpenBB Docs" />
-
-## Getting Started with Discord
 
 Now that you have added the bot to your Discord you can get started with running commands.
 

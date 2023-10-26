@@ -1,6 +1,6 @@
 ---
-title: Discord
-sidebar_position: 1
+title: Setting up Discord bot
+sidebar_position: 2
 description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,slack]
 ---
@@ -10,8 +10,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Discord - Bot | OpenBB Docs" />
 
 import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
-
-## Discord - First Time Setup
 
 <AddBotDialogDiscord
 />
