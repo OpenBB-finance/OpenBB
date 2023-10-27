@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import clsx from "clsx";
+import { useLocation } from "@docusaurus/router";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import {
   useHideableNavbar,
   useNavbarMobileSidebar,
 } from "@docusaurus/theme-common/internal";
 import NavbarMobileSidebar from "@theme/Navbar/MobileSidebar";
-import styles from "./styles.module.css";
-import { useLocation } from "@docusaurus/router";
+import clsx from "clsx";
+import React, { useEffect } from "react";
 import { useIFrameContext } from "../../Root";
+import styles from "./styles.module.css";
 function NavbarBackdrop(props) {
   return (
     <div

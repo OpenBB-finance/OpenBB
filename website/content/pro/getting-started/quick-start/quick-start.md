@@ -6,7 +6,7 @@ sidebar_position: 2
 
 Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment research. Let's get you started by understanding the layout of the Terminal Pro.
 
-<img width="1467" alt="275680756-5738aae0-23cd-4cfa-8150-77150a1d5086" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c4a53275-5182-4e9a-a39f-ecb7604dd821">
+<img width="1467" alt="275680756-5738aae0-23cd-4cfa-8150-77150a1d5086" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c4a53275-5182-4e9a-a39f-ecb7604dd821"/>
 
 The interface is divided into two main areas:
 
