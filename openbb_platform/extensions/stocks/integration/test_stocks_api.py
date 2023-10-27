@@ -959,16 +959,14 @@ def test_stocks_info(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({"symbol": "AAPL", "limit": 3, "provider": "sec", "skip_reports": None}),
-    ],
+    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
 )
 @pytest.mark.integration
-def test_stocks_ftd(params, headers):
+def test_stocks_disc_gainers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/ftd?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/gainers?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -976,14 +974,14 @@ def test_stocks_ftd(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL,NVDA,QQQ,INTC", "provider": "fmp"})],
+    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
 )
 @pytest.mark.integration
-def test_stocks_price_performance(params, headers):
+def test_stocks_disc_losers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/price_performance?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/losers?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -991,39 +989,14 @@ def test_stocks_price_performance(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        (
-            {
-                "provider": "intrinio",
-                "symbol": None,
-                "start_date": "2021-01-01",
-                "end_date": "2021-12-31",
-                "limit": 300,
-                "status": None,
-                "min_value": None,
-                "max_value": None,
-            }
-        ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": None,
-                "start_date": "2023-01-01",
-                "end_date": None,
-                "limit": 300,
-                "status": None,
-                "min_value": None,
-                "max_value": None,
-            }
-        ),
-    ],
+    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
 )
 @pytest.mark.integration
-def test_stocks_calendar_ipo(params, headers):
+def test_stocks_disc_active(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/active?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
