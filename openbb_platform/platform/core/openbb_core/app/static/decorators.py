@@ -74,9 +74,9 @@ def register_accessor(name, cls) -> Callable:
 def extend_obbject(name: str) -> Callable:
     """Extend an OBBject, inspired by pandas.
 
-    Set the following as entry_point in your extension .toml file:
+    Set the following as entry_point in your extension .toml file and install it:
     [tool.poetry.plugins."openbb_obbject_extension"]
-    useless = "openbb_useless:entry_point"
+    example = "openbb_example:entry_point"
 
     Extension code:
     ```python
