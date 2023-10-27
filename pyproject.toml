@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "openbb"
+name = "openbb-terminal"
 version = "3.2.3"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
