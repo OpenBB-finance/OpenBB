@@ -1449,6 +1449,7 @@ optional = false
 python-versions = ">=3.7,<4"
 files = [
     {file = "reportlab-4.0.5-py3-none-any.whl", hash = "sha256:1344dbe779b9049a1888105503837d0e5b62163bf5c6b33bd1fbe84bad484f50"},
+    {file = "reportlab-4.0.5.tar.gz", hash = "sha256:9c68f277736f585c5c9938755b826dd57c877fcaeb203e21cefea12b3b1db4f5"},
 ]
 
 [package.dependencies]
