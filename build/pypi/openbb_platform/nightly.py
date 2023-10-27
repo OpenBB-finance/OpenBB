@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import toml
 
-PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
+PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
 SUB_PACKAGES = {}
@@ -80,4 +80,5 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    #build()
+    print(PYPROJECT)

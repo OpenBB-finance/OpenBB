@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from typing import List, Optional
 
-PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
+PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
 
 def update_lock_file(packages: Optional[List[str]] = None) -> None:
     """Update the poetry lock files in all the packages or in the given packages."""
