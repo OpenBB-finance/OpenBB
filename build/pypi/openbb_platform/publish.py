@@ -2,7 +2,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from dev_utils.dev_install import PLATFORM_PATH
+PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
 
 SUB_PACKAGES = ["platform/provider", "platform/core", "extensions", "providers"]
 

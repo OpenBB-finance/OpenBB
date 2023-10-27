@@ -1,9 +1,9 @@
 import subprocess
 import sys
 from typing import List, Optional
+from pathlib import Path
 
-from dev_utils.dev_install import PLATFORM_PATH
-
+PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
 
 def update_lock_file(packages: Optional[List[str]] = None) -> None:
     """Update the poetry lock files in all the packages or in the given packages."""
