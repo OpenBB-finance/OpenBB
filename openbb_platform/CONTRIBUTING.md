@@ -51,7 +51,7 @@
 ## Introduction
 
 This document provides guidelines for contributing to the OpenBB Platform.
-Througout this document, we will be differentiating between two types of contributors: Developers and Contributors.
+Throughout this document, we will be differentiating between two types of contributors: Developers and Contributors.
 
 1. **Developers**: Those who are building new features or extensions for the OpenBB Platform or leveraging the OpenBB Platform.
 2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#how-to-create-a-pr) thus giving back to the community.
