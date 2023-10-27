@@ -20,20 +20,53 @@ class PolygonStockQuoteQueryParams(StockQuoteQueryParams):
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " If a list is supplied, only the first symbol will be processed."
     )
-
     limit: Optional[int] = Field(
-        default=50,
+        default=25,
         description=(
             QUERY_DESCRIPTIONS.get("interval", "")
-            + " Up to one million records will be returned. Pagination occurs in groups of 50,000."
+            + " Up to ten million records will be returned. Pagination occurs in groups of 50,000."
             + " Remaining limit values will always return 50,000 more records unless it is the last page."
             + " High volume tickers will require multiple max requests for a single day's NBBO records."
-            + " Expect stocks, like SPY, to require 5-10M rows, approaching 1GB in size, per day."
+            + " Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV."
+            + " Splitting large requests into chunks is recommended for full-day requests of high-volume symbols."
         ),
     )
-    timestamp: Optional[Union[str, int]] = Field(
+    timestamp: Optional[Union[datetime, str]] = Field(
         default=None,
-        description="Query by timestamp. Either a date with the format YYYY-MM-DD or a nanosecond timestamp.",
+        description="""
+            Query by datetime. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+        """,
+    )
+    timestamp_lt: Optional[Union[datetime, str]] = Field(
+        default=None,
+        description="""
+            Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+        """,
+    )
+    timestamp_gt: Optional[Union[datetime, str]] = Field(
+        default=None,
+        description="""
+            Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+        """,
+    )
+    timestamp_lte: Optional[Union[datetime, str]] = Field(
+        default=None,
+        description="""
+            Query by datetime, less than or equal to.
+            Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+        """,
+    )
+    timestamp_gte: Optional[Union[datetime, str]] = Field(
+        default=None,
+        description="""
+            Query by datetime, greater than or equal to.
+            Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+        """,
     )
 
 
@@ -145,6 +178,7 @@ class PolygonStockQuoteFetcher(
         symbols = query.symbol.split(",") if "," in query.symbol else [query.symbol]
         query.symbol = symbols[0]
         records = 0
+
         # Internal hard limit to prevent system overloads.
         max = 10000000
         if query.timestamp or query.limit >= 50000:
@@ -152,7 +186,9 @@ class PolygonStockQuoteFetcher(
             query.limit = 50000
         results = []
         base_url = f"https://api.polygon.io/v3/quotes/{symbols[0]}"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol"]
+        ).replace("_", ".")
         url = f"{base_url}?{query_str}&apiKey={api_key}"
         data = get_data_one(url, **kwargs)
         results = data["results"]
