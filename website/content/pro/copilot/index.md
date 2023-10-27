@@ -6,7 +6,8 @@ sidebar_position: 2
 
 OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 
-<img width="1453" alt="Screenshot 2023-10-18 at 2 02 30 AM" src="https://github.com/OpenBB-finance/terminalpro/assets/25267873/da29f8e9-9602-4e67-8ea9-a3ba5133ff3f" />
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d7023765-7fcd-4bcb-bded-7ed44d4f7c18)
+
 
 To initiate a dialogue with the OpenBB Copilot, simply click on the icon located at the top left of your screen. You have the option to input your request either through typing or voice command.
 
