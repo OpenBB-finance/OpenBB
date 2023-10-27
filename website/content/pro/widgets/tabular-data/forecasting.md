@@ -2,7 +2,7 @@
 sidebar_position: 3
 ---
 
-# Mastering Forecasting
+# Forecasting
 
 In the dynamic world of investment research, the ability to accurately model and forecast financial time series is a crucial skill. OpenBB Terminal Pro empowers you to do just that, right from our user-friendly interface. Simply select the time series you wish to model or forecast, choose your preferred model, and voila! A chart is generated, displaying your selected time series alongside the forecast or model you've chosen.
 
