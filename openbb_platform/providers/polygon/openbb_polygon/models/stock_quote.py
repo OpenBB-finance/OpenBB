@@ -181,7 +181,14 @@ class PolygonStockQuoteFetcher(
 
         # Internal hard limit to prevent system overloads.
         max = 10000000
-        if query.timestamp or query.limit >= 50000:
+        if (
+            query.timestamp
+            or query.timestamp_gt
+            or query.timestamp_gte
+            or query.timestamp_lt
+            or query.timestamp_lte
+            or query.limit >= 50000
+        ):
             max = query.limit if query.limit != 25 and query.limit < max else max
             query.limit = 50000
         results = []
@@ -195,8 +202,14 @@ class PolygonStockQuoteFetcher(
         results = map_exchanges(results)
         results = map_tape(results)
         records += len(results)
-        if records == 50000 and "next_url" in data:
-            while records < max and data["next_url"]:
+        if (
+            query.timestamp
+            or query.timestamp_gt
+            or query.timestamp_gte
+            and records == 50000
+            and "next_url" in data
+        ):
+            while records < max and "next_url" in data and data["next_url"]:
                 new_data = get_data_one(f"{data['next_url']}&apiKey={api_key}")
                 records += len(new_data["results"])
                 data = new_data
