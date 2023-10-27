@@ -38,24 +38,32 @@ _Credentials = create_model(  # type: ignore
 class Credentials(_Credentials):
     """Credentials model used to store provider credentials"""
 
-    def model_dump(self, *args, **kwargs) -> Dict[str, Any]:
-        """Override model_dump to include new fields added with `_add_fields`"""
-        instance_fields = super().model_dump(*args, **kwargs)
+    @model_serializer(when_used="always")
+    def _serialize(self) -> Dict[str, Any]:
+        """Serialize credentials to a dict"""
+        # We override the default serializer to include new_fields added after init
+        # This will be called everytime model_dump() is called
+        instance_fields = vars(super())
         class_fields = self.model_fields
         for f_name, f_info in class_fields.items():
             instance_fields.setdefault(f_name, f_info.default)
-
-        return instance_fields
-
-    @model_serializer(when_used="json-unless-none")
-    def _serialize(self) -> Dict[str, Any]:
         return {
             k: v.get_secret_value() if isinstance(v, SecretStr) else v
-            for k, v in self.model_dump().items()
+            for k, v in instance_fields.items()
         }
 
     def __repr__(self) -> str:
+        # We use the __dict__ because model_dump() will use the serializer
+        # and unmask the credentials
         return (
+            self.__class__.__name__
+            + "\n\n"
+            + "\n".join([f"{k}: {v}" for k, v in self.__dict__.items()])
+        )
+
+    def show(self):
+        """Unmask credentials and print them"""
+        print(  # noqa: T201
             self.__class__.__name__
             + "\n\n"
             + "\n".join([f"{k}: {v}" for k, v in self.model_dump().items()])
@@ -93,11 +101,3 @@ class Credentials(_Credentials):
         cls.model_fields.update(new_fields)
         cls.__annotations__.update(new_annotations)
         cls.model_rebuild(force=True)
-
-    def show(self):
-        """Unmask credentials and print them"""
-        print(  # noqa: T201
-            self.__class__.__name__
-            + "\n\n"
-            + "\n".join([f"{k}: {v}" for k, v in self.model_dump(mode="json").items()])
-        )
