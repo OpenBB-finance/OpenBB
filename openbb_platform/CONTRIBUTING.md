@@ -10,6 +10,14 @@
         - [Standard Data Example](#standard-data-example)
       - [What is an extension?](#what-is-an-extension)
         - [Types of extensions](#types-of-extensions)
+  - [Dependency Management](#dependency-management)
+    - [High-Level Overview](#high-level-overview)
+    - [Core Dependency Management](#core-dependency-management)
+      - [Installation](#installation)
+      - [Using Poetry](#using-poetry)
+    - [Core and Extensions](#core-and-extensions)
+      - [Installation](#installation-1)
+      - [Dependency Management with Poetry](#dependency-management-with-poetry)
   - [Developer Guidelines](#developer-guidelines)
     - [Expectations for Developers](#expectations-for-developers)
     - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
@@ -33,10 +41,9 @@
         - [Setup](#setup)
         - [Release](#release)
         - [Publish](#publish)
-    - [How to contribute to the OpenBB Platform?](#how-to-contribute-to-the-openbb-platform)
-      - [Manage environment and dependencies](#manage-environment-and-dependencies)
-      - [Manage extensions](#manage-extensions)
-        - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
+    - [Manage extensions](#manage-extensions)
+      - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
+    - [Write code and commit](#write-code-and-commit)
       - [How to create a PR?](#how-to-create-a-pr)
         - [Branch Naming Conventions](#branch-naming-conventions)
 
@@ -174,6 +181,50 @@ We primarily have 3 types of extensions:
 If your extension is of high quality and you think that it would be a good community extension, you can open a PR to the OpenBB Platform repository and we'll review it.
 
 We encourage independent extensions to be shared with the community by publishing them to PyPI.
+
+## Dependency Management
+
+### High-Level Overview
+
+- **Provider**: The base package with no dependencies on other `openbb` packages.
+- **Core**: Depends on the Provider and serves as the main infrastructural package.
+- **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
+- **Providers**: Utility packages extending functionality to different providers, where each provider is its own package.
+
+### Core Dependency Management
+
+#### Installation
+
+- **pip**: `pip install -e OpenBBTerminal/openbb_platform/platform/core`
+- **poetry**: `poetry install OpenBBTerminal/openbb_platform/platform/core`
+
+#### Using Poetry
+
+Ensure you're in a fresh conda environment before adjusting dependencies.
+
+- **Add a Dependency**: `poetry add <my-dependency>`
+- **Update Dependencies**:
+  - All: `poetry update`
+  - Specific: `poetry update <my-dependency>`
+- **Remove a Dependency**: `poetry remove <my-dependency>`
+
+### Core and Extensions
+
+#### Installation
+
+For development setup, use the provided script to install all extensions and their dependencies:
+
+- `python dev_install.py [-e|--extras]`
+
+> **Note**: If developing an extension, avoid installing all extensions to prevent unnecessary overhead.
+
+#### Dependency Management with Poetry
+
+- **Add Platform Extension**: `poetry add openbb-extension-name [--dev]`
+- **Resolve Conflicts**: Adjust versions in `pyproject.toml` if notified by Poetry.
+- **Lock Dependencies**: `poetry lock`
+- **Update Platform**: `poetry update openbb-platform`
+- **Documentation**: Maintain `pyproject.toml` and `poetry.lock` for a clear record of dependencies.
 
 ## Developer Guidelines
 
@@ -586,65 +637,7 @@ Now, you can pip install your package from PyPI with:
 pip install openbb-some_ext
 ```
 
-### How to contribute to the OpenBB Platform?
-
-#### Manage environment and dependencies
-
-In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
-
-<details>
-<summary>Need help setting up Miniconda or Git?</summary>
-
-Sometimes, installing Miniconda or Git can be a bit tricky, so we've prepared a set of instructions to help you get started.
-
-Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installation/source) for more information.
-</details>
-
-1. Clone the repository:
-
-    ```bash
-    git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
-    ```
-
-2. Create and activate a virtual environment:
-
-    ```bash
-    conda create -n "obb-dev" python=3.9.13
-    conda activate obb-dev
-    ```
-
-    > Supported python versions: python = ">=3.8,<3.12"
-
-3. Manage your environment with [Poetry](https://python-poetry.org/):
-
-    ```bash
-    pip install poetry
-    ```
-
-4. Install the packages using the `dev_install.py` script located in the `openbb_platform` folder:
-
-    ```bash
-    python dev_install.py
-    ```
-
-   > To install all the packages, including extras, use the `-e` argument with the above script.
-
-5. Setup your API keys locally by adding them to the `~/.openbb_platform/user_settings.json` file. Populate this file with the following template and replace the values with your keys:
-
-  ```json
-  {
-    "credentials": {
-      "fmp_api_key": "REPLACE_ME",
-      "polygon_api_key": "REPLACE_ME",
-      "benzinga_api_key": "REPLACE_ME",
-      "fred_api_key": "REPLACE_ME"
-    }
-  }
-  ```
-
-  > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
-
-#### Manage extensions
+### Manage extensions
 
 To install an extension hosted on PyPI, use the `pip install <extension>` command.
 
@@ -662,7 +655,7 @@ openbb-extension = { path = "<relative-path-to-the-extension>", develop = true }
 
 Now you can use the `python dev_install.py [-e]` command to install the local extension.
 
-##### Add an extension as a dependency
+#### Add an extension as a dependency
 
 To add the `openbb-qa` extension as a dependency, you'll need to add it to the `pyproject.toml` file:
 
@@ -672,6 +665,8 @@ openbb-qa = "^0.0.0a2"
 ```
 
 Then you can follow the same process as above to install the extension.
+
+### Write code and commit
 
 #### How to create a PR?
 
