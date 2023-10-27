@@ -58,7 +58,7 @@ jobs:
       - name: OpenBB Platform - Create the dinamically generated wheel
         run: |
           python -m pip install poetry toml
-          python openbb_platform/dev_utils/nightly.py
+          python build/pypi/openbb_platform/nightly.py
 
       - name: OpenBB Platform - Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

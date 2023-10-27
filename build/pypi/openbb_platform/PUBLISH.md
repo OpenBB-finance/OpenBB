@@ -9,8 +9,8 @@ Publishing checklist:
 3. Change the Platform version on:
    -  `openbb_platform/platform/core/openbb_core/app/constants.py`
    - `openbb_platform/README.md`
-4. Run the publishing script: `python openbb_platform/dev_utils/dev_publish.py`
-5. Update poetry files: `python openbb_platform/poetry_update.py`
+4. Run the publishing script: `python build/pypi/openbb_platform/publish.py`
+5. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
 6. Open a PR so that changes are reflected on the main branch
 7. If applicable, set the version on `constants.py` to use the `dev` tag again
 
