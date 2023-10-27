@@ -873,7 +873,23 @@ def test_stocks_search(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
-        ({"symbol": "AAPL", "provider": "polygon"}),
+        (
+            {
+                "symbol": "CLOV",
+                "timestamp": "2023-10-26",
+                "provider": "polygon",
+                "limit": 1000,
+            }
+        ),
+        (
+            {
+                "symbol": "CLOV",
+                "provider": "polygon",
+                "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
+                "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
+                "limit": 5000,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
