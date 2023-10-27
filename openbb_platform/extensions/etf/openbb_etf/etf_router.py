@@ -38,3 +38,14 @@ def historical(
 ) -> OBBject[BaseModel]:
     """ETF Historical Market Price."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfInfo")
+def info(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """ETF Information Overview."""
+    return OBBject(results=Query(**locals()).execute())
