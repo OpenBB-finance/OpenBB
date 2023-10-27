@@ -11,12 +11,8 @@ QUERY_DESCRIPTIONS = {
     "date": "A specific date to get data for.",
     "limit": "The number of data entries to return.",
     "countries": "The country or countries to get data.",
-    "units": """The unit of measurement for the CPI data.
-    Options:
-    - `growth_previous`: growth from the previous period
-    - `growth_same`: growth from the same period in the previous year
-    - `index_2015`: index with base year 2015.""",
-    "frequency": "The frequency of the data points; options include `monthly`, `quarter`, and `annual`",
+    "units": "The unit of measurement for the data.",
+    "frequency": "The frequency of the data.",
 }
 
 DATA_DESCRIPTIONS = {

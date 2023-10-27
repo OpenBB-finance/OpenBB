@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EtfSearchQueryParams(QueryParams):
-    """ETF Search Query Params"""
+    """ETF Search Query Params."""
 
     query: Optional[str] = Field(description="Search query.", default="")
 
@@ -18,5 +18,5 @@ class EtfSearchQueryParams(QueryParams):
 class EtfSearchData(Data):
     """ETF Search Data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + "(ETF)")
     name: Optional[str] = Field(description="Name of the ETF.", default=None)

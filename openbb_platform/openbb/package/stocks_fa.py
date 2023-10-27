@@ -430,13 +430,13 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
-        ] = None,
+        ],
         end_date: typing_extensions.Annotated[
             Union[datetime.date, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
-        ] = None,
+        ],
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -489,7 +489,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.cal()
+        >>> obb.stocks.fa.cal(start_date="2023-01-01", end_date="2023-06-06")
         """  # noqa: E501
 
         inputs = filter_inputs(
