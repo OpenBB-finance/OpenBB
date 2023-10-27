@@ -21,6 +21,7 @@
   - [Developer Guidelines](#developer-guidelines)
     - [Expectations for Developers](#expectations-for-developers)
     - [How to build OpenBB extensions?](#how-to-build-openbb-extensions)
+    - [Building Extensions: Best Practices](#building-extensions-best-practices)
     - [How to add a new data point?](#how-to-add-a-new-data-point)
       - [Identify which type of data you want to add](#identify-which-type-of-data-you-want-to-add)
       - [Check if the standard model exists](#check-if-the-standard-model-exists)
@@ -267,6 +268,13 @@ The high level steps are:
 - Use your extension (either from Python or the API interface)
 - QA your extension
 - Share your extension with the community
+
+### Building Extensions: Best Practices
+
+1. **Review Platform Dependencies**: Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
+2. **Use Loose Versioning**: If possible, specify a range to maintain compatibility. E.g., `>=1.4,<1.5`.
+3. **Testing**: Test your extension with the Platform's core to avoid conflicts. Both unit and integration tests are recommended.
+4. **Document Dependencies**: Use `pyproject.toml` and `poetry.lock` for clear, up-to-date records.
 
 ### How to add a new data point?
 
