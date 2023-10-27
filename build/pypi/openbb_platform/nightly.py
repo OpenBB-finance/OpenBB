@@ -5,7 +5,6 @@ from typing import Any, Dict
 
 import toml
 
-
 PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 

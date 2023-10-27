@@ -1,7 +1,7 @@
 import subprocess
 import sys
-from typing import List, Optional
 from pathlib import Path
+from typing import List, Optional
 
 PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
 
