@@ -146,9 +146,9 @@ class PolygonStockQuoteFetcher(
         query.symbol = symbols[0]
         records = 0
         # Internal hard limit to prevent system overloads.
-        max = 1000000
-        if query.limit is None or query.limit >= 50000:
-            max = query.limit if query.limit and query.limit < max else max
+        max = 10000000
+        if query.timestamp or query.limit >= 50000:
+            max = query.limit if query.limit != 50 and query.limit < max else max
             query.limit = 50000
         results = []
         base_url = f"https://api.polygon.io/v3/quotes/{symbols[0]}"
@@ -159,13 +159,13 @@ class PolygonStockQuoteFetcher(
         results = map_exchanges(results)
         results = map_tape(results)
         records += len(results)
-        if records == 50000 and "next_url" in data:
+        if query.timestamp and records == 50000 and "next_url" in data:
             while records < max and "next_url" in data and data["next_url"]:
                 new_data = get_data_one(f"{data['next_url']}&apiKey={api_key}")
                 records += len(new_data["results"])
+                data = new_data
                 new_data = map_tape(new_data["results"])
                 results.extend(map_exchanges(new_data))
-                data = new_data
 
         return results
 

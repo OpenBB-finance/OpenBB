@@ -436,6 +436,7 @@ def map_exchanges(results):
 
 def map_tape(results):
     for result in results:
-        mapped_result = STOCK_TAPE_MAP[result["tape"]]
-        result["tape"] = mapped_result
+        if "tape" in result:
+            mapped_result = STOCK_TAPE_MAP[result["tape"]]
+            result["tape"] = mapped_result
     return results
