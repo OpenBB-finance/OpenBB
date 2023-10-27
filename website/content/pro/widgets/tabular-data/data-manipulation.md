@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Mastering Data Manipulation
+# Data Manipulation
 
 In the realm of investment research, financial data often comes in tabular form. This is because it's predominantly quantitative, and analysts and quants frequently need to delve into the raw data to make informed decisions. To enhance your navigation experience through this data, we've incorporated basic data manipulation capabilities.
 
