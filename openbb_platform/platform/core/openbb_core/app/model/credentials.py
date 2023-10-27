@@ -19,7 +19,7 @@ class LoadingError(Exception):
 
 
 class CredentialsLoader:
-    """Here we create the Credentials model from the provider required credentials"""
+    """Here we create the Credentials model"""
 
     credentials: Set[str] = set()
 
