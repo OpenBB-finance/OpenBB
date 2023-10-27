@@ -1,3 +1,4 @@
+"""Generate API integration tests."""
 import argparse
 import os
 from typing import Dict, List, Literal, Type, get_type_hints
@@ -25,15 +26,14 @@ def get_post_flat_params(hints: Dict[str, Type]):
 
 def write_init_test_template(http_method: str, path: str):
     """Write some common initialization for the tests with the defined template."""
-
     http_template_imports = {"get": "", "post": "import json"}
     template = http_template_imports[http_method]
-    template += """
+    template += """import base64
+
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
-import base64
 from openbb_core.env import Env
+from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -43,6 +43,10 @@ def headers():
     base64_bytes = base64.b64encode(userpass_bytes)
 
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+
+
+# pylint: disable=redefined-outer-name
+
 """
 
     with open(path, "w") as f:
@@ -57,7 +61,6 @@ def write_test_w_template(
     chart: bool = False,
 ):
     """Write the test with the defined template."""
-
     params_str = ",\n".join([f"({params})" for params in params_list])
 
     http_template_request = {
@@ -103,6 +106,7 @@ def test_exists(route: str, path: str):
         return route.replace("/", "_")[1:] in f.read()
 
 
+# pylint: disable=W0621
 def write_commands_integration_tests(
     command_map: CommandMap,
     provider_interface: ProviderInterface,
@@ -111,11 +115,11 @@ def write_commands_integration_tests(
     """Write the commands integration tests."""
     commands_not_found = []
 
-    commandmap_map = command_map.map
-    commandmap_models = command_map.commands_model
+    cm_map = command_map.map
+    cm_models = command_map.commands_model
     provider_interface_map = provider_interface.map
 
-    for route in commandmap_map:
+    for route in cm_map:
         http_method = get_http_method(api_paths, f"/api/v1{route}")
 
         menu = route.split("/")[1]
@@ -128,7 +132,7 @@ def write_commands_integration_tests(
         if not http_method:
             commands_not_found.append(route)
         else:
-            hints = get_type_hints(commandmap_map[route])
+            hints = get_type_hints(cm_map[route])
             hints.pop("cc", None)
             hints.pop("return", None)
 
@@ -136,7 +140,7 @@ def write_commands_integration_tests(
                 [{k: "" for k in get_post_flat_params(hints)}]
                 if http_method == "post"
                 else get_test_params(
-                    model_name=commandmap_models[route],
+                    model_name=cm_models[route],
                     provider_interface_map=provider_interface_map,
                 )
             )
@@ -154,7 +158,6 @@ def write_commands_integration_tests(
 
 def write_charting_extension_integration_tests():
     """Write the charting extension integration tests."""
-
     functions = ChartingService.get_implemented_charting_functions()
 
     # we assume test file exists
