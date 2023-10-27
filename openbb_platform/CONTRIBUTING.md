@@ -38,7 +38,6 @@
       - [Manage extensions](#manage-extensions)
         - [Add an extension as a dependency](#add-an-extension-as-a-dependency)
       - [How to create a PR?](#how-to-create-a-pr)
-        - [Install pre-commit hooks](#install-pre-commit-hooks)
         - [Branch Naming Conventions](#branch-naming-conventions)
 
 ## Introduction
@@ -687,10 +686,6 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
    solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
-
-##### Install pre-commit hooks
-
-To install pre-commit hooks, run `pre-commit install` in the root of the repository.
 
 ##### Branch Naming Conventions
 
