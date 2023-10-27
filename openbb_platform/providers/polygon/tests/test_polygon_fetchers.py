@@ -13,6 +13,7 @@ from openbb_polygon.models.major_indices_historical import (
 )
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
+from openbb_polygon.models.stock_quote import PolygonStockQuoteFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -123,5 +124,14 @@ def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
     params = {"date": date(2023, 1, 1)}
 
     fetcher = PolygonForexPairsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_polygon_stock_quote_fetcher(credentials=test_credentials):
+    params = {"symbol": "SPY"}
+
+    fetcher = PolygonStockQuoteFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

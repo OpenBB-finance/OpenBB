@@ -10,6 +10,7 @@ from openbb_polygon.models.major_indices_historical import (
 )
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
+from openbb_polygon.models.stock_quote import PolygonStockQuoteFetcher
 from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
@@ -29,5 +30,6 @@ polygon_provider = Provider(
         "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
         "ForexHistorical": PolygonForexHistoricalFetcher,
         "ForexPairs": PolygonForexPairsFetcher,
+        "StockQuote": PolygonStockQuoteFetcher,
     },
 )

@@ -873,6 +873,7 @@ def test_stocks_search(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "polygon"}),
     ],
 )
 @pytest.mark.integration

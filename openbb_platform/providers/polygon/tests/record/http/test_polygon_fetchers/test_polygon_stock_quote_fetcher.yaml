@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v3/quotes/SPY?apiKey=MOCK_API_KEY&limit=50
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/8yab08bQQ7Gv8u+joo9M/bYkU4nrrSVUEOhhaNwqlBIIhoKSZpsWqDqdz9tlhdw
+        l/F26ebP2xUW+T3jsZ/xzK9sOpjNb/JZ1v7Pr6w7+3YxuOt97Y6uBlkbsbX4MpkOe4OsHTC8Ei4/
+        zYYPj39wOez/T0jx5WnI46cyhFpZbzzqD/PheFT8T/zSyoaj/rDXzcfT4gMDfWllk+40H/aGk+4o
+        v8iHt4NZ3r2dZG1kFc9BAECDEyTGVjYbfJ8PRr3BxWh+ezmYZm0E58Q70VY2G06S8eyYGFpZ3p0U
+        v/x3qwl+9//87il/EdKMAABeQnQxJYDjYAoAwOjRNSyAW5IA/qkA0gR/VAk+RFZPLslP4FP8ZbyK
+        UAhr5m8mAaISoURAX/yghABeDQGKeEUWbliANe2AEoBZAcAQwFUJgLHpDJA18XslZSTykub3Ic1f
+        xIsLorz6HRCeChCa4yeCKMb6u2QFLOOjkoM1VMBn/NhIDywBAkUgTQsAaAsQokKoK0B8JoDfrAAQ
+        fKSkAE4rMiA4qV8CZUsyAElIihU0BIgxLQCSMIKLsnYBmqmB4lA9BRZjCzjHSQEW8ZGJvWtWgGU2
+        2Ddug6Ogj4AILlj86RKwiA8kImYJcNvNH53lARxKBT+ImscA2W58Ug1pC+Aw7QEX8T56O/1dZQfY
+        GD+IgBCGkDwFOodG+i/ipThHrZ4/rII/QpAgLqTPAMgWfxEfkc3t/wL+uI4hQIxadG+IaOx+LMxN
+        Ar+I9+AIqeHqv0b8yN5ROvvRp+1PGS+B0MSvoJdNwYtjlhhiuvShUfkX8aJqu/9lqf987TeJL4E9
+        G6mPaeNTxrO6onO83PvTZsZ/5c8PxGA0PjQKf4kPXtnEX+J7KvCXzD5WhU/ig/MGvlX4xHFx/Gm8
+        762TH6Jl+9AY/pX8Xlis5d/ivle4ehsfol37XPCevDX5ecny63qOfQUAxmALwHb1Qy1sU8P5v2T0
+        tzJ+ijY/2QmAAixm9d/2BPAVCRAqEoABG98BlQnADfKzF04bfwh2/0MSDrXnHnb/Wys+VSy/3f+Q
+        BMlu//XdT2X6N8nvwOT3FfufGLn26Lv28tPKdr8LEYOBX7H7faCodcceFd5/jfyg3nlK2z/wFbsf
+        Ceq3v+f8sDF+7yM4NNPfpW++FvGOwEPD/Mv2/0oE8I4JCRf+PSUAGCf/It4zk6vb/6vmnusSABdv
+        GAKE5A5A1fTFRxFP4Lx997tMALUrwLoEYGUqfXxy8P+YHcsFKOIFQ4RYtwRWCbDkBLg6ASIZNQBV
+        0kfAhQAAbF99vUCANdXAkp+AJXn1hyrpHrCIV644AiyzAFrbAa+QnzQ9/0OVtAUs4wXrD8Ce8+sm
+        +Zm8T7//QjVmAGV8ZKh9Atii9WcXlJMtENW4+n7UD/QvO8CmPBArYkQkTl/9o0arASBG79mb7/+q
+        +Te3/ogRwPKAqDH9+msR7zw793fr/0dXf88E0Gb4I+vi5lqTEwDURW4k+Iv4SER/2f/+aATMq0iA
+        hQBsJ0AwEqCIZ6Fgvn5qZgOsjr/wMBa/YQBWxb/MAq9MACfFSS4tgDEEKQVUlaYFWPb4aUUCiAb2
+        ikYGeMMCFfGCnmofg7enBIi64hxnHIKMa6BHASPXHYNvCz8jgTjr9ROK5YEZCSEEhif8X1rZLO/m
+        81nWzg4/vD97++bN3uH7k09ZK5sW/2KWXwz7WTsLAGHAHC57lzAg0j5csjoY4KUMRLo+a2WjwV1+
+        MZ/eZO3sa55PZu2dne5k+Goyvrm/Go9eDcc7P/zO9/k4H8x2Ph2e/bM3n87G03+cfd7VzvHufef6
+        6u7D3tXP/du3D4efzmfdU5z09wA7r89/9G4/3vSu8dv554Pr/dHBj97oSPvvbvLzzwdwdoo/90cf
+        J5en/37ov3ub917TrP/uRDvXu/ede7jrvIb7g5uj+879ycPR8QntHx/8q3N9Nu8cn9x19o7g4Ho3
+        nF5lv/8bAAD//7yrKwcaMwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1500'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 27 Oct 2023 07:27:09 GMT
+      Link:
+      - <https://api.polygon.io/v3/quotes/SPY?cursor=YXA9MTAyMjgxODgwJmFzPSZsaW1pdD01MCZvcmRlcj1kZXNjJnNvcnQ9dGltZXN0YW1wJnRpbWVzdGFtcC5sdGU9MjAyMy0xMC0yNlQyMyUzQTU5JTNBMjYuMTUxMDQ0NjA4Wg>;
+        rel="next"
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Item-Count:
+      - '50'
+      X-Request-Id:
+      - 4004e664bcb0e559d0b6920e1b8e88a3
+    status:
+      code: 200
+      message: OK
+version: 1
