@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Home
 
-<img width="1792" alt="Screenshot 2023-10-08 at 8 55 28 PM" src="https://github.com/OpenBB-finance/terminalpro/assets/25267873/3e6e9b81-41fd-499a-b026-defe7baab5d7" />
+<img width="1792" alt="273495206-3e6e9b81-41fd-499a-b026-defe7baab5d7" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9be1e003-5aec-41b8-a400-b897646fd907">
 
 Welcome to the home of OpenBB Terminal Pro, your one-stop hub for all things related to the terminal. Here's what you can find:
 
