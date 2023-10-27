@@ -88,6 +88,7 @@ def extend_obbject(name: str) -> Callable:
     class Example:
         def __init__(self, obbject):
             self._obbject = obbject
+
         def hello(self):
             api_key = self._obbject._credentials.example_api_key
             print(f"Hello, this is my credential: {api_key}!")
