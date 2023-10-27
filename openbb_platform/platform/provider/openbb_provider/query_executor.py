@@ -1,6 +1,8 @@
 """Query executor module."""
 from typing import Any, Dict, Optional, Type
 
+from pydantic import SecretStr
+
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.abstract.provider import Provider
 from openbb_provider.registry import Registry, RegistryLoader
@@ -34,7 +36,7 @@ class QueryExecutor:
 
     @staticmethod
     def filter_credentials(
-        provider: Provider, credentials: Optional[Dict[str, str]]
+        provider: Provider, credentials: Optional[Dict[str, SecretStr]]
     ) -> Dict[str, str]:
         """Filter credentials and check if they match provider requirements."""
         if provider.required_credentials is not None:
@@ -46,7 +48,7 @@ class QueryExecutor:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
                     raise ProviderError(f"Missing credential '{c}'.")
-                filtered_credentials[c] = credential_value
+                filtered_credentials[c] = credential_value.get_secret_value()
 
         return filtered_credentials
 
@@ -55,7 +57,7 @@ class QueryExecutor:
         provider_name: str,
         model_name: str,
         params: Dict[str, Any],
-        credentials: Optional[Dict[str, str]] = None,
+        credentials: Optional[Dict[str, SecretStr]] = None,
         **kwargs: Any,
     ) -> Any:
         """Execute query.
