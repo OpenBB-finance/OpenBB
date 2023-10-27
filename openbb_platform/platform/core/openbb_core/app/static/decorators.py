@@ -1,12 +1,9 @@
 import warnings
 from functools import wraps
-from typing import Any, Callable, List, Optional, TypeVar, overload
+from typing import Any, Callable, Optional, TypeVar, overload
 
 from pydantic.validate_call import validate_call
 from typing_extensions import ParamSpec
-
-from openbb_core.app.model.credentials import Credentials, format_map
-from openbb_core.app.model.obbject import OBBject
 
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -55,7 +52,7 @@ class CachedAccessor:
         return accessor_obj
 
 
-def _register_accessor(name, cls) -> Callable:
+def register_accessor(name, cls) -> Callable:
     """Register a custom accessor"""
 
     def decorator(accessor):
@@ -74,38 +71,36 @@ def _register_accessor(name, cls) -> Callable:
     return decorator
 
 
-def extend_obbject(name: str, required_credentials: List[str]) -> Callable:
+def extend_obbject(name: str) -> Callable:
     """Extend an OBBject, inspired by pandas.
 
-    Parameters
-    ----------
-    name : str
-        Name of the accessor.
+    Set the following as entry_point in your extension .toml file:
+    [tool.poetry.plugins."openbb_obbject_extension"]
+    useless = "openbb_useless:entry_point"
 
-    required_credentials : List[str]
-        List of required credentials.
+    Extension code:
+    ```python
+    from openbb_core.app.model.extension import Extension
+    from openbb_core.app.static.decorators import extend_obbject
 
-    Returns
-    -------
-    Callable
-        Decorator for the extension.
+    entry_point = Extension(name="example", required_credentials=["api_key"])
+    @extend_obbject(name="example")
+    class Example:
+        def __init__(self, obbject):
+            self._obbject = obbject
+        def hello(self):
+            api_key = self._obbject._credentials.example_api_key
+            print(f"Hello, this is my credential: {api_key}!")
+    ```
 
-    Example
-    -------
-    @extend_obbject(name="useless", required_credentials=["api_key"]
-    class Useless
-        def __init__(self, obbject)
-            self._obbject = obbj
-        def hello(self) -> str
-            cred = self._obbject._credentials.model_dump(mode="json")["useless_api_key"
-            return f"Hi, I'm {self.__class__.__name__}, this is my credential: {cred}!"
-
+    Usage:
     >>> from openbb import obb
-    >>> obbject = obb.stocks.load("AAPL")
-    >>> obbject.useless.hello()
-    Hi, I'm Useless, this is my credential: None!
+    >>> obbject = obb.stock.load("AAPL")
+    >>> obbject.example.hello()
+    Hello, this is my credential: None!
     """
-    formatted_creds = [f"{name}_{c}" for c in required_credentials]
-    # pylint: disable=protected-access
-    Credentials._add_fields(**format_map(formatted_creds))
-    return _register_accessor(name, OBBject)
+    # pylint: disable=import-outside-toplevel
+    # Avoid circular imports
+    from openbb_core.app.model.obbject import OBBject
+
+    return register_accessor(name, OBBject)

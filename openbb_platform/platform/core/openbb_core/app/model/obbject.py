@@ -17,7 +17,6 @@ import pandas as pd
 from numpy import ndarray
 from pydantic import BaseModel, Field
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
@@ -249,6 +248,9 @@ class OBBject(Tagged, Generic[T]):
         chart.fig
             The chart figure.
         """
+        #  pylint: disable=import-outside-toplevel
+        # Avoids circular import
+        from openbb_core.app.charting_service import ChartingService
 
         cs = ChartingService()
         kwargs["data"] = self.to_dataframe()

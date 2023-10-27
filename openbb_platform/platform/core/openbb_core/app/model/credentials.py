@@ -1,60 +1,83 @@
-from typing import Any, Dict, List, Optional, Tuple
+import traceback
+from typing import Any, Dict, Optional, Set, Tuple
 
+from importlib_metadata import entry_points
 from pydantic import (
+    BaseModel,
     ConfigDict,
     SecretStr,
     create_model,
     model_serializer,
 )
-from pydantic.fields import FieldInfo
 
+from openbb_core.app.model.extension import Extension
 from openbb_core.app.provider_interface import ProviderInterface
 
-# Here we create the BaseModel from the provider required credentials.
-# This means that if a new provider extension is installed, the required
-# credentials will be automatically added to the Credentials model.
+
+class LoadingError(Exception):
+    """Error loading extension."""
 
 
-def format_map(
-    required_credentials: List[str],
-) -> Dict[str, Tuple[object, None]]:
-    """Format credentials map to be used in the Credentials model"""
-    formatted: Dict[str, Tuple[object, None]] = {}
-    for c in required_credentials:
-        formatted[c] = (Optional[SecretStr], None)
+class CredentialsLoader:
+    """Here we create the Credentials model from the provider required credentials"""
 
-    return formatted
+    credentials: Set[str] = set()
+
+    @staticmethod
+    def prepare(
+        required_credentials: Set[str],
+    ) -> Dict[str, Tuple[object, None]]:
+        """Prepare credentials map to be used in the Credentials model"""
+        formatted: Dict[str, Tuple[object, None]] = {}
+        for c in required_credentials:
+            formatted[c] = (Optional[SecretStr], None)
+
+        return formatted
+
+    def from_providers(self) -> None:
+        """Load credentials from providers"""
+        for c in ProviderInterface().required_credentials:
+            self.credentials.add(c)
+
+    def from_extensions(self) -> None:
+        """Load credentials from extensions"""
+        for entry_point in sorted(entry_points(group="openbb_obbject_extension")):
+            try:
+                entry = entry_point.load()
+                if isinstance(entry, Extension):
+                    for c in entry.required_credentials:
+                        self.credentials.add(c)
+            except Exception as e:
+                traceback.print_exception(type(e), e, e.__traceback__)
+                raise LoadingError(f"Invalid extension '{entry_point.name}'") from e
+
+    def load(self) -> BaseModel:
+        """Load credentials from providers"""
+        self.from_providers()
+        self.from_extensions()
+        return create_model(  # type: ignore
+            "Credentials",
+            __config__=ConfigDict(validate_assignment=True),
+            **self.prepare(self.credentials),
+        )
 
 
-provider_credentials = ProviderInterface().required_credentials
-
-_Credentials = create_model(  # type: ignore
-    "Credentials",
-    __config__=ConfigDict(validate_assignment=True),
-    **format_map(provider_credentials),
-)
+_Credentials = CredentialsLoader().load()
 
 
-class Credentials(_Credentials):
+class Credentials(_Credentials):  # type: ignore
     """Credentials model used to store provider credentials"""
 
-    @model_serializer(when_used="always")
+    @model_serializer(when_used="json-unless-none")
     def _serialize(self) -> Dict[str, Any]:
         """Serialize credentials to a dict"""
-        # We override the default serializer to include new_fields added after init
-        # This will be called everytime model_dump() is called
-        instance_fields = vars(super())
-        class_fields = self.model_fields
-        for f_name, f_info in class_fields.items():
-            instance_fields.setdefault(f_name, f_info.default)
         return {
             k: v.get_secret_value() if isinstance(v, SecretStr) else v
-            for k, v in instance_fields.items()
+            for k, v in self.__dict__.items()
         }
 
     def __repr__(self) -> str:
-        # We use the __dict__ because model_dump() will use the serializer
-        # and unmask the credentials
+        """String representation of the credentials"""
         return (
             self.__class__.__name__
             + "\n\n"
@@ -66,38 +89,5 @@ class Credentials(_Credentials):
         print(  # noqa: T201
             self.__class__.__name__
             + "\n\n"
-            + "\n".join([f"{k}: {v}" for k, v in self.model_dump().items()])
+            + "\n".join([f"{k}: {v}" for k, v in self.model_dump(mode="json").items()])
         )
-
-    @classmethod
-    def _add_fields(cls, **field_definitions: Any) -> None:
-        """Add new fields to the Credentials model"""
-        new_fields: Dict[str, FieldInfo] = {}
-        new_annotations: Dict[str, Optional[type]] = {}
-
-        for f_name, f_def in field_definitions.items():
-            if isinstance(f_def, tuple):
-                try:
-                    f_annotation, f_value = f_def
-                except ValueError as e:
-                    raise Exception(
-                        "field definitions should either be a tuple of (<type>, <default>) or just a "
-                        "default value, unfortunately this means tuples as "
-                        "default values are not allowed"
-                    ) from e
-            else:
-                f_annotation, f_value = None, f_def
-
-            if f_annotation:
-                new_annotations[f_name] = f_annotation
-            new_fields[f_name] = FieldInfo.from_annotated_attribute(
-                annotation=f_annotation, default=f_value
-            )
-
-            if hasattr(cls, f_name):
-                raise ValueError(f"Attribute '{f_name}' is already defined.")
-            setattr(cls, f_name, None)
-
-        cls.model_fields.update(new_fields)
-        cls.__annotations__.update(new_annotations)
-        cls.model_rebuild(force=True)
