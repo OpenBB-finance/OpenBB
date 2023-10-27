@@ -879,6 +879,10 @@ def test_stocks_search(params, obb):
                 "timestamp": "2023-10-26",
                 "provider": "polygon",
                 "limit": 1000,
+                "timestamp_lte": None,
+                "timestamp_gte": None,
+                "timestamp_gt": None,
+                "timestamp_lt": None,
             }
         ),
         (
@@ -888,6 +892,9 @@ def test_stocks_search(params, obb):
                 "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
                 "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
                 "limit": 5000,
+                "timestamp_gte": None,
+                "timestamp_lte": None,
+                "timestamp": None,
             }
         ),
     ],
