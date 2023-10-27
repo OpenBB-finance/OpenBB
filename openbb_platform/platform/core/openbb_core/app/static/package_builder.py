@@ -447,8 +447,24 @@ class DocstringGenerator:
             example_params["symbol"] = "BTCUSD"
         elif "forex" in route[0] and "symbol" in example_params:
             example_params["symbol"] = "EURUSD"
-        elif "index" in route[0] and "symbol" in example_params:
+        elif (
+            "index" in route[0]
+            and "european" not in route[0]
+            and "symbol" in example_params
+        ):
             example_params["symbol"] = "SPX"
+        elif (
+            "index" in route[0]
+            and "european" in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "BUKBUS"
+        elif (
+            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
+        ):
+            example_params["symbol"] = "VX"
+        elif "futures" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "ES"
 
         example = "\nExample\n-------\n"
         example += ">>> from openbb import obb\n"

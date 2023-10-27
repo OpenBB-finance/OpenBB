@@ -75,7 +75,6 @@ class BiztocGlobalNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Biztoc endpoint."""
-
         api_key = credentials.get("biztoc_api_key") if credentials else ""
 
         data = get_news(
