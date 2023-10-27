@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Advanced Search
 
-<img width="1455" alt="Screenshot 2023-10-16 at 5 56 41 PM" src="https://github.com/OpenBB-finance/terminalpro/assets/25267873/b5ed496a-5822-49c9-bc56-958dab886f59" />
+<img width="1455" alt="275681118-b5ed496a-5822-49c9-bc56-958dab886f59" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b10a013f-ad07-4ea6-ac55-17236b249bb2">
 
 OpenBB Terminal Pro's advanced search is a powerful tool that enables you to perform a wide range of tasks swiftly and efficiently.
 
