@@ -9,11 +9,30 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Installation - Platform | OpenBB Docs" />
 
-## Supported environments
+## General System Requirements
 
-### Venv
+Most systems capable of running Python 3.8-3.11 will be compatible with the OpenBB Platform.  A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended.  Maintaining the system with current patches ensures maximum compatibility.  At a minimum, Windows and macOS should be:
 
-The OpenBB Platform is installed within a Python virtual environment.  It is compatible with versions of Python between 3.8 and 3.11, inclusively.  Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
+- Windows 10
+- Mac OS Big Sur
+
+Linux users should run the command line update for the package manager, prior to installation.
+
+## Supported Environments
+
+The OpenBB Platform is installed within a Python virtual environment.  It is compatible with versions of Python between 3.8 and 3.11, inclusively.  The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html),  [Docker](https://hub.docker.com/), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+
+[Docker](/platform/installation#docker) builds the environment during the installation process, skip ahead to the specific section [below](/platform/installation#docker).
+
+For those new to Python, [this article](https://www.infoworld.com/article/3306656/python-virtualenv-and-venv-dos-and-donts.html) shares some tips on getting started and why environments are important.
+
+See [this guide](https://code.visualstudio.com/docs/python/environments) for creating a Python environment in VS Code.
+
+With the container created, and activated, begin the installation process.
+
+## Installation
+
+Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
 
 :::note
 Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment.
@@ -28,7 +47,7 @@ pip install poetry toml
 Install from PyPI with:
 
 ```console
-pip install openbb==4.0.0a3
+pip install openbb==4.0.0a4
 ```
 
 :::note
@@ -38,17 +57,17 @@ While still under active development, the version number is required to install 
 To install all of the extensions and providers:
 
 ```console
-pip install openbb[all]==4.0.0a3
+pip install openbb[all]==4.0.0a4
 ```
 
 To install a single extension:
 
 ```console
-pip install openbb[charting]==4.0.0a3
+pip install openbb[charting]==4.0.0a4
 ```
 
 ```console
-pip install openbb[ta]==4.0.0a3
+pip install openbb[ta]==4.0.0a4
 ```
 
 Import the package with:
