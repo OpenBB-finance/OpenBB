@@ -106,5 +106,5 @@ def price_performance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Price performance as a return, over different periods.."""
+    """Price performance as a return, over different periods."""
     return OBBject(results=Query(**locals()).execute())
