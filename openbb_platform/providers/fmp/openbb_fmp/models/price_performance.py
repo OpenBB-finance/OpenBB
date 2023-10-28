@@ -1,11 +1,9 @@
 """FMP Price Performance Model"""
 
 
-from datetime import date
 from typing import Any, Dict, List, Optional
 
-from dateutil.relativedelta import relativedelta
-from openbb_fmp.utils.helpers import create_url, get_data_one
+from openbb_fmp.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.recent_performance import (
     RecentPerformanceData,
