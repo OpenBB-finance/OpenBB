@@ -32,7 +32,7 @@ import Card from "@site/src/components/General/Card";
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data. We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
-TODO: Add terminal image
+<img width="806" alt="terminal" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0140f6e6-4a16-4b9a-80af-8b6378a5f9e0">
 
 ---
 
