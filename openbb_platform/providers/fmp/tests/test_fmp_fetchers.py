@@ -16,6 +16,7 @@ from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
+from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -473,5 +474,14 @@ def test_fmp_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "IOO"}
 
     fetcher = FMPEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_sectors_fetcher(credentials=test_credentials):
+    params = {"symbol": "IOO"}
+
+    fetcher = FMPEtfSectorsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
