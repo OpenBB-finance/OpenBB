@@ -97,6 +97,6 @@ fmp_provider = Provider(
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
-        "PricePerformance": FMPPricePerformanceFetcher
+        "PricePerformance": FMPPricePerformanceFetcher,
     },
 )

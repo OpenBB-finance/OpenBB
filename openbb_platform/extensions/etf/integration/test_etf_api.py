@@ -36,8 +36,22 @@ def test_etf_search(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "IOO", "start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "yfinance"}),
-        ({"symbol": "MISL", "start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "yfinance"}),
+        (
+            {
+                "symbol": "IOO",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "yfinance",
+            }
+        ),
+        (
+            {
+                "symbol": "MISL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "yfinance",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
