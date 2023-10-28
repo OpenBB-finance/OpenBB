@@ -13,8 +13,9 @@ from pydantic import BaseModel
 
 router = Router(prefix="")
 
-
 # pylint: disable=unused-argument
+
+
 @router.command(model="EtfSearch")
 def search(
     cc: CommandContext,
@@ -48,4 +49,15 @@ def info(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """ETF Information Overview."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfSectors")
+def sectors(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """ETF Sector weighting."""
     return OBBject(results=Query(**locals()).execute())
