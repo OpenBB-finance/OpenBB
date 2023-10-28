@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rnval - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rnval
-
 The risk neutral value of the options
 
 ### Usage

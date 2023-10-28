@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="compare - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# compare
-
 Compare results between all activated Panel regression models
 
 ### Usage

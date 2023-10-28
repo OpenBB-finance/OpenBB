@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mcapdom - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# mcapdom
-
 Display asset's percentage share of total crypto circulating market cap [Source: https://messari.io]
 
 ### Usage

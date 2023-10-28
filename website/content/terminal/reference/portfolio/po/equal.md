@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="equal - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# equal
-
 Returns an equally weighted portfolio
 
 ### Usage

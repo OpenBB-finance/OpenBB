@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="qqplot - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
-# qqplot
-
 Display QQ plot vs normal quantiles
 
 ### Usage

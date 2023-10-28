@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sidtc - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
-# sidtc
-
 Get short interest and days to cover. [Source: Stockgrid]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L76)]

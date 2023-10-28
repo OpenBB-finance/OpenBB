@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="arktrades - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
-# arktrades
-
 Gets a dataframe of ARK trades for ticker
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/ark_model.py#L19)]

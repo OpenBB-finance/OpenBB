@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="text_sent - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# text_sent
-
 Find the sentiment of a post and related comments.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L1049)]

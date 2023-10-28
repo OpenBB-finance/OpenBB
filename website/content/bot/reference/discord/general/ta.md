@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ta - General - Discord - Reference | OpenBB Bot Docs" />
 
-# ta
-
 This command allows the user to retrieve a technical analysis summary for a given stock ticker. The summary includes several indicators such as moving averages, fibonacci levels, support and resistance levels, and other technical metrics.
 
 ### Usage

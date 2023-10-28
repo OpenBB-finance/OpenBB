@@ -30,8 +30,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ols - Econometrics - Reference | OpenBB SDK Docs" />
 
-# ols
-
 Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L176)]

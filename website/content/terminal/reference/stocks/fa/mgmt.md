@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mgmt - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# mgmt
-
 Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider]
 
 ### Usage

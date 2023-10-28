@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="clean - Econometrics - Reference | OpenBB SDK Docs" />
 
-# clean
-
 Clean up NaNs from the dataset
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L65)]

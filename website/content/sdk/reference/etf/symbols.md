@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="symbols - Etf - Reference | OpenBB SDK Docs" />
 
-# symbols
-
 Gets all etf names and symbols
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L19)]

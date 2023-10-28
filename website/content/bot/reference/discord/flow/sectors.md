@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sectors - Flow - Discord - Reference | OpenBB Bot Docs" />
 
-# sectors
-
 This command retrieves a summary of all flows by MarketCap percentage per sector over the past x days.
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="overview - Economy - Reference | OpenBB SDK Docs" />
 
-# overview
-
 Scrape data for market overview
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/wsj_model.py#L62)]

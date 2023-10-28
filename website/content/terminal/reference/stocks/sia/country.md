@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="country - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# country
-
 See existing countries, or set country if arg specified
 
 ### Usage

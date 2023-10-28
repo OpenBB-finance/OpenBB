@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="unitroot - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
-# unitroot
-
 Unit root test / stationarity (ADF, KPSS)
 
 ### Usage

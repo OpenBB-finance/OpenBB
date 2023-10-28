@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="combine - Forecast - Reference | OpenBB Terminal Docs" />
 
-# combine
-
 Combine two entire datasets, or add specific columns. Add specificcolumns with the syntax: datasetX.column2,datasetY.column3
 
 ### Usage

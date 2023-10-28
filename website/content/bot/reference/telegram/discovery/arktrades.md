@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="arktrades - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
-# arktrades
-
 This command allows the user to retrieve a list of all trades made by ARK, including the time and amount of each trade. The data is presented in an easy-to-read table format so that the user can quickly analyze the trades made by ARK.
 
 ### Usage

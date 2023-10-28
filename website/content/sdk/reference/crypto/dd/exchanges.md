@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="exchanges - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
-# exchanges
-
 Helper method to get all the exchanges supported by ccxt
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L10)]

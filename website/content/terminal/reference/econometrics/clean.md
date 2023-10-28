@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="clean - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# clean
-
 Clean a dataset by filling and dropping NaN values.
 
 ### Usage

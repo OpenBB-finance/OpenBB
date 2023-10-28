@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="coin_list - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
-# coin_list
-
 Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L452)]

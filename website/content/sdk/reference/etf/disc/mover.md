@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mover - Disc - Etf - Reference | OpenBB SDK Docs" />
 
-# mover
-
 Scrape data for top etf movers.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/discovery/wsj_model.py#L15)]

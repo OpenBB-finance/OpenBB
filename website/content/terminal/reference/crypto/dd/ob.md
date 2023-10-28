@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ob - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# ob
-
 Get the order book for selected coin
 
 ### Usage

@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="senate - Government - Telegram - Reference | OpenBB Bot Docs" />
 
-# senate
-
 This command allows a user to view the recent trades of senate members for a specific ticker.
 
 ### Usage

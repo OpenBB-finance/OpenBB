@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cash - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# cash
-
 Get Cash Flow.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L140)]

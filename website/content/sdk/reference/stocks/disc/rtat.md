@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rtat - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# rtat
-
 Gets the top 10 retail stocks per day
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/nasdaq_model.py#L20)]

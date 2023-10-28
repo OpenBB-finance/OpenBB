@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mgmt - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# mgmt
-
 Get company managers from Business Insider
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/business_insider_model.py#L19)]

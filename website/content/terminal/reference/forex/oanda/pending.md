@@ -12,8 +12,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pending - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# pending
-
 Get information about pending orders.
 
 ### Usage

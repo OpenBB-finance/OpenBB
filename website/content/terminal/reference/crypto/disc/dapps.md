@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dapps - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
-# dapps
-
 Shows top decentralized applications [Source: https://dappradar.com/] Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]} to sort by column
 
 ### Usage

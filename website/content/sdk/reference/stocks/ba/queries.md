@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="queries - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# queries
-
 Get related queries from google api [Source: google].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/google_model.py#L73)]

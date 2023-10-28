@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="history - Robinhood - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# history
-
 Historical Portfolio Info
 
 ### Usage

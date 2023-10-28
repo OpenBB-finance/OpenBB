@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="acf - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
-# acf
-
 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff forex data
 
 ### Usage

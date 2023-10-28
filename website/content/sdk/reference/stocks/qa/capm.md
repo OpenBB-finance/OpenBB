@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="capm - Qa - Stocks - Reference | OpenBB SDK Docs" />
 
-# capm
-
 Provides information that relates to the CAPM model
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/factors_model.py#L80)]

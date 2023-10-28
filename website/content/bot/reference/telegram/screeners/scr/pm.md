@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pm - Scr - Screeners - Telegram - Reference | OpenBB Bot Docs" />
 
-# pm
-
 This command offers the user the ability to view the top pre-market gainers, losers, and most active, giving the user a better understanding of the market’s movements before the market officially opens.
 
 ### Usage

@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="om - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# om
-
 Provides omega ratio of the selected portfolio.
 
 ### Usage

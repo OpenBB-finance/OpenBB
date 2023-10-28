@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="plot - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# plot
-
 This function plots option payoff diagrams
 
 ### Usage

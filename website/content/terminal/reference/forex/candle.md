@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="candle - Forex - Reference | OpenBB Terminal Docs" />
 
-# candle
-
 Show candle for loaded fx data
 
 ### Usage

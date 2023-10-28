@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tradier - Keys - Reference | OpenBB SDK Docs" />
 
-# tradier
-
 Set Tradier key
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L680)]

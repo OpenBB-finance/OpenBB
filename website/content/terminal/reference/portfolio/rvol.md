@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rvol - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# rvol
-
 Show rolling volatility portfolio vs benchmark
 
 ### Usage

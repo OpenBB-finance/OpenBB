@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="global - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# global
-
 Shows global statistics about Crypto Market
 
 ### Usage

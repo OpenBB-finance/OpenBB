@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="erc20_tokens - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
-# erc20_tokens
-
 Helper method that loads ~1500 most traded erc20 token.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L210)]

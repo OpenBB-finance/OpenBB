@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fama_raw - Qa - Stocks - Reference | OpenBB SDK Docs" />
 
-# fama_raw
-
 Gets base Fama French data to calculate risk
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/factors_model.py#L20)]

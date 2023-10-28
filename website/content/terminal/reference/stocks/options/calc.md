@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="calc - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# calc
-
 Calculate profit or loss for given option settings.
 
 ### Usage

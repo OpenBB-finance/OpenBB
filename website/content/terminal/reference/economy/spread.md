@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spread - Economy - Reference | OpenBB Terminal Docs" />
 
-# spread
-
 Generate bond spread matrix.
 
 ### Usage

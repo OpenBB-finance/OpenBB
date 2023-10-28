@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="distr - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# distr
-
 Compute distribution of daily returns
 
 ### Usage

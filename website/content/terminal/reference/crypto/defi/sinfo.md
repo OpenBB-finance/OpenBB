@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sinfo - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# sinfo
-
 Displays staking info of a certain terra address. [Source: https://fcd.terra.dev/swagger]
 
 ### Usage

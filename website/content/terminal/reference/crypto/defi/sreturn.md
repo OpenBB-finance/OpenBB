@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sreturn - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# sreturn
-
 Displays terra blockchain staking returns history. [Source: https://fcd.terra.dev/swagger]
 
 ### Usage

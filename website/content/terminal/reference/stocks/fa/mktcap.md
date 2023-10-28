@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mktcap - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# mktcap
-
 Market Cap estimate over time. [Source: Yahoo Finance]
 
 ### Usage

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="generate_data - Options - Stocks - Reference | OpenBB SDK Docs" />
 
-# generate_data
-
 Gets x values, and y values before and after premiums
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L287)]

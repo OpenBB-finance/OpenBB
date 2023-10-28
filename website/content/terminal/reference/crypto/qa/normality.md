@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="normality - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
-# normality
-
 Normality tests
 
 ### Usage

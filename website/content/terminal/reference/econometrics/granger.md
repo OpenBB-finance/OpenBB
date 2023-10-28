@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="granger - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# granger
-
 Show Granger causality between two timeseries
 
 ### Usage

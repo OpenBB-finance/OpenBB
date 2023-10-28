@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="collections - Nft - Crypto - Reference | OpenBB Terminal Docs" />
 
-# collections
-
 NFT Collections [Source: https://nftpricefloor.com/]
 
 ### Usage

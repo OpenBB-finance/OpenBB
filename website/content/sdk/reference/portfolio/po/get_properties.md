@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="get_properties - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# get_properties
-
 Get properties to use on property optimization.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/optimizer_model.py#L2872)]

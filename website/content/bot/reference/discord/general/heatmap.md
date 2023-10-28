@@ -32,8 +32,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="heatmap - General - Discord - Reference | OpenBB Bot Docs" />
 
-# heatmap
-
 This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 
 ### Usage

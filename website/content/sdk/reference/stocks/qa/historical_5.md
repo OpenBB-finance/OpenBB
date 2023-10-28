@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="historical_5 - Qa - Stocks - Reference | OpenBB SDK Docs" />
 
-# historical_5
-
 Get 5 year monthly historical performance for a ticker with dividends filtered
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/factors_model.py#L58)]

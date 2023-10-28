@@ -10,8 +10,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ycrv - Economy - Reference | OpenBB Terminal Docs" />
 
-# ycrv
-
 Generate country yield curve. The yield curve shows the bond rates at different maturities.
 
 ### Usage

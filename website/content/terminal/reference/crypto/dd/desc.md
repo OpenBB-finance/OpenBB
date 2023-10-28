@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="desc - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# desc
-
 Display project description [Source: Token Terminal]
 
 ### Usage

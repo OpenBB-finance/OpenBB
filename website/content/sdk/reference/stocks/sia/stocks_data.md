@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks_data - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
-# stocks_data
-
 Get stocks data based on a list of stocks and the finance key. The function searches for the
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/stockanalysis_model.py#L84)]

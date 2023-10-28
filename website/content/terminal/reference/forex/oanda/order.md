@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="order - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# order
-
 Create order
 
 ### Usage

@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="unu - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# unu
-
 This command gets unusual options from fdscanner.com
 
 ### Usage

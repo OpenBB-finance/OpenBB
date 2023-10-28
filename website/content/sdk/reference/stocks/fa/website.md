@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="website - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# website
-
 Gets website of company from yfinance
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L210)]

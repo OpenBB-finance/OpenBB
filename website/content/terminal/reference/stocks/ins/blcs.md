@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="blcs - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# blcs
-
 Print latest CEO/CFO sales 100k. [Source: OpenInsider]
 
 ### Usage

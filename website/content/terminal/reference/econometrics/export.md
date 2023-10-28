@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="export - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# export
-
 Export dataset to Excel
 
 ### Usage

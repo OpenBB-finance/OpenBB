@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ugs - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# ugs
-
 Print up to 25 undervalued stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 
 ### Usage

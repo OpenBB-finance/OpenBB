@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="prt - Crypto - Reference | OpenBB Terminal Docs" />
 
-# prt
-
 Potential Returns ToolTool to check returns if loaded coin reaches provided price or other crypto market capUses CoinGecko to grab coin data (price and market cap).
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="valuation - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# valuation
-
 Prints screener data of similar companies. [Source: Finviz]
 
 ### Usage

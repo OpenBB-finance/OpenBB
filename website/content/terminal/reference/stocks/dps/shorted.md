@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="shorted - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# shorted
-
 Print up to 25 top ticker most shorted. [Source: Yahoo Finance]
 
 ### Usage

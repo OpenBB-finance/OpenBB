@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dpotc - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# dpotc
-
 Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
 ### Usage

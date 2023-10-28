@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ath - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# ath
-
 All time high data for loaded coin
 
 ### Usage

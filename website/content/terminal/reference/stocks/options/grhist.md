@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="grhist - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# grhist
-
 Plot historical option greeks.
 
 ### Usage

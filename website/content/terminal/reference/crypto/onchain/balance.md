@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="balance - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# balance
-
 Display info about tokens on given ethereum blockchain balance. [Source: Ethplorer]
 
 ### Usage

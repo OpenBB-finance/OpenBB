@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="file - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# file
-
 Select parameter file to use
 
 ### Usage

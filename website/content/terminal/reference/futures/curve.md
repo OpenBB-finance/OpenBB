@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="curve - Futures - Reference | OpenBB Terminal Docs" />
 
-# curve
-
 Display futures curve. [Source: YahooFinance]
 
 ### Usage

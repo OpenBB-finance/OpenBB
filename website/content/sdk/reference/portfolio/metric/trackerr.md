@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trackerr - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# trackerr
-
 Get tracking error
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1344)]

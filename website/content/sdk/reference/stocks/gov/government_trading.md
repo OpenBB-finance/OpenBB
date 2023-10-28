@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="government_trading - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
-# government_trading
-
 Returns the most recent transactions by members of government
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L25)]

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="prints - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
-# prints
-
 This command allows the user to retrieve the Last 15 Crypto Prints over the last 24 hours for the specified coin. The command will provide information on the price, volume, size, and other metrics associated with the prints.
 
 ### Usage

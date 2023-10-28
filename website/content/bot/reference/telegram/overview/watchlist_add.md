@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="watchlist_add - Overview - Telegram - Reference | OpenBB Bot Docs" />
 
-# watchlist_add
-
 This command allows the user to add a stock or stocks to their watchlist.
 
 ### Usage

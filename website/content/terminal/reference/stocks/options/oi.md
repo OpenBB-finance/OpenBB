@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="oi - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# oi
-
 Plot open interest. Open interest represents the number of contracts that exist.
 
 ### Usage

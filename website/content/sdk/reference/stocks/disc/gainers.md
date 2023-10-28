@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gainers - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# gainers
-
 Get top gainers. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L16)]

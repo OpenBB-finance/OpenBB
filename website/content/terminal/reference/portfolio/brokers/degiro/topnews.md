@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="topnews - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# topnews
-
 
 
 ### Usage

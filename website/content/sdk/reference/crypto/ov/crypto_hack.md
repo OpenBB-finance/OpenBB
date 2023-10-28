@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="crypto_hack - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
-# crypto_hack
-
 Get crypto hack
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L139)]

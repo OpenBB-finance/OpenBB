@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spectrum - Economy - Reference | OpenBB SDK Docs" />
 
-# spectrum
-
 Display finviz spectrum in system viewer [Source: Finviz]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/finviz_view.py#L111)]

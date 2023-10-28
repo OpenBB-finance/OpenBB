@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="movers - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# movers
-
 Get stock movers
 
 ### Usage

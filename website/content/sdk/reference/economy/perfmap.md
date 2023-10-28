@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="perfmap - Economy - Reference | OpenBB SDK Docs" />
 
-# perfmap
-
 Opens Finviz map website in a browser. [Source: Finviz]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/finviz_model.py#L42)]

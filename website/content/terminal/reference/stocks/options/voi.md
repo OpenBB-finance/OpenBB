@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="voi - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# voi
-
 Plots Volume + Open Interest of calls vs puts.
 
 ### Usage

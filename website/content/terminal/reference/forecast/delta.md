@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="delta - Forecast - Reference | OpenBB Terminal Docs" />
 
-# delta
-
 Add %Change (Delta) to dataset based on specific column.
 
 ### Usage

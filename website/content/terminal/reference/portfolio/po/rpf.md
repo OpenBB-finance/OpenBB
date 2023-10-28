@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rpf - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# rpf
-
 Remove one of the portfolios
 
 ### Usage

@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxdiv - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# maxdiv
-
 Maximizes the portfolio's diversification ratio
 
 ### Usage

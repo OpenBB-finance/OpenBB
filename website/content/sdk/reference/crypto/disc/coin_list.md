@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="coin_list - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
-# coin_list
-
 Get list of coins available on CoinGecko [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L339)]

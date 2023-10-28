@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="events - Economy - Reference | OpenBB SDK Docs" />
 
-# events
-
 Get economic calendar for countries between specified dates
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L21)]

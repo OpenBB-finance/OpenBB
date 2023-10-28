@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="exmarkets - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# exmarkets
-
 Get all exchange markets found for given exchange You can display only N number of records with --limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score --sortby parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange_id, pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,
 
 ### Usage

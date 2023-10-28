@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="performance - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
-# performance
-
 Prints performance data of the companies that meet the pre-set filtering.
 
 ### Usage

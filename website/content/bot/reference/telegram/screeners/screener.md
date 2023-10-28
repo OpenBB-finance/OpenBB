@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="screener - Screeners - Telegram - Reference | OpenBB Bot Docs" />
 
-# screener
-
 This command allows the user to retrieve stock screener results according to the chosen technical signal.
 
 ### Usage

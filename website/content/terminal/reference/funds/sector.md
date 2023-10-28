@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sector - Funds - Reference | OpenBB Terminal Docs" />
 
-# sector
-
 Show fund sector weighting.
 
 ### Usage

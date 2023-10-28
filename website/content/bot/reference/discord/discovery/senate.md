@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="senate - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
-# senate
-
 This command retrieves the most recent senate trades for all tickers including the date and time of the trade and the price information.
 
 ### Usage

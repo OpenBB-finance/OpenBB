@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="platforms - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# platforms
-
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
 
 ### Usage

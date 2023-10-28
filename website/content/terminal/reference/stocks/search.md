@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="search - Stocks - Reference | OpenBB Terminal Docs" />
 
-# search
-
 Show companies matching the search query
 
 ### Usage

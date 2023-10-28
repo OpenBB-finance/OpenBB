@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="so - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# so
-
 Provides the sortino ratio of the selected stock.
 
 ### Usage

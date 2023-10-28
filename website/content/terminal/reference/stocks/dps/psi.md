@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="psi - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# psi
-
 Shows price vs short interest volume. [Source: Quandl/Stockgrid]
 
 ### Usage

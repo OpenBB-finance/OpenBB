@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pos - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# pos
-
 Get dark pool short positions. [Source: Stockgrid]
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="exrates - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# exrates
-
 Shows list of crypto, fiats, commodity exchange rates from CoinGecko You can look on only N number of records with --limit, You can sort by Index, Name, Unit, Value, Type, and also use --reverse flag to sort descending.
 
 ### Usage

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="raw - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
-# raw
-
 Print raw data to console
 
 ### Usage

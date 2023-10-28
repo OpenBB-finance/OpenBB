@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="normality - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# normality
-
 Normality tests
 
 ### Usage

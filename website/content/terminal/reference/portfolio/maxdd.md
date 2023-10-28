@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxdd - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# maxdd
-
 Show portfolio maximum drawdown
 
 ### Usage

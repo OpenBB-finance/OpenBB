@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sh - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# sh
-
 Provides the sharpe ratio of the selected stock.
 
 ### Usage

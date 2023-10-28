@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="weights - Etf - Reference | OpenBB Terminal Docs" />
 
-# weights
-
 Look at ETF sector holdings
 
 ### Usage

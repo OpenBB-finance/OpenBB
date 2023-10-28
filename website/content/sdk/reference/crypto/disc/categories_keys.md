@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="categories_keys - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
-# categories_keys
-
 Get list of categories keys
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L115)]

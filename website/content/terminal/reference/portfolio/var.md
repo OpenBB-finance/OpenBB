@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="var - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# var
-
 Provides value at risk (short: VaR) of the selected portfolio.
 
 ### Usage

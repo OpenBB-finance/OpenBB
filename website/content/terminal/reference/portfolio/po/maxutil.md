@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxutil - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# maxutil
-
 Maximizes a risk averse utility function
 
 ### Usage

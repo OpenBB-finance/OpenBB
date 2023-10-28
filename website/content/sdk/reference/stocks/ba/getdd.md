@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="getdd - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# getdd
-
 Gets due diligence posts from list of subreddits [Source: reddit].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L711)]

@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="nexter - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# nexter
-
 This command will retrieve the next earnings date for the given stock ticker symbol.
 
 ### Usage

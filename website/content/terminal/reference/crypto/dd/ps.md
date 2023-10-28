@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ps - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# ps
-
 Get price and supply related metrics for given coin.
 
 ### Usage

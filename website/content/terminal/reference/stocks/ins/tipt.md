@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tipt - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tipt
-
 Print top insider purchases of the day. [Source: OpenInsider]
 
 ### Usage

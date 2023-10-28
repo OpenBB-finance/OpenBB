@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="shrs - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# shrs
-
 Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]
 
 ### Usage

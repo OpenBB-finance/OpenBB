@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bullbear - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# bullbear
-
 Gets bullbear sentiment for ticker [Source: stocktwits].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L16)]

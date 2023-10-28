@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="divinfo - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# divinfo
-
 This command retrieves dividend information for a given stock. The data includes dividend rate, yield, and ex-div date.
 
 ### Usage

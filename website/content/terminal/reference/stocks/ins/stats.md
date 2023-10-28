@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stats - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# stats
-
 Open insider filtered data using selected ticker. [Source: OpenInsider]
 
 ### Usage

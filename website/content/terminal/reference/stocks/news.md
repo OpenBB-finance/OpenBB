@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="news - Stocks - Reference | OpenBB Terminal Docs" />
 
-# news
-
 latest news of the company
 
 ### Usage

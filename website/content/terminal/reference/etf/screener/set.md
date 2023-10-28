@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="set - Screener - Etf - Reference | OpenBB Terminal Docs" />
 
-# set
-
 Set preset.
 
 ### Usage

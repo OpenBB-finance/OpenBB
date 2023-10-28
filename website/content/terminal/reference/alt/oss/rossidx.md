@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rossidx - Oss - Alt - Reference | OpenBB Terminal Docs" />
 
-# rossidx
-
 Display list of startups from ross index [Source: https://runacap.com/] Use --chart to display chart and -t {stars,forks} to set chart type
 
 ### Usage

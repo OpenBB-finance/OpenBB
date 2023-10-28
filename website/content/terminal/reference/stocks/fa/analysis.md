@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="analysis - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# analysis
-
 Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
 ### Usage

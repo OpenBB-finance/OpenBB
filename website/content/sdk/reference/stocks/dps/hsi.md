@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hsi - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
-# hsi
-
 Returns a high short interest DataFrame
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/shortinterest_model.py#L18)]

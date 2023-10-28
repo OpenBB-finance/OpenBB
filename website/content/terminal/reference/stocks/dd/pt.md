@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pt - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# pt
-
 Prints price target from analysts. [Source: Business Insider]
 
 ### Usage

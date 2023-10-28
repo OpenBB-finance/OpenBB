@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="vol - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# vol
-
 Plot volume. Volume refers to the number of contracts traded today.
 
 ### Usage

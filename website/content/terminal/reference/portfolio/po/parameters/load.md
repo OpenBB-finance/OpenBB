@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load portfolio risk parameters (ini or xlsx)
 
 ### Usage

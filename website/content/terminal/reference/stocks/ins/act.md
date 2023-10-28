@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="act - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# act
-
 Prints insider activity over time [Source: Business Insider]
 
 ### Usage

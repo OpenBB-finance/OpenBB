@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fama_coe - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# fama_coe
-
 Use Fama and French to get the cost of equity for a company
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L300)]

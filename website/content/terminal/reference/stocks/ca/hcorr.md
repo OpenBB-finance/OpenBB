@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hcorr - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# hcorr
-
 Correlation heatmap based on historical price comparison between similar companies.
 
 ### Usage

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fdols - Econometrics - Reference | OpenBB SDK Docs" />
 
-# fdols
-
 First differencing is an alternative to using fixed effects when there might be correlation.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L399)]

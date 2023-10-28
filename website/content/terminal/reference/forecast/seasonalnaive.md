@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="seasonalnaive - Forecast - Reference | OpenBB Terminal Docs" />
 
-# seasonalnaive
-
 Perform SeasonalNaive forecasting: https://nixtla.github.io/statsforecast/models.html#seasonalnaive
 
 ### Usage

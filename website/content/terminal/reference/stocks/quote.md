@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="quote - Stocks - Reference | OpenBB Terminal Docs" />
 
-# quote
-
 Current quote for stock ticker
 
 ### Usage

@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="jcdr - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# jcdr
-
 Show daily cramer recommendation
 
 ### Usage

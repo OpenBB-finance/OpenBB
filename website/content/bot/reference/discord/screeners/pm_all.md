@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pm_all - Screeners - Discord - Reference | OpenBB Bot Docs" />
 
-# pm_all
-
 This command allows the user to retrieve all available pre-market screeners.
 
 ### Usage

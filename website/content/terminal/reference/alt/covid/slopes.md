@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="slopes - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
-# slopes
-
 Show countries with highest slopes.
 
 ### Usage

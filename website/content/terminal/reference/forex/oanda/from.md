@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="from - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# from
-
 Select the "from" currency symbol in a forex pair
 
 ### Usage

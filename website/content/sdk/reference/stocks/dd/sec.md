@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sec - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
-# sec
-
 Get SEC filings for a given stock ticker. [Source: Market Watch]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/marketwatch_model.py#L20)]

@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Portfolio_Analysis - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ugs - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# ugs
-
 Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L54)]

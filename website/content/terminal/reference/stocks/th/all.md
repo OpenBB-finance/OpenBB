@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="all - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
-# all
-
 Show all exchanges
 
 ### Usage

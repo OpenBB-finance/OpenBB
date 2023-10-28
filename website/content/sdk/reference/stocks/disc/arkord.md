@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="arkord - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# arkord
-
 Returns ARK orders in a Dataframe
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/ark_model.py#L23)]

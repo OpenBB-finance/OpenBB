@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="search_index - Economy - Reference | OpenBB SDK Docs" />
 
-# search_index
-
 Search indices by keyword. [Source: FinanceDatabase]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L725)]

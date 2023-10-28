@@ -11,8 +11,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cpis - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# cpis
-
 Companies per Industry based on Sector and Market Cap
 
 ### Usage

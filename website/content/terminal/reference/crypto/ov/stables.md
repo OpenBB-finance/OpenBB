@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stables - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# stables
-
 Shows stablecoins by market capitalization. Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference like the U.S. dollar or to a commodity's price such as gold. You can display only N number of coins with --limit parameter. You can sort data by {} with --sortby
 
 ### Usage

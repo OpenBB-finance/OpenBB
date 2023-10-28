@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sop - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# sop
-
 Displays selected option
 
 ### Usage

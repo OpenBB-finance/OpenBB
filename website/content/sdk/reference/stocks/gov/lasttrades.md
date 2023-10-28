@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lasttrades - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
-# lasttrades
-
 Get last government trading [Source: quiverquant.com]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L164)]

@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="games - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
-# games
-
 Shows top blockchain games [Source: https://dappradar.com/] Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="performance - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# performance
-
 Prints screener data of similar companies. [Source: Finviz]
 
 ### Usage

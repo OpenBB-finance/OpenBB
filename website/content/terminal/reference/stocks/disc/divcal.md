@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="divcal - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# divcal
-
 Get dividend calendar for selected date
 
 ### Usage

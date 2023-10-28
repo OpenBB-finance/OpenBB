@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="blis - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# blis
-
 Print latest insider sales 100k. [Source: OpenInsider]
 
 ### Usage

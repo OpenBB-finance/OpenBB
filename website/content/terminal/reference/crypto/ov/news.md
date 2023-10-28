@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="news - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# news
-
 Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bullbear - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# bullbear
-
 Print bullbear sentiment based on last 30 messages on the board. Also prints the watchlist_count. [Source: Stocktwits]
 
 ### Usage

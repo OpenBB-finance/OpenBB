@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tist - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tist
-
 Print top insider sales of the day. [Source: OpenInsider]
 
 ### Usage

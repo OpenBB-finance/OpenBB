@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="twitter - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# twitter
-
 Show last 10 tweets for given coin. You can display only N number of tweets with --limit parameter. You can sort data by date, user_name, status, retweet_count, like_count --sort parameter and also with --reverse flag to sort ascending. Displays: date, user_name, status, retweet_count, like_count
 
 ### Usage

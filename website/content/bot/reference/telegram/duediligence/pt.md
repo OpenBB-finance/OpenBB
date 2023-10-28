@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pt - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
-# pt
-
 This command allows the user to retrieve a chart with price targets for the specified ticker. The chart will provide information on the current price, target prices and analyst ratings, allowing the user to make more informed decisions.
 
 ### Usage

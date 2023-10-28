@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="token_decimals - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
-# token_decimals
-
 Helper methods that gets token decimals number. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L176)]

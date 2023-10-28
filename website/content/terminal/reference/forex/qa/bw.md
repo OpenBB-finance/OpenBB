@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bw - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
-# bw
-
 Box and Whisker plot
 
 ### Usage

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="analysis - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# analysis
-
 Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/eclect_us_model.py#L18)]

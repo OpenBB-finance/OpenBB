@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ulc - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# ulc
-
 Get Yahoo Finance potentially undervalued large cap stocks.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L116)]

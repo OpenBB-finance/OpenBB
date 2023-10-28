@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ftd - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# ftd
-
 Prints latest fails-to-deliver data. [Source: SEC]
 
 ### Usage

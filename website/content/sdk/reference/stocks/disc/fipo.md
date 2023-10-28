@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fipo - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# fipo
-
 Future IPOs dates. [Source: Finnhub]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L115)]

@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="wsb - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# wsb
-
 Get wsb posts [Source: reddit].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L602)]

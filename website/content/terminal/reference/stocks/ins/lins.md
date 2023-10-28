@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lins - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# lins
-
 Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
 
 ### Usage

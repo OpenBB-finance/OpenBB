@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="om - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# om
-
 Provides omega ratio of the selected stock.
 
 ### Usage

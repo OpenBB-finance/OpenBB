@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="summary - Etf - Reference | OpenBB SDK Docs" />
 
-# summary
-
 Return summary description of ETF. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/yfinance_model.py#L44)]

@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pools - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# pools
-
 Display uniswap pools by volume. [Source: https://thegraph.com/en/]
 
 ### Usage

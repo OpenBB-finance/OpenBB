@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="summary - Portfolio - Reference | OpenBB SDK Docs" />
 
-# summary
-
 Get portfolio and benchmark returns summary
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L692)]

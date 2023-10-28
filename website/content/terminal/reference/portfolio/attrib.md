@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="attrib - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# attrib
-
 Displays sector attribution of the portfolio compared to the S&P 500
 
 ### Usage

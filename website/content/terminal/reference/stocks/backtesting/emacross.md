@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="emacross - Backtesting - Stocks - Reference | OpenBB Terminal Docs" />
 
-# emacross
-
 Cross between a long and a short Exponential Moving Average.
 
 ### Usage

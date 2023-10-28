@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="exchange - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# exchange
-
 Swap exclude international exchanges flag
 
 ### Usage

@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="set - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# set
-
 Select one of the portfolio optimization models
 
 ### Usage

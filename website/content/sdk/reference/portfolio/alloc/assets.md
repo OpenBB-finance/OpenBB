@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="assets - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
 
-# assets
-
 Display portfolio asset allocation compared to the benchmark
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L770)]

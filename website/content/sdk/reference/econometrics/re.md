@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="re - Econometrics - Reference | OpenBB SDK Docs" />
 
-# re
-
 The random effects model is virtually identical to the pooled OLS model except that is accounts for the
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L276)]

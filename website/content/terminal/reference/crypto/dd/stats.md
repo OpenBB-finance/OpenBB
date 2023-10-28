@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stats - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# stats
-
 Display coin stats
 
 ### Usage

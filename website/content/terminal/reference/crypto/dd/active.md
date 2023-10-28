@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="active - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# active
-
 Display active blockchain addresses over time [Source: https://glassnode.org]
 
 ### Usage

@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="delete - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
-# delete
-
 This command allows the user to delete an active alert they have set.
 
 ### Usage

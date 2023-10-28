@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tsne - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tsne
-
 Get similar companies to compare with using sklearn TSNE.
 
 ### Usage

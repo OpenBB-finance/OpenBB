@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="equity - Funds - Reference | OpenBB Terminal Docs" />
 
-# equity
-
 Show fund equity holdings.
 
 ### Usage

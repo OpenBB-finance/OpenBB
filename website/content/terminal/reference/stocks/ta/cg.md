@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cg - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
-# cg
-
 The Center of Gravity indicator, in short, is used to anticipate future price movements and to trade on price reversals as soon as they happen. However, just like other oscillators, the COG indicator returns the best results in range-bound markets and should be avoided when the price is trending. Traders who use it will be able to closely speculate the upcoming price change of the asset.
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="infer - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# infer
-
 Print quick sentiment inference from last tweets that contain the ticker. This model splits the text into character-level tokens and uses vader sentiment analysis. [Source: Twitter]
 
 ### Usage

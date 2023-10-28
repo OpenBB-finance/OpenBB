@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="symbol - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
-# symbol
-
 Select the symbol you wish to trade
 
 ### Usage

@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="atr - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
-# atr
-
 Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
 
 ### Usage

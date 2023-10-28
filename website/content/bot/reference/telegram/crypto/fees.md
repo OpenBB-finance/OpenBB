@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fees - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
-# fees
-
 This will provide the user with the fee rate of the top crypto protocols on a specified date, allowing the user to compare different protocols' fees and make an informed decision.
 
 ### Usage

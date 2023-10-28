@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="historical - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# historical
-
 Historical price comparison between similar companies.
 
 ### Usage

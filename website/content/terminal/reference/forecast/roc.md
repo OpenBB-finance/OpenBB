@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="roc - Forecast - Reference | OpenBB Terminal Docs" />
 
-# roc
-
 Add rate of change to dataset based on specific column.
 
 ### Usage

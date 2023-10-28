@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="filter_stocks - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
-# filter_stocks
-
 Filter stocks based on country, sector, industry, market cap and exclude exchanges.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L109)]

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="customer - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# customer
-
 This command allows the user to display customers of the company using the given symbol.
 
 ### Usage

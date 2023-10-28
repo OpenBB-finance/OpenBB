@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sto - Forecast - Reference | OpenBB Terminal Docs" />
 
-# sto
-
 Add in Stochastic Oscillator %K and %D
 
 ### Usage

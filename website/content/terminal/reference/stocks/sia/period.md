@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="period - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# period
-
 Set period between annual, quarterly and trailing
 
 ### Usage

@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="blacklitterman - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# blacklitterman
-
 Optimize portfolio using Black Litterman estimates
 
 ### Usage

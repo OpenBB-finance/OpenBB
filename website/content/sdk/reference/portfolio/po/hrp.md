@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hrp - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# hrp
-
 Optimize with Hierarchical Risk Parity
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1487)]

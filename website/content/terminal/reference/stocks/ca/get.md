@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="get - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# get
-
 Get similar companies from selected data source (default: Finviz) to compare with.
 
 ### Usage

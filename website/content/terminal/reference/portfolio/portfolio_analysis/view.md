@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="view - Portfolio_Analysis - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# view
-
 Show available portfolios to load.
 
 ### Usage

@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gaintopain - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# gaintopain
-
 Get Pain-to-Gain ratio based on historical data
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1313)]

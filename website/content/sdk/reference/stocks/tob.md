@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tob - Stocks - Reference | OpenBB SDK Docs" />
 
-# tob
-
 Get top of book bid and ask for ticker on exchange [CBOE.com]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/cboe_model.py#L12)]

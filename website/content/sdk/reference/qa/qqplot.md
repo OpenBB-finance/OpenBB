@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="qqplot - Qa - Reference | OpenBB SDK Docs" />
 
-# qqplot
-
 Plots QQ plot for data against normal quantiles
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L462)]

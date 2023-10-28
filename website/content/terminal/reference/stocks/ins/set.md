@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="set - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# set
-
 Set preset from under presets folder.
 
 ### Usage

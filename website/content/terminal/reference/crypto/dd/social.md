@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="social - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# social
-
 Shows social media corresponding to loaded coin. You can find there name of telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
 
 ### Usage

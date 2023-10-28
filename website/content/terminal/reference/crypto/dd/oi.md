@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="oi - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# oi
-
 Displays open interest by exchange for a certain asset [Source: https://coinglass.github.io/API-Reference/]
 
 ### Usage

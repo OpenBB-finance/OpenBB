@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="candle - Etf - Reference | OpenBB Terminal Docs" />
 
-# candle
-
 Shows historic data for an ETF
 
 ### Usage

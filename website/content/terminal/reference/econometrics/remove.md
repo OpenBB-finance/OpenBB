@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="remove - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# remove
-
 Remove a dataset from the loaded dataset list
 
 ### Usage

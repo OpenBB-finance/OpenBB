@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lookup - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# lookup
-
 
 
 ### Usage

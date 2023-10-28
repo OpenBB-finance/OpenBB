@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="show - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# show
-
 Show selected saved portfolios
 
 ### Usage

@@ -55,8 +55,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ewf - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# ewf
-
 Display exchange withdrawal fees [Source: https://withdrawalfees.com/]
 
 ### Usage

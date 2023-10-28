@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tk - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# tk
-
 Display asset's tokenomics [Source: https://messari.io]
 
 ### Usage

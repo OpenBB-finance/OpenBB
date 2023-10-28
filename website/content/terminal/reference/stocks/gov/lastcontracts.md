@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lastcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# lastcontracts
-
 Last government contracts. [Source: www.quiverquant.com]
 
 ### Usage

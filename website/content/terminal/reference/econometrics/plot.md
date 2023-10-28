@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="plot - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# plot
-
 Plot data based on the index
 
 ### Usage

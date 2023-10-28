@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="upcoming - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# upcoming
-
 Upcoming earnings release dates. [Source: Seeking Alpha]
 
 ### Usage

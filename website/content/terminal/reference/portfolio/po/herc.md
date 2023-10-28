@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="herc - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# herc
-
 Builds a hierarchical equal risk contribution portfolio
 
 ### Usage

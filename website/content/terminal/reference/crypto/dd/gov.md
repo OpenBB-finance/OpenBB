@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gov - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# gov
-
 Display asset's governance [Source: https://messari.io]
 
 ### Usage

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tvl - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# tvl
-
 Total value locked (TVL) metric - Ethereum ERC20 [Source:https://docs.flipsidecrypto.com/] useraddress OR addressname must be provided
 
 ### Usage

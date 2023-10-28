@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="prices - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# prices
-
 "Display token historical prices. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
 
 ### Usage

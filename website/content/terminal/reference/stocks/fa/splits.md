@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="splits - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# splits
-
 Stock splits and reverse split events since IPO [Source: Yahoo Finance]
 
 ### Usage

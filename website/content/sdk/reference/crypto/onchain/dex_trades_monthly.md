@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dex_trades_monthly - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
-# dex_trades_monthly
-
 Get list of trades on Decentralized Exchanges monthly aggregated.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L333)]

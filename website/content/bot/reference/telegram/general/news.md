@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="news - General - Telegram - Reference | OpenBB Bot Docs" />
 
-# news
-
 This command allows the user to retrieve the latest news for a given ticker.
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="active - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# active
-
 Print up to 25 top most actively traded intraday tickers. [Source: Yahoo Finance]
 
 ### Usage

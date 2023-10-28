@@ -28,8 +28,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="blip - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# blip
-
 Print latest insider purchases 25k. [Source: OpenInsider]
 
 ### Usage

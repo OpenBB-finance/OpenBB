@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="industries - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
-# industries
-
 Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L69)]

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fred_notes - Economy - Reference | OpenBB SDK Docs" />
 
-# fred_notes
-
 Get series notes. [Source: FRED]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L68)]

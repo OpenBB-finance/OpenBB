@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="norm - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# norm
-
 Test whether the used data is normally distributed.
 
 ### Usage

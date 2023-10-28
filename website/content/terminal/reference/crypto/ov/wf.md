@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="wf - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# wf
-
 Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
 
 ### Usage

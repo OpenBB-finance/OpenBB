@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lcb - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# lcb
-
 Print latest cluster buys. [Source: OpenInsider]
 
 ### Usage

@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="treasury_maturities - Economy - Reference | OpenBB SDK Docs" />
 
-# treasury_maturities
-
 Get treasury maturity options [Source: EconDB]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L849)]

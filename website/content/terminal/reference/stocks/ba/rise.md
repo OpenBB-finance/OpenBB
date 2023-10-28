@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rise - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rise
-
 Print top rising related queries with this stock's query. [Source: Google]
 
 ### Usage

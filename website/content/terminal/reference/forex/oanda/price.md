@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="price - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# price
-
 Get price for selected instrument.
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dividend - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# dividend
-
 Optimize weighted according to dividend yield
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2207)]

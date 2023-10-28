@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fwd - Forex - Reference | OpenBB SDK Docs" />
 
-# fwd
-
 Gets forward rates from fxempire
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/fxempire_model.py#L14)]

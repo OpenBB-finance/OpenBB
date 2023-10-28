@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="quote - Stocks - Reference | OpenBB SDK Docs" />
 
-# quote
-
 Ticker quote.  [Source: YahooFinance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_model.py#L233)]

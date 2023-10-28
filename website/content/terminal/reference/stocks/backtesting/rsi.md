@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rsi - Backtesting - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rsi
-
 Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 
 ### Usage

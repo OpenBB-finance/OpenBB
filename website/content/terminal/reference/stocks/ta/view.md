@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="view - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
-# view
-
 View historical price with trendlines. [Source: Finviz]
 
 ### Usage

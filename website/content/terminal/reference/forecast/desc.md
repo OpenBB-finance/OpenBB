@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="desc - Forecast - Reference | OpenBB Terminal Docs" />
 
-# desc
-
 Show descriptive statistics of a dataset
 
 ### Usage

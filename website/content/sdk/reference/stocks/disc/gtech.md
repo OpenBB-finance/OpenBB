@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gtech - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# gtech
-
 Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L76)]

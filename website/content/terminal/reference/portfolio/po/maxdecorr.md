@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxdecorr - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# maxdecorr
-
 Maximizes the portfolio's decorrelation
 
 ### Usage

@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mret - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# mret
-
 Monthly returns
 
 ### Usage

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="account - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# account
-
 Display info about your trading accounts on Coinbase
 
 ### Usage

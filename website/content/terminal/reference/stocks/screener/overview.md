@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="overview - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
-# overview
-
 Prints overview data of the companies that meet the pre-set filtering.
 
 ### Usage

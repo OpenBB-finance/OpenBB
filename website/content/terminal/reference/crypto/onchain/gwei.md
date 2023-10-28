@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gwei - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# gwei
-
 Display ETH gas fees [Source: https://ethgasstation.info]
 
 ### Usage

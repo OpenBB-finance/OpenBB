@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sh - Oss - Alt - Reference | OpenBB Terminal Docs" />
 
-# sh
-
 Display a repo star history [Source: https://api.github.com]
 
 ### Usage

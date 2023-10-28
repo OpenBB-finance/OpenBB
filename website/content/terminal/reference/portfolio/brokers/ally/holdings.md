@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="holdings - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# holdings
-
 Display info about your trading accounts on Ally
 
 ### Usage

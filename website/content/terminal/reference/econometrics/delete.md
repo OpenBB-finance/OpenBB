@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="delete - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# delete
-
 The column you want to delete from a dataset.
 
 ### Usage

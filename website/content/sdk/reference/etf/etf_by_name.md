@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="etf_by_name - Etf - Reference | OpenBB SDK Docs" />
 
-# etf_by_name
-
 Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L132)]

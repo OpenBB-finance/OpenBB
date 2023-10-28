@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="topsum - Darkpool - Discord - Reference | OpenBB Bot Docs" />
 
-# topsum
-
 This command allows the user to retrieve total block and dark pool data summary. It sums all darkpool prints and gives a table of the largest by symbol as well as a graph for comparison.
 
 ### Usage

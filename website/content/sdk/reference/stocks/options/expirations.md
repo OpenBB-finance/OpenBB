@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="expirations - Options - Stocks - Reference | OpenBB SDK Docs" />
 
-# expirations
-
 Get Option Chain Expirations
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L69)]

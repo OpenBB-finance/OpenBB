@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sector - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# sector
-
 See existing sectors, or set sector if arg specified
 
 ### Usage

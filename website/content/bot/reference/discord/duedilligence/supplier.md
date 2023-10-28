@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="supplier - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# supplier
-
 This command allows users to retrieve the list of suppliers associated with the company with the given ticker.
 
 ### Usage

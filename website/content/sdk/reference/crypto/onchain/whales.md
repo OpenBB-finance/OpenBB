@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# whales
-
 <Tabs>
 <TabItem value="model" label="Model" default>
 

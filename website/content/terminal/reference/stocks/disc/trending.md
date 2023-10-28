@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trending - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# trending
-
 Trending news articles. [Source: Seeking Alpha]
 
 ### Usage

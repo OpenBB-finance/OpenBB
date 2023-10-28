@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="search - Funds - Reference | OpenBB Terminal Docs" />
 
-# search
-
 Search mutual funds in selected country based on selected field.
 
 ### Usage

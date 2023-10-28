@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maketcap - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
-# maketcap
-
 Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L97)]

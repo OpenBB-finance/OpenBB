@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="global_cases - Covid - Alt - Reference | OpenBB SDK Docs" />
 
-# global_cases
-
 Get historical cases for given country.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L26)]

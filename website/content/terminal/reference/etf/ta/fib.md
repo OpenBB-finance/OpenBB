@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fib - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
-# fib
-
 Calculates the fibonacci retracement levels
 
 ### Usage

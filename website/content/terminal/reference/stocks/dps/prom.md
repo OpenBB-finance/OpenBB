@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="prom - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# prom
-
 Display dark pool (ATS) data of tickers with growing trades activity using linear regression.
 
 ### Usage

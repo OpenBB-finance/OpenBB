@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ipolist - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
-# ipolist
-
 This command allows the user to view 10 of the most recent and upcoming Initial Public Offerings (IPOs) including the company name, the IPO date, and the stock exchange. This information can help users stay up-to-date with the latest IPOs, and provide them with opportunities to invest in new companies.
 
 ### Usage

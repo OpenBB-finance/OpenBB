@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="show_available_pairs_for_given_symbol - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
-# show_available_pairs_for_given_symbol
-
 Return all available quoted assets for given symbol. [Source: Coinbase]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L21)]

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cw - Charts - Discord - Reference | OpenBB Bot Docs" />
 
-# cw
-
 This command allows the user to retrieve a weekly candlestick chart for the ticker/coin provided. The chart displays the opening and closing prices, the high and low prices, and the trading volume for the week for the specified ticker/coin.
 
 ### Usage

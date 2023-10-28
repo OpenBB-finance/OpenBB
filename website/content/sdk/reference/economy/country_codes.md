@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="country_codes - Economy - Reference | OpenBB SDK Docs" />
 
-# country_codes
-
 Get available country codes for Bigmac index
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L125)]

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="plot - Funds - Reference | OpenBB Terminal Docs" />
 
-# plot
-
 Plot historical data.
 
 ### Usage

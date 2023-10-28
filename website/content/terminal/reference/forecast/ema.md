@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ema - Forecast - Reference | OpenBB Terminal Docs" />
 
-# ema
-
 Add exponential moving average to dataset based on specific column.
 
 ### Usage

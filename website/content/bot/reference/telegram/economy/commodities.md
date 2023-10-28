@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="commodities - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
-# commodities
-
 This command allows users to quickly and easily retrieve an overview of Futures and commodities. It provides the last price and change for the day.
 
 ### Usage

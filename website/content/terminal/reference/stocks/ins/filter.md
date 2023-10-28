@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="filter - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# filter
-
 Print open insider filtered data using loaded preset. [Source: OpenInsider]
 
 ### Usage

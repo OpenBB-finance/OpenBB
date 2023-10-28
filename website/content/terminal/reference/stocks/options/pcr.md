@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pcr - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# pcr
-
 Display put to call ratio for ticker [AlphaQuery.com]
 
 ### Usage

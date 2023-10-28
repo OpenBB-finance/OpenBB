@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lobbying - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
-# lobbying
-
 Corporate lobbying details
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L531)]

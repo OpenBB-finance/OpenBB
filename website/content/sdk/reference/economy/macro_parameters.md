@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="macro_parameters - Economy - Reference | OpenBB SDK Docs" />
 
-# macro_parameters
-
 This function returns the available macro parameters with detail.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L631)]

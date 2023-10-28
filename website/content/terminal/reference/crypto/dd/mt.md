@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mt - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# mt
-
 Display messari timeseries [Source: https://messari.io]
 
 ### Usage

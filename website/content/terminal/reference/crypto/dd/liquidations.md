@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="liquidations - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# liquidations
-
 Displays liquidations data for the loaded crypto asset [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
 ### Usage

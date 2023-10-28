@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rates - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
-# rates
-
 Show historical death/cases rates for a country.
 
 ### Usage

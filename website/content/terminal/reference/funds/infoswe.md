@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="infoswe - Funds - Reference | OpenBB Terminal Docs" />
 
-# infoswe
-
 Show fund info of a swedish fund.
 
 ### Usage

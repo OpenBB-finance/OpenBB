@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="balances - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# balances
-
 Account balance details
 
 ### Usage

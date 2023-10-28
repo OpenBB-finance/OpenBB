@@ -29,8 +29,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="metric - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# metric
-
 Display metric of choice for different periods
 
 ### Usage

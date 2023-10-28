@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="losers - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# losers
-
 Get top losers. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L35)]

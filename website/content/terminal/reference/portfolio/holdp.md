@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="holdp - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# holdp
-
 Display holdings of assets (in percentage)
 
 ### Usage

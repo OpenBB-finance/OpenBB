@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="futures - General - Telegram - Reference | OpenBB Bot Docs" />
 
-# futures
-
 This command allows the user to retrieve futures prices on the stock market.
 
 ### Usage

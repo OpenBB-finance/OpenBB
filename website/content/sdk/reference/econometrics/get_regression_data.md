@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="get_regression_data - Econometrics - Reference | OpenBB SDK Docs" />
 
-# get_regression_data
-
 This function creates a DataFrame with the required regression data as
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L112)]

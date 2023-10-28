@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spac - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# spac
-
 Show other users SPACs announcement. [Source: Reddit]
 
 ### Usage

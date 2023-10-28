@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="line - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# line
-
 Show line plot of selected data or highlight specific datetimes.
 
 ### Usage

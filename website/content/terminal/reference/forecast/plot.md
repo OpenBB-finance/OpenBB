@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="plot - Forecast - Reference | OpenBB Terminal Docs" />
 
-# plot
-
 Plot data based on the index
 
 ### Usage

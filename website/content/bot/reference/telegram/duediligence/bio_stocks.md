@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bio_stocks - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
-# bio_stocks
-
 This command retrieves a stock's company information and displays it to the user. It takes a stock ticker as an argument and returns information such as the company's name, description, sector, industry, CEO, and more.
 
 ### Usage

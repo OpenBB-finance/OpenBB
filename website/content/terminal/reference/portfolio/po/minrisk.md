@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="minrisk - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# minrisk
-
 Minimizes portfolio's risk
 
 ### Usage

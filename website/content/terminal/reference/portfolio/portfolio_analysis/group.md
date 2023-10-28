@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="group - Portfolio_Analysis - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# group
-
 Displays portfolio grouped by a given column
 
 ### Usage

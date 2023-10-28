@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="scorr - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# scorr
-
 FinBrain's sentiment correlation across similar tickers.
 
 ### Usage

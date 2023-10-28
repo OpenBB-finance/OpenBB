@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="check_presets - Screen - Options - Stocks - Reference | OpenBB SDK Docs" />
 
-# check_presets
-
 Checks option screener preset values
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L251)]

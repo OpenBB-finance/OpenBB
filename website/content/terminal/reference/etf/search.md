@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="search - Etf - Reference | OpenBB Terminal Docs" />
 
-# search
-
 Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]
 
 ### Usage

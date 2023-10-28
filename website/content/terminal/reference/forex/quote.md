@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="quote - Forex - Reference | OpenBB Terminal Docs" />
 
-# quote
-
 Get current exchange rate quote
 
 ### Usage

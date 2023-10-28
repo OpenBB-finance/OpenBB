@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="screen - Screener - Etf - Reference | OpenBB Terminal Docs" />
 
-# screen
-
 Screens ETFS from a personal scraping github repository. Data scraped from stockanalysis.com
 
 ### Usage

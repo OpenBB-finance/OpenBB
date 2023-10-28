@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="quote - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# quote
-
 Get stock quote
 
 ### Usage

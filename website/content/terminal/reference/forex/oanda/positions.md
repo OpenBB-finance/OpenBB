@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="positions - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# positions
-
 Get information about open positions.
 
 ### Usage

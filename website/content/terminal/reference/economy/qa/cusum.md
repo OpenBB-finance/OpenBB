@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cusum - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
-# cusum
-
 Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
 ### Usage

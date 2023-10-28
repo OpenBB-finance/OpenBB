@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rmv - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rmv
-
 Remove similar tickers to compare with.
 
 ### Usage

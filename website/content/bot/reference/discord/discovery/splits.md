@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="splits - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
-# splits
-
 This command allows users to view a list of recent stock splits for all available tickers. This list includes the ticker, the date of the split, and the ratio of the split. This data can be used to track how stocks have been split in the past.
 
 ### Usage

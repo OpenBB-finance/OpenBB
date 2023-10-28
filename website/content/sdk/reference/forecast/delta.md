@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="delta - Forecast - Reference | OpenBB SDK Docs" />
 
-# delta
-
 Calculate the %change of a variable based on a specific column
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L335)]

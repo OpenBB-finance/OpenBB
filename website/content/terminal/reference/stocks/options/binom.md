@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="binom - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# binom
-
 Gives the option value using binomial option valuation
 
 ### Usage

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="candle - Stocks - Reference | OpenBB Terminal Docs" />
 
-# candle
-
 Shows historic data for a stock
 
 ### Usage

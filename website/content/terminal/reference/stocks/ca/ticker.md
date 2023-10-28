@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ticker - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# ticker
-
 Set ticker to extract similar from
 
 ### Usage

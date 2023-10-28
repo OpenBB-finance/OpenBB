@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hcp - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# hcp
-
 Builds hierarchical clustering based portfolios
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/optimizer_model.py#L1903)]

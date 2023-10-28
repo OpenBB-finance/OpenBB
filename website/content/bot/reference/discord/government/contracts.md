@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="contracts - Government - Discord - Reference | OpenBB Bot Docs" />
 
-# contracts
-
 This command will allow the user to retrieve the top 15 government contracts by amount for a specific ticker.
 
 ### Usage

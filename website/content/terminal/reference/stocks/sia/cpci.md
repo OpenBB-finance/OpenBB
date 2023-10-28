@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cpci - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# cpci
-
 Companies per Country based on Industry and Market Cap
 
 ### Usage

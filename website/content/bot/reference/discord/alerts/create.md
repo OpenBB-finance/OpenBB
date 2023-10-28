@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="create - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
-# create
-
 This command creates an alert for a given symbol (ex. BTCUSD) that will notify the user when the price is equal to or above the user defined price.
 
 ### Usage

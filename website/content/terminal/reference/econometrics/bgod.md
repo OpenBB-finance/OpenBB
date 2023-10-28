@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bgod - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# bgod
-
 Show Breusch-Godfrey autocorrelation test results.Needs OLS to be run in advance with independent and dependent variables
 
 ### Usage

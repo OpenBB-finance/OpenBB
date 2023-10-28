@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="instholdings - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
-# instholdings
-
 This command allows the user to retrieve the top 15 institutional holdings for a given stock. This list is retrieved from the most recent available institutional holdings reported to the United States Securities and Exchange Commission.
 
 ### Usage

@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trending - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
-# trending
-
 Discover trending coins (Top-7) on CoinGecko in the last 24 hours
 
 ### Usage

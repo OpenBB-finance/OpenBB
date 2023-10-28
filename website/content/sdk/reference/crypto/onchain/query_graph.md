@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="query_graph - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
-# query_graph
-
 Helper methods for querying graphql api. [Source: https://bitquery.io/]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L159)]

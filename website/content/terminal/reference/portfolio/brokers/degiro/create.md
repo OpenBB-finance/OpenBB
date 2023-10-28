@@ -31,8 +31,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="create - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# create
-
 
 
 ### Usage

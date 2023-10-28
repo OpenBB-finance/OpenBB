@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="logout - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# logout
-
 
 
 ### Usage

@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="supplier - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
-# supplier
-
 Get suppliers from ticker provided. [Source: CSIMarket]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/csimarket_model.py#L42)]

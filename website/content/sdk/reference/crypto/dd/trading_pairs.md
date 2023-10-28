@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trading_pairs - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
-# trading_pairs
-
 Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L21)]

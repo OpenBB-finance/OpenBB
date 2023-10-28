@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="divs - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# divs
-
 Historical dividends for a company
 
 ### Usage

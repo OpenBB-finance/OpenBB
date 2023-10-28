@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="supplier - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# supplier
-
 List of suppliers from ticker provided. [Source: CSIMarket]
 
 ### Usage

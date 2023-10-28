@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rsharpe - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# rsharpe
-
 Show rolling sharpe portfolio vs benchmark
 
 ### Usage

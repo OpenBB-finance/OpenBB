@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tispw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tispw
-
 Print top insider sales of the week. [Source: OpenInsider]
 
 ### Usage

@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cases - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
-# cases
-
 Show historical cases for country.
 
 ### Usage

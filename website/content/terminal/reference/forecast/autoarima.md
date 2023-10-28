@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="autoarima - Forecast - Reference | OpenBB Terminal Docs" />
 
-# autoarima
-
 Perform Automatic ARIMA forecast: https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
 
 ### Usage

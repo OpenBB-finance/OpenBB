@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="serverid - Info - Discord - Reference | OpenBB Bot Docs" />
 
-# serverid
-
 This command allows the user to retrieve the Server ID of discord room. The Server ID is a unique identifier associated with the server and is needed for some autoposting features when you link your account.
 
 ### Usage

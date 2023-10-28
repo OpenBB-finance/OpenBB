@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="performance - Economy - Reference | OpenBB SDK Docs" />
 
-# performance
-
 Get group (sectors, industry or country) performance data. [Source: Finviz]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/finviz_model.py#L112)]

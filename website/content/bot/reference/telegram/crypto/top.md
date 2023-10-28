@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="top - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
-# top
-
 This command will retrieve the top cryptocurrencies, ranked by market capitalization, allowing the user to quickly get a snapshot of the current market.
 
 ### Usage

@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trades - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# trades
-
 Get the latest trades for selected coin
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="orders - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# orders
-
 List your current open orders
 
 ### Usage

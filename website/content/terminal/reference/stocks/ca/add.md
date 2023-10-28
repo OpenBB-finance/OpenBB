@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="add - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# add
-
 Add similar tickers to compare with.
 
 ### Usage

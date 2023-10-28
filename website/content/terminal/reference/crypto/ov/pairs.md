@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pairs - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# pairs
-
 Shows available trading pairs on Coinbase
 
 ### Usage

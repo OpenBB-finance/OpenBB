@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lpsb - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# lpsb
-
 Print latest penny stock buys. [Source: OpenInsider]
 
 ### Usage

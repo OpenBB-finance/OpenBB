@@ -28,8 +28,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="property - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# property
-
 Returns a portfolio that is weighted based on selected property.
 
 ### Usage

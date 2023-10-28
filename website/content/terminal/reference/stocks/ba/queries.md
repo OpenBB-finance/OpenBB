@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="queries - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# queries
-
 Print top related queries with this stock's query. [Source: Google]
 
 ### Usage

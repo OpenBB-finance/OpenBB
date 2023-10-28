@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="uoastock - Options - Discord - Reference | OpenBB Bot Docs" />
 
-# uoastock
-
 This command allows the user to retrieve the 20-day average options volume by ticker. The volume is based on the total volume of all options traded in the given period of time, including calls and puts.
 
 ### Usage

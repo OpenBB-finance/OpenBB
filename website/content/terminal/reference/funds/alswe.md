@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="alswe - Funds - Reference | OpenBB Terminal Docs" />
 
-# alswe
-
 Show allocation of a swedish fund.
 
 ### Usage

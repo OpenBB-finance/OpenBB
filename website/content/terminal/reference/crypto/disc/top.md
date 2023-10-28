@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="top - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
-# top
-
 Display N coins from the data source, if the data source is CoinGecko it can receive a category as argument (-c decentralized-finance-defi or -c stablecoins) and will show only the top coins in that category. can also receive sort arguments (these depend on the source), e.g., --sort Volume [$] You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with CoinGecko Number of coins to show: -l 10
 
 ### Usage

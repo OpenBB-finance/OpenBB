@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sec - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# sec
-
 Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
 
 ### Usage

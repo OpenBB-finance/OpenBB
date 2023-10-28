@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="snews - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# snews
-
 Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
 ### Usage

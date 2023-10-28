@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dwat - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# dwat
-
 Show autocorrelation tests from Durbin-Watson. Needs OLS to be run in advance with independent and dependent variables
 
 ### Usage

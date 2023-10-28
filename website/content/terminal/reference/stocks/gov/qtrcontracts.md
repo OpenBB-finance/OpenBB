@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="qtrcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# qtrcontracts
-
 Look at government contracts [Source: www.quiverquant.com]
 
 ### Usage

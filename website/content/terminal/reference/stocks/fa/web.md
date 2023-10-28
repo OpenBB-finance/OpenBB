@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="web - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# web
-
 Opens company's website. [Source: Yahoo Finance]
 
 ### Usage

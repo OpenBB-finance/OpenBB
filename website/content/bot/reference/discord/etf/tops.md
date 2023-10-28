@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tops - Etf - Discord - Reference | OpenBB Bot Docs" />
 
-# etf tops
-
 This command returns the top ETFs for the day - sorted by gainers, losers, or active.
 
 ### Usage

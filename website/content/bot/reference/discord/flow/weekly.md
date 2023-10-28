@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="weekly - Flow - Discord - Reference | OpenBB Bot Docs" />
 
-# weekly
-
 This command allows the user to retrieve the Top 20 flow by Premium for a stock with an option contact expiring that week.
 
 ### Usage

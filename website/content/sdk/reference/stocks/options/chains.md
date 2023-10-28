@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="chains - Options - Stocks - Reference | OpenBB SDK Docs" />
 
-# chains
-
 Get Option Chain For A Stock.  No greek data is returned
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L20)]

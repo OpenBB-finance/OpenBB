@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="calendar - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# calendar
-
 Show Calendar Data
 
 ### Usage

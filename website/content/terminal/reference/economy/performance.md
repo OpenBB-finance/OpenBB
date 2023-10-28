@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="performance - Economy - Reference | OpenBB Terminal Docs" />
 
-# performance
-
 View group (sectors, industry or country) performance data. [Source: Finviz]
 
 ### Usage

@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fun - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# fun
-
 Display fundamental metrics overview [Source: Token Terminal]
 
 ### Usage

@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stats - Nft - Crypto - Reference | OpenBB Terminal Docs" />
 
-# stats
-
 Display stats about an opensea nft collection. e.g. alien-frens [Source: https://opensea.io]
 
 ### Usage

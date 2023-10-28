@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cancel - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# cancel
-
 Cancel a Pending Order.
 
 ### Usage

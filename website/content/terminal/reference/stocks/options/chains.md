@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="chains - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# chains
-
 Display option chains
 
 ### Usage

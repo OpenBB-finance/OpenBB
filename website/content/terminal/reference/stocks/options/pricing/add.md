@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="add - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# add
-
 Adds a price to the list
 
 ### Usage

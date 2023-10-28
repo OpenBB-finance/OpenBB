@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="top - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# top
-
 Display top ERC20 tokens. [Source: Ethplorer]
 
 ### Usage

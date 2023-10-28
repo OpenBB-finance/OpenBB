@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stats - Info - Discord - Reference | OpenBB Bot Docs" />
 
-# stats
-
 This command allows the user to retrieve the current number of servers the bot is in.
 
 ### Usage

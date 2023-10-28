@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="country - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
-# country
-
 Select a country to look at data for.
 
 ### Usage

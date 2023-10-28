@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="iv - Options - Telegram - Reference | OpenBB Bot Docs" />
 
-# iv
-
 This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 
 ### Usage

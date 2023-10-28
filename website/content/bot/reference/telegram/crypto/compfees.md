@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="compfees - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
-# compfees
-
 This command allows users to retrieve the Protocol fees over time for the given project.
 
 ### Usage

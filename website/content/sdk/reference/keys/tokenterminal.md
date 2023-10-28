@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tokenterminal - Keys - Reference | OpenBB SDK Docs" />
 
-# tokenterminal
-
 Set Token Terminal key.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L2483)]

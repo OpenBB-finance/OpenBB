@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rot - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rot
-
 Rating over time (monthly). [Source: Finnhub]
 
 ### Usage

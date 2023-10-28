@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fr - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# fr
-
 Display asset's fundraising details [Source: https://messari.io]
 
 ### Usage

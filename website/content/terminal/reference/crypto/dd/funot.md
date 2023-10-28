@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="funot - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# funot
-
 Display fundamental metric over time [Source: Token Terminal]
 
 ### Usage

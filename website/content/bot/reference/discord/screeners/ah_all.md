@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ah_all - Screeners - Discord - Reference | OpenBB Bot Docs" />
 
-# ah_all
-
 This command retrieves all available after-hours screeners (gainers, losers, and most active). It is helpful for users who need to quickly access and review all the available after-hours screeners without having to search through a large list.
 
 ### Usage

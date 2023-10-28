@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="coins_for_given_exchange - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
-# coins_for_given_exchange
-
 Helper method to get all coins available on binance exchange [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L357)]

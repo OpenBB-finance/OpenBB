@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="help - Info - Telegram - Reference | OpenBB Bot Docs" />
 
-# help
-
 List of commands for OpenBB Bot.
 
 ### Usage

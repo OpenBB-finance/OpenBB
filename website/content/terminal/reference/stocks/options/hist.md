@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hist - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# hist
-
 Gets historical quotes for given option chain
 
 ### Usage

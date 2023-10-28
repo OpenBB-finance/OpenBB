@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rmv - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# rmv
-
 Remove one of the options to be shown in the hedge.
 
 ### Usage

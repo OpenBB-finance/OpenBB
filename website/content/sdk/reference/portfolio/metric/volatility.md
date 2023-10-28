@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="volatility - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# volatility
-
 Get volatility for portfolio and benchmark selected
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1111)]

@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="check_if_open - Th - Stocks - Reference | OpenBB SDK Docs" />
 
-# check_if_open
-
 Check if market open helper function
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L156)]

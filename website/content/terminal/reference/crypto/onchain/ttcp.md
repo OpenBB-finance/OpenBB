@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ttcp - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# ttcp
-
 Display most traded crypto pairs on given decentralized exchange in chosen time period. [Source: https://graphql.bitquery.io/]
 
 ### Usage

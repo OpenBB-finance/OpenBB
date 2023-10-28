@@ -30,8 +30,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spectrum - Economy - Reference | OpenBB Terminal Docs" />
 
-# spectrum
-
 View group (sectors, industry or country) spectrum data. [Source: Finviz]
 
 ### Usage

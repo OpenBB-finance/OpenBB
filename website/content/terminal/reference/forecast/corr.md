@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="corr - Forecast - Reference | OpenBB Terminal Docs" />
 
-# corr
-
 Plot correlation coefficients.
 
 ### Usage

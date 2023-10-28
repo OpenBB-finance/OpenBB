@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fwd - Forex - Reference | OpenBB Terminal Docs" />
 
-# fwd
-
 Get forward rates for loaded pair.
 
 ### Usage

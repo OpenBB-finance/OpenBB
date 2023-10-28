@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tispm - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tispm
-
 Print top insider sales of the month. [Source: OpenInsider]
 
 ### Usage

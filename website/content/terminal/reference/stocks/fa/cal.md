@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cal - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# cal
-
 Calendar earnings of the company. Including revenue and earnings estimates. [Source: Yahoo Finance]
 
 ### Usage

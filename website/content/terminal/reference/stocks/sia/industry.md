@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="industry - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# industry
-
 See existing industries, or set industry if arg specified
 
 ### Usage

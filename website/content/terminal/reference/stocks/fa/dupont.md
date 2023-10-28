@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dupont - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# dupont
-
 The extended dupont deconstructs return on equity to allow investors to understand it better
 
 ### Usage

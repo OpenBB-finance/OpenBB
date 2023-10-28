@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="balance - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# balance
-
 Display balance
 
 ### Usage

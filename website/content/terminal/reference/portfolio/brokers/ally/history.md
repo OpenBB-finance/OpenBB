@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="history - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# history
-
 Account transaction history
 
 ### Usage

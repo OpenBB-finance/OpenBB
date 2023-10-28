@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fe - Econometrics - Reference | OpenBB SDK Docs" />
 
-# fe
-
 When effects are correlated with the regressors the RE and BE estimators are not consistent.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L351)]

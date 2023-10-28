@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxdiv - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# maxdiv
-
 Optimize diversification weights
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L813)]

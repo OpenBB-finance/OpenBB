@@ -84,8 +84,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="set - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
-# set
-
 Set preset from custom and default ones.
 
 ### Usage

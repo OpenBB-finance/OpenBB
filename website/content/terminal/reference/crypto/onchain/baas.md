@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="baas - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# baas
-
 Display average bid, ask prices, spread for given crypto pair for chosen time period [Source: https://graphql.bitquery.io/]
 
 ### Usage

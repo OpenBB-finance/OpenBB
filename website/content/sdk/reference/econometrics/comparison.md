@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="comparison - Econometrics - Reference | OpenBB SDK Docs" />
 
-# comparison
-
 Compare regression results between Panel Data regressions.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L437)]

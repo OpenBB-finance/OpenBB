@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="toppm - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# toppm
-
 Print top officer purchases of the month. [Source: OpenInsider]
 
 ### Usage

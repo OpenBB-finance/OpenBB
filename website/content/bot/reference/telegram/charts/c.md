@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="c - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
-# c
-
 This command will retrieve a candlestick chart for the crypto coin provided. The interval provided must be a valid time interval (default 15 minutes). The chart will be displayed to the user and will contain information such as the opening and closing prices, the high and low, the volume, and any other relevant information.
 
 ### Usage

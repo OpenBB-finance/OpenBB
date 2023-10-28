@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="regions - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
 
-# regions
-
 Display portfolio region allocation compared to the benchmark
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L902)]

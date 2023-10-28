@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="futures - Economy - Reference | OpenBB SDK Docs" />
 
-# futures
-
 Get futures data.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/sdk_helpers.py#L8)]

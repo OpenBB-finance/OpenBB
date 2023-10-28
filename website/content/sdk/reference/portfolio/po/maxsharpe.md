@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# maxsharpe
-
 Optimize Sharpe ratio weights
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L265)]

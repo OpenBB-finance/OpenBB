@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="contracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# contracts
-
 Contracts associated with ticker. [Source: www.quiverquant.com]
 
 ### Usage

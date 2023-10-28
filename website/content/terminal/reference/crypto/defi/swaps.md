@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="swaps - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# swaps
-
 Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="est - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# est
-
 Yearly estimates and quarter earnings/revenues. [Source: Business Insider]
 
 ### Usage

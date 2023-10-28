@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bc - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# bc
-
 Blockchain explorers URLs for loaded coin. Those are sites like etherescan.io or polkascan.io in which you can see all blockchain data e.g. all txs, all tokens, all contracts...
 
 ### Usage

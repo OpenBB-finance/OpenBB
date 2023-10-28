@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pir - Etf - Reference | OpenBB Terminal Docs" />
 
-# pir
-
 Create passive investor ETF excel report which contains most of the important metrics about an ETF obtained from Yahoo Finnace. You are able to input any ETF ticker you like within the command to create am extensive report
 
 ### Usage

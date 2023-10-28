@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Etf - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load ETF ticker to perform analysis on.
 
 ### Usage

@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pi - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# pi
-
 Display asset's project info [Source: https://messari.io]
 
 ### Usage

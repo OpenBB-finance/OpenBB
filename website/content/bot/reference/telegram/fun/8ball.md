@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="8ball - Fun - Telegram - Reference | OpenBB Bot Docs" />
 
-# 8ball
-
 This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 
 ### Usage

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxpain - Options - Telegram - Reference | OpenBB Bot Docs" />
 
-# maxpain
-
 This command retrieves the Max Pain on expiration date for a given stock. Max Pain is the strike price with the most open options contracts and it is the price at which the stock would cause financial losses for the largest number of option holders at expiration.
 
 ### Usage

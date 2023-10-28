@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="historical - Futures - Reference | OpenBB Terminal Docs" />
 
-# historical
-
 Display futures historical. [Source: YahooFinance]
 
 ### Usage

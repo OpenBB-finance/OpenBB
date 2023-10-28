@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="herc - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# herc
-
 Optimize with Hierarchical Equal Risk Contribution (HERC) method.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1679)]

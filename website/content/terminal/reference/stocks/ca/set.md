@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="set - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# set
-
 Select similar companies to compare with.
 
 ### Usage

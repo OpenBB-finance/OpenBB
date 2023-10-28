@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="equal - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
-# equal
-
 Equally weighted portfolio, where weight = 1/# of symbols
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2063)]

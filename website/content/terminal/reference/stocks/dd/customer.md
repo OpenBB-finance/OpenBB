@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="customer - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
-# customer
-
 List of customers from ticker provided. [Source: CSIMarket]
 
 ### Usage

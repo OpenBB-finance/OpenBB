@@ -32,8 +32,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="info - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# info
-
 Show basic coin information for all coins from CoinPaprika API You can display only N number of coins with --limit parameter. You can sort data by rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply, market_cap, beta_value, ath_price --sortby parameter and also with --reverse flag to sort descending. Displays: rank, name, symbol, price, volume_24h, circulating_supply, total_supply, max_supply, market_cap, beta_value, ath_price
 
 ### Usage

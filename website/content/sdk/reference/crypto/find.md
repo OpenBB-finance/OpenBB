@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="find - Crypto - Reference | OpenBB SDK Docs" />
 
-# find
-
 Find similar coin by coin name,symbol or id.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/crypto_models.py#L9)]

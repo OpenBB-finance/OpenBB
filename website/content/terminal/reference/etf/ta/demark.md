@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="demark - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
-# demark
-
 Calculates the Demark sequential indicator.
 
 ### Usage

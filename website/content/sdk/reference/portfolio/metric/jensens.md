@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="jensens - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# jensens
-
 Get jensen's alpha
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1480)]

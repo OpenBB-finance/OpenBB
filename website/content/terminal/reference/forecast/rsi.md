@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rsi - Forecast - Reference | OpenBB Terminal Docs" />
 
-# rsi
-
 Add rsi to dataset based on specific column.
 
 ### Usage

@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="nft - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
-# nft
-
 Shows top NFT collections [Source: https://dappradar.com/] Accepts --sort {Name,Protocols,Floor Price [$],Avg Price [$],Market Cap,Volume [$]} to sort by column
 
 ### Usage

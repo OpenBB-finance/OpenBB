@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="process_candle - Stocks - Reference | OpenBB SDK Docs" />
 
-# process_candle
-
 Process DataFrame into candle style plot.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L825)]

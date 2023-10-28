@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hist - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
-# hist
-
 Histogram with density and rug
 
 ### Usage

@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="topshortvol - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
 
-# topshortvol
-
 This command allows the user to retrieve the Top 15 Short Interest Stocks per Finra. It's typically measured as a ratio of the stock's total short vol divided by the total volume for the trading day. This information is essential for traders to make informed decisions in the market.
 
 ### Usage

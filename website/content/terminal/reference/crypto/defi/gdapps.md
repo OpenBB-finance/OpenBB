@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gdapps - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# gdapps
-
 Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api]
 
 ### Usage

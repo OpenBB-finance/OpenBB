@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="which - Forecast - Reference | OpenBB Terminal Docs" />
 
-# which
-
 Show library versions of required packages.
 
 ### Usage

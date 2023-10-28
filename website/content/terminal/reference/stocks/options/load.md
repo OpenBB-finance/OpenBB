@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load a ticker into option menu
 
 ### Usage

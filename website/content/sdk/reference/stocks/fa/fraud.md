@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="fraud - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
-# fraud
-
 Get fraud ratios based on fundamentals
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/av_model.py#L594)]

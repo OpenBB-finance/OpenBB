@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="_make_request - Oss - Alt - Reference | OpenBB SDK Docs" />
 
-# _make_request
-
 Helper method to scrap.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_model.py#L67)]

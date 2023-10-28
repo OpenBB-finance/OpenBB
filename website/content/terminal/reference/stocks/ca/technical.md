@@ -28,8 +28,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="technical - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# technical
-
 Prints screener data of similar companies. [Source: Finviz]
 
 ### Usage

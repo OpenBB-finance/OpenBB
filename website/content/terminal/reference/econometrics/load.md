@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load dataset (from previous export, custom imports or StatsModels).
 
 ### Usage

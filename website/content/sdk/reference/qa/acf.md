@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="acf - Qa - Reference | OpenBB SDK Docs" />
 
-# acf
-
 Plots Auto and Partial Auto Correlation of returns and change in returns
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L372)]

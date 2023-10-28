@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rs - Oss - Alt - Reference | OpenBB Terminal Docs" />
 
-# rs
-
 Display a repo summary [Source: https://api.github.com]
 
 ### Usage

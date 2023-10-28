@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="compare - Etf - Reference | OpenBB Terminal Docs" />
 
-# compare
-
 Compare selected ETFs [Source: StockAnalysis]
 
 ### Usage

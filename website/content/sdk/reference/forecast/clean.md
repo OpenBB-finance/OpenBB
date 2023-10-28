@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="clean - Forecast - Reference | OpenBB SDK Docs" />
 
-# clean
-
 Clean up NaNs from the dataset
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L100)]

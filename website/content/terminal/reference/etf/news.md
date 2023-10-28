@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="news - Etf - Reference | OpenBB Terminal Docs" />
 
-# news
-
 Prints latest news about ETF, including date, title and web link. [Source: News API]
 
 ### Usage

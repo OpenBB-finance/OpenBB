@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="popular - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# popular
-
 Print latest popular tickers. [Source: Reddit]
 
 ### Usage

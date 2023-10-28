@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="show - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# show
-
 Show a portion of the DataFrame
 
 ### Usage

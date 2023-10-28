@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="validators - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# validators
-
 Displays information about terra validators. [Source: https://fcd.terra.dev/swagger]
 
 ### Usage

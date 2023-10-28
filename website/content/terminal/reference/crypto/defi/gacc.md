@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="gacc - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# gacc
-
 Displays terra blockchain account growth history. [Source: https://fcd.terra.dev/swagger]
 
 ### Usage

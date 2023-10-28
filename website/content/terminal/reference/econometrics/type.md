@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="type - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# type
-
 Show the type of the columns of the dataset and/or change the type of the column
 
 ### Usage

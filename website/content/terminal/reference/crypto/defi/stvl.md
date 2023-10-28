@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stvl - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# stvl
-
 Displays historical values of the total sum of TVLs from all listed dApps. [Source: https://docs.llama.fi/api]
 
 ### Usage

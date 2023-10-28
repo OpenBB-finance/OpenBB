@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="analyst - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# analyst
-
 This command allows the user to retrieve analyst recommendations for a given stock ticker.
 
 ### Usage

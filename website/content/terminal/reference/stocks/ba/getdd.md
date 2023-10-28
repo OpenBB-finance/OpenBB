@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="getdd - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# getdd
-
 Print top stock's due diligence from other users. [Source: Reddit]
 
 ### Usage

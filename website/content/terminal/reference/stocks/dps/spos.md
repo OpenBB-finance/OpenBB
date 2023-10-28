@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spos - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
-# spos
-
 Shows Net Short Vol. vs Position. [Source: Stockgrid]
 
 ### Usage

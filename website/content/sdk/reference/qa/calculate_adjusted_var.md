@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="calculate_adjusted_var - Qa - Reference | OpenBB SDK Docs" />
 
-# calculate_adjusted_var
-
 Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L182)]

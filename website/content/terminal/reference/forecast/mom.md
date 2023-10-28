@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="mom - Forecast - Reference | OpenBB Terminal Docs" />
 
-# mom
-
 Add momentum to dataset based on specific column.
 
 ### Usage

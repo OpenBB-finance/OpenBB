@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="toppw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# toppw
-
 Print top officer purchases of the week. [Source: OpenInsider]
 
 ### Usage

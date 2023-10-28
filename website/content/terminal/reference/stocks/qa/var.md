@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="var - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# var
-
 Provides value at risk (short: VaR) of the selected stock.
 
 ### Usage

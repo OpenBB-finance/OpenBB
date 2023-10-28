@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="borrowed - Short_Data - Discord - Reference | OpenBB Bot Docs" />
 
-# borrowed
-
 This command allows the user to view the history of borrowed shares available and fees associated with the stock with the ticker symbol. This can be a useful tool for traders and investors to track changes in share borrowing over time and to compare fees charged by different brokers.
 
 ### Usage

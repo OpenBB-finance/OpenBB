@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="dret - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# dret
-
 Daily returns
 
 ### Usage

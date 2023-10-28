@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="deaths - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
-# deaths
-
 Show historical deaths by country.
 
 ### Usage

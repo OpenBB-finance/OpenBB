@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load your portfolio transactions.
 
 ### Usage

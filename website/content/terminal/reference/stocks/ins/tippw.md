@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tippw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tippw
-
 Print top insider purchases of the week. [Source: OpenInsider]
 
 ### Usage

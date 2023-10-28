@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ytd - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
-# ytd
-
 This command allows the user to retrieve the stock's year-to-date performance for a particular ticker symbol. It displays the stock's performance over various periods of time, from 5 days to 5 years.
 
 ### Usage

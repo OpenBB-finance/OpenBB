@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="country - Funds - Reference | OpenBB Terminal Docs" />
 
-# country
-
 Set a country for funds
 
 ### Usage

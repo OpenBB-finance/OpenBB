@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="lobbying - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# lobbying
-
 Lobbying details [Source: www.quiverquant.com]
 
 ### Usage

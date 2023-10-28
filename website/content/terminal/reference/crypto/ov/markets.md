@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="markets - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
-# markets
-
 Show market related (price, supply, volume) coin information for all coins on CoinPaprika. You can display only N number of coins with --limit parameter. You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h, ath_price, pct_from_ath, --sortby parameter and also with --reverse flag to sort ascending. Displays: rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
 
 ### Usage

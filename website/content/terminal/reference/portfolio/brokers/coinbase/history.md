@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="history - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# history
-
 Display account history
 
 ### Usage

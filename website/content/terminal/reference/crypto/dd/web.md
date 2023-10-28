@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="web - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# web
-
 Websites found for given Coin. You can find there urls to homepage, forum, announcement site and others.
 
 ### Usage

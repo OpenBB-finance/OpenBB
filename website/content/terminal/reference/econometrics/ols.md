@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ols - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# ols
-
 Performs an OLS regression on timeseries data.
 
 ### Usage

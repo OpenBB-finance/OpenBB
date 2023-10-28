@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="view - Screener - Etf - Reference | OpenBB Terminal Docs" />
 
-# view
-
 View available presets under presets folder.
 
 ### Usage

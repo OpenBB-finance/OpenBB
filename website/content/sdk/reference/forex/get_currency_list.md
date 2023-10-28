@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="get_currency_list - Forex - Reference | OpenBB SDK Docs" />
 
-# get_currency_list
-
 Load AV currency codes from a local file.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/av_model.py#L19)]

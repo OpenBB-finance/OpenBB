@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="histcont - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# histcont
-
 Quarterly-contracts historical [Source: www.quiverquant.com]
 
 ### Usage

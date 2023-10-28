@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="candles - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# candles
-
 Display Candle Data
 
 ### Usage

@@ -29,8 +29,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Crypto - Reference | OpenBB SDK Docs" />
 
-# load
-
 Load crypto currency to get data for
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L488)]

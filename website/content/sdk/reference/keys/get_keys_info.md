@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="get_keys_info - Keys - Reference | OpenBB SDK Docs" />
 
-# get_keys_info
-
 Get info on available APIs to use in set_keys.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L177)]

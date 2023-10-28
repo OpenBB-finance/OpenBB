@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="topsells - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
-# topsells
-
 Top sells for government trading. [Source: www.quiverquant.com]
 
 ### Usage

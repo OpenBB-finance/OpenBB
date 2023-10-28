@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="orderbook - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
-# orderbook
-
 Plot an orderbook for an instrument if Oanda provides one.
 
 ### Usage

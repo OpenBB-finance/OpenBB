@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trending - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
-# trending
-
 Get trending tickers from stocktwits [Source: stocktwits].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L79)]

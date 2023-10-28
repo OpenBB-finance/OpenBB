@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="events - Economy - Reference | OpenBB Terminal Docs" />
 
-# events
-
 Economic calendar. If no start or end dates, default is the current day high importance events.
 
 ### Usage

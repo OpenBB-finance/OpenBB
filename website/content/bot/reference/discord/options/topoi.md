@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="topoi - Options - Discord - Reference | OpenBB Bot Docs" />
 
-# topoi
-
 This command allows the user to retrieve Top Open Interest among all stocks. This command queries the current market data and provides a list of the most actively traded stocks and options in the current market.
 
 ### Usage

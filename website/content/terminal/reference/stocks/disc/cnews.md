@@ -29,8 +29,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="cnews - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
-# cnews
-
 Customized news. [Source: Seeking Alpha]
 
 ### Usage

@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="plot - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# plot
-
 Plot selected charts for portfolios
 
 ### Usage

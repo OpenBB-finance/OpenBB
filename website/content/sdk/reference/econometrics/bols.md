@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bols - Econometrics - Reference | OpenBB SDK Docs" />
 
-# bols
-
 The between estimator is an alternative, usually less efficient estimator, can can be used to
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L314)]

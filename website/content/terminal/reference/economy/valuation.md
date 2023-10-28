@@ -30,8 +30,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="valuation - Economy - Reference | OpenBB Terminal Docs" />
 
-# valuation
-
 View group (sectors, industry or country) valuation data. [Source: Finviz]
 
 ### Usage

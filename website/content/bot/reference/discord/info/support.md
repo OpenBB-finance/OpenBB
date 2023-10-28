@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="support - Info - Discord - Reference | OpenBB Bot Docs" />
 
-# support
-
 This command allows the user to send a support ticket directly to our team.
 
 ### Usage

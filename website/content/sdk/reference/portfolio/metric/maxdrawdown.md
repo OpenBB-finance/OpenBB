@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxdrawdown - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# maxdrawdown
-
 Get maximum drawdown ratio for portfolio and benchmark selected
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1266)]

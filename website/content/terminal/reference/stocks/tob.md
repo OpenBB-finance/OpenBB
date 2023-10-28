@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tob - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tob
-
 Get top of book for loaded ticker from selected exchange
 
 ### Usage

@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="team - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# team
-
 Display asset's team [Source: https://messari.io]
 
 ### Usage

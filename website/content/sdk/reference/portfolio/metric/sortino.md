@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sortino - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# sortino
-
 Get sortino ratio for portfolio and benchmark selected
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1213)]

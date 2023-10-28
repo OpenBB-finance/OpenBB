@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tv - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
-# tv
-
 View TradingView for technical analysis. [Source: TradingView]
 
 ### Usage

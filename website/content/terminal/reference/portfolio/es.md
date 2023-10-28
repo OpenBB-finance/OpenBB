@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="es - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# es
-
 Provides Expected Shortfall (short: ES) of the selected portfolio.
 
 ### Usage

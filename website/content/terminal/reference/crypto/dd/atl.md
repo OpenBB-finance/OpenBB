@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="atl - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# atl
-
 All time low data for loaded coin
 
 ### Usage

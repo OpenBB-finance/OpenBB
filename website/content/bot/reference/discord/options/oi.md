@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="oi - Options - Discord - Reference | OpenBB Bot Docs" />
 
-# oi
-
 This command allows the user to retrieve the Open Interest and Call/Put ratio for a given stock. Optionally, the user can also specify an expiration date to get a more granular breakdown.
 
 ### Usage

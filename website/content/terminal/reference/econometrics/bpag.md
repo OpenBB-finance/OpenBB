@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bpag - Econometrics - Reference | OpenBB Terminal Docs" />
 
-# bpag
-
 Show Breusch-Pagan heteroscedasticity test results. Needs OLS to be run in advance with independent and dependent variables
 
 ### Usage

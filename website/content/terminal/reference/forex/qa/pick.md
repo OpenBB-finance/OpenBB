@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pick - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
-# pick
-
 Change target variable
 
 ### Usage

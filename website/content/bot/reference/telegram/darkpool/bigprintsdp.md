@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="bigprintsdp - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
-# bigprintsdp
-
 This command will retrieve the largest combination of dark pool and block trades over a specified amount of days. It will provide a comprehensive view of the biggest dark pool and block trades over the specified number of days and give the user an idea of the market activity over that period.
 
 ### Usage

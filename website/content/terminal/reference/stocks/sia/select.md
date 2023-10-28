@@ -16,8 +16,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="select - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
-# select
-
 Select stock ticker and alter the industry, sector, country and market cap accordingly for this ticker.
 
 ### Usage

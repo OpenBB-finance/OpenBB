@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="edebt - Economy - Reference | OpenBB Terminal Docs" />
 
-# edebt
-
 National debt statistics for various countries. [Source: Wikipedia]
 
 ### Usage

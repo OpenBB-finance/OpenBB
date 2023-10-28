@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ln - Etf - Reference | OpenBB SDK Docs" />
 
-# ln
-
 Return a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/financedatabase_model.py#L15)]

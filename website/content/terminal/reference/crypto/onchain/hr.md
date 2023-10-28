@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hr - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
-# hr
-
 Display mean hashrate for a certain blockchain (ETH or BTC) [Source: https://glassnode.org]
 
 ### Usage

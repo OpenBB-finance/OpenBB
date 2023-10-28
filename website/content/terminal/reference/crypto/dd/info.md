@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="info - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# info
-
 Shows basic information about loaded coin like: Name, Symbol, Description, Market Cap, Public Interest, Supply, and Price related metrics
 
 ### Usage

@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="trading_pair_info - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
-# trading_pair_info
-
 Get information about chosen trading pair. [Source: Coinbase]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L48)]

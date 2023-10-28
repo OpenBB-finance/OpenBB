@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="active - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# active
-
 Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L97)]

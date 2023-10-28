@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="asc - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
-# asc
-
 Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L138)]

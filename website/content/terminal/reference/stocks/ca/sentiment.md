@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="sentiment - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# sentiment
-
 FinBrain's sentiment comparison across similar tickers.
 
 ### Usage

@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="parity - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# parity
-
 Shows whether options are over or under valued
 
 ### Usage

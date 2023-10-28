@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="chains - Options - Telegram - Reference | OpenBB Bot Docs" />
 
-# chains
-
 This command allows users to retrieve Options Chain by Expiry, which gives an overview of the bid, ask, and open interest of options contracts for a specific stock.
 
 ### Usage

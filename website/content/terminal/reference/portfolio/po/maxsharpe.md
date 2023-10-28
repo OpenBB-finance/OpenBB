@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# maxsharpe
-
 Maximizes the portfolio's return/risk ratio
 
 ### Usage

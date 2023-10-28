@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stats - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# stats
-
 Display base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
 
 ### Usage

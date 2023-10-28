@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="vaults - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
-# vaults
-
 Display Top DeFi Vaults. [Source: https://coindix.com/]
 
 ### Usage

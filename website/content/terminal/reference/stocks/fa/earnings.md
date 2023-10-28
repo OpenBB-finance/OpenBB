@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="earnings - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
-# earnings
-
 Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
 
 ### Usage

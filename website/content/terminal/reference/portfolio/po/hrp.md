@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hrp - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# hrp
-
 Builds a hierarchical risk parity portfolio
 
 ### Usage

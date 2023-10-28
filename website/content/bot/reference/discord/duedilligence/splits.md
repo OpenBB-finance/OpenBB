@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="splits - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
-# splits
-
 This command retrieves a list of recent stock splits for a given ticker. This command is useful for tracking the splits of a particular stock over time.
 
 ### Usage

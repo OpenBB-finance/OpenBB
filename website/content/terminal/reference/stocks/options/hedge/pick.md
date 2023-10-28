@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="pick - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
-# pick
-
 This function plots option hedge diagrams
 
 ### Usage

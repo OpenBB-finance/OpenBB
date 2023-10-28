@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="summary - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
-# summary
-
 Summary statistics
 
 ### Usage

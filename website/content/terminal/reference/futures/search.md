@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="search - Futures - Reference | OpenBB Terminal Docs" />
 
-# search
-
 Search futures. [Source: YahooFinance]
 
 ### Usage

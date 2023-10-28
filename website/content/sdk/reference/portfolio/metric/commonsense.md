@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="commonsense - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
-# commonsense
-
 Get common sense ratio
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1448)]

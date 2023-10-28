@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="inv - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
-# inv
-
 Display asset's investors [Source: https://messari.io]
 
 ### Usage

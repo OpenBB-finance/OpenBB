@@ -17,8 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="spread - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
-# spread
-
 Shows rolling spread measurement
 
 ### Usage

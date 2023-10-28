@@ -13,8 +13,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="info - Funds - Reference | OpenBB Terminal Docs" />
 
-# info
-
 Get fund information.
 
 ### Usage

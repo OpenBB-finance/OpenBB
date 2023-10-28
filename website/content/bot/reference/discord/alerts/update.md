@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="update - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
-# update
-
 This command allows the user to update the condition on an active alert, such as changing the value of a price alert. The command will update the alert with the new condition and keep the alert active until it is manually deactivated or the alert's condition is met.
 
 ### Usage

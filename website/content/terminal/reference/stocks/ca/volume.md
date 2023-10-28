@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="volume - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
-# volume
-
 Historical volume comparison between similar companies.
 
 ### Usage

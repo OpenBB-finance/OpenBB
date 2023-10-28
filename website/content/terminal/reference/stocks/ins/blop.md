@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="blop - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
-# blop
-
 Print latest officer purchases 25k. [Source: OpenInsider]
 
 ### Usage

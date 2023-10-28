@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="price - Crypto - Reference | OpenBB Terminal Docs" />
 
-# price
-
 Display price and interval of confidence in real-time. [Source: Pyth]
 
 ### Usage

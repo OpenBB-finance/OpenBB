@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="combine - Forecast - Reference | OpenBB SDK Docs" />
 
-# combine
-
 Adds the given column of df2 to df1
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L409)]

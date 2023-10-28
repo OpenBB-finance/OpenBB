@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="load - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# load
-
 Load file of stocks tickers with optional categories
 
 ### Usage

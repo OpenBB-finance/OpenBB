@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="watchlist - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# watchlist
-
 Print other users watchlist. [Source: Reddit]
 
 ### Usage

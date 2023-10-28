@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="tokenomics - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
-# tokenomics
-
 Get tokenomics for given coin. [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_model.py#L253)]

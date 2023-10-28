@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="rbeta - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# rbeta
-
 Show rolling beta portfolio vs benchmark
 
 ### Usage

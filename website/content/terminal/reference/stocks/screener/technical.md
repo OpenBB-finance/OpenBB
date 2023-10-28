@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="technical - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
-# technical
-
 Prints technical data of the companies that meet the pre-set filtering.
 
 ### Usage

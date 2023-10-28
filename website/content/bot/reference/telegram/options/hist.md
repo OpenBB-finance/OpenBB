@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="hist - Options - Telegram - Reference | OpenBB Bot Docs" />
 
-# hist
-
 This command allows the user to retrieve the historical price of options for the given parameters of a ticker, expiry, strike , option type, and interval for the past x days in a chart format.
 
 ### Usage

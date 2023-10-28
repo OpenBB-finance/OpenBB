@@ -30,8 +30,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="ef - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
-# ef
-
 This function plots random portfolios based on their risk and returns and shows the efficient frontier.
 
 ### Usage

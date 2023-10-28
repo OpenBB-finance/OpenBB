@@ -14,8 +14,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="overview - Funds - Reference | OpenBB Terminal Docs" />
 
-# overview
-
 Show overview of funds from selected country.
 
 ### Usage

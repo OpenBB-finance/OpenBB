@@ -15,8 +15,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="wsb - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
-# wsb
-
 Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
 
 ### Usage
