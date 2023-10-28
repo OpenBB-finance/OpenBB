@@ -1,103 +1,16 @@
 ---
+title: Routines for Power Users
 sidebar_position: 5
-title: Scripts & Routines
 description: Learn how to set up and maintain scripts and routines in the OpenBB Terminal. These operations will help automate processes and repetitive tasks to save time and effort.
-keywords: [scripts, routines, .do file, stata, spss, r studio, python, automation, data collection, aggregation, script, routine, openbb terminal, tasks, processes]
+keywords: [finance, terminal, command line interface, cli, menu, commands]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<HeadTitle title="Scripts & Routines - Terminal | OpenBB Docs" />
-
-OpenBB Routine Scripts allow users to write simple scripts for automating processes and repetitive tasks. In essence these are text plain-text files that can be created or modified in any basic text editor with the only difference of having an `.openbb` extension.
-
-Other software like STATA, SPSS and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process.
-
-For example, not only is it possible to automate a set of functionality, it is also possible to export a large amount of data to Excel through the usage of `--export` and `--sheet-name` making data collection efficient, reproducible and customizable.
-
-## Introduction
-
-Run a routine file from the main menu, with the `exe` command. A great start would be to use `exe --example` to get a sense of what this functionality does. Below, the `--help` dialogue is displayed.
-
-```console
-usage: exe [--file PATH] [-i ROUTINE_ARGS] [-e] [-h]
-
-Execute automated routine script. For an example, please use `exe --example` and for documentation and to learn how create your own script type `about exe`.
-
-options:
-  --file PATH           The path or .openbb file to run. (default: None)
-  -i ROUTINE_ARGS, --input ROUTINE_ARGS
-                        Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD (default: None)
-  -e, --example         Run an example script to understand how routines can be used. (default: False)
-  -h, --help            show this help message (default: False)
-```
-
-## The Macro Recorder
-
-OpenBB script routines can be captured with the macro recorder, controlled with global commands, `record` to start saving commands and `stop` to terminate the recording. This shares similarities with that of Excel's VBA methods. This means that any command you run will be automatically recorded for the routine script and once you type `stop` it automatically saves the file to the `~/OpenBBUserData/routines/` folder.
-
-For example, if you copy and paste the following prompt in the OpenBB Terminal and press enter, you will see an example.
-
-```console
-$ /record/economy/cpi/treasury/index sp500/stop
-```
-
-The following shows the output from this pipeline of commands.
-
-![Routines](https://user-images.githubusercontent.com/46355364/223204998-70d9e5da-f84e-4c22-90c4-576dcf87c1df.png)
-
-Because there was a `record` and `stop` at the `start` and `end` respectively, a routine script was created. This file cane be found inside the `routines` folder within the `OpenBBUserData` folder (more on exporting and import data [here](https://docs.openbb.co/terminal/usage/guides/data)).
-
-Now, you should be able to access the routine file from the terminal main menu by doing `/exe --file` and using the auto-completer. Note that the naming of the file will differ for you based on the time you are executing the script.
-
-![Routines](https://user-images.githubusercontent.com/46355364/223205394-77e7a33d-e9fa-4686-b32f-e8d183b265e6.png)
-
-## Basic Script
-
-The most basic script style contains 2 main elements:
-
-  - **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
-  - **Commands**: any text *without* a hashtag is being ran inside the OpenBB Terminal as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `stocks/load AAPL/candle --ma 20` is a valid line for the script.
-
-For instance, the text below corresponds to the example file that OpenBB provides.
-
-```
-# Go into the stocks context
-stocks
-
-# Load a company ticker, e.g. Apple
-load AAPL
-
-# Show a candle chart with a 20 day Moving Average
-candle --ma 20
-
-# Switch over to the Fundamental Analysis menu
-fa
-
-# Show Earnings per Share (EPS) estimates
-epsfc
-
-# Show price targets charts
-pt
-
-# Show future estimations
-est
-
-# Return to home
-home
-```
-
-## Creating and Running a Routine Script
-
-As a starting point, let's use the example above.
-
-1. Create a new text file with name `routines_template.openbb` and copy paste the routine above. For simplicity you can also download the template file **[here](https://www.dropbox.com/s/73g9qx9xgtbb2ec/routines_template.openbb?dl=1)**.
-2. Move the file inside the `routines` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder and, optionally, adjust the name to your liking.
-3. Open up the OpenBB Terminal, and type `exe --file routines_template`. If you changed the name of the file, then replace `routines_template` by such. As long as the file remains in the `routines` folder, you will be able to find your file through OpenBB Terminal's auto-completer capability.
-
-Now you should expect the contents of the example above to be run. This means that a candle chart with a moving average of 20 days, expectations and price targets from analysts and estimated future performance should pop up before returning to the home window.
-
-![OpenBB Routine Script Execution](https://user-images.githubusercontent.com/46355364/223207167-dfab3a74-d34d-47d4-bf6e-44944e8fbfa2.png)
+<TutorialVideo
+    youtubeLink="https://www.youtube.com/embed/zhbX5tTmyPw?si=5XzbbhgiCFsTmbDo"
+    videoLegend="Short video on what power users can do with routines"
+/>
 
 ## Input Variables
 
