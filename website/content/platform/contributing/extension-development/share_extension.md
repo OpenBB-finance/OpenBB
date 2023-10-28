@@ -6,8 +6,6 @@ keywords: [openbb platform, introduction, share, extension, contributing,
  documentation, PyPI, community]
 ---
 
-
-
 We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
 
 ## Publish your extension to PyPI

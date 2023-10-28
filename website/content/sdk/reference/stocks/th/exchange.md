@@ -37,8 +37,6 @@ openbb.stocks.th.exchange(symbol: str)
 | pd.DataFrame | Exchange info |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.stocks.th.exchange_chart(symbol: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", cal
 | pd.Dataframe | Historic information for an option |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.options.hist_ce_chart(symbol: str = "GME", expiry: str = "2021-02-
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

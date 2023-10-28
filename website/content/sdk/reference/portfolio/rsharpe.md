@@ -49,8 +49,6 @@ output = openbb.portfolio.rsharpe(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +80,6 @@ openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngin
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

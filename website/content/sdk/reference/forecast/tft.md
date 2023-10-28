@@ -55,8 +55,6 @@ openbb.forecast.tft(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit Prob. TFT model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -109,8 +107,6 @@ openbb.forecast.tft_chart(data: Union[pd.Series, pd.DataFrame], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

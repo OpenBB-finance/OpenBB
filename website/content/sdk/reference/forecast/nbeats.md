@@ -54,8 +54,6 @@ openbb.forecast.nbeats(data: Union[pd.Series, pd.DataFrame], target_column: str 
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[NBEATSModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best NBEATS Model. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -108,8 +106,6 @@ openbb.forecast.nbeats_chart(data: Union[pd.DataFrame, pd.Series], target_column
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

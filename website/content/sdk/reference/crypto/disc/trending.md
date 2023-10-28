@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | Trending Coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -63,8 +61,6 @@ openbb.crypto.disc.trending_chart(export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

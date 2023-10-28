@@ -39,8 +39,6 @@ openbb.stocks.sia.cpci(industry: str = "Internet Content & Information", mktcap:
 | dict | Dictionary of countries and number of companies in a specific sector |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.sia.cpci_chart(industry: str = "Internet Content & Information", m
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

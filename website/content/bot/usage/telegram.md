@@ -5,8 +5,6 @@ description: Understand the basics for getting started and running the OpenBB Bo
 keywords: [telegram, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
 
-
-
 Now that you have added the bot to your Telegram server you can get started with running commands.
 
 To use it, you need to type slash commands in the chat. A slash command starts with a / followed by a keyword and an optional argument. For example, ```/cd AAPL``` will show you the daily chart for Apple stock.

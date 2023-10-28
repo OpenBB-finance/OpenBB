@@ -48,8 +48,6 @@ openbb.ta.clenow(df["Close"])
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -91,8 +89,6 @@ openbb.ta.clenow_chart(df["Close"])
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

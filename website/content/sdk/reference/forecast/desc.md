@@ -37,8 +37,6 @@ openbb.forecast.desc(data: pd.DataFrame)
 | pd.DataFrame | The df with the new data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -63,8 +61,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

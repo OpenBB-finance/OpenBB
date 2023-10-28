@@ -37,8 +37,6 @@ openbb.futures.curve(symbol: str = "")
 | pd.DataFrame | Dictionary with sector weightings allocation |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.futures.curve_chart(symbol: str, raw: bool = False, export: str = "", ext
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

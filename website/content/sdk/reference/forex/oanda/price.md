@@ -38,8 +38,6 @@ openbb.forex.oanda.price(accountID: str = "REPLACE_ME", instrument: Optional[str
 | Union[Dict[str, str], bool] | The currency pair price or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.forex.oanda.price_chart(account: str, instrument: Optional[str] = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

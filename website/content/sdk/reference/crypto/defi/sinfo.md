@@ -37,8 +37,6 @@ openbb.crypto.defi.sinfo(address: str = "")
 | Tuple[pd.DataFrame, str] | luna delegations and summary report for given address |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

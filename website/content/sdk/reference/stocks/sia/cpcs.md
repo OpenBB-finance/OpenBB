@@ -39,8 +39,6 @@ openbb.stocks.sia.cpcs(sector: str = "Technology", mktcap: str = "Large", exclud
 | dict | Dictionary of countries and number of companies in a specific sector |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.sia.cpcs_chart(sector: str = "Technology", mktcap: str = "Large", 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

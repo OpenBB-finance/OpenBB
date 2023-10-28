@@ -28,8 +28,6 @@ keywords:
   ]
 ---
 
-
-
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
 This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**

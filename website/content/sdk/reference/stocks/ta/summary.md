@@ -37,8 +37,6 @@ openbb.stocks.ta.summary(symbol: str)
 | str | technical summary report |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.stocks.ta.summary_chart(symbol: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

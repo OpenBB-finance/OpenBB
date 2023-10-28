@@ -57,8 +57,6 @@ openbb.forecast.trans(data: Union[pd.Series, pd.DataFrame], target_column: str =
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TransformerModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best transformer Model. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -113,8 +111,6 @@ openbb.forecast.trans_chart(data: Union[pd.Series, pd.DataFrame], target_column:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

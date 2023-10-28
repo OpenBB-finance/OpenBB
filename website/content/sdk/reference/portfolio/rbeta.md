@@ -48,8 +48,6 @@ output = openbb.portfolio.rbeta(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -80,8 +78,6 @@ openbb.portfolio.rbeta_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

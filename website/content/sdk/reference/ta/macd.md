@@ -40,8 +40,6 @@ openbb.ta.macd(data: pd.Series, n_fast: int = 12, n_slow: int = 26, n_signal: in
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.macd_chart(data: pd.Series, n_fast: int = 12, n_slow: int = 26, n_sign
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

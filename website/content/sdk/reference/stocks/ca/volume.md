@@ -38,8 +38,6 @@ openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 | pd.DataFrame | Dataframe with volume for stock |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = No
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

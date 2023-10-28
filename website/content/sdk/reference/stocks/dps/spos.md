@@ -37,8 +37,6 @@ openbb.stocks.dps.spos(symbol: str)
 | pd.DataFrame | Net short position |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.dps.spos_chart(symbol: str, limit: int = 84, raw: bool = False, ex
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

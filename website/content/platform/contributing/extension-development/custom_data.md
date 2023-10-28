@@ -5,8 +5,6 @@ description: Add a custom data source to the OpenBB Platform.
 keywords: [openbb platform, extension, custom data source, contributing, documentation]
 ---
 
-
-
 You will get your data either from a CSV file, local database or from an API endpoint.
 
 If you don't want or don't need to partake in the data standardization framework, you have the option to add all the logic straight inside the router file. This is usually the case when you are returning custom data from your local CSV file, or similar. Keep in mind that we also serve the REST API and that you shouldn't send non-serializable objects as a response (e.g. a pandas dataframe).

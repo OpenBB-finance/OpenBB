@@ -6,8 +6,6 @@ keywords: [discord, telegram, individual, customizing, customization, how to, ex
 ---
 
 
-
-
 The individual plan offers three different capabilities - Charting, Alerts, and Watchlist. In addition to these benefits you also get unlimited commands per month after registering.
 
 <div className="flex justify-center h-full w-[800px] rounded-r-[4px]">

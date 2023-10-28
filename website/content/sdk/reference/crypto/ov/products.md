@@ -38,8 +38,6 @@ openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
 | pd.DataFrame | Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

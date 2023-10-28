@@ -40,8 +40,6 @@ openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_
 | pd.DataFrame | Dataframe of fib levels |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

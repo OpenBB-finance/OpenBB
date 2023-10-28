@@ -42,8 +42,6 @@ openbb.forecast.autoarima(data: Union[pd.Series, pd.DataFrame], target_column: s
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision<br/>Fit AutoaRIMA model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -84,8 +82,6 @@ openbb.forecast.autoarima_chart(data: Union[pd.DataFrame, pd.Series], target_col
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

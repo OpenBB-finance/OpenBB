@@ -5,8 +5,6 @@ description: Learn how to setup your development environment for the OpenBB Plat
 keywords: [openbb platform, introduction, environment, setup, contributing, documentation]
 ---
 
-
-
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 
 <details>

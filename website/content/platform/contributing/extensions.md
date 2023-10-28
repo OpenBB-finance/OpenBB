@@ -5,8 +5,6 @@ description: Learn about the Extensions inside the OpenBB Platform.
 keywords: [openbb platform, introduction, extensions, contributing, documentation]
 ---
 
-
-
 Extensions add functionality to the OpenBB Platform. They can be a new data source, a new command, a new visualization, etc.
 
 ## Types of extensions

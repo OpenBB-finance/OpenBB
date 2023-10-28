@@ -39,8 +39,6 @@ openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str 
 | Union[pd.DataFrame, bool] | Close trades data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.forex.oanda.close_chart(accountID: str, orderID: str = "", units: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
 | pd.DataFrame | DataFrame with aroon indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

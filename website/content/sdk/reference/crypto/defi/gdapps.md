@@ -37,8 +37,6 @@ openbb.crypto.defi.gdapps(limit: int = 50)
 | pd.DataFrame | Information about DeFi protocols grouped by chain |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", external_axes
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -42,8 +42,6 @@ openbb.forecast.autoselect(data: Union[pd.Series, pd.DataFrame], target_column: 
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast, Union[int, str]] | list[np.ndarray] - Adjusted Data series<br/>list[np.ndarray] - List of historical fcast values<br/>list[np.ndarray] - List of predicted fcast values<br/>Optional[float] - precision<br/>StatsForecast - Fit ETS model object.<br/>Union[int, str] - Best model |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -84,8 +82,6 @@ openbb.forecast.autoselect_chart(data: Union[pd.DataFrame, pd.Series], target_co
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

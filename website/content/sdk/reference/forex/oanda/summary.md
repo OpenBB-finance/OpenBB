@@ -37,8 +37,6 @@ openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Account summary data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.forex.oanda.summary_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

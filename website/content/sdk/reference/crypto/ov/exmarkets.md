@@ -40,8 +40,6 @@ openbb.crypto.ov.exmarkets(exchange_id: str = "binance", symbols: str = "USD", s
 | pd.DataFrame | pair, base_currency_name, quote_currency_name, market_url,<br/>category, reported_volume_24h_share, trust_score, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.ov.exmarkets_chart(exchange: str = "binance", sortby: str = "pair"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

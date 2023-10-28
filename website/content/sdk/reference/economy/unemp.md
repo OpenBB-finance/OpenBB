@@ -37,8 +37,6 @@ openbb.economy.unemp(start_year: int = 2010)
 | pd.DataFrame | Dataframe of historical yields |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.economy.unemp_chart(start_year: int = 2010, raw: bool = False, export: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

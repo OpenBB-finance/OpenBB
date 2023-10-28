@@ -38,8 +38,6 @@ openbb.crypto.ov.crypto_hacks(sortby: str = "Platform", ascend: bool = False)
 | pd.DataFrame | Hacks with columns {Platform,Date,Amount [$],Audited,Slug,URL} |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.ov.crypto_hacks_chart(limit: int = 15, sortby: str = "Platform", a
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

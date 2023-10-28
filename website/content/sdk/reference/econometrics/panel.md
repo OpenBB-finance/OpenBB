@@ -84,8 +84,6 @@ union          0.1777     0.0172     10.344     0.0000      0.1441      0.2114
 ```
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -119,8 +117,6 @@ openbb.econometrics.panel_chart(Y: pd.DataFrame, X: pd.DataFrame, regression_typ
 | ---- | ----------- |
 | The dataset used, the dependent variable, the independent variable and |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

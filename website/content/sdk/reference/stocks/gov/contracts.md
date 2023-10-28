@@ -38,8 +38,6 @@ openbb.stocks.gov.contracts(symbol: str, past_transaction_days: int = 10)
 | pd.DataFrame | Most recent transactions by members of U.S. Congress |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.stocks.gov.contracts_chart(symbol: str, past_transaction_days: int = 10, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

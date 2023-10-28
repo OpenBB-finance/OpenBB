@@ -38,8 +38,6 @@ openbb.crypto.ov.btcrb(start_date: str = "2010-01-01", end_date: Optional[str] =
 | pd.DataFrame | price over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.btcrb_chart(start_date: str = "2010-01-01", end_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

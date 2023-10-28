@@ -37,8 +37,6 @@ openbb.crypto.defi.anchor_data(address: str = "")
 | Tuple[pd.DataFrame, pd.DataFrame, str] | - pd.DataFrame: Earnings over time in UST<br/>- pd.DataFrame: History of transactions<br/>- str:              Overall statistics |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_t
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

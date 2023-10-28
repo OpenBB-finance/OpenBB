@@ -40,8 +40,6 @@ openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol"
 | pd.DataFrame | N coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

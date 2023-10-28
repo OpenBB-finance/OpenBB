@@ -39,8 +39,6 @@ openbb.crypto.disc.losers(interval: str = "1h", limit: int = 50, sortby: str = "
 | pd.DataFrame | Top Losers  - coins which lost most in price in given period of time.<br/>Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.disc.losers_chart(interval: str = "1h", limit: int = 20, export: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

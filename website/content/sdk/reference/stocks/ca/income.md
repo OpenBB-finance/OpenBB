@@ -40,8 +40,6 @@ openbb.stocks.ca.income(similar: List[str], timeframe: str = "2021", quarter: bo
 | pd.DataFrame | Dataframe of income statements |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2021", quart
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

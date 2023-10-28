@@ -37,8 +37,6 @@ openbb.stocks.ta.view(symbol: str)
 | bytes | Image in byte format |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.stocks.ta.view_chart(symbol: str, external_axes: Optional[List[matplotlib
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

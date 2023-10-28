@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | DataFrame with recent news from most popular DeFi related newsletters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -64,8 +62,6 @@ openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

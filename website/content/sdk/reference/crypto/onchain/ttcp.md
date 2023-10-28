@@ -41,8 +41,6 @@ openbb.crypto.onchain.ttcp(network: str = "ethereum", exchange: str = "Uniswap",
 | pd.DataFrame | Most traded crypto pairs on given decentralized exchange in chosen time period. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.crypto.onchain.ttcp_chart(exchange: str = "Uniswap", days: int = 10, limi
 | ---- | ----------- |
 | pd.DataFrame | Most traded crypto pairs on given decentralized exchange in chosen time period. |
 ---
-
-
 
 </TabItem>
 </Tabs>

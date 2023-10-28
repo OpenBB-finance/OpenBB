@@ -46,8 +46,6 @@ df = openbb.stocks.dd.pt(symbol="AAPL")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -90,8 +88,6 @@ openbb.stocks.dd.pt_chart(symbol="AAPL")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

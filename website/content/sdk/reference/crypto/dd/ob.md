@@ -39,8 +39,6 @@ openbb.crypto.dd.ob(exchange: str, symbol: str, to_symbol: str)
 | Dict[str, Any] | With bids and asks |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.dd.ob_chart(exchange: str, symbol: str, to_symbol: str, export: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -37,8 +37,6 @@ openbb.economy.bigmac(country_codes: List[str] = None)
 | pd.DataFrame | Dataframe with Big Mac indices converted to USD equivalent. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.economy.bigmac_chart(country_codes: List[str] = None, raw: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

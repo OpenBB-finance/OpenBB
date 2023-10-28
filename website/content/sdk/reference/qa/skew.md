@@ -38,8 +38,6 @@ openbb.qa.skew(data: pd.DataFrame, window: int = 14)
 | pd.DataFrame | Dataframe of rolling skew |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.qa.skew_chart(symbol: str, data: pd.DataFrame, target: str, window: int =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

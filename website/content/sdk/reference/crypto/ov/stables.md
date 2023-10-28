@@ -48,8 +48,6 @@ openbb.crypto.ov.stables(sortby="Volume_[$]", ascend=True, limit=10)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -91,8 +89,6 @@ openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

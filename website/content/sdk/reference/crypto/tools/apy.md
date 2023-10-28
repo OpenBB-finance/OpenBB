@@ -38,8 +38,6 @@ openbb.crypto.tools.apy(apr: float, compounding_times: int)
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.tools.apy_chart(apr: float, compounding_times: int, narrative: boo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.crypto.ov.contracts(platform_id: str = "eth-ethereum", sortby: str = "act
 | pd.DataFrame | id, type, active |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.ov.contracts_chart(symbol: str, sortby: str = "active", ascend: bo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.crypto.onchain.tv(symbol: str = "UNI", trade_amount_currency: str = "USD"
 | pd.DataFrame | Token volume on Decentralized Exchanges |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.crypto.onchain.tv_chart(symbol: str = "WBTC", trade_amount_currency: str 
 | ---- | ----------- |
 | pd.DataFrame | Token volume on different decentralized exchanges |
 ---
-
-
 
 </TabItem>
 </Tabs>

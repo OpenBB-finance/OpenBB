@@ -39,8 +39,6 @@ openbb.crypto.dd.events(symbol: str = "BTC", sortby: str = "date", ascend: bool 
 | pd.DataFrame | Events found for given coin<br/>Columns: id, date , date_to, name, description, is_conference, link, proof_image_link |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.dd.events_chart(symbol: str = "BTC", limit: int = 10, sortby: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

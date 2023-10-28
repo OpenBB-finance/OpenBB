@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | list of startups |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

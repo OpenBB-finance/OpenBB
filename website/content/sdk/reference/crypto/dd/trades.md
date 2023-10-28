@@ -39,8 +39,6 @@ openbb.crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str)
 | pd.DataFrame | trades for a coin in a given exchange |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.dd.trades_chart(exchange: str, symbol: str, to_symbol: str, limit:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

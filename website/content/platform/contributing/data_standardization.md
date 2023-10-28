@@ -5,8 +5,6 @@ description: Learn what is data standardization and how does it work inside the 
 keywords: [openbb platform, introduction, data standardization, contributing, documentation]
 ---
 
-
-
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
 Each data model should inherit from a [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.

@@ -37,8 +37,6 @@ openbb.stocks.dps.psi_sg(symbol: str)
 | Tuple[pd.DataFrame, List] | Short interest volume data, Price data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.dps.psi_sg_chart(symbol: str, limit: int = 84, raw: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

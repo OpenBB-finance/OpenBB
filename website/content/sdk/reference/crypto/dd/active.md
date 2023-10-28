@@ -40,8 +40,6 @@ openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2
 | pd.DataFrame | active addresses over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_d
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -37,8 +37,6 @@ openbb.stocks.ba.mentions(symbol: str)
 | pd.DataFrame | Dataframe of interest over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ba.mentions_chart(symbol: str, start_date: str = "", export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

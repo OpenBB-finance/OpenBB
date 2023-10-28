@@ -38,8 +38,6 @@ openbb.futures.historical(symbols: List[str], expiry: str = "")
 | pd.DataFrame | Dictionary with sector weightings allocation |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

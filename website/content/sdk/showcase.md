@@ -5,8 +5,6 @@ description: Showcasing apps created by users using the OpenBB SDK
 keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
 ---
 
-
-
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
 This page contains a list of projects that use the OpenBB SDK.

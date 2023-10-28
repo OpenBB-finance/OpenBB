@@ -38,8 +38,6 @@ openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
 | pd.DataFrame | Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,<br/>Funding_Rate, Volume_24h, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, l
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

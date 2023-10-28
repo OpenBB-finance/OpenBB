@@ -40,8 +40,6 @@ openbb.crypto.dd.pr(main_coin: str, to_symbol: Optional[str] = None, limit: Opti
 | pd.DataFrame | Potential returns data<br/>Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.dd.pr_chart(to_symbol: str, from_symbol: Optional[str] = None, lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

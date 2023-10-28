@@ -37,8 +37,6 @@ openbb.alt.oss.summary(repo: str)
 | pd.DataFrame | Dataframe with repo summary - Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.alt.oss.summary_chart(repo: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.crypto.onchain.hr(symbol: str, interval: str = "24h", start_date: str = "
 | pd.DataFrame | mean hashrate and symbol price over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.onchain.hr_chart(symbol: str, start_date: str = "2010-01-01", end_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

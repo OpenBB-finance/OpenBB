@@ -28,8 +28,6 @@ keywords:
   ]
 ---
 
-
-
 ## Installation and Updates
 
 <details><summary>How much hard drive space is required?</summary>

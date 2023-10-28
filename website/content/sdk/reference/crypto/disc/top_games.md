@@ -38,8 +38,6 @@ openbb.crypto.disc.top_games(sortby: str = "", limit: int = 10)
 | pd.DataFrame | Top blockchain games. Columns: Name, Daily Users, Daily Volume [$] |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.disc.top_games_chart(limit: int = 10, export: str = "", sortby: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

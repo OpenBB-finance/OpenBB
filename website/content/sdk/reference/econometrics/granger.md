@@ -39,8 +39,6 @@ openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.
 | dict | Dictionary containing results of Granger test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_serie
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

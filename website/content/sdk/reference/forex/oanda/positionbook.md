@@ -38,8 +38,6 @@ openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str
 | Union[pd.DataFrame, bool] | Position book data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", exte
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

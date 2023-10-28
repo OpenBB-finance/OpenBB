@@ -4,8 +4,6 @@ keywords: [markets, trading, hours, stocks, time, global, world, location, open,
 description: An Introduction to the Trading Hours menu, within the Stocks menu. This set of features displays the status of international markets.
 ---
 
-
-
 The Trading Hours sub-module is a set of functions for checking the status and hours of operation for markets globally.
 
 ## How to Use

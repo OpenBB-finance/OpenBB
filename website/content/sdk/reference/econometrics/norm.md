@@ -37,8 +37,6 @@ openbb.econometrics.norm(data: pd.Series)
 | pd.DataFrame | Dataframe containing statistics of normality |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

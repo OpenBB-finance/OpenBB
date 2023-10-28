@@ -37,8 +37,6 @@ openbb.stocks.gov.lastcontracts(past_transaction_days: int = 2)
 | pd.DataFrame | DataFrame of government contracts |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.gov.lastcontracts_chart(past_transaction_days: int = 2, limit: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

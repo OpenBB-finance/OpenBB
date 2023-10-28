@@ -68,8 +68,6 @@ frontier = openbb.portfolio.po.ef(portfolio_engine=p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -128,8 +126,6 @@ frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

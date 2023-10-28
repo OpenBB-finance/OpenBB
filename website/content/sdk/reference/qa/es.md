@@ -41,8 +41,6 @@ openbb.qa.es(data: pd.DataFrame, use_mean: bool = False, distribution: str = "no
 | pd.DataFrame | DataFrame with Expected Shortfall per percentile |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.qa.es_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

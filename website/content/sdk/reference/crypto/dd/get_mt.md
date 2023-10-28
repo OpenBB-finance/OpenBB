@@ -37,8 +37,6 @@ openbb.crypto.dd.get_mt(only_free: bool = True)
 | pd.DataFrame | available timeseries |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

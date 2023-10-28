@@ -39,8 +39,6 @@ openbb.crypto.onchain.balance(address: str, sortby: str = "index", ascend: bool 
 | pd.DataFrame | DataFrame with list of tokens and their balances. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.onchain.balance_chart(address: str, limit: int = 15, sortby: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

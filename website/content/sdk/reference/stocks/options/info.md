@@ -37,8 +37,6 @@ openbb.stocks.options.info(symbol: str)
 | float | The info for a given ticker |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.stocks.options.info_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

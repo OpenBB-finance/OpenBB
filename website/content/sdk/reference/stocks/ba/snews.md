@@ -39,8 +39,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.ba.snews_chart(symbol: str, export: str = "", external_axes: Optio
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

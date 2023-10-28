@@ -45,8 +45,6 @@ openbb.forecast.linregr(data: Union[pd.Series, pd.DataFrame], target_column: str
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, LinearRegressionModel] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best Linear Regression Model. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -89,8 +87,6 @@ openbb.forecast.linregr_chart(data: Union[pd.Series, pd.DataFrame], target_colum
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

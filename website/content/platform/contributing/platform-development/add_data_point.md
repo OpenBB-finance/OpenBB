@@ -6,8 +6,6 @@ keywords: [openbb platform, introduction, data point, contributing, documentatio
 provider, QueryParams, Data, Fetcher, transform, extract]
 ---
 
-
-
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/standard_models) model.
 
 ## Identify which type of data you want to add

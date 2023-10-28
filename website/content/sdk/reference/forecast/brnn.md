@@ -53,8 +53,6 @@ openbb.forecast.brnn(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | E501 | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best BRNN Model. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -106,8 +104,6 @@ openbb.forecast.brnn_chart(data: Union[pd.Series, pd.DataFrame], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

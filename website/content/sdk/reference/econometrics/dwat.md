@@ -52,8 +52,6 @@ durbin_watson_value = openbb.econometrics.dwat(model)
 ```
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -85,8 +83,6 @@ openbb.econometrics.dwat_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

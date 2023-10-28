@@ -23,8 +23,6 @@ keywords:
   ]
 ---
 
-
-
 This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub to achieve optimal performance.
 
 ## Registration

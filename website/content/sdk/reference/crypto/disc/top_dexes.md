@@ -37,8 +37,6 @@ openbb.crypto.disc.top_dexes(sortby: str = "", limit: int = 10)
 | pd.DataFrame | Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$] |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.disc.top_dexes_chart(limit: int = 10, export: str = "", sortby: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

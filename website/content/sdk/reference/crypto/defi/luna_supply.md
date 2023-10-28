@@ -38,8 +38,6 @@ openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", da
 | pd.DataFrame | Dataframe of supply history data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_ty
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

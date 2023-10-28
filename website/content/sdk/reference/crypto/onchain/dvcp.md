@@ -41,8 +41,6 @@ openbb.crypto.onchain.dvcp(limit: int = 100, symbol: str = "UNI", to_symbol: str
 | pd.DataFrame | Daily volume for given pair |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.crypto.onchain.dvcp_chart(symbol: str = "WBTC", to_symbol: str = "USDT", 
 | ---- | ----------- |
 | pd.DataFrame | Token volume on different decentralized exchanges |
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascen
 | pd.DataFrame | Available trading pairs on Coinbase |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

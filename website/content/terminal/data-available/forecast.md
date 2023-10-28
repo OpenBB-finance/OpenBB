@@ -4,8 +4,6 @@ keywords: [machine learning, statistics, artificial intelligence, deep learning,
 description: An introduction to the OpenBB Terminal's Forecast menu and machine learning toolkit.
 ---
 
-
-
 The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 
 ## The Forecast Menu
@@ -397,7 +395,7 @@ rnn SPY --model-type GRU --forecast-only
 
 Epoch 85: 100%|█████████████████████████████████████| 214/214 [00:02<00:00, 75.10it/s, loss=-4.45, v_num=logs, train_loss=-4.35, val_loss=-2.35]
 
-RNN model obtains MAPE: 2.77% 
+RNN model obtains MAPE: 2.77%
 ```
 
 ![RNN with GRU](https://user-images.githubusercontent.com/85772166/233540843-2167a3ad-0088-4d84-a298-7b8b3b3655ff.png)
@@ -482,7 +480,7 @@ brnn SPY --forecast-only
 ```console
 Epoch 196: 100%|███████████████████████████████████| 214/214 [00:01<00:00, 107.42it/s, loss=-4.09, v_num=logs, train_loss=-4.07, val_loss=-1.53]
 
-Block RNN model obtains MAPE: 3.25% 
+Block RNN model obtains MAPE: 3.25%
 ```
 
 ![BRNN Without Covariates](https://user-images.githubusercontent.com/85772166/233541019-7bc0545e-f2f1-4a6d-84a2-7e7ac1de9043.png)
@@ -502,7 +500,7 @@ brnn SPY --forecast-only --past-covariates volume
 ```console
 Covariate #0: volume
 Epoch 86: 100%|████████████████████████████████████████| 214/214 [00:02<00:00, 74.77it/s, loss=-4, v_num=logs, train_loss=-4.19, val_loss=-1.53]
-Block RNN model obtains MAPE: 4.69% 
+Block RNN model obtains MAPE: 4.69%
 ```
 
 ![BRNN With Past Covariates](https://user-images.githubusercontent.com/85772166/233541054-552243aa-0509-47fd-8ac8-42c0b433095a.png)
@@ -532,7 +530,7 @@ brnn -d SPY --past-covariates EMA_200 -t 0.95
 
 Covariate #0: EMA_200
 Epoch 87: 100%|█████████████████████████████████████| 215/215 [00:02<00:00, 82.81it/s, loss=-3.87, v_num=logs, train_loss=-4.29, val_loss=-1.59]
-Block RNN model obtains MAPE: 3.38% 
+Block RNN model obtains MAPE: 3.38%
 ```
 
 ![Parameter Adjustments](https://user-images.githubusercontent.com/85772166/233541148-707d2167-46ee-47b1-b6dc-ed56b239f32f.png)
@@ -552,7 +550,7 @@ Covariate #6: SPY_atr
 Covariate #7: SPY_rsi10
 Covariate #8: EMA_200
 Epoch 39: 100%|█████████████████████████████████████| 215/215 [00:02<00:00, 83.50it/s, loss=-3.92, v_num=logs, train_loss=-4.03, val_loss=-2.14]
-Block RNN model obtains MAPE: 3.57% 
+Block RNN model obtains MAPE: 3.57%
 ```
 
 ![BRNN with All Past Covariates](https://user-images.githubusercontent.com/85772166/233541177-7ddd64be-ec79-4aaf-b30f-41607a7b7f68.png)
@@ -633,7 +631,7 @@ Covariate #4: AAPL_close
 Covariate #5: MSFT_close
 Predicting Regression for 5 days
 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:00<00:00, 117.16it/s]
-Regression model obtains MAPE: 1.66% 
+Regression model obtains MAPE: 1.66%
 ```
 
 ![Regression with All Past Covariates](https://user-images.githubusercontent.com/85772166/233541328-931117ff-9a84-437d-b8e8-b653d56335bc.png)

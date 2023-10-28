@@ -40,8 +40,6 @@ openbb.stocks.ba.hist(symbol: str, start_date: Optional[str] = None, end_date: O
 | pd.DataFrame | Dataframe of historical sentiment |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.stocks.ba.hist_chart(symbol: str, start_date: Optional[str] = None, end_d
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: f
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

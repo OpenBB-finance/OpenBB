@@ -26,8 +26,6 @@ keywords:
   ]
 ---
 
-
-
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
 Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1).

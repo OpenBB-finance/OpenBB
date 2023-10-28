@@ -4,8 +4,6 @@ keywords: [forex, currency, money, hedge, dollar, euro, pound, currencies, marke
 description: The Forex menu enables you to load any combination of currencies (e.g. USDEUR or JPYGBP), show current quote and historical data as well as forward rates.
 ---
 
-
-
 The Forex module provides a way for users to get currency pair data, from a number of sources. API keys for them are handled by the Keys module. After importing the entire OpenBB SDK, no further action is required to authorize the sources. This module also provides Oanda account holders with broker integration.
 
 ## How to Use

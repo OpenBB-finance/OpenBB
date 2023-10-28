@@ -38,8 +38,6 @@ openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
 | pd.DataFrame | Test results from the Breusch-Godfrey Test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

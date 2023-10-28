@@ -37,8 +37,6 @@ openbb.crypto.onchain.info(address: Any)
 | pd.DataFrame | DataFrame with information about provided ERC20 token. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.onchain.info_chart(address: str, social: bool = False, export: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

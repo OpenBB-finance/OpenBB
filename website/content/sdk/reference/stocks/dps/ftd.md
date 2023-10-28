@@ -40,8 +40,6 @@ openbb.stocks.dps.ftd(symbol: str, start_date: Optional[str] = None, end_date: O
 | pd.DataFrame | Fail to deliver data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.stocks.dps.ftd_chart(symbol: str, data: pd.DataFrame = None, start_date: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -5,8 +5,6 @@ description: Understand the basics for getting started and running the OpenBB Bo
 keywords: [discord, how to, explanation, openbb bot, openbb, guide, bot guide, commands, community]
 ---
 
-
-
 Now that you have added the bot to your Discord you can get started with running commands.
 
 If you're new to OpenBB Discord Bot, here's a quick guide to get you started.

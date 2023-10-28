@@ -37,8 +37,6 @@ openbb.crypto.ov.cr(rate_type: str = "borrow")
 | pd.DataFrame | crypto interest rates per platform |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.cr_chart(symbols: str, platforms: str, rate_type: str = "borrow
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

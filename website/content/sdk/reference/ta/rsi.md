@@ -40,8 +40,6 @@ openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, dr
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

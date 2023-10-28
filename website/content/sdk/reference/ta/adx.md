@@ -40,8 +40,6 @@ openbb.ta.adx(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: in
 | pd.DataFrame | DataFrame with adx indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, dri
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

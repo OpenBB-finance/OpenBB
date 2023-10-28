@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | BTC circulating supply |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

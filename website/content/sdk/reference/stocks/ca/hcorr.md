@@ -39,8 +39,6 @@ openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, can
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe with correlation matrix, Dataframe with historical prices for all comparison stocks |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = Non
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

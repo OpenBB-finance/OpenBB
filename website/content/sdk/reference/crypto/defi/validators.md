@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | terra validators details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.crypto.defi.validators_chart(limit: int = 10, sortby: str = "votingPower"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -58,8 +58,6 @@ openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type 
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -109,8 +107,6 @@ openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type 
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

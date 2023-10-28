@@ -41,8 +41,6 @@ openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int
 | pd.DataFrame | Dataframe of the screener |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -77,8 +75,6 @@ openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limi
 | ---- | ----------- |
 | list[str] | List of stocks |
 ---
-
-
 
 </TabItem>
 </Tabs>

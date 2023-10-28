@@ -38,8 +38,6 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
 | pd.DataFrame | Dataframe of estimated market cap over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, exp
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

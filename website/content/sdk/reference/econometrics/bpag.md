@@ -37,8 +37,6 @@ openbb.econometrics.bpag(model: statsmodels.regression.linear_model.RegressionRe
 | pd.DataFrame | Test results from the Breusch-Pagan Test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.econometrics.bpag_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

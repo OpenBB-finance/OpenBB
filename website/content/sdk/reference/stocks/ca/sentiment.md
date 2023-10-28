@@ -37,8 +37,6 @@ openbb.stocks.ca.sentiment(symbols: List[str])
 | pd.DataFrame | Contains sentiment analysis from several tickers |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ca.sentiment_chart(similar: List[str], raw: bool = False, export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

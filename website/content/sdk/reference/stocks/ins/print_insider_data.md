@@ -38,8 +38,6 @@ openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
 | pd.DataFrame | Open insider filtered data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

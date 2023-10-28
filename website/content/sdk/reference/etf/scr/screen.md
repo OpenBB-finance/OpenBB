@@ -37,8 +37,6 @@ openbb.etf.scr.screen(preset: str)
 | pd.DataFrame | Screened dataframe |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.etf.scr.screen_chart(preset: str, num_to_show: int, sortby: str, ascend: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

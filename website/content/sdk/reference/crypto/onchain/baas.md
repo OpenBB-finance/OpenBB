@@ -41,8 +41,6 @@ openbb.crypto.onchain.baas(symbol: str = "WETH", to_symbol: str = "USDT", limit:
 | pd.DataFrame | Average bid and ask prices, spread for given crypto pair for chosen time period |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.crypto.onchain.baas_chart(symbol: str = "WETH", to_symbol: str = "USDT", 
 | ---- | ----------- |
 | pd.DataFrame | Average bid and ask prices, spread for given crypto pair for chosen time period |
 ---
-
-
 
 </TabItem>
 </Tabs>

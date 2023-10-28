@@ -37,8 +37,6 @@ openbb.crypto.defi.gacc(cumulative: bool = True)
 | pd.DataFrame | historical data of accounts growth |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.defi.gacc_chart(kind: str = "total", cumulative: bool = False, lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

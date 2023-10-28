@@ -41,8 +41,6 @@ openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

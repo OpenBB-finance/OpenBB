@@ -5,8 +5,6 @@ description: At its base, the OpenBB Platform supplies core architecture and ser
 keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client]
 ---
 
-
-
 At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
 - Charting libraries and views

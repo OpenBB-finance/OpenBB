@@ -37,8 +37,6 @@ openbb.crypto.dd.gov(symbol: str)
 | Tuple[str, pd.DataFrame] | Governance summary,<br/>Metric Value with governance details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.dd.gov_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.stocks.gov.gtrades(symbol: str, gov_type: str = "congress", past_transact
 | pd.DataFrame | DataFrame of tickers government trading |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.stocks.gov.gtrades_chart(symbol: str, gov_type: str = "congress", past_tr
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

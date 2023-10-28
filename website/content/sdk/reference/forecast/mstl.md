@@ -42,8 +42,6 @@ openbb.forecast.mstl(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit MSTL model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -84,8 +82,6 @@ openbb.forecast.mstl_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

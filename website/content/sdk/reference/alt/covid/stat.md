@@ -39,8 +39,6 @@ openbb.alt.covid.stat(country: str, stat: str = "cases", limit: int = 10)
 | pd.DataFrame | Dataframe of data for given country and statistic |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.alt.covid.stat_chart(country: str, stat: str = "cases", raw: bool = False
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -37,8 +37,6 @@ openbb.crypto.dd.basic(symbol: str = "BTC")
 | pd.DataFrame | Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -38,8 +38,6 @@ openbb.econometrics.coint(datasets: pd.Series, return_z: bool = False)
 | Union[pd.DataFrame,Dict] | Dataframe with results of cointegration tests or a Dict of the z results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

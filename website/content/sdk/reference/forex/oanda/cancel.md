@@ -37,8 +37,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.forex.oanda.cancel_chart(accountID: str, orderID: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

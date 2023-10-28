@@ -38,8 +38,6 @@ openbb.crypto.dd.balance(from_symbol: str, to_symbol: str = "USDT")
 | pd.DataFrame | Dataframe with account holdings for an asset |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.balance_chart(from_symbol: str, to_symbol: str = "USDT", export
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

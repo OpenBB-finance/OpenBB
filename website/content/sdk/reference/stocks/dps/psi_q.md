@@ -38,8 +38,6 @@ openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
 | pd.DataFrame | short interest volume data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

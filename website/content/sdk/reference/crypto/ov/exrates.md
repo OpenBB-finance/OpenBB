@@ -38,8 +38,6 @@ openbb.crypto.ov.exrates(sortby: str = "Name", ascend: bool = False)
 | pd.DataFrame | Index, Name, Unit, Value, Type |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.exrates_chart(sortby: str = "Name", ascend: bool = False, limit
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

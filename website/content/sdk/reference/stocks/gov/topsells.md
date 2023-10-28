@@ -38,8 +38,6 @@ openbb.stocks.gov.topsells(gov_type: str = "congress", past_transactions_months:
 | pd.DataFrame | DataFrame of top government sell trading |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_m
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

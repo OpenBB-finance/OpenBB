@@ -40,8 +40,6 @@ openbb.stocks.ba.infer(symbol: str, limit: int = 100, start_date: Optional[str] 
 | pd.DataFrame | Dataframe of tweets and sentiment |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.stocks.ba.infer_chart(symbol: str, limit: int = 100, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

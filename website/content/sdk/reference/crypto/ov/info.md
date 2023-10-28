@@ -39,8 +39,6 @@ openbb.crypto.ov.info(symbols: str = "USD", sortby: str = "rank", ascend: bool =
 | pd.DataFrame | rank, name, symbol, price, volume_24h, circulating_supply, total_supply,<br/>max_supply, market_cap, beta_value, ath_price, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.ov.info_chart(symbol: str, sortby: str = "rank", ascend: bool = Tr
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -5,8 +5,6 @@ description: Showcasing apps created by users using the OpenBB Platform
 keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi, platform]
 ---
 
-
-
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
 ## Coming Soon

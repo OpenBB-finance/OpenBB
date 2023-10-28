@@ -6,8 +6,6 @@ keywords: [openbb, platform, introduction, manage extensions, contributing,
  documentation, pypi]
 ---
 
-
-
 To install extensions hosted on PyPI, use the `pip install <extension>` command.
 
 To install an extension that is developed locally, ensure that it contains a `pyproject.toml` file and then use the `pip install <extension>` command.

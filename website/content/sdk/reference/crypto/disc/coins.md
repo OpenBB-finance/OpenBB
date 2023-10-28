@@ -40,8 +40,6 @@ openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Sy
 | pd.DataFrame | N coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "S
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

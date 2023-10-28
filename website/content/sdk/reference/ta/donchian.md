@@ -39,8 +39,6 @@ openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int
 | pd.DataFrame | Dataframe of upper and lower channels |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

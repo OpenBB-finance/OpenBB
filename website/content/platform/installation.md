@@ -5,8 +5,6 @@ description: The OpenBB Platform provides the core architecture and services to 
 keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
 ---
 
-
-
 ## General System Requirements
 
 Most systems capable of running Python 3.8-3.11 will be compatible with the OpenBB Platform.  A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended.  Maintaining the system with current patches ensures maximum compatibility.  At a minimum, Windows and macOS should be:

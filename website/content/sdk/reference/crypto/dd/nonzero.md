@@ -39,8 +39,6 @@ openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: 
 | pd.DataFrame | addresses with non-zero balances |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

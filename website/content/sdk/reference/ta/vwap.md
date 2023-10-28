@@ -38,8 +38,6 @@ openbb.ta.vwap(data: pd.DataFrame, offset: int = 0)
 | pd.DataFrame | Dataframe with VWAP data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

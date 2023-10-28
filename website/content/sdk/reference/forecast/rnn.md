@@ -50,8 +50,6 @@ openbb.forecast.rnn(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[RNNModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best RNN Model |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -100,8 +98,6 @@ openbb.forecast.rnn_chart(data: Union[pd.DataFrame, pd.Series], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

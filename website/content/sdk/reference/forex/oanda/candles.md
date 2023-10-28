@@ -39,8 +39,6 @@ openbb.forex.oanda.candles(instrument: Optional[str] = None, granularity: str = 
 | Union[pd.DataFrame, bool] | Candle chart data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.forex.oanda.candles_chart(instrument: str = "", granularity: str = "D", c
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

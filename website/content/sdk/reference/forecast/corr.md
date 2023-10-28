@@ -37,8 +37,6 @@ openbb.forecast.corr(data: pd.DataFrame)
 | pd.DataFrame | The df with the new data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.forecast.corr_chart(dataset: pd.DataFrame, export: str = "", external_axe
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

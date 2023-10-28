@@ -40,8 +40,6 @@ openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pc
 | pd.DataFrame | All markets for given coin and currency |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

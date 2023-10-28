@@ -37,8 +37,6 @@ openbb.stocks.dps.dpotc(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dark Pools (ATS) Data, OTC (Non-ATS) Data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Opti
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

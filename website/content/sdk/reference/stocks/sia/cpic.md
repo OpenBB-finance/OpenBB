@@ -39,8 +39,6 @@ openbb.stocks.sia.cpic(country: str = "United States", mktcap: str = "Large", ex
 | dict | Dictionary of industries and number of companies in a specific country |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.sia.cpic_chart(country: str = "United States", mktcap: str = "Larg
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

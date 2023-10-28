@@ -40,8 +40,6 @@ openbb.crypto.dd.change(symbol: str, exchange: str = "binance", start_date: str 
 | pd.DataFrame | supply change in exchange wallets of a certain symbol over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

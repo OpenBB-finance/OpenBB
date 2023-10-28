@@ -49,8 +49,6 @@ output = openbb.portfolio.om(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -80,8 +78,6 @@ openbb.portfolio.om_chart(portfolio_engine: portfolio_engine.PortfolioEngine, th
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

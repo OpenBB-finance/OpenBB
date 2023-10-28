@@ -39,8 +39,6 @@ openbb.stocks.sia.cps(country: str = "United States", mktcap: str = "Large", exc
 | dict | Dictionary of sectors and number of companies in a specific country |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.sia.cps_chart(country: str = "United States", mktcap: str = "Large
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

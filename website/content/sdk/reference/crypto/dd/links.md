@@ -37,8 +37,6 @@ openbb.crypto.dd.links(symbol: str)
 | pd.DataFrame | asset links |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.dd.links_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

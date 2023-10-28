@@ -39,8 +39,6 @@ openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool
 | pd.DataFrame | Twitter timeline for given coin.<br/>Columns: date, user_name, status, retweet_count, like_count |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

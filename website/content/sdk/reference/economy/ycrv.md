@@ -46,8 +46,6 @@ ycrv_df = openbb.economy.ycrv()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.economy.ycrv_chart(date: datetime.datetime = None, external_axes: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

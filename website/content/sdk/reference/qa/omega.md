@@ -39,8 +39,6 @@ openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: f
 | pd.DataFrame | omega series |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

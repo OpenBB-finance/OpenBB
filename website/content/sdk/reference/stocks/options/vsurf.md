@@ -37,8 +37,6 @@ openbb.stocks.options.vsurf(symbol: str)
 | pd.DataFrame | Dataframe of DTE, Strike and IV |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", z: str = "IV", 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

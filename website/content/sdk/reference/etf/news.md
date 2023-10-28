@@ -40,8 +40,6 @@ openbb.etf.news(query: str, limit: int = 10, start_date: Optional[str] = None, s
 | List[Tuple[pd.DataFrame, dict]] | List of tuples containing news df in first index,<br/>dict containing title of news df. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.etf.news_chart(query: str, limit: int = 3, start_date: Optional[str] = No
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

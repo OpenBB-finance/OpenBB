@@ -37,8 +37,6 @@ openbb.stocks.ins.act(symbol: str)
 | pd.DataFrame | Insider activity data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

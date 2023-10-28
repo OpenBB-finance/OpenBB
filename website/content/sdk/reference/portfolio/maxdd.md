@@ -48,8 +48,6 @@ output = openbb.portfolio.maxdd(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -79,8 +77,6 @@ openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

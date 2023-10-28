@@ -25,8 +25,6 @@ keywords:
   ]
 ---
 
-
-
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.
 
 <details><summary>How often are patches for bugs released?</summary>

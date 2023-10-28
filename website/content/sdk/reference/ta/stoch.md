@@ -40,8 +40,6 @@ openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3,
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: in
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

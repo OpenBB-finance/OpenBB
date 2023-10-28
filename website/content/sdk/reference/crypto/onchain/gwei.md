@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | four gas fees and durations<br/>    (fees for slow, average, fast and<br/>    fastest transactions in gwei and<br/>    its average durations in seconds) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -63,8 +61,6 @@ openbb.crypto.onchain.gwei_chart(export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

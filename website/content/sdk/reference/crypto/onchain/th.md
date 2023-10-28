@@ -39,8 +39,6 @@ openbb.crypto.onchain.th(address: str, sortby: str = "timestamp", ascend: bool =
 | pd.DataFrame | DataFrame with token historical transactions. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.onchain.th_chart(address: str, limit: int = 10, sortby: str = "tim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

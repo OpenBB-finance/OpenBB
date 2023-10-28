@@ -38,8 +38,6 @@ openbb.crypto.dd.ps(symbol: str = "BTC", quotes: str = "USD")
 | pd.DataFrame | Most important ticker related information<br/>Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.ps_chart(from_symbol: str = "BTC", to_symbol: str = "USD", expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

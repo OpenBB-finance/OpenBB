@@ -39,8 +39,6 @@ openbb.stocks.ca.hist(similar: List[str], start_date: Optional[str] = None, cand
 | pd.DataFrame | Dataframe containing candle type variable for each ticker |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.stocks.ca.hist_chart(similar: List[str], start_date: Optional[str] = None
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

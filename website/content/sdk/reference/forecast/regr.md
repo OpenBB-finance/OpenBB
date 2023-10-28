@@ -44,8 +44,6 @@ openbb.forecast.regr(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best Regression Model. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -88,8 +86,6 @@ openbb.forecast.regr_chart(data: Union[pd.Series, pd.DataFrame], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

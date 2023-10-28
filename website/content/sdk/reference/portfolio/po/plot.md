@@ -105,8 +105,6 @@ openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type=
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -203,8 +201,6 @@ openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type=
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

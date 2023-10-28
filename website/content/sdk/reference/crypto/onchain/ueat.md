@@ -40,8 +40,6 @@ openbb.crypto.onchain.ueat(interval: str = "day", limit: int = 90, sortby: str =
 | pd.DataFrame | Unique ethereum addresses which made a transaction |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.onchain.ueat_chart(interval: str = "days", limit: int = 10, sortby
 | ---- | ----------- |
 | pd.DataFrame | Number of unique ethereum addresses which made a transaction in given time interval |
 ---
-
-
 
 </TabItem>
 </Tabs>

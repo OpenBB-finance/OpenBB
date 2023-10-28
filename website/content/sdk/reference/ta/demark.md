@@ -47,8 +47,6 @@ openbb.ta.demark(df["Close"])
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -90,8 +88,6 @@ openbb.ta.demark_chart(df)
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

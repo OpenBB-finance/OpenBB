@@ -38,8 +38,6 @@ openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
 | pd.DataFrame | Dataframe with tickers and total amount if total selected. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, ra
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

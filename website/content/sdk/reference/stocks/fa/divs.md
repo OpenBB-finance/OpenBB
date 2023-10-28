@@ -46,8 +46,6 @@ openbb.fa.divs("AAPL")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -88,8 +86,6 @@ openbb.fa.divs_chart("AAPL")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

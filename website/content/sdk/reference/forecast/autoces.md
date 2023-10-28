@@ -42,8 +42,6 @@ openbb.forecast.autoces(data: Union[pd.Series, pd.DataFrame], target_column: str
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit CES model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -84,8 +82,6 @@ openbb.forecast.autoces_chart(data: Union[pd.DataFrame, pd.Series], target_colum
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

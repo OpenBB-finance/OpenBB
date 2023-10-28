@@ -38,8 +38,6 @@ openbb.crypto.dd.candles(symbol: str, interval: str = "24h")
 | pd.DataFrame | Candles for chosen trading pair. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.candles_chart(symbol: str, interval: str = "24h", export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

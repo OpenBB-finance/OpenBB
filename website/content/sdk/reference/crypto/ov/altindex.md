@@ -39,8 +39,6 @@ openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_
 | pd.DataFrame | Date, Value (Altcoin Index) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -5,8 +5,6 @@ description: The OpenBB SDK provides programmatic access to all Terminal functio
 keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
 ---
 
-
-
 The OpenBB SDK provides programmatic access to all Terminal functions and much more. This layer of code allows users to build their own tools and applications on top of the existing architecture.
 
 :::note

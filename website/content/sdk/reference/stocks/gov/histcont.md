@@ -37,8 +37,6 @@ openbb.stocks.gov.histcont(symbol: str)
 | pd.DataFrame | Historical quarterly government contracts |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

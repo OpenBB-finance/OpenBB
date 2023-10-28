@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | Historical values of total sum of Total Value Locked from all listed protocols. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -65,8 +63,6 @@ openbb.crypto.defi.stvl_chart(limit: int = 5, export: str = "", external_axes: O
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

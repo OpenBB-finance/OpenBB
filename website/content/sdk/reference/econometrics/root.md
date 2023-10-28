@@ -39,8 +39,6 @@ openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str =
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

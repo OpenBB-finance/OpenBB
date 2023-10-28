@@ -37,8 +37,6 @@ openbb.economy.gdpc(start_year: int = 2010)
 | pd.DataFrame | DataFrame of GDP per Capita |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.economy.gdpc_chart(start_year: int = 2010, raw: bool = False, export: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

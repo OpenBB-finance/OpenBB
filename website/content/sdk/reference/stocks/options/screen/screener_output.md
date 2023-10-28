@@ -37,8 +37,6 @@ openbb.stocks.options.screen.screener_output(preset: str)
 | Tuple[pd.DataFrame, str] | DataFrame with screener data or empty if errors, String containing error message if supplied |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.options.screen.screener_output_chart(preset: str, limit: int = 20,
 | ---- | ----------- |
 | List | List of tickers screened |
 ---
-
-
 
 </TabItem>
 </Tabs>

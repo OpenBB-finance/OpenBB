@@ -37,8 +37,6 @@ openbb.economy.inf(start_year: int = 2010)
 | pd.DataFrame | DataFrame of inflation rates |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.economy.inf_chart(start_year: int = 2010, raw: bool = False, export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

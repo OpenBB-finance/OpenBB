@@ -37,8 +37,6 @@ openbb.stocks.fa.splits(symbol: str)
 | pd.DataFrame | Dataframe of forward and reverse splits |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.stocks.fa.splits_chart(symbol: str, export: str = "", external_axes: Opti
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

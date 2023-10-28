@@ -38,8 +38,6 @@ openbb.crypto.ov.indexes(sortby: str = "Name", ascend: bool = True)
 | pd.DataFrame | Name, Id, Market, Last, MultiAsset |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.ov.indexes_chart(sortby: str = "Name", ascend: bool = True, limit:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

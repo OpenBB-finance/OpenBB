@@ -38,8 +38,6 @@ openbb.ta.cg(values: pd.Series, window: int)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

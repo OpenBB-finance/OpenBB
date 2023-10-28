@@ -38,8 +38,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.forex.oanda.listorders_chart(accountID: str, order_state: str = "PENDING"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

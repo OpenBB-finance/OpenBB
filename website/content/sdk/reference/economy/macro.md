@@ -51,8 +51,6 @@ macro_df = openbb.economy.macro()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -89,8 +87,6 @@ openbb.economy.macro_chart(parameters: list = None, countries: list = None, tran
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

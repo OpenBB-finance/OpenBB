@@ -48,8 +48,6 @@ pcr_df = openbb.stocks.options.pcr("B")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -81,8 +79,6 @@ openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

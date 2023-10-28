@@ -39,8 +39,6 @@ openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 | pd.DataFrame | sharpe ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

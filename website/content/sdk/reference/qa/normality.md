@@ -37,8 +37,6 @@ openbb.qa.normality(data: pd.DataFrame)
 | pd.DataFrame | Dataframe containing statistics of normality |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.qa.normality_chart(data: pd.DataFrame, target: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

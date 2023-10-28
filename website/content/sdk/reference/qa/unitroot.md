@@ -39,8 +39,6 @@ openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool
 | pd.DataFrame | DataFrame with balance historical transactions (last 100) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "t
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 1
 | pd.DataFrame | Dataframe containing slopes |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: i
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -38,8 +38,6 @@ openbb.qa.rolling(data: pd.DataFrame, window: int = 14)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling mean,<br/>Dataframe of rolling standard deviation |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.qa.rolling_chart(data: pd.DataFrame, target: str, symbol: str = "", windo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

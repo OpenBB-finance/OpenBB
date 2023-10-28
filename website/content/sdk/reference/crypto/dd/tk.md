@@ -38,8 +38,6 @@ openbb.crypto.dd.tk(symbol: str, coingecko_id: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Metric Value tokenomics,<br/>Circulating supply overtime |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.tk_chart(symbol: str, export: str = "", external_axes: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

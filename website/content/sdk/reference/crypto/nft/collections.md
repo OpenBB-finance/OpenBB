@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | nft collections |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -65,8 +63,6 @@ openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = Fa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

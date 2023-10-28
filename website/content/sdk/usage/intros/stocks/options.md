@@ -4,8 +4,6 @@ keywords: [OpenBB, sdk, Options, stocks, derivatives, puts, calls, oi, vol, gree
 excerpt: This guide introduces the user to Options submenu within the Stocks menu.
 ---
 
-
-
 The Options module wraps the Terminal commands for the SDK layer, providing programmatic access and greater flexibility for processing data.
 
 ## How to Use

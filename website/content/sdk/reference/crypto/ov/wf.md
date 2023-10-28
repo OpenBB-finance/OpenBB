@@ -37,8 +37,6 @@ openbb.crypto.ov.wf(limit: int = 100)
 | pd.DataFrame | Coin, Lowest, Average, Median, Highest, Exchanges Compared |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.ov.wf_chart(limit: int = 15, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

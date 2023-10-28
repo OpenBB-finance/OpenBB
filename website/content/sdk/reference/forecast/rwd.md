@@ -41,8 +41,6 @@ openbb.forecast.rwd(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] precision,<br/>Fit RWD model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +80,6 @@ openbb.forecast.rwd_chart(data: Union[pd.DataFrame, pd.Series], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

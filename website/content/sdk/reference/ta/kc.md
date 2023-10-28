@@ -41,8 +41,6 @@ openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: st
 | pd.DataFrame | Dataframe of rolling kc |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -77,8 +75,6 @@ openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

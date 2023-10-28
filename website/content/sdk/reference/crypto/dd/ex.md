@@ -39,8 +39,6 @@ openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_shar
 | pd.DataFrame | All exchanges for given coin<br/>Columns: id, name, adjusted_volume_24h_share, fiats |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "a
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

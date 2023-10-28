@@ -33,8 +33,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -59,8 +57,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

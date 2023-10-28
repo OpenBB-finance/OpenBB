@@ -40,8 +40,6 @@ openbb.ta.adosc(data: pd.DataFrame, use_open: bool = False, fast: int = 3, slow:
 | pd.DataFrame | Dataframe with technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.adosc_chart(data: pd.DataFrame, fast: int = 3, slow: int = 10, use_ope
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

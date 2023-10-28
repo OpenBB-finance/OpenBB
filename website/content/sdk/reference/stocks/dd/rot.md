@@ -37,8 +37,6 @@ openbb.stocks.dd.rot(symbol: str)
 | pd.DataFrame | Get dataframe with ratings |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.stocks.dd.rot_chart(symbol: str, limit: int = 10, raw: bool = False, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

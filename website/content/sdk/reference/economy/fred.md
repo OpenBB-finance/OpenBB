@@ -39,8 +39,6 @@ openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end
 | pd.DataFrame | Series data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = Non
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

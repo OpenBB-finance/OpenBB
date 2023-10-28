@@ -41,8 +41,6 @@ openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = Fal
 | pd.DataFrame | Information about DeFi protocols |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = Fal
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

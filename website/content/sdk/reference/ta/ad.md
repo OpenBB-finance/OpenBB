@@ -38,8 +38,6 @@ openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
 | pd.DataFrame | Dataframe with technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

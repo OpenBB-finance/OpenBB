@@ -49,8 +49,6 @@ df = openbb.crypto.dd.eb(symbol="BTC")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -93,8 +91,6 @@ openbb.crypto.dd.eb_chart(symbol="BTC")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -40,8 +40,6 @@ openbb.qa.sortino(data: pd.DataFrame, target_return: float = 0, window: float = 
 | pd.DataFrame | sortino ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

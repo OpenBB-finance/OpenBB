@@ -38,8 +38,6 @@ openbb.economy.cpi(interval: str = "m", start_year: int = 2010)
 | pd.DataFrame | Dataframe of CPI |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.economy.cpi_chart(interval: str = "m", start_year: int = 2010, raw: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

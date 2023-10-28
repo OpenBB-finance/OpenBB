@@ -5,8 +5,6 @@ description: The structure of command syntax is standardized across common field
 keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client, parameters, kwargs, arguments, syntax]
 ---
 
-
-
 The structure of command syntax is standardized across common fields.  This ensures that a `date` is always a `date` and the format remains consistent throughout.  Standardized parameters include, but are not limited to:
 
 - [provider](/platform/usage/syntax_structure#provider)
@@ -88,7 +86,7 @@ The OpenBB Provider module enforces REST-compliant lists that can be entered in 
 
 #### Comma-Separated String
 
-This is the format required by the Fast API, when creating new data endpoints, it is important that the Python interface is able to accept both formats.  
+This is the format required by the Fast API, when creating new data endpoints, it is important that the Python interface is able to accept both formats.
 
 ```python
 quotes = obb.stocks.quote("td,schw,jpm,ms", provider="fmp")

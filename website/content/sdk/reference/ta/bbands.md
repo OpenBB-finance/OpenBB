@@ -40,8 +40,6 @@ openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode:
 | pd.DataFrame | Dataframe of bollinger band data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

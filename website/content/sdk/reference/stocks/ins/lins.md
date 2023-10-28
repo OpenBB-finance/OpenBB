@@ -37,8 +37,6 @@ openbb.stocks.ins.lins(symbol: str)
 | pd.DataFrame | Latest insider trading activity |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

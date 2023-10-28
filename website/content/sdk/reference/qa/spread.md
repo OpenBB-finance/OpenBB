@@ -38,8 +38,6 @@ openbb.qa.spread(data: pd.DataFrame, window: int = 14)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling standard deviation,<br/>Dataframe of rolling variance |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

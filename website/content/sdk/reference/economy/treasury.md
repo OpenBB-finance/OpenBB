@@ -50,8 +50,6 @@ openbb.economy.treasury()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -87,8 +85,6 @@ openbb.economy.treasury_chart(instruments: list = None, maturities: list = None,
 | ---- | ----------- |
 | Plots the Treasury Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

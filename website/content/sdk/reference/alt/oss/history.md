@@ -37,8 +37,6 @@ openbb.alt.oss.history(repo: str)
 | pd.DataFrame | Dataframe with star history - Columns: Date, Stars |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

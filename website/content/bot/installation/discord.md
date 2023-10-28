@@ -5,8 +5,6 @@ description: How to get started with OpenBB Bot
 keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,slack]
 ---
 
-
-
 import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
 
 <AddBotDialogDiscord

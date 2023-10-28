@@ -37,8 +37,6 @@ openbb.stocks.ba.regions(symbol: str)
 | pd.DataFrame | Dataframe of interest by region |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ba.regions_chart(symbol: str, limit: int = 5, export: str = "", ex
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

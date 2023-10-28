@@ -41,8 +41,6 @@ openbb.stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float]
 | pd.DataFrame | Dataframe containing historical greeks |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -79,8 +77,6 @@ openbb.stocks.options.grhist_chart(symbol: str, expiry: str, strike: Union[float
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

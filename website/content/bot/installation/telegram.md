@@ -6,8 +6,6 @@ keywords: [installation, install, install openbb bot, guide, how to, explanation
 ---
 
 
-
-
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
 
 <AddBotDialogTelegram

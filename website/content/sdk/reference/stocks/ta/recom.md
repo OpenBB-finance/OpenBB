@@ -40,8 +40,6 @@ openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "
 | pd.DataFrame | Dataframe of tradingview recommendations based on technical indicators |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

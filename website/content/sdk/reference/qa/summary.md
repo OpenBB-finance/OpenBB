@@ -37,8 +37,6 @@ openbb.qa.summary(data: pd.DataFrame)
 | pd.DataFrame | Summary statistics |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.qa.summary_chart(data: pd.DataFrame, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

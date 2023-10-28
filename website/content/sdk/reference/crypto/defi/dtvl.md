@@ -37,8 +37,6 @@ openbb.crypto.defi.dtvl(protocol: str)
 | pd.DataFrame | Historical tvl |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

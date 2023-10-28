@@ -38,8 +38,6 @@ openbb.alt.covid.ov(country: str, limit: int = 100)
 | pd.DataFrame | Dataframe of historical cases and deaths |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

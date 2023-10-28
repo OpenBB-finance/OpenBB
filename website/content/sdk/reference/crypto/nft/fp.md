@@ -37,8 +37,6 @@ openbb.crypto.nft.fp(slug: str)
 | pd.DataFrame | nft collections |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", externa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

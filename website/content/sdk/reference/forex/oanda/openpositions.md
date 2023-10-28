@@ -36,8 +36,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -65,8 +63,6 @@ openbb.forex.oanda.openpositions_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

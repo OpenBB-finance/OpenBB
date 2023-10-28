@@ -37,8 +37,6 @@ openbb.crypto.nft.stats(slug: str)
 | pd.DataFrame | collection stats |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.nft.stats_chart(slug: str, export: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

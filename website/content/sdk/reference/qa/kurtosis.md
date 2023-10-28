@@ -38,8 +38,6 @@ openbb.qa.kurtosis(data: pd.DataFrame, window: int = 14)
 | pd.DataFrame | Dataframe of rolling kurtosis |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.qa.kurtosis_chart(symbol: str, data: pd.DataFrame, target: str, window: i
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

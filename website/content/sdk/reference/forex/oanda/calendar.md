@@ -38,8 +38,6 @@ openbb.forex.oanda.calendar(days: int = 14, instrument: Optional[str] = None)
 | Union[pd.DataFrame, bool] | Calendar events data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.forex.oanda.calendar_chart(instrument: str, days: int = 7)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

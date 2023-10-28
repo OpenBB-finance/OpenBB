@@ -42,8 +42,6 @@ openbb.crypto.dd.news(limit: int = 60, post_kind: str = "news", filter_: Optiona
 | pd.DataFrame | DataFrame with recent news from different sources filtered by provided parameters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.crypto.dd.news_chart(post_kind: str = "news", region: str = "en", filter_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

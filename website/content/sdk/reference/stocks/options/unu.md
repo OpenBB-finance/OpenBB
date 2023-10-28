@@ -46,8 +46,6 @@ unu_df = openbb.stocks.options.unu()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -80,8 +78,6 @@ openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

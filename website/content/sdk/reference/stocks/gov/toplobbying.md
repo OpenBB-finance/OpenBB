@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | DataFrame of top corporate lobbying |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +64,6 @@ openbb.stocks.gov.toplobbying_chart(limit: int = 10, raw: bool = False, export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

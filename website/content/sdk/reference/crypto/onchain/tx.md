@@ -37,8 +37,6 @@ openbb.crypto.onchain.tx(tx_hash: str)
 | pd.DataFrame | DataFrame with information about ERC20 token transaction. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

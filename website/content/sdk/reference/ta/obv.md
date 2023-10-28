@@ -37,8 +37,6 @@ openbb.ta.obv(data: pd.DataFrame)
 | pd.DataFrame | Dataframe with technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", exte
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

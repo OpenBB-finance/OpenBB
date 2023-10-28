@@ -38,8 +38,6 @@ openbb.crypto.dd.oi(symbol: str, interval: int = 0)
 | pd.DataFrame | open interest by exchange and price |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

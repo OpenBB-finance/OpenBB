@@ -37,8 +37,6 @@ openbb.stocks.ba.headlines(symbol: str)
 | pd.DataFrame | Empty if there was an issue with data retrieval |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

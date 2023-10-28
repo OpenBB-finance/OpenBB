@@ -39,8 +39,6 @@ openbb.crypto.onchain.prices(address: str, sortby: str = "date", ascend: bool = 
 | pd.DataFrame | DataFrame with token historical prices. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.crypto.onchain.prices_chart(address: str, limit: int = 30, sortby: str = 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

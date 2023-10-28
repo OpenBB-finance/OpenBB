@@ -24,8 +24,6 @@ keywords:
   ]
 ---
 
-
-
 ## Developer Issues
 
 <details><summary>How do I launch in debug mode?</summary>
@@ -42,7 +40,7 @@ plots_backend().start(True)
 from openbb_terminal.sdk import openbb
 ```
 
-The charts and tables will now include a developer tools button, located at the top-left of the window.  
+The charts and tables will now include a developer tools button, located at the top-left of the window.
 
 </details>
 

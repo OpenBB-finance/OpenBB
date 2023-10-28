@@ -38,8 +38,6 @@ openbb.crypto.defi.aterra(asset: str = "ust", address: str = "terra1tmnqgvg567yp
 | pd.DataFrame | historical data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

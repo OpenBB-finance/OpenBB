@@ -5,8 +5,6 @@ description: Learn how to create a Pull Request to the OpenBB Platform.
 keywords: [openbb platform, introduction, pull request, contributing, documentation, github]
 ---
 
-
-
 To create a Pull Request to the OpenBB Platform, you'll need to fork the repository and create a new branch.
 
 1. Create your Feature Branch, e.g. `git checkout -b feature/AmazingFeature`

@@ -38,8 +38,6 @@ openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str
 | Dict[Union[str, Any], pd.DataFrame] | A dictionary with a DataFrame for each option. With dataset_name set, only shows one<br/>options table. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_nam
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -4,8 +4,6 @@ keywords: [crypto, web3, nft, blockchain, cryptocurrency, sub-module, openbb.cry
 description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus
 ---
 
-
-
 The Crypto module wraps the functions of the OpenBB Terminal menu. This allows web applications and dashboards to be built quickly on top of the existing infrastructure. Navigating the functions is similar to operating the OpenBB Terminal.
 
 ## How to Use

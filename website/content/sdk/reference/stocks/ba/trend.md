@@ -39,8 +39,6 @@ openbb.stocks.ba.trend(start_date: Optional[str] = None, hour: int = 0, number: 
 | pd.DataFrame | Dataframe of trending data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.stocks.ba.trend_chart(start_date: Optional[str] = None, hour: int = 0, nu
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

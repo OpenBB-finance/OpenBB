@@ -4,8 +4,6 @@ keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation
 description: The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the Stocks menu to use these features.
 ---
 
-
-
 The CA module provides programmatic access to the commands from within the OpenBB Terminal menu. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ca`
 
 ## How to Use

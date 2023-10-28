@@ -37,8 +37,6 @@ openbb.crypto.defi.sreturn(limit: int = 200)
 | pd.DataFrame | historical staking returns |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axe
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

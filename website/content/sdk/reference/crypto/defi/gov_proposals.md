@@ -40,8 +40,6 @@ openbb.crypto.defi.gov_proposals(status: str = "", sortby: str = "id", ascend: b
 | pd.DataFrame | Terra blockchain governance proposals list |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.crypto.defi.gov_proposals_chart(limit: int = 10, status: str = "all", sor
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

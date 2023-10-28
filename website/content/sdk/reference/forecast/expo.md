@@ -45,8 +45,6 @@ openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit Prob. Expo model object. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -90,8 +88,6 @@ openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

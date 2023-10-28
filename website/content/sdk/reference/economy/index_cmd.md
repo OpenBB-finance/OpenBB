@@ -52,8 +52,6 @@ openbb.economy.index(["^GSPC", "sp400"])
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -90,8 +88,6 @@ openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int 
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

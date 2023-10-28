@@ -39,8 +39,6 @@ openbb.alt.oss.top(sortby: str, limit: int = 50, categories: str = "")
 | pd.DataFrame | Dataframe with repos |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +70,6 @@ openbb.alt.oss.top_chart(sortby: str, categories: str = "", limit: int = 10, exp
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

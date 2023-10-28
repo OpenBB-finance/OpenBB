@@ -37,8 +37,6 @@ openbb.stocks.ca.scorr(similar: List[str])
 | Tuple[pd.DataFrame,pd.DataFrame] | Contains sentiment analysis from several tickers |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -38,8 +38,6 @@ openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
 | Tuple[pd.DataFrame, Dict] | Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

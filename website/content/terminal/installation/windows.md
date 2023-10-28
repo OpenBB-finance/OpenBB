@@ -22,8 +22,6 @@ keywords:
   ]
 ---
 
-
-
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
 This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).

@@ -40,8 +40,6 @@ openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset:
 | pd.DataFrame | Dataframe of atr |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

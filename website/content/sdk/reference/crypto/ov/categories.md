@@ -37,8 +37,6 @@ openbb.crypto.ov.categories(sort_filter: str = "market_cap_desc")
 | pd.DataFrame | Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +67,6 @@ openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

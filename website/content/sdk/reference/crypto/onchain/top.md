@@ -38,8 +38,6 @@ openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
 | pd.DataFrame | DataFrame with list of top 50 tokens. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +68,6 @@ openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: b
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

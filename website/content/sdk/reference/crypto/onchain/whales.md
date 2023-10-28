@@ -40,8 +40,6 @@ openbb.crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: 
 | pd.DataFrame | Crypto wales transactions |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.onchain.whales_chart(min_value: int = 800000, limit: int = 100, so
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

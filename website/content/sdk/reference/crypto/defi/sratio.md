@@ -37,8 +37,6 @@ openbb.crypto.defi.sratio(limit: int = 200)
 | pd.DataFrame | historical staking ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.defi.sratio_chart(limit: int = 90, export: str = "", external_axes
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

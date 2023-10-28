@@ -38,8 +38,6 @@ openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
 | pd.DataFrame | roadmap |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

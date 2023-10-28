@@ -5,8 +5,6 @@ description: API (Application Programming Interface) keys are access credentials
 keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, whale alert]
 ---
 
-
-
 API (Application Programming Interface) keys are access credentials for obtaining data from a particular data vendor. They are a string of random characters assigned, by the data provider, to an individual account.
 
 ## Setting API keys through Hub (easy)

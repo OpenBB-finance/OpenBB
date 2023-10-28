@@ -5,8 +5,6 @@ description: Learn how to QA your extension.
 keywords: [openbb platform, introduction, qa, contributing, extension, documentation]
 ---
 
-
-
 We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 
 Primarily, we have tools that semi-automate the creation of unit and integration tests.

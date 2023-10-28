@@ -37,8 +37,6 @@ openbb.crypto.dd.stats(symbol: str)
 | pd.DataFrame | 24h stats for chosen trading pair |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.dd.stats_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -41,8 +41,6 @@ openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: pd.DataFrame = None, r
 | Tuple[pd.Series, pd.Series, float, float] | Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: pd.DataFrame = N
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

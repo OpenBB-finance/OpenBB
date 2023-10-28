@@ -37,8 +37,6 @@ openbb.crypto.dd.team(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Individuals,<br/>Organizations |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +65,6 @@ openbb.crypto.dd.team_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

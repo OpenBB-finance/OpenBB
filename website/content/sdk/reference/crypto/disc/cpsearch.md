@@ -41,8 +41,6 @@ openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier
 | pd.DataFrame | Search Results<br/>Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

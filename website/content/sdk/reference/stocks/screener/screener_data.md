@@ -40,8 +40,6 @@ openbb.stocks.screener.screener_data(preset_loaded: str = "top_gainers", data_ty
 | pd.DataFrame | Dataframe with loaded filtered stocks |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.stocks.screener.screener_data_chart(loaded_preset: str = "top_gainers", d
 | ---- | ----------- |
 | List[str] | List of stocks that meet preset criteria |
 ---
-
-
 
 </TabItem>
 </Tabs>

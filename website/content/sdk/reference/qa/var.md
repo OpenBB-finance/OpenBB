@@ -42,8 +42,6 @@ openbb.qa.var(data: pd.DataFrame, use_mean: bool = False, adjusted_var: bool = F
 | pd.DataFrame | DataFrame with Value at Risk per percentile |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -78,8 +76,6 @@ openbb.qa.var_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

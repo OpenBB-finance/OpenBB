@@ -40,8 +40,6 @@ openbb.crypto.dd.mcapdom(symbol: str, interval: str = "1d", start_date: Optional
 | pd.DataFrame | market dominance percentage over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.crypto.dd.mcapdom_chart(symbol: str, start_date: Optional[str] = None, en
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

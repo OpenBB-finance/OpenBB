@@ -41,8 +41,6 @@ openbb.crypto.dd.mt(symbol: str, timeseries_id: str, interval: str = "1d", start
 | Tuple[pd.DataFrame, str] | Messari timeseries over time,<br/>Timeseries title |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.crypto.dd.mt_chart(symbol: str, timeseries_id: str, start_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -38,8 +38,6 @@ openbb.economy.gdp(interval: str = "q", start_year: int = 2010)
 | pd.DataFrame | Dataframe of GDP |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.economy.gdp_chart(interval: str = "q", start_year: int = 2010, raw: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

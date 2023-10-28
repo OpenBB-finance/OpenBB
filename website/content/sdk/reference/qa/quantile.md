@@ -39,8 +39,6 @@ openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling median prices over window,<br/>Dataframe of rolling quantile prices over window |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +72,6 @@ openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", wind
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

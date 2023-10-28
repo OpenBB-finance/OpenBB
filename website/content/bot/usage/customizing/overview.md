@@ -5,8 +5,6 @@ description: Learn to customize your OpenBB Bot experience
 keywords: [discord, telegram, slack, how to, explanation, openbb bot, openbb, guide, bot guide, customize, individual, server]
 ---
 
-
-
 For the best user experience, you will want to customize the OpenBB Bot settings. Different types of customizations we offer are:
 
 <div className="flex">

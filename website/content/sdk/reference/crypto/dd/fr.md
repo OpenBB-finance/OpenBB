@@ -37,8 +37,6 @@ openbb.crypto.dd.fr(symbol: str)
 | Tuple[str, pd.DataFrame, pd.DataFrame, pd.DataFrame] | Launch summary,<br/>Sales rounds,<br/>Treasury Accounts,<br/>Metric Value launch details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +66,6 @@ openbb.crypto.dd.fr_chart(symbol: str, export: str = "", external_axes: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

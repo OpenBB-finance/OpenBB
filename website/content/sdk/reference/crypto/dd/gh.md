@@ -41,8 +41,6 @@ openbb.crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = "1d
 | pd.DataFrame | developer activity over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +74,6 @@ openbb.crypto.dd.gh_chart(symbol: str, start_date: Optional[str] = None, dev_act
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

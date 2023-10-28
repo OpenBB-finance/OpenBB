@@ -34,8 +34,6 @@ This function does not take any parameters.
 | pd.DataFrame | Dataframe containing historical data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -64,8 +62,6 @@ openbb.crypto.defi.ayr_chart(export: str = "", external_axes: Optional[List[matp
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

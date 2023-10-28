@@ -38,8 +38,6 @@ openbb.ta.fisher(data: pd.DataFrame, window: int = 14)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.ta.fisher_chart(data: pd.DataFrame, window: int = 14, symbol: str = "", e
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -39,8 +39,6 @@ openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] =
 | pd.DataFrame | Top 100 DeFi Vaults for given chain/protocol sorted by APY. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +73,6 @@ openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

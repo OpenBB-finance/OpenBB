@@ -39,8 +39,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +69,6 @@ openbb.forecast.plot_chart(data: pd.DataFrame, columns: List[str], export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

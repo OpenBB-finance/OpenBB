@@ -39,8 +39,6 @@ openbb.economy.tyld(interval: str = "m", maturity: str = "10y", start_date: str 
 | pd.DataFrame | Dataframe of historical yields |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +71,6 @@ openbb.economy.tyld_chart(interval: str = "m", maturity: str = "10y", start_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>
