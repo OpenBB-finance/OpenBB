@@ -4,6 +4,7 @@ from typing import Iterable, List, Optional, Union
 
 import pandas as pd
 from openbb_provider.abstract.data import Data
+
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 
