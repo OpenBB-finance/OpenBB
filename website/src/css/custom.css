@@ -488,6 +488,6 @@ html[data-theme='dark'] .sidebar-divider {
 
 .theme-edit-this-page {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
