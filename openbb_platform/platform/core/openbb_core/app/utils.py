@@ -78,10 +78,13 @@ def get_user_cache_directory() -> str:
     file = SystemSettings().model_dump()["user_settings_path"]
     with open(file) as settings_file:
         contents = settings_file.read()
-    settings = json.loads(contents)["preferences"]
+    try:
+        settings = json.loads(contents)["preferences"]
+    except KeyError:
+        settings = None
     cache_dir = (
         settings["cache_directory"]
-        if "cache_directory" in settings
+        if settings and "cache_directory" in settings
         else Preferences().cache_directory
     )
     return cache_dir
