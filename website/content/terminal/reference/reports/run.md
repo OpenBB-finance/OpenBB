@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="run - Reports - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="reports /run - Reference | OpenBB Terminal Docs" />
 
 Run a notebook from this folder: '/home/runner/OpenBBUserData/reports/custom reports'.
 

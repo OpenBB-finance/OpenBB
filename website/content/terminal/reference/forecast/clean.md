@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="clean - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /clean - Reference | OpenBB Terminal Docs" />
 
 Clean a dataset by filling and dropping NaN values.
 

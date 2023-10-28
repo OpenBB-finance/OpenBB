@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="panel - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /panel - Reference | OpenBB Terminal Docs" />
 
 Performs regression analysis on Panel Data. There are a multitude of options to select from to fit the needs of restrictions of the dataset.
 

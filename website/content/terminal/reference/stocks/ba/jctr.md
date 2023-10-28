@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="jctr - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/jctr - Reference | OpenBB Terminal Docs" />
 
 Show cramer recommendation for loaded ticker
 

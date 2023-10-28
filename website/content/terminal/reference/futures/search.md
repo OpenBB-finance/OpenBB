@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Futures - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="futures /search - Reference | OpenBB Terminal Docs" />
 
 Search futures. [Source: YahooFinance]
 

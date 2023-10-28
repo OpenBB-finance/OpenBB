@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="score - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/score - Reference | OpenBB Terminal Docs" />
 
 Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 

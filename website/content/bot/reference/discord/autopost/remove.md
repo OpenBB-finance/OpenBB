@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="commands manage - Autopost - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="autopost: commands manage - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to remove an autopost webhook feed from the channel. When executed, it will remove the feed from the channel and prevent any further autoposts from being sent.
 

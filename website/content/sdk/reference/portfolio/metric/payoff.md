@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="payoff - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.payoff - Reference | OpenBB SDK Docs" />
 
 Get payoff ratio
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxutil - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.maxutil - Reference | OpenBB SDK Docs" />
 
 Optimize maximum utility weights
 

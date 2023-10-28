@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="house - Discovery - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="discovery: house - Discord Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve recent house trades for all tickers. The command will display the time of the trade, the ticker, the size of the trade, the price, and any other relevant details.
 

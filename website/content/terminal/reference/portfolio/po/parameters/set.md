@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="set - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/parameters/set /po - Reference | OpenBB Terminal Docs" />
 
 Select one of the portfolio optimization models
 

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dvcp - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.dvcp - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

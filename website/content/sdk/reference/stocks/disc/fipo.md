@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fipo - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.fipo - Reference | OpenBB SDK Docs" />
 
 Future IPOs dates. [Source: Finnhub]
 

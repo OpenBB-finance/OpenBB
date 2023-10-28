@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="list - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/hedge/list /options - Reference | OpenBB Terminal Docs" />
 
 Lists available calls and puts.
 

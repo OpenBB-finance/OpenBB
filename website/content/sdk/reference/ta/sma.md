@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sma - Ta - Reference | OpenBB SDK Docs" />
+<HeadTitle title="ta.sma - Reference | OpenBB SDK Docs" />
 
 Gets simple moving average (SMA) for stock
 

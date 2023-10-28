@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gov - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/gov - Reference | OpenBB Terminal Docs" />
 
 Display asset's governance [Source: https://messari.io]
 

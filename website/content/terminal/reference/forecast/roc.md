@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="roc - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /roc - Reference | OpenBB Terminal Docs" />
 
 Add rate of change to dataset based on specific column.
 

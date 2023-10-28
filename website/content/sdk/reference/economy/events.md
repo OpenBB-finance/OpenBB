@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="events - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.events - Reference | OpenBB SDK Docs" />
 
 Get economic calendar for countries between specified dates
 

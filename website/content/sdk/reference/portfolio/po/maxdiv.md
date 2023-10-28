@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxdiv - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.maxdiv - Reference | OpenBB SDK Docs" />
 
 Optimize diversification weights
 

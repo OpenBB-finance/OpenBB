@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="btc_transac - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.btc_transac - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

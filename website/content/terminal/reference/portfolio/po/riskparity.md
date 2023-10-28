@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="riskparity - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/riskparity - Reference | OpenBB Terminal Docs" />
 
 Build a risk parity portfolio based on risk budgeting approach
 

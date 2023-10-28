@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="1hr - Pop - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="pop: 1hr - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves the top 15 stocks that have been traded in the past hour on the OpenBB Bot across all our platforms. It provides the user with an up-to-date overview of the stocks that have been the most active over the past hour, allowing the user to quickly identify trends and potentially capitalize on them.
 

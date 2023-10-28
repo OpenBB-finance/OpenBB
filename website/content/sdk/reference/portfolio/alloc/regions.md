@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="regions - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.alloc.regions - Reference | OpenBB SDK Docs" />
 
 Display portfolio region allocation compared to the benchmark
 

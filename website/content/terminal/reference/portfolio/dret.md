@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dret - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /dret - Reference | OpenBB Terminal Docs" />
 
 Daily returns
 

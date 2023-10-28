@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="clean - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.clean - Reference | OpenBB SDK Docs" />
 
 Clean up NaNs from the dataset
 

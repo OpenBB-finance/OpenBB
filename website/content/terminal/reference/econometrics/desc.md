@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="desc - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /desc - Reference | OpenBB Terminal Docs" />
 
 Show the descriptive statistics of the dataset
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="watchlist - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.watchlist - Reference | OpenBB SDK Docs" />
 
 Get reddit users watchlists [Source: reddit].
 

@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="compfees - Crypto - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="crypto: compfees - Discord Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve the Protocol fees over time for the given project.
 

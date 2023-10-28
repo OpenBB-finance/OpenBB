@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="c3m - Charts - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="charts: c3m - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve a 3-minute intraday chart for the given ticker. This chart will display the candlestick chart for the day. It will provide a visual representation of the stock's performance over the current day, making it helpful for short-term investors.
 

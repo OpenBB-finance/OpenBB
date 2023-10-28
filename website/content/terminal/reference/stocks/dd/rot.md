@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rot - Dd - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dd/rot - Reference | OpenBB Terminal Docs" />
 
 Rating over time (monthly). [Source: Finnhub]
 

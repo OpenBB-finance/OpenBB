@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gaintopain - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.gaintopain - Reference | OpenBB SDK Docs" />
 
 Get Pain-to-Gain ratio based on historical data
 

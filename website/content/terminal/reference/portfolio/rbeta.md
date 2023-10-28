@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rbeta - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /rbeta - Reference | OpenBB Terminal Docs" />
 
 Show rolling beta portfolio vs benchmark
 

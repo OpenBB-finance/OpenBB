@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="season - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /season - Reference | OpenBB Terminal Docs" />
 
 The seasonality for a given column
 

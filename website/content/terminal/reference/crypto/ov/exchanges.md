@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="exchanges - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/exchanges - Reference | OpenBB Terminal Docs" />
 
 Shows Top Crypto Exchanges You can display only N number exchanges with --limit parameter. You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sortby Or you can sort data by 'name', 'currencies', 'markets', 'fiats', 'confidence', 'volume_24h', 'volume_7d', 'volume_30d', 'sessions_per_month' if you are using the alternative source CoinPaprika and also with --reverse flag to sort ascending. Flag --urls will display urls. Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC
 

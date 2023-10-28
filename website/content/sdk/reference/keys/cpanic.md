@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cpanic - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.cpanic - Reference | OpenBB SDK Docs" />
 
 Set Cpanic key.
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="decliners - Disc - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/disc/decliners - Reference | OpenBB Terminal Docs" />
 
 Displays top ETF/Mutual fund decliners from wsj.com/market-data
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candle - Forex - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forex.candle - Reference | OpenBB SDK Docs" />
 
 Show candle plot for fx data.
 

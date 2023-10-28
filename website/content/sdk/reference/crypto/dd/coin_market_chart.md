@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coin_market_chart - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.coin_market_chart - Reference | OpenBB SDK Docs" />
 
 Get prices for given coin. [Source: CoinGecko]
 

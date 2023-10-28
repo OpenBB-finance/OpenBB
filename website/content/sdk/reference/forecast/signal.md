@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="signal - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.signal - Reference | OpenBB SDK Docs" />
 
 A price signal based on short/long term price.
 

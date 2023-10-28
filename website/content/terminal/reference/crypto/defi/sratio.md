@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sratio - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/sratio - Reference | OpenBB Terminal Docs" />
 
 Displays terra blockchain staking ratio history. [Source: https://fcd.terra.dev/swagger]
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="delete - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.delete - Reference | OpenBB SDK Docs" />
 
 None
 

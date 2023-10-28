@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lcsc - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/lcsc - Reference | OpenBB Terminal Docs" />
 
 Display Luna circulating supply changes stats. [Source: Smartstake.io] Follow these steps to get the key token: 1. Head to https://terra.smartstake.io/ 2. Right click on your browser and choose Inspect 3. Select Network tab (by clicking on the expand button next to Source tab) 4. Go to Fetch/XHR tab, and refresh the page 5. Get the option looks similar to the following: `listData?type=history&dayCount=30` 6. Extract the key and token out of the URL
 

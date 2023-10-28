@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="acf - Qa - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/qa/acf - Reference | OpenBB Terminal Docs" />
 
 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff crypto data
 

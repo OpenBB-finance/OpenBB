@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cdf - Qa - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/qa/cdf - Reference | OpenBB Terminal Docs" />
 
 Cumulative distribution function
 

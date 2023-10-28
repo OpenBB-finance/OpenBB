@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="top - Nft - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="nft: top - Discord Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve the top NFT collections from Ethereum. It provides a list of the most popular and valuable NFT collections, helping users to keep abreast of the latest trends in the NFT space.
 

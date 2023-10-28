@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="defi - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/defi - Reference | OpenBB Terminal Docs" />
 
 Shows global DeFi statistics DeFi or Decentralized Finance refers to financial services that are built on top of distributed networks with no central intermediaries. Displays metrics like: Market Cap, Trading Volume, Defi Dominance, Top Coins...
 

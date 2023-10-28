@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="chartfib - Charts - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="charts: chartfib - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Fibonacci levels for a given ticker. This data can be used to identify potential support and resistance levels and can be used to identify potential entry and exit points in the stock market.
 

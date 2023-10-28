@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="top_dapps - Disc - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.disc.top_dapps - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rename - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /rename - Reference | OpenBB Terminal Docs" />
 
 The column you want to rename from a dataset.
 

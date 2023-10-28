@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="topnews - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/topnews /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

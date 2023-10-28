@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candle - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/candle - Reference | OpenBB Terminal Docs" />
 
 Show candle for loaded fx data
 

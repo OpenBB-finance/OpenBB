@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="income - Ca - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ca.income - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

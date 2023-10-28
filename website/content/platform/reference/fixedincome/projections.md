@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="projections - Fixedincome - Reference | OpenBB Platform Docs" />
+<HeadTitle title="fixedincome.projections - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

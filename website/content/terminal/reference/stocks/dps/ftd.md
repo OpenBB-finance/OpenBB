@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ftd - Dps - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/ftd - Reference | OpenBB Terminal Docs" />
 
 Prints latest fails-to-deliver data. [Source: SEC]
 

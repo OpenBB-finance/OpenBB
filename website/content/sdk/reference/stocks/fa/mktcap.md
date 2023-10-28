@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mktcap - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.mktcap - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hq - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/hq - Reference | OpenBB Terminal Docs" />
 
 Opens in Google Maps HQ location of the company. [Source: Yahoo Finance]
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="login - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/login /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

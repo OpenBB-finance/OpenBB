@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="prices - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.prices - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

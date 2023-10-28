@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hma - Ta - Reference | OpenBB SDK Docs" />
+<HeadTitle title="ta.hma - Reference | OpenBB SDK Docs" />
 
 Gets hull moving average (HMA) for stock
 

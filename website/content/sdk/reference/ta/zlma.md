@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="zlma - Ta - Reference | OpenBB SDK Docs" />
+<HeadTitle title="ta.zlma - Reference | OpenBB SDK Docs" />
 
 Gets zero-lagged exponential moving average (ZLEMA) for stock
 

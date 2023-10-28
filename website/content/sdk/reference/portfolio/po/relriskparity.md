@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="relriskparity - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.relriskparity - Reference | OpenBB SDK Docs" />
 
 Optimize with Relaxed Risk Parity using the least squares approach
 

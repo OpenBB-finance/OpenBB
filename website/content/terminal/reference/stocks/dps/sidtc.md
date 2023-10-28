@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sidtc - Dps - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/sidtc - Reference | OpenBB Terminal Docs" />
 
 Print short interest and days to cover. [Source: Stockgrid]
 

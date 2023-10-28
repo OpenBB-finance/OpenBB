@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="export - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /export - Reference | OpenBB Terminal Docs" />
 
 Export dataset to Excel
 

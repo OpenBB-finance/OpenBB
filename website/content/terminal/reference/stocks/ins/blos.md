@@ -29,7 +29,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="blos - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/blos - Reference | OpenBB Terminal Docs" />
 
 Print latest officer sales 100k. [Source: OpenInsider]
 

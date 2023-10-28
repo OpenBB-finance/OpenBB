@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="print_insider_data - Ins - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ins.print_insider_data - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

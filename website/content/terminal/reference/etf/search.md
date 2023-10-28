@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf /search - Reference | OpenBB Terminal Docs" />
 
 Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]
 

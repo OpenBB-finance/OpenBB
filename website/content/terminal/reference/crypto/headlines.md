@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="headlines - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /headlines - Reference | OpenBB Terminal Docs" />
 
 Display sentiment analysis from FinBrain for chosen Cryptocurrencies
 

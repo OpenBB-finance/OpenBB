@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cmc - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.cmc - Reference | OpenBB SDK Docs" />
 
 Set Coinmarketcap key
 

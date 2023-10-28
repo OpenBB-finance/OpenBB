@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hist - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.hist - Reference | OpenBB SDK Docs" />
 
 Get historical option pricing.
 

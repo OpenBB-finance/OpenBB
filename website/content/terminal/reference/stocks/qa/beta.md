@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="beta - Qa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/beta - Reference | OpenBB Terminal Docs" />
 
 Displays a scatter plot demonstrating the beta of two stocks or ETFs.
 

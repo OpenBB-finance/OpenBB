@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="query_graph - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.query_graph - Reference | OpenBB SDK Docs" />
 
 Helper methods for querying graphql api. [Source: https://bitquery.io/]
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="exchanges - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.exchanges - Reference | OpenBB SDK Docs" />
 
 Helper method to get all the exchanges supported by ccxt
 

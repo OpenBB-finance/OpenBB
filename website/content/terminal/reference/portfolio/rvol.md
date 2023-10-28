@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rvol - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /rvol - Reference | OpenBB Terminal Docs" />
 
 Show rolling volatility portfolio vs benchmark
 

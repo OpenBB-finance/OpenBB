@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="set_keys - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.set_keys - Reference | OpenBB SDK Docs" />
 
 Set API keys in bundle.
 

@@ -25,7 +25,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sectors - Darkpool - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="darkpool: sectors - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a summary of all prints by % of MarketCap by Sector over the last x days. The user will be able to view the sector's market cap divided by total darkpool activity to see possible accumulation.
 

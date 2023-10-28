@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="token_decimals - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.token_decimals - Reference | OpenBB SDK Docs" />
 
 Helper methods that gets token decimals number. [Source: Ethplorer]
 

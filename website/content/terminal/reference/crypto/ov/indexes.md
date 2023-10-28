@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="indexes - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/indexes - Reference | OpenBB Terminal Docs" />
 
 Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap. You can display only N number of indexes with --limit parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sortby and also with --reverse flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset
 

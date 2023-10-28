@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="overview - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /overview - Reference | OpenBB Terminal Docs" />
 
 Provide a market overview of a variety of options. This can be a general overview, indices, bonds and currencies. [Source: Wall St. Journal]
 

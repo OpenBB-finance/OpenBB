@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="income - Ca - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/income - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly income statement the company, and compares it against similar companies.
 

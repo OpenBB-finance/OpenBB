@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="clean - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /clean - Reference | OpenBB Terminal Docs" />
 
 Clean a dataset by filling and dropping NaN values.
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="price - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.price - Reference | OpenBB SDK Docs" />
 
 Returns price and confidence interval from pyth live feed. [Source: Pyth]
 

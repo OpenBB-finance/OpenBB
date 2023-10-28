@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cashflow - Ca - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/cashflow - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.
 

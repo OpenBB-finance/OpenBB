@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="check_valid_binance_str - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.check_valid_binance_str - Reference | OpenBB SDK Docs" />
 
 Check if symbol is in defined binance. [Source: Binance]
 

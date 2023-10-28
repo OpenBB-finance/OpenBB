@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="line - Qa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/line - Reference | OpenBB Terminal Docs" />
 
 Show line plot of selected data or highlight specific datetimes.
 

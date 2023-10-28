@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="commands add - Autopost - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="autopost: commands add - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to add an autopost command to a channel. It allows the user to receive notifications from OpenBB bot in the channel without having to manually query them. This can be used for all commands that appear in the list when you run "autopost commands add"
 

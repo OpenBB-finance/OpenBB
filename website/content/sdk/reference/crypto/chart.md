@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="chart - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.chart - Reference | OpenBB SDK Docs" />
 
 Load data for Technical Analysis
 

@@ -34,7 +34,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="categories - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/categories - Reference | OpenBB Terminal Docs" />
 
 Shows top cryptocurrency categories by market capitalization. It includes categories like: stablecoins, defi, solana ecosystem, polkadot ecosystem and many others. You can sort by {}, using --sortby parameter
 

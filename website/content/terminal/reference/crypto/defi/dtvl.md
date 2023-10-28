@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dtvl - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/dtvl - Reference | OpenBB Terminal Docs" />
 
 Displays historical TVL of different dApps. [Source: https://docs.llama.fi/api]
 

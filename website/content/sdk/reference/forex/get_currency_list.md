@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="get_currency_list - Forex - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forex.get_currency_list - Reference | OpenBB SDK Docs" />
 
 Load AV currency codes from a local file.
 

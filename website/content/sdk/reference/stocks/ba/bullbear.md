@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bullbear - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.bullbear - Reference | OpenBB SDK Docs" />
 
 Gets bullbear sentiment for ticker [Source: stocktwits].
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pipo - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/pipo - Reference | OpenBB Terminal Docs" />
 
 Past IPOs dates. [Source: https://finnhub.io]
 

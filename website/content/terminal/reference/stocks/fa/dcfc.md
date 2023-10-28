@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dcfc - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/dcfc - Reference | OpenBB Terminal Docs" />
 
 Prints the discounted cash flow of a company over time including the DCF of today. The following fields are expected: DCF, Stock price, and Date. [Source: Financial Modeling Prep]
 

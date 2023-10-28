@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ulc - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/ulc - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
 

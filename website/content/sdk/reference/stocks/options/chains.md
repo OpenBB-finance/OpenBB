@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="chains - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.chains - Reference | OpenBB SDK Docs" />
 
 Get Option Chain For A Stock.  No greek data is returned
 

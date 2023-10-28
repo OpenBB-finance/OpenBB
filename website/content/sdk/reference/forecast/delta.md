@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="delta - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.delta - Reference | OpenBB SDK Docs" />
 
 Calculate the %change of a variable based on a specific column
 

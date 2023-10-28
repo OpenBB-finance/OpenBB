@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.load - Reference | OpenBB SDK Docs" />
 
 Get PortfolioEngine object
 

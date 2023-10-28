@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="yieldcurve - Economy - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="economy: yieldcurve - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the US Bonds yield curve. The yield curve is a graph that plots the yields of different bonds with different maturities, providing an indication of the direction of interest rates.
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trending - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.trending - Reference | OpenBB SDK Docs" />
 
 Get trending tickers from stocktwits [Source: stocktwits].
 

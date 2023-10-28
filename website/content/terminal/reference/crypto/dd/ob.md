@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ob - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/ob - Reference | OpenBB Terminal Docs" />
 
 Get the order book for selected coin
 

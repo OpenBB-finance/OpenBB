@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="topstrikevol - Options - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: topstrikevol - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the top option strike by volume for a given security with the ability to add an expiration date for a more detailed breakdown.
 

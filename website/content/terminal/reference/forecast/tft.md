@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tft - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /tft - Reference | OpenBB Terminal Docs" />
 
 Perform TFT forecast (Temporal Fusion Transformer): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="allblocks - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="darkpool: allblocks - Telegram Reference | OpenBB Bot Docs" />
 
 The command allows the user to retrieve the last 15 block trades of a given security. This command will provide a summary of the last 15 block trades, including the time, price, quantity, and total gross value of each trade.
 

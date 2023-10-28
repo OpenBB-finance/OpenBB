@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Futures - Reference | OpenBB SDK Docs" />
+<HeadTitle title="futures.search - Reference | OpenBB SDK Docs" />
 
 Get search futures [Source: Yahoo Finance]
 

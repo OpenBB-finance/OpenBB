@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rise - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.rise - Reference | OpenBB SDK Docs" />
 
 Get top rising related queries with this stock's query [Source: google].
 

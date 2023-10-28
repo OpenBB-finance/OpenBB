@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="divs - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/divs - Reference | OpenBB Terminal Docs" />
 
 Historical dividends for a company
 

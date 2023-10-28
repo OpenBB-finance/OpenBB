@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="macro_countries - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.macro_countries - Reference | OpenBB SDK Docs" />
 
 This function returns the available countries and respective currencies.
 

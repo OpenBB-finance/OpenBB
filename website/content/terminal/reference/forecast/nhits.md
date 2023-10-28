@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="nhits - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /nhits - Reference | OpenBB Terminal Docs" />
 
 Perform nhits forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 

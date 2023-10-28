@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="oichart - Options - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: oichart - Discord Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve a chart of Total Open Interest by Strike Price for the given ticker symbol. This chart provides a visual representation of the open interest on various strike prices for the given ticker symbol, where the size of each point on the graph reflects the amount of open interest. This can be used to analyze the open interest on various strike prices and make informed decisions about the underlying security.
 

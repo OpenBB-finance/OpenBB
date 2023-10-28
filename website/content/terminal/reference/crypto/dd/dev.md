@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dev - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/dev - Reference | OpenBB Terminal Docs" />
 
 Developers data for loaded coin. If the development data is available you can see how the code development of given coin is going on. There are some statistics that shows number of stars, forks, subscribers, pull requests, commits, merges, contributors on github.
 

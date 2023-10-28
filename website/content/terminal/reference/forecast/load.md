@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /load - Reference | OpenBB Terminal Docs" />
 
 Load custom dataset (from previous export, custom imports).
 

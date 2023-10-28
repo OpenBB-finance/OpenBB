@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dex - Disc - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/disc/dex - Reference | OpenBB Terminal Docs" />
 
 Shows top decentralized exchanges [Source: https://dappradar.com/] Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
 

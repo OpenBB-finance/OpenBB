@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="industry - Sia - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/sia/industry - Reference | OpenBB Terminal Docs" />
 
 See existing industries, or set industry if arg specified
 

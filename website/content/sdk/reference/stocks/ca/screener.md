@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="screener - Ca - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ca.screener - Reference | OpenBB SDK Docs" />
 
 Screener Overview.
 

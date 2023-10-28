@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arkord - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.arkord - Reference | OpenBB SDK Docs" />
 
 Returns ARK orders in a Dataframe
 

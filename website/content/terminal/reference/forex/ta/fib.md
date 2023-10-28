@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fib - Ta - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/ta/fib - Reference | OpenBB Terminal Docs" />
 
 Calculates the fibonacci retracement levels
 

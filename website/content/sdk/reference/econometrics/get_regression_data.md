@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="get_regression_data - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.get_regression_data - Reference | OpenBB SDK Docs" />
 
 This function creates a DataFrame with the required regression data as
 

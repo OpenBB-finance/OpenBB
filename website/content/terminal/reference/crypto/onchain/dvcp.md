@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dvcp - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/dvcp - Reference | OpenBB Terminal Docs" />
 
 Display daily volume for given crypto pair [Source: https://graphql.bitquery.io/]
 

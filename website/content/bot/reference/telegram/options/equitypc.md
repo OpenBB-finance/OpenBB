@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="equitypc - Options - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: equitypc - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the Equity Put/Call Volume Ratio from market-harmonics.com. This ratio is used to measure the demand for puts versus calls in the equity market and can be a useful tool for traders to help gauge market sentiment.
 

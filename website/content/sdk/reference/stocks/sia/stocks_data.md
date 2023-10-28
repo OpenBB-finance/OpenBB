@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks_data - Sia - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.sia.stocks_data - Reference | OpenBB SDK Docs" />
 
 Get stocks data based on a list of stocks and the finance key. The function searches for the
 

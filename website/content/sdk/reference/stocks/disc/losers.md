@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="losers - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.losers - Reference | OpenBB SDK Docs" />
 
 Get top losers. [Source: Yahoo Finance]
 

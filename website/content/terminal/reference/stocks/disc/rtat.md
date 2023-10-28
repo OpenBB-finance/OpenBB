@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rtat - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/rtat - Reference | OpenBB Terminal Docs" />
 
 Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs
 

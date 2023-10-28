@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="active - Disc - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/disc/active - Reference | OpenBB Terminal Docs" />
 
 Displays most active ETF/Mutual funds from wsj.com/market-data
 

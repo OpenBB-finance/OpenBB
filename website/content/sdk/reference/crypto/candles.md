@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candles - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.candles - Reference | OpenBB SDK Docs" />
 
 Plot candle chart from dataframe. [Source: Binance]
 

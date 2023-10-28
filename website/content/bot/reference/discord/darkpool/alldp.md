@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alldp - Darkpool - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="darkpool: alldp - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the last 15 darkpool trades for the specified stock ticker. A darkpool is a private stock trading system that allows large trades to take place without affecting the public market, providing access to larger and more efficient trades.
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="messages - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.messages - Reference | OpenBB SDK Docs" />
 
 Get last messages for a given ticker [Source: stocktwits].
 

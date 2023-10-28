@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="summaryflow - Flow - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="flow: summaryflow - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a summary of all the flow per stock over the last x days, with the result sorted in various ways. This summary will include the ratio to total market capitalization, the number of trades, and other information.
 

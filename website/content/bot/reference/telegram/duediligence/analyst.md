@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="analyst - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duediligence: analyst - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve analyst recommendations for a given stock ticker.
 

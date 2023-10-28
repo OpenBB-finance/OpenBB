@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="kurtosis - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.kurtosis - Reference | OpenBB SDK Docs" />
 
 Get kurtosis for portfolio and benchmark selected
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="generate_data - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.generate_data - Reference | OpenBB SDK Docs" />
 
 Gets x values, and y values before and after premiums
 

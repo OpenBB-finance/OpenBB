@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="qqplot - Qa - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/qqplot - Reference | OpenBB Terminal Docs" />
 
 Display QQ plot vs normal quantiles
 

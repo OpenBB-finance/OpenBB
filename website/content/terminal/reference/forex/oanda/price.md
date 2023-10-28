@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="price - Oanda - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/price - Reference | OpenBB Terminal Docs" />
 
 Get price for selected instrument.
 

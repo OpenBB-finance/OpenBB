@@ -32,7 +32,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="macro - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.macro - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

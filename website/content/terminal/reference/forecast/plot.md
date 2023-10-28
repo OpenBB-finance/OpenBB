@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="plot - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /plot - Reference | OpenBB Terminal Docs" />
 
 Plot data based on the index
 

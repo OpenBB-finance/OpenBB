@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="quandl - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.quandl - Reference | OpenBB SDK Docs" />
 
 Set Quandl key
 

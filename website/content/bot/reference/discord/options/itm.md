@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="itm - Options - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: itm - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a list of In-the-Money options for the stock ticker symbol sorted by expiry date. The command compares the amount of Calls and Puts In-the-Money vs Out-the-Money and gives a total.
 

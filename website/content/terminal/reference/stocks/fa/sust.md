@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sust - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/sust - Reference | OpenBB Terminal Docs" />
 
 Print sustainability values of the company. The following fields are expected: Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, Tobacco, Total ESG, Highestcontroversy, ESG Performance, Coal, Pesticides, Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]
 

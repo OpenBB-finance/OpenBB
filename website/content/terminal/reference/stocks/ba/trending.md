@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trending - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/trending - Reference | OpenBB Terminal Docs" />
 
 Stocks trending. [Source: Stocktwits]
 

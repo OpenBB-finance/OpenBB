@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="score - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.score - Reference | OpenBB SDK Docs" />
 
 Gets value score from fmp
 

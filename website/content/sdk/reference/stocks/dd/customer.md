@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="customer - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.customer - Reference | OpenBB SDK Docs" />
 
 Print customers from ticker provided
 

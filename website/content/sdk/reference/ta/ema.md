@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ema - Ta - Reference | OpenBB SDK Docs" />
+<HeadTitle title="ta.ema - Reference | OpenBB SDK Docs" />
 
 Gets exponential moving average (EMA) for stock
 

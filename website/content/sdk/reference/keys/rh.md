@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rh - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.rh - Reference | OpenBB SDK Docs" />
 
 Set Robinhood key
 

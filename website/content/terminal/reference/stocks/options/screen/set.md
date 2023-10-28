@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="set - Screen - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screen/set /options - Reference | OpenBB Terminal Docs" />
 
 Set preset from custom and default ones.
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mover - Disc - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.disc.mover - Reference | OpenBB SDK Docs" />
 
 Scrape data for top etf movers.
 

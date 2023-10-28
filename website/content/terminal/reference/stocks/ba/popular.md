@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="popular - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/popular - Reference | OpenBB Terminal Docs" />
 
 Print latest popular tickers. [Source: Reddit]
 

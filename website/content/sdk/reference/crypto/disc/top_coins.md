@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="top_coins - Disc - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.disc.top_coins - Reference | OpenBB SDK Docs" />
 
 Get top cryptp coins.
 

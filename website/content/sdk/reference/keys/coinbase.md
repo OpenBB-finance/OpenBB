@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coinbase - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.coinbase - Reference | OpenBB SDK Docs" />
 
 Set Coinbase key
 

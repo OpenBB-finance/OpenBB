@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cm - Charts - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="charts: cm - Discord Reference | OpenBB Bot Docs" />
 
 This command allows you to view a monthly candlestick chart for a given stock or cryptocurrency. The chart displays the open, close, high and low prices for the selected ticker/coin each month. This command is useful for analyzing the long-term performance of a stock or cryptocurrency.
 

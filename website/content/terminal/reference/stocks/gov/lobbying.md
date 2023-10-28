@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lobbying - Gov - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/lobbying - Reference | OpenBB Terminal Docs" />
 
 Lobbying details [Source: www.quiverquant.com]
 

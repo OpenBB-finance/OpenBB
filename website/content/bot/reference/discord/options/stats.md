@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stats - Options - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: stats - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Options Statistics for a stock with the given ticker symbol. This includes information such as Open Interest, Volume, Implied Volatility, and Earnings move data.
 

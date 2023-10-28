@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="root - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /root - Reference | OpenBB Terminal Docs" />
 
 Show unit root tests of a column of a dataset
 

@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="toppm - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/toppm - Reference | OpenBB Terminal Docs" />
 
 Print top officer purchases of the month. [Source: OpenInsider]
 

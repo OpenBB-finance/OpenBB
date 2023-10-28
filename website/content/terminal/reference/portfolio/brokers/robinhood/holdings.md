@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="holdings - Robinhood - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/robinhood/holdings /brokers - Reference | OpenBB Terminal Docs" />
 
 Display info about your trading accounts on Robinhood
 

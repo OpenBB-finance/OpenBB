@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tcn - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /tcn - Reference | OpenBB Terminal Docs" />
 
 Perform TCN forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tcn_model.html
 

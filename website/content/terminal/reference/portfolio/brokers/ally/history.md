@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="history - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/ally/history /brokers - Reference | OpenBB Terminal Docs" />
 
 Account transaction history
 

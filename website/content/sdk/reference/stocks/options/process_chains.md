@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="process_chains - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.process_chains - Reference | OpenBB SDK Docs" />
 
 Function to take in the request and return a DataFrame
 

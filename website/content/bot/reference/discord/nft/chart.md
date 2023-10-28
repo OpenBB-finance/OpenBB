@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="chart - Nft - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="nft: chart - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the NFT Collection Data related to the specified slug. The chart will show the floor price over time and sales count.
 

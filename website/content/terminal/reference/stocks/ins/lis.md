@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lis - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/lis - Reference | OpenBB Terminal Docs" />
 
 Print latest insider sales. [Source: OpenInsider]
 

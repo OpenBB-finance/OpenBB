@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trending - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.trending - Reference | OpenBB SDK Docs" />
 
 Returns a list of trending articles
 

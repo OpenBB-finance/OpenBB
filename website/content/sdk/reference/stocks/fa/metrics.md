@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="metrics - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.metrics - Reference | OpenBB SDK Docs" />
 
 Get key metrics
 

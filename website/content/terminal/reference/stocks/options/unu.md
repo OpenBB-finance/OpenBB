@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="unu - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/unu - Reference | OpenBB Terminal Docs" />
 
 This command gets unusual options from fdscanner.com
 

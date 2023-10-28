@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ols - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.ols - Reference | OpenBB SDK Docs" />
 
 Performs an OLS regression on timeseries data. [Source: Statsmodels]
 

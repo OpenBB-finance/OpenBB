@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="closetrade - Oanda - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/closetrade - Reference | OpenBB Terminal Docs" />
 
 Close a trade by id.
 

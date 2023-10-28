@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mktcap - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/mktcap - Reference | OpenBB Terminal Docs" />
 
 Returns a portfolio that is weighted based on Market Cap.
 

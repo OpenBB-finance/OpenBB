@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="add - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /add - Reference | OpenBB Terminal Docs" />
 
 Add columns to your dataframe with the option to use formulas. E.g. newdatasetcol = basedatasetcol sign criteriaordatasetcol thesis.high_revenue = thesis.revenue  1000 dataset.debt_ratio = dataset.debt div dataset2.assets
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="information - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.information - Reference | OpenBB SDK Docs" />
 
 Get information ratio
 

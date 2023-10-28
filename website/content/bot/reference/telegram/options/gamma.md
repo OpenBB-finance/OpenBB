@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gamma - Options - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: gamma - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to view the Options Gamma Levels for a particular stock. Options Gamma Levels are important to understanding the rate of change for the option's Delta when the underlying stock price changes. Knowing this information can help traders make informed decisions about which options to purchase.
 

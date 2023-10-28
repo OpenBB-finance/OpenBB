@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="deposits - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/coinbase/deposits /brokers - Reference | OpenBB Terminal Docs" />
 
 Display a list of deposits for your account.
 

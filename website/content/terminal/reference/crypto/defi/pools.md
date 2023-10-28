@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pools - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/pools - Reference | OpenBB Terminal Docs" />
 
 Display uniswap pools by volume. [Source: https://thegraph.com/en/]
 

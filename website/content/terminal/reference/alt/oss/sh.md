@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sh - Oss - Alt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/oss/sh - Reference | OpenBB Terminal Docs" />
 
 Display a repo star history [Source: https://api.github.com]
 

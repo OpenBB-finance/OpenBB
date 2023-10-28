@@ -56,7 +56,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="vaults - Defi - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.defi.vaults - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

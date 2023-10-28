@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trans - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /trans - Reference | OpenBB Terminal Docs" />
 
 Perform Transformer Forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.transformer_model.html
 

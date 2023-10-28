@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="summary - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/summary - Reference | OpenBB Terminal Docs" />
 
 Summary statistics
 

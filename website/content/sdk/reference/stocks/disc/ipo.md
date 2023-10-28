@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ipo - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.ipo - Reference | OpenBB SDK Docs" />
 
 Get IPO calendar
 

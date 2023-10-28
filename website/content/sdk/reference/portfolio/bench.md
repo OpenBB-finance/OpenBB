@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bench - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.bench - Reference | OpenBB SDK Docs" />
 
 Load benchmark into portfolio
 

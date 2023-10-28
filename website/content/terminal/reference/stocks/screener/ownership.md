@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ownership - Screener - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screener/ownership - Reference | OpenBB Terminal Docs" />
 
 Prints ownership data of the companies that meet the pre-set filtering.
 

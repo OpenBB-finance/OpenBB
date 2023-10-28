@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="growth - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.growth - Reference | OpenBB SDK Docs" />
 
 Get financial statement growth
 

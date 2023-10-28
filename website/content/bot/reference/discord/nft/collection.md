@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="collection - Nft - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="nft: collection - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves a collection of Non-Fungible Token (NFT) data associated with the specified slug. It returns the collection's metadata, including the owner, the number of items in the collection, the total NFTs minted, and various other data on the NFT.
 

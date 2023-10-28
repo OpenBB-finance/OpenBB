@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="historical - Screener - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screener/historical - Reference | OpenBB Terminal Docs" />
 
 Historical price comparison between similar companies [Source: Yahoo Finance]
 

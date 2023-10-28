@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="adx - Ta - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/adx - Reference | OpenBB Terminal Docs" />
 
 The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX). The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider a high number to be a strong trend, and a low number, a weak trend.
 

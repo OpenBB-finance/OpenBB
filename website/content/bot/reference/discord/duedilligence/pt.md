@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pt - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duedilligence: pt - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a chart with price targets for the specified ticker. The chart will provide information on the current price, target prices and analyst ratings, allowing the user to make more informed decisions.
 

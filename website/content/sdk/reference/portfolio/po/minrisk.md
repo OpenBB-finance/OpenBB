@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="minrisk - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.minrisk - Reference | OpenBB SDK Docs" />
 
 Optimize minimum risk weights
 

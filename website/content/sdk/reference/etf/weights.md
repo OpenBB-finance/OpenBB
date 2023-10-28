@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="weights - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.weights - Reference | OpenBB SDK Docs" />
 
 Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 

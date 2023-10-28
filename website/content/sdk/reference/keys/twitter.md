@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="twitter - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.twitter - Reference | OpenBB SDK Docs" />
 
 Set Twitter key
 

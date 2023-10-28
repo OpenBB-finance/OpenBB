@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="recom - Ta - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/recom - Reference | OpenBB Terminal Docs" />
 
 Print tradingview recommendation based on technical indicators. [Source: Tradingview]
 

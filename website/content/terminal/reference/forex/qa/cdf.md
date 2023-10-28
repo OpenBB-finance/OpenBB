@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cdf - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/cdf - Reference | OpenBB Terminal Docs" />
 
 Cumulative distribution function
 

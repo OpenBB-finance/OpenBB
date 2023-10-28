@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="es - Qa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/es - Reference | OpenBB Terminal Docs" />
 
 Provides Expected Shortfall (short: ES) of the selected stock.
 

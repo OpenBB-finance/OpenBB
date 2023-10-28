@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="est - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.est - Reference | OpenBB SDK Docs" />
 
 Get analysts' estimates for a given ticker. [Source: Business Insider]
 

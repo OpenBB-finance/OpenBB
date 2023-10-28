@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="nexter - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duedilligence: nexter - Discord Reference | OpenBB Bot Docs" />
 
 This command will retrieve the next earnings date for the given stock ticker symbol.
 

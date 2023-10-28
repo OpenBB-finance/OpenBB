@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="info - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /info - Reference | OpenBB Terminal Docs" />
 
 Get fund information.
 

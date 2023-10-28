@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pop - Discovery - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="discovery: pop - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the top 15 tickers for the day or hour based on popularity on the OpenBB Bot across all our platforms. It allows users to get an overview of the most popular stocks in the market within the last 24 hours (1d) or 1 Hour (1hr).
 

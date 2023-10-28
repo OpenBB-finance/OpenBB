@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lt - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/lt - Reference | OpenBB Terminal Docs" />
 
 Display Trades on Decentralized Exchanges aggregated by DEX or Month [Source: https://graphql.bitquery.io/]
 

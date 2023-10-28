@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="vwap - Ta - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/vwap - Reference | OpenBB Terminal Docs" />
 
 The Volume Weighted Average Price that measures the average typical price by volume. It is typically used with intraday charts to identify general direction.
 

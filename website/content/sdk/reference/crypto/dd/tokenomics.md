@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tokenomics - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.tokenomics - Reference | OpenBB SDK Docs" />
 
 Get tokenomics for given coin. [Source: CoinGecko]
 

@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="info - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/info - Reference | OpenBB Terminal Docs" />
 
 Display option data [Source: Barchart.com]
 

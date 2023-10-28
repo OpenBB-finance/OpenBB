@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="messages - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/messages - Reference | OpenBB Terminal Docs" />
 
 Print up to 30 of the last messages on the board. [Source: Stocktwits]
 

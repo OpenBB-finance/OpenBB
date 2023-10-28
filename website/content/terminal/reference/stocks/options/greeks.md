@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="greeks - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/greeks - Reference | OpenBB Terminal Docs" />
 
 The greeks for a given option.
 

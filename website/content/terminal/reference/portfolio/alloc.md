@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alloc - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /alloc - Reference | OpenBB Terminal Docs" />
 
 Show your allocation to each asset or sector compared to the benchmark.
 

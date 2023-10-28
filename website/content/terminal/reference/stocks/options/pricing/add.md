@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="add - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/pricing/add /options - Reference | OpenBB Terminal Docs" />
 
 Adds a price to the list
 

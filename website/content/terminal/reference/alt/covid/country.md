@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="country - Covid - Alt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/covid/country - Reference | OpenBB Terminal Docs" />
 
 Select a country to look at data for.
 

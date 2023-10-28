@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arg - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/parameters/arg /po - Reference | OpenBB Terminal Docs" />
 
 Set a different value for one of the available arguments.
 

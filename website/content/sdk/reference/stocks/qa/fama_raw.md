@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fama_raw - Qa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.qa.fama_raw - Reference | OpenBB SDK Docs" />
 
 Gets base Fama French data to calculate risk
 

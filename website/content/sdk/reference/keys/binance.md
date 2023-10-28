@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="binance - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.binance - Reference | OpenBB SDK Docs" />
 
 Set Binance key
 

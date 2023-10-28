@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="last_price - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.last_price - Reference | OpenBB SDK Docs" />
 
 Makes api request for last price
 

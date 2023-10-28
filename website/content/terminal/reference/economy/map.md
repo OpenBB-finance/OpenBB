@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="map - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /map - Reference | OpenBB Terminal Docs" />
 
 Performance index stocks map categorized by sectors and industries. Size represents market cap. Opens web-browser. [Source: Finviz]
 

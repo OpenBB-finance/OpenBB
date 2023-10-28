@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="combine - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.combine - Reference | OpenBB SDK Docs" />
 
 Adds the given column of df2 to df1
 

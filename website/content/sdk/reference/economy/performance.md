@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="performance - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.performance - Reference | OpenBB SDK Docs" />
 
 Get group (sectors, industry or country) performance data. [Source: Finviz]
 

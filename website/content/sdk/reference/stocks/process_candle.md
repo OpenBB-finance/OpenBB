@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="process_candle - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.process_candle - Reference | OpenBB SDK Docs" />
 
 Process DataFrame into candle style plot.
 

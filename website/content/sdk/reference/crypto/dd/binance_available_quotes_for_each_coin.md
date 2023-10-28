@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="binance_available_quotes_for_each_coin - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.binance_available_quotes_for_each_coin - Reference | OpenBB SDK Docs" />
 
 Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 

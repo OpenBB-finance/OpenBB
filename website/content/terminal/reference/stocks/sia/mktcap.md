@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mktcap - Sia - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/sia/mktcap - Reference | OpenBB Terminal Docs" />
 
 Set mktcap to nano, micro, small, mid, large or mega
 

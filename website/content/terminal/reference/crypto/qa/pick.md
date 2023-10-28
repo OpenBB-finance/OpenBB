@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pick - Qa - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 

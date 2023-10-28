@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="clenow - Ta - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/ta/clenow - Reference | OpenBB Terminal Docs" />
 
 Calculates the Clenow Volatility Adjusted Momentum.
 

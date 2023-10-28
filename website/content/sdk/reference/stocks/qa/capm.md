@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="capm - Qa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.qa.capm - Reference | OpenBB SDK Docs" />
 
 Provides information that relates to the CAPM model
 

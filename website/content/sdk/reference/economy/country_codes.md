@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="country_codes - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.country_codes - Reference | OpenBB SDK Docs" />
 
 Get available country codes for Bigmac index
 

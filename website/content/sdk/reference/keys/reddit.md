@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="reddit - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.reddit - Reference | OpenBB SDK Docs" />
 
 Set Reddit key
 

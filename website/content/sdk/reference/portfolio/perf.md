@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="perf - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.perf - Reference | OpenBB SDK Docs" />
 
 Get portfolio performance vs the benchmark
 

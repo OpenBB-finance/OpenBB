@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="blacklitterman - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/blacklitterman - Reference | OpenBB Terminal Docs" />
 
 Optimize portfolio using Black Litterman estimates
 

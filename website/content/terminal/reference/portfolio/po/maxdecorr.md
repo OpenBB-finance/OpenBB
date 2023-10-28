@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxdecorr - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/maxdecorr - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's decorrelation
 

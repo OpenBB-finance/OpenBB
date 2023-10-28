@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="qqplot - Qa - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/qa/qqplot - Reference | OpenBB Terminal Docs" />
 
 Display QQ plot vs normal quantiles
 

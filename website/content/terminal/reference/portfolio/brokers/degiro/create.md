@@ -29,7 +29,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="create - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/create /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

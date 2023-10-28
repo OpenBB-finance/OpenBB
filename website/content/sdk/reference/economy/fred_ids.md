@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fred_ids - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.fred_ids - Reference | OpenBB SDK Docs" />
 
 Get Series IDs. [Source: FRED]
 

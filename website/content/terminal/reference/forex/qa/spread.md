@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="spread - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/spread - Reference | OpenBB Terminal Docs" />
 
 Shows rolling spread measurement
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="vsurf - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/vsurf - Reference | OpenBB Terminal Docs" />
 
 Plot 3D volatility surface.
 

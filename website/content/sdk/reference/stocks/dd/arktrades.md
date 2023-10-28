@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arktrades - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.arktrades - Reference | OpenBB SDK Docs" />
 
 Gets a dataframe of ARK trades for ticker
 

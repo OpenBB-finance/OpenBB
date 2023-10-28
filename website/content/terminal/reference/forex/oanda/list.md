@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="list - Oanda - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/list - Reference | OpenBB Terminal Docs" />
 
 List order history
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="wfpe - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/wfpe - Reference | OpenBB Terminal Docs" />
 
 Coin withdrawal fees per exchange [Source: https://withdrawalfees.com/]
 

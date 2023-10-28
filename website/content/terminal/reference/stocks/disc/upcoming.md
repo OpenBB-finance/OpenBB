@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="upcoming - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/upcoming - Reference | OpenBB Terminal Docs" />
 
 Upcoming earnings release dates. [Source: Seeking Alpha]
 

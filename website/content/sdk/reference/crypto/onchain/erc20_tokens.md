@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="erc20_tokens - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.erc20_tokens - Reference | OpenBB SDK Docs" />
 
 Helper method that loads ~1500 most traded erc20 token.
 

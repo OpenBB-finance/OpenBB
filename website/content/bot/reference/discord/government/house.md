@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="house - Government - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="government: house - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve recent house trades for a specific ticker.
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="spread - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /spread - Reference | OpenBB Terminal Docs" />
 
 Generate bond spread matrix.
 

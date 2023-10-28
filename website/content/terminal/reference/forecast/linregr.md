@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="linregr - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /linregr - Reference | OpenBB Terminal Docs" />
 
 Perform a linear regression forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
 

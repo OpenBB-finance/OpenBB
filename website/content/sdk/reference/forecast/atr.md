@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="atr - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.atr - Reference | OpenBB SDK Docs" />
 
 Calculate the Average True Range of a variable based on a a specific stock ticker.
 

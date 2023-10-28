@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="quote - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /quote - Reference | OpenBB Terminal Docs" />
 
 Current quote for stock ticker
 

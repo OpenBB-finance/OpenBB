@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="line - Qa - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/line - Reference | OpenBB Terminal Docs" />
 
 Show line plot of selected data or highlight specific datetimes.
 

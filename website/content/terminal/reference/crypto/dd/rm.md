@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rm - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/rm - Reference | OpenBB Terminal Docs" />
 
 Display asset's roadmap [Source: https://messari.io]
 

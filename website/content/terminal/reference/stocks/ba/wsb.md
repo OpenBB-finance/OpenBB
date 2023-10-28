@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="wsb - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/wsb - Reference | OpenBB Terminal Docs" />
 
 Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
 

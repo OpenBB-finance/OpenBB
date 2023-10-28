@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="opening - Flow - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="flow: opening - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Top 20 flows by premium for a stock with the Opening condition - Volume exceeding Open Interest on the trade.
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="est - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duedilligence: est - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve earning estimates for a given stock symbol. This can be used as a helpful tool for investors to get an idea of how a stock may perform in terms of earnings.
 

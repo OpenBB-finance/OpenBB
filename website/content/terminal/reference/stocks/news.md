@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="news - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /news - Reference | OpenBB Terminal Docs" />
 
 latest news of the company
 

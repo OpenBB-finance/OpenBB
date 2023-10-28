@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fun - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/fun - Reference | OpenBB Terminal Docs" />
 
 Display fundamental metrics overview [Source: Token Terminal]
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="regions - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/regions - Reference | OpenBB Terminal Docs" />
 
 Plot bars of regions based on stock's interest. [Source: Google]
 

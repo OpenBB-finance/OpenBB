@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="upcoming - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.upcoming - Reference | OpenBB SDK Docs" />
 
 Returns a DataFrame with upcoming earnings
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lasttrades - Gov - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.gov.lasttrades - Reference | OpenBB SDK Docs" />
 
 Get last government trading [Source: quiverquant.com]
 

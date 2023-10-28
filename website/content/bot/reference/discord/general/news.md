@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="news - General - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="general: news - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the latest news for a given ticker.
 

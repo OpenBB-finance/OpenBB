@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candle - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.candle - Reference | OpenBB SDK Docs" />
 
 Show candle plot of loaded ticker.
 

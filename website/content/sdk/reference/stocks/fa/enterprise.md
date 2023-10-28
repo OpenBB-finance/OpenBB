@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="enterprise - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.enterprise - Reference | OpenBB SDK Docs" />
 
 Financial Modeling Prep ticker enterprise
 

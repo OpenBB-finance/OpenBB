@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tokens - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/tokens - Reference | OpenBB Terminal Docs" />
 
 Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="atr - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /atr - Reference | OpenBB Terminal Docs" />
 
 Add Average True Range to dataset of specific stock ticker.
 

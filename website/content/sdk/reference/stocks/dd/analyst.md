@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="analyst - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.analyst - Reference | OpenBB SDK Docs" />
 
 Get analyst data. [Source: Finviz]
 

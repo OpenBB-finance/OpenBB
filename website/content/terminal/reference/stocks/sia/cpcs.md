@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cpcs - Sia - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/sia/cpcs - Reference | OpenBB Terminal Docs" />
 
 Companies per Country based on Sector and Market Cap
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="news - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.news - Reference | OpenBB SDK Docs" />
 
 Get news from Finviz
 

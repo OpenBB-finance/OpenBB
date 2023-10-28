@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="shorted - Dps - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dps.shorted - Reference | OpenBB SDK Docs" />
 
 Get most shorted stock screener [Source: Yahoo Finance]
 

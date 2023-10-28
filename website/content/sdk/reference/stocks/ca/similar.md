@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="similar - Ca - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ca.similar - Reference | OpenBB SDK Docs" />
 
 Find similar tickers to a given symbol.
 

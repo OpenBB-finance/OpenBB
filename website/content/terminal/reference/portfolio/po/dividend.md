@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dividend - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/dividend - Reference | OpenBB Terminal Docs" />
 
 Returns a portfolio that is weighted based dividend yield.
 

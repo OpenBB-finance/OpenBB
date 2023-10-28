@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="wf - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/wf - Reference | OpenBB Terminal Docs" />
 
 Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
 

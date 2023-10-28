@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mkt - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/mkt - Reference | OpenBB Terminal Docs" />
 
 Get all markets found for given coin. You can display only N number of markets with --limt parameter. You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange, pair, trust_score, volume, price, pct_volume_share,
 

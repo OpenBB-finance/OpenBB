@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ldapps - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/ldapps - Reference | OpenBB Terminal Docs" />
 
 Display information about listed dApps on DeFi Llama. [Source: https://docs.llama.fi/api]
 

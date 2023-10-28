@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="demark - Ta - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/ta/demark - Reference | OpenBB Terminal Docs" />
 
 Calculates the Demark sequential indicator.
 

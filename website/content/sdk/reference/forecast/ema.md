@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ema - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.ema - Reference | OpenBB SDK Docs" />
 
 A moving average provides an indication of the trend of the price movement
 

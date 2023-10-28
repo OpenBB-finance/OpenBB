@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="index - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /index - Reference | OpenBB Terminal Docs" />
 
 Set a (multi) index for the dataset
 

@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="closed - Th - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/th/closed - Reference | OpenBB Terminal Docs" />
 
 Show currently closed exchanges
 

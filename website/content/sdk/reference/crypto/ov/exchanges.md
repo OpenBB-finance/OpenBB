@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="exchanges - Ov - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.ov.exchanges - Reference | OpenBB SDK Docs" />
 
 Show top crypto exchanges.
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fred - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /fred - Reference | OpenBB Terminal Docs" />
 
 Query the FRED database and plot data based on the Series ID. [Source: FRED]
 

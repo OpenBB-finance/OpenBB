@@ -25,7 +25,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arkord - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/arkord - Reference | OpenBB Terminal Docs" />
 
 Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
 

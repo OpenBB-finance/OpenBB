@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="re - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.re - Reference | OpenBB SDK Docs" />
 
 The random effects model is virtually identical to the pooled OLS model except that is accounts for the
 

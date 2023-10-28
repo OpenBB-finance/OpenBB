@@ -29,7 +29,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="brnn - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /brnn - Reference | OpenBB Terminal Docs" />
 
 Perform BRNN forecast (Vanilla RNN, LSTM, GRU): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.block_rnn_model.html
 

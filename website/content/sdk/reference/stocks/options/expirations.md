@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="expirations - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.expirations - Reference | OpenBB SDK Docs" />
 
 Get Option Chain Expirations
 

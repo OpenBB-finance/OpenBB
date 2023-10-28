@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="to - Oanda - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/to - Reference | OpenBB Terminal Docs" />
 
 Select the "to" currency symbol in a forex pair
 

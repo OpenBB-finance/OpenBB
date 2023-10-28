@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="topvol - Options - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: topvol - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Top 15 Highest stock options volumes by adding the call and put volume together. This data can be used to identify the most liquid options for trading.
 

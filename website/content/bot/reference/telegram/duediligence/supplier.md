@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="supplier - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duediligence: supplier - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve the list of suppliers associated with the company with the given ticker.
 

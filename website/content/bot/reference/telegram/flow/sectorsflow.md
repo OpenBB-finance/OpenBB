@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sectorsflow - Flow - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="flow: sectorsflow - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves a summary of all flows by MarketCap percentage per sector over the past x days.
 

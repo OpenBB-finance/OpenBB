@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="si - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.si - Reference | OpenBB SDK Docs" />
 
 Set Sentimentinvestor key.
 

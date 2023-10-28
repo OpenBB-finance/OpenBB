@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bench - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /bench - Reference | OpenBB Terminal Docs" />
 
 Load in a benchmark from a selected list or set your own based on the ticker.
 

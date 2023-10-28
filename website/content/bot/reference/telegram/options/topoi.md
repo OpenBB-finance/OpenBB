@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="topoi - Options - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: topoi - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Top Open Interest among all stocks. This command queries the current market data and provides a list of the most actively traded stocks and options in the current market.
 

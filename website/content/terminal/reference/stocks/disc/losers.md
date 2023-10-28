@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="losers - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/losers - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top losers. [Source: Yahoo Finance]
 

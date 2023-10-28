@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="holdv - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /holdv - Reference | OpenBB Terminal Docs" />
 
 Display holdings of assets (absolute value)
 

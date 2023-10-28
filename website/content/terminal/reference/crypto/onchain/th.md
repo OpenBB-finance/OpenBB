@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="th - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/th - Reference | OpenBB Terminal Docs" />
 
 Displays info about token history. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
 

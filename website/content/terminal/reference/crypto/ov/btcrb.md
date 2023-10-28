@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="btcrb - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/btcrb - Reference | OpenBB Terminal Docs" />
 
 Display bitcoin rainbow chart overtime including halvings. [Price data from source: https://glassnode.com] [Inspired by: https://blockchaincenter.net]
 

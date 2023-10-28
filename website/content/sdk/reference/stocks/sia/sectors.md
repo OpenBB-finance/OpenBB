@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sectors - Sia - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.sia.sectors - Reference | OpenBB SDK Docs" />
 
 Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]
 

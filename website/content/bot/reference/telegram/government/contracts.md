@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="contracts - Government - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="government: contracts - Telegram Reference | OpenBB Bot Docs" />
 
 This command will allow the user to retrieve the top 15 government contracts by amount for a specific ticker.
 

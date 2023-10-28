@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sectors - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.alloc.sectors - Reference | OpenBB SDK Docs" />
 
 Display portfolio sector allocation compared to the benchmark
 

@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sec - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.sec - Reference | OpenBB SDK Docs" />
 
 Get SEC filings for a given stock ticker. [Source: Market Watch]
 

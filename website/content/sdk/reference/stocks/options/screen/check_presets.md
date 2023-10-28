@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="check_presets - Screen - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.screen.check_presets - Reference | OpenBB SDK Docs" />
 
 Checks option screener preset values
 

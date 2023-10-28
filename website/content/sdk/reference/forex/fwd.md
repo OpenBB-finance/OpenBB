@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fwd - Forex - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forex.fwd - Reference | OpenBB SDK Docs" />
 
 Gets forward rates from fxempire
 

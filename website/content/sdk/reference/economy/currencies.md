@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="currencies - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.currencies - Reference | OpenBB SDK Docs" />
 
 Scrape data for global currencies
 

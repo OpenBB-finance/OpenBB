@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="weights - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf /weights - Reference | OpenBB Terminal Docs" />
 
 Look at ETF sector holdings
 

@@ -25,7 +25,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="decompose - Qa - Reference | OpenBB SDK Docs" />
+<HeadTitle title="qa.decompose - Reference | OpenBB SDK Docs" />
 
 Perform seasonal decomposition
 

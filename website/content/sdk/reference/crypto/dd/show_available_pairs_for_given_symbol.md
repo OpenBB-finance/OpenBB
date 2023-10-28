@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="show_available_pairs_for_given_symbol - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.show_available_pairs_for_given_symbol - Reference | OpenBB SDK Docs" />
 
 Return all available quoted assets for given symbol. [Source: Coinbase]
 

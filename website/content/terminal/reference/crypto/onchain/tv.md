@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tv - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/tv - Reference | OpenBB Terminal Docs" />
 
 Display token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]
 

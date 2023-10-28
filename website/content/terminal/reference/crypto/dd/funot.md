@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="funot - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/funot - Reference | OpenBB Terminal Docs" />
 
 Display fundamental metric over time [Source: Token Terminal]
 

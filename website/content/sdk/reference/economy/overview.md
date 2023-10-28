@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="overview - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.overview - Reference | OpenBB SDK Docs" />
 
 Scrape data for market overview
 

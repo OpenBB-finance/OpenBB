@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="toppw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/toppw - Reference | OpenBB Terminal Docs" />
 
 Print top officer purchases of the week. [Source: OpenInsider]
 

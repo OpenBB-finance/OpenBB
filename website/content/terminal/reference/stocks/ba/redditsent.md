@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="redditsent - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/redditsent - Reference | OpenBB Terminal Docs" />
 
 Determine general Reddit sentiment about a ticker. [Source: Reddit]
 

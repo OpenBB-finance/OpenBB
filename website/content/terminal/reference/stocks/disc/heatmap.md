@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="heatmap - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/heatmap - Reference | OpenBB Terminal Docs" />
 
 Get the SP 500 heatmap from finviz and display in interactive treemap
 

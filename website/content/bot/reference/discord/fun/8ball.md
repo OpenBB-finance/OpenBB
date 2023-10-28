@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="8ball - Fun - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="fun: 8ball - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 

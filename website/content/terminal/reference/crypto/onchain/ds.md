@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ds - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/ds - Reference | OpenBB Terminal Docs" />
 
 Get daily transactions for certain symbols in ethereum blockchain [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="watchlist_remove - Overview - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="overview: watchlist_remove - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to remove a stock from their watchlist.
 

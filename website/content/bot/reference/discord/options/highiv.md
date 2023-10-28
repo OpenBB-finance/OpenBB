@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="highiv - Options - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: highiv - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves the 15 highest IV30 equity stocks by 30 day Implied Volatility. The IV30 metric is a measure of the expected volatility of a stock over the next 30 days. This command is ideal for users looking to make investments with high potential return and is useful for traders looking to capitalize on market movements.
 

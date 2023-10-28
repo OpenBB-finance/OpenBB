@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxret - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/maxret - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's return
 

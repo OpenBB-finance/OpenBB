@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tradier - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.tradier - Reference | OpenBB SDK Docs" />
 
 Set Tradier key
 

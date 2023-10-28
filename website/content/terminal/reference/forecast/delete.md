@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="delete - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /delete - Reference | OpenBB Terminal Docs" />
 
 The column you want to delete from a dataset.
 

@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="performance - Ca - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/performance - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 

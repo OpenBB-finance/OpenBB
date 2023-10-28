@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="currencies - Economy - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="economy: currencies - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve an overview of all available currencies. It will provide the user with information such as the currency name, price, and change.
 

@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="_retry_session - Oss - Alt - Reference | OpenBB SDK Docs" />
+<HeadTitle title="alt.oss._retry_session - Reference | OpenBB SDK Docs" />
 
 Helper methods that retries to make request.
 

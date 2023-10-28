@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="asc - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/asc - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
 

@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="government_trading - Gov - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.gov.government_trading - Reference | OpenBB SDK Docs" />
 
 Returns the most recent transactions by members of government
 

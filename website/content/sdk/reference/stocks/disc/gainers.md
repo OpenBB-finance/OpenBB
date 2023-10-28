@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gainers - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.gainers - Reference | OpenBB SDK Docs" />
 
 Get top gainers. [Source: Yahoo Finance]
 

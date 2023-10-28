@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.load - Reference | OpenBB SDK Docs" />
 
 Load custom file into dataframe.
 

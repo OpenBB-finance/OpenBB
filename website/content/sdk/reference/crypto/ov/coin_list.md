@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coin_list - Ov - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.ov.coin_list - Reference | OpenBB SDK Docs" />
 
 Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
 

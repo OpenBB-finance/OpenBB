@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hsi - Dps - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dps.hsi - Reference | OpenBB SDK Docs" />
 
 Returns a high short interest DataFrame
 

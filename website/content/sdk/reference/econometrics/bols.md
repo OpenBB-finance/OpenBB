@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bols - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.bols - Reference | OpenBB SDK Docs" />
 
 The between estimator is an alternative, usually less efficient estimator, can can be used to
 

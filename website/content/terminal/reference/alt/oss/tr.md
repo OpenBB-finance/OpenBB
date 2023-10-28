@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tr - Oss - Alt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/oss/tr - Reference | OpenBB Terminal Docs" />
 
 Display top repositories [Source: https://api.github.com]
 

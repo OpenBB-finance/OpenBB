@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="day - Flow - Flow - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="flow - flow: day - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the most recent flow for a stock with the specified ticker symbol. The command will return the most up-to-date flow data for that stock over $25,000.
 

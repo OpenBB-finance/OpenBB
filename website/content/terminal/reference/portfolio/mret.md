@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mret - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /mret - Reference | OpenBB Terminal Docs" />
 
 Monthly returns
 

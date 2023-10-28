@@ -11,7 +11,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="holdings - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/ally/holdings /brokers - Reference | OpenBB Terminal Docs" />
 
 Display info about your trading accounts on Ally
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="categories_keys - Disc - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.disc.categories_keys - Reference | OpenBB SDK Docs" />
 
 Get list of categories keys
 

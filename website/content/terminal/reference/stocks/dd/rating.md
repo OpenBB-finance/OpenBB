@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rating - Dd - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dd/rating - Reference | OpenBB Terminal Docs" />
 
 Based on specific ratios, prints information whether the company is a (strong) buy, neutral or a (strong) sell. The following fields are expected: P/B, ROA, DCF, P/E, ROE, and D/E. [Source: Financial Modeling Prep]
 

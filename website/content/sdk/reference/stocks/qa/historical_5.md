@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="historical_5 - Qa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.qa.historical_5 - Reference | OpenBB SDK Docs" />
 
 Get 5 year monthly historical performance for a ticker with dividends filtered
 

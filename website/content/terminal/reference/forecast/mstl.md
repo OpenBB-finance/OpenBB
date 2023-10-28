@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mstl - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /mstl - Reference | OpenBB Terminal Docs" />
 
 Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast: https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
 

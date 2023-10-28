@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="jensens - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.jensens - Reference | OpenBB SDK Docs" />
 
 Get jensen's alpha
 

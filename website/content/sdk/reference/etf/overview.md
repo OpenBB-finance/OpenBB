@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="overview - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.overview - Reference | OpenBB SDK Docs" />
 
 Get overview data for selected etf
 

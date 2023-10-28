@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sentiment - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/sentiment - Reference | OpenBB Terminal Docs" />
 
 Plot in-depth sentiment predicted from tweets from last days that contain pre-defined ticker. [Source: Twitter]
 

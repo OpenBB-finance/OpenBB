@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="add - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/hedge/add /options - Reference | OpenBB Terminal Docs" />
 
 Add options to the diagram.
 

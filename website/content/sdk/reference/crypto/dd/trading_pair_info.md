@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trading_pair_info - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.trading_pair_info - Reference | OpenBB SDK Docs" />
 
 Get information about chosen trading pair. [Source: Coinbase]
 

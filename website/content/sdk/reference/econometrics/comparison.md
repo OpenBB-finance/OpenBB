@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="comparison - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.comparison - Reference | OpenBB SDK Docs" />
 
 Compare regression results between Panel Data regressions.
 

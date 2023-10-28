@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="calculate_adjusted_var - Qa - Reference | OpenBB SDK Docs" />
+<HeadTitle title="qa.calculate_adjusted_var - Reference | OpenBB SDK Docs" />
 
 Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
 

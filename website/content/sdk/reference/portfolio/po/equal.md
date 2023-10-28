@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="equal - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.equal - Reference | OpenBB SDK Docs" />
 
 Equally weighted portfolio, where weight = 1/# of symbols
 

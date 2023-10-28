@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rating - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.rating - Reference | OpenBB SDK Docs" />
 
 Get ratings for a given ticker. [Source: Financial Modeling Prep]
 

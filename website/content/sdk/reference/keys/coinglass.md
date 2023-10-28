@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coinglass - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.coinglass - Reference | OpenBB SDK Docs" />
 
 Set Coinglass key.
 

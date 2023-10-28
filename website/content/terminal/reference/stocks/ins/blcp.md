@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="blcp - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/blcp - Reference | OpenBB Terminal Docs" />
 
 Print latest CEO/CFO purchases 25k. [Source: OpenInsider]
 

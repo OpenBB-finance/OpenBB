@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.load - Reference | OpenBB SDK Docs" />
 
 Load a symbol to perform analysis using the string above as a template.
 

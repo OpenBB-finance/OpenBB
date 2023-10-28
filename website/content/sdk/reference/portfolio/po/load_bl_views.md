@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load_bl_views - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.load_bl_views - Reference | OpenBB SDK Docs" />
 
 Load a Excel file with views for Black Litterman model.
 

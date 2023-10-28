@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ermove - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duediligence: ermove - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the implied move for a stock based on the current option prices. The implied move is a measure of how far the stock is expected to move during the option's expiration.
 

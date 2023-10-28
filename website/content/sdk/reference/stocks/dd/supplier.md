@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="supplier - Dd - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dd.supplier - Reference | OpenBB SDK Docs" />
 
 Get suppliers from ticker provided. [Source: CSIMarket]
 

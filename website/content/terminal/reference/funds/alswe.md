@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alswe - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /alswe - Reference | OpenBB Terminal Docs" />
 
 Show allocation of a swedish fund.
 

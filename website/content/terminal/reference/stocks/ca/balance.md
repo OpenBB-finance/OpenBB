@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="balance - Ca - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/balance - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly balance statement the company, and compares it against similar companies.
 

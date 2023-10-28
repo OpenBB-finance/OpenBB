@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="basic - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/basic - Reference | OpenBB Terminal Docs" />
 
 Get basic information for coin. Like: name, symbol, rank, type, description, platform, proof_type, contract, tags, parent
 

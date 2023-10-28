@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="aprtoapy - Tools - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/tools/aprtoapy - Reference | OpenBB Terminal Docs" />
 
 Tool to calculate APY from APR value. Compouding periods, i.e., the number of times compounded per year can be defined with -c argument.
 

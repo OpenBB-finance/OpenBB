@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rename - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.rename - Reference | OpenBB SDK Docs" />
 
 Rename a column in a dataframe
 

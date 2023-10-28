@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="etf_by_name - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.etf_by_name - Reference | OpenBB SDK Docs" />
 
 Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]
 

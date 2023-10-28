@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="filter_stocks - Sia - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.sia.filter_stocks - Reference | OpenBB SDK Docs" />
 
 Filter stocks based on country, sector, industry, market cap and exclude exchanges.
 

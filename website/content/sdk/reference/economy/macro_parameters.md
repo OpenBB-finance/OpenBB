@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="macro_parameters - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.macro_parameters - Reference | OpenBB SDK Docs" />
 
 This function returns the available macro parameters with detail.
 

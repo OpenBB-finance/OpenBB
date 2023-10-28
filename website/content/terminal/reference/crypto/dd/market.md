@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="market - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/market - Reference | OpenBB Terminal Docs" />
 
 Market data for loaded coin. There you find metrics like: Market Cap, Supply, Circulating Supply, Price, Volume and many others.
 

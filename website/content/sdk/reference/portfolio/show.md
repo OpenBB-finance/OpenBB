@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="show - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.show - Reference | OpenBB SDK Docs" />
 
 Get portfolio transactions
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tops - Etf - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="etf: tops - Telegram Reference | OpenBB Bot Docs" />
 
 This command returns the top ETFs for the day - sorted by gainers, losers, or active.
 

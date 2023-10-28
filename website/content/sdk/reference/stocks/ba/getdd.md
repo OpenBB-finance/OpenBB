@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="getdd - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.getdd - Reference | OpenBB SDK Docs" />
 
 Gets due diligence posts from list of subreddits [Source: reddit].
 

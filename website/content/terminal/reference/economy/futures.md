@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="futures - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /futures - Reference | OpenBB Terminal Docs" />
 
 Futures/Commodities from Wall St. Journal and FinViz.
 

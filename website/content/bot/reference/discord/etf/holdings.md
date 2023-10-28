@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="holdings - Etf - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="etf: holdings - Discord Reference | OpenBB Bot Docs" />
 
 This command returns the holdings for an ETF sorted by percent of ETF.
 

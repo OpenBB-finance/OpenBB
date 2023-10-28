@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.po.maxsharpe - Reference | OpenBB SDK Docs" />
 
 Optimize Sharpe ratio weights
 

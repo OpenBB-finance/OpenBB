@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tokenterminal - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.tokenterminal - Reference | OpenBB SDK Docs" />
 
 Set Token Terminal key.
 

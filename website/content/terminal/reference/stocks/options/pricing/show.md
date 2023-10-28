@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="show - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/pricing/show /options - Reference | OpenBB Terminal Docs" />
 
 Display prices
 

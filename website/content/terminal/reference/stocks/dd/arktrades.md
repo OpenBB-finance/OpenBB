@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arktrades - Dd - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dd/arktrades - Reference | OpenBB Terminal Docs" />
 
 Get trades for ticker across all ARK funds.
 

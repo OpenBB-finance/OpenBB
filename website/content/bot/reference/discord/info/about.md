@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="about - Info - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="info: about - Discord Reference | OpenBB Bot Docs" />
 
 This command will provide users with a comprehensive overview of OpenBB Bot and links to our social media pages.
 

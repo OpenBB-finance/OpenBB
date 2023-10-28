@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bitquery - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.bitquery - Reference | OpenBB SDK Docs" />
 
 Set Bitquery key
 

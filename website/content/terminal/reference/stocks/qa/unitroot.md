@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="unitroot - Qa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/unitroot - Reference | OpenBB Terminal Docs" />
 
 Unit root test / stationarity (ADF, KPSS)
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sto - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.sto - Reference | OpenBB SDK Docs" />
 
 Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
 

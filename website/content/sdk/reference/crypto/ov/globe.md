@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="globe - Ov - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.ov.globe - Reference | OpenBB SDK Docs" />
 
 Get global crypto market data.
 

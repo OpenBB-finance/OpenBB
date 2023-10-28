@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rnval - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/pricing/rnval /options - Reference | OpenBB Terminal Docs" />
 
 The risk neutral value of the options
 

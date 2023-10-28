@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dex_trades_monthly - Onchain - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.onchain.dex_trades_monthly - Reference | OpenBB SDK Docs" />
 
 Get list of trades on Decentralized Exchanges monthly aggregated.
 

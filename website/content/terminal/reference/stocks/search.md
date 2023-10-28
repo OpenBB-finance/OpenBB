@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /search - Reference | OpenBB Terminal Docs" />
 
 Show companies matching the search query
 

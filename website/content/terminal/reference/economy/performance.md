@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="performance - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /performance - Reference | OpenBB Terminal Docs" />
 
 View group (sectors, industry or country) performance data. [Source: Finviz]
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rsi - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /rsi - Reference | OpenBB Terminal Docs" />
 
 Add rsi to dataset based on specific column.
 

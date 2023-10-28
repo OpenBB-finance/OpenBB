@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf /load - Reference | OpenBB Terminal Docs" />
 
 Load ETF ticker to perform analysis on.
 

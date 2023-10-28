@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sto - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /sto - Reference | OpenBB Terminal Docs" />
 
 Add in Stochastic Oscillator %K and %D
 

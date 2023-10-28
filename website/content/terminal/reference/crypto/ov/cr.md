@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cr - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/cr - Reference | OpenBB Terminal Docs" />
 
 Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms. You can select rate type with --type {borrow,supply} You can display only N number of platforms with --limit parameter.
 

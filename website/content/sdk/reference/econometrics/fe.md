@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fe - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.fe - Reference | OpenBB SDK Docs" />
 
 When effects are correlated with the regressors the RE and BE estimators are not consistent.
 

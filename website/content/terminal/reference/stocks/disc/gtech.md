@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gtech - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/gtech - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 

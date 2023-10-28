@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="view - Screen - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screen/view /options - Reference | OpenBB Terminal Docs" />
 
 View available presets under presets folder.
 

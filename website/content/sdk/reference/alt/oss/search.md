@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Oss - Alt - Reference | OpenBB SDK Docs" />
+<HeadTitle title="alt.oss.search - Reference | OpenBB SDK Docs" />
 
 Get repos sorted by stars or forks. Can be filtered by categories.
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="help - Info - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="info: help - Telegram Reference | OpenBB Bot Docs" />
 
 List of commands for OpenBB Bot.
 

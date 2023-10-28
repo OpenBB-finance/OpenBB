@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /load - Reference | OpenBB Terminal Docs" />
 
 Load historical exchange rate data.Available data sources are Alpha Advantage and YahooFinanceBy default main source used for analysis is YahooFinance (yf). To change it use --source av
 

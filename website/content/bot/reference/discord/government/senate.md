@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="senate - Government - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="government: senate - Discord Reference | OpenBB Bot Docs" />
 
 This command allows a user to view the recent trades of senate members for a specific ticker.
 

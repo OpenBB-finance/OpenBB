@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto_hack_slugs - Ov - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.ov.crypto_hack_slugs - Reference | OpenBB SDK Docs" />
 
 Get all crypto hack slugs
 

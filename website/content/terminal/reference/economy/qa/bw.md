@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bw - Qa - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/bw - Reference | OpenBB Terminal Docs" />
 
 Box and Whisker plot
 

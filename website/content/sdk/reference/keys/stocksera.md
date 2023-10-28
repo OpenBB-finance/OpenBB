@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocksera - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.stocksera - Reference | OpenBB SDK Docs" />
 
 Set Stocksera key.
 

@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ugs - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.ugs - Reference | OpenBB SDK Docs" />
 
 Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
 

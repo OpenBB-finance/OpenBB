@@ -10,7 +10,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pending - Oanda - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/pending - Reference | OpenBB Terminal Docs" />
 
 Get information about pending orders.
 

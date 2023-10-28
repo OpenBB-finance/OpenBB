@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="indices - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.indices - Reference | OpenBB SDK Docs" />
 
 Get the top US indices
 

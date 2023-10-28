@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="demark - Ta - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/demark - Reference | OpenBB Terminal Docs" />
 
 Calculates the Demark sequential indicator.
 

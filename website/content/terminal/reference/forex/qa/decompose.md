@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="decompose - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/decompose - Reference | OpenBB Terminal Docs" />
 
 Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
 

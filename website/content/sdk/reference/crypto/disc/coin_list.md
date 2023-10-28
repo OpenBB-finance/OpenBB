@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coin_list - Disc - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.disc.coin_list - Reference | OpenBB SDK Docs" />
 
 Get list of coins available on CoinGecko [Source: CoinGecko]
 

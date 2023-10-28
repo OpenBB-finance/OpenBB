@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coint - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /coint - Reference | OpenBB Terminal Docs" />
 
 Show co-integration between two timeseries
 

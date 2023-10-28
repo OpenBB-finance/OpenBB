@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ah - Screeners - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="screeners: ah - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve After-Hours stock movers according to a chosen screener.
 

@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Portfolio_Analysis - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/portfolio_analysis/load - Reference | OpenBB Terminal Docs" />
 
 Function to get portfolio from predefined csv/json/xlsx file inside portfolios folder
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="customer - Dd - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dd/customer - Reference | OpenBB Terminal Docs" />
 
 List of customers from ticker provided. [Source: CSIMarket]
 

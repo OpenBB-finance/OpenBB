@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ah - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duedilligence: ah - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve afterhours data for a given stock ticker. The data retrieved will include the stock's current price, the highest and lowest prices of the ah session, the volume traded, and the change in the afterhours market.
 

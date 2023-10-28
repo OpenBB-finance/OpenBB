@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="urban - Fun - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="fun: urban - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to search for a definition of a word on Urban Dictionary.
 

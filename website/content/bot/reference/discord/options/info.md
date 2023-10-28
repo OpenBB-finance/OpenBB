@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="info - Options - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="options: info - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 

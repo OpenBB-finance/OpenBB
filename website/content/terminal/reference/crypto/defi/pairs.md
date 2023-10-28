@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pairs - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/pairs - Reference | OpenBB Terminal Docs" />
 
 Displays Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]
 

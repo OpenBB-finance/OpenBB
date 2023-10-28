@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fundrate - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/fundrate - Reference | OpenBB Terminal Docs" />
 
 Displays funding rate by exchange for a certain asset [Source: https://coinglass.github.io/API-Reference/]
 

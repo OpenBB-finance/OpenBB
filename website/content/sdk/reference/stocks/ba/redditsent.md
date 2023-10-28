@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="redditsent - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.redditsent - Reference | OpenBB SDK Docs" />
 
 Finds posts related to a specific search term in Reddit.
 

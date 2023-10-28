@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="var - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.var - Reference | OpenBB SDK Docs" />
 
 Get portfolio VaR
 

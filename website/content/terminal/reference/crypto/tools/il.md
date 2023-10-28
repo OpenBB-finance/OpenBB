@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="il - Tools - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/tools/il - Reference | OpenBB Terminal Docs" />
 
 Tool to calculate Impermanent Loss in a custom liquidity pool. Users can provide percentages increases for two tokens (and their weight in the liquidity pool) and verify the impermanent loss that can occur.
 

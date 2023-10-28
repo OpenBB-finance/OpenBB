@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="check_if_open - Th - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.th.check_if_open - Reference | OpenBB SDK Docs" />
 
 Check if market open helper function
 

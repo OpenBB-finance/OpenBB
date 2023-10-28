@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ulc - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.ulc - Reference | OpenBB SDK Docs" />
 
 Get Yahoo Finance potentially undervalued large cap stocks.
 

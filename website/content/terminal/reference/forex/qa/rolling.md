@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rolling - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/rolling - Reference | OpenBB Terminal Docs" />
 
 Rolling mean and std deviation
 

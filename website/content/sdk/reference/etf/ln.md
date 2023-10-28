@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ln - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.ln - Reference | OpenBB SDK Docs" />
 
 Return a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 

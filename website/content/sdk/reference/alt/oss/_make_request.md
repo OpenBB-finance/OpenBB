@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="_make_request - Oss - Alt - Reference | OpenBB SDK Docs" />
+<HeadTitle title="alt.oss._make_request - Reference | OpenBB SDK Docs" />
 
 Helper method to scrap.
 

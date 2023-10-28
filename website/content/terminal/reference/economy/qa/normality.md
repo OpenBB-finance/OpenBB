@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="normality - Qa - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/normality - Reference | OpenBB Terminal Docs" />
 
 Normality tests
 

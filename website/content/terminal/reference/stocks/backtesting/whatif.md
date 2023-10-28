@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="whatif - Backtesting - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/backtesting/whatif - Reference | OpenBB Terminal Docs" />
 
 Displays what if scenario of having bought X shares at date Y
 

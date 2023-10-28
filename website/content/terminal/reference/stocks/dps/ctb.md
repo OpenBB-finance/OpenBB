@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ctb - Dps - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/ctb - Reference | OpenBB Terminal Docs" />
 
 Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]
 

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="trading_pairs - Dd - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.dd.trading_pairs - Reference | OpenBB SDK Docs" />
 
 Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
 

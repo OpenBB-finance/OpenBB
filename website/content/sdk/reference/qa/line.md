@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="line - Qa - Reference | OpenBB SDK Docs" />
+<HeadTitle title="qa.line - Reference | OpenBB SDK Docs" />
 
 Display line plot of data
 

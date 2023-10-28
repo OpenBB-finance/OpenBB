@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="relriskparity - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/relriskparity - Reference | OpenBB Terminal Docs" />
 
 Build a relaxed risk parity portfolio based on least squares approach
 

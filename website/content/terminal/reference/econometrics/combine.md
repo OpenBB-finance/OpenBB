@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="combine - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /combine - Reference | OpenBB Terminal Docs" />
 
 The columns you want to add to a dataset. The first argument is the dataset to add columns inand the remaining could be: datasetX.column2,datasetY.column3
 

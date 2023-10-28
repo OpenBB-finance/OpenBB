@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="chartsr - Charts - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="charts: chartsr - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Displays Support and Resistance Levels for the ticker provided. It will display the support and resistance levels of a given ticker on the chart. These levels can help the user in making better trading decisions.
 

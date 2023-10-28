@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cdf - Qa - Reference | OpenBB SDK Docs" />
+<HeadTitle title="qa.cdf - Reference | OpenBB SDK Docs" />
 
 Plots Cumulative Distribution Function
 

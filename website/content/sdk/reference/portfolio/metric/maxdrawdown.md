@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxdrawdown - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.maxdrawdown - Reference | OpenBB SDK Docs" />
 
 Get maximum drawdown ratio for portfolio and benchmark selected
 

@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rsquare - Metric - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.metric.rsquare - Reference | OpenBB SDK Docs" />
 
 Get R2 Score for portfolio and benchmark selected
 

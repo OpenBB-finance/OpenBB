@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mom - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.mom - Reference | OpenBB SDK Docs" />
 
 A momentum oscillator, which measures the percentage change between the current
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="btcct - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/btcct - Reference | OpenBB Terminal Docs" />
 
 Display BTC confirmed transactions [Source: https://api.blockchain.info/]
 

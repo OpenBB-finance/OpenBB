@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="global_cases - Covid - Alt - Reference | OpenBB SDK Docs" />
+<HeadTitle title="alt.covid.global_cases - Reference | OpenBB SDK Docs" />
 
 Get historical cases for given country.
 

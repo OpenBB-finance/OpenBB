@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bio - Crypto - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="crypto: bio - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve fundamental information about a crypto, such as its current price, 24-hour trading volume, market cap, and other key metrics, by entering a specific crypto symbol (e.g. "BTC") as an argument.
 

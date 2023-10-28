@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="quote - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.quote - Reference | OpenBB SDK Docs" />
 
 Ticker quote.  [Source: YahooFinance]
 

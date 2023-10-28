@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="parity - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/parity - Reference | OpenBB Terminal Docs" />
 
 Shows whether options are over or under valued
 

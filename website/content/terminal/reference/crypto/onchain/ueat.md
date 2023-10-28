@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ueat - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/ueat - Reference | OpenBB Terminal Docs" />
 
 Display number of unique ethereum addresses which made a transaction in given time interval, [Source: https://graphql.bitquery.io/]
 

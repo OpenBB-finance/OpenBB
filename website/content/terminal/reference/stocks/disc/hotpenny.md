@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hotpenny - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/hotpenny - Reference | OpenBB Terminal Docs" />
 
 Provides top penny stocks from various websites. [Source: Yfinance]
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="flip - Fun - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="fun: flip - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to simulate a coin flip displaying either a 'Heads' or 'Tails'.
 

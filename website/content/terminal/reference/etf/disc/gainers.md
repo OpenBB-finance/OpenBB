@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gainers - Disc - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/disc/gainers - Reference | OpenBB Terminal Docs" />
 
 Displays top ETF/Mutual fund gainers from wsj.com/market-data
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rmv - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/pricing/rmv /options - Reference | OpenBB Terminal Docs" />
 
 Removes a price from the list
 

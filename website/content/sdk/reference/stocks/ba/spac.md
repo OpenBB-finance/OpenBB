@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="spac - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.spac - Reference | OpenBB SDK Docs" />
 
 Get posts containing SPAC from top subreddits [Source: reddit].
 

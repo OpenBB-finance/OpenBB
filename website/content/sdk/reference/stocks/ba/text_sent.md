@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="text_sent - Ba - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ba.text_sent - Reference | OpenBB SDK Docs" />
 
 Find the sentiment of a post and related comments.
 

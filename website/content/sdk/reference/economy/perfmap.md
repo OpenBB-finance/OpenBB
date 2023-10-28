@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="perfmap - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.perfmap - Reference | OpenBB SDK Docs" />
 
 Opens Finviz map website in a browser. [Source: Finviz]
 

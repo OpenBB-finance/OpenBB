@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="whales - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/whales - Reference | OpenBB Terminal Docs" />
 
 Display crypto whales transactions. [Source: https://docs.whale-alert.io/]
 

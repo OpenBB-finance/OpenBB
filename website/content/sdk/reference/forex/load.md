@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Forex - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forex.load - Reference | OpenBB SDK Docs" />
 
 Load forex for two given symbols.
 

@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="summary - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.summary - Reference | OpenBB SDK Docs" />
 
 Get portfolio and benchmark returns summary
 

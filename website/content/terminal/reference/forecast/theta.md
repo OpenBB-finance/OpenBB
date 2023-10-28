@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="theta - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /theta - Reference | OpenBB Terminal Docs" />
 
 Perform Theta forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
 

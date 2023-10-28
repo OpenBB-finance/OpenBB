@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="key - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/key - Reference | OpenBB Terminal Docs" />
 
 Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]
 

@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="interest - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/interest - Reference | OpenBB Terminal Docs" />
 
 Plot interest over time of words/sentences versus stock price. [Source: Google]
 

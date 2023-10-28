@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="view - Screener - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screener/view - Reference | OpenBB Terminal Docs" />
 
 View available presets under presets folder.
 

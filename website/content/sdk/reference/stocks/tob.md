@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tob - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.tob - Reference | OpenBB SDK Docs" />
 
 Get top of book bid and ask for ticker on exchange [CBOE.com]
 

@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cnews - Disc - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/cnews - Reference | OpenBB Terminal Docs" />
 
 Customized news. [Source: Seeking Alpha]
 

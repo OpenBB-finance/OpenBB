@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="autoets - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /autoets - Reference | OpenBB Terminal Docs" />
 
 Perform Automatic ETS (Error, Trend, Seasonality) forecast: https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
 

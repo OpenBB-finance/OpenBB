@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="get_keys_info - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.get_keys_info - Reference | OpenBB SDK Docs" />
 
 Get info on available APIs to use in set_keys.
 

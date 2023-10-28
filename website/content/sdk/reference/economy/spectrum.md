@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="spectrum - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.spectrum - Reference | OpenBB SDK Docs" />
 
 Display finviz spectrum in system viewer [Source: Finviz]
 

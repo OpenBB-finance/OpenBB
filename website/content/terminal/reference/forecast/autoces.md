@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="autoces - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /autoces - Reference | OpenBB Terminal Docs" />
 
 Perform Automatic Complex Exponential Smoothing forecast: https://nixtla.github.io/statsforecast/models.html#autoces
 

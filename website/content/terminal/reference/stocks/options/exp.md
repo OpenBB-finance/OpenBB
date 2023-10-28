@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="exp - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/exp - Reference | OpenBB Terminal Docs" />
 
 See and set expiration date
 

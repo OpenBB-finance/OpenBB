@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="platforms - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/platforms - Reference | OpenBB Terminal Docs" />
 
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
 

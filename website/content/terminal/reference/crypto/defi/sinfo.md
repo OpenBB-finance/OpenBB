@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sinfo - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/sinfo - Reference | OpenBB Terminal Docs" />
 
 Displays staking info of a certain terra address. [Source: https://fcd.terra.dev/swagger]
 

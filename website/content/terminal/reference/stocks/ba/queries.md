@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="queries - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/queries - Reference | OpenBB Terminal Docs" />
 
 Print top related queries with this stock's query. [Source: Google]
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="qtrcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/qtrcontracts - Reference | OpenBB Terminal Docs" />
 
 Look at government contracts [Source: www.quiverquant.com]
 

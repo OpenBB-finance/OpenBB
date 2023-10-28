@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="customer - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duediligence: customer - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to display customers of the company using the given symbol.
 

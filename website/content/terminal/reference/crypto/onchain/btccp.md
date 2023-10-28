@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="btccp - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/btccp - Reference | OpenBB Terminal Docs" />
 
 Display BTC circulating supply [Source: https://api.blockchain.info/]
 

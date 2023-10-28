@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="etf_by_category - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.etf_by_category - Reference | OpenBB SDK Docs" />
 
 Return a selection of ETFs based on category filtered by total assets.
 

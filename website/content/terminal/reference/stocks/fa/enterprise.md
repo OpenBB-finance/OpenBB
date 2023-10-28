@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="enterprise - Fa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/enterprise - Reference | OpenBB Terminal Docs" />
 
 Prints stock price, number of shares, market capitalization and enterprise value over time. The following fields are expected: Add total debt, Enterprise value, Market capitalization, Minus cash and cash equivalents, Number of shares, Stock price, and Symbol. [Source: Financial Modeling Prep]
 

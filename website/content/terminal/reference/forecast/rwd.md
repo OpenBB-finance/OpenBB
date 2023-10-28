@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rwd - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /rwd - Reference | OpenBB Terminal Docs" />
 
 Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
 

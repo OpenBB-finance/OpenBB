@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gacc - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/gacc - Reference | OpenBB Terminal Docs" />
 
 Displays terra blockchain account growth history. [Source: https://fcd.terra.dev/swagger]
 

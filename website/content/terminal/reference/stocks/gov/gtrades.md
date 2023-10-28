@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gtrades - Gov - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/gtrades - Reference | OpenBB Terminal Docs" />
 
 Government trading. [Source: www.quiverquant.com]
 

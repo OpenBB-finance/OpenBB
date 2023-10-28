@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="supplier - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="duedilligence: supplier - Discord Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve the list of suppliers associated with the company with the given ticker.
 

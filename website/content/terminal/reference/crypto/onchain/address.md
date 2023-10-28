@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="address - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/address - Reference | OpenBB Terminal Docs" />
 
 Load address for further analysis. You can analyze account address, token address or transaction hash. [Source: Ethplorer]
 

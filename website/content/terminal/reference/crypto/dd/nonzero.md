@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="nonzero - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/nonzero - Reference | OpenBB Terminal Docs" />
 
 Display addresses with nonzero assets in a certain blockchain [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
 

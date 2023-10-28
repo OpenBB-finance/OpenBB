@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="github - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.github - Reference | OpenBB SDK Docs" />
 
 Set GitHub key.
 

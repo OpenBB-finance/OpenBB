@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="newsletter - Defi - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/newsletter - Reference | OpenBB Terminal Docs" />
 
 Display DeFi related substack newsletters. [Source: substack.com]
 

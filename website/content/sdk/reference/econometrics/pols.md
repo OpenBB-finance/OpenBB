@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pols - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.pols - Reference | OpenBB SDK Docs" />
 
 PooledOLS is just plain OLS that understands that various panel data structures.
 

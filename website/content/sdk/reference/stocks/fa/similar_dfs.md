@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="similar_dfs - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.similar_dfs - Reference | OpenBB SDK Docs" />
 
 Get dataframes for similar companies
 

@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bigmac - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /bigmac - Reference | OpenBB Terminal Docs" />
 
 Get historical Big Mac Index [Nasdaq Data Link]
 

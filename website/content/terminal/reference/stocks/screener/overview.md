@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="overview - Screener - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screener/overview - Reference | OpenBB Terminal Docs" />
 
 Prints overview data of the companies that meet the pre-set filtering.
 

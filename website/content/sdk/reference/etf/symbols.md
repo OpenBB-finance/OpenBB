@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="symbols - Etf - Reference | OpenBB SDK Docs" />
+<HeadTitle title="etf.symbols - Reference | OpenBB SDK Docs" />
 
 Gets all etf names and symbols
 

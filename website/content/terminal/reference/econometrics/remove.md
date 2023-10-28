@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="remove - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /remove - Reference | OpenBB Terminal Docs" />
 
 Remove a dataset from the loaded dataset list
 

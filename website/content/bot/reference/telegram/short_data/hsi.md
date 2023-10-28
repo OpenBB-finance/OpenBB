@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hsi - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="short_data: hsi - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the top high short interest stocks over a 20% ratio. This information can let an investor identify possible short squeeze potential.
 

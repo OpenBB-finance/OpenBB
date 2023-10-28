@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fdols - Econometrics - Reference | OpenBB SDK Docs" />
+<HeadTitle title="econometrics.fdols - Reference | OpenBB SDK Docs" />
 
 First differencing is an alternative to using fixed effects when there might be correlation.
 

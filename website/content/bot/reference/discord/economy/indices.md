@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="indices - Economy - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="economy: indices - Discord Reference | OpenBB Bot Docs" />
 
 This command provides a real-time overview of the major US stock indices, such as the Dow Jones Industrial Average, the S&P 500, and the NASDAQ Composite. It displays the most current index values, as well as the percentage change from the previous day.
 

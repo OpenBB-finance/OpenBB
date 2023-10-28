@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="analysis - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.analysis - Reference | OpenBB SDK Docs" />
 
 Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 

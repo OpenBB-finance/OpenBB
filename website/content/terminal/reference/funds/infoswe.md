@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="infoswe - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /infoswe - Reference | OpenBB Terminal Docs" />
 
 Show fund info of a swedish fund.
 

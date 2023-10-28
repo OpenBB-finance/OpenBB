@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dividends - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.dividends - Reference | OpenBB SDK Docs" />
 
 Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="gtech - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.gtech - Reference | OpenBB SDK Docs" />
 
 Get technology stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 

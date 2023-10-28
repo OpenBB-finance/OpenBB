@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="compare - Econometrics - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="econometrics /compare - Reference | OpenBB Terminal Docs" />
 
 Compare results between all activated Panel regression models
 

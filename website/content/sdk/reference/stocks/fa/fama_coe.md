@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fama_coe - Fa - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.fa.fama_coe - Reference | OpenBB SDK Docs" />
 
 Use Fama and French to get the cost of equity for a company
 

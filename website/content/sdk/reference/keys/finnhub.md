@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="finnhub - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.finnhub - Reference | OpenBB SDK Docs" />
 
 Set Finnhub key
 

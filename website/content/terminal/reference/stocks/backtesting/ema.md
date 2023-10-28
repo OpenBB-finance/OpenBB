@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ema - Backtesting - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/backtesting/ema - Reference | OpenBB Terminal Docs" />
 
 Strategy where stock is bought when Price  EMA(l)
 

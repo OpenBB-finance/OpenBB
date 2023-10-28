@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="supplier - Dd - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dd/supplier - Reference | OpenBB Terminal Docs" />
 
 List of suppliers from ticker provided. [Source: CSIMarket]
 

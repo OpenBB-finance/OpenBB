@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="autoselect - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /autoselect - Reference | OpenBB Terminal Docs" />
 
 Perform Automatic Statistical Forecast (select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, ...)
 

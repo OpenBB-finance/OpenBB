@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="glassnode - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.glassnode - Reference | OpenBB SDK Docs" />
 
 Set Glassnode key.
 

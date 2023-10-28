@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tob - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /tob - Reference | OpenBB Terminal Docs" />
 
 Get top of book for loaded ticker from selected exchange
 

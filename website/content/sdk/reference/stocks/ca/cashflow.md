@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cashflow - Ca - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.ca.cashflow - Reference | OpenBB SDK Docs" />
 
 Get cashflow data. [Source: Marketwatch]
 

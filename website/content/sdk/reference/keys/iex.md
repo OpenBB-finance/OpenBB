@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="iex - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.iex - Reference | OpenBB SDK Docs" />
 
 Set IEX Cloud key
 

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/maxsharpe - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's return/risk ratio
 

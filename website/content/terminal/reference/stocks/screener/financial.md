@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="financial - Screener - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/screener/financial - Reference | OpenBB Terminal Docs" />
 
 Prints financial data of the companies that meet the pre-set filtering.
 

@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="usbonds - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.usbonds - Reference | OpenBB SDK Docs" />
 
 Scrape data for us bonds
 

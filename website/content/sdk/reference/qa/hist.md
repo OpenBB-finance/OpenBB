@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hist - Qa - Reference | OpenBB SDK Docs" />
+<HeadTitle title="qa.hist - Reference | OpenBB SDK Docs" />
 
 Plots histogram of data
 

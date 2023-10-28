@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="events - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/events - Reference | OpenBB Terminal Docs" />
 
 Show information about most important coins events. Most of coins doesn't have any events. You can display only top N number of events with --limit parameter. You can sort data by id, date , date_to, name, description, is_conference --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each event Displays: date , date_to, name, description, is_conference, link, proof_image_link
 

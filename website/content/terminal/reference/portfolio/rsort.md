@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rsort - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /rsort - Reference | OpenBB Terminal Docs" />
 
 Show rolling sortino portfolio vs benchmark
 

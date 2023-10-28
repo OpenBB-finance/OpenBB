@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="get_groups - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.get_groups - Reference | OpenBB SDK Docs" />
 
 Get group available
 

@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.search - Reference | OpenBB SDK Docs" />
 
 Search selected query for tickers.
 

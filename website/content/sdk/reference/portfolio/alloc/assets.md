@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="assets - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
+<HeadTitle title="portfolio.alloc.assets - Reference | OpenBB SDK Docs" />
 
 Display portfolio asset allocation compared to the benchmark
 

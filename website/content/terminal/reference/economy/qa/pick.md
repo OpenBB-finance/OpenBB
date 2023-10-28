@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pick - Qa - Economy - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Load a FRED series to current selection
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sentiment - Ca - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/sentiment - Reference | OpenBB Terminal Docs" />
 
 FinBrain's sentiment comparison across similar tickers.
 

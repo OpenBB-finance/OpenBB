@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="bigflow - Flow - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="flow: bigflow - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the top 20 largest flow by premium for a stock. We calculate the largest flow by multiplying the price of the option at the time of the trade by the volume of that trade.
 

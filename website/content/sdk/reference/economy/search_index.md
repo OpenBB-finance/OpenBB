@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search_index - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.search_index - Reference | OpenBB SDK Docs" />
 
 Search indices by keyword. [Source: FinanceDatabase]
 

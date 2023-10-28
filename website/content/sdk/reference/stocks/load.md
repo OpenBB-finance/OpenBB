@@ -25,7 +25,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.load - Reference | OpenBB SDK Docs" />
 
 Load a symbol to perform analysis using the string above as a template.
 

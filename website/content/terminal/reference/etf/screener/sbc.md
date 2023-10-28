@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="sbc - Screener - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/screener/sbc - Reference | OpenBB Terminal Docs" />
 
 Search by category [Source: FinanceDatabase/StockAnalysis.com]
 

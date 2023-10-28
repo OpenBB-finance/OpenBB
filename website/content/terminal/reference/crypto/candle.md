@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candle - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/candle - Reference | OpenBB Terminal Docs" />
 
 Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tv - Ta - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/tv - Reference | OpenBB Terminal Docs" />
 
 View TradingView for technical analysis. [Source: TradingView]
 

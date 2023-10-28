@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="github_data - Oss - Alt - Reference | OpenBB SDK Docs" />
+<HeadTitle title="alt.oss.github_data - Reference | OpenBB SDK Docs" />
 
 Get repository stats.
 

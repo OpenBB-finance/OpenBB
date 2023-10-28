@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="watchlist - Overview - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="overview: watchlist - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve an overview of their watchlist, which includes the current price, high/low, volume, and change. You can also get other related information with a quick click like flow, darkpool data, technical analysis, and news - all from one spot.
 

@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lastcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/lastcontracts - Reference | OpenBB Terminal Docs" />
 
 Last government contracts. [Source: www.quiverquant.com]
 

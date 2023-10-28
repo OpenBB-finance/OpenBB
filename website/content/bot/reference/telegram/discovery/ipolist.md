@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ipolist - Discovery - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="discovery: ipolist - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to view 10 of the most recent and upcoming Initial Public Offerings (IPOs) including the company name, the IPO date, and the stock exchange. This information can help users stay up-to-date with the latest IPOs, and provide them with opportunities to invest in new companies.
 

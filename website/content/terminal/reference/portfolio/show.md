@@ -25,7 +25,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="show - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /show - Reference | OpenBB Terminal Docs" />
 
 Show transactions table
 

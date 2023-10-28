@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="mentions - Ba - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/mentions - Reference | OpenBB Terminal Docs" />
 
 Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 

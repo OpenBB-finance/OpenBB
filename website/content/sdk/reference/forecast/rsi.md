@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="rsi - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.rsi - Reference | OpenBB SDK Docs" />
 
 A momentum indicator that measures the magnitude of recent price changes to evaluate
 

@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="levels - Darkpool - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="darkpool: levels - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Biggest Levels for All Prints over the last x days for the given ticker. This information is useful in assessing the overall performance of the stock, as it provides information on the largest levels of prints over the last x days.
 

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="ctb - Dps - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.dps.ctb - Reference | OpenBB SDK Docs" />
 
 Get stocks with highest cost to borrow [Source: Interactive Broker]
 

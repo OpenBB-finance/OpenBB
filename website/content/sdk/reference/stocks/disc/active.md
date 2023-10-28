@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="active - Disc - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.disc.active - Reference | OpenBB SDK Docs" />
 
 Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
 

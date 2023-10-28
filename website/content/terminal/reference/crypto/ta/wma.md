@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="wma - Ta - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ta/wma - Reference | OpenBB Terminal Docs" />
 
 A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a corresponding Simple Moving Average.
 

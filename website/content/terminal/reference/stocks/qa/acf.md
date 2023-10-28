@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="acf - Qa - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/acf - Reference | OpenBB Terminal Docs" />
 
 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="arktrades - Discovery - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="discovery: arktrades - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a list of all trades made by ARK, including the time and amount of each trade. The data is presented in an easy-to-read table format so that the user can quickly analyze the trades made by ARK.
 

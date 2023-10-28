@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cpi - Economy - Reference | OpenBB Platform Docs" />
+<HeadTitle title="economy.cpi - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

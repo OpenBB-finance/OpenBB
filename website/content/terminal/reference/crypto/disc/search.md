@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="search - Disc - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/disc/search - Reference | OpenBB Terminal Docs" />
 
 Search over CoinPaprika API You can display only N number of results with --limit parameter. You can sort data by id, name , category --sort parameter and also with --reverse flag to sort descending. To choose category in which you are searching for use --cat/-c parameter. Available categories: currencies|exchanges|icos|people|tags|all Displays: id, name, category
 

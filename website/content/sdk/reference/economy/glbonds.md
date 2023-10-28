@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="glbonds - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.glbonds - Reference | OpenBB SDK Docs" />
 
 Scrape data for global bonds
 

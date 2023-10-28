@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="oanda - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.oanda - Reference | OpenBB SDK Docs" />
 
 Set Oanda key
 

@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="news - Dd - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/news - Reference | OpenBB Terminal Docs" />
 
 Display most recent news on the given coin from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]
 

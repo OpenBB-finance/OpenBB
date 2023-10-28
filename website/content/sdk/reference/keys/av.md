@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="av - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.av - Reference | OpenBB SDK Docs" />
 
 Set Alpha Vantage key
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="heatmap - Overview - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="overview: heatmap - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 

@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.load - Reference | OpenBB SDK Docs" />
 
 Load crypto currency to get data for
 

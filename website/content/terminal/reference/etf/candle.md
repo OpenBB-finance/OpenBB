@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="candle - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/candle - Reference | OpenBB Terminal Docs" />
 
 Shows historic data for an ETF
 

@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hist - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/hist - Reference | OpenBB Terminal Docs" />
 
 Display history for given ethereum blockchain balance. e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699 [Source: Ethplorer]
 

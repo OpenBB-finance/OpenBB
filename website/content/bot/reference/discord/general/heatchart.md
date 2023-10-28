@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="heatchart - General - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="general: heatchart - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a Daily Market Heat Chart (15 minute delayed). The heat chart shows a graphical representation of the performance of the market by sector for that day, with different colors indicating different levels of performance.
 

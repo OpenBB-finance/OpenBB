@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="top - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/top - Reference | OpenBB Terminal Docs" />
 
 Display top ERC20 tokens. [Source: Ethplorer]
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /load - Reference | OpenBB Terminal Docs" />
 
 Get historical data.
 

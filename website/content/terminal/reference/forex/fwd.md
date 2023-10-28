@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fwd - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /fwd - Reference | OpenBB Terminal Docs" />
 
 Get forward rates for loaded pair.
 

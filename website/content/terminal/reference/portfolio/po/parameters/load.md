@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/parameters/load /po - Reference | OpenBB Terminal Docs" />
 
 Load portfolio risk parameters (ini or xlsx)
 

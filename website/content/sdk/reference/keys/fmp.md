@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fmp - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.fmp - Reference | OpenBB SDK Docs" />
 
 Set Financial Modeling Prep key
 

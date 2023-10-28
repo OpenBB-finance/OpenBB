@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="future - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.future - Reference | OpenBB SDK Docs" />
 
 Get futures data. [Source: Finviz]
 

@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="top - Crypto - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="crypto: top - Discord Reference | OpenBB Bot Docs" />
 
 This command will retrieve the top cryptocurrencies, ranked by market capitalization, allowing the user to quickly get a snapshot of the current market.
 

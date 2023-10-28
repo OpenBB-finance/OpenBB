@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="plot - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /plot - Reference | OpenBB Terminal Docs" />
 
 Plot historical data.
 

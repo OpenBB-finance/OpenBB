@@ -27,7 +27,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="plot - Options - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/plot - Reference | OpenBB Terminal Docs" />
 
 Shows a plot for the given x and y variables
 

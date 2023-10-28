@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="technical - Screeners - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="screeners: technical - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve stock screener results according to the chosen technical signal.
 

@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="degiro - Keys - Reference | OpenBB SDK Docs" />
+<HeadTitle title="keys.degiro - Reference | OpenBB SDK Docs" />
 
 Set Degiro key
 

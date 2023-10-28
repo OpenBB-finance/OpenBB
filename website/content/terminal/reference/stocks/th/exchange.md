@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="exchange - Th - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/th/exchange - Reference | OpenBB Terminal Docs" />
 
 Select the exchange you want see open hours for
 

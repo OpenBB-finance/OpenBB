@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="treasury_maturities - Economy - Reference | OpenBB SDK Docs" />
+<HeadTitle title="economy.treasury_maturities - Reference | OpenBB SDK Docs" />
 
 Get treasury maturity options [Source: EconDB]
 

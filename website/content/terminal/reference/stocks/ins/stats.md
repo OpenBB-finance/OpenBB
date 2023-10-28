@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stats - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/stats - Reference | OpenBB Terminal Docs" />
 
 Open insider filtered data using selected ticker. [Source: OpenInsider]
 

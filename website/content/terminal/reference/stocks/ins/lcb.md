@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="lcb - Ins - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/lcb - Reference | OpenBB Terminal Docs" />
 
 Print latest cluster buys. [Source: OpenInsider]
 

@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fp - Nft - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/nft/fp - Reference | OpenBB Terminal Docs" />
 
 Display floor price of a certain NFT collection. [Source: https://nftpricefloor.com/]
 

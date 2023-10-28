@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="export - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.export - Reference | OpenBB SDK Docs" />
 
 None
 

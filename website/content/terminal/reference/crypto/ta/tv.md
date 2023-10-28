@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="tv - Ta - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ta/tv - Reference | OpenBB Terminal Docs" />
 
 View TradingView for technical analysis. [Source: TradingView]
 

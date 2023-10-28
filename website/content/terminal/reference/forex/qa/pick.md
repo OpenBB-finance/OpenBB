@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="pick - Qa - Forex - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 

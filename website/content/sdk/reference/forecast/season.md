@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="season - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.season - Reference | OpenBB SDK Docs" />
 
 Plot seasonality from a dataset
 

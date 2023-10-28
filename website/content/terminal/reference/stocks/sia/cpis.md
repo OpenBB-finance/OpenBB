@@ -9,7 +9,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="cpis - Sia - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/sia/cpis - Reference | OpenBB Terminal Docs" />
 
 Companies per Industry based on Sector and Market Cap
 

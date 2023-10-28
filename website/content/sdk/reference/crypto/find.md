@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="find - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.find - Reference | OpenBB SDK Docs" />
 
 Find similar coin by coin name,symbol or id.
 

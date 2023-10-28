@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="hm - Ov - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/hm - Reference | OpenBB Terminal Docs" />
 
 Display cryptocurrencies heatmap with daily percentage change [Source: https://coingecko.com] Accepts --category or -c to display only coins of a certain category (default no category to display all coins ranked by market cap). You can look on only top N number of records with --limit.
 

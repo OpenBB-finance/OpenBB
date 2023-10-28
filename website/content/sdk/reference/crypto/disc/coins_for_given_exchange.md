@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="coins_for_given_exchange - Disc - Crypto - Reference | OpenBB SDK Docs" />
+<HeadTitle title="crypto.disc.coins_for_given_exchange - Reference | OpenBB SDK Docs" />
 
 Helper method to get all coins available on binance exchange [Source: CoinGecko]
 

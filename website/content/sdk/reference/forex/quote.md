@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="quote - Forex - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forex.quote - Reference | OpenBB SDK Docs" />
 
 Get forex quote.
 

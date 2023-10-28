@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="herc - Po - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/herc - Reference | OpenBB Terminal Docs" />
 
 Builds a hierarchical equal risk contribution portfolio
 

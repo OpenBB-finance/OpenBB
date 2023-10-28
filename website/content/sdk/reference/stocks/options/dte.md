@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="dte - Options - Stocks - Reference | OpenBB SDK Docs" />
+<HeadTitle title="stocks.options.dte - Reference | OpenBB SDK Docs" />
 
 Gets days to expiration from yfinance option date
 

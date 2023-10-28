@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="summary - Etf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf /summary - Reference | OpenBB Terminal Docs" />
 
 Print ETF description summary
 

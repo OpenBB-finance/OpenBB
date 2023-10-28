@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="expo - Forecast - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forecast /expo - Reference | OpenBB Terminal Docs" />
 
 Perform Probabilistic Exponential Smoothing forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 

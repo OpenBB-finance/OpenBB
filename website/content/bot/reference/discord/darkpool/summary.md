@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="summary - Darkpool - Discord - Reference | OpenBB Bot Docs" />
+<HeadTitle title="darkpool: summary - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves a summary of all the prints by percentage of MarketCap over the last x days, sorted by MarketCap. The summary includes the total number of prints and their total percentage of MarketCap, as well as the float and short percentage.
 

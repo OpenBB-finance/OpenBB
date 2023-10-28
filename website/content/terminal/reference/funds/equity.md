@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="equity - Funds - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="funds /equity - Reference | OpenBB Terminal Docs" />
 
 Show fund equity holdings.
 

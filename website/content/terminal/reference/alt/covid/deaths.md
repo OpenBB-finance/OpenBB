@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="deaths - Covid - Alt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/covid/deaths - Reference | OpenBB Terminal Docs" />
 
 Show historical deaths by country.
 

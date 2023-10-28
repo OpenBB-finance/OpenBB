@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="collections - Nft - Crypto - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/nft/collections - Reference | OpenBB Terminal Docs" />
 
 NFT Collections [Source: https://nftpricefloor.com/]
 

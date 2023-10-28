@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="watchlist_add - Overview - Telegram - Reference | OpenBB Bot Docs" />
+<HeadTitle title="overview: watchlist_add - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to add a stock or stocks to their watchlist.
 

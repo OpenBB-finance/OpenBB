@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="load - Forecast - Reference | OpenBB SDK Docs" />
+<HeadTitle title="forecast.load - Reference | OpenBB SDK Docs" />
 
 Load custom file into dataframe.
 

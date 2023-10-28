@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="spos - Dps - Stocks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/spos - Reference | OpenBB Terminal Docs" />
 
 Shows Net Short Vol. vs Position. [Source: Stockgrid]
 

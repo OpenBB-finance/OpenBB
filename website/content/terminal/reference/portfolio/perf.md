@@ -15,7 +15,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="perf - Portfolio - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /perf - Reference | OpenBB Terminal Docs" />
 
 Shows performance of each trade and total performance of the portfolio versus the benchmark.
 
