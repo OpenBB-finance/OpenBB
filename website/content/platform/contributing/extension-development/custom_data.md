@@ -5,9 +5,7 @@ description: Add a custom data source to the OpenBB Platform.
 keywords: [openbb platform, extension, custom data source, contributing, documentation]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Add a custom data source - Platform | OpenBB Docs" />
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 

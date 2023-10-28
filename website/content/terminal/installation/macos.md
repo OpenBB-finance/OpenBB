@@ -26,9 +26,7 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="MacOS - Terminal | OpenBB Docs" />
 
 import InstallerButton from "@site/src/components/General/InstallerButton";
 

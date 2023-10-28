@@ -5,9 +5,7 @@ description: The structure of command syntax is standardized across common field
 keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client, parameters, kwargs, arguments, syntax]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Basic Syntax - Platform | OpenBB Docs" />
 
 The structure of command syntax is standardized across common fields.  This ensures that a `date` is always a `date` and the format remains consistent throughout.  Standardized parameters include, but are not limited to:
 

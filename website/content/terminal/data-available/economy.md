@@ -3,9 +3,7 @@ title: Economy
 keywords: [economy, macro, index, treasury, fred, market, econdb, index, yield, curve, economic, indicators, micro, inflation, interest rate, interest, unemployment, gdp, gross domestic product, openbb terminal, how to, example, overview, futures, econdb, fred, yahoo finance, macro, index, forecasting, quantitative]
 description: A brief guide to the Economy menu. It includes an introduction to the commands, functionality, data, and provides examples for use.
 ---
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Economy - Terminal | OpenBB Docs" />
 
 The `/economy` menu provides methods for querying macroeconomic data sets from sources like FRED, OECD, and EconDB.  To get the most out of this menu, sign up for a free API key from the [Federal Reserve of St. Louis](https://fred.stlouisfed.org/), and enter it into the OpenBB Terminal from the [`/keys` menu](https://docs.openbb.co/terminal/usage/guides/api-keys).
 

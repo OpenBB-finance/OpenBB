@@ -3,9 +3,7 @@ title: Insiders
 keywords: [stocks, insiders, transactions, form-4, sec, ceo, cfo, major holder, director, sale, award, grant, option]
 description: This guide introduces the Stocks Insiders module by briefly explaining the functions and how to use them.
 ---
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Stocks Insiders - SDK | OpenBB Docs" />`
 
 ## Overview
 

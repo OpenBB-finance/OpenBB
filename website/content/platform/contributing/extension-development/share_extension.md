@@ -6,9 +6,7 @@ keywords: [openbb platform, introduction, share, extension, contributing,
  documentation, PyPI, community]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Share your extension - Platform | OpenBB Docs" />
 
 We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
 

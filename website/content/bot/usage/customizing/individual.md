@@ -6,9 +6,7 @@ keywords: [discord, telegram, individual, customizing, customization, how to, ex
 ---
 
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Individual - Bot | OpenBB Docs" />
 
 The individual plan offers three different capabilities - Charting, Alerts, and Watchlist. In addition to these benefits you also get unlimited commands per month after registering.
 

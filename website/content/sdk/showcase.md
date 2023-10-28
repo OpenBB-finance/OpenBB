@@ -5,9 +5,7 @@ description: Showcasing apps created by users using the OpenBB SDK
 keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Showcase - SDK | OpenBB Docs" />
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 

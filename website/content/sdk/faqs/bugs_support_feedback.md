@@ -21,9 +21,7 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Bugs, Support, and Feedback - SDK | OpenBB Docs" />
 
 ## Bugs, Support, and Feedback
 

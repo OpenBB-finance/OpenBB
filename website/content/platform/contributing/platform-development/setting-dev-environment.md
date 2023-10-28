@@ -5,9 +5,7 @@ description: Introduction to the OpenBB Platform.
 keywords: [openbb platform, introduction, development, contributing, documentation]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform Development - Platform | OpenBB Docs" />
 
 There are many ways to contribute to the OpenBB Platform. You can add a new data point, add a new command, add a new visualization, add a new extension, fix a bug etc.
 

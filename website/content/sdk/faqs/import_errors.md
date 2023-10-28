@@ -26,9 +26,7 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Import Errors - SDK | OpenBB Docs" />
 
 ## Import Errors
 

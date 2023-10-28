@@ -6,9 +6,7 @@ keywords: [openbb, platform, introduction, manage extensions, contributing,
  documentation, pypi]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Manage Extensions - Platform | OpenBB Docs" />
 
 To install extensions hosted on PyPI, use the `pip install <extension>` command.
 

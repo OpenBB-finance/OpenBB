@@ -3,9 +3,7 @@ title: Mutual Funds
 keywords: [mutual funds, funds, morningstar, morning star, blackrock, vanguard, countries, global, search, holdings]
 description: An introduction to the Mutual Funds menu - search and analyze the global mutual funds universe by country.
 ---
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Mutual Funds - Terminal | OpenBB Docs"/>
 
 The Mutual Funds menu provides a global view of the mutual funds universe.  Enter the menu by typing, `/funds`.
 

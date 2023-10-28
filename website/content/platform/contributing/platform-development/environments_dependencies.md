@@ -5,9 +5,7 @@ description: Learn how to setup your development environment for the OpenBB Plat
 keywords: [openbb platform, introduction, environment, setup, contributing, documentation]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Environment Setup - Platform | OpenBB Docs" />
 
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 

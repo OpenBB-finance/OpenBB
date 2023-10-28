@@ -26,9 +26,7 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - SDK | OpenBB Docs" />
 
 ## Installation and Updates
 

@@ -6,9 +6,7 @@ keywords: [installation, install, install openbb bot, guide, how to, explanation
 ---
 
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Telegram - Bot | OpenBB Docs" />
 
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
 

@@ -5,9 +5,7 @@ description: The OpenBB Platform offers an array of data providers.  The extensi
 keywords: [api, keys, data provider, data, free, alpha vantage, fred, polygon, intrinio, alphavantage, bitquery, sec, yfinance, community, github]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Provider Extensions - Platform | OpenBB Docs" />
 
 When the core OpenBB Platform package is installed, familiar components might be missing.  The extension framework allows individual pieces to be installed and removed seamlessly within the environment.
 

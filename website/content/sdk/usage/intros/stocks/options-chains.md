@@ -4,9 +4,7 @@ keywords: [OpenBB, sdk, Options, stocks, derivatives, puts, calls, oi, vol, gree
 excerpt: This guide introduces the Options class and data object.
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Options Chains - SDK | OpenBB Docs" />
 
 ## Overview
 

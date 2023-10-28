@@ -23,9 +23,7 @@ keywords:
     binance
   ]
 ---
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources - SDK | OpenBB Docs" />
 
 ## Data and Sources
 

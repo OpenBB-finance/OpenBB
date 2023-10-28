@@ -5,9 +5,7 @@ description: Learn how to create a Pull Request to the OpenBB Platform.
 keywords: [openbb platform, introduction, pull request, contributing, documentation, github]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Create a Pull Request - Platform | OpenBB Docs" />
 
 To create a Pull Request to the OpenBB Platform, you'll need to fork the repository and create a new branch.
 

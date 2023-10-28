@@ -24,9 +24,7 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources - Terminal | OpenBB Docs" />
 
 ## Data and Sources
 
