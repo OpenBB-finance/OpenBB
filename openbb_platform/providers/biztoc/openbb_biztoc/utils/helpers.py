@@ -9,13 +9,17 @@ from openbb_core.app.utils import get_user_cache_directory
 
 cache_dir = get_user_cache_directory()
 
+biztoc_session_tags = requests_cache.CachedSession(
+    f"{cache_dir}/http/biztoc_tags", expire_after=timedelta(days=1)
+)
+biztoc_session_sources = requests_cache.CachedSession(
+    f"{cache_dir}/http/biztoc_sources", expire_after=timedelta(days=3)
+)
+
 
 def get_sources(api_key: str) -> List[Dict]:
     """Valid sources for Biztoc queries."""
 
-    biztoc_session_sources = requests_cache.CachedSession(
-        f"{cache_dir} / http / biztoc_sources", expire_after=timedelta(days=3)
-    )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -32,16 +36,13 @@ def get_sources(api_key: str) -> List[Dict]:
 def get_pages(api_key: str) -> List[str]:
     """Valid pages for Biztoc queries."""
 
-    biztoc_session_pages = requests_cache.CachedSession(
-        f"{cache_dir} / http / biztoc_pages", expire_after=timedelta(days=3)
-    )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
     }
-    pages = biztoc_session_pages.get(
+    pages = biztoc_session_sources.get(
         "https://biztoc.p.rapidapi.com/pages", headers=headers, timeout=10
     )
 
@@ -51,9 +52,6 @@ def get_pages(api_key: str) -> List[str]:
 def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
     """Valid tags required for Biztoc queries."""
 
-    biztoc_session_tags = requests_cache.CachedSession(
-        f"{cache_dir} / http / biztoc_tags", expire_after=timedelta(days=1)
-    )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",

@@ -12,7 +12,7 @@ from openbb_provider.utils.helpers import to_snake_case
 
 cache_dir = get_user_cache_directory()
 cboe_session = requests_cache.CachedSession(
-    f"{cache_dir} / http / cboe_directories", expire_after=timedelta(days=7)
+    f"{cache_dir}/http/cboe_directories", expire_after=timedelta(days=7)
 )
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
