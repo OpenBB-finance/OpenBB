@@ -14,11 +14,13 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 ## Introduction
 
-OpenBB Routine Scripts allows users to write simple scripts for automating processes and repetitive tasks. In essence, these are text plain-text files that can be created or modified in any basic text editor with the only difference of having a `.openbb` extension.
+OpenBB Routines allows users to write simple scripts for automating processes and repetitive tasks. In essence, these are text plain-text files that can be created or modified in any basic text editor with the only difference of having a `.openbb` extension.
 
 Other software like STATA, SPSS, and R-Studio share similar functionality in the area of Econometrics and the OpenBB routine scripts venture into the area of financial analysis and data collection to speed up the process.
 
 For example, not only is it possible to automate a set of functionality, but it is also possible to export a large amount of data to Excel through the usage of `--export` and `--sheet-name` making data collection efficient, reproducible and customizable.
+
+The reason for this is the pipeline of commands became increasingly lengthy. This posed a challenge when sharing the commands with colleagues, as it became difficult for them to understand the purpose of the pipeline and what each step aimed to achieve.
 
 ## Routine execution
 
@@ -41,9 +43,12 @@ options:
 
 ## Basic Script
 
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/eaeb3511-d544-4579-8d76-f7a4fd7bb1d3)
+
 The most basic script style contains 2 main elements:
 
   - **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
+
   - **Commands**: any text *without* a hashtag is being run inside the OpenBB Terminal as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `stocks/load AAPL/candle --ma 20` is a valid line for the script.
 
 For instance, the text below corresponds to the example file that OpenBB provides.
