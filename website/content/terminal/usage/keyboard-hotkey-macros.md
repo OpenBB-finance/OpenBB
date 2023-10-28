@@ -15,39 +15,18 @@ keywords:
   ]
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<HeadTitle title="Keyboard Hotkey Macros - Terminal | OpenBB Docs" />
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/cgeN3Ep2nEw?si=YR6l4AfhhJjxzH0H"
+  videoLegend="Long video on using VIA to configre my Keychron keyboard for OpenBB"
+/>
 
 This document will explain how you can set hotkeys macros on your customizable keyboard which allow you to perform investment research in a few seconds.
 
-## Introduction to Routines
-
-The OpenBB Terminal is a powerful open source investment research platform.
-
-The more proefficient you get on the platform, the faster and more efficiently you are able to do investment research.
-
-One of the concepts that OpenBB introduced early on was the concept of script routines. Read more [here](https://docs.openbb.co/terminal/usage/guides/scripts-and-routines).
-
-**TL;DR: You can create MACROS like in Excel to run a sequence of commands.**
-
-E.g. by running `exe script.openbb` the following sequence could be executed
-
-```console
-stocks/load AAPL/candle --ma 20/fa/epsfc/pt/est
-```
-
-which would lead to:
-
-<img width="1441" alt="image" src="https://user-images.githubusercontent.com/25267873/236659876-e119c820-b9ed-40e7-bb8d-5510fe862149.png" />
-
-This allows to automate the process of investment research, and can improve user's experience by a significant margin.
-
 ## Supported Configurators
 
-1. [VIA](#via)
-
-## VIA
+### VIA
 
 This document will explain how you can set hotkeys on your customizable keyboard using [VIA](https://www.caniusevia.com/).
 
@@ -80,16 +59,6 @@ Note that the `{KC_ENT}` will ensure that the command is run on the terminal.
 
 ![Save](https://user-images.githubusercontent.com/25267873/236661232-4f9119de-af37-49a2-948d-cfd6d650ed92.png)
 
-6. Finally, we are ready to test it on the [OpenBB Terminal](https://my.openbb.co/app/terminal). After going into `stocks` and doing `load AAPL`, I pressed "Fn2'+Z which lead to:
+6. Finally, we are ready to test it on the [OpenBB Terminal](https://my.openbb.co/app/terminal). After going into `stocks` and doing `load AAPL`, I pressed "Fn2+Z" which lead to:
 
 ![Test](https://user-images.githubusercontent.com/25267873/236660272-290fe586-7663-4cd6-bfc0-80b7f8f2efd1.png)
-
-PS: If you prefer to see this in video format, you can do so by checking the following video.
-
-<p align="center">
-   <a href="https://www.youtube.com/watch?v=cgeN3Ep2nEw" rel="Keychron x OpenBB Demo">
-      <img src="https://user-images.githubusercontent.com/25267873/236660025-581d0e4f-df5e-4461-b2b9-70154c1bdf89.png" alt="Didier demonstrating Keychron x OpenBB" width="100%"/>
-   </a>
-</p>
-
-Hope you enjoy this tutorial, and please let us know what type of MACROS are you setting up.
