@@ -1,7 +1,27 @@
 ---
 title: psi_q
-description: OpenBB SDK Function
+description: The psi_q documentation page explains the usage of the psi_q function,
+  which plots the short interest of a stock. It contains the source code, code snippets,
+  parameters, and return types of the function.
+keywords:
+- psi_q
+- short interest
+- OpenBBTerminal
+- stock
+- plot
+- code
+- function
+- documentation
+- parameters
+- returns
+- source code
+- NYSE
+- NASDAQ
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="psi_q - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

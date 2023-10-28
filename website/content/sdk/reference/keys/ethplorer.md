@@ -1,7 +1,24 @@
 ---
 title: ethplorer
-description: OpenBB SDK Function
+description: This page provides documentation on how to set the Ethplorer key in the
+  OpenBB finance terminal. It includes explanations of the parameters and gives examples
+  of how to use this function.
+keywords:
+- OpenBBTerminal
+- Ethplorer
+- API key
+- Python
+- Documentation
+- SDK
+- Finance
+- Example
+- Source Code
+- Parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ethplorer - Keys - Reference | OpenBB SDK Docs" />
 
 # ethplorer
 
@@ -41,4 +58,3 @@ openbb.keys.ethplorer(key="example_key")
 ```
 
 ---
-

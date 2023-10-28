@@ -1,7 +1,34 @@
 ---
 title: ayr
-description: OpenBB SDK Function
+description: This documentation page provides a detailed overview of the Anchor Yield
+  Reserve's 30-day history. It provides the source code and usage for the `ayr` and
+  `ayr_chart` functions from the `openbb.crypto.defi` namespace, including parameters
+  and returns.
+keywords:
+- docusaurus
+- SEO
+- metadata
+- documentation page
+- Anchor Yield Reserve
+- crypto
+- defi
+- openbb
+- ayr
+- ayr_chart
+- crypto.defi
+- python
+- matplotlib
+- pd.DataFrame
+- dataframe
+- parameters
+- returns
+- source code
+- 30-day history
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ayr - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

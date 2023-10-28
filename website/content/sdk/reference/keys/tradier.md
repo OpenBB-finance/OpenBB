@@ -1,7 +1,23 @@
 ---
 title: tradier
-description: OpenBB SDK Function
+description: Learn how to set a Tradier API key in the OpenBB terminal using the 'openbb.keys.tradier'
+  Python function. This documentation provides parameter info, function usage, and
+  examples.
+keywords:
+- tradier
+- api key
+- openbb terminal
+- python
+- sdk
+- openbb keys tradier
+- terminal environment variables
+- function usage
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tradier - Keys - Reference | OpenBB SDK Docs" />
 
 # tradier
 
@@ -41,4 +57,3 @@ openbb.keys.tradier(key="example_key")
 ```
 
 ---
-

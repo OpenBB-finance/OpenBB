@@ -1,7 +1,22 @@
 ---
 title: slopes
-description: OpenBB SDK Function
+description: Our site offers extensive information on how to use slopes models to
+  analyze COVID-19 data. The models provide detailed data frames based on historical
+  data to help with the analysis and prediction. Learn how to manipulate these models
+  to suit your specific needs.
+keywords:
+- slopes models
+- COVID-19 data analysis
+- data frames
+- historical data
+- OpenBB finance
+- Python
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="slopes - Covid - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

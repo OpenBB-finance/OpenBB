@@ -1,7 +1,25 @@
 ---
 title: price
-description: OpenBB SDK Function
+description: This marketing page provides information on how to request and view forex
+  prices with the modules in OpenBB-finance. It outlines parameters and returns for
+  each featured function.
+keywords:
+- OpenBB-finance
+- forex prices
+- oanda
+- price request
+- price view
+- python
+- source code
+- currency pair
+- functions
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="price - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

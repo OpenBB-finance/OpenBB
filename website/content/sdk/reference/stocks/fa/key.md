@@ -1,7 +1,22 @@
 ---
 title: key
-description: OpenBB SDK Function
+description: This page provides the source code and explanation on how to get key
+  metrics from OpenBB's stocks fundamental analysis. Detailed parameters and return
+  value are provided.
+keywords:
+- OpenBB
+- key metrics
+- stocks
+- fundamental analysis
+- dataframe
+- source code
+- symbol
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="key - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # key
 
@@ -30,4 +45,3 @@ openbb.stocks.fa.key(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key metrics |
 ---
-

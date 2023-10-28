@@ -1,7 +1,22 @@
 ---
 title: quote
-description: OpenBB SDK Function
+description: The documentation page provides a brief explanation on how to use the
+  OpenBBTerminal to fetch stock ticker quotes from FMP. It also includes the source
+  code and instructions on its parameters and return type.
+keywords:
+- FMP
+- OpenBBTerminal
+- stocks
+- fundamental analysis
+- ticker quote
+- python
+- pd.DataFrame
+- symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # quote
 
@@ -30,4 +45,3 @@ openbb.stocks.fa.quote(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of ticker quote |
 ---
-

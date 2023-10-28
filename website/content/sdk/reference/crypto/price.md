@@ -1,7 +1,20 @@
 ---
 title: price
-description: OpenBB SDK Function
+description: Get the price and confidence interval from the Pyth live feed for any
+  given crypto asset. It also provides the previous price of the asset for comparison.
+keywords:
+- price
+- confidence interval
+- Pyth live feed
+- crypto price
+- asset price
+- confidence level
+- previous price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="price - Crypto - Reference | OpenBB SDK Docs" />
 
 # price
 
@@ -30,4 +43,3 @@ openbb.crypto.price(symbol: str)
 | ---- | ----------- |
 | Tuple[float, float, float] | Price of the asset,<br/>Confidence level,<br/>Previous price of the asset |
 ---
-

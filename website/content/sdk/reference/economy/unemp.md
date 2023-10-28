@@ -1,7 +1,23 @@
 ---
 title: unemp
-description: OpenBB SDK Function
+description: This page provides full documentation on using unemp functions in OpenBB
+  to get US unemployment historical data and visualize it using charts. Includes information
+  on function parameters and return types.
+keywords:
+- OpenBB documentation
+- unemp function
+- US unemployment data
+- historical unemployment data
+- AlphaVantage
+- data visualization
+- Python
+- DataFrame
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unemp - Economy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

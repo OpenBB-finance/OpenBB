@@ -1,7 +1,21 @@
 ---
 title: sectors
-description: OpenBB SDK Function
+description: This documentation page offers details on how to retrieve all sectors
+  in Yahoo Finance data based on criteria such as country or industry. The source
+  code and the parameters for the function are provided.
+keywords:
+- Yahoo Finance data
+- Finance Database
+- Sector analysis
+- Industry filter
+- Country filter
+- OpenBB Terminal
+- Stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sectors - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
 # sectors
 
@@ -31,4 +45,3 @@ openbb.stocks.sia.sectors(industry: str = "", country: str = "")
 | ---- | ----------- |
 | list | List of possible sectors |
 ---
-

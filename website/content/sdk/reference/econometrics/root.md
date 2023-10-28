@@ -1,7 +1,23 @@
 ---
 title: root
-description: OpenBB SDK Function
+description: Detailed explanation of OpenBB's econometrics Python library focusing
+  on the functionality of unit root tests including ADF and KPSS tests. The page features
+  instructions on how to conduct these tests with Python, making it beneficial for
+  data analysts and those interested in data series analysis.
+keywords:
+- Docusaurus
+- OpenBB
+- Econometrics
+- ADF test
+- KPSS test
+- Data series
+- Python
+- Data Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="root - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

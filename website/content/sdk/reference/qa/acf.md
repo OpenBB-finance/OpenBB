@@ -1,7 +1,30 @@
 ---
 title: acf
-description: OpenBB SDK Function
+description: This page provides a detailed description and source code of acf - an
+  OpenBB function used to plot Auto and Partial Auto Correlation of returns and change
+  in returns. One can understand how to use the function, its parameters, and view
+  examples of its use.
+keywords:
+- OpenBBTerminal
+- auto correlation
+- quantitive analysis
+- OpenBB
+- quantitative_analysis.qa_view.py
+- plots
+- pd.DataFrame
+- python
+- openbb.qa.acf
+- codes
+- parameters
+- returns
+- examples
+- stocks.load
+- GitHub source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="acf - Qa - Reference | OpenBB SDK Docs" />
 
 # acf
 
@@ -43,4 +66,3 @@ openbb.qa.acf(data=df, target="Adj Close")
 ```
 
 ---
-

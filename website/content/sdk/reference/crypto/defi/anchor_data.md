@@ -1,7 +1,32 @@
 ---
 title: anchor_data
-description: OpenBB SDK Function
+description: Improve your understanding of the Anchor protocol with the help of our
+  documentation providing detailed instructions on how to retrieve and plot earnings
+  data for a specific Terra address. Skim through the parameters, the types, the given
+  descriptions, and the functionality.
+keywords:
+- docusaurus
+- documentation
+- SEO
+- anchor protocol
+- earnings data
+- terra address
+- source code
+- python
+- parameters
+- returns
+- pd.DataFrame
+- model
+- view chart
+- plot
+- transactions history
+- export
+- external axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="anchor_data - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

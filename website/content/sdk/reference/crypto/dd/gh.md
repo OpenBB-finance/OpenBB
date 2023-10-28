@@ -1,7 +1,26 @@
 ---
 title: gh
-description: OpenBB SDK Function
+description: This is a documentation for GH development activity tool by OpenBB which
+  includes detailed functionality on how to return lists of Github activity for a
+  given cryptocurrency with adjustable time intervals. Source codes for model and
+  chart representations are included.
+keywords:
+- OpenBB
+- GH tool
+- developer activity
+- cryptocurrency
+- Github activity
+- time interval
+- model
+- chart
+- source code
+- python
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gh - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

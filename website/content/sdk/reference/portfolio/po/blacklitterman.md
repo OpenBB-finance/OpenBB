@@ -1,7 +1,25 @@
 ---
 title: blacklitterman
-description: OpenBB SDK Function
+description: The page describes the Python method for the Black Litterman model implemented
+  in the OpenBB library for optimizing portfolio weights. This method provides an
+  advanced approach in risk management and return estimation by taking into account
+  various parameters like risk-free rate, risk aversion factor, and objectives like
+  maximizing Sharpe ratio or minimizing risk.
+keywords:
+- Black Litterman model
+- Portfolio optimization
+- Python
+- OpenBB
+- Portfolio weights
+- Risk management
+- Return estimates
+- Sharpe ratio
+- Equilibrium portfolio
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="blacklitterman - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # blacklitterman
 
@@ -74,4 +92,3 @@ weights, performance = openbb.portfolio.po.blacklitterman(portfolio_engine=p)
 ```
 
 ---
-

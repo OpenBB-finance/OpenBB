@@ -1,7 +1,29 @@
 ---
 title: toplobbying
-description: OpenBB SDK Function
+description: This page provides details on the 'toplobbying' functionality of the
+  OpenBBTerminal software, including the Quiverquant model and view. The page offers
+  a guide on how to present top lobbying tickers based on total money spent and guides
+  on retrieving corporate lobbying details using Python.
+keywords:
+- Corporate Lobbying
+- Top Lobbying
+- Lobbying Tickers
+- Government
+- OpenBBTerminal
+- Quiverquant model
+- Quiverquant view
+- Source Code
+- Python
+- Data frame
+- Chart
+- Raw data
+- Export data
+- External axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="toplobbying - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

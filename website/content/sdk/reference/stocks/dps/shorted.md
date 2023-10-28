@@ -1,7 +1,22 @@
 ---
 title: shorted
-description: OpenBB SDK Function
+description: The page provides details about the 'shorted' function of OpenBBTerminal
+  which shows the most shorted stocks according to Yahoo Finance. Details include
+  the source code and parameters, if any.
+keywords:
+- shorted
+- stock screener
+- Yahoo Finance
+- OpenBB finance
+- OpenBBTerminal
+- stocks
+- dark pool shorts
+- yahoofinance model
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="shorted - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 # shorted
 
@@ -27,4 +42,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most Shorted Stocks |
 ---
-

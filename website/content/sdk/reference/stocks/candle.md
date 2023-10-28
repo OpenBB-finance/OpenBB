@@ -1,7 +1,27 @@
 ---
 title: candle
-description: OpenBB SDK Function
+description: This documentation page contains information about the 'candle' function
+  of OpenBB's SDK which plots the candlestick chart for a specific stock ticker. It
+  offers various parameters for data customization providing an interactive way to
+  visualize stock market data.
+keywords:
+- Candle function
+- Stocks visualization
+- OpenBB terminal
+- Candlestick chart
+- Python stock market data
+- Matplotlib
+- Plotly
+- Stock ticker data
+- Intraday data
+- Financial data
+- SEO for technical documentation
+- SEO for programming documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candle - Stocks - Reference | OpenBB SDK Docs" />
 
 # candle
 

@@ -1,7 +1,26 @@
 ---
 title: contracts
-description: OpenBB SDK Function
+description: This page provides technical documentation around functions related to
+  cryptocurrency contract addresses. It includes information on how to use Python
+  functions for obtaining and sorting contract addresses for any given blockchain
+  platform using CoinPaprika as the data source.
+keywords:
+- OpenBB Terminal
+- cryptocurrency
+- contracts
+- CoinPaprika
+- Python functions
+- blockchain platform
+- contract addresses
+- crypto data
+- technical documentation
+- sort data
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

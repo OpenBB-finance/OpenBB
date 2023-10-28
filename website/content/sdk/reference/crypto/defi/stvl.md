@@ -1,7 +1,27 @@
 ---
 title: stvl
-description: OpenBB SDK Function
+description: 'The documentation explores the stvl functionality: a tool for returning
+  and plotting historical values of the total sum of Total Value Locked (TVL) from
+  all listed protocols. Source code links are included.'
+keywords:
+- stvl
+- Total Value Locked
+- cryptocurrency
+- historical values
+- OpenBB-terminal
+- defi
+- dataframe
+- python
+- source code
+- plotting
+- export
+- returns
+- protocols
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stvl - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

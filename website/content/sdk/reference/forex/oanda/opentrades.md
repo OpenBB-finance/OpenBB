@@ -1,7 +1,22 @@
 ---
 title: opentrades
-description: OpenBB SDK Function
+description: This page provides information on the 'opentrades' function in the OpenBB
+  Python library. It provides sections on how to request open trades data and view
+  open trades using the forex Oanda module, complete with source code for reference.
+keywords:
+- opentrades
+- OpenBB
+- forex
+- Oanda
+- trade data
+- open trades chart
+- Python
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="opentrades - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

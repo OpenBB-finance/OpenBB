@@ -1,7 +1,25 @@
 ---
 title: file
-description: OpenBB SDK Function
+description: This page provides detailed information on the functionality and usage
+  of the 'Load portfolio optimization engine from file' method in the OpenBB Terminal
+  application. Examples and parameters are discussed extensively to ensure user familiarity
+  with the method.
+keywords:
+- OpenBB Terminal
+- portfolio optimization
+- load portfolio
+- python
+- PoEngine
+- parameters
+- source code
+- examples
+- maxsharpe
+- risk_free_rate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="file - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # file
 
@@ -87,4 +105,3 @@ weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
 ```
 
 ---
-

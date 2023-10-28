@@ -1,7 +1,22 @@
 ---
 title: trending
-description: OpenBB SDK Function
+description: This page provides detailed information on trending coins. Users can
+  learn how to return and view a table of trending coins from CoinGecko using OpenBB's
+  Python functions.
+keywords:
+- OpenBB
+- CoinGecko
+- trending coins
+- Python functions
+- cryptocurrency
+- crypto trends
+- dataframe
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trending - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

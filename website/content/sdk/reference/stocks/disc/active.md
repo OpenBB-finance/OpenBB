@@ -1,7 +1,25 @@
 ---
 title: active
-description: OpenBB SDK Function
+description: This page provides documentation for the 'active' function of the OpenBB
+  Finance API. The function returns the most active stocks in descending order based
+  on intraday trade volume.
+keywords:
+- OpenBB Finance API
+- active function
+- Stock trading
+- Trading volume
+- Most active stocks
+- Finance
+- API documentation
+- Python
+- Data Frame
+- Yahoo Finance
+- Intraday trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="active - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # active
 
@@ -27,4 +45,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most active stocks |
 ---
-

@@ -1,7 +1,27 @@
 ---
 title: search
-description: OpenBB SDK Function
+description: The documentation page details the 'search' function of the OpenBB python
+  library used for querying stocks information. The function allows queries based
+  on parameters like country, sector, industry and exchange country. The search results
+  are returned as a pandas DataFrame.
+keywords:
+- search
+- query
+- tickers
+- OpenBB
+- stocks
+- country
+- sector
+- industry
+- exchange_country
+- limit
+- pd.DataFrame
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="search - Stocks - Reference | OpenBB SDK Docs" />
 
 # search
 
@@ -45,4 +65,3 @@ openbb.stocks.search(country="united states", exchange_country="Germany")
 ```
 
 ---
-

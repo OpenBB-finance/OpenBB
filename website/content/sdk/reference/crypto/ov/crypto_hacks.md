@@ -1,7 +1,21 @@
 ---
 title: crypto_hacks
-description: OpenBB SDK Function
+description: Deep dive into major cryptocurrency-related hacks with OpenBB's crypto
+  hacks models. Evaluate, sort by key parameters and view intricate details about
+  each crypto hack.
+keywords:
+- Crypto hacks
+- Crypto security
+- Cryptocurrency
+- OpenBB crypto
+- Crypto hack data
+- OpenBBTerminal
+- Crypto data sorting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto_hacks - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

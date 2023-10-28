@@ -1,7 +1,23 @@
 ---
 title: act
-description: OpenBB SDK Function
+description: OpenBBTerminal offers user-friendly, Python-based tools to gauge insider
+  activity data for a given stock ticker from Business Insider. The available functions
+  not only assemble the raw data but also provide you with an elaborate chart outlining
+  past insider activities.
+keywords:
+- OpenBB Finance
+- OpenBBTerminal
+- Stock Insider Activity
+- Python
+- Data Analysis
+- Business Insider
+- Financial Data
+- Stock Market
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="act - Ins - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

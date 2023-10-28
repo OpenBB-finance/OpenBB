@@ -1,7 +1,26 @@
 ---
 title: lt
-description: OpenBB SDK Function
+description: Docusaurus page containing OpenBBTerminal's onchain lt model and view
+  that depict trades happening on Decentralized Exchanges - aggregated per DEX or
+  time. Also includes code snippets, parameter details, and return values.
+keywords:
+- OpenBBTerminal
+- onchain
+- lt model
+- Decentralized Exchanges
+- DEX
+- lt view
+- onchain trading
+- trades aggregation
+- code snippets
+- parameter details
+- return values
+- Bitcoin
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lt - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

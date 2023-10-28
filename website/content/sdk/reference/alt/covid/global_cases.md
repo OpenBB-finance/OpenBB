@@ -1,7 +1,24 @@
 ---
 title: global_cases
-description: OpenBB SDK Function
+description: The 'global_cases' page provides code and instructions for getting historical
+  Covid-19 case data for any country. Utilize the provided Python function to retrieve
+  a DataFrame of historical data.
+keywords:
+- Covid-19
+- historical data
+- Python
+- DataFrame
+- openbb.alt.covid.global_cases
+- global cases
+- country specific data
+- programming
+- source code
+- documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="global_cases - Covid - Alt - Reference | OpenBB SDK Docs" />
 
 # global_cases
 
@@ -55,4 +72,3 @@ df = get_global_cases("Spain")
 Dataframe of historical cases for Spain
 ```
 ---
-

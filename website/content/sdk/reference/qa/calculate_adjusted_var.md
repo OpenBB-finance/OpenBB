@@ -1,7 +1,25 @@
 ---
 title: calculate_adjusted_var
-description: OpenBB SDK Function
+description: This docusaurus page explains the calculation of adjusted VaR, which
+  takes into account skew and kurtosis. It includes the explanation of the source
+  code, parameters used, and what the function returns.
+keywords:
+- Docusaurus page
+- adjusted VaR calculation
+- Cornish-Fischer-Expansion
+- quantitative analysis
+- Python code
+- source code explanation
+- kurtosis
+- skew
+- standard deviation
+- mean
+- normal distribution
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="calculate_adjusted_var - Qa - Reference | OpenBB SDK Docs" />
 
 # calculate_adjusted_var
 
@@ -34,4 +52,3 @@ openbb.qa.calculate_adjusted_var(kurtosis: float, skew: float, ndp: float, std: 
 | ---- | ----------- |
 | float | Real adjusted VaR |
 ---
-

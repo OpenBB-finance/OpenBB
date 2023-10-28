@@ -1,7 +1,21 @@
 ---
 title: maxsharpe
-description: OpenBB SDK Function
+description: This page provides comprehensive details about the openbb.portfolio.po.maxsharpe
+  function. It's a key part of OpenBB's portfolio optimization module, designed to
+  optimize the Sharpe ratio of portfolio weights. You'll also find information about
+  the parameters used by the function and examples of how to use it in portfolio management.
+keywords:
+- openbb.portfolio.po.maxsharpe
+- Portfolio Optimization
+- Sharpe Ratio
+- Portfolio Management
+- Financial Risk Measure
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # maxsharpe
 
@@ -75,4 +89,3 @@ weights, performance = openbb.portfolio.po.maxsharpe(portfolio_engine=p)
 ```
 
 ---
-

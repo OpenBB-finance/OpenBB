@@ -1,7 +1,24 @@
 ---
 title: macd
-description: OpenBB SDK Function
+description: This page provides a comprehensive guide to MACD (Moving Average Convergence
+  Divergence) implementation in OpenBB terminal. It explains how to model and visualize
+  the MACD signal using Python as well as the parameters involved.
+keywords:
+- macd
+- OpenBB_terminal
+- technical analysis
+- moving average convergence divergence
+- plotting macd
+- macd signal
+- python
+- data visualization
+- momentum model
+- momentum view
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="macd - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

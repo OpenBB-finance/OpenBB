@@ -1,7 +1,22 @@
 ---
 title: earnings
-description: OpenBB SDK Function
+description: This site provides an extensive guide to retrieving earnings data of
+  any stock ticker using the OpenBB Terminal. The page includes detailed parameters
+  descriptions and practical examples.
+keywords:
+- OpenBB Terminal
+- earnings data
+- stock ticker
+- Python
+- AlphaVantage
+- YahooFinance
+- quarterly data
+- DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="earnings - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # earnings
 
@@ -48,4 +63,3 @@ aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage, quar
 ```
 
 ---
-

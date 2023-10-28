@@ -1,7 +1,27 @@
 ---
 title: arkord
-description: OpenBB SDK Function
+description: This page contains details about the arkord function, which returns ARK
+  orders in a DataFrame. The function provides options to filter based on buys only,
+  sells only, or by a specific fund. This page also lists the various columns in the
+  returned DataFrame, which includes ticker, date, shares, weight, fund, and direction.
+keywords:
+- ARK
+- Orders
+- Dataframe
+- filter
+- buys only
+- sells only
+- fund
+- DataFrame
+- ARK orders data frame
+- shares
+- weight
+- direction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="arkord - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # arkord
 
@@ -32,4 +52,3 @@ openbb.stocks.disc.arkord(buys_only: bool = False, sells_only: bool = False, fun
 | ---- | ----------- |
 | DataFrame | ARK orders data frame with the following columns -<br/>(ticker, date, shares, weight, fund, direction) |
 ---
-

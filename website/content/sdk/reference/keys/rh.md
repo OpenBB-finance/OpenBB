@@ -1,7 +1,26 @@
 ---
 title: rh
-description: OpenBB SDK Function
+description: This page provides detailed information on setting the Robinhood key
+  using the openbb keys function. It includes source code, parameters description,
+  return types, and usage examples. This Python SDK function allows users to handle
+  their Robinhood key in different environments including Jupyter notebook sessions
+  and terminal environment variables.
+keywords:
+- Robinhood
+- openbb
+- keys
+- username and password
+- Python
+- source code
+- SDK
+- API key
+- Jupyter notebook session
+- terminal environment variables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rh - Keys - Reference | OpenBB SDK Docs" />
 
 # rh
 
@@ -47,4 +66,3 @@ username="example_username",
     )
 ```
 ---
-

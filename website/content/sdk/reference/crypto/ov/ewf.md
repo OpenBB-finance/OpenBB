@@ -1,7 +1,26 @@
 ---
 title: ewf
-description: OpenBB SDK Function
+description: The documentation page discusses two functions - openbb.crypto.ov.ewf
+  and openbb.crypto.ov.ewf_chart. The first function scrapes exchange withdrawal fees
+  and returns a DataFrame with details on Exchange, Coins, and various statistics.
+  The second function allows users to export this data into different formats. The
+  source code and use cases of both functions are included.
+keywords:
+- openbb.crypto.ov.ewf
+- Exchange withdrawal fees
+- Scrapes exchange withdrawal fees
+- openbb.crypto.ov.ewf_chart
+- Python
+- pd.DataFrame
+- Model
+- Chart
+- Source Code
+- Export dataframe data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ewf - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

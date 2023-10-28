@@ -1,7 +1,24 @@
 ---
 title: messari
-description: OpenBB SDK Function
+description: This page deals with details on setting the Messari key in the OpenBB
+  finance terminal. It highlights on parameters such as API key, the persist and show_output
+  options and also provides an example of how to use the openbb.keys.messari function.
+keywords:
+- OpenBB terminal
+- Messari key
+- API key
+- Python
+- SDK
+- Parameters
+- openbb.keys.messari function
+- example usage
+- persist
+- show_output
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="messari - Keys - Reference | OpenBB SDK Docs" />
 
 # messari
 
@@ -41,4 +58,3 @@ openbb.keys.messari(key="example_key")
 ```
 
 ---
-

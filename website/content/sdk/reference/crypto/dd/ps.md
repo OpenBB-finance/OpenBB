@@ -1,7 +1,29 @@
 ---
 title: ps
-description: OpenBB SDK Function
+description: This page includes an overview of the OpenBB Terminal cryptocurrency
+  functions ps and ps_chart. The ps function obtains ticker-related information for
+  a given cryptocurrency and the ps_chart function visualizes trading data for a particular
+  cryptocurrency. The documentation is inclusive of source code, input parameters,
+  and expected returns.
+keywords:
+- Cryptocurrency
+- CoinPaprika API
+- Python programming
+- OpenBB Terminal
+- Market ticker related information
+- Cryptocurrency symbols
+- Crypto trading data
+- pd.DataFrame
+- Cryptocurrency chart
+- Data export
+- CSV
+- JSON
+- XSLX
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ps - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

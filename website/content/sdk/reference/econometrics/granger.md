@@ -1,7 +1,20 @@
 ---
 title: granger
-description: OpenBB SDK Function
+description: Documentation about Granger test functions to calculate and visualize
+  Econometrics models in OpenBB terminal. Covers usage, parameters and return types.
+keywords:
+- Granger test
+- Econometrics
+- OpenBB terminal
+- Python
+- Source code
+- Function parameters
+- function return
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="granger - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

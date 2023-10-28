@@ -1,7 +1,23 @@
 ---
 title: normality
-description: OpenBB SDK Function
+description: This page provides detailed information on OpenBB's qa.normality and
+  qa.normality_chart functions used for quantitative analysis. These functions are
+  used to generate statistics on the relation to the normal curve, targeting specific
+  data in a dataframe.
+keywords:
+- openbb.qa.normality
+- quantitative analysis
+- distribution returns
+- normal curve
+- openbb.qa.normality_chart
+- dataframe
+- statistics normality
+- targeted data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="normality - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

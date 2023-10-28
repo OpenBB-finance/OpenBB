@@ -1,7 +1,23 @@
 ---
 title: stalker
-description: OpenBB SDK Function
+description: This documentation page provides information on how to use the 'stalker'
+  function from the OpenBB platform, which gathers messages from a specified user
+  on Stocktwits. The source code is also available for referencing.
+keywords:
+- Stalker
+- Messages
+- User
+- Posts
+- Stocktwits
+- OpenBB
+- Source code
+- Python
+- Post limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stalker - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # stalker
 
@@ -31,4 +47,3 @@ openbb.stocks.ba.stalker(user: str, limit: int = 30)
 | ---- | ----------- |
 | List[Dict[str, Any]] | List of posts |
 ---
-

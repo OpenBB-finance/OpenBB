@@ -1,7 +1,29 @@
 ---
 title: scorr
-description: OpenBB SDK Function
+description: This page provides information on the 'scorr' function, a tool used to
+  get correlation sentiments across similar companies. It also displays information
+  on how to utilize the 'scorr_chart' function, designed to plot correlation sentiments
+  heatmap for a set of similar companies.
+keywords:
+- scorr function
+- scorr_chart function
+- correlation sentiments
+- similar companies
+- OpenBB
+- FinBrain
+- FinViz
+- Finnhub
+- Polygon
+- heatmap plot
+- sentiment analysis
+- stock comparison
+- Python
+- matplotlib axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="scorr - Ca - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

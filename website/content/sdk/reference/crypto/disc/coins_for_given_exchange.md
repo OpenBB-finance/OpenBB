@@ -1,7 +1,21 @@
 ---
 title: coins_for_given_exchange
-description: OpenBB SDK Function
+description: The documentation page for the helper method openbb.crypto.disc.coins_for_given_exchange()
+  for getting all coins available on binance exchange sourced from CoinGecko. Information
+  includes parameters, returns and source code.
+keywords:
+- cryptocurrency
+- openbb.crypto.disc.coins_for_given_exchange
+- binance
+- CoinGecko
+- trading pairs
+- page paging
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="coins_for_given_exchange - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 # coins_for_given_exchange
 
@@ -31,4 +45,3 @@ openbb.crypto.disc.coins_for_given_exchange(exchange_id: str = "binance", page: 
 | ---- | ----------- |
 | dict | dictionary with all trading pairs on binance |
 ---
-

@@ -1,7 +1,20 @@
 ---
 title: all_binance_trading_pairs
-description: OpenBB SDK Function
+description: This page provides the function to get all available trading pairs on
+  Binance in DataFrame format with columns including symbol, baseAsset, and quoteAsset.
+  This function does not require any parameters.
+keywords:
+- Binance
+- Trading pairs
+- DataFrame
+- baseAsset
+- quoteAsset
+- Crypto Trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="all_binance_trading_pairs - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 # all_binance_trading_pairs
 
@@ -27,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | All available pairs on Binance<br/>Columns: symbol, baseAsset, quoteAsset |
 ---
-

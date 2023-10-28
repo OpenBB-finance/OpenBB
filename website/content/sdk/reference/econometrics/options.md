@@ -1,7 +1,25 @@
 ---
 title: options
-description: OpenBB SDK Function
+description: This page details two main functionalities of OpenBB-finance's model
+  and chart components - obtaining columns-dataset combinations from datasets for
+  use in commands and plotting custom data. Code snippets, links to source code, parameters
+  involved, and return types are provided.
+keywords:
+- OpenBB finance
+- data visualization
+- data modelling
+- Python
+- source code
+- datasets
+- econometrics
+- tabs
+- chart
+- options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

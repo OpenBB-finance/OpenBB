@@ -1,7 +1,21 @@
 ---
 title: pt
-description: OpenBB SDK Function
+description: This documentation pertains to OpenBB's APIs for retrieving and visualizing
+  analysts' price targets for stocks. Two key functions are discussed, one to retrieve
+  the data and the other to generate charts.
+keywords:
+- OpenBB
+- API documentation
+- stock price targets
+- data retrieval
+- data visualization
+- analysts' price targets
+- SDK
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pt - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

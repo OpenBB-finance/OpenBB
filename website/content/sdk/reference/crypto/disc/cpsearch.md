@@ -1,7 +1,25 @@
 ---
 title: cpsearch
-description: OpenBB SDK Function
+description: Documentation for 'cpsearch', a cryptocurrency discovery function in
+  OpenBBTerminal using the CoinPaprika API. This page provides details about parameters,
+  source code links and data return types.
+keywords:
+- docusaurus
+- cpsearch
+- coinPaprika
+- cryptocurrency
+- search
+- OpenBBTerminal
+- python
+- crypto discovery
+- search parameters
+- coinPaprika API
+- data analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cpsearch - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,35 @@
 ---
 title: rwd
-description: OpenBB SDK Function
+description: This page represents the functions for Random Walk with Drift (RWD) forecasting
+  including the model and chart view. It provides parameters, their types, descriptions,
+  and default settings, and explains the purpose and results of each function.
+keywords:
+- rwd
+- Random Walk with Drift forecasting
+- forecasting model
+- parameter description
+- source code
+- OpenBB-finance
+- model object
+- rwd view
+- chart display
+- data series
+- fcast values
+- predict
+- start window
+- forecast horizon
+- export
+- residuals
+- forecast only
+- start date
+- end date
+- naive
+- external axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rwd - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

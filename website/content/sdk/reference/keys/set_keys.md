@@ -1,7 +1,22 @@
 ---
 title: set_keys
-description: OpenBB SDK Function
+description: Guide on how to set API keys in bundle with OpenBB finance terminal,
+  including parameters, return values and examples. Contains source code link
+keywords:
+- OpenBB terminal
+- API keys
+- Set keys
+- Python code
+- Source code
+- Jupyter notebook
+- Finance
+- Environment variables
+- Programming guide
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="set_keys - Keys - Reference | OpenBB SDK Docs" />
 
 # set_keys
 
@@ -50,4 +65,3 @@ openbb.keys.set_keys(keys_dict=d)
 ```
 
 ---
-

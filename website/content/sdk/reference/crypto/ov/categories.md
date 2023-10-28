@@ -1,7 +1,25 @@
 ---
 title: categories
-description: OpenBB SDK Function
+description: 'This page provides information about top crypto categories from the
+  CoinGecko source. Detailed explanations of the two main functions are provided:
+  the ''categories'' function, which returns top crypto categories based on various
+  filters, and the ''categories_chart'' function, which displays the top cryptocurrency
+  categories by market capitalization.'
+keywords:
+- crypto categories
+- CoinGecko
+- crypto market capitalization
+- data sorting
+- data visualization
+- OpenBBTerminal
+- openbb.crypto.ov.categories
+- openbb.crypto.ov.categories_chart
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="categories - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

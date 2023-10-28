@@ -1,7 +1,21 @@
 ---
 title: trending
-description: OpenBB SDK Function
+description: Learn how to obtain trending tickers from Stocktwits using the OpenBB
+  Terminal. The page provides clear python code and explanation of the returned dataframe.
+  OpenBB Terminal is a powerful tool for financial data analysis.
+keywords:
+- trending tickers
+- stocktwits
+- OpenBB Terminal
+- python code
+- watchlist count
+- Dataframe
+- financial data analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trending - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # trending
 
@@ -27,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of trending tickers and watchlist count |
 ---
-

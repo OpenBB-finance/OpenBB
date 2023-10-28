@@ -1,7 +1,22 @@
 ---
 title: unitroot
-description: OpenBB SDK Function
+description: This documentation provides in-depth information on how to calculate
+  unit root test statistics, using the OpenBB software. This includes source code,
+  parameter details, and return values for both model and chart functions.
+keywords:
+- OpenBB
+- quantitative analysis
+- unit root test
+- ADF test
+- KPSS test
+- regression
+- Python
+- DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unitroot - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

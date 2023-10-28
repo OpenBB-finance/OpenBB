@@ -1,7 +1,20 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: This page provides details on how to use the Finviz News function integrated
+  into OpenBB. This function can be used to pull the latest news for a specific stock
+  ticker symbol.
+keywords:
+- Finviz News
+- OpenBB Finviz integration
+- Python Finviz news function
+- stock ticker symbol
+- financial news
+- website news API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 # news
 
@@ -30,4 +43,3 @@ openbb.stocks.dd.news(symbol: str)
 | ---- | ----------- |
 | List[Any] | News |
 ---
-

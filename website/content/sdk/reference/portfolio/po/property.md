@@ -1,7 +1,20 @@
 ---
 title: property
-description: OpenBB SDK Function
+description: This documentation discusses the use of 'property' function in OpenBB
+  Terminal's portfolio optimization module. It elaborates on how to call this function
+  with different parameters, its returns, and provides usage examples.
+keywords:
+- Portfolio Optimization
+- OpenBB Terminal
+- Python
+- Financial Data
+- OpenBB Portfolio
+- Property Function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="property - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # property
 
@@ -65,4 +78,3 @@ weights, performance = openbb.portfolio.po.property(portfolio_engine=p, prop="fo
 ```
 
 ---
-

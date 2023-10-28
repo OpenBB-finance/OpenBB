@@ -1,7 +1,21 @@
 ---
 title: kurtosis
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about Kurtosis
+  Indicator and how to plot rolling kurtosis with OpenBB-finance's tool. It includes
+  source code links and parameters needed for these python functions.
+keywords:
+- OpenBB-finance
+- Kurtosis Indicator
+- Python
+- Plotting Kurtosis
+- Quantitative Analysis
+- Dataframe
+- Python Functions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kurtosis - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

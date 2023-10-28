@@ -1,7 +1,25 @@
 ---
 title: lastcontracts
-description: OpenBB SDK Function
+description: This documentation page provides information on using OpenBBTerminal's
+  Python code to obtain government contract data from QuiverQuant. It guides how to
+  use the lastcontracts model and view functions for data analysis and export.
+keywords:
+- Python
+- OpenBB
+- OpenBBTerminal
+- Government contracts
+- QuiverQuant
+- Data analysis
+- Finance
+- Source code
+- Data export
+- GitHub
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lastcontracts - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

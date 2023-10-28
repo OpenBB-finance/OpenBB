@@ -1,7 +1,21 @@
 ---
 title: spectrum
-description: OpenBB SDK Function
+description: Learn how to use the OpenBB economy spectrum function to display the
+  finviz spectrum in your system viewer. Understand parameters like group and export,
+  and learn how to customize them for your needs.
+keywords:
+- spectrum
+- finviz
+- openbb.economy.spectrum
+- group
+- export
+- get_groups()
+- sector
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="spectrum - Economy - Reference | OpenBB SDK Docs" />
 
 # spectrum
 
@@ -30,4 +44,3 @@ openbb.economy.spectrum(group: str = "sector", export: str = "")
 This function does not return anything
 
 ---
-

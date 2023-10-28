@@ -1,7 +1,24 @@
 ---
 title: filter_stocks
-description: OpenBB SDK Function
+description: This page provides an in-depth look into the function 'filter_stocks'
+  used for filtering stocks based on various parameters like country, sector, industry,
+  and market cap, and excluding specific exchanges. Understand the usage and benefits
+  of this functionality in stock filtering.
+keywords:
+- filter stocks
+- stock filters
+- stock filtering
+- finance database
+- sector stocks
+- industry stocks
+- market cap
+- stock exchange
+- filter by country
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="filter_stocks - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
 # filter_stocks
 
@@ -34,4 +51,3 @@ openbb.stocks.sia.filter_stocks(country: str = None, sector: str = None, industr
 | ---- | ----------- |
 | list | List of filtered stocks |
 ---
-

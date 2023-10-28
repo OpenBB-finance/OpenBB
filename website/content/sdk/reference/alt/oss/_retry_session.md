@@ -1,7 +1,26 @@
 ---
 title: _retry_session
-description: OpenBB SDK Function
+description: The _retry_session function in OpenBBTerminal is a Python helper method
+  that attempts to mount a session given a URL, implementing a retry scheme with parameters
+  for number of retries and a backoff factor. It returns a session object from the
+  requests library.
+keywords:
+- openbb
+- _retry_session
+- url
+- retries
+- backoff_factor
+- requests.Session
+- Python
+- session mount
+- retry scheme
+- source code
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="_retry_session - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 # _retry_session
 
@@ -32,4 +51,3 @@ openbb.alt.oss._retry_session(url: str, retries: int = 3, backoff_factor: float 
 | ---- | ----------- |
 | requests.Session | Mounted session |
 ---
-

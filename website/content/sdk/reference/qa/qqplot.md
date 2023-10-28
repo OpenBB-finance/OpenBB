@@ -1,7 +1,24 @@
 ---
 title: qqplot
-description: OpenBB SDK Function
+description: The 'qqplot' page provides information on how to use the 'qqplot' function
+  in the OpenBB library for quantitative data analysis. It explains the procedure,
+  the parameters required, and provides a practical example using the stock ticker
+  from Apple.
+keywords:
+- qqplot
+- OpenBB
+- quantitative analysis
+- python
+- data analysis
+- matplotlib
+- Pandas Dataframe
+- stock ticker
+- AAPL
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qqplot - Qa - Reference | OpenBB SDK Docs" />
 
 # qqplot
 
@@ -42,4 +59,3 @@ openbb.qa.qqplot(data=df, target="Adj Close")
 ```
 
 ---
-

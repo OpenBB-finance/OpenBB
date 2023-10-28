@@ -1,7 +1,23 @@
 ---
 title: derivatives
-description: OpenBB SDK Function
+description: This page provides instructions on how to extract crypto derivatives
+  data from CoinGecko API using Python. It provides detailed information on the parameters
+  used in the extraction code for both 'Model' and 'Chart' categories, along with
+  the return data format.
+keywords:
+- CoinGecko API
+- crypto derivatives
+- Python
+- data extraction
+- cryptocurrency
+- data sorting
+- OpenBB
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="derivatives - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

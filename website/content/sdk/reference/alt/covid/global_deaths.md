@@ -1,7 +1,22 @@
 ---
 title: global_deaths
-description: OpenBB SDK Function
+description: This page provides understanding about the function 'global_deaths' from
+  OpenBB.terminals used to fetch historical death statistics for a specified country
+  due to covid.
+keywords:
+- OpenBB.terminals
+- global_deaths
+- covid
+- historical death data
+- python function
+- dataframe
+- SEO
+- country specific statistics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="global_deaths - Covid - Alt - Reference | OpenBB SDK Docs" />
 
 # global_deaths
 
@@ -30,4 +45,3 @@ openbb.alt.covid.global_deaths(country: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical deaths |
 ---
-

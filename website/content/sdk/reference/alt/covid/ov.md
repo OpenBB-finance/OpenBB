@@ -1,7 +1,24 @@
 ---
 title: ov
-description: OpenBB SDK Function
+description: This documentation page provides detailed information on the 'ov' models
+  used for retrieving historical cases and deaths-by-country data. It also explains
+  the parameters required to run these models, and returns in the form of a DataFrame.
+keywords:
+- docusaurus
+- documentation
+- ov model
+- historical data
+- cases
+- deaths
+- country-specific
+- dataframe
+- parameters
+- functions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ov - Covid - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: process_chains
-description: OpenBB SDK Function
+description: A details documentation page about how to use process_chains function
+  of openbb.stocks.options in Python. This function takes API response from Tradier
+  and returns a DataFrame with available options.
+keywords:
+- OpenBB Terminal
+- stocks
+- options
+- process chains
+- Python
+- API
+- Tradier
+- DataFrame
+- options trading
+- documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="process_chains - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 # process_chains
 
@@ -30,4 +47,3 @@ openbb.stocks.options.process_chains(response: requests.models.Response)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with all available options |
 ---
-

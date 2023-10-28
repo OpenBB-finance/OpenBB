@@ -1,7 +1,25 @@
 ---
 title: norm
-description: OpenBB SDK Function
+description: This page provides a detailed guide for testing normality in data series
+  using Python with a graphical representation of normal distribution. It also explains
+  how to export data and use external axes for plotting.
+keywords:
+- Econometrics
+- Python
+- OpenBB-finance
+- Data normality test
+- Timeseries
+- Histogram
+- Data exporting
+- Data plotting
+- Data Science
+- Statistics
+- Normal distribution
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="norm - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,27 @@
 ---
 title: ma
-description: OpenBB SDK Function
+description: Comprehensive guide to the ma and ma_chart functions as part of the OpenBB
+  technical analysis python package. These functions focus on plotting the moving
+  average (MA) technical indicator of various types like EMA, ZLMA and SMA for a given
+  time-series data.
+keywords:
+- Technical Analysis
+- Moving Average
+- EMA
+- SMA
+- ZLMA
+- Python
+- Pandas
+- Financial Data
+- Data Visualization
+- OpenBB
+- FAANG stocks
+- MA Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ma - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

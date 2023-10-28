@@ -1,7 +1,21 @@
 ---
 title: view
-description: OpenBB SDK Function
+description: Technical analysis with OpenBB - Learn how to use finviz model and view
+  chart using stock ticker. Detailed examples, parameters, and source code included.
+keywords:
+- OpenBB
+- technical analysis
+- finviz model
+- view chart
+- stock ticker
+- Python
+- source code
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="view - Ta - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: santiment
-description: OpenBB SDK Function
+description: Detailed documentation on how to set the Santiment API key using the
+  OpenBB-Terminal SDK. Instructions and examples are provided, including parameters
+  for optional persistence and output display.
+keywords:
+- Santiment key
+- API key
+- OpenBB-Terminal
+- Python
+- SDK
+- SEO for Documentation
+- Document SEO
+- Persist Key
+- Show Output
+- Jupyter Notebook
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="santiment - Keys - Reference | OpenBB SDK Docs" />
 
 # santiment
 
@@ -41,4 +58,3 @@ openbb.keys.santiment(key="example_key")
 ```
 
 ---
-

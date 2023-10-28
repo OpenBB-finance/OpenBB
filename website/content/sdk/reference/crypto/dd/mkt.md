@@ -1,7 +1,22 @@
 ---
 title: mkt
-description: OpenBB SDK Function
+description: An extensive guide and source code for working with cryptocurrency market
+  data from the CoinPaprika API using Python with OpenBB finance. It includes sections
+  on how to fetch all markets for a given cryptocurrency and print tables that display
+  market information.
+keywords:
+- CoinPaprika API
+- cryptocurrency market data
+- OpenBB finance
+- Python
+- cryptocurrency
+- data fetching
+- market tables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mkt - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

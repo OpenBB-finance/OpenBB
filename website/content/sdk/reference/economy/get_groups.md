@@ -1,7 +1,19 @@
 ---
 title: get_groups
-description: OpenBB SDK Function
+description: This page provides content about the openbb.economy.get_groups() function,
+  sourced from OpenBB-Finance. The function doesn't take any parameters nor returns
+  any output.
+keywords:
+- openbb.economy.get_groups()
+- OpenBB-Finance
+- No-parameters
+- No-return
+- Source-code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="get_groups - Economy - Reference | OpenBB SDK Docs" />
 
 # get_groups
 
@@ -26,4 +38,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

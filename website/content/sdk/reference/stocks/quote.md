@@ -1,7 +1,21 @@
 ---
 title: quote
-description: OpenBB SDK Function
+description: Documentation for 'Ticker quote', a function of OpenBB's Stock Model.
+  It retrieves information about a specific ticker from YahooFinance. This tool doesn't
+  return any values, it solely utilizes inputted symbols.
+keywords:
+- Ticker quote
+- OpenBB
+- YahooFinance
+- Stock model
+- Python
+- symbol
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - Stocks - Reference | OpenBB SDK Docs" />
 
 # quote
 
@@ -29,4 +43,3 @@ openbb.stocks.quote(symbol: str)
 This function does not return anything
 
 ---
-

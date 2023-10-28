@@ -1,7 +1,25 @@
 ---
 title: sortino
-description: OpenBB SDK Function
+description: Documentation on the use of the Sortino Ratio function within the OpenBB
+  Quantitative Analysis Code. It includes the Python source code along with details
+  of parameters for calculating and plotting the Sortino ratio.
+keywords:
+- Sortino Ratio
+- Source Code
+- Quantitative Analysis
+- OpenBB
+- Python
+- Data Analysis
+- Plotting
+- Charts
+- Python Dataframes
+- Financial Metrics
+- Risk-Adjusted Performance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sortino - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,25 @@
 ---
 title: sectors
-description: OpenBB SDK Function
+description: SEO for the 'sectors' documentation page of the OpenBB finance that elaborates
+  about portfolio sector allocation compared to the benchmark.
+keywords:
+- OpenBB
+- finance
+- portfolio
+- sector allocation
+- benchmark
+- source code
+- parameters
+- returns
+- examples
+- portfolio engine
+- allocation tables
+- recalculate allocation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sectors - Alloc - Portfolio - Reference | OpenBB SDK Docs" />
 
 # sectors
 
@@ -43,4 +61,3 @@ output = openbb.portfolio.alloc.sectors(p)
 ```
 
 ---
-

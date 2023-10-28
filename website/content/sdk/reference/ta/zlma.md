@@ -1,7 +1,23 @@
 ---
 title: zlma
-description: OpenBB SDK Function
+description: This page provides an in-depth view of the zlma function, which is used
+  to calculate zero-lagged exponential moving average (ZLEMA) for stocks. The page
+  includes the source code and details of parameters and returns.
+keywords:
+- ZLEMA
+- stock analysis
+- technical analysis
+- openbb.ta.zlma function
+- exponential moving average
+- OpenBB finance
+- overlap_model.py
+- dataframe
+- EMA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="zlma - Ta - Reference | OpenBB SDK Docs" />
 
 # zlma
 
@@ -32,4 +48,3 @@ openbb.ta.zlma(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and EMA |
 ---
-

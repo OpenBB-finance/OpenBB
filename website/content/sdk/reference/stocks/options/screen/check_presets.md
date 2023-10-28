@@ -1,7 +1,20 @@
 ---
 title: check_presets
-description: OpenBB SDK Function
+description: This page explains the check_presets function used in option screener
+  to check the preset values. The function takes a dictionary with presets from configparser
+  as argument and returns a string of accumulated errors.
+keywords:
+- check_presets
+- Option Screener
+- Preset values
+- openbb.stocks.options.screen
+- configparser
+- Error accumulation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="check_presets - Screen - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 # check_presets
 
@@ -30,4 +43,3 @@ openbb.stocks.options.screen.check_presets(preset_dict: dict)
 | ---- | ----------- |
 | str | String of all errors accumulated |
 ---
-

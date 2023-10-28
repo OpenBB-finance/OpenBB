@@ -1,7 +1,27 @@
 ---
 title: rbeta
-description: OpenBB SDK Function
+description: 'The page provides a comprehensive guide to using the PortfolioEngine
+  for analyzing rolling beta. It discusses two key methods: calculating the rolling
+  beta using ''rbeta'' function and visualizing it using ''rbeta_chart'' function.
+  The page also provides detailed information about parameters for both methods, and
+  examples.'
+keywords:
+- OpenBB portfolio
+- PortfolioEngine
+- rbeta
+- rbeta_chart
+- rolling beta
+- SEO
+- SEO metadata
+- metadata optimization
+- code examples
+- parameters
+- function usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rbeta - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

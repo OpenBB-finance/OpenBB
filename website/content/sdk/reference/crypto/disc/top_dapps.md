@@ -1,7 +1,29 @@
 ---
 title: top_dapps
-description: OpenBB SDK Function
+description: This documentation page provides detailed instructions on how to get
+  top decentralized applications by daily volume and users. Also includes code for
+  creating and displaying a chart of such applications.
+keywords:
+- docusaurus page
+- top decentralized applications
+- SEO
+- Metadata
+- daily volume
+- daily users
+- source code
+- chart
+- cryptocurrency
+- dataframe
+- data sorting
+- python
+- OpenBB
+- DappRadar
+- export dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top_dapps - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

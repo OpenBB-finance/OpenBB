@@ -1,7 +1,25 @@
 ---
 title: luna_supply
-description: OpenBB SDK Function
+description: 'Luna Supply documentation: Features two functions that offer supply
+  history data of the Terra ecosystem, in both numerical (DataFrame) and visual (Chart)
+  formats. Each function has customisable parameters providing flexibility to users.'
+keywords:
+- Luna supply
+- Terra ecosystem
+- Supply history data
+- Dataframe
+- Chart
+- Python
+- Supply type
+- Day count
+- Export type
+- Result limit
+- External axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="luna_supply - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

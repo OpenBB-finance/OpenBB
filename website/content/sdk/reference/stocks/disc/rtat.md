@@ -1,7 +1,22 @@
 ---
 title: rtat
-description: OpenBB SDK Function
+description: The rtat function provides the top 10 retail stocks per day functionality.
+  It does not take any parameters and returns a DataFrame with tickers.
+keywords:
+- Retail Stocks
+- rtat function
+- top 10 stocks
+- Stock Tickers
+- Dataframe of tickers
+- OpenBB
+- Stock Discovery
+- Python
+- No parameters function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rtat - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # rtat
 
@@ -27,4 +42,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of tickers |
 ---
-

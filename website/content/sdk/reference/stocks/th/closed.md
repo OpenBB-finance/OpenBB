@@ -1,7 +1,23 @@
 ---
 title: closed
-description: OpenBB SDK Function
+description: The page provides information on the two functions `openbb.stocks.th.closed()`
+  and `openbb.stocks.th.closed_chart()`. The first function is for getting currently
+  closed exchanges which returns a pd.DataFrame. The second function is for displaying
+  closed exchanges but does not return anything.
+keywords:
+- closed exchanges
+- Python
+- pd.DataFrame
+- OpenBB
+- Stocks
+- Trading hours
+- openbb.stocks.th.closed()
+- openbb.stocks.th.closed_chart()
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="closed - Th - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: fr
-description: OpenBB SDK Function
+description: Our docusaurus page provides Python functions that return and display
+  crypto coin fundraising data. It deals with launch summary, sales rounds, treasury
+  accounts and metric value launch details. The page also showcases how to export
+  the data to different file formats.
+keywords:
+- Crypto coin fundraising data
+- Python functions
+- Launch Summary
+- Sales rounds
+- Treasury accounts
+- Metric value launch details
+- Export data
+- Docusaurus page
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fr - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

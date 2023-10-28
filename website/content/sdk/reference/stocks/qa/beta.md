@@ -1,7 +1,26 @@
 ---
 title: beta
-description: OpenBB SDK Function
+description: Learn how to calculate beta for a ticker and a reference ticker, and
+  display it with a scatterplot and linear regression, using OpenBB - an open source
+  finance tool. The page includes source code and parameters to correctly perform
+  and visualize these actions.
+keywords:
+- Docusaurus page optimization
+- Beta calculation
+- Ticker symbol
+- Reference ticker symbol
+- Stock market analysis
+- Quantitative analysis
+- Data visualization
+- Scatterplot
+- Linear regression
+- Open source finance
+- OpenBB
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="beta - Qa - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

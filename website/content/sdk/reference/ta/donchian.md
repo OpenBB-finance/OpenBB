@@ -1,7 +1,24 @@
 ---
 title: donchian
-description: OpenBB SDK Function
+description: This page provides comprehensive documentation on how to calculate and
+  plot Donchian Channels using OpenBB's technical analysis tools. Learn about the
+  parameters and return types to leverage this method in your financial modelling
+  work.
+keywords:
+- Donchian Channels
+- Technical Analysis
+- Financial Modelling
+- OpenBB
+- FinTech
+- Volatility Models
+- Python
+- Dataframes
+- Data Visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="donchian - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

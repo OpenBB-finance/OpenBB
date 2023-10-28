@@ -1,7 +1,26 @@
 ---
 title: tv
-description: OpenBB SDK Function
+description: 'This documentation provides coding references and details about two
+  functions related to the OpenBB Crypto Onchain Decentralized Exchange: one function
+  to get token volume and another to view and print this data. Available parameters
+  and return types are also discussed.'
+keywords:
+- Decentralized Exchange
+- Token Volume
+- OpenBB Crypto Onchain
+- ERC20 token symbol
+- Trade amount currency
+- Sort data
+- Data ascending
+- Parameter details
+- Return types
+- Source code
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tv - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

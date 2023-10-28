@@ -1,7 +1,21 @@
 ---
 title: rsquare
-description: OpenBB SDK Function
+description: Detailed information about using the 'rsquare' function in the 'openbb'
+  portfolio metric, which calculates the R2 Score between a portfolio and a selected
+  benchmark. The page includes examples of usage.
+keywords:
+- portfolio
+- benchmark
+- R2 Score
+- PortfolioEngine
+- openbb.portfolio.metric.rsquare
+- DataFrame
+- openbb.portfolio.load
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsquare - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # rsquare
 
@@ -40,4 +54,3 @@ output = openbb.portfolio.metric.rsquare(p)
 ```
 
 ---
-

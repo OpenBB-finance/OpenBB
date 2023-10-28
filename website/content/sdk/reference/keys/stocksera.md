@@ -1,7 +1,20 @@
 ---
 title: stocksera
-description: OpenBB SDK Function
+description: 'The OpenBB project: how to set your Stocksera API key using Python.
+  Documentation provides information about parameters, return types, and examples
+  for the stocksera method.'
+keywords:
+- Stocksera
+- OpenBB
+- API Key
+- Python
+- Jupyter Notebook
+- Environment Variables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocksera - Keys - Reference | OpenBB SDK Docs" />
 
 # stocksera
 
@@ -41,4 +54,3 @@ openbb.keys.stocksera(key="example_key")
 ```
 
 ---
-

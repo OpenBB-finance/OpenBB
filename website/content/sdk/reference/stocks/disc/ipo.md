@@ -1,7 +1,22 @@
 ---
 title: ipo
-description: OpenBB SDK Function
+description: Navigate through the IPO calendar using OpenBB's Python toolkit. The
+  page provides source code and parameters for IPO through start and end dates, returning
+  all events in a convenient pd.DataFrame format.
+keywords:
+- IPO
+- IPO calendar
+- OpenBB
+- start date
+- end date
+- Python
+- Source code
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ipo - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # ipo
 
@@ -31,4 +46,3 @@ openbb.stocks.disc.ipo(start_date: Optional[str] = None, end_date: Optional[str]
 | ---- | ----------- |
 | pd.DataFrame | Get dataframe with IPO calendar events |
 ---
-

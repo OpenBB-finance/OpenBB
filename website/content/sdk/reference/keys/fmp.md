@@ -1,7 +1,24 @@
 ---
 title: fmp
-description: OpenBB SDK Function
+description: This page provides a guide for setting the Financial Modeling Prep API
+  key using the OpenBB Terminal. It covers parameters to set the key, adjusting the
+  persist and show_output options, and an example of usage.
+keywords:
+- OpenBB Terminal
+- Financial Modeling Prep
+- API key
+- Python
+- set api key
+- openbb.keys.fmp
+- persist
+- show_output
+- SDK
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fmp - Keys - Reference | OpenBB SDK Docs" />
 
 # fmp
 
@@ -41,4 +58,3 @@ openbb.keys.fmp(key="example_key")
 ```
 
 ---
-

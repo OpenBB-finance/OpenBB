@@ -1,7 +1,19 @@
 ---
 title: mgmt
-description: OpenBB SDK Function
+description: This page provides a guide on getting company managers' details from
+  Business Insider using the OpenBB library. Code snippet in Python is provided.
+keywords:
+- company managers
+- Business Insider
+- OpenBB library
+- Python code
+- Stock ticker symbol
+- Dataframe of managers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mgmt - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # mgmt
 
@@ -30,4 +42,3 @@ openbb.stocks.fa.mgmt(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of managers |
 ---
-

@@ -1,7 +1,28 @@
 ---
 title: skew
-description: OpenBB SDK Function
+description: This documentation page provides details on the function openbb.qa.skew,
+  used for rolling skewness indicator calculations and plotting. It includes parameters
+  description and links to the source code.
+keywords:
+- OpenBB
+- Quantitative Analysis
+- Skewness Indicator
+- Python Coding
+- Source Code
+- Financial Data Analysis
+- DataFrame
+- Rolling Skew
+- Skew Chart
+- Parameters
+- Window Length
+- Stock Ticker
+- Data Export
+- External Axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="skew - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

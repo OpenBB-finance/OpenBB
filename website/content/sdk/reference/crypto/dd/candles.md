@@ -1,7 +1,24 @@
 ---
 title: candles
-description: OpenBB SDK Function
+description: This page provides documentation on how to get or chart candles for a
+  chosen trading pair and time interval on Coinbase using the OpenBB crypto library.
+  It includes the Python code for these functions and the parameters to use.
+keywords:
+- OpenBB crypto library
+- candles trading pair
+- time interval
+- Coinbase
+- Python function
+- Cryptocurrency trading
+- Crypto trading analysis
+- Cryptocurrency pairs
+- Trade charting
+- Data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candles - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

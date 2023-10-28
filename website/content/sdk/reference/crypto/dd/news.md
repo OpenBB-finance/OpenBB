@@ -1,7 +1,21 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: Detailed information on how to fetch recent cryptocurrency posts from
+  CryptoPanic news aggregator using OpenBB in Python. Also, understand about the news
+  filtering parameters available and how to display the news content.
+keywords:
+- CryptoPanic
+- News Aggregator
+- OpenBB
+- News Filtering
+- Python Code
+- Cryptocurrency News
+- Github Source Code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

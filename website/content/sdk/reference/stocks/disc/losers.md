@@ -1,7 +1,26 @@
 ---
 title: losers
-description: OpenBB SDK Function
+description: This page provides information on how to get the top stock market losers
+  using the 'losers' function with OpenBB and Yahoo Finance. This function does not
+  require parameters and returns a pandas dataframe of stock losers.
+keywords:
+- losers
+- top losers
+- Yahoo Finance
+- Source Code
+- stocks
+- discovery
+- stock market
+- finance
+- openbb
+- yahoofinance_model.py
+- pd.DataFrame
+- Stock Losers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="losers - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # losers
 
@@ -27,4 +46,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Stock Losers |
 ---
-

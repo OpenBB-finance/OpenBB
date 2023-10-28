@@ -1,7 +1,28 @@
 ---
 title: mcapdom
-description: OpenBB SDK Function
+description: Documentation for mcapdom function in OpenBBTerminal Python package,
+  providing the tools to retrieve and visualize market dominance data for any given
+  cryptocurrency over time. The page describes parameters, return values and provides
+  direct links to the source code.
+keywords:
+- mcapdom
+- market dominance
+- crypto dominance
+- crypto symbol
+- market cap dominance chart
+- OpenBBTerminal
+- OpenBB Python functions
+- cryptocurrency due diligence
+- cryptocurrency market data
+- cryptocurrency trading analysis
+- financial data visualization
+- python finance
+- cryptocurrency interval data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mcapdom - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

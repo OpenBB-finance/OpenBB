@@ -1,7 +1,23 @@
 ---
 title: gtech
-description: OpenBB SDK Function
+description: Gtech is a function used to get technology stocks with revenue and earnings
+  growth exceeding 25%. The page provides source code and details about parameters
+  and returns.
+keywords:
+- gtech
+- technology stocks
+- revenue growth
+- earnings growth
+- Yahoo Finance
+- OpenBB
+- stocks discovery
+- python code
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gtech - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # gtech
 
@@ -27,4 +43,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Growth technology stocks |
 ---
-

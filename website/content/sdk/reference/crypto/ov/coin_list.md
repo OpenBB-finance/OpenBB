@@ -1,7 +1,20 @@
 ---
 title: coin_list
-description: OpenBB SDK Function
+description: The coin_list page is a documentation of the function that returns the
+  list of all available coins on CoinPaprika. It includes source code and is part
+  of the OpenBBTerminal project.
+keywords:
+- coin_list
+- CoinPaprika
+- crypto
+- pandas.DataFrame
+- OpenBB
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="coin_list - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 # coin_list
 
@@ -27,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pandas.DataFrame | Available coins on CoinPaprika<br/>rank, id, name, symbol, type |
 ---
-

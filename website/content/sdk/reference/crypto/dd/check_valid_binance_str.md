@@ -1,7 +1,21 @@
 ---
 title: check_valid_binance_str
-description: OpenBB SDK Function
+description: Learn about the check_valid_binance_str Python function from OpenBB.
+  This function checks if symbols are defined in binance. Source code provided.
+keywords:
+- binance
+- symbol
+- cryptocurrency
+- openbb
+- Python
+- source code
+- due diligence
+- check_valid_binance_str
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="check_valid_binance_str - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 # check_valid_binance_str
 
@@ -27,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | str | Symbol |
 ---
-

@@ -1,7 +1,22 @@
 ---
 title: ratios
-description: OpenBB SDK Function
+description: This page provides important details about the 'ratios' function in 'OpenBB
+  Stocks' module which is used for fundamental analysis. Users can extract key ratios
+  by providing a stock's ticker symbol and specifying other optional parameters. The
+  function returns a DataFrame of key ratios.
+keywords:
+- OpenBB Stocks
+- Fundamental Analysis
+- Key Ratios
+- Stock Ticker Symbol
+- Quarterly Data
+- Python
+- Dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ratios - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # ratios
 
@@ -32,4 +47,3 @@ openbb.stocks.fa.ratios(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key ratios |
 ---
-

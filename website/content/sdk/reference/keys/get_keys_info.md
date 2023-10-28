@@ -1,7 +1,27 @@
 ---
 title: get_keys_info
-description: OpenBB SDK Function
+description: Understand more about the get_keys_info function in OpenBBTerminal, which
+  provides info on available APIs usable in set_keys. Find the source code link, how
+  to use the function, the parameter it takes, and what it returns.
+keywords:
+- get_keys_info
+- APIs
+- set_keys
+- openbb.keys
+- parameters
+- returns
+- type
+- description
+- Dict[str, List[str]]
+- Dictionary
+- API keys
+- arguments
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="get_keys_info - Keys - Reference | OpenBB SDK Docs" />
 
 # get_keys_info
 
@@ -27,4 +47,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, List[str]] | Dictionary of expected API keys and arguments |
 ---
-

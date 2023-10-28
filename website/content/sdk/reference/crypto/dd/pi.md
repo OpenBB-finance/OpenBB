@@ -1,7 +1,27 @@
 ---
 title: pi
-description: OpenBB SDK Function
+description: Details about the PI function used in OpenBB crypto due diligence. It
+  covers aspects like fetching coin product info and presenting it as tables and charts.
+  Also, includes links to the source code.
+keywords:
+- OpenBB
+- Cryptocurrency
+- Due Diligence
+- pi Function
+- Python
+- Project Info
+- Tables
+- Charts
+- Docusaurus
+- Metadata
+- SEO
+- Source Code
+- Github
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pi - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

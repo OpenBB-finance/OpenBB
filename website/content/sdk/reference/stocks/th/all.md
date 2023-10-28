@@ -1,7 +1,23 @@
 ---
 title: all
-description: OpenBB SDK Function
+description: Documentation detail of OpenBB's all exchanges and chart display functions.
+  OpenBB provides functionalities to fetch all available exchanges and display them
+  in a chart format.
+keywords:
+- OpenBB Documentation
+- OpenBB Exchanges API
+- OpenBB Chart Display
+- Python scripts
+- API Documentation
+- Open source financial tools
+- OpenBB Source Code
+- Stock Exchange Data
+- Extracting Exchange Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="all - Th - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

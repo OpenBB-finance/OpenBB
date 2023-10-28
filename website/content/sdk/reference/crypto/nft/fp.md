@@ -1,7 +1,20 @@
 ---
 title: fp
-description: OpenBB SDK Function
+description: The page provides detailed documentation on the functionality of nftpricefloor
+  model and view. The model helps to fetch NFT collections and the view function displays
+  the collection's floor price overtime.
+keywords:
+- NFT collection
+- nftpricefloor
+- openbb.crypto.nft.fp
+- openbb.crypto.nft.fp_chart
+- Data Visualization
+- Data Modelling
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fp - Nft - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

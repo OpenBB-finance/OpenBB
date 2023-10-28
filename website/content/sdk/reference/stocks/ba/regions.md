@@ -1,7 +1,24 @@
 ---
 title: regions
-description: OpenBB SDK Function
+description: This page provides detailed instructions on how to utilize the regions
+  functions from OpenBB finance terminal to retrieve and visualize stock interests
+  by region using Google API. The documentation covers the parameters, return types,
+  and source code for the functionalities.
+keywords:
+- Docusaurus
+- SEO metadata
+- regions
+- google api
+- stock's interest
+- openbb.stocks.ba.regions
+- openbb.stocks.ba.regions_chart
+- ticker symbol
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="regions - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,23 @@
 ---
 title: infer
-description: OpenBB SDK Function
+description: This page is a detailed guide for using OpenBB's terminal to access and
+  analyze Twitter data, providing tips for inferring market sentiment from tweets
+  and visualizing data.
+keywords:
+- OpenBB
+- terminal guidance
+- Twitter data analysis
+- market sentiment
+- social media analytics
+- VADER sentiment analysis
+- python
+- data visualization
+- programming code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="infer - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

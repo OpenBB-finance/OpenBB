@@ -1,7 +1,14 @@
 ---
 title: rsi
-description: OpenBB SDK Function
+description: Implements relative strength index
+keywords:
+- relative strength index
+- technical analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsi - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

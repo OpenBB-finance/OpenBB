@@ -1,7 +1,27 @@
 ---
 title: sharpe
-description: OpenBB SDK Function
+description: Get sharpe ratio for a portfolio and benchmark using the OpenBB Terminal.
+  This page provides a detailed description of how to use the Sharpe ratio function
+  with code examples in Python.
+keywords:
+- Sharpe ratio
+- portfolio
+- PortfolioEngine
+- risk_free_rate
+- openbb.portfolio.metric.sharpe
+- financial metrics
+- OpenBB Terminal
+- OpenBB finance
+- Python
+- portfolio analysis
+- benchmark
+- portfolio management
+- risk analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sharpe - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # sharpe
 
@@ -41,4 +61,3 @@ output = openbb.portfolio.metric.sharpe(p)
 ```
 
 ---
-

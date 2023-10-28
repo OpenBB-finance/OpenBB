@@ -1,7 +1,23 @@
 ---
 title: glbonds
-description: OpenBB SDK Function
+description: Webpage on 'glbonds' function - a data scraping tool for global bonds
+  information. It returns name, coupon rate, yield and change in yield.
+keywords:
+- glbonds
+- data scraping
+- global bonds
+- OpenBB
+- python
+- DataFrame
+- yield
+- rate
+- change
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="glbonds - Economy - Reference | OpenBB SDK Docs" />
 
 # glbonds
 
@@ -27,4 +43,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, coupon rate, yield and change in yield |
 ---
-

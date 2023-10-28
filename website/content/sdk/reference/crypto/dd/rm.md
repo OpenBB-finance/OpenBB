@@ -1,7 +1,29 @@
 ---
 title: rm
-description: OpenBB SDK Function
+description: The page consists of two main components or features. Initially, it details
+  a function designed to return the roadmap for each individual cryptocurrency, explaining
+  how data can be sorted and what the output will look like. Later, it describes a
+  function aimed at plotting the roadmap for each cryptocurrency, including details
+  on the parameters users will need to understand and adjust for the purpose of the
+  function.
+keywords:
+- cryptocurrency
+- roadmap
+- data sorting
+- function parameters
+- plotting
+- matplotlib
+- OpenBB
+- crypto symbol
+- python programming
+- dataframe
+- reverse order
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rm - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

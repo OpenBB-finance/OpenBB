@@ -1,7 +1,31 @@
 ---
 title: platforms
-description: OpenBB SDK Function
+description: "This page contains a directory of all smart contract platforms such\
+  \ as Ethereum, Solana, Cosmos, Polkadot, and Kusama. The page provides source codes\
+  \ and instructs the use of functionalities in two formats \u2014 model and chart."
+keywords:
+- smart contract platforms
+- Ethereum
+- Solana
+- Cosmos
+- Polkadot
+- Kusama
+- source code
+- model view
+- chart view
+- OpenBB
+- cryptocurrency
+- openbb.crypto.ov.platforms()
+- openbb.crypto.ov.platforms_chart()
+- CoinPaprika
+- Python
+- pd.DataFrame
+- dataframe export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="platforms - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: trades
-description: OpenBB SDK Function
+description: Documentation of 'trades' in OpenBB.finance. It includes various functions
+  for obtaining and displaying trades for a coin in a given exchange. It covers both
+  the model and view and provides detailed description of each parameter involved.
+keywords:
+- trades
+- exchange
+- coin
+- currency
+- symbol
+- OpenBB.finance
+- ccxt model
+- ccxt view
+- trade chart
+- crypto
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trades - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

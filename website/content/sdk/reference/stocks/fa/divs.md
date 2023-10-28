@@ -1,7 +1,32 @@
 ---
 title: divs
-description: OpenBB SDK Function
+description: Improve your knowledge of OpenBB's fundamental analysis tools for stocks
+  with this comprehensive guide on retrieving and charting historical dividend data.
+  This page contains examples and source code in python focused on the use of the
+  'divs' and 'divs_chart' functions for tickers like 'AAPL'.
+keywords:
+- docusaurus
+- SEO
+- metadata
+- documentation
+- dividends chart
+- fundamental analysis
+- historical data
+- source code
+- ticker symbol
+- dividend history
+- openbb
+- stocks
+- python
+- AAPL
+- matplotlib
+- pandas DataFrame
+- openbb_terminal.sdk
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="divs - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

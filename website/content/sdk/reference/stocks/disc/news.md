@@ -1,7 +1,20 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: This page provides information on the documentation for the 'news' functionality
+  in OpenBBTerminal. It enables users to customize their news type and limit the number
+  of news to be displayed.
+keywords:
+- OpenBBTerminal documentation
+- Customize News
+- News types
+- Limit News Display
+- Stock News
+- Python code for news customization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # news
 
@@ -31,4 +44,3 @@ openbb.stocks.disc.news(news_type: str = "Top-News", limit: int = 5)
 | ---- | ----------- |
 | List[dict] | List of dict news |
 ---
-

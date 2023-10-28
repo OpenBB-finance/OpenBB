@@ -1,7 +1,27 @@
 ---
 title: government_trading
-description: OpenBB SDK Function
+description: This page documents the government_trading function, which returns the
+  most recent transactions by members of government like congress, senate, house,
+  and others. The source code and parameters are provided for reference.
+keywords:
+- OpenBB Terminal
+- government trading
+- recent transactions
+- congress trading
+- senate trading
+- house trades
+- financial contracts
+- quarter contracts
+- corporate lobbying
+- ticker symbol
+- trade data
+- Python
+- Data Frame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="government_trading - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 # government_trading
 
@@ -31,4 +51,3 @@ openbb.stocks.gov.government_trading(gov_type: str = "congress", symbol: str = "
 | ---- | ----------- |
 | pd.DataFrame | Most recent transactions by members of U.S. Congress |
 ---
-

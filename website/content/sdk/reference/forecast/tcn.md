@@ -1,7 +1,24 @@
 ---
 title: tcn
-description: OpenBB SDK Function
+description: This documentation page provides information on how to use the 'tcn'
+  functionality of OpenBBTerminal. This enables you to perform Temporal Convolutional
+  Network (TCN) forecasting and display the forecast using OpenBB Platform's resources.
+keywords:
+- OpenBBTerminal
+- Temporal Convolutional Network
+- TCN forecasting
+- OpenBB platform
+- tcn_model.py
+- tcn_view.py
+- time series prediction
+- Forecast visualization
+- Source code
+- Predictive analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tcn - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,25 @@
 ---
 title: hm
-description: OpenBB SDK Function
+description: The page provides detailed documentation for OpenBB crypto functions
+  that interact with CoinGecko to retrieve and visualise cryptocurrency data. It includes
+  code examples, a list of parameters and their descriptions for each function, and
+  source code links.
+keywords:
+- python
+- OpenBB
+- cryptocurrency
+- CoinGecko
+- heatmap
+- documentation
+- docusaurus
+- dataframe
+- metadata
+- SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hm - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

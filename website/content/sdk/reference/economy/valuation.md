@@ -1,7 +1,24 @@
 ---
 title: valuation
-description: OpenBB SDK Function
+description: This is a documentation page about the openbb.economy.valuation function
+  from OpenBB that uses Finviz data to get group valuation data. It allows for sorting
+  by column and in ascending order, returning these results in a dataframe.
+keywords:
+- group valuation data
+- finance sector
+- performance data
+- sort by column
+- ascending order
+- Finviz
+- OpenBB
+- Python
+- GitHub
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="valuation - Economy - Reference | OpenBB SDK Docs" />
 
 # valuation
 
@@ -32,4 +49,3 @@ openbb.economy.valuation(group: str = "sector", sortby: str = "Name", ascend: bo
 | ---- | ----------- |
 | pd.DataFrame | dataframe with valuation/performance data |
 ---
-

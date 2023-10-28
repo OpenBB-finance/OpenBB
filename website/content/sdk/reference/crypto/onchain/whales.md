@@ -1,7 +1,25 @@
 ---
 title: whales
-description: OpenBB SDK Function
+description: Learn how to utilise Whale Alert's API with OpenBB Terminal for tracking
+  high value transactions on major blockchains. This page contains detailed information
+  on how to implement and use this feature to retrieve both live and historical onchain
+  data from various cryptocurrencies.
+keywords:
+- Whale Alert API
+- blockchain transactions
+- onchain data
+- cryptocurrency
+- major blockchains
+- crypto whales
+- high value transactions
+- transaction tracking
+- data retrieval
+- OpenBB Terminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="whales - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

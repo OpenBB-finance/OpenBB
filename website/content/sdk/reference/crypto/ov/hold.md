@@ -1,7 +1,27 @@
 ---
 title: hold
-description: OpenBB SDK Function
+description: Comprehensive guides to holding Bitcoin and Ethereum by public companies.
+  Details on visualizing the hold data and exporting it to your preferred data format
+  (csv, json, xlsx). Source references to CoinGecko. Includes links to source codes.
+keywords:
+- cryptocurrency
+- bitcoin
+- ethereum
+- public companies
+- data visualization
+- CoinGecko
+- bar graph
+- dataframe
+- openbb.crypto.ov.hold
+- openbb.crypto.ov.hold_chart
+- csv
+- json
+- xlsx
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hold - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

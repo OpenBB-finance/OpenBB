@@ -1,7 +1,24 @@
 ---
 title: stables
-description: OpenBB SDK Function
+description: Documentation for the stable coins API provided by OpenBB, including
+  how to use the model endpoints for data extraction and the chart endpoints for data
+  visualization.
+keywords:
+- OpenBB stable coins API
+- cryptocurrency documentation
+- data extraction
+- data visualization
+- metadata SEO
+- python cryptocurrency API
+- OpenBB documentation
+- CoinGecko API
+- programming examples
+- SDK usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stables - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

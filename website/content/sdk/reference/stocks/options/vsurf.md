@@ -1,7 +1,23 @@
 ---
 title: vsurf
-description: OpenBB SDK Function
+description: A documentation page that guides how to use vsurf method which gets the
+  IV surface for calls and puts for stock ticker symbol and how to utilize vsurf_chart
+  to display the vol surface. Includes source code, data types and defaults.
+keywords:
+- Docusaurus
+- vSurf
+- vSurf_Chart
+- IV Surface
+- vol surface
+- OpenBBTerminal
+- options
+- ticker symbol
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vsurf - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

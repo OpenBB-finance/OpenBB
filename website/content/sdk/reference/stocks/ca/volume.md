@@ -1,7 +1,28 @@
 ---
 title: volume
-description: OpenBB SDK Function
+description: This documentation page details how to get and display stock volume using
+  openbb.stocks.ca volume function. Includes Python codes and parameter descriptions
+  for user guidance.
+keywords:
+- openbb.stocks.ca
+- stock volume
+- Yahoo Finance
+- Python
+- documentation
+- source code
+- docusaurus
+- parameter description
+- volume_chart
+- volume function
+- stock analysis
+- finnhub_peers
+- finviz_peers
+- polygon_peers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="volume - Ca - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

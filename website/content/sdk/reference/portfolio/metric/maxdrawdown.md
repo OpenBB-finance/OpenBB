@@ -1,7 +1,24 @@
 ---
 title: maxdrawdown
-description: OpenBB SDK Function
+description: This page provides details on how to get the maximum drawdown ratio for
+  a selected portfolio and benchmark using the 'maxdrawdown' function in the OpenBB
+  application. Learn how to effectively use and apply this feature in your portfolio
+  management practice.
+keywords:
+- OpenBB
+- Portfolio Management
+- Benchmarking
+- Maximum Drawdown
+- Metrics
+- Python
+- PortfolioEngine
+- Portfolio analysis
+- Market analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxdrawdown - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # maxdrawdown
 
@@ -40,4 +57,3 @@ output = openbb.portfolio.metric.maxdrawdown(p)
 ```
 
 ---
-

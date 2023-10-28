@@ -1,7 +1,21 @@
 ---
 title: ulc
-description: OpenBB SDK Function
+description: This page provides information on the 'ulc' function which is used to
+  retrieve potentially undervalued large cap stocks from Yahoo Finance through the
+  OpenBB platform. No parameters are needed for this function. It returns the most
+  undervalued large cap stocks in a pd.DataFrame format.
+keywords:
+- ulc
+- Yahoo Finance
+- undervalued large cap stocks
+- OpenBB
+- stocks
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ulc - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # ulc
 
@@ -27,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most undervalued large cap stocks |
 ---
-

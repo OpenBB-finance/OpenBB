@@ -1,7 +1,24 @@
 ---
 title: rot
-description: OpenBB SDK Function
+description: This webpage contains detailed methods and code snippets to retrieve
+  and visualize rating over time data for any stock ticker. It includes functioning
+  code in Python, and links to the source code in GitHub.
+keywords:
+- stock ratings
+- python
+- Finnhub api
+- data visualization
+- open source
+- stock market
+- financial markets
+- OpenBBTerminal
+- investment research
+- due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rot - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

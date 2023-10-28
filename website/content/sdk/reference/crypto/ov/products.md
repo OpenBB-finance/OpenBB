@@ -1,7 +1,23 @@
 ---
 title: products
-description: OpenBB SDK Function
+description: Documentation for the functions related to the retrieval and visualization
+  of financial products using the OpenBBTerminal and CoinGecko API. Covers aspects
+  such as sorting of data, ascending and descending configuration, product charts
+  and exporting data.
+keywords:
+- OpenBBTerminal financial products
+- CoinGecko API
+- openbb.crypto.ov.products
+- Financial data sorting
+- Data ascending and descending
+- products_chart
+- Financial products chart
+- Data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="products - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

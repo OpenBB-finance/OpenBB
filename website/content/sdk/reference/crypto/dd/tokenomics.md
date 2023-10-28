@@ -1,7 +1,28 @@
 ---
 title: tokenomics
-description: OpenBB SDK Function
+description: Documentation page for the tokenomics function in OpenBBTerminal's cryptocurrency
+  due diligence module. This Python method takes a coin symbol and gives back the
+  tokenomics for that coin.
+keywords:
+- tokenomics
+- coin
+- OpenBBTerminal
+- cryptocurrency
+- pycoingecko_model
+- crypto
+- dd
+- symbol
+- coin symbol
+- tokenomics source code
+- pd.DataFrame
+- Metric
+- Value
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tokenomics - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 # tokenomics
 
@@ -30,4 +51,3 @@ openbb.crypto.dd.tokenomics(symbol: str = "")
 | ---- | ----------- |
 | pd.DataFrame | Metric, Value with tokenomics |
 ---
-

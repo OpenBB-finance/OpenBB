@@ -1,7 +1,24 @@
 ---
 title: screener
-description: OpenBB SDK Function
+description: This documentation page provides an overview of the Screener feature
+  in the OpenBB Terminal, demonstrating how to use it to compare similar companies.
+keywords:
+- OpenBB Terminal
+- Stock Screener
+- Comparison Analysis
+- Similar Companies
+- Data Analysis
+- Python
+- Finviz
+- Finnhub
+- Polygon
+- Technical Analysis
+- Financial Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="screener - Ca - Stocks - Reference | OpenBB SDK Docs" />
 
 # screener
 
@@ -31,4 +48,3 @@ openbb.stocks.ca.screener(similar: List[str], data_type: str = "overview")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with overview, valuation, financial, ownership, performance or technical |
 ---
-

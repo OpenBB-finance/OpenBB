@@ -1,7 +1,26 @@
 ---
 title: unu
-description: OpenBB SDK Function
+description: The documentation page provides details about the 'unu' command from
+  openbb.stocks.options. It includes information on how to get unusual option activity
+  data from fdscanner.com and display the unusual options table. It lists parameters,
+  returns, and gives examples of usage.
+keywords:
+- openbb
+- stocks
+- options
+- unu
+- fdscanner.com
+- unusual option activity
+- dataframe
+- python code
+- parameters
+- returns
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unu - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

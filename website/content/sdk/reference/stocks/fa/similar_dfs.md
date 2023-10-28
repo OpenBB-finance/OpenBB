@@ -1,7 +1,26 @@
 ---
 title: similar_dfs
-description: OpenBB SDK Function
+description: The similar_dfs function in OpenBB is documented on this page. This function
+  is used for generating dataframes for similar companies by taking inputs such as
+  a ticker symbol, the output from the yfinance.info function and the number of similar
+  companies to produce. The option of filtering based on market cap is also provided.
+  Going through this documentation provides valuable information to understand the
+  use and functioning of the similar_dfs function.
+keywords:
+- similar_dfs
+- dataframes
+- similar companies
+- OpenBB
+- stocks
+- fundamental analysis
+- yfinance.info function
+- ticker symbol
+- market cap
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="similar_dfs - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # similar_dfs
 
@@ -33,4 +52,3 @@ openbb.stocks.fa.similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filte
 | ---- | ----------- |
 | List[str, pd.DataFrame] | A list of similar companies |
 ---
-

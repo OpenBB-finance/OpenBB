@@ -1,7 +1,21 @@
 ---
 title: sidtc
-description: OpenBB SDK Function
+description: Documentation for sidtc, a tool command that retrieves and sorts short
+  interest and days-to-cover data.
+keywords:
+- sidtc
+- short interest
+- days-to-cover
+- stockgrid
+- OpenBB-finance
+- pd.DataFrame
+- stock data
+- floating short
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sidtc - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 # sidtc
 
@@ -30,4 +44,3 @@ openbb.stocks.dps.sidtc(sortby: str = "float")
 | ---- | ----------- |
 | pd.DataFrame | Short interest and days to cover data |
 ---
-

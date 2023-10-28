@@ -1,7 +1,23 @@
 ---
 title: tx
-description: OpenBB SDK Function
+description: This is an intricate page pertaining to transaction information sourcing
+  from Ethplorer. It lays out comprehensive details about model and chart transactions,
+  offering Python source codes and linked GitHub resource. It elucidates transaction
+  hash parameters and the formats to export data frames, among others.
+keywords:
+- Ethplorer transactions
+- transaction information
+- model transactions
+- chart transactions
+- Python source code
+- transaction hash parameters
+- export data frame formats
+- GitHub resource
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tx - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

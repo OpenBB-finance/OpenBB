@@ -1,7 +1,25 @@
 ---
 title: twitter
-description: OpenBB SDK Function
+description: Learn how to implement twitter functions for cryptocurrency through our
+  OpenBB Terminal documentation. Access information such as code usage, parameters,
+  return types etc.
+keywords:
+- OpenBB Terminal
+- Cryptocurrency
+- Twitter
+- Python
+- Code Documentation
+- Sort Data
+- CSV
+- JSON
+- XLSX
+- Export Dataframe
+- CoinPaprika API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="twitter - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

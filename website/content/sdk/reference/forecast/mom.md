@@ -1,7 +1,21 @@
 ---
 title: mom
-description: OpenBB SDK Function
+description: This page provides information about the momentum oscillator 'mom' function
+  in the OpenBB forecast module. It explains the parameters and returns a DataFrame
+  with an added MOM column.
+keywords:
+- momentum oscillator
+- mom function
+- OpenBB forecast module
+- DataFrame
+- MOM column
+- source code
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mom - Forecast - Reference | OpenBB SDK Docs" />
 
 # mom
 
@@ -32,4 +46,3 @@ openbb.forecast.mom(dataset: pd.DataFrame, target_column: str = "close", period:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added MOM column |
 ---
-

@@ -1,7 +1,24 @@
 ---
 title: var
-description: OpenBB SDK Function
+description: This Docusaurus page contains Python source code for 'var/model' and
+  'var chart' functions. Each section provides detailed explanations of parameters
+  and returns, and links to the respective source code. The functions are a part of
+  quantitative analysis of a specified stock dataframe.
+keywords:
+- Docusaurus page
+- tab items
+- Python code
+- quantitative analysis
+- dataframe
+- var/model
+- var chart
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="var - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

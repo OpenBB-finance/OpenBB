@@ -1,7 +1,25 @@
 ---
 title: ef
-description: OpenBB SDK Function
+description: The page highlights the use and functioning of the efficient frontier
+  model in portfolio optimization. It includes explanations about parameters used,
+  type of returns, and examples. Furthermore, it details the process for displaying
+  the efficient frontier chart.
+keywords:
+- Efficient Frontier
+- Portfolio Optimization
+- Financial Models
+- Python
+- OpenBB Terminal
+- Risk Measure
+- Portfolio Simulation
+- Stock Portfolio
+- Data Visualization
+- Financial Software
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ef - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

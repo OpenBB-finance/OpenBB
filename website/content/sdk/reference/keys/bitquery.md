@@ -1,7 +1,23 @@
 ---
 title: bitquery
-description: OpenBB SDK Function
+description: This documentation page is dedicated to the Bitquery key setting process
+  in the OpenBB Terminal application. Learn how to set API keys, understand the use
+  of environment variables, and follow practical examples using the Python language
+  in a Jupyter Notebook environment.
+keywords:
+- Bitquery
+- API Key
+- Setting Key
+- openbb
+- Python
+- Environment Variables
+- Jupyter Notebook
+- Terminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bitquery - Keys - Reference | OpenBB SDK Docs" />
 
 # bitquery
 
@@ -41,4 +57,3 @@ openbb.keys.bitquery(key="example_key")
 ```
 
 ---
-

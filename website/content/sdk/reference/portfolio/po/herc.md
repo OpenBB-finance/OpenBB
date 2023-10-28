@@ -1,7 +1,23 @@
 ---
 title: herc
-description: OpenBB SDK Function
+description: The page provides detailed documentation for the Hierarchical Equal Risk
+  Contribution (HERC) method in the OpenBB Terminal's portfolio optimization module.
+  The method is used for the optimized allocation of resources in a portfolio to minimize
+  risk. The page includes a detailed explanation of input parameters, return types,
+  and code examples.
+keywords:
+- HERC Method
+- Portfolio Optimization
+- OpenBB Terminal
+- Python
+- Risk Management
+- Hierarchical Equal Risk Contribution
+- Financial Modelling
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="herc - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # herc
 
@@ -81,4 +97,3 @@ weights, performance = openbb.portfolio.po.herc(portfolio_engine=p)
 ```
 
 ---
-

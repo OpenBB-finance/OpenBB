@@ -1,7 +1,25 @@
 ---
 title: ex
-description: OpenBB SDK Function
+description: This page provides code documentation and examples for retrieving and
+  visualizing data about cryptocurrency exchanges for a given coin, using the CoinPaprika
+  API. The OpenBBTerminal project developed by OpenBB-finance allows sorting the data
+  and exports it for further analysis.
+keywords:
+- cryptocurrency
+- CoinPaprika
+- OpenBBTerminal
+- cryptocurrency exchanges
+- python
+- data sort
+- data visualization
+- BTC
+- volume share
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ex - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

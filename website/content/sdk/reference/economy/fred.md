@@ -1,7 +1,31 @@
 ---
 title: fred
-description: OpenBB SDK Function
+description: The page includes detailed information on the 'fred' function in the
+  OpenBBTerminal software. With this function, users can acquire and visualize economic
+  series data from the Federal Reserve Economic Data (FRED) database. It also lists
+  out function parameters and return type.
+keywords:
+- OpenBBTerminal
+- fred function
+- Federal Reserve Economic Data
+- FRED
+- economy
+- series data
+- parameters
+- return type
+- visualization
+- code
+- SEO
+- metadata
+- documentation
+- source code
+- data retrieval
+- data analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fred - Economy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

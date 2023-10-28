@@ -1,7 +1,26 @@
 ---
 title: balance
-description: OpenBB SDK Function
+description: This page provides information on how to use OpenBB's onchain tools for
+  interacting with the Ethereum blockchain. It includes instructions on how to get
+  information about token balances and displaying this information in a chart format.
+  Relevant Python code is also provided.
+keywords:
+- Docusaurus
+- Onchain
+- OpenBB
+- ethplorer
+- Ethereum blockchain
+- Blockchain balance
+- Tokens
+- ETH balance
+- Python
+- Dataframe
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

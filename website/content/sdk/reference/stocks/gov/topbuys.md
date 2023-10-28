@@ -1,7 +1,27 @@
 ---
 title: topbuys
-description: OpenBB SDK Function
+description: This documentation page covers the top buy government trading on OpenBB
+  Terminal, providing detailed information on relevant python functions and parameters.
+  It features source code and explanations for different data types and optional parameters.
+keywords:
+- OpenBB Terminal
+- top buy government trading
+- python functions
+- source code
+- parameters
+- data types
+- quiverquant.com
+- congress
+- senate
+- house
+- pandas DataFrame
+- matplotlib
+- trading data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topbuys - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

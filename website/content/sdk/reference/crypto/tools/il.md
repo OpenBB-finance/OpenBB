@@ -1,7 +1,24 @@
 ---
 title: il
-description: OpenBB SDK Function
+description: 'This page provides technical documentation for two imperative features
+  in OpenBB''s cryptocurrency tool suite: the Impermanent Loss calculation model and
+  its corresponding chart display. Learn about their parameters, return types, and
+  source code.'
+keywords:
+- OpenBB
+- Cryptocurrency
+- Impermanent Loss
+- Impermanent Loss Model
+- Impermanent Loss Chart Display
+- Crypto Tool Suite
+- Crypto A
+- Crypto B
+- Liquidity Pool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="il - Tools - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

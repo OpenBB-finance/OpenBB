@@ -1,7 +1,23 @@
 ---
 title: cashflow
-description: OpenBB SDK Function
+description: This page discusses the cashflow data from Marketwatch. It explains how
+  to use the openbb.stocks.ca.cashflow function, its parameters, and outputs, emphasizing
+  on a dataframe of cashflow comparisons.
+keywords:
+- cashflow data
+- marketwatch source code
+- openbb.stocks.ca.cashflow function
+- parameters
+- dataframe of cashflow comparisons
+- Python
+- timeframe
+- quarter
+- export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cashflow - Ca - Stocks - Reference | OpenBB SDK Docs" />
 
 # cashflow
 
@@ -33,4 +49,3 @@ openbb.stocks.ca.cashflow(similar: List[str], timeframe: str = "2021", quarter: 
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of cashflow comparisons |
 ---
-

@@ -1,7 +1,27 @@
 ---
 title: redditsent
-description: OpenBB SDK Function
+description: A documentation on redditsent function. It is used to find posts related
+  to a specific search term from Reddit. The function provides comprehensive search
+  and categorization of results based on user-preferences.
+keywords:
+- redditsent
+- Search function
+- Reddit posts
+- Behavioral analysis
+- Python function
+- OpenBBTerminal
+- Ticker symbol
+- post categorization
+- Comprehensive search
+- subreddits
+- dataframe
+- polarity scores
+- average polarity score
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="redditsent - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # redditsent
 
@@ -35,4 +55,3 @@ openbb.stocks.ba.redditsent(symbol: str, limit: int = 100, sortby: str = "releva
 | ---- | ----------- |
 |  | Dataframe of submissions related to the search term,<br/>List of polarity scores,<br/>Average polarity score. |
 ---
-

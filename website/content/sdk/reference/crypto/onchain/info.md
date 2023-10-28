@@ -1,7 +1,25 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This documentation page provides information and source code regarding
+  getting info about ERC20 tokens, and displaying it. Covered aspects include related
+  parameters and returns.
+keywords:
+- ERC20 token info
+- source code
+- Ethplorer
+- parameters
+- returns
+- python
+- DataFrame
+- OpenBB finance
+- OpenBBTerminal
+- cryptocurrency
+- onchain
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: bpag
-description: OpenBB SDK Function
+description: The 'bpag' page provides comprehensive information about the Breusch-Pagan
+  test calculation in econometrics. The page contains source code and models for heteroscedasticity
+  and regression, including parameters, return types, and export format for data.
+keywords:
+- bpag
+- heteroscedasticity
+- Breusch-Pagan Test
+- OLS Model
+- source code
+- econometrics
+- regression model
+- bpag_chart
+- export data
+- statsmodels
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bpag - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,19 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This documentation page provides information about the info and chart
+  models for options in OpenBB Terminal, explaining how to get ticker info and scrape
+  Barchart.com for options info.
+keywords:
+- OpenBB Terminal documentation
+- Stock options
+- Ticker info
+- Barchart.com scraping
+- Python utilities
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

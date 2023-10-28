@@ -1,7 +1,24 @@
 ---
 title: tyld
-description: OpenBB SDK Function
+description: This page provides documentation for retrieving and displaying historical
+  yield data using the 'tyld' and 'tyld_chart' functions in the OpenBB finance module.
+  This data can be filtered based on various parameters including the interval, maturity
+  and start date. For more in-depth details and access to the source code, please
+  refer to the respective sections.
+keywords:
+- OpenBB finance module
+- historical yield
+- tyld function
+- tyld_chart function
+- Python
+- data retrieval
+- data display
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tyld - Economy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

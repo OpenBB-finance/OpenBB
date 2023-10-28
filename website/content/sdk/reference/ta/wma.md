@@ -1,7 +1,20 @@
 ---
 title: wma
-description: OpenBB SDK Function
+description: This page provides a comprehensive guide on how to get the Weighted Moving
+  Average (WMA) for stock using OpenBB's wma function. This includes relevant parameters
+  and return values.
+keywords:
+- Weighted Moving Average
+- WMA
+- OpenBB
+- Stock Analysis
+- Python Function
+- Technical Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wma - Ta - Reference | OpenBB SDK Docs" />
 
 # wma
 
@@ -32,4 +45,3 @@ openbb.ta.wma(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and WMA |
 ---
-

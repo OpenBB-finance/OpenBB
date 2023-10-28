@@ -1,7 +1,18 @@
 ---
 title: enterprise
-description: OpenBB SDK Function
+description: This page provides detailed information about the financial modeling
+  prep ticker enterprise, including python code, parameter descriptions, and returns.
+keywords:
+- Financial Modeling Prep Ticker Enterprise
+- Enterprise Parameters
+- Enterprise Returns
+- Python code for Financial Modeling
+- Fundamental Analysis Ticker Symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="enterprise - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # enterprise
 
@@ -32,4 +43,3 @@ openbb.stocks.fa.enterprise(symbol: str, limit: int = 5, quarterly: bool = False
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of enterprise information |
 ---
-

@@ -1,7 +1,21 @@
 ---
 title: tail
-description: OpenBB SDK Function
+description: Documentation about the OpenBB terminal's 'tail' function. The function
+  retrieves the tail ratio of portfolios, handling transactions and performing calculations.
+  Also gives details about its parameters, return types, and example usage.
+keywords:
+- OpenBB terminal
+- tail function
+- PortfolioEngine class instance
+- portfolio metrics
+- transactions
+- calculations
+- tail ratio
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tail - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # tail
 
@@ -41,4 +55,3 @@ output = openbb.portfolio.metric.tail(p)
 ```
 
 ---
-

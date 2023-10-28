@@ -1,7 +1,22 @@
 ---
 title: asc
-description: OpenBB SDK Function
+description: Documentation for OpenBB's function to get the most aggressive small
+  cap stocks from Yahoo Finance with high earnings growth rates. Includes python code
+  and parameters description.
+keywords:
+- Yahoo Finance
+- small cap stocks
+- earnings growth rates
+- OpenBB
+- stocks
+- python
+- DataFrame
+- aggressive small cap stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="asc - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # asc
 
@@ -27,4 +42,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most aggressive small cap stocks |
 ---
-

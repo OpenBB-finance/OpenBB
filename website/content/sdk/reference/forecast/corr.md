@@ -1,7 +1,24 @@
 ---
 title: corr
-description: OpenBB SDK Function
+description: This page shares details on how to use 'corr' and 'corr_chart' functions
+  of OpenBB Terminal's forecast module. The 'corr' function returns correlation for
+  a given DataFrame, and 'corr_chart' function plots correlation coefficients for
+  dataset features.
+keywords:
+- OpenBB Terminal
+- forecast module
+- corr function
+- correlation coefficients
+- data analysis
+- corr_chart function
+- plot correlation coefficients
+- Python
+- DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="corr - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

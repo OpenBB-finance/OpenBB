@@ -1,7 +1,22 @@
 ---
 title: fisher
-description: OpenBB SDK Function
+description: Documentation page about Fisher Transform, a technical analysis indicator
+  used in finance. Detailed explanation on how to implement and use the Fisher Transform
+  indicator using the OpenBB library, with guides on parameters and returns for function
+  calls.
+keywords:
+- Fisher Transform
+- technical analysis
+- finance
+- OpenBB library
+- pd.DataFrame
+- OHLC prices
+- indicator window
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fisher - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

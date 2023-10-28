@@ -1,7 +1,22 @@
 ---
 title: indexes
-description: OpenBB SDK Function
+description: The documentation page covers the retrieval and visualization of crypto
+  indexes using the CoinGecko API in the OpenBB platform. It details parameters, source
+  code, and return values for related methods.
+keywords:
+- CoinGecko API
+- crypto indexes
+- OpenBB
+- pycoingecko_model
+- pycoingecko_view
+- data sort
+- crypto data visualization
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indexes - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

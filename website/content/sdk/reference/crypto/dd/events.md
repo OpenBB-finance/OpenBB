@@ -1,7 +1,25 @@
 ---
 title: events
-description: OpenBB SDK Function
+description: The page provides detailed documentation on how to get all events related
+  to a given cryptocurrency like conferences, start date of futures trading. It also
+  provides insights into how to sort, limit and export these events using the OpenBBTerminal
+  methods.
+keywords:
+- OpenBBTerminal
+- cryptocurrency events
+- cryptocurrency futures trading
+- cryptocurrency conferences
+- sorting cryptocurrency data
+- exporting cryptocurrency data
+- cryptocurrency
+- data frame
+- python cryptocurrency project
+- CoinPaprika API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="events - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

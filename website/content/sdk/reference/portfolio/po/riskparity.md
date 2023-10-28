@@ -1,7 +1,21 @@
 ---
 title: riskparity
-description: OpenBB SDK Function
+description: Documentation page on how to optimize portfolio with Risk Parity using
+  the risk budgeting approach in the OpenBB Terminal Python package. It includes parameters
+  specifications, return values, and usage examples.
+keywords:
+- Risk Parity
+- Portfolio Optimization
+- Python
+- OpenBB Terminal
+- Risk Budgeting Approach
+- Portfolio Engine
+- Investment Strategies
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="riskparity - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # riskparity
 
@@ -72,4 +86,3 @@ weights, performance = openbb.portfolio.po.riskparity(portfolio_engine=p)
 ```
 
 ---
-

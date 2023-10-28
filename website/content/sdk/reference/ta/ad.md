@@ -1,7 +1,23 @@
 ---
 title: ad
-description: OpenBB SDK Function
+description: This page provides information about how to implement and plot the AD
+  (Accumulation/Distribution Line) technical indicator using OpenBB's Python module.
+  It includes the source code, required parameters, and the outputs from these functions.
+keywords:
+- Docusaurus
+- SEO
+- Metadata
+- OpenBB
+- Technical Indicator
+- AD indicator
+- Python
+- Pandas DataFrame
+- Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ad - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

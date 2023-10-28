@@ -1,7 +1,24 @@
 ---
 title: prom
-description: OpenBB SDK Function
+description: 'This page provides a detailed explanation of two important functions
+  in FINRA ATS data analysis offered by our tool: ''prom'' and ''Chart''. ''prom''
+  fetches and processes the most promising stocks based on linear regression while
+  ''Chart'' aids in visualizing the dark pool data for improving trading decisions.'
+keywords:
+- FINRA ATS data
+- Trading tool
+- Linear regression
+- Dark pool data
+- OpenBB Terminal
+- Dark pool trades activity
+- Stocks analysis
+- Data visualization
+- Promising stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prom - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

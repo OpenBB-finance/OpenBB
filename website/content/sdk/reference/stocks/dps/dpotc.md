@@ -1,7 +1,23 @@
 ---
 title: dpotc
-description: OpenBB SDK Function
+description: Documentation for dpotc and dpotc_chart, functions in the OpenBB Finance
+  library for retrieving and visualizing Dark Pools (ATS) and OTC (Non-ATS) data from
+  FINRA. Includes parameters and source code.
+keywords:
+- dpotc
+- FINRA data
+- Dark Pools (ATS) Data
+- OTC (Non-ATS) Data
+- dpotc_chart
+- barchart
+- matplotlib
+- source code
+- Export dataframe data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dpotc - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

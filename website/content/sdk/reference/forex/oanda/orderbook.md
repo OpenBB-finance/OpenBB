@@ -1,7 +1,26 @@
 ---
 title: orderbook
-description: OpenBB SDK Function
+description: This documentation page hosts information on 'Orderbook' operations in
+  forex trading using the 'Oanda' platform, powered by 'OpenBB'. It includes Python
+  source code, various parameters, and return types. Also addressed is ploting an
+  'Orderbook' chart with 'matplotlib'.
+keywords:
+- orderbook
+- oanda
+- forex
+- currency pair
+- accountID
+- OpenBB
+- orderbook chart
+- matplotlib
+- pandas DataFrame
+- Python
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="orderbook - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

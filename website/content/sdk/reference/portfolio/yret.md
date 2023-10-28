@@ -1,7 +1,24 @@
 ---
 title: yret
-description: OpenBB SDK Function
+description: Website page provides in-depth guide on using yret, a module that delivers
+  yearly returns in quantitative finance. It includes complete procedures from loading
+  portfolio to displaying returns in graph.
+keywords:
+- Yearly Returns
+- Portfolio Management
+- Quantitative Finance
+- Python
+- Data Visualization
+- Open source
+- Finance Library
+- Benchmarking
+- Portfolio Load
+- yret Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="yret - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

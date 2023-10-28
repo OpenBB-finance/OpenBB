@@ -1,7 +1,22 @@
 ---
 title: popular
-description: OpenBB SDK Function
+description: This page contains a python function to get popular tickers from a list
+  of subreddits. The function leverages the OpenBB.Finance Terminal to analyze the
+  behavioral analysis of posts from Reddit.
+keywords:
+- OpenBB.Finance Terminal
+- Reddit ticker analysis
+- Python function
+- Behavioral analysis
+- Popular tickers
+- Subreddits
+- Post analysis
+- DataFrames
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="popular - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # popular
 
@@ -32,4 +47,3 @@ openbb.stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str 
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of top tickers from supplied subreddits |
 ---
-

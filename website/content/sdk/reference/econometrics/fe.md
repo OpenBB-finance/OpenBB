@@ -1,7 +1,23 @@
 ---
 title: fe
-description: OpenBB SDK Function
+description: This page presents the fe function of the OpenBB Econometrics Module,
+  explaining its parameters and their functionality. Here, users can find about entity
+  effects, time effects, and regressors.
+keywords:
+- OpenBB Econometrics
+- fe function
+- entity effects
+- time effects
+- regressors
+- Fixed Effects
+- PanelOLS model
+- Python
+- regression model
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fe - Econometrics - Reference | OpenBB SDK Docs" />
 
 # fe
 
@@ -33,4 +49,3 @@ openbb.econometrics.fe(Y: pd.DataFrame, X: pd.DataFrame, entity_effects: bool = 
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>PanelOLS model with Fixed Effects |
 ---
-

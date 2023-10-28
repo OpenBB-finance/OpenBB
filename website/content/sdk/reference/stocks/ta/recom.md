@@ -1,7 +1,24 @@
 ---
 title: recom
-description: OpenBB SDK Function
+description: This page offers details on tradingview recommendations based on technical
+  indicators with an emphasis on Model and Chart tabs. This includes information on
+  parameters, returns, and source code.
+keywords:
+- Tradingview recommendation
+- Technical indicators
+- Model
+- Chart
+- Parameters
+- Returns
+- Source code
+- OpenBB
+- Stocks
+- Tradingview TA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="recom - Ta - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

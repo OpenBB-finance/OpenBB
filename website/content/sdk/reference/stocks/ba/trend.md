@@ -1,7 +1,30 @@
 ---
 title: trend
-description: OpenBB SDK Function
+description: The page details functions related to behavioural analysis with OpenBB
+  Terminal, specifically focusing on trend analysis. The page explains how to generate
+  sentiment data on the most talked about stock tickers. Explained in detail with
+  source code and parameters.
+keywords:
+- sentiment data
+- tickers
+- trend
+- OpenBB Terminal
+- behavioural analysis
+- python
+- source code
+- trend chart
+- API call
+- dataframe
+- start date
+- hour
+- number
+- limit
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trend - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

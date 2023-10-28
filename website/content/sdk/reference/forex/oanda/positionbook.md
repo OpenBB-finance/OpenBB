@@ -1,7 +1,27 @@
 ---
 title: positionbook
-description: OpenBB SDK Function
+description: Improve your understanding of the positionbook functionality on the OpenBBTerminal.
+  Discover how to request position book data and plot a position book for an instrument
+  if Oanda provides one. Detailed source codes and parameter descriptions are provided
+  to facilitate its usage.
+keywords:
+- positionbook
+- python
+- plotting
+- source code
+- Oanda
+- forex
+- OpenBBTerminal
+- data frame
+- parameters
+- currency pair
+- matplotlib
+- axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="positionbook - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

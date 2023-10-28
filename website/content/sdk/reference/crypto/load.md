@@ -1,7 +1,33 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: The documentation page describes the crypto currency load function in
+  OpenBB's Terminal. It helps to get data for any crypto currency by specifying parameters
+  such as symbol, start date, interval, exchange, vs_currency, end_date and the source
+  of the data. It then returns a PD DataFrame with price and volume data.
+keywords:
+- OpenBB Terminal
+- cryptocurrency
+- crypto load
+- crypto currency data
+- source code
+- parameters
+- Python
+- CCXT
+- CoinGecko
+- YahooFinance
+- Binance
+- PD Dataframe
+- end date
+- start date
+- interval
+- exchange
+- vs currency
+- symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Crypto - Reference | OpenBB SDK Docs" />
 
 # load
 
@@ -36,4 +62,3 @@ openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneTy
 | ---- | ----------- |
 | pd.DataFrame | Dataframe consisting of price and volume data |
 ---
-

@@ -1,7 +1,22 @@
 ---
 title: ema
-description: OpenBB SDK Function
+description: Documentation on how to use the EMA (Exponential Moving Average) function
+  with OpenBB Terminal. The function receives a dataset and returns a DataFrame with
+  an added EMA column, providing an indication of price trend movement.
+keywords:
+- EMA
+- Moving average
+- Price trend
+- Forecast
+- Dataset
+- Python
+- OpenBB Terminal
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ema - Forecast - Reference | OpenBB SDK Docs" />
 
 # ema
 
@@ -32,4 +47,3 @@ openbb.forecast.ema(dataset: pd.DataFrame, target_column: str = "close", period:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added EMA column |
 ---
-

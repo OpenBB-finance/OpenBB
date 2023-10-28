@@ -1,7 +1,28 @@
 ---
 title: adosc
-description: OpenBB SDK Function
+description: Technical page discussing the calculation and plotting of the AD Oscillator
+  technical indicator. The page also includes links to source code and parameter descriptions.
+keywords:
+- AD Oscillator
+- technical indicator
+- source code
+- parameter description
+- calculate
+- plot
+- technical analysis
+- openbb
+- pd.DataFrame
+- fast value
+- slow value
+- volume model
+- OpenBBTerminal
+- TabItem
+- docusaurus
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adosc - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

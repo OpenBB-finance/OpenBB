@@ -1,7 +1,23 @@
 ---
 title: fred_notes
-description: OpenBB SDK Function
+description: Learn about OpenBB's FRED model and how it makes searching the series
+  notes database easier. This page also talks about the search and limit parameters
+  involved when querying the FRED database, and the DataFrame of matched series it
+  returns.
+keywords:
+- FRED series notes
+- OpenBB economy
+- FRED model
+- data searching
+- text query
+- series notes database
+- Python
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fred_notes - Economy - Reference | OpenBB SDK Docs" />
 
 # fred_notes
 
@@ -31,4 +47,3 @@ openbb.economy.fred_notes(search_query: str, limit: int = -1)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of matched series |
 ---
-

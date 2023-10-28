@@ -1,7 +1,22 @@
 ---
 title: text_sent
-description: OpenBB SDK Function
+description: Learn how to use the Text Sentiment Analysis function of OpenBB's Reddit
+  Model. Understand the sentiment of a post and related comments, providing valuable
+  insights into stock market trends.
+keywords:
+- Text sentiment analysis
+- OpenBB
+- Stock market sentiment
+- Behavioural analysis
+- Comment analysis
+- Post analysis
+- Python
+- Reddit model
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="text_sent - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # text_sent
 
@@ -30,4 +45,3 @@ openbb.stocks.ba.text_sent(post_data: List[str])
 | ---- | ----------- |
 | float | A number in the range [-1, 1] representing sentiment |
 ---
-

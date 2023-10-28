@@ -1,7 +1,24 @@
 ---
 title: mykeys
-description: OpenBB SDK Function
+description: This documentation page offers detailed instructions on how to get currently
+  set API keys using the OpenBB finance mykeys function. Includes parameter descriptions,
+  return types, and usage examples.
+keywords:
+- API keys
+- OpenBB finance
+- mykeys function
+- Python
+- OpenBBTerminal
+- Parameters
+- Return types
+- Examples
+- pd.DataFrame
+- SDK
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mykeys - Keys - Reference | OpenBB SDK Docs" />
 
 # mykeys
 
@@ -46,4 +63,3 @@ Key
 COINGLASS_KEY  *******
 ```
 ---
-

@@ -1,7 +1,32 @@
 ---
 title: plot
-description: OpenBB SDK Function
+description: This documentation page outlines the functions related to plotting and
+  charting an investment portfolio using the OpenBB's po module. The page provides
+  examples of different chart types such as pie, hist, dd, and rc. It includes necessary
+  parameters for the functions and discusses the usage of a portfolio engine.
+keywords:
+- plot
+- tab
+- po
+- chart
+- portfolio
+- example
+- investment
+- pie
+- hist
+- dd
+- rc
+- engine
+- type
+- category
+- parameters
+- returns
+- OpenBB
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="plot - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

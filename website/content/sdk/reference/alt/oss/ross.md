@@ -1,7 +1,26 @@
 ---
 title: ross
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about the 'ross'
+  functions of the OpenBB Terminal. These functions help to retrieve and visualize
+  data about startups from the ROSS index.
+keywords:
+- OpenBB Terminal
+- ross function
+- data retrieval
+- startups data
+- ROSS index
+- Python
+- visualization
+- dataframe
+- chart
+- data sort
+- growth line chart
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ross - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

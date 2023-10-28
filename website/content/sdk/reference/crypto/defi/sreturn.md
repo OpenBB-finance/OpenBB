@@ -1,7 +1,16 @@
 ---
 title: sreturn
-description: OpenBB SDK Function
+description: "Get terra blockchain staking returns history"
+keywords:
+- blockchain
+- terra
+- staking
+- defi
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sreturn - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

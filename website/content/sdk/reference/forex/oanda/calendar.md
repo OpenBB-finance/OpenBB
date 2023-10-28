@@ -1,7 +1,28 @@
 ---
 title: calendar
-description: OpenBB SDK Function
+description: Provides a comprehensive guide on the Oanda calendar functionality in
+  the OpenBB finance package. Details include how to request data of significant events,
+  parameters for currency pair and days, model and view interfaces, and corresponding
+  source code.
+keywords:
+- oanda
+- forex
+- calendar
+- events
+- data
+- currency pair
+- advance
+- model
+- view
+- chart
+- source code
+- OpenBB-finance
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="calendar - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,20 @@
 ---
 title: cal
-description: OpenBB SDK Function
+description: This page provides a python function for fetching calendar earnings of
+  a specific stock ticker symbol using the OpenBB Terminal library. The function returns
+  a pandas dataframe with the earnings data.
+keywords:
+- calendar earnings
+- ticker symbol
+- openbb.stocks.fa.cal()
+- stock fundamental analysis
+- Python finance library
+- Dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cal - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # cal
 
@@ -30,4 +43,3 @@ openbb.stocks.fa.cal(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of calendar earnings |
 ---
-

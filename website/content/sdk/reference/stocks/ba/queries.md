@@ -1,7 +1,23 @@
 ---
 title: queries
-description: OpenBB SDK Function
+description: Learn how to get related queries from Google API using the `openbb.stocks.ba.queries`
+  function in the OpenBB Terminal. This page includes parameters, return types, and
+  source code.
+keywords:
+- OpenBB Terminal
+- Google API
+- Queries
+- Behavioral analysis
+- Stock ticker symbol
+- Dataframe
+- Python
+- Source code
+- Marketing SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="queries - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # queries
 
@@ -31,4 +47,3 @@ openbb.stocks.ba.queries(symbol: str, limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of related queries |
 ---
-

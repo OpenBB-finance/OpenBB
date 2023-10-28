@@ -1,7 +1,19 @@
 ---
 title: ftd
-description: OpenBB SDK Function
+description: Documentation related to 'ftd'- a feature that provides fails-to-deliver
+  data for a given ticker. Offers a model and chart view
+keywords:
+- ftd
+- fails-to-deliver
+- stock data
+- chart view
+- model view
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ftd - Dps - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

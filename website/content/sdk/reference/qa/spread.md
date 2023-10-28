@@ -1,7 +1,24 @@
 ---
 title: spread
-description: OpenBB SDK Function
+description: 'The page provides information about two central functions of the OpenBBTerminal:
+  ''spread'' and ''spread_chart''. These Python functions are part of the quantitative
+  analysis, analyzing standard deviation, variance and create spread charts. The descriptions
+  include source code, parameters, and return values.'
+keywords:
+- OpenBBTerminal
+- Standard Deviation
+- Variance
+- pd.DataFrame
+- Quantitative Analysis
+- Rolling model
+- Spread
+- Spread chart
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="spread - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

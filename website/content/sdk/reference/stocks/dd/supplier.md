@@ -1,7 +1,27 @@
 ---
 title: supplier
-description: OpenBB SDK Function
+description: Detailed documentation on the supplier function of OpenBBTerminal. It
+  describes how to use the function to get suppliers using a certain ticker from CSIMarket,
+  the source code path, and the parameters involved.
+keywords:
+- supplier
+- ticker
+- CSIMarket
+- Source Code
+- OpenBBTerminal
+- stocks
+- due diligence
+- csimarket model.py
+- stocks.dd.supplier function
+- symbol parameter
+- limit parameter
+- dataframe
+- suppliers data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="supplier - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 # supplier
 
@@ -31,4 +51,3 @@ openbb.stocks.dd.supplier(symbol: str, limit: int = 50)
 | ---- | ----------- |
 | pd.DataFrame | A dataframe of suppliers |
 ---
-

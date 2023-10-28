@@ -1,7 +1,25 @@
 ---
 title: screener_data
-description: OpenBB SDK Function
+description: This documentation outlines the functionality of the screener_data and
+  screener_data_chart modules in the OpenBB Terminal, a Python library for loading
+  and handling preset stock filters. It provides parameter descriptions and return
+  values, with links to the source code.
+keywords:
+- Screener data
+- OpenBB Terminal
+- Python library
+- Source code
+- Stocks
+- Preset filters
+- Data types
+- Screener data chart
+- Order of stocks
+- Data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="screener_data - Screener - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,26 @@
 ---
 title: events
-description: OpenBB SDK Function
+description: Implement our economic calendar for selected countries and specific dates
+  functionality in your application using OpenBB. Use it to analyze global economic
+  trends or forecast market movements.
+keywords:
+- OpenBB
+- economic calendar
+- financial market events
+- global economy
+- market analysis
+- economic forecast
+- economic events
+- countries economy
+- economic data retrieval
+- market trends
+- predictive analytics
+- economic indicators
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="events - Economy - Reference | OpenBB SDK Docs" />
 
 # events
 
@@ -52,4 +71,3 @@ calendars = openbb.economy.events(["United States","Canada"], start_date="2022-1
 ```
 
 ---
-

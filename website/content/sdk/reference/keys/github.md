@@ -1,7 +1,25 @@
 ---
 title: github
-description: OpenBB SDK Function
+description: The page guides users on how to set a GitHub API key using the OpenBBTerminal.
+  It provides explanations about the parameters involved and gives a brief glimpse
+  into the possible return values. The page also includes code examples as useful
+  guidance.
+keywords:
+- github
+- API key
+- openbb
+- key set
+- OpenBBTerminal
+- Python
+- source code
+- terminal environment variables
+- Jupyter notebook session
+- key persistence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="github - Keys - Reference | OpenBB SDK Docs" />
 
 # github
 
@@ -41,4 +59,3 @@ openbb.keys.github(key="example_key")
 ```
 
 ---
-

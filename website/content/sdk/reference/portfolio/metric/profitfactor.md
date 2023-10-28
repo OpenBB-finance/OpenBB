@@ -1,7 +1,22 @@
 ---
 title: profitfactor
-description: OpenBB SDK Function
+description: This page provides detailed information regarding the 'profitfactor'
+  function in the openbb.portfolio.metric package. It includes a brief description,
+  parameters details, returns types, and some examples of usage.
+keywords:
+- openbb portfolio metric
+- profitfactor function
+- PortfolioEngine
+- code example
+- Python
+- openbb.portfolio.load
+- trading portfolio
+- profit factor
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="profitfactor - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # profitfactor
 
@@ -43,4 +58,3 @@ output = openbb.portfolio.metric.profitfactor(p)
 During some time periods there were no losing trades. Thus some values could not be calculated.
 ```
 ---
-

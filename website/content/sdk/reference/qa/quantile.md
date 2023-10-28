@@ -1,7 +1,24 @@
 ---
 title: quantile
-description: OpenBB SDK Function
+description: This page provides documentation and source code for OpenBB's Quantile
+  function. It includes info about parameters, return types, and how to generate and
+  plot rolling quantile data using Python.
+keywords:
+- Docusaurus
+- OpenBB
+- Quantile
+- Python
+- Source Code
+- Data Analysis
+- Quantitative Analysis
+- Plotting Data
+- Rolling Quantile
+- Python DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantile - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,27 @@
 ---
 title: rvol
-description: OpenBB SDK Function
+description: This page provides documentation for rvol, a feature of the OpenBB Terminal.
+  It includes details about how to get rolling volatility and display a chart of it,
+  including the use of the PortfolioEngine class and various window sizes.
+keywords:
+- OpenBB Terminal
+- rolling volatility
+- portfolio engine
+- rvol
+- charting
+- volatility calculation
+- portfolio risk analysis
+- OpenBB SDK
+- OpenBB rvol
+- Python
+- matplotlib
+- pd.DataFrame
+- rvol chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rvol - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

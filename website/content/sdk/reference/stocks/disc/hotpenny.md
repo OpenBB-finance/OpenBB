@@ -1,7 +1,19 @@
 ---
 title: hotpenny
-description: OpenBB SDK Function
+description: 'The page provides documentation on how to use the hotpenny function
+  provided by OpenBB, which returns a DataFrame of today''s hot penny stocks with
+  different columns such as Ticker, Price, Change, $ Volume, Volume, # Trades.'
+keywords:
+- hot penny stocks
+- OpenBB
+- stocks DataFrame
+- stock trading
+- financial data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hotpenny - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # hotpenny
 
@@ -27,4 +39,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | DataFrame | Today hot penny stocks DataFrame with the following columns:<br/>Ticker, Price, Change, $ Volume, Volume, # Trades |
 ---
-

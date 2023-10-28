@@ -1,7 +1,23 @@
 ---
 title: balance
-description: OpenBB SDK Function
+description: This page provides detailed information for retrieving balance sheet
+  data via the OpenBBTerminal's Python function. This includes the parameters and
+  return type of the function, as well as examples of its use for different data sources
+  specifically for the stock symbol 'AAPL'.
+keywords:
+- OpenBBTerminal
+- Python
+- balance sheet
+- financial data
+- YahooFinance
+- AlphaVantage
+- stock symbol
+- AAPL
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # balance
 
@@ -50,4 +66,3 @@ quarterly_income_statement = openbb.stocks.fa.balance("AAPL", source="AlphaVanta
 ```
 
 ---
-

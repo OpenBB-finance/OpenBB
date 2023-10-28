@@ -1,7 +1,26 @@
 ---
 title: qtrcontracts
-description: OpenBB SDK Function
+description: Documentation on the use of qtrcontracts function in Python for analyzing
+  quarterly contracts by ticker. Posts include parameter details for the model and
+  chart functions.
+keywords:
+- qtrcontracts function
+- Python
+- quarterly contracts analytics
+- OpenBB finance
+- Model function
+- Chart function
+- Parameter settings
+- Source code
+- Dataframe
+- matplotlib.axes._axes.Axes
+- Total analysis
+- Momentum analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qtrcontracts - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

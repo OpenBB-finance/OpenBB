@@ -1,7 +1,26 @@
 ---
 title: kurtosis
-description: OpenBB SDK Function
+description: This documentation page provides information on how to get the kurtosis
+  for portfolio and benchmark selected using the OpenBB finance portfolio engine.
+  The page contains source code, parameters, return types and examples.
+keywords:
+- OpenBB finance portfolio engine
+- portfolio metrics
+- kurtosis
+- portfolio and benchmark
+- Python
+- finance
+- data analysis
+- OpenBBTerminal
+- source code
+- PortfolioEngine class instance
+- portfolio load
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kurtosis - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # kurtosis
 
@@ -40,4 +59,3 @@ output = openbb.portfolio.metric.kurtosis(p)
 ```
 
 ---
-

@@ -1,7 +1,21 @@
 ---
 title: score
-description: OpenBB SDK Function
+description: Documentation of 'score' function in fmp, part of the fundamental analysis
+  of stocks, which retrieves the value score for a specified ticker symbol. Returns
+  a np.number type value score.
+keywords:
+- score
+- fmp
+- stocks
+- fundamental analysis
+- value score
+- ticker symbol
+- np.number
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="score - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # score
 
@@ -30,4 +44,3 @@ openbb.stocks.fa.score(symbol: str)
 | ---- | ----------- |
 | np.number | Value score |
 ---
-

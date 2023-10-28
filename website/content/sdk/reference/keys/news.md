@@ -1,7 +1,22 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: This page provides information about the 'Set News key' feature in the
+  OpenBB Terminal. Learn how to use the function, understand the parameters and returns,
+  and see use-cases in Python code examples.
+keywords:
+- OpenBB Terminal documentation
+- Set News key function
+- API keys
+- Python code examples
+- OpenBB SDK
+- terminal environment variables
+- Change API key
+- Jupyter notebook sessions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Keys - Reference | OpenBB SDK Docs" />
 
 # news
 
@@ -41,4 +56,3 @@ openbb.keys.news(key="example_key")
 ```
 
 ---
-

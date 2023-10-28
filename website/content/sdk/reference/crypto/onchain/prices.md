@@ -1,7 +1,26 @@
 ---
 title: prices
-description: OpenBB SDK Function
+description: The 'prices' page shows how to use our API to obtain and display information
+  about historic prices of different cryptocurrencies. This includes parameters and
+  return types.
+keywords:
+- historical prices
+- volume
+- market cap
+- average price
+- onchain
+- tokens
+- Ethplorer
+- OpenBB
+- cryptocurrency
+- API
+- Python
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prices - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,21 @@
 ---
 title: generate_data
-description: OpenBB SDK Function
+description: The generate_data function in openbb.stocks.options gets x values, and
+  y values before and after premiums. It doesn't take any parameters or return anything.
+keywords:
+- generate_data
+- x values
+- y values
+- premiums
+- current_price
+- options
+- underlying
+- openbb.stocks.options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="generate_data - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 # generate_data
 
@@ -26,4 +40,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

@@ -1,7 +1,28 @@
 ---
 title: future
-description: OpenBB SDK Function
+description: This page provides detailed documentation on how to use OpenBB's 'future'
+  function in Python script. It explains parameters and returns related to different
+  financial instruments.
+keywords:
+- OpenBB
+- OpenBB future function
+- Python script
+- financial instruments
+- Indices
+- Energy
+- Metals
+- Meats
+- Grains
+- Softs
+- Bonds
+- Currencies
+- Finviz
+- Dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="future - Economy - Reference | OpenBB SDK Docs" />
 
 # future
 
@@ -32,4 +53,3 @@ openbb.economy.future(future_type: str = "Indices", sortby: str = "ticker", asce
 | ---- | ----------- |
 | pd.Dataframe | Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies |
 ---
-

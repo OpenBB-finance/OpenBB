@@ -1,7 +1,25 @@
 ---
 title: gdapps
-description: OpenBB SDK Function
+description: This page presents features such as the displaying and plotting of top
+  dApps by TVL, which are part of the DeFi module of the openbb crypto module. Detailed
+  guides on how to use these features with service parameters such as limit, export
+  type, and others are included. Links to source code are also provided.
+keywords:
+- dApps
+- TVL
+- gdapps
+- openbb.crypto.defi
+- pd.DataFrame
+- DeFi protocols
+- Chart
+- matplotlib
+- Export dataframe
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gdapps - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

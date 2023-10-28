@@ -1,7 +1,23 @@
 ---
 title: contracts
-description: OpenBB SDK Function
+description: This documentation contains the details of two functions, 'contracts'
+  and 'contracts_chart', that are used to retrieve trading data of U.S. government
+  contracts for specific ticker from 'quiverquant.com'. It explains the parameters
+  and return type of the functions, and provides links to the source code.
+keywords:
+- contracts
+- contracts_chart
+- quiverquant.com
+- government contracts
+- ticker
+- trading data
+- parameters
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Gov - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

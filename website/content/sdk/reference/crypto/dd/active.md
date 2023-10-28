@@ -1,7 +1,24 @@
 ---
 title: active
-description: OpenBB SDK Function
+description: Documentation for the activation and visualization of active addresses
+  of a certain cryptocurrency symbol. Explains how to both retrieve and chart data
+  concerning active addresses within specific time frames.
+keywords:
+- cryptocurrency
+- active addresses
+- data visualization
+- source code
+- OpenBBTerminal
+- python
+- docusaurus documentation
+- due diligence
+- time intervals
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="active - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

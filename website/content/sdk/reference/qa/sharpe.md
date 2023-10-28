@@ -1,7 +1,25 @@
 ---
 title: sharpe
-description: OpenBB SDK Function
+description: Documentation page on the Sharpe Ratio - a financial measure calculated
+  in the OpenBB framework. Includes parameters, source code, and instructions for
+  plotting the Sharpe ratio in a chart. Relevant for quantitative finance, data analysis,
+  and Python programming.
+keywords:
+- Sharpe Ratio
+- Quantitative Analysis
+- Risk-Free Rate
+- Data Visualization
+- Python
+- Finance
+- OpenBB
+- Financial Models
+- Data Analysis
+- Programming
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sharpe - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

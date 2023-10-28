@@ -1,7 +1,23 @@
 ---
 title: mret
-description: OpenBB SDK Function
+description: This page provides comprehensive guides and source codes on how to get
+  and display monthly returns using the functions 'mret' and 'mret_chart' respectively,
+  both under openbb.portfolio of the OpenBB Terminal.
+keywords:
+- OpenBB Terminal
+- portfolio
+- mret
+- mret_chart
+- Monthly returns
+- PortfolioEngine
+- portfolio.load
+- openbb.portfolio.load
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mret - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

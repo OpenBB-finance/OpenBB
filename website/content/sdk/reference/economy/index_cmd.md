@@ -1,7 +1,28 @@
 ---
 title: index
-description: OpenBB SDK Function
+description: This page provides documentation for the OpenBB Terminal SDK functions
+  for fetching and visualizing economic indices data from Yahoo Finance. It provides
+  Python code examples and explains parameters and returns in detail.
+keywords:
+- Docusaurus documentation
+- SEO
+- OpenBB Terminal SDK
+- Python
+- Economy indices
+- Yahoo Finance data
+- DataFrame
+- Data visualization
+- Python code examples
+- Data intervals
+- Data start and end dates
+- Adjusted Close
+- Cumulative returns on index
+- Export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="index - Economy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,21 @@
 ---
 title: obv
-description: OpenBB SDK Function
+description: This page provides information on how to use the On Balance Volume (OBV)
+  technical indicator source code. It covers how to plot the OBV chart and list the
+  parameters and returns. This information is useful for stock market analysis.
+keywords:
+- OBV
+- On Balance Volume
+- technical indicator source code
+- plot OBV chart
+- parameters
+- returns
+- stock market analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="obv - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

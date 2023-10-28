@@ -1,7 +1,23 @@
 ---
 title: clenow
-description: OpenBB SDK Function
+description: This page offers thorough knowledge of Clenow Volatility Adjusted Momentum
+  model in OpenBB. It describes the function, parameters, returns and provides examples
+  of the feature in python code for aspiring users.
+keywords:
+- OpenBB
+- Clenow Volatility Adjusted Momentum
+- Technical analysis
+- Function description
+- Parameters
+- Python code example
+- Data series
+- Regression
+- Momentum chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="clenow - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

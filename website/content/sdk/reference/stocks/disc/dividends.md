@@ -1,7 +1,23 @@
 ---
 title: dividends
-description: OpenBB SDK Function
+description: This page provides documentation on how to access the dividend calendar
+  for a given date using our OpenBB Terminal. The date represents the Ex-Dividend
+  Date. Users are guided on how to use it and understand the returned DataFrame.
+keywords:
+- dividends
+- OpenBB Terminal
+- Ex-Dividend Date
+- Python
+- Dataframe
+- dividend calendar
+- documentation
+- stock market
+- finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dividends - Disc - Stocks - Reference | OpenBB SDK Docs" />
 
 # dividends
 
@@ -30,4 +46,3 @@ openbb.stocks.disc.dividends(date: str = None)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of dividend calendar |
 ---
-

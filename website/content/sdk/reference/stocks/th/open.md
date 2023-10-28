@@ -1,7 +1,22 @@
 ---
 title: open
-description: OpenBB SDK Function
+description: Documentation page offering extensive details on how 'open' feature functions
+  in OpenBB finance and their source code. This feature showcases open exchanges and
+  how to display them.
+keywords:
+- OpenBB
+- Finance Software
+- Python
+- Open
+- Exchanges
+- Trading hours
+- Documentation
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="open - Th - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

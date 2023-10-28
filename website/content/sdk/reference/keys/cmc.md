@@ -1,7 +1,21 @@
 ---
 title: cmc
-description: OpenBB SDK Function
+description: This page provides the process of setting the Coinmarketcap key, it explains
+  the parameters involved and gives an example of how it can be done. The topic is
+  important for users who want to integrate their projects with Coinmarketcap's API.
+keywords:
+- Coinmarketcap
+- API
+- key setting
+- Jupyter notebook
+- python
+- openbb_terminal
+- environment variables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cmc - Keys - Reference | OpenBB SDK Docs" />
 
 # cmc
 
@@ -41,4 +55,3 @@ openbb.keys.cmc(key="example_key")
 ```
 
 ---
-

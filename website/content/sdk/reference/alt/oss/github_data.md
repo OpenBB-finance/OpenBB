@@ -1,7 +1,23 @@
 ---
 title: github_data
-description: OpenBB SDK Function
+description: This page provides the function 'openbb.alt.oss.github_data' to retrieve
+  repository stats from a specified GitHub API endpoint using Python. It includes
+  a list of parameters for this function and explains what data you will retrieve.
+keywords:
+- github data
+- repository stats
+- source code
+- python
+- openbb.alt.oss.github_data
+- github api endpoint
+- params
+- api endpoint
+- dictionary data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="github_data - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 # github_data
 
@@ -31,4 +47,3 @@ openbb.alt.oss.github_data(url: str, kwargs: Any)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with data |
 ---
-

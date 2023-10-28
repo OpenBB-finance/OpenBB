@@ -1,7 +1,27 @@
 ---
 title: gainers
-description: OpenBB SDK Function
+description: The page provides functionalities regarding Largest Gainers in cryptocurrency,
+  powered by CoinGecko's API. It contains Python models and charts to display the
+  coins which gain the most in a given period. Additionally, it provides details on
+  how to sort and display data, and export data to different file formats.
+keywords:
+- gainers
+- crypto
+- coingecko
+- model
+- chart
+- dataframe
+- python
+- OpenBB
+- price
+- volume
+- export
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gainers - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

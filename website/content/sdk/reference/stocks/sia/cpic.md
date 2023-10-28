@@ -1,7 +1,27 @@
 ---
 title: cpic
-description: OpenBB SDK Function
+description: The documentation page on cpic used in openbb_terminal provides detailed
+  information on how to use the 'cpic' and 'cpic_chart' to analyze and visualize the
+  number of companies per industry in a specific country, considering optional parameters
+  like market cap, excluding international exchanges, maximum industries to display
+  and more.
+keywords:
+- cpic
+- openbb_terminal documentation
+- sector industry analysis
+- Number of companies per industry
+- Finance Database
+- Market Cap
+- Excluding international exchanges
+- Data visualization
+- Python
+- Parameter description
+- Returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cpic - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

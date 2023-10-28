@@ -1,7 +1,22 @@
 ---
 title: ldapps
-description: OpenBB SDK Function
+description: This page provides documentation for ldapps functions used in the OpenBB
+  finance terminal. These functions retrieve and display information about listed
+  DeFi protocols, their current Total Valued Locked (TVL), and changes to it.
+keywords:
+- OpenBB
+- DeFi protocols
+- ldapps
+- dApps
+- cryptocurrency
+- Total Valued Locked (TVL)
+- Python
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ldapps - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

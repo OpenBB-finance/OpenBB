@@ -1,7 +1,21 @@
 ---
 title: categories_keys
-description: OpenBB SDK Function
+description: This page provides documentation on the 'categories_keys' function from
+  OpenBB, which retrieves a list of categories keys in the cryptocurrency domain.
+keywords:
+- OpenBB
+- categories_keys
+- documentation
+- cryptocurrency
+- category keys
+- crypto categories
+- Python
+- function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="categories_keys - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 # categories_keys
 
@@ -27,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List of categories keys |
 ---
-

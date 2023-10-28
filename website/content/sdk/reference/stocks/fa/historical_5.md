@@ -1,7 +1,24 @@
 ---
 title: historical_5
-description: OpenBB SDK Function
+description: Find how to get a 5 year monthly historical performance for a given ticker
+  with dividends filtered using OpenBB's Python library. By analyzing ticker symbols
+  with this method, get a detailed data analysis.
+keywords:
+- Historical performance
+- OpenBB
+- 5 year monthly history
+- Dividends
+- Ticker symbol
+- Data analysis
+- Python
+- Source code
+- Fundamental analysis
+- Pandas DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="historical_5 - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # historical_5
 
@@ -30,4 +47,3 @@ openbb.stocks.fa.historical_5(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Historical data |
 ---
-

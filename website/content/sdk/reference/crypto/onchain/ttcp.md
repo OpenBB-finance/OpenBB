@@ -1,7 +1,29 @@
 ---
 title: ttcp
-description: OpenBB SDK Function
+description: The ttcp (Top Traded Crypto Pairs) page provides details about two backend
+  functions that analyze trading data from decentralized exchanges like Uniswap. This
+  page includes python source-codes and parameters for the functions, which help in
+  viewing and analyzing the most traded crypto pairs within a chosen timeframe.
+keywords:
+- ttcp
+- Crypto Trade
+- Crypto Pairs
+- Decentralized Exchange
+- OpenBB
+- Onchain Data
+- Trade Analysis
+- Ethereum
+- Uniswap
+- Bitquery Model
+- Bitquery View
+- Python
+- Data Visualization
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ttcp - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

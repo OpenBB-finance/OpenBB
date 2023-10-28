@@ -1,7 +1,23 @@
 ---
 title: history
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about using the
+  openbb software's history feature, with sections for its model and chart display.
+  It illustrates how to retrieve repository star history, search for specific repositories,
+  and plot repo summaries.
+keywords:
+- openbb software
+- repository star history
+- github
+- chart display
+- repo summary plot
+- export dataframe
+- external axes
+- software documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="history - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

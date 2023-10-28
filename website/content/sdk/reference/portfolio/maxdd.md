@@ -1,7 +1,23 @@
 ---
 title: maxdd
-description: OpenBB SDK Function
+description: Documentation page providing details about the maximum drawdown calculation
+  in historical series and how to display the drawdown curve. Contains examples, parameters,
+  returns, and source code links.
+keywords:
+- maxdd
+- OpenBBTerminal
+- PortfolioEngine
+- maximum drawdown
+- portfolio
+- documentation
+- source code
+- examples
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxdd - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

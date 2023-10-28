@@ -1,7 +1,22 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: This documentation is for a news aggregator platform on the OpenBB Terminal
+  which fetches recent posts from CryptoPanic. It details available functions, parameters,
+  returns and the source code link.
+keywords:
+- OpenBB Terminal
+- CryptoPanic
+- news aggregator
+- source code
+- parameters
+- returns
+- crypto news
+- filter options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,23 @@
 ---
 title: currencies
-description: OpenBB SDK Function
+description: This page provides information about accessing global currencies data
+  through a Python function. The function returns a DataFrame with the name, price,
+  net change, and percent change of multiple currencies.
+keywords:
+- global currencies data
+- Python
+- data scraping
+- DataFrame
+- OpenBB
+- economy.currencies
+- price
+- net change
+- percent change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="currencies - Economy - Reference | OpenBB SDK Docs" />
 
 # currencies
 
@@ -27,4 +43,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, price, net change and percent change |
 ---
-

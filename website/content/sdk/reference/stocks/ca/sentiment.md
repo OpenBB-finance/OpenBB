@@ -1,7 +1,31 @@
 ---
 title: sentiment
-description: OpenBB SDK Function
+description: The page provides detailed information about Sentiment Analysis functions
+  provided by the OpenBB Finance Terminal. It guides users on how to retrieve sentiment
+  analysis for several symbols using FinBrain's API and how to display the sentiment
+  for all ticker.
+keywords:
+- API
+- Sentiment Analysis
+- OpenBB
+- Finance
+- Terminal
+- FinBrain
+- Ticker
+- Symbols
+- Finviz_peers
+- Finnhub_peers
+- Polygon_peers
+- Data visualization
+- Python
+- matplotlib
+- Data Export
+- Sentiment chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sentiment - Ca - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

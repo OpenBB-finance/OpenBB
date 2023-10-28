@@ -1,7 +1,28 @@
 ---
 title: fwd
-description: OpenBB SDK Function
+description: This documentation page provides the syntax and details for extracting
+  forward rates from fxempire using the OpenBB.finance OpenBBTerminal, including the
+  parameters required and the return type. The page is of significant utility to users
+  seeking to navigate the forex section of the OpenBBTerminal.
+keywords:
+- fwd function
+- fxempire
+- OpenBBTerminal
+- Forward rates
+- forex
+- OpenBB.finance
+- currency conversion
+- USD
+- EUR
+- parameters
+- returns
+- pd.DataFrame
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fwd - Forex - Reference | OpenBB SDK Docs" />
 
 # fwd
 
@@ -31,4 +52,3 @@ openbb.forex.fwd(to_symbol: str = "USD", from_symbol: str = "EUR")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing forward rates |
 ---
-

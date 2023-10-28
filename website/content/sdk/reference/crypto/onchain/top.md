@@ -1,7 +1,26 @@
 ---
 title: top
-description: OpenBB SDK Function
+description: Documentation for the OpenBB project's top 50 crypto tokens function.
+  This is implemented in Python and uses Docusaurus to organize and render the documentation.
+  It covers the parameters required and the expected result, including the sort order
+  and the type of data rendered.
+keywords:
+- Docusaurus
+- SEO
+- Metadata
+- Top 50 Tokens
+- OpenBB
+- Cryptocurrency
+- ERC20
+- Ethplorer
+- Python
+- Cryptocurrency Rank
+- DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: gov_proposals
-description: OpenBB SDK Function
+description: Docusaurus page about Terra blockchain governance proposals, detailing
+  parameters and functionalities such as sorting, ascending/descending and exporting
+  data. Includes links to original source and GitHub source.
+keywords:
+- Terra Blockchain
+- Governance Proposals
+- Sorting Data
+- Ascending
+- Descending
+- Exporting Data
+- Source Code
+- Python
+- OpenBB Terminal
+- Docusaurus Page SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gov_proposals - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

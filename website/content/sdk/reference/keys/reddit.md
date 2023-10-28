@@ -1,7 +1,29 @@
 ---
 title: reddit
-description: OpenBB SDK Function
+description: The documentation page provides information on how to set Reddit API
+  keys using openbb_terminal's Python SDK. It lays out detailed procedures to establish
+  Reddit's client id and client secret for authentication. The page also explains
+  defaults and optional parameters including user credentials and options for API
+  key persistance.
+keywords:
+- Reddit API
+- openbb keys
+- Reddit client id
+- Reddit client secret
+- Reddit authentication
+- openbb_terminal
+- Python SDK
+- API setting
+- API key
+- User credentials
+- Jupyter notebook
+- Environment variables
+- Status string
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="reddit - Keys - Reference | OpenBB SDK Docs" />
 
 # reddit
 
@@ -53,4 +75,3 @@ client_id="example_id",
     )
 ```
 ---
-

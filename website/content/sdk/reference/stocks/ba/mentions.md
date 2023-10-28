@@ -1,7 +1,21 @@
 ---
 title: mentions
-description: OpenBB SDK Function
+description: Documentation page for OpenBB Terminal's modules 'mentions' and 'mentions_chart.'
+  These modules analyze and visualize the interest over time for a particular stock's
+  symbol using Google's API.
+keywords:
+- OpenBB Terminal
+- Stock market analysis
+- Google API
+- Stock interest
+- Python
+- Data visualization
+- Finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mentions - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

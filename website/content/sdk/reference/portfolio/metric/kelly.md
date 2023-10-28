@@ -1,7 +1,20 @@
 ---
 title: kelly
-description: OpenBB SDK Function
+description: This page provides information on how to use the 'kelly' function from
+  the OpenBB portfolio management library. With detailed parameter explanations to
+  calculate the kelly criterion and examples of usage, it is a valuable reference
+  for portfolio management within the OpenBB environment.
+keywords:
+- kelly criterion
+- portfolio management
+- openbb.portfolio.metric.kelly
+- portfolio engine
+- portfolio load
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kelly - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # kelly
 
@@ -40,4 +53,3 @@ output = openbb.portfolio.metric.kelly(p)
 ```
 
 ---
-

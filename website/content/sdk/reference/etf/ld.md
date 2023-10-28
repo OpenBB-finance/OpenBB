@@ -1,7 +1,22 @@
 ---
 title: ld
-description: OpenBB SDK Function
+description: This page of the OpenBB Terminal documentation provides details on how
+  to return a selection of ETFs based on description filtered by total assets using
+  the 'ld' function. It includes source code links, input parameters, and their returns.
+keywords:
+- OpenBB Terminal
+- ETF selection
+- description filter
+- total assets filter
+- '''ld'' function'
+- source code
+- parameter description
+- ETF return
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ld - Etf - Reference | OpenBB SDK Docs" />
 
 # ld
 
@@ -30,4 +45,3 @@ openbb.etf.ld(description: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with ETFs that match a certain description |
 ---
-

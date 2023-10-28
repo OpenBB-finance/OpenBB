@@ -1,7 +1,25 @@
 ---
 title: get_mt
-description: OpenBB SDK Function
+description: This page covers the get_mt function, its usage, parameters and return
+  types. It defines the method to retrieve available messari timeseries in two different
+  views; Model and Chart.
+keywords:
+- get_mt function
+- messari timeseries
+- OpenBBTerminal
+- Python
+- Model
+- Chart
+- Source code
+- pd.DataFrame
+- query
+- export dataframe
+- crypto dd
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="get_mt - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,25 @@
 ---
 title: exchange
-description: OpenBB SDK Function
+description: This documentation page provides details on the 'exchange' function of
+  the OpenBB platform. This includes the model function for acquiring current exchange
+  open hours, and the view function for displaying these hours. The page provides
+  information on source codes, parameters and return values.
+keywords:
+- exchange
+- trading hours
+- openbb
+- model
+- view
+- chart
+- source code
+- parameters
+- returns
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exchange - Th - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

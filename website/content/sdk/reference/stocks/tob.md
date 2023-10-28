@@ -1,7 +1,26 @@
 ---
 title: tob
-description: OpenBB SDK Function
+description: Get top of book bid and ask for any ticker on the CBOE exchange using
+  the OpenBB Terminal. Default exchange is BZX, but can be changed to EDGX, BYX, or
+  EDGA. Returns a Dataframe of Bids.
+keywords:
+- Top of Book bid
+- Ask for ticker
+- CBOE
+- BZX
+- EDGX
+- BYX
+- EDGA
+- OpenBB Terminal
+- OpenBB Stocks
+- Dataframe of Bids
+- OpenBB finance
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tob - Stocks - Reference | OpenBB SDK Docs" />
 
 # tob
 
@@ -31,4 +50,3 @@ openbb.stocks.tob(symbol: str, exchange: str = "BZX")
 | ---- | ----------- |
 | pd.DatatFrame | Dataframe of Bids |
 ---
-

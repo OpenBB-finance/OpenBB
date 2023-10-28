@@ -1,7 +1,24 @@
 ---
 title: gwei
-description: OpenBB SDK Function
+description: This documentation page details the 'gwei' functionality of OpenBB's
+  crypto onchain operations. It contains code snippets and function descriptions for
+  retrieving Ethereum gas fees data, along with export methods for the same.
+keywords:
+- OpenBB
+- crypto onchain operations
+- gwei
+- Ethereum gas fees data
+- data export
+- pd.DataFrame
+- Python
+- Source Code
+- function documentation
+- onchain data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gwei - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,30 @@
 ---
 title: top
-description: OpenBB SDK Function
+description: 'This content describes two features: ''Model'' and ''Chart''. ''Model''
+  gets repositories sorted by stars or forks with possible category filtering. ''Chart''
+  plots a repo summary. Both procedures involve parameters like ''sortby'', ''categories'',
+  ''limit'', ''export'', and ''external_axes''.'
+keywords:
+- Documentation
+- Model
+- Chart
+- Repositories
+- Stars
+- Forks
+- Filtering
+- Parameters
+- Sortby
+- Categories
+- Limit
+- Export
+- External_axes
+- Dataframe
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

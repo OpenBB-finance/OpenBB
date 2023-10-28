@@ -1,7 +1,26 @@
 ---
 title: historical
-description: OpenBB SDK Function
+description: 'This webpage provides comprehensive documentation about the ''historical''
+  feature of OpenBB''s application: OpenBBTerminal. Users can view and access python
+  codes, parameters, returning values for two main functionalities: viewing historical
+  price of stocks and creating a chart for those stocks.'
+keywords:
+- OpenBBTerminal
+- historical stock price
+- stock chart
+- python codes
+- parameters
+- documentation
+- dataframe
+- preset loaded
+- type candle
+- start date
+- MinMax normalization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="historical - Screener - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

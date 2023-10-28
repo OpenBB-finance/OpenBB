@@ -1,7 +1,30 @@
 ---
 title: iex
-description: OpenBB SDK Function
+description: This documentation provides information about the 'iex' function for
+  setting the IEX Cloud key using the OpenBB terminal. The function helps users to
+  set their API key with optional parameters such as persist and show_output for additional
+  functionality. Use this function to easily integrate your application with the IEX
+  Cloud services.
+keywords:
+- iex
+- OpenBB terminal
+- API key
+- IEX Cloud
+- python
+- api key setting
+- openbb.keys.iex
+- code documentation
+- coding
+- programming
+- software development
+- source code
+- persist
+- show_output
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="iex - Keys - Reference | OpenBB SDK Docs" />
 
 # iex
 
@@ -41,4 +64,3 @@ openbb.keys.iex(key="example_key")
 ```
 
 ---
-

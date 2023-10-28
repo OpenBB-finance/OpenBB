@@ -1,7 +1,26 @@
 ---
 title: print_insider_data
-description: OpenBB SDK Function
+description: Documentation page for OpenBB-finance's Print Insider Data feature. It
+  includes details about the parameters involved, such as the type of insider data
+  and the limit of data rows to display, as well as the option to export data in a
+  specific format. The page provides source code links for further information.
+keywords:
+- Print insider data
+- Open insider filtered data
+- Type_insider
+- Limit
+- Export data format
+- Docusaurus page metadata
+- Python
+- Source code
+- OpenBBTerminal
+- OpenBB-finance
+- Metadata SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="print_insider_data - Ins - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

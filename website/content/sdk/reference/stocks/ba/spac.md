@@ -1,7 +1,22 @@
 ---
 title: spac
-description: OpenBB SDK Function
+description: A detailed documentation page on the SPAC function from OpenBB's financial
+  analysis tool suite. Learn how to extract SPAC-related posts from top subreddits
+  with OpenBB.
+keywords:
+- SPAC
+- Reddit Analysis
+- Python
+- OpenBB
+- subreddits
+- Financial Analysis
+- Data Extraction
+- SPAC posts Extraction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="spac - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # spac
 
@@ -30,4 +45,3 @@ openbb.stocks.ba.spac(limit: int = 5)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, dict, int] | Dataframe of reddit submission,<br/>Dictionary of tickers and counts,<br/>Number of posts found. |
 ---
-

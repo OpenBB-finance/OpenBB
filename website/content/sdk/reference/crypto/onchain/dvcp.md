@@ -1,7 +1,25 @@
 ---
 title: dvcp
-description: OpenBB SDK Function
+description: This documentation page contains information about dvcp, a function from
+  the OpenBB framework that provides data about the daily volume of a specific cryptocurrency
+  pair. Both the data model and a chart view are presented. The documentation includes
+  source code links, detailed information about parameters and returned data.
+keywords:
+- dvcp
+- OpenBB
+- cryptocurrency
+- daily volume
+- ERC20 token
+- data model
+- chart view
+- source code
+- parameters
+- returned data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dvcp - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

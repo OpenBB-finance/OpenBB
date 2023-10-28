@@ -1,7 +1,23 @@
 ---
 title: pending
-description: OpenBB SDK Function
+description: This page explains how to get information on pending orders using the
+  OpenBB Terminal. The documentation includes specific source code for the Forex market
+  with OANDA, detailing parameters and returns including the AccountID. The page also
+  provides a link to the relevant source code on GitHub.
+keywords:
+- OpenBB Terminal
+- Forex
+- OANDA
+- AccountID
+- Pending orders
+- OpenBB Forex OANDA Pending
+- Source Code
+- Pending chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pending - Oanda - Forex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

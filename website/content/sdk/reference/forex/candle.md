@@ -1,7 +1,20 @@
 ---
 title: candle
-description: OpenBB SDK Function
+description: Discover how to implement candle plotting for forex data using the OpenBB
+  platform. The page includes necessary parameters for creating a candle plot and
+  source code for reference.
+keywords:
+- forex
+- candle
+- fx data
+- moving averages
+- matplotlib
+- OpenBB.finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candle - Forex - Reference | OpenBB SDK Docs" />
 
 # candle
 
@@ -33,4 +46,3 @@ openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = 
 This function does not return anything
 
 ---
-

@@ -1,7 +1,33 @@
 ---
 title: aroon
-description: OpenBB SDK Function
+description: This documentation page provides an in-depth overview of the Aroon technical
+  indicator within the OpenBBTerminal. It covers the model and chart view of the Aroon
+  indicator, with detailed parameters and source code. It also provides the functionality
+  to plot the Aroon indicator and export data.
+keywords:
+- aroon
+- technical indicator
+- OpenBBTerminal
+- openbb.ta
+- openbb.ta.aroon
+- openbb.ta.aroon_chart
+- trend indicators
+- pd.DataFrame
+- python
+- OHLC price data
+- plotting
+- matplotlib
+- axes
+- scalar
+- window
+- symbol
+- export
+- external axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="aroon - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

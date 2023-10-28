@@ -1,7 +1,25 @@
 ---
 title: treasury_maturities
-description: OpenBB SDK Function
+description: This page covers the documentation of OpenBB finance's treasury_maturities
+  function, providing details on the source code and its returns. This function returns
+  a DataFrame containing the name of the financial instruments and a string containing
+  all options.
+keywords:
+- OpenBB finance
+- Documentation
+- Treasury Maturities
+- EconDB
+- Source Code
+- OpenBBTerminal
+- Python Code
+- Economy
+- Financial Instruments
+- Data Frame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="treasury_maturities - Economy - Reference | OpenBB SDK Docs" />
 
 # treasury_maturities
 
@@ -27,4 +45,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Contains the name of the instruments and a string containing all options. |
 ---
-

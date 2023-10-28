@@ -1,7 +1,25 @@
 ---
 title: om
-description: OpenBB SDK Function
+description: Learn how to use the omega ratio function to guide your portfolio management.
+  This page provides details about parameters, returns, and examples on how to apply
+  the omega ratio method in your transaction calculations using both model and chart
+  views.
+keywords:
+- omega ratio
+- portfolio management
+- OpenBB Terminal
+- PortfolioEngine class
+- financial transactions
+- annualized target return
+- portfolio load
+- python
+- source code
+- chart view
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="om - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

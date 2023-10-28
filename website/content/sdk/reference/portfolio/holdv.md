@@ -1,7 +1,24 @@
 ---
 title: holdv
-description: OpenBB SDK Function
+description: Detailed documentation of the holdv function in portfolio module of OpenBB
+  finance dealing with getting and displaying holdings of assets. Learn how to use
+  and understand the parameters, source code and examples included.
+keywords:
+- OpenBB finance documentation
+- holdv function OpenBB
+- portfolio module OpenBB
+- portfolio engine
+- get holdings value
+- holdv chart display
+- assets holdings
+- Python finance tools
+- portfolio management OpenBB
+- OpenBB assets management
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holdv - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

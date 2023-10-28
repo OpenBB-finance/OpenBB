@@ -1,7 +1,23 @@
 ---
 title: distr
-description: OpenBB SDK Function
+description: This page provides documentation on using the 'distr' and 'distr_chart'
+  functions in OpenBB Terminal's Portfolio module. Learn how to display daily returns
+  and configure parameters like the PortfolioEngine instance and return intervals.
+keywords:
+- OpenBB Terminal documentation
+- Portfolio Module
+- Display Daily Returns
+- PortfolioEngine instance
+- Return intervals
+- distr function
+- distr_chart function
+- Python
+- Source Code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="distr - Portfolio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

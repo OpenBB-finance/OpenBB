@@ -1,7 +1,21 @@
 ---
 title: bbands
-description: OpenBB SDK Function
+description: This documentation is about the 'bbands' function in the OpenBB finance
+  library. It allows users to calculate and plot Bollinger Bands for financial data,
+  providing multiple parameters for customization.
+keywords:
+- OpenBB finance library
+- Bollinger Bands
+- Financial data analysis
+- Python financial tools
+- Technical analysis
+- Volatility models
+- Financial chart plotting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bbands - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

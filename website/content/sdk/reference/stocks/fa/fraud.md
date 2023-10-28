@@ -1,7 +1,22 @@
 ---
 title: fraud
-description: OpenBB SDK Function
+description: This is an informational page about Fetching fraud ratios based on fundamentals
+  using OpenBB's stocks.fa.fraud function in Python. This function accepts a stock
+  ticker symbol and returns fraud ratios in a pandas DataFrame format.
+keywords:
+- OpenBB Terminal
+- fraud ratios
+- Python
+- fundamental analysis
+- stock ticker symbol
+- pandas DataFrame
+- source code
+- OpenBB.finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fraud - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # fraud
 
@@ -31,4 +46,3 @@ openbb.stocks.fa.fraud(symbol: str, detail: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | The fraud ratios |
 ---
-

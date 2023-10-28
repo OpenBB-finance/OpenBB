@@ -1,7 +1,20 @@
 ---
 title: load_bl_views
-description: OpenBB SDK Function
+description: This page documents the 'load_bl_views' function, part of the OpenBB's
+  portfolio optimization toolset which allows users to load an Excel file with views
+  for the Black Litterman model. Learn about inputs, outputs and usage.
+keywords:
+- load_bl_views
+- OpenBB portfolio optimization
+- Black Litterman model
+- Python
+- Excel file loading
+- p_views matrix
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load_bl_views - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # load_bl_views
 
@@ -30,4 +43,3 @@ openbb.portfolio.po.load_bl_views(excel_file: str = "")
 | ---- | ----------- |
 | list | Returns a list with p_views matrix |
 ---
-

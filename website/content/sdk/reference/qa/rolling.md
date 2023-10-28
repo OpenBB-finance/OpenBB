@@ -1,7 +1,24 @@
 ---
 title: rolling
-description: OpenBB SDK Function
+description: A documentation page explaining the functionality of the OpenBB rolling
+  model and rolling chart. These tools deal with computing and plotting rolling means
+  and standard deviations in financial data, mapped by stock symbols or tickers. The
+  methods are implemented in Python and operate on dataframes.
+keywords:
+- rolling
+- quantitative analysis
+- dataframe
+- standard deviation
+- mean
+- OpenBB
+- Python
+- Stock ticker
+- window
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rolling - Qa - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

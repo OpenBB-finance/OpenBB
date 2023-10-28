@@ -1,7 +1,28 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This page provides detailed documentation on retrieving and visualizing
+  cryptocurrency data from the CoinPaprika API using methods from the OpenBB crypto
+  module. The page includes parameters and return values, data sorting, and export
+  options. Source codes are also linked for better understanding.
+keywords:
+- CoinPaprika API
+- crypto coin data
+- cryptocurrency information
+- openbb.crypto.ov.info
+- data modeling
+- data sorting
+- ascending and descending sorting
+- data visualization
+- data export formats
+- python coding
+- coin market cap
+- coin volume
+- price chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

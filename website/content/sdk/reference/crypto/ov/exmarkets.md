@@ -1,7 +1,20 @@
 ---
 title: exmarkets
-description: OpenBB SDK Function
+description: Documentation for the exmarkets API functions from OpenBBTerminal's Cryptocurrency
+  Overview tool. Lists markets by exchange ID and manages charts.
+keywords:
+- OpenBBTerminal
+- exmarkets
+- API
+- Cryptocurrency Overview Tool
+- Markets by Exchange ID
+- Cryptocurrency
+- CoinPaprika
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exmarkets - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

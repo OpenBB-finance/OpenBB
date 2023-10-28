@@ -1,7 +1,23 @@
 ---
 title: cnews
-description: OpenBB SDK Function
+description: This page provides details about the 'cnews' function of the OpenBB Terminal,
+  capable of fetching company news. The function uses the company ticker and optional
+  dates of search as parameters.
+keywords:
+- OpenBB Terminal
+- cnews function
+- company news
+- Finnhub
+- company ticker
+- news articles
+- search dates
+- Python
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cnews - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # cnews
 
@@ -32,4 +48,3 @@ openbb.stocks.ba.cnews(symbol: str, start_date: Optional[str] = None, end_date: 
 | ---- | ----------- |
 | List | term to search on the news articles |
 ---
-

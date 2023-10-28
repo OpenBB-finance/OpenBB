@@ -1,7 +1,23 @@
 ---
 title: av
-description: OpenBB SDK Function
+description: This documentation page provides detailed instructions on how to set
+  the Alpha Vantage key using OpenBB Terminal. It includes descriptions for parameters,
+  information on returns, and usage examples.
+keywords:
+- Alpha Vantage key
+- OpenBB Terminal
+- API key
+- SDK
+- Python
+- Functions
+- Global settings
+- Environment variables
+- Jupyter notebook
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="av - Keys - Reference | OpenBB SDK Docs" />
 
 # av
 
@@ -41,4 +57,3 @@ openbb.keys.av(key="example_key")
 ```
 
 ---
-

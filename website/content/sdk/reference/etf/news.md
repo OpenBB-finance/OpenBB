@@ -1,7 +1,22 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: The page provides documentation on how to get and display news for a
+  given term using OpenBB's Python functions. It also describes parameters used in
+  these functions and links to the related source codes.
+keywords:
+- OpenBB
+- Documentation
+- Python functions
+- News retrieval
+- NewsAPI
+- Source code
+- Dataframe
+- Parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Etf - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

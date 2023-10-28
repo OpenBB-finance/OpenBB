@@ -1,7 +1,27 @@
 ---
 title: re
-description: OpenBB SDK Function
+description: This page provides a detailed look into the Random Effects Model developed
+  by OpenBB. It covers the parameters involved such as regression variables and data
+  sets, the return type, and a link is provided to access the source code, making
+  it a valuable resource for any data scientist interested in econometrics.
+keywords:
+- random effects model
+- regression variables
+- OpenBB
+- data science
+- Python code
+- econometrics
+- pooled OLS model
+- independent variable
+- dependent variable
+- dataset
+- source code
+- github
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="re - Econometrics - Reference | OpenBB SDK Docs" />
 
 # re
 
@@ -31,4 +51,3 @@ openbb.econometrics.re(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>RandomEffects model |
 ---
-

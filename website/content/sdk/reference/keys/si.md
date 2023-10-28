@@ -1,7 +1,20 @@
 ---
 title: si
-description: OpenBB SDK Function
+description: This page provides a guide on how to set the Sentimentinvestor key using
+  OpenBB terminal. It explains the parameters and returns of the function, including
+  examples demonstrating its use.
+keywords:
+- Sentimentinvestor
+- API key
+- OpenBB terminal
+- terminal environment variables
+- Python
+- Jupyter notebook
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="si - Keys - Reference | OpenBB SDK Docs" />
 
 # si
 
@@ -41,4 +54,3 @@ openbb.keys.si(key="example_key")
 ```
 
 ---
-

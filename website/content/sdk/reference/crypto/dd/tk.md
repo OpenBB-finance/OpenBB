@@ -1,7 +1,22 @@
 ---
 title: tk
-description: OpenBB SDK Function
+description: This page provides documentation for the tk model and chart functions
+  from the openbb.crypto.dd library. The model function returns coin tokenomics for
+  a specific cryptocurrency while the chart function plots the same.
+keywords:
+- cryptocurrency
+- tokenomics
+- openbb.crypto.dd
+- coin tokenomics
+- coin tokenomics plot
+- Python
+- programming
+- function documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tk - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

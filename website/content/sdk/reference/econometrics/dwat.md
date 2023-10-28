@@ -1,7 +1,21 @@
 ---
 title: dwat
-description: OpenBB SDK Function
+description: Detailed explanation of Durbin Watson autocorrelation test calculations
+  and chart visualisation using OpenBBTerminal's econometrics functions.
+keywords:
+- Docusaurus
+- OpenBBTerminal
+- Econometrics
+- Durbin Watson
+- Autocorrelation
+- Statistical modelling
+- Regression
+- Data visualisation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dwat - Econometrics - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

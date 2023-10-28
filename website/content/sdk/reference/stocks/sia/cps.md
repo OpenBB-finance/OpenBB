@@ -1,7 +1,25 @@
 ---
 title: cps
-description: OpenBB SDK Function
+description: A docusaurus documentation page detailing the usage of the 'cps' and
+  'cps_chart' functions within the OpenBB marketing terminal. The functions pertain
+  to the analysis of companies per sector in a specific country and market cap
+keywords:
+- docusaurus
+- cps
+- cps_chart
+- OpenBB terminal
+- sector industry analysis
+- finance database
+- SEO
+- stock market
+- metadata
+- market cap analysis
+- company analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cps - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

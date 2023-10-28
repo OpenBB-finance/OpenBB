@@ -1,7 +1,26 @@
 ---
 title: erc20_tokens
-description: OpenBB SDK Function
+description: This page provides a helper method that loads the most traded erc20 tokens.
+  It contains source code, parameters and returns for the OpenBBTerminal project's
+  cryptocurrency bitquery model.
+keywords:
+- erc20 tokens
+- most traded erc20 token
+- cryptocurrency
+- bitquery model
+- source code
+- OpenBBFinance
+- OpenBBTerminal
+- python
+- pd.DataFrame
+- token address
+- token symbol
+- token name
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="erc20_tokens - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 # erc20_tokens
 
@@ -27,4 +46,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | ERC20 tokens with address, symbol and name |
 ---
-

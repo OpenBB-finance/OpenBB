@@ -1,7 +1,24 @@
 ---
 title: fib
-description: OpenBB SDK Function
+description: This page serves as documentation for the Fibonacci levels calculation
+  model and its plotting function. Learn how to set parameters, define retracement
+  periods, and generate charts.
+keywords:
+- Fibonacci levels
+- retracement periods
+- Fibonacci documentation
+- plotting function
+- financial market analytics
+- technical analysis
+- OpenBB
+- OpenBBTerminal
+- data visualization
+- Fibonacci levels chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fib - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,25 @@
 ---
 title: holders
-description: OpenBB SDK Function
+description: This documentation page provides insights on obtaining and displaying
+  the top token holder information using Ethplorer. It explains the crypto-onchain
+  methods used for data extraction and its process.
+keywords:
+- OpenBB Terminal
+- crypto onchain
+- Ethplorer
+- token holders
+- ERC20 tokens
+- data extraction
+- data frame
+- python
+- source code
+- data processing
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holders - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

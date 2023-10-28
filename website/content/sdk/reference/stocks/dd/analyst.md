@@ -1,7 +1,22 @@
 ---
 title: analyst
-description: OpenBB SDK Function
+description: This documentation page provides details on retrieving analyst data from
+  the OpenBB terminal. Get valuable information regarding stock ticker symbols and
+  analyst price targets for your due diligence.
+keywords:
+- Analyst
+- Finviz
+- OpenBB
+- Analyst Data
+- Stocks
+- Price Targets
+- Stock Ticker Symbol
+- Due Diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="analyst - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 # analyst
 
@@ -30,4 +45,3 @@ openbb.stocks.dd.analyst(symbol: str)
 | ---- | ----------- |
 | DataFrame | Analyst price targets |
 ---
-

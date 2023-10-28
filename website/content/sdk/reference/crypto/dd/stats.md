@@ -1,7 +1,25 @@
 ---
 title: stats
-description: OpenBB SDK Function
+description: Discover the statistics module of openbb.crypto.dd using symbol trading
+  pair and explore the possibility of exporting data to desired file format. Find
+  detailed parameters and return values to improve your experience.
+keywords:
+- crypto stats
+- coinbase trading
+- data export
+- OpenBBTerminal
+- API parameters
+- Python
+- dataframe
+- crypto trading
+- base currency
+- ETH-USDT
+- UNI-ETH
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stats - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

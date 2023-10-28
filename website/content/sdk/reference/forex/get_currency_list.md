@@ -1,7 +1,22 @@
 ---
 title: get_currency_list
-description: OpenBB SDK Function
+description: Documentation page for the get_currency_list function which loads currency
+  codes from a local file in the OpenBB finance platform.
+keywords:
+- get_currency_list function
+- OpenBB finance platform
+- Currency codes
+- Local file
+- Forex
+- Open source finance platform
+- Finance
+- Python
+- Function Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="get_currency_list - Forex - Reference | OpenBB SDK Docs" />
 
 # get_currency_list
 
@@ -26,4 +41,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

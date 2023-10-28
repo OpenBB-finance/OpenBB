@@ -1,7 +1,22 @@
 ---
 title: dte
-description: OpenBB SDK Function
+description: This documentation page provides detailed information on the 'dte' function.
+  Learn about the computation of days to expiration from yfinance option date using
+  the 'openbb.stocks.options' methods in Python.
+keywords:
+- dte function
+- yfinance option date
+- openbb.stocks.options
+- python coding
+- finance model
+- stock options
+- source code
+- days to expiration
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dte - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 # dte
 
@@ -26,4 +41,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

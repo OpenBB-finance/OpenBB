@@ -1,7 +1,20 @@
 ---
 title: information
-description: OpenBB SDK Function
+description: Documentation for the 'information' function of the OpenBB financial
+  library. It calculates the information ratio for different time periods based on
+  portfolio transactions.
+keywords:
+- OpenBB
+- financial library
+- information ratio
+- portfolio transactions
+- portfolio metrics
+- PortfolioEngine
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="information - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # information
 
@@ -40,4 +53,3 @@ output = openbb.portfolio.metric.information(p)
 ```
 
 ---
-

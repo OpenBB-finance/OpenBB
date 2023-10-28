@@ -1,7 +1,22 @@
 ---
 title: top_nfts
-description: OpenBB SDK Function
+description: Learn how to get and sort top NFT collections data by using OpenBB crypto
+  discovery tools. Source code, and parameters for customization are provided.
+keywords:
+- nfts
+- Top NFTs
+- crypto
+- OpenBB
+- cryptocurrency
+- DappRadar
+- crypto discovery
+- NFT collections
+- Dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top_nfts - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

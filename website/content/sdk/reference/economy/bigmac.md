@@ -1,7 +1,29 @@
 ---
 title: bigmac
-description: OpenBB SDK Function
+description: This page provides documentation for the Big Mac Index functionality
+  in OpenBB. It includes details on how to use the 'bigmac' function and its parameters,
+  along with source code links and return information. This information is useful
+  for individuals looking to utilize the OpenBB economic dataset for data analysis.
+keywords:
+- bigmac
+- OpenBB
+- docusaurus
+- documentation
+- Big Mac Index
+- economy
+- country_codes
+- dataframe
+- matplotlib
+- USD equivalent
+- source code
+- parameters
+- returns
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bigmac - Economy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

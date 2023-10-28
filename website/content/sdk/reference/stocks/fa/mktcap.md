@@ -1,7 +1,26 @@
 ---
 title: mktcap
-description: OpenBB SDK Function
+description: "This page provides documentation about the mktcap function of OpenBB-finance\u2019\
+  s Yahoo Finance Module. It explains the operation and usage of the functions for\
+  \ market cap modeling and charting over a certain period."
+keywords:
+- OpenBB-finance
+- Yahoo Finance
+- mktcap function
+- market cap model
+- market cap chart
+- Stock ticker symbol
+- Python
+- Financial analysis
+- Fundamental analysis
+- Stock market data
+- Dataframe
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mktcap - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

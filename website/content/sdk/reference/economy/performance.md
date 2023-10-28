@@ -1,7 +1,22 @@
 ---
 title: performance
-description: OpenBB SDK Function
+description: This page provides detailed information on retrieving group performance
+  data using OpenBB's economy module. It provides explanations on parameters and return
+  types along with a link to the source code.
+keywords:
+- OpenBB economy module
+- group performance data
+- Python
+- Finviz
+- Dataframe
+- Performance data retrieval
+- Source code
+- Programming
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="performance - Economy - Reference | OpenBB SDK Docs" />
 
 # performance
 
@@ -32,4 +47,3 @@ openbb.economy.performance(group: str = "sector", sortby: str = "Name", ascend: 
 | ---- | ----------- |
 | pd.DataFrame | dataframe with performance data |
 ---
-

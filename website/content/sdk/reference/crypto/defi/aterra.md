@@ -1,7 +1,26 @@
 ---
 title: aterra
-description: OpenBB SDK Function
+description: This document provides information about how to fetch historical data
+  for a specific Terra asset, plot the 30-day history of that asset and explains the
+  usage of each function. Also includes source code links.
+keywords:
+- Terra assets
+- historical data
+- address
+- OpenBB Terminal
+- GET request
+- Draw chart
+- Python
+- aterra
+- meta data
+- parameters
+- returns
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="aterra - Defi - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

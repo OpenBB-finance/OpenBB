@@ -1,7 +1,25 @@
 ---
 title: summary
-description: OpenBB SDK Function
+description: This documentation page contains comprehensive information on OpenBB's
+  repository summary and chart view options. You can retrieve a summary with OpenBB
+  library and display it in a chart view. Includes source code links and detailed
+  parameter descriptions for usage.
+keywords:
+- OpenBB
+- Repository Summary
+- Chart View
+- Source Code
+- Python
+- Github
+- Docusaurus
+- SEO
+- Dataframe
+- API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summary - Oss - Alt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

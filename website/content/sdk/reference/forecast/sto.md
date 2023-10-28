@@ -1,7 +1,23 @@
 ---
 title: sto
-description: OpenBB SDK Function
+description: Page about the Stochastic Oscillator (STO) function in the OpenBB library.
+  It includes information about calculating momentum indicators, source code, parameters,
+  and what it returns.
+keywords:
+- sto
+- stochastic oscillator
+- momentum indicator
+- source code
+- forecasting
+- openbb
+- k & d columns
+- dataset
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sto - Forecast - Reference | OpenBB SDK Docs" />
 
 # sto
 
@@ -31,4 +47,3 @@ openbb.forecast.sto(dataset: pd.DataFrame, close_column: str = "close", high_col
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added STO K & D columns |
 ---
-

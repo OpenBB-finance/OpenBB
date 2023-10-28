@@ -1,7 +1,24 @@
 ---
 title: eodhd
-description: OpenBB SDK Function
+description: This is a documentation page for the 'set Eodhd key' functionality of
+  the OpenBB software. It provides the Python code, parameters and their descriptions,
+  return values, and an example on how to use the function.
+keywords:
+- eodhd
+- openbb
+- api key
+- python
+- parameters
+- returns
+- examples
+- source code
+- jupyter
+- terminal environment variables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="eodhd - Keys - Reference | OpenBB SDK Docs" />
 
 # eodhd
 
@@ -41,4 +58,3 @@ openbb.keys.eodhd(key="example_key")
 ```
 
 ---
-

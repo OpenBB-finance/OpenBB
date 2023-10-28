@@ -1,7 +1,24 @@
 ---
 title: collections
-description: OpenBB SDK Function
+description: This documentation page provides methods to get NFT collections, its
+  source code and ways to visualize the data via charts. The content primarily revolves
+  around usage, parameters, and the return type of the functions.
+keywords:
+- Docusaurus
+- Marketing
+- SEO
+- OpenBB
+- NFT
+- Collections
+- Chart
+- nftpricefloor
+- Python
+- Dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="collections - Nft - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

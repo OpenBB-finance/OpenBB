@@ -1,7 +1,23 @@
 ---
 title: est
-description: OpenBB SDK Function
+description: Access analysts' estimates for given ticker symbols utilizing OpenBB.
+  Understand the method in Python with accompanying source code and expected return
+  data types.
+keywords:
+- analysts' estimates
+- ticker
+- OpenBB
+- business insider
+- source code
+- stocks
+- due diligence
+- Python
+- pd.DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="est - Dd - Stocks - Reference | OpenBB SDK Docs" />
 
 # est
 
@@ -30,4 +46,3 @@ openbb.stocks.dd.est(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Year estimates |
 ---
-

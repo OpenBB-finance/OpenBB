@@ -1,7 +1,26 @@
 ---
 title: nonzero
-description: OpenBB SDK Function
+description: Documentation page for OpenBB's nonzero function and nonzero_chart function.
+  These functions are used to retrieve addresses with a non-zero balance of a certain
+  symbol and plot them respectively.
+keywords:
+- OpenBB
+- nonzero function
+- nonzero_chart function
+- addresses with non-zero balance
+- cryptocurrency
+- Python
+- dataframe
+- BTC
+- chart plotting
+- source code
+- export data
+- due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nonzero - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

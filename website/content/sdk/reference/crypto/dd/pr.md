@@ -1,7 +1,27 @@
 ---
 title: pr
-description: OpenBB SDK Function
+description: The documentation explains how to leverage APIs for calculating and comparing
+  potential returns of cryptocurrencies. It details requirements and parameters for
+  two functions - fetching data for potential returns calculation and function to
+  record these returns.
+keywords:
+- cryptocurrency
+- potential returns
+- coin comparison
+- fetch data
+- APIs usage
+- OpenBBTerminal
+- python functions
+- documentation
+- coin calculation
+- pr model
+- pr chart
+- CoinGecko source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pr - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

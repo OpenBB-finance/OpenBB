@@ -1,7 +1,23 @@
 ---
 title: losers
-description: OpenBB SDK Function
+description: The 'Losers' page on OpenBBTerminal provides functions that allow users
+  to find out which cryptocurrencies suffered the largest losses during a given time
+  period. Documentation includes information on parameters, return types, and source
+  code.
+keywords:
+- Cryptocurrency
+- Losers
+- Price changes
+- CoinGecko
+- API
+- Crypto analysis
+- OpenBBTerminal
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="losers - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

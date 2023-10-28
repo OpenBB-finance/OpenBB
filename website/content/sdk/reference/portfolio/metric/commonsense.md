@@ -1,7 +1,22 @@
 ---
 title: commonsense
-description: OpenBB SDK Function
+description: This documentation page includes details on how to get the commonsense
+  ratio for a portfolio within the OpenBB-framework using Python. It explains the
+  use of the PortfolioEngine class and provides examples using the openbb.portfolio.load
+  and openbb.portfolio.metric.commonsense functions.
+keywords:
+- commonsense ratio
+- PortfolioEngine
+- openbb.portfolio.load
+- openbb.portfolio.metric.commonsense
+- Python
+- OpenBB
+- SDK
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="commonsense - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # commonsense
 
@@ -40,4 +55,3 @@ output = openbb.portfolio.metric.commonsense(p)
 ```
 
 ---
-

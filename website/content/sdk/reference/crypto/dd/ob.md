@@ -1,7 +1,27 @@
 ---
 title: ob
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about operation
+  of generating and viewing order book for a coin in a given exchange using OpenBB
+  library. Learn about the parameters required and the response for each function
+  call.
+keywords:
+- OpenBB
+- orderbook
+- openbb.crypto.dd
+- cryptocurrency
+- coin exchange
+- ob
+- ob_chart
+- coin symbol
+- exchange id
+- crypto trading
+- matplotlib.axes._axes.Axes
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ob - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

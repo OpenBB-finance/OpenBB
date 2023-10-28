@@ -1,7 +1,23 @@
 ---
 title: binance_available_quotes_for_each_coin
-description: OpenBB SDK Function
+description: This page provides a detailed guide to the helper methods in OpenBB Terminal
+  that, for every coin available on Binance, add all quote assets. It includes how
+  to use the function and what it will return.
+keywords:
+- OpenBB Terminal
+- Binance
+- cryptocurrency
+- quote assets
+- helper methods
+- coin
+- function
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="binance_available_quotes_for_each_coin - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 # binance_available_quotes_for_each_coin
 
@@ -27,4 +43,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | dict | All quote assets for given coin<br/>{'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...] |
 ---
-

@@ -1,7 +1,25 @@
 ---
 title: cg
-description: OpenBB SDK Function
+description: Documentation for Center of Gravity Indicator function 'cg' and its graphical
+  representation 'cg_chart' in the OpenBB Terminal. Explanation of their source code,
+  parameters, and returns are covered.
+keywords:
+- OpenBB Terminal
+- Center of Gravity Indicator
+- Technical Analysis
+- Source Code
+- Python
+- Parameters
+- Returns
+- Charts
+- pd.DataFrame
+- pd.Series
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cg - Ta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

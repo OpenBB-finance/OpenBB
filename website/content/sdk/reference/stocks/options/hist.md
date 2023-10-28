@@ -1,7 +1,21 @@
 ---
 title: hist
-description: OpenBB SDK Function
+description: The page explains how to get historical option pricing using the OpenBB
+  SDK in Python. It provides a detailed guide for parameters and return types along
+  with examples. You may choose data source from ChartExchange or Tradier.
+keywords:
+- Option Pricing
+- Historical data
+- openbb
+- SDK
+- Python
+- ChartExchange
+- Tradier
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hist - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 # hist
 
@@ -51,4 +65,3 @@ openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier
 ```
 
 ---
-

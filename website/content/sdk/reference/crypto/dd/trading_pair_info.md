@@ -1,7 +1,28 @@
 ---
 title: trading_pair_info
-description: OpenBB SDK Function
+description: The trading_pair_info page provides a detailed guide on how to get essential
+  trading pair information from Coinbase using the OpenBB API. The tool supports all
+  significant trading pairs such as ETH-USDT and UNI-ETH. Retrieve the needed data
+  in a convenient DataFrame format. Check out the source code to learn more.
+keywords:
+- trading pair info
+- coinbase
+- crypto trading
+- OpenBB
+- cryptocurrency trading
+- API
+- Python
+- ETH-USDT
+- UNI-ETH
+- dataframe
+- source code
+- documentation
+- due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trading_pair_info - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 # trading_pair_info
 
@@ -30,4 +51,3 @@ openbb.crypto.dd.trading_pair_info(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Basic information about given trading pair |
 ---
-

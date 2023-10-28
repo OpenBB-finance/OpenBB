@@ -1,7 +1,25 @@
 ---
 title: cpci
-description: OpenBB SDK Function
+description: This docusaurus page provides comprehensive information on the 'cpci'
+  function of the OpenBB Terminal. It explains how to use the function to get the
+  number of companies per country in a specific industry based on market cap and whether
+  to exclude international exchanges. Detailed parameters and return values are provided,
+  along with source code links for those who require in-depth understanding.
+keywords:
+- OpenBB Terminal
+- cpci function
+- number of companies per country
+- industry-based company distribution
+- market cap
+- finance database
+- industry selection
+- python code
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cpci - Sia - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

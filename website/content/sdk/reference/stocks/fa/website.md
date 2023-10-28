@@ -1,7 +1,17 @@
 ---
 title: website
-description: OpenBB SDK Function
+description: This page provides documentation on how to fetch a company's website
+  from yfinance using a stock ticker symbol.
+keywords:
+- yfinance
+- website
+- stock ticker symbol
+- openbb
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="website - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # website
 
@@ -30,4 +40,3 @@ openbb.stocks.fa.website(symbol: str)
 | ---- | ----------- |
 | str | Company website |
 ---
-

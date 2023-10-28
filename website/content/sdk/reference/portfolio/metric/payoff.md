@@ -1,7 +1,21 @@
 ---
 title: payoff
-description: OpenBB SDK Function
+description: Documentation for openbb.portfolio.metric.payoff function. This function
+  allows to get the payoff ratio of a portfolio during different time periods. The
+  function does not take any parameters and returns a DataFrame with values.
+keywords:
+- payoff ratio
+- portfolio
+- openbb
+- DataFrame
+- time periods
+- portfolio metric
+- no losing trades
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="payoff - Metric - Portfolio - Reference | OpenBB SDK Docs" />
 
 # payoff
 
@@ -40,4 +54,3 @@ output = openbb.portfolio.metric.payoff(p)
 During some time periods there were no losing trades. Thus some values could not be calculated.
 ```
 ---
-

@@ -1,7 +1,22 @@
 ---
 title: markets
-description: OpenBB SDK Function
+description: The markets page provides detailed information on how to use the OpenBB
+  crypto market API functions. The high-level cryptocurrency data from CoinPaprika
+  API allows the user to import and view detailed coin information, with the functionality
+  of sorting the data based on different parameters.
+keywords:
+- OpenBB
+- cryptocurrency
+- API
+- CoinPaprika
+- crypto market
+- coin information
+- data sorting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="markets - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,19 @@
 ---
 title: dupont
-description: OpenBB SDK Function
+description: This page provides source code for the function openbb.stocks.fa.dupont
+  that returns the dupont ratio breakdown for a given stock ticker symbol.
+keywords:
+- dupont ratios
+- source code
+- Stock ticker symbol
+- openbb.stocks.fa.dupont
+- pd.DataFrame
+- dupont ratio breakdown
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dupont - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # dupont
 
@@ -30,4 +42,3 @@ openbb.stocks.fa.dupont(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | The dupont ratio breakdown |
 ---
-

@@ -1,7 +1,27 @@
 ---
 title: wf
-description: OpenBB SDK Function
+description: This documentation page discusses two features of the software, focusing
+  on top coins withdrawal fees. The first tab details the 'Model' feature, which scrapes
+  data for top coins' withdrawal fees by employing specific python code. The code
+  parameters and return objects are clearly defined. The second tab is about 'Chart',
+  the feature to visualize top coins withdrawal fees. Also elaborates on how to limit
+  searches, export data, with the inclusion of python script.
+keywords:
+- OpenBBTerminal
+- python code
+- withdrawal fees
+- crypto coins
+- scraping data
+- data visualization
+- source code
+- parameters
+- data export
+- coin search
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wf - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

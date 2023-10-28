@@ -1,7 +1,22 @@
 ---
 title: cash
-description: OpenBB SDK Function
+description: Improve financial analysis with OpenBB's Cash Flow feature. Retrieve
+  historical cash flow data for any stock symbol using various sources like YahooFinance
+  with options to get quarterly data and data as a percentage change.
+keywords:
+- OpenBB
+- Cash Flow
+- Financial Analysis
+- Stock Symbol
+- YahooFinance
+- AlphaVantage
+- ' quarterly data'
+- percentage change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cash - Fa - Stocks - Reference | OpenBB SDK Docs" />
 
 # cash
 
@@ -50,4 +65,3 @@ quarterly_income_statement = openbb.stocks.fa.cash("AAPL", source="AlphaVantage"
 ```
 
 ---
-

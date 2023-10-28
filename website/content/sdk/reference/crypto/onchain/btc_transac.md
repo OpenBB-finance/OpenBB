@@ -1,7 +1,23 @@
 ---
 title: btc_transac
-description: OpenBB SDK Function
+description: This documentation page provides code and information about retrieving
+  and visualizing BTC confirmed transactions using OpenBB. It includes python code
+  and detailed parameters' description for the functions.
+keywords:
+- OpenBB
+- BTC confirmed transactions
+- Python
+- API
+- blockchain.info
+- Data Export
+- Data Visualization
+- crypto.onchain.btc_transac
+- crypto.onchain.btc_transac_chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="btc_transac - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

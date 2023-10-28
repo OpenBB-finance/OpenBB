@@ -1,7 +1,23 @@
 ---
 title: top_games
-description: OpenBB SDK Function
+description: This page is about the 'top_games' function that fetches the top blockchain
+  games based on daily volume and users. It provides information about the parameters
+  needed for the function, its source code and what the function will return.
+keywords:
+- blockchain games
+- daily volume
+- daily users
+- source code
+- parameters
+- data sorting
+- data limit
+- data export
+- OpenBB crypto
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top_games - Disc - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

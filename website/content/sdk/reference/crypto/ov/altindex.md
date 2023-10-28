@@ -1,7 +1,23 @@
 ---
 title: altindex
-description: OpenBB SDK Function
+description: Page featuring the altindex function of the OpenBB library, enabling
+  the tracking of altcoin performance over various periods of time.
+keywords:
+- OpenBB
+- altindex
+- altcoin tracking
+- cryptocurrency
+- altcoin index
+- Python crypto library
+- blockchain documentation
+- crypto charting
+- scripting
+- crypto data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="altindex - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,28 @@
 ---
 title: maxdiv
-description: OpenBB SDK Function
+description: This page is about the function 'maxdiv' of the openbb.portfolio.po.
+  It provides an overview, parameters, returns and examples of this function, which
+  is used to optimize diversification weights for portfolio. Use 'maxdiv' to maximize
+  diversity across various assets in your portfolio.
+keywords:
+- OpenBB
+- maxdiv
+- portfolio optimization
+- diversification
+- OpenBB portfolio
+- OpenBB maxdiv
+- maximize diversity
+- portfolio weights
+- portfolio performance
+- portfolio examples
+- Risk measures
+- Portfolio risk
+- Covariance estimation methods
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxdiv - Po - Portfolio - Reference | OpenBB SDK Docs" />
 
 # maxdiv
 
@@ -70,4 +91,3 @@ weights, performance = openbb.portfolio.po.maxdiv(portfolio_engine=p)
 ```
 
 ---
-

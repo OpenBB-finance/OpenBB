@@ -1,7 +1,23 @@
 ---
 title: hist_ce
-description: OpenBB SDK Function
+description: 'This page describes two main functionalities of the OpenBBFinance documentation:
+  ''hist_ce'' function for getting historical prices for a specific stock option and
+  ''hist_ce_chart'' function for displaying the same historical stock data in charts.
+  Both functions come with detailed explanations of their parameters and expected
+  returns.'
+keywords:
+- OpenBBFinance documentation
+- stock options
+- historical prices
+- chart visualization
+- hist_ce function
+- hist_ce_chart function
+- stock data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hist_ce - Options - Stocks - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

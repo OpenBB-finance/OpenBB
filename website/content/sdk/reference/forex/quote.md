@@ -1,7 +1,21 @@
 ---
 title: quote
-description: OpenBB SDK Function
+description: Documentation on how to get forex quotes using the OpenBB Terminal. It
+  covers the different parameters that can be used, return types and also gives example
+  usage.
+keywords:
+- OpenBB Terminal Documentation
+- Forex Quotes
+- Python SDK
+- OpenBB forex.quote function
+- Forex Quote Parameter Instructions
+- YahooFinance Forex API
+- AlphaVantage Forex API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - Forex - Reference | OpenBB SDK Docs" />
 
 # quote
 
@@ -47,4 +61,3 @@ EUR_USD= openbb.forex.quote("EUR/USD", source="AlphaVantage")
 ```
 
 ---
-

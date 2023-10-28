@@ -1,7 +1,22 @@
 ---
 title: cdf
-description: OpenBB SDK Function
+description: The page provides details about the 'cdf' function in the OpenBB SDK,
+  which plots the Cumulative Distribution Function. It lists the function parameters,
+  return values, and provides a working example.
+keywords:
+- Cumulative Distribution Function
+- Plotting
+- Data Analysis
+- Quantitative Analysis
+- DataFrame
+- Python
+- OpenBB SDK
+- clf function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cdf - Qa - Reference | OpenBB SDK Docs" />
 
 # cdf
 
@@ -43,4 +58,3 @@ openbb.qa.cdf(data=df, target="Adj Close")
 ```
 
 ---
-

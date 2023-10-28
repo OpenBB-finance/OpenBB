@@ -1,7 +1,21 @@
 ---
 title: messages
-description: OpenBB SDK Function
+description: This page provides information regarding the 'get last messages for a
+  given ticker' function in the OpenBB Terminal. It explains the usage and parameters
+  of the function.
+keywords:
+- OpenBB Terminal
+- stock messages
+- stock ticker
+- Stocktwits messages
+- Python
+- data analysis
+- behavioural analysis on stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="messages - Ba - Stocks - Reference | OpenBB SDK Docs" />
 
 # messages
 
@@ -31,4 +45,3 @@ openbb.stocks.ba.messages(symbol: str, limit: int = 30)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of messages |
 ---
-

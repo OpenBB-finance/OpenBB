@@ -1,7 +1,23 @@
 ---
 title: defi
-description: OpenBB SDK Function
+description: This documents discusses useful functionalities for understanding global
+  Decentralized Finances. The content includes source code, parameters, and the returns.
+keywords:
+- Decentralized Finances
+- OpenBB Terminal
+- cryptocurrency
+- CoinGecko
+- Python
+- source code
+- parameters
+- returns
+- dataframe
+- defi
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="defi - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

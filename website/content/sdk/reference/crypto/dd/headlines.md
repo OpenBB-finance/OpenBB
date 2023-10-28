@@ -1,7 +1,25 @@
 ---
 title: headlines
-description: OpenBB SDK Function
+description: This documentation page details how to implement sentiment analysis for
+  financial asset symbols using FinBrain's API through the OpenBB Terminal's Python
+  protocols. It explains the parameters and returns for two functions that handle
+  model and chart views, showing raw table data and enabling exportation.
+keywords:
+- sentiment analysis
+- financial assets
+- ticker symbols
+- FinBrain's API
+- OpenBB Terminal
+- Python protocols
+- model view
+- chart view
+- raw table data
+- exportation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="headlines - Dd - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

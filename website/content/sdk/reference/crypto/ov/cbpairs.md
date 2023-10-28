@@ -1,7 +1,25 @@
 ---
 title: cbpairs
-description: OpenBB SDK Function
+description: This page provides in-depth information on how to use different functions
+  to get a list of available trading pairs or visualize it in a chart form with source
+  code supplied from OpenBB-finance/OpenBBTerminal project on GitHub.
+keywords:
+- OpenBB-finance
+- OpenBBTerminal
+- GitHub
+- source code
+- cryptocurrency
+- trading pairs
+- coinbase
+- model
+- view
+- charts
+- visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cbpairs - Ov - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

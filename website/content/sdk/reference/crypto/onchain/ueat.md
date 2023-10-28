@@ -1,7 +1,20 @@
 ---
 title: ueat
-description: OpenBB SDK Function
+description: Learn how to monitor unique ethereum address transactions using OpenBB's
+  ueat. Explore how to use the ueat function and chart for effective insights.
+keywords:
+- ueat
+- OpenBB
+- ethereum address transactions
+- crypto onchain
+- bitquery model
+- bitquery view
+- monitor ethereum transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ueat - Onchain - Crypto - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
