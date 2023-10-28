@@ -7,14 +7,15 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 import requests
 import requests_cache
+from openbb_core.app.utils import get_user_cache_directory
 from openbb_provider.utils.helpers import to_snake_case
 
-TICKER_EXCEPTIONS = ["NDX", "RUT"]
-# This will cache the import requests for 7 days.  Ideally to speed up subsequent imports.
-# Only used on functions run on import
+cache_dir = get_user_cache_directory()
 cboe_session = requests_cache.CachedSession(
-    "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
+    f"{cache_dir} / http / cboe_directories", expire_after=timedelta(days=7)
 )
+
+TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
 US_INDEX_COLUMNS = {
     "symbol": "symbol",
@@ -62,13 +63,6 @@ EUR_INDEX_CONSTITUENTS_COLUMNS = {
     "tick": "tick",
     "security_type": "type",
 }
-
-
-# This will cache certain requests for 7 days.  Ideally to speed up subsequent queries.
-# Only used on functions with static values like symbol directories.
-cboe_session = requests_cache.CachedSession(
-    "OpenBB_CBOE", expire_after=timedelta(days=7), use_cache_dir=True
-)
 
 
 def get_cboe_directory(**kwargs) -> pd.DataFrame:

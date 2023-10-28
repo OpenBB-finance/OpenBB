@@ -1,15 +1,20 @@
+"""Biztoc Helpers"""
+
 from datetime import timedelta
 from typing import Dict, List, Literal
 
 import requests
 import requests_cache
+from openbb_core.app.utils import get_user_cache_directory
+
+cache_dir = get_user_cache_directory()
 
 
 def get_sources(api_key: str) -> List[Dict]:
     """Valid sources for Biztoc queries."""
 
     biztoc_session_sources = requests_cache.CachedSession(
-        "OpenBB_Biztoc_Pages", expire_after=timedelta(days=3), use_cache_dir=True
+        f"{cache_dir} / http / biztoc_sources", expire_after=timedelta(days=3)
     )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
@@ -28,7 +33,7 @@ def get_pages(api_key: str) -> List[str]:
     """Valid pages for Biztoc queries."""
 
     biztoc_session_pages = requests_cache.CachedSession(
-        "OpenBB_Biztoc_Pages", expire_after=timedelta(days=3), use_cache_dir=True
+        f"{cache_dir} / http / biztoc_pages", expire_after=timedelta(days=3)
     )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
@@ -47,7 +52,7 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
     """Valid tags required for Biztoc queries."""
 
     biztoc_session_tags = requests_cache.CachedSession(
-        "OpenBB_Biztoc_Tags", expire_after=timedelta(days=1), use_cache_dir=True
+        f"{cache_dir} / http / biztoc_tags", expire_after=timedelta(days=1)
     )
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
