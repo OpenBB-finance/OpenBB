@@ -1,7 +1,20 @@
 ---
 title: cg
-description: OpenBB Terminal Function
+description: This page provides detailed information on the Center of Gravity indicator
+  (COG) used to anticipate future price movements and trade on price reversals, and
+  its best usage in range-bound markets.
+keywords:
+- Center of Gravity indicator
+- future price movements
+- trade on price reversals
+- oscillators
+- range-bound markets
+- asset price change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cg - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # cg
 

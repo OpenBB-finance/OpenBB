@@ -1,7 +1,21 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: This page pertains to the summary statistics command used in Python for
+  data analysis. The command provides a comprehensive summary of various statistical
+  parameters for a given dataset, offering insight into data distribution and patterns.
+keywords:
+- summary statistics
+- data analysis
+- statistics
+- data summary
+- data distribution
+- data interpretation
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summary - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # summary
 

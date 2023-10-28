@@ -1,7 +1,20 @@
 ---
 title: orderbook
-description: OpenBB Terminal Function
+description: This is a marketing website page on how to plot an orderbook for an instrument
+  using the provided Oanda command. The page contains details on usage of 'orderbook'
+  command.
+keywords:
+- Orderbook
+- Oanda Command
+- Instrument
+- Usage
+- Parameters
+- Marketing website
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="orderbook - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
 # orderbook
 

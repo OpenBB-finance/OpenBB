@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: tvl
-description: OpenBB Telegram Command
+description: On this page, users can learn how to retrieve historical TVL (Total Value
+  Locked) data for any given protocol, providing a snapshot of capital currently locked
+  in the protocol for comparison and tracking of growth over time.
+keywords:
+- TVL
+- historical data
+- total value locked
+- protocol
+- capital
+- comparison
+- tracking growth
+- tvl command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tvl - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
 # tvl
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: shortrate
-description: OpenBB Telegram Command
+description: Informative guide on how to use the shortrate command that retrieves
+  Display Short Shares spot borrow rate from Interactive Brokers for a specific ticker.
+  With this command, users can make more informed decisions in short selling processes.
+keywords:
+- stock
+- short sell
+- shortrate command
+- borrow rate
+- interactive brokers
+- ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="shortrate - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
 
 # shortrate
 

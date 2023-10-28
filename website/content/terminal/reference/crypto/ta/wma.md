@@ -1,7 +1,23 @@
 ---
 title: wma
-description: OpenBB Terminal Function
+description: A comprehensive guide about Weighted Moving Average (WMA), its special
+  features, usage, inclusion of parameters like window lengths and offset. Also, providing
+  an illustrative diagram about WMA.
+keywords:
+- Weighted Moving Average
+- WMA
+- n_length
+- n_offset
+- WMA parameters
+- WMA usage
+- WMA diagram
+- window lengths
+- offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wma - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # wma
 

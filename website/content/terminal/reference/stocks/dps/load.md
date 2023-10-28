@@ -1,7 +1,29 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: Understanding how to load a stock ticker for analysis. This page provides
+  description and usage of parameters such as stock ticker, start date, end date,
+  interval, filepath and more. Indian tickers and Yahoo Finance markets are also referenced.
+keywords:
+- load
+- stock ticker
+- analysis
+- data source
+- Indian ticker
+- yahoo finance
+- market
+- parameters
+- starting date
+- ending date
+- intraday stock
+- prepost
+- filepath
+- monthly data
+- weekly data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

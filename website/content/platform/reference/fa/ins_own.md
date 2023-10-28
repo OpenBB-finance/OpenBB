@@ -1,7 +1,24 @@
 ---
 title: ins_own
-description: OpenBB Platform Function
+description: This page is about Institutional Ownership, which offers data related
+  to the ownership shares in a company including various parameters like number of
+  investors, number of shares, total invested amount and more. It also includes an
+  API function call to retrieve this data.
+keywords:
+- institutional ownership
+- investors holding
+- number of shares
+- total invested amount
+- ownership percent
+- put call ratio
+- institutional ownership data
+- API function call
+- data retrieve
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ins_own - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -101,4 +118,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

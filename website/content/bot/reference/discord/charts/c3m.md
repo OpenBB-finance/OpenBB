@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: c3m
-description: OpenBB Discord Command
+description: The documentation page for /c3m command in stock market analysis tool.
+  This command retrieves a 3-minute intraday chart, which provides visual representation
+  of a stock's performance during the day, particularly useful for short-term investors.
+keywords:
+- 3 minute intraday chart
+- stock performance
+- candlestick chart
+- short-term investments
+- /c3m command
+- trading hours
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="c3m - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # c3m
 

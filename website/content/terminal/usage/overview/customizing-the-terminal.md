@@ -1,9 +1,22 @@
 ---
-sidebar_position: 4
 title: Customization
-description: The settings and feature flags menus are for altering the behaviour and presentation of the Terminal, both are accessed from the main menu.
-keywords: [settings, featflags, feature flags, lay-out, advanced, customizing, openbb terminal]
+sidebar_position: 4
+description: This documentation page details the functionality of the Settings Menu
+  and the Feature Flags Menu in the OpenBB Terminal. It instructs users how to customize
+  the Terminal, alter its behaviour, and manipulate various environment variables.
+keywords:
+- OpenBB Terminal
+- Settings Menu
+- Feature Flags Menu
+- customize Terminal
+- alter Terminal behaviour
+- environment variables
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Customization - Overview - Usage | OpenBB Terminal Docs" />
 The OpenBB Terminal contains two menus for altering the behaviour and presentation of the Terminal, Settings and Feature Flags, both of which are accessed from the main menu.
 
 

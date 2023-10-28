@@ -1,7 +1,27 @@
 ---
 title: Crypto
-keywords: [crypto, web3, nft, blockchain, cryptocurrency, sub-module, openbb.crypto, openbb sdk, sdk, import statement, load, candles, find, active address, trades, coin_list, baas, trending, news]
-description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus
+description: This Docusaurus page is dedicated to providing a detailed guide on how
+  Cryptocurrency applications and dashboards can be built quickly using the OpenBB
+  Terminal's Crypto Module. It provides an outline on how to use SDK functions at
+  the 'openbb.crypto' level, rundown of functions and modules, along with sample Python
+  codes on loading data, finding similar coins, measuring liquidity, identifying trending
+  coins and more. This page can be useful for those working on Cryptocurrency applications,
+  particularly those relying on Python or OpenBB Terminal.
+keywords:
+- Docusaurus
+- Cryptocurrency
+- OpenBB Terminal
+- Web Application
+- Crypto Module
+- SDK Functions
+- Digital Assets
+- Onchain Metrics
+- Data visualisation
+- Python
+- CCXT
+- Trending Coins
+- Liquidity Measurement
+- Coin Ranking
 ---
 
 The Crypto module wraps the functions of the OpenBB Terminal menu. This allows web applications and dashboards to be built quickly on top of the existing infrastructure. Navigating the functions is similar to operating the OpenBB Terminal.

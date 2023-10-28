@@ -1,7 +1,24 @@
 ---
 title: hm
-description: OpenBB Terminal Function
+description: This page provides a guide to use 'hm' tool in displaying cryptocurrencies
+  heatmap with a daily percentage change. Utilize parameter options like 'limit' and
+  'category' to customize the display.
+keywords:
+- cryptocurrency
+- heatmap
+- daily percentage change
+- parameters
+- limit
+- category
+- crypto categories
+- display options
+- cryptocurrency tool
+- '''hm'' tool'
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hm - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # hm
 

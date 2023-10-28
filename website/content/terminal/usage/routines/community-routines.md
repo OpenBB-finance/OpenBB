@@ -1,9 +1,26 @@
 ---
 title: Community Routines
 sidebar_position: 6
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Page provides a detailed overview on the usage of OpenBB's Community
+  Routines. It explains how users can share, access, upvote, and search for investment
+  research scripts. Additionally, it presents the feature of using the new TimeGPT-1
+  model from Nixtla, and the options to save, download, and share scripts.
+keywords:
+- Community Routines
+- OpenBB Terminal
+- Investment Research
+- Investment Scripts
+- TimeGPT-1 Model
+- Tutorial Video
+- Upvotes
+- Share Scripts
+- Advanced Search
+- Nixtla
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Community Routines - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -61,5 +78,3 @@ Also, don’t forget to set your socials on your account so other OpenBB users c
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/ace4c886-e521-46e5-a53a-736408dd096e)
 
 We hope you take advantage of this exciting addition and learn how to use one of the best features the terminal has to offer.
-
-

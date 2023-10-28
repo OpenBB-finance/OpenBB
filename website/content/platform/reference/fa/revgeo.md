@@ -1,7 +1,29 @@
 ---
 title: revgeo
-description: OpenBB Platform Function
+description: The revgeo page provides information about the Revenue Geographic, a
+  function that returns geographic revenue data. Parameters, returns and data structure
+  are covered in details.
+keywords:
+- revgeo
+- Revenue Geographic
+- geographic revenue data
+- data query
+- Docusaurus documentation
+- provider
+- period
+- structure
+- symbol
+- geographic segment
+- Revenue from the America
+- Revenue from Europe
+- Revenue from Greater China
+- Revenue from Japan
+- Revenue from Rest of Asia Pacific
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="revgeo - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -72,4 +94,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

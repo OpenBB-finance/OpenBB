@@ -1,7 +1,30 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides clear instructions on how to load a stock ticker for
+  performing analysis, with special settings like loading an Indian ticker, defining
+  the timeframe, setting intraday minutes, including pre/after market hours, and more.
+  It also includes usage cases and available parameters.
+keywords:
+- stock ticker
+- stock analysis
+- DEAR systems
+- stock data
+- data analysis
+- Python
+- finance analysis
+- Indian stock market
+- trading parameters
+- Yahoo Finance
+- custom data file
+- monthly data
+- weekly data
+- prepost market hours
+- intraday stock
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ta
-description: OpenBB Telegram Command
+description: Documentation page on command '/ta' which retrieves technical analysis
+  summary including indicators such as moving averages, fibonacci levels, etc for
+  a given stock ticker.
+keywords:
+- technical analysis
+- stock ticker
+- moving averages
+- fibonacci levels
+- support and resistance levels
+- technical metrics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta - General - Telegram - Reference | OpenBB Bot Docs" />
 
 # ta
 

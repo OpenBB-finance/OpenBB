@@ -1,7 +1,24 @@
 ---
 title: adosc
-description: OpenBB Terminal Function
+description: This page explains the Accumulation/Distribution Oscillator (adosc),
+  a momentum indicator in trading examining both the strength of price moves and underlying
+  buying/selling pressure. It details usage, parameters, and potential market implications.
+keywords:
+- Accumulation/Distribution Oscillator
+- adosc
+- momentum indicator
+- price moves
+- buying pressure
+- selling pressure
+- market turning points
+- trading
+- stock market
+- investment
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adosc - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # adosc
 

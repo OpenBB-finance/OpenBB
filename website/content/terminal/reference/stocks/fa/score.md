@@ -1,7 +1,22 @@
 ---
 title: score
-description: OpenBB Terminal Function
+description: This is a documentation for Score, a Python command for a value investing
+  tool based on insights by Warren Buffett, Joseph Piotroski, and Benjamin Graham.
+  This command does not require any parameters.
+keywords:
+- Score
+- Value Investing
+- Warren Buffett
+- Joseph Piotroski
+- Benjamin Graham
+- Investment tool
+- FMP
+- Python command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="score - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # score
 

@@ -1,8 +1,26 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chart
-description: OpenBB Discord Command
+description: This page provides a guide on how to retrieve a chart of the top DeFi
+  protocols by market capitalization. It explains the usage, parameters, and examples
+  of '/crypto defi chart' command to have a visual overview of the current DeFi landscape.
+keywords:
+- DeFi
+- market capitalization
+- visual representation
+- total DeFi market size
+- ' crypto'
+- chart
+- protocols
+- Total Value Locked
+- Market Cap
+- sort data
+- chain
+- sort order
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chart - Defi - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # chart
 

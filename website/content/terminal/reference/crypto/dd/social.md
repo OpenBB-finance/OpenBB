@@ -1,7 +1,21 @@
 ---
 title: social
-description: OpenBB Terminal Function
+description: This Docusaurus page provides guidelines on using the 'social' command
+  to fetch relevant social media information for any loaded cryptocurrency.
+keywords:
+- social media for cryptocurrencies
+- information about crypto coins
+- Telegram channels for cryptos
+- Reddit groups for cryptos
+- Twitter for cryptos
+- Bitcointalk for cryptos
+- Facebook for cryptos
+- Discord for cryptos
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="social - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # social
 

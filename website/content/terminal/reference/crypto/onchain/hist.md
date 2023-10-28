@@ -1,7 +1,22 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: Learn how to us the 'hist' function to display history for any given
+  Ethereum Blockchain balance using Ethplorer. Understand the usage, parameters and
+  their defaults, for an optimized user experience.
+keywords:
+- crypto
+- ethereum
+- hist
+- blockchain
+- ethereum blockchain
+- transaction history
+- ethplorer
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hist - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # hist
 

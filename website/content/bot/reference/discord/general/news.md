@@ -1,8 +1,17 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: news
-description: OpenBB Discord Command
+description: A documentation page describing how to use the 'news' command to retrieve
+  the latest stock market news for a specific ticker symbol.
+keywords:
+- news
+- stock market
+- ticker
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - General - Discord - Reference | OpenBB Bot Docs" />
 
 # news
 

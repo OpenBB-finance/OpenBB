@@ -1,7 +1,21 @@
 ---
 title: rnval
-description: OpenBB Terminal Function
+description: The rnval page provides detailed information about calculating the risk
+  neutral value of options, with steps to use the 'rnval' function. It includes detailed
+  parameters like strike prices and risk-free rates along with examples to aid comprehension.
+keywords:
+- rnval
+- risk neutral value
+- options
+- stock options
+- python
+- strike price
+- risk-free rate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rnval - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # rnval
 

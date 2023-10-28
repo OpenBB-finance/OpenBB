@@ -1,7 +1,25 @@
 ---
 title: gh
-description: OpenBB Terminal Function
+description: "Learn how to utilize the GH command line tool to track GitHub activity\
+  \ for a given crypto coin. Discover how to filter by development activity, set frequency\
+  \ intervals, and define start and end dates\u2014all with this powerful Python-based\
+  \ tool."
+keywords:
+- Github activity
+- Pull Request
+- Issue
+- command line tool
+- Python
+- development activity
+- frequency intervals
+- start and end dates
+- Santiment
+- tracking tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gh - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # gh
 

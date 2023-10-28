@@ -1,8 +1,20 @@
 ---
 title: Hedge
-keywords: [options, stocks, derivatives, puts, calls, oi, vol, greeks, hedge, gamme, delta, theta, rho, vanna, vomma, phi, charm, iv, volatility, implied, realized, price, last, bid, ask, expiry, expiration, chains, chain, put, call, strategy, how to, example, expiration]
-excerpt: This guide introduces the Hedge submenu, within the Options menu, providing examples in use.
+description: This page provides a detailed guide on how to use the Hedge menu feature
+  to calculate positions within the selected expiration chain for the purpose of achieving
+  directional neutrality in stock options trading.
+keywords:
+- stock options
+- hedge menu
+- expiration chain
+- directional neutrality
+- strike price
+- options payoff chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Hedge - Options - Stocks - Data Available | OpenBB Terminal Docs" />
 The Hedge menu is designed to help the user calculate positions within the selected expiration chain to be directionally neutral. Enter the submenu after choosing the desired <a href="/terminal/reference/stocks/options/exp" target="_blank" rel="noreferrer noopener">expiration</a> date by using the command, `hedge`, from the Options menu.
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218986900-da12b720-b7d9-4a80-9943-3060d7f79b62.png"></img>

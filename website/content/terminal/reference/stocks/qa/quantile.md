@@ -1,7 +1,20 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: This page provides insights into the concept of 'Quantile' and how it's
+  used for dividing a distribution. It includes parameter details such as n_window
+  and f_quantile and usage information with Python.
+keywords:
+- quantile
+- distribution
+- median
+- n_window
+- f_quantile
+- observations
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantile - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # quantile
 

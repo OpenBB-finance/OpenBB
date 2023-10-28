@@ -1,7 +1,21 @@
 ---
 title: candle
-description: OpenBB Terminal Function
+description: This page provides documentation on using the 'candle' feature for displaying
+  charts for loaded coins in the chosen currency and date range. It includes usage
+  instructions and details about parameters.
+keywords:
+- candle feature
+- coin chart
+- currency chart
+- date range chart
+- logy parameter
+- log scale chart
+- docusaurus page SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candle - Crypto - Reference | OpenBB Terminal Docs" />
 
 # candle
 

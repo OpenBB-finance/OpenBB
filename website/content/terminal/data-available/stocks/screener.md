@@ -1,8 +1,26 @@
 ---
 title: Stock Screener
-keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, how to, example, components, S&P, preset, signal name, description]
-description: Learn the basics of the Stock Screener - a diverse tool for stock discovery.  Get to it from the `Stocks` menu by typing `scr` and then pressing `enter`.
+description: This comprehensive guide provides step-by-step instructions for using
+  the Stock Screener tool, an efficient way to discover stocks and narrow down investment
+  options. It includes details on various categories of stocks, detailed examples,
+  and preset parameters for customization. This guide also includes information on
+  how to view, set, and customize presets as per user preferences.
+keywords:
+- stock screener
+- stock research
+- stock statistics
+- stock investing
+- financial analytics
+- preset parameters
+- investment tool
+- custom presets
+- trading trends
+- technical analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Screener - Stocks - Data Available | OpenBB Terminal Docs" />
 The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 
 - Overview

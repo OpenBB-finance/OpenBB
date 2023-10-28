@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: update
-description: OpenBB Discord Command
+description: This page provides description and usage of the 'update' command within
+  the context of active alerts. It includes details on how to change the condition
+  of an active alert, specifically for price alerts.
+keywords:
+- Update command
+- Price alert
+- Active alerts
+- Update condition
+- Deactivate alert
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="update - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
 # update
 

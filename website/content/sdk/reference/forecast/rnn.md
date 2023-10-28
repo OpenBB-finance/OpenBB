@@ -1,7 +1,26 @@
 ---
 title: rnn
-description: OpenBB SDK Function
+description: Learn about our Recurrent Neural Networks (RNN) forecasting models in
+  OpenBB Terminal's documentation. This includes instructions on how to perform RNN
+  forecasting, parameters used, returns and how to display an RNN forecast chart.
+keywords:
+- RNN
+- forecasting
+- training model
+- Parameters
+- Returns
+- chart
+- machine learning
+- OpenBB Terminal
+- predict
+- Python
+- AI
+- Neural networks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rnn - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

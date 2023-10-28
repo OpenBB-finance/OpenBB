@@ -1,7 +1,24 @@
 ---
 title: sma
-description: OpenBB Terminal Function
+description: The page explains the simple moving average (SMA) command, used for data
+  smoothing and trend identification. It includes SMA's usage, parameters, and a graphical
+  representation, making it easier to understand how to use SMA to filter data.
+keywords:
+- Moving Average
+- trend identification
+- data smoothing
+- Simple Moving Average
+- SMA
+- data filtering
+- python
+- sma command
+- n_length
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sma - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sma
 

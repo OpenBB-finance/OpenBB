@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: wsb
-description: OpenBB Telegram Command
+description: The /wsb command allows users to view the top 15 trending stocks on r/WallStreetBets,
+  including the mentions count for popular stocks.
+keywords:
+- WSB
+- /wsb command
+- trending stocks
+- WallStreetBets
+- mentions count
+- popular stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wsb - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # wsb
 

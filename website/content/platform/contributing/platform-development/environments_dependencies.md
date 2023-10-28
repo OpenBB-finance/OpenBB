@@ -1,9 +1,29 @@
 ---
 title: Setup your development environment
 sidebar_position: 2
-description: Learn how to setup your development environment for the OpenBB Platform.
-keywords: [openbb platform, introduction, environment, setup, contributing, documentation]
+description: Detailed instructions on setting up the development environment for contributing
+  to the OpenBB Platform. This includes sections on setting up Miniconda, Git, cloning
+  the repository, creating a virtual environment, managing the environment with Poetry,
+  installing packages, and setting up API keys.
+keywords:
+- OpenBB Platform contribution
+- environment setup
+- Miniconda
+- Git
+- repository clone
+- virtual environment
+- python versions
+- Poetry
+- packages installation
+- API keys setup
+- OpenBB Hub
+- Python interface
+- API Keys
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Setup your development environment - Platform Development - Contributing | OpenBB Platform Docs" />
 
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 

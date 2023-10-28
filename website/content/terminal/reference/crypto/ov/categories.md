@@ -1,7 +1,40 @@
 ---
 title: categories
-description: OpenBB Terminal Function
+description: Docusaurus page that provides details on top cryptocurrency categories
+  by market capitalization. It includes categories such as stablecoins, defi, solana
+  ecosystem, and polkadot ecosystem, among others. This page also provides ways to
+  sort and display data.
+keywords:
+- cryptocurrency categories
+- market capitalization
+- stablecoins
+- defi
+- solana ecosystem
+- polkadot ecosystem
+- sort parameter
+- pie chart
+- smart contract platform
+- binance smart chain
+- polygon ecosystem
+- avalanche ecosystem
+- moonriver ecosystem
+- fantom ecosystem
+- stablecoins
+- arbitrum ecosystem
+- near protocol ecosystem
+- exchange-based tokens
+- decentralized finance
+- centralized exchange token
+- gnosis chain ecosystem
+- cosmos ecosystem
+- market cap change 24h
+- top 3 coins
+- volume 24h
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="categories - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # categories
 

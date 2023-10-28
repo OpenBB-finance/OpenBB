@@ -1,7 +1,20 @@
 ---
 title: unitroot
-description: OpenBB Terminal Function
+description: This page offers a detailed guide on the use of the unit root function
+  in testing stationarity, parameters included, and usage examples.
+keywords:
+- unit root
+- stationarity
+- ADF
+- KPSS
+- regression type
+- python
+- code examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unitroot - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # unitroot
 

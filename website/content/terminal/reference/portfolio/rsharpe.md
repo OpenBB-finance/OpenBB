@@ -1,7 +1,22 @@
 ---
 title: rsharpe
-description: OpenBB Terminal Function
+description: The page provides comprehensive instructions on how to use the 'rsharpe'
+  function, which is a tool for comparing a portfolio against a benchmark. The function
+  allows for customization based on the desired period and risk free rate.
+keywords:
+- rsharpe
+- rolling sharpe portfolio
+- benchmarking
+- risk free rate
+- portfolio period
+- portfolio calculation
+- financial analysis
+- financial tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsharpe - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # rsharpe
 

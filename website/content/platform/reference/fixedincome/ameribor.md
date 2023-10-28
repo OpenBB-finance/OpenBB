@@ -1,7 +1,25 @@
 ---
 title: ameribor
-description: OpenBB Platform Function
+description: Explore in-depth the Ameribor or the American interbank offered rate
+  that reflects the cost of short-term interbank borrowing based on transactions in
+  overnight unsecured loans conducted on the American Financial Exchange (AFX). This
+  page provides a comprehensive overview of its parameters, returns and data.
+keywords:
+- Ameribor
+- American interbank offered rate
+- Interest rate
+- AFX
+- American Financial Exchange
+- Short-term interbank borrowing
+- Unsecured loans
+- Financial data
+- Data provider
+- Date format
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ameribor - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -79,4 +97,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

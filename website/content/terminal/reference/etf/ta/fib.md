@@ -1,7 +1,21 @@
 ---
 title: fib
-description: OpenBB Terminal Function
+description: This page offers a comprehensive guide on how to calculate Fibonacci
+  retracement levels, detailing its usage and the parameters required.
+keywords:
+- Fibonacci retracement levels
+- Financial market analysis
+- Trading tools
+- Technical analysis
+- period parameter
+- start parameter
+- end parameter
+- calculation guide
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fib - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # fib
 

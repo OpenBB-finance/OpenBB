@@ -1,7 +1,27 @@
 ---
 title: pos
-description: OpenBB Terminal Function
+description: The 'pos' page holds the explanation and tutorial for retrieving dark
+  pool short positions. The content includes usage, parameters with their detailed
+  description, and an example in form of a table.
+keywords:
+- Dark pool short positions
+- Python script usage
+- Data parameters
+- Data sorting
+- Descending order
+- Ascending order
+- Display limit
+- Command line tool example
+- Volatility data
+- Net short volume
+- DP position
+- Stock market parameters
+- Stockgrid source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pos - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # pos
 

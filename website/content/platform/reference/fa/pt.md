@@ -1,7 +1,27 @@
 ---
 title: pt
-description: OpenBB Platform Function
+description: This page provides insights on how to query and retrieve 'Price Target
+  Consensus' data for selected symbols using a specified provider. It includes explanations
+  for the parameters needed, the data returned, and how to handle specific sequences
+  of commands.
+keywords:
+- Price Target Consensus
+- Data Provider
+- FMP
+- Symbol Data
+- Price Target
+- Consensus Target
+- High Target
+- Low Target
+- Median Target
+- Chart Object
+- Command Execution
+- Python Wordwrap
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pt - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -68,4 +88,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

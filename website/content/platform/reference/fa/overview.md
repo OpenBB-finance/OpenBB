@@ -1,7 +1,45 @@
 ---
 title: overview
-description: OpenBB Platform Function
+description: This page provides information about the functionality of the 'company
+  overview' feature, detailing its parameters, returns, and data types. It extensively
+  discusses attributes like symbol, provider, market capitalization, beta, volume
+  average, dividends, and more. It's a comprehensive guide for understanding the data
+  this function outputs.
+keywords:
+- company overview
+- data
+- provider
+- symbol
+- parameters
+- returns
+- data types
+- fmp
+- market capitalization
+- beta
+- volume average
+- dividend
+- changes
+- cik
+- isin
+- exchange
+- industry
+- ceo
+- sector
+- country
+- full time employees
+- phone number
+- address
+- discounted cash flow
+- ipo date
+- trading
+- fund
+- etf
+- adr
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="overview - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -99,4 +137,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

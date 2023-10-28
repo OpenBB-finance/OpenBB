@@ -1,7 +1,21 @@
 ---
 title: skew
-description: OpenBB Terminal Function
+description: The skew page describes skewness as a measure of asymmetry or distortion
+  of a symmetric distribution, such as a normal distribution. Skewness measures the
+  deviation of a random variable from a symmetric distribution. The page also details
+  the usage and parameters of the 'skew' function.
+keywords:
+- skew
+- asymmetry
+- symmetric distribution
+- normal distribution
+- deviation
+- n_window parameter
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="skew - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # skew
 

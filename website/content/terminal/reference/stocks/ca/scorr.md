@@ -1,7 +1,19 @@
 ---
 title: scorr
-description: OpenBB Terminal Function
+description: The page provides reference to FinBrain's sentiment correlation tool,
+  demonstrating usage, parameters, and a screenshot for better interpretation. It
+  aids with extracting and comparing sentiment data across similar tickers.
+keywords:
+- FinBrain
+- sentiment correlation
+- similar tickers
+- sentiment_compare
+- raw sentiment data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="scorr - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # scorr
 

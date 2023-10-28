@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ah
-description: OpenBB Discord Command
+description: Documentation for the 'ah' command for retrieving afterhours data for
+  a specific stock ticker, with usage, parameters, and examples.
+keywords:
+- Afterhours data
+- Stock ticker
+- Current stock price
+- Highest and lowest prices
+- Trade volume
+- Market change
+- Command usage
+- Python command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ah - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # ah
 

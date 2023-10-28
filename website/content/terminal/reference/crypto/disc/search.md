@@ -1,7 +1,23 @@
 ---
 title: search
-description: OpenBB Terminal Function
+description: This docusaurus page provides detail on how to use the Search function
+  within the CoinPaprika API, including specific parameters such as limit, sort, and
+  category.
+keywords:
+- CoinPaprika
+- API
+- Search function
+- Data sorting
+- Data categories
+- SEO
+- metadata
+- docusaurus
+- bitcoin
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="search - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # search
 

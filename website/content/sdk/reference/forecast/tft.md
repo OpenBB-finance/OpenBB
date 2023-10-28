@@ -1,7 +1,27 @@
 ---
 title: tft
-description: OpenBB SDK Function
+description: This Docusaurus page provides in-depth information on the use of Temporal
+  Fusion Transformer for forecasting purposes, as implemented through OpenBB finance.
+  It includes details on the model's parameters, usage, and output, along with the
+  source code and chart visualization capabilities. The page is of high relevance
+  for developers, data analysts, and professionals dealing with predictive modeling
+  and data analysis tasks.
+keywords:
+- Temporal Fusion Transformer forecasting
+- OpenBB finance
+- Temporal Fusion Transformer chart
+- Python
+- SEO
+- Machine Learning
+- Data analysis
+- Predictive modeling
+- Predictive analytics
+- Data modeling
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tft - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

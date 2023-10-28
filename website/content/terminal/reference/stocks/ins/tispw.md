@@ -1,7 +1,23 @@
 ---
 title: tispw
-description: OpenBB Terminal Function
+description: tispw - A command line tool to fetch and present top insider sales of
+  the week from OpenInsider. Parameters for usage include the limit of datarows to
+  display. An important utility for those interested in stock market trends.
+keywords:
+- tispw
+- insider sales
+- stock market
+- OpenInsider
+- data display
+- parameters
+- datarows
+- python
+- command line tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tispw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # tispw
 

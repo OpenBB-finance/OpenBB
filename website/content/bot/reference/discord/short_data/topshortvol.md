@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topshortvol
-description: OpenBB Discord Command
+description: This docusaurus page provides detailed information about the 'topshortvol'
+  command, which retrieves the Top 15 Short Interest Stocks per Finra, providing essential
+  data for traders.
+keywords:
+- topshortvol
+- command
+- Finra
+- trading data
+- short vol
+- Short Interest Stocks
+- stock market
+- trading day
+- traders
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topshortvol - Short_Data - Discord - Reference | OpenBB Bot Docs" />
 
 # topshortvol
 

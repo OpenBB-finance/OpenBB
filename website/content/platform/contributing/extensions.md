@@ -1,9 +1,24 @@
 ---
 title: Extensions in the OpenBB Platform
 sidebar_position: 3
-description: Learn about the Extensions inside the OpenBB Platform.
-keywords: [openbb platform, introduction, extensions, contributing, documentation]
+description: Learn about the different types of extensions that add functionality
+  to the OpenBB Platform, including OpenBB extensions, community extensions, and independent
+  extensions.
+keywords:
+- OpenBB Platform
+- extensions
+- OpenBB extensions
+- Community Extensions
+- Independent Extensions
+- openbb-stocks
+- openbb-yfinance
+- PR
+- PyPI
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Extensions in the OpenBB Platform - Contributing | OpenBB Platform Docs" />
 
 Extensions add functionality to the OpenBB Platform. They can be a new data source, a new command, a new visualization, etc.
 

@@ -1,7 +1,21 @@
 ---
 title: dex
-description: OpenBB Terminal Function
+description: The dex page displays information about top decentralized exchanges.
+  It provides usage, parameters, and examples of how to fetch and sort the data.
+keywords:
+- Decentralized Exchanges
+- Dex command
+- Crypto Data Sorting
+- Crypto Trading Volume
+- Dex Parameters
+- Dex Examples
+- DappRadar
+- Cryptocurrency
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dex - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # dex
 

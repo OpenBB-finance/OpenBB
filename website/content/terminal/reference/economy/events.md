@@ -1,7 +1,31 @@
 ---
 title: events
-description: OpenBB Terminal Function
+description: This page of the documentation provides comprehensive instructions on
+  how to use the 'events' feature of our API. It allows users to fetch economic events
+  from various countries within a specified date range. Important options include
+  setting the importance and category of events.
+keywords:
+- economy
+- economic calendar
+- global financial events
+- SEO for economics
+- events tracking
+- country wise economic events
+- start date
+- end date
+- importance
+- event category
+- Python
+- API usage
+- investing
+- financial market
+- data analysis
+- finance data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="events - Economy - Reference | OpenBB Terminal Docs" />
 
 # events
 

@@ -1,7 +1,22 @@
 ---
 title: sma
-description: OpenBB Terminal Function
+description: This page explains the Simple Moving Average (sma), a method used to
+  filter noise and identify trends in data by averaging the previous set of values
+  within a given time period. It includes the usage and parameter details.
+keywords:
+- sma
+- moving averages
+- simple moving average
+- filter noise
+- identify trends
+- time period
+- n_length
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sma - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # sma
 

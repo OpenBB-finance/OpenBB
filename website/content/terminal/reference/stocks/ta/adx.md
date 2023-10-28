@@ -1,7 +1,23 @@
 ---
 title: adx
-description: OpenBB Terminal Function
+description: Discover the purpose and usage of the ADX (Average Directional Index),
+  a Welles Wilder style moving average of the Directional Movement Index. Learn to
+  interpret the ADX values to determine the strength of a trend.
+keywords:
+- ADX
+- Welles Wilder
+- Average Directional Index
+- Directional Movement Index
+- ADX interpretation
+- ADX parameters
+- ADX usage
+- Trend strength
+- Trend analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adx - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # adx
 

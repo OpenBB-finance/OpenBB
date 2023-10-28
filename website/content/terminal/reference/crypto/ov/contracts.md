@@ -1,7 +1,24 @@
 ---
 title: contracts
-description: OpenBB Terminal Function
+description: This page details how to effectively fetch all contract addresses for
+  a specific blockchain platform with customizable parameters for limitations and
+  sorting. Various platforms such as Ethereum and Bitcoin are discussed, along with
+  illustration on detailed sets of commands.
+keywords:
+- contracts
+- blockchain platform
+- smart contracts
+- ethereum
+- bitcoin
+- parameters
+- sort data
+- display
+- crypto
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # contracts
 

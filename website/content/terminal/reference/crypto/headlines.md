@@ -1,7 +1,22 @@
 ---
 title: headlines
-description: OpenBB Terminal Function
+description: This page provides comprehensive details on how to use 'headlines' to
+  display sentiment analysis from FinBrain for specific cryptocurrencies. It includes
+  the usage commands, parameters, and several examples for better understanding.
+keywords:
+- headlines
+- sentiment analysis
+- FinBrain
+- cryptocurrencies
+- command usage
+- parameters
+- examples
+- cryptocurrency symbols
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="headlines - Crypto - Reference | OpenBB Terminal Docs" />
 
 # headlines
 

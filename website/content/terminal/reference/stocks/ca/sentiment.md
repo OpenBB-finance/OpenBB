@@ -1,7 +1,19 @@
 ---
 title: sentiment
-description: OpenBB Terminal Function
+description: This page details the sentiment comparison feature in FinBrain's system.
+  It offers an understanding of sentiment across similar tickers, with the possibility
+  to view raw sentiment data.
+keywords:
+- FinBrain
+- sentiment comparison
+- sentiment
+- tickers
+- raw sentiment data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sentiment - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sentiment
 

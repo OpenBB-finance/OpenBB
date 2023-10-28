@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: unu
-description: OpenBB Telegram Command
+description: The unu command is a tool that retrieves unusual options sorted by strike
+  and expiration, helping users identify potential trading opportunities. The command
+  displays options having the highest Volume to Open Interest ratio.
+keywords:
+- unu command
+- unusual options
+- trading opportunities
+- Volume to Open Interest ratio
+- strike and expiration
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unu - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # unu
 

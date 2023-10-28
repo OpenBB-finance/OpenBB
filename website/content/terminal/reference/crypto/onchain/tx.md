@@ -1,7 +1,22 @@
 ---
 title: tx
-description: OpenBB Terminal Function
+description: The page provides a detailed guide on displaying information about ERC20
+  token transactions on the Ethereum blockchain using tx command.
+keywords:
+- ERC20 token
+- Ethereum blockchain
+- tx command
+- Ethplorer
+- blockchain transactions
+- cryptocurrency
+- blockchain technology
+- command usage
+- token transaction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tx - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # tx
 

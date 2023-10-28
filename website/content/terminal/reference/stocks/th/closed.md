@@ -1,7 +1,17 @@
 ---
 title: closed
-description: OpenBB Terminal Function
+description: Closed exchanges documentation page provides instructions on how to use
+  the 'exchange' command that has no parameters to show currently closed exchanges.
+keywords:
+- closed exchanges
+- exchange command
+- usage
+- no parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="closed - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
 # closed
 

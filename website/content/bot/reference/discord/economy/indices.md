@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: indices
-description: OpenBB Discord Command
+description: This page provides a command for a real-time overview of major US stock
+  indices like the Dow Jones Industrial Average, S&P 500, and NASDAQ Composite. It
+  shows current index values with percentage changes.
+keywords:
+- indices
+- US stock indices
+- Dow Jones Industrial Average
+- S&P 500
+- NASDAQ Composite
+- index values
+- percentage change
+- real-time overview
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indices - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # indices
 

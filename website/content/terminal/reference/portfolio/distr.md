@@ -1,7 +1,25 @@
 ---
 title: distr
-description: OpenBB Terminal Function
+description: This page provides information on how to compute the distribution of
+  daily returns with 'distr'. It includes details on its usage, parameters and choices
+  for the period.
+keywords:
+- distr
+- daily returns
+- compute distribution
+- usage
+- parameters
+- period
+- file
+- loaded
+- default
+- optional
+- choices
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="distr - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # distr
 

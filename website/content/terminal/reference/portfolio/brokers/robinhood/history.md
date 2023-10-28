@@ -1,7 +1,21 @@
 ---
 title: history
-description: OpenBB Terminal Function
+description: Learn about the usage and parameters for accessing historical portfolio
+  information with spans ranging from a day to all accessible history and intervals
+  from 5 minutes to a week.
+keywords:
+- historical portfolio info
+- portfolio history
+- historical data
+- interval data
+- span of data
+- python
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="history - Robinhood - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # history
 

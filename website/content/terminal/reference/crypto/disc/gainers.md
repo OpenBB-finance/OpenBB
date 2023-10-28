@@ -1,7 +1,23 @@
 ---
 title: gainers
-description: OpenBB Terminal Function
+description: This page provides details on the 'gainers' functionality, including
+  descriptions, parameters, usage, and examples. The gainers functionality displays
+  the coins that have gained the most in a selected time period.
+keywords:
+- gainers
+- crypto
+- coins
+- market cap
+- volume
+- time intervals
+- parameters
+- defaults
+- SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gainers - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # gainers
 

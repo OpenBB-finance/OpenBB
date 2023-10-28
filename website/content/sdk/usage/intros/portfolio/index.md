@@ -1,7 +1,17 @@
 ---
 title: Portfolio
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers, function, holdings, assets, returns, examples, import statement, load, show, perf, summary, maxdd, resharpe, rvol, dret]
-description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio.
+description: Docusaurus page focuses on the usage of the OpenBB Terminal Portfolio
+  module, detailing its features and examples of use like portfolio performance benchmarking,
+  risk metrics calculation or maximum drawdown calculation.
+keywords:
+- OpenBB Terminal
+- portfolio module
+- performance benchmarking
+- risk metrics
+- maximum drawdown
+- portfolio loading
+- OpenBB SDK
+- portfolio transactions
 ---
 
 The [Portfolio menu](/terminal/usage/intros/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.

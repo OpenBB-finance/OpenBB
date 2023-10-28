@@ -1,7 +1,23 @@
 ---
 title: candle
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on the usage of the 'candle' command
+  in Python, a tool for displaying historic stock data. It covers functionalities
+  such as plot display, data sorting and trendline addition.
+keywords:
+- Python
+- candle command
+- historic stock data
+- data visualization
+- data sorting
+- trendlines
+- interactive plotly chart
+- moving average
+- log scale
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candle - Stocks - Reference | OpenBB Terminal Docs" />
 
 # candle
 

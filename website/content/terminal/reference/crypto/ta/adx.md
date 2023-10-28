@@ -1,7 +1,24 @@
 ---
 title: adx
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on using the ADX, a Welles Wilder
+  style moving average of the Directional Movement Index. It includes usage examples
+  and parameter specifications.
+keywords:
+- ADX
+- Welles Wilder
+- Directional Movement Index
+- DX
+- trend strength
+- python
+- parameters
+- n_length
+- n_scalar
+- n_drift
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adx - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # adx
 

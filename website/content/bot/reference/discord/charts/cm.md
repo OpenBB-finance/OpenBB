@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cm
-description: OpenBB Discord Command
+description: Learn about the /cm command that allows you to view a monthly candlestick
+  chart for a given stock or cryptocurrency, perfect for analyzing the long-term performance
+  of your chosen ticker/coin.
+keywords:
+- Candlestick chart
+- Stock analysis
+- Cryptocurrency analysis
+- Open price
+- Close price
+- High price
+- Low price
+- Long-term performance
+- Stock ticker
+- Command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cm - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # cm
 

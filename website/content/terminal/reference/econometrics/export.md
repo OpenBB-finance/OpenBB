@@ -1,7 +1,23 @@
 ---
 title: export
-description: OpenBB Terminal Function
+description: This documentation page guides you on how to use the 'export' command
+  in Python for exporting a dataset to Excel or CSV. It provides detailed usage, parameters,
+  and examples.
+keywords:
+- export
+- dataset
+- Excel
+- CSV
+- Python
+- econometrics
+- data export
+- export command
+- OpenBBTerminal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="export - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # export
 

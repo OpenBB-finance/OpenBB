@@ -1,7 +1,28 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: Learn how to load and analyze crypto currency data using our command-line
+  utility. This page provides full usage details, including parameters, exchange choice,
+  interval selection and more. The tool supports Yahoo finance, ccxt among other data
+  sources.
+keywords:
+- crypto currency analysis
+- Yahoo Finance
+- ccxt
+- crypto exchange
+- coin data
+- crypto intervals
+- command line utility
+- binance
+- bitbank
+- coinbasepro
+- cryptocom
+- kucoin
+- retrieving crypto data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # load
 

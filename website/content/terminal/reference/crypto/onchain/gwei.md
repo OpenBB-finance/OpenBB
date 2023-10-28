@@ -1,7 +1,20 @@
 ---
 title: gwei
-description: OpenBB Terminal Function
+description: This page provides in-depth information on gwei, ETH gas fees, and their
+  usage with the onchain command. It's a valuable resource for those involved in the
+  crypto transaction process on the Ethereum platform.
+keywords:
+- gwei
+- ETH gas fees
+- onchain
+- ethereum
+- ethgasstation.info
+- crypto transaction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gwei - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # gwei
 

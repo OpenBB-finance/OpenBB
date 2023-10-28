@@ -1,7 +1,19 @@
 ---
 title: spread
-description: OpenBB Terminal Function
+description: The 'spread' page shows the rolling spread measurement. Users can learn
+  how to use the 'spread' command, including its parameters such as 'n_window' which
+  defines the window length.
+keywords:
+- spread
+- rolling spread measurement
+- python
+- n_window
+- window length
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="spread - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # spread
 

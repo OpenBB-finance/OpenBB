@@ -1,8 +1,29 @@
 ---
 title: Comparison Analysis
-keywords: [comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch, openbb terminal, sdk, how to, usage]
-description: The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the Stocks menu to use these features.
+description: Learn how to use the CA module of the OpenBB Terminal SDK for functionalities
+  like balance financials comparison, historical price correlation, sentiment analysis
+  comparison and more using Python. Discover the list of similar companies, historical
+  volume data comparison and more.
+keywords:
+- OpenBB Terminal
+- OpenBB Terminal SDK
+- CA module OpenBB
+- Python SDK for OpenBB Terminal
+- financial analysis using Python
+- stock data analysis
+- Python stock data
+- market sentiment analysis
+- financial comparison using Python
+- openbb.stocks.ca functions
+- historical price correlation
+- sentiment analysis comparison
+- similar companies list
+- historical volume data comparison
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Comparison Analysis - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The CA module provides programmatic access to the commands from within the OpenBB Terminal menu. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ca`
 

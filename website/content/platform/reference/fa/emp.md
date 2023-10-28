@@ -1,7 +1,28 @@
 ---
 title: emp
-description: OpenBB Platform Function
+description: 'This page provides you with the historical number of employees in a
+  company. It includes information about the company symbol, the provider, and specific
+  details such as: CIK of the company, time of acceptance, date of report, name of
+  the company, form type, filing date, employee count, and the source URL. Perfect
+  for those looking to query historical business data.'
+keywords:
+- Historical Employees
+- symbol
+- provider
+- fmp
+- CIK
+- acceptance_time
+- period_of_report
+- company_name
+- form_type
+- filing_date
+- employee_count
+- source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="emp - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -72,4 +93,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

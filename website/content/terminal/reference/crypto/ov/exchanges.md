@@ -1,7 +1,25 @@
 ---
 title: exchanges
-description: OpenBB Terminal Function
+description: A documentation page that details the usage of currency exchange parameters
+  in crypto trading. Provides details on how to sort and limit data based on various
+  criteria, specifically for CoinPaprika and CoinGecko exchanges.
+keywords:
+- crypto exchanges
+- display limit
+- sort data
+- Trust_Score
+- Id
+- Name
+- Country
+- Year_Established
+- Trade_Volume_24h_BTC
+- CoinPaprika
+- CoinGecko
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exchanges - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # exchanges
 

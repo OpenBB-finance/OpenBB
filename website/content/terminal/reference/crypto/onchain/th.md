@@ -1,7 +1,23 @@
 ---
 title: th
-description: OpenBB Terminal Function
+description: This page provides comprehensive documentation for the 'th' function
+  which displays information about token history. It explains the usage of the function,
+  along with descriptions of parameters like limit, sortby, reverse and hash. Useful
+  for anyone needing to navigate token history using Ethplorer.
+keywords:
+- token history
+- Ethplorer
+- python
+- command parameters
+- sortby
+- reverse
+- hash
+- transaction hash
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="th - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # th
 

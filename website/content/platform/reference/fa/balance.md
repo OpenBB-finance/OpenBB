@@ -1,7 +1,37 @@
 ---
 title: balance
-description: OpenBB Platform Function
+description: The balance page provides a comprehensive guide on how to obtain information
+  about a company's balance sheet. It offers various parameters you can use to fetch
+  data from different providers like FMP, Intrinio, or Polygon. The documentation
+  is detailed, offering full information about returns, data types, defaults, and
+  optional parameters.
+keywords:
+- balance sheet
+- financial data
+- parameters
+- data providers
+- FMP
+- Intrinio
+- Polygon
+- symbol
+- period
+- CIK
+- type
+- year
+- company name
+- SIC
+- filing date
+- report date
+- sources
+- order
+- sort
+- Docusaurus page optimization
+- SEO for Docusaurus
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -223,4 +253,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

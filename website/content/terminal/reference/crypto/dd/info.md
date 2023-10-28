@@ -1,7 +1,26 @@
 ---
 title: info
-description: OpenBB Terminal Function
+description: This page provides commands to retrieve basic information about any loaded
+  cryptocurrency like Bitcoin. It shows data like Name, Symbol, Description, Market
+  Cap, Public Interest, Supply, and Price related metrics. This feature can be very
+  useful for those tracking specific cryptocurrencies and their performance.
+keywords:
+- crypto
+- bitcoin
+- cryptocurrency information
+- bitcoin stats
+- market cap
+- public interest score
+- supply
+- price metrics
+- crypto commands
+- btc
+- digital currency
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # info
 

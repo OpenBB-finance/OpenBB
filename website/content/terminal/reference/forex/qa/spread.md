@@ -1,7 +1,20 @@
 ---
 title: spread
-description: OpenBB Terminal Function
+description: A documentation page detailing how to use the spread measurement tool.
+  The page includes parameters, usage, and visuals to guide the user.
+keywords:
+- spread measurement
+- rolling spread
+- usage
+- parameters
+- n_window
+- window length
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="spread - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # spread
 

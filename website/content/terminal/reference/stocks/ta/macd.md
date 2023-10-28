@@ -1,7 +1,23 @@
 ---
 title: macd
-description: OpenBB Terminal Function
+description: This page explains the Moving Average Convergence Divergence (MACD),
+  a tool used in technical analysis to signal trend changes. By explaining the behaviour
+  of MACD under various conditions, understanding its usage, and highlighting its
+  parameters, it assists in generating buy and sell signals.
+keywords:
+- MACD
+- Moving Average Convergence Divergence
+- Exponential Moving Averages
+- Trend changes
+- Buy signal
+- Sell signal
+- Overbought conditions
+- Oversold conditions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="macd - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # macd
 

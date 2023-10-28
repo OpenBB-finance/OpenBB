@@ -1,7 +1,22 @@
 ---
 title: ema
-description: OpenBB Terminal Function
+description: Page providing details about the Exponential Moving Average (EMA), a
+  crucial tool in technical analysis. Explains the comparison between EMA and Simple
+  Moving Average, along with usage and parameters.
+keywords:
+- Exponential Moving Average
+- technical analysis
+- Simple Moving Average
+- cumulative calculation
+- responsive to changes
+- parameters
+- Window lengths
+- offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ema - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # ema
 

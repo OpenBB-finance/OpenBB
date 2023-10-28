@@ -1,7 +1,25 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: Learn how to use the Stochastic Oscillator, a tool for measuring where
+  the close is in relation to the recent trading range. Input values range from zero
+  to 100, and interpret the output for buy and sell signals
+keywords:
+- Stochastic Oscillator
+- overbought condition
+- oversold condition
+- buy signal
+- sell signal
+- Fast %D and Slow %D
+- Raw %K
+- moving average
+- trading range
+- stoch usage
+- stoch parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stoch - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # stoch
 

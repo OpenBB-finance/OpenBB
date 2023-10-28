@@ -1,7 +1,28 @@
 ---
 title: lcsc
-description: OpenBB Terminal Function
+description: This is a documentation page for the 'lcsc' function which displays Luna
+  circulating supply changes. The function sources its data from Smartstake.io. Instructions
+  are provided on obtaining the required key token from Smartstake.io alongside usage
+  and parameters information.
+keywords:
+- lcsc
+- Luna circulating supply
+- Smartstake.io
+- key token
+- Inspect tool
+- Fetch/XHR tab
+- listData
+- history
+- dayCount
+- URL extraction
+- parameters
+- python
+- range
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lcsc - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # lcsc
 

@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: gamma
-description: OpenBB Discord Command
+description: This page is a guide on how to view the Options Gamma Levels for a specific
+  stock using the '/op gamma' command. It provides an understanding of Delta's rate
+  of change with stock price variations and aids in making informed trading decisions.
+keywords:
+- options gamma levels
+- stock price changes
+- delta rate of change
+- trading decisions
+- call and put gamma
+- put wall
+- call wall
+- stock ticker
+- expiry date
+- /op gamma
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gamma - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # gamma
 

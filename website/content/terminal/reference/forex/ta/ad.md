@@ -1,7 +1,19 @@
 ---
 title: ad
-description: OpenBB Terminal Function
+description: The page delves into the Accumulation/Distribution Line, a valuable tool
+  in trading analysis, explaining its comparison to other indicators and its usage
+  in predicting price movements.
+keywords:
+- Accumulation/Distribution Line
+- On Balance Volume
+- trading analysis
+- price prediction
+- close location value
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ad - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # ad
 

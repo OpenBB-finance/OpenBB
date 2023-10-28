@@ -1,7 +1,18 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: This page provides an overview of her selected country's funds. You'll
+  learn how to limit the number of search results shown.
+keywords:
+- funds
+- country-specific
+- overview
+- search
+- limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="overview - Funds - Reference | OpenBB Terminal Docs" />
 
 # overview
 

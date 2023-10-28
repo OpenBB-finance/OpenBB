@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topoi
-description: OpenBB Telegram Command
+description: Understand how to use the topoi command to retrieve the Top Open Interest
+  among all stocks. Learn how it queries current market data to provide a list of
+  the most actively traded stocks and options.
+keywords:
+- topoi
+- command
+- Open Interest
+- stocks
+- trading
+- market data
+- options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topoi - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # topoi
 

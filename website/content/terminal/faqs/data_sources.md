@@ -1,28 +1,24 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Information about data sources and providers offered through the OpenBB Terminal.
+description: The page discusses the data sources and functionalities of OpenBB, an
+  aggregator of data from various sources. It guides on troubleshooting, locating
+  data, and requesting features.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    data,
-    data provider,
-    india,
-    binance
-  ]
+- data aggregator
+- OpenBB
+- troubleshooting guide
+- data sources
+- ticker symbols
+- load function
+- OpenBB Terminal
+- feature request
+- data providers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data and Sources - Faqs | OpenBB Terminal Docs" />
 
 ## Data and Sources
 

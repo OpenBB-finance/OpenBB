@@ -1,7 +1,23 @@
 ---
 title: normality
-description: OpenBB Terminal Function
+description: The page provides usage details for the command 'normality' which executes
+  normality tests in python, includes parameters and examples showcasing normality
+  statistics like Kurtosis, Skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov.
+keywords:
+- normality tests
+- python
+- kurtosis
+- skewness
+- Jarque-Bera
+- Shapiro-Wilk
+- Kolmogorov-Smirnov
+- statistics
+- p-value
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="normality - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # normality
 

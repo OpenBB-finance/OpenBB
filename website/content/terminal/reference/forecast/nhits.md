@@ -1,7 +1,27 @@
 ---
 title: nhits
-description: OpenBB Terminal Function
+description: 'The nhits page provide detailed parameters for forecasting using the
+  Temporal Fusion Transformer model for predicting time-series. A step by step guide
+  to use nhits in a command-line along with additional key performance indicators
+  are provided. This is an effective resource for financial market predictions and
+  similar time-series forecasting tasks with tutorial and potential usage for nn models. '
+keywords:
+- nhits
+- darts forecasting
+- tft model
+- time-series forecasting
+- forecast parameters
+- nn models
+- tensorflow models
+- neural network models
+- stock market predict
+- financial forecast
+- nhits command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nhits - Forecast - Reference | OpenBB Terminal Docs" />
 
 # nhits
 

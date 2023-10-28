@@ -1,7 +1,18 @@
 ---
 title: dupont
-description: OpenBB Terminal Function
+description: This page provides information about the Dupont tool, which deconstructs
+  return on equity to help investors understand it better. This tool can toggle between
+  presenting raw data and processed data.
+keywords:
+- dupont
+- return on equity
+- investment
+- raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dupont - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # dupont
 

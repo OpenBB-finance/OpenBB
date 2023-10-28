@@ -1,7 +1,22 @@
 ---
 title: nbeats
-description: OpenBB SDK Function
+description: Learn how to perform NBEATS Forecasting with OpenBB Finance. Explore
+  the parameters, their descriptions, and learn how to properly tune them for optimal
+  forecasting results.
+keywords:
+- NBEATS Forecasting
+- OpenBB Finance
+- forecast parameters
+- training models
+- machine learning
+- Python
+- data science
+- time series prediction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nbeats - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: vsurf
-description: OpenBB Telegram Command
+description: This page provides a guide on how to use the 'vsurf' command to retrieve
+  an options volatility surface for a ticker symbol, displaying the relationship between
+  stock price and the implied volatility of options.
+keywords:
+- vsurf command
+- options volatility surface
+- ticker symbol
+- implied volatilities
+- stock price
+- stock options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vsurf - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # vsurf
 

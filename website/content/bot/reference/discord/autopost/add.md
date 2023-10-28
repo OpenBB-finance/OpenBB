@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: commands add
-description: OpenBB Discord Command
+description: This documentation page provides in-depth insight on how to use the 'add'
+  command in the context of autoposting with OpenBB bot. It gives details of usage,
+  parameters and even provides a few illustrative examples.
+keywords:
+- OpenBB bot
+- autopost commands
+- autoposting
+- commands add
+- usage parameters
+- automated notifications
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="commands add - Autopost - Discord - Reference | OpenBB Bot Docs" />
 
 # commands add
 

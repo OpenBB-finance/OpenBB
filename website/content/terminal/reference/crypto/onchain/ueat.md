@@ -1,7 +1,28 @@
 ---
 title: ueat
-description: OpenBB Terminal Function
+description: The ueat page provides a means to display the number of unique ethereum
+  addresses which made a transaction in a given time interval. It provides options
+  to limit or sort data and to set time intervals. Statistics such as average, medium,
+  and maximum gas prices are available and data can be displayed in reverse or sorted
+  order.
+keywords:
+- ueat
+- ethereum
+- transaction
+- time interval
+- unique addresses
+- bitquery
+- sort
+- average gas price
+- medium gas price
+- maximum gas price
+- raw data
+- reverse flag
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ueat - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # ueat
 

@@ -1,7 +1,18 @@
 ---
 title: sinfo
-description: OpenBB Terminal Function
+description: Learn how to use sinfo tool to display staking info of a Terra address.
+  Provides usage information and parameter details.
+keywords:
+- sinfo tool
+- Terra address
+- staking info
+- parameters
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sinfo - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # sinfo
 

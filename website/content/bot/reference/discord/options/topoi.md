@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topoi
-description: OpenBB Discord Command
+description: This page explains how to use the 'topoi' command, allowing users to
+  retrieve Top Open Interest among all stocks. It discusses the purpose, usage, and
+  provides examples of this command.
+keywords:
+- topoi command
+- retrieve Top Open Interest
+- most actively traded stocks
+- current market data
+- stocks and options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topoi - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # topoi
 

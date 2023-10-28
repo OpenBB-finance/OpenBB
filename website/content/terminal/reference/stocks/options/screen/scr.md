@@ -1,7 +1,24 @@
 ---
 title: scr
-description: OpenBB Terminal Function
+description: The page describes the usage, parameters and functions of the scr command.
+  It includes details about various presets like high_IV, TSLA_Poots, SPY_ATM_Calls
+  among others and key concepts like Implied Volatility and Price-to-book.
+keywords:
+- Screener filter
+- syncretism
+- high IV
+- TSLA Poots
+- SPY ATM Calls
+- Implied Volatility
+- Open Interest
+- Price-to-book
+- scr command
+- SPY ATM Poots
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="scr - Screen - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # scr
 

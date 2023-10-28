@@ -1,7 +1,22 @@
 ---
 title: performance
-description: OpenBB Terminal Function
+description: This page provides information on the 'performance' command in the Python
+  programming language. It displays screener data from Finviz for similar companies,
+  giving a comprehensive performance overview including parameters such as Perf Week,
+  Perf Month, Perf Quart, Perf Half, Perf Year, and more. The command is shown in
+  use along with sample output.
+keywords:
+- Python
+- performance command
+- Finviz
+- stock screener
+- screener data
+- company performance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="performance - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # performance
 

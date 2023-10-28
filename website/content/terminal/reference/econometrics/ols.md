@@ -1,7 +1,21 @@
 ---
 title: ols
-description: OpenBB Terminal Function
+description: This page explains how to perform an OLS regression on timeseries data
+  using specific commands and parameters. It's useful for those working in data analytics
+  or statistical modeling.
+keywords:
+- OLS regression
+- timeseries data
+- data analytics
+- statistical modeling
+- dependent variable
+- independent variable
+- no_output parameter
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ols - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # ols
 

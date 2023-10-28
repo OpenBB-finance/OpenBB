@@ -1,7 +1,27 @@
 ---
 title: losers
-description: OpenBB Terminal Function
+description: The 'losers' documentation page provides a Python based solution for
+  identifying cryptocurrencies with the largest drop in value over a given time period.
+  Control the analysis with options for the time interval, record limits, and sorting.
+  This tool is essential for in-depth market analysis and monitoring market trends.
+keywords:
+- Market Analysis
+- Cryptocurrency
+- Crypto Losers
+- Market Trends
+- Price Drop
+- Time Interval
+- Record Limit
+- Sort Options
+- Python Script
+- Crypto Coin Symbol
+- Market Cap Rank
+- Volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="losers - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # losers
 

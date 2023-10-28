@@ -1,8 +1,34 @@
 ---
 title: Forex
-keywords: [forex, currency, money, hedge, dollar, euro, pound, currencies, market, openbb terminal, how to, example, fwd, forward rate, oanda, quote]
-description: A brief introduction and guide to the Forex menu. It includes descriptions of its functionality, commands, data, outputs, and examples in context.
+description: This page provides comprehensive information on the Forex menu within
+  our terminal, including the ability to load any combination of currency pairs, view
+  real-time quotes and historical data, leverage forward rates, and apply technical
+  analysis. It also provides the capability to integrate with the Oanda platform and
+  offers detailed guides on more advanced techniques such as quantitative analysis
+  and seasonality.
+keywords:
+- Forex
+- currency trading
+- currency pairs
+- USD/EUR
+- JPY/GBP
+- quote
+- candle
+- forward rates
+- fwd
+- technical analysis
+- forecasting
+- Oanda
+- historical data
+- real-time currency exchange
+- terminal
+- quantitative analysis
+- seasonality
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forex - Data Available | OpenBB Terminal Docs" />
 
 The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.
 

@@ -1,7 +1,30 @@
 ---
 title: markets
-description: OpenBB Terminal Function
+description: Explore market-related coin information such as price, supply, and volume
+  for all digital currencies on CoinPaprika. Customize the number of coins to be displayed
+  and sort data by various parameters such as rank, price, and volume. Ideal for cryptocurrency
+  analysis and comparison.
+keywords:
+- market data
+- coin data
+- coin information
+- coin statistics
+- php market
+- cryptocurrency
+- cryptocurrency market
+- price data
+- supply data
+- volume data
+- crypto analysis
+- market comparison
+- crypto ranking
+- coin ranking
+- crypto price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="markets - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # markets
 

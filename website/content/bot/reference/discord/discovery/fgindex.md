@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: fgindex
-description: OpenBB Discord Command
+description: The page defines the use of 'fgindex' command in getting the Fear & Greed
+  Index. This is a key investor sentiment indicator by CNNMoney and offers insights
+  into the stock market through analysis of momentum, sentiment, and trading volume.
+keywords:
+- fgindex
+- Fear & Greed Index
+- investor sentiment indicator
+- CNNMoney
+- stock market
+- market momentum
+- market sentiment
+- stock trading volume
+- score range 0-100
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fgindex - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # fgindex
 

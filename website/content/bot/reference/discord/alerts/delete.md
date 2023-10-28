@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: delete
-description: OpenBB Discord Command
+description: Learn how to delete an active alert using our user-friendly commands.
+  This page provides detailed usage and examples of alert deletion.
+keywords:
+- delete
+- alert
+- commands
+- user guide
+- parameters
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="delete - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
 # delete
 

@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: vsurf
-description: OpenBB Discord Command
+description: This page provides instructions on how to use the 'vsurf' command to
+  retrieve an options volatility surface for a specific stock ticker, detailing implied
+  volatilities, open interest, and last price.
+keywords:
+- vsurf command
+- options volatility surface
+- stock ticker
+- implied volatilities
+- open interest
+- last price
+- command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vsurf - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # vsurf
 

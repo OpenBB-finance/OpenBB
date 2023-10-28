@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ipolist
-description: OpenBB Discord Command
+description: The ipolist command page provides details on how to use the command to
+  get the latest and upcoming Initial Public Offerings (IPOs) information. The information
+  includes the name of the company, IPO date, and the stock exchange.
+keywords:
+- ipolist command
+- initial public offerings
+- IPO updates
+- new companies
+- stock exchange
+- investment opportunities
+- upcoming IPOs
+- latest IPOs
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ipolist - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # ipolist
 

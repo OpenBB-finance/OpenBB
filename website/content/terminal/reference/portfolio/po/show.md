@@ -1,7 +1,26 @@
 ---
 title: show
-description: OpenBB Terminal Function
+description: The page provides command usage and parameters for the 'show' feature
+  which helps to display selected saved portfolios and its associated categories like
+  asset class, country, sector, industry with an option to allocate amount for long
+  term investments.
+keywords:
+- show
+- saved portfolios
+- usage
+- parameters
+- portfolios
+- categories
+- long allocation
+- asset class
+- country
+- sector
+- industry
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="show - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # show
 

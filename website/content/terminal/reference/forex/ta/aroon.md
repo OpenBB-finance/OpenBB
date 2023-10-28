@@ -1,7 +1,21 @@
 ---
 title: aroon
-description: OpenBB Terminal Function
+description: Learn about the Aroon Indicator, a tool that shows when a new trend is
+  dawning in market analysis. Understand its parameters, usage and visual representation.
+keywords:
+- Aroon Indicator
+- Market Analysis
+- New Trend
+- Upward Trend
+- Downward Trend
+- Aroon Up
+- Aroon Down
+- Crossovers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="aroon - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # aroon
 

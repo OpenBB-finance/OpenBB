@@ -1,8 +1,25 @@
 ---
 title: Mutual Funds
-keywords: [mutual funds, funds, morningstar, morning star, blackrock, vanguard, countries, global, search, holdings]
-description: An introduction to the Mutual Funds menu - search and analyze the global mutual funds universe by country.
+description: The documentation presents various commands and functions available within
+  the Mutual Funds menu, enabling users to analyze and get detailed insights about
+  different mutual funds. It covers features like searching funds, loading fund data,
+  analyzing sector weightings, and viewing current fund holdings, among others.
+keywords:
+- Mutual funds
+- Fund analysis
+- Investment
+- Fund listings
+- /funds commands
+- Fund data
+- Mutual fund information
+- Fund sector weightings
+- Mutual fund holdings
+- Mutual fund carbon metrics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Mutual Funds - Data Available | OpenBB Terminal Docs" />
 
 
 The Mutual Funds menu provides a global view of the mutual funds universe.  Enter the menu by typing, `/funds`.

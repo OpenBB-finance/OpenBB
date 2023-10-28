@@ -1,7 +1,22 @@
 ---
 title: ad
-description: OpenBB Terminal Function
+description: The Accumulation/Distribution Line page provides information about how
+  this technical analysis tool operates, based on the close location value, to predict
+  trends in stock price. It also covers how to interpret divergence in the indicator,
+  usage of the tool, and parameters for customization.
+keywords:
+- Accumulation/Distribution Line
+- On Balance Volume
+- close location value
+- stock market indicator
+- price movement
+- technical analysis
+- price trends
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ad - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # ad
 

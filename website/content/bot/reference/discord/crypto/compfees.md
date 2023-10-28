@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: compfees
-description: OpenBB Discord Command
+description: Learn how to use the compfees command to retrieve Protocol fees with
+  step-by-step examples. The command caters to various projects including btc, eth,
+  doge, etc.
+keywords:
+- compfees
+- Protocol fees
+- btc
+- eth
+- doge
+- projects
+- /crypto command
+- crypto
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="compfees - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # compfees
 

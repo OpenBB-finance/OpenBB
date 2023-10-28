@@ -1,7 +1,23 @@
 ---
 title: defi
-description: OpenBB Terminal Function
+description: The 'defi' page provides global decentralized finance (DeFi) statistics
+  such as market cap, trading volume, DeFi dominance, and top coins. It plainly outlines
+  how to use the function, its lack of parameters and showcases an example of the
+  function being used.
+keywords:
+- DeFi
+- Decentralized Finance
+- distributed networks
+- financial services
+- Market Cap
+- Trading Volume
+- Defi Dominance
+- Top Coins
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="defi - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # defi
 

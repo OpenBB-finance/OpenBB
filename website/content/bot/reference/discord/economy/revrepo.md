@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: revrepo
-description: OpenBB Discord Command
+description: On this page, you can understand how to use the '/econ revrepo' command
+  to retrieve Reverse Repo data with flexibility on the number of days, specifically
+  catering to your needs.
+keywords:
+- RevRepo
+- /econ revrepo
+- Retrieving Reverse Repo data
+- Command Usage
+- Parameters
+- Examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="revrepo - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # revrepo
 

@@ -1,9 +1,27 @@
 ---
 title: Routine Macro Recorder
 sidebar_position: 4
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Learn how to use the macro recorder in OpenBB to start saving commands
+  and automate common tasks with scripts. This page guides you through the process
+  of recording, saving, and accessing your recorded routines.
+keywords:
+- OpenBB
+- macro recorder
+- script routines
+- global commands
+- Excel's VBA methods
+- command recording
+- routine script
+- OpenBB Terminal
+- terminal main menu
+- exe --file
+- OpenBBUserData
+- routines folder
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Routine Macro Recorder - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

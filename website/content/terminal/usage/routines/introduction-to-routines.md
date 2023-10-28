@@ -1,9 +1,24 @@
 ---
 title: Introduction to Routines
 sidebar_position: 3
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: The page provides a detailed introduction to OpenBB Routines, which allow
+  users to automate processes and repetitive tasks in financial analysis and data
+  collection. It explains basic scripts, routine execution, and guides users on getting
+  started with an example.
+keywords:
+- OpenBB Routines
+- automated processes
+- repetitive tasks
+- financial analysis
+- data collection
+- basic script
+- routine execution
+- tutorial video
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Introduction to Routines - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

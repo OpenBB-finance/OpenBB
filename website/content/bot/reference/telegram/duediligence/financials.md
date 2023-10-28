@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: financials
-description: OpenBB Telegram Command
+description: This page provides detailed information on how to retrieve the financials
+  of a company using a specified stock ticker. It includes insights on total assets,
+  cash, debt, liabilities, and revenue for a comprehensive analysis of a company's
+  financial health.
+keywords:
+- financials command
+- stock ticker
+- company assets
+- company liabilities
+- company revenue
+- debt analysis
+- financial health
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="financials - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # financials
 

@@ -1,7 +1,26 @@
 ---
 title: baas
-description: OpenBB Terminal Function
+description: This documentation is related to the 'baas' function which displays the
+  average bid, ask prices, and spread for a chosen crypto pair over a specified time
+  period. The function can work with various cryptocurrencies and ERC 20 tokens.
+keywords:
+- baas
+- crypto pair
+- average bid
+- average ask prices
+- spread
+- time period
+- ERC20 token
+- crypto currency
+- ETH
+- USD
+- BTC
+- USDT
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="baas - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # baas
 

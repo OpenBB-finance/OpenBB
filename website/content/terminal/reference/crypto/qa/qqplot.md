@@ -1,7 +1,18 @@
 ---
 title: qqplot
-description: OpenBB Terminal Function
+description: A docusaurus page dedicated to explaining how to utilize the 'qqplot'
+  Python function to display data in a QQ plot versus normal quantiles. Provides a
+  succinct guide on usage and parameters available.
+keywords:
+- qqplot
+- normal quantiles
+- data visualization
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qqplot - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # qqplot
 

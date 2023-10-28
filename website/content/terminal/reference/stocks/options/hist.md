@@ -1,7 +1,22 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: The page provides a method to get historical quotes for the provided
+  option chain using Python. It details the usage and parameters required, including
+  the strike price, put option flag, and OCC option symbol. Example code and output
+  are provided.
+keywords:
+- historical quotes
+- option chain
+- strike price
+- put option
+- OCC option symbol
+- Python
+- code example
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hist - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # hist
 

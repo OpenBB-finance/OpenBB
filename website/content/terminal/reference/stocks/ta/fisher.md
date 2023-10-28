@@ -1,7 +1,26 @@
 ---
 title: fisher
-description: OpenBB Terminal Function
+description: The page provides a comprehensive guide to the Fisher Transform, a technical
+  indicator by John F. Ehlers. It helps in highlighting extreme prices based on recent
+  values, identifying turning points, showing the trend and isolating price waves.
+  The functions, usage and parameters of the Fisher Transform are elaborately discussed.
+keywords:
+- Fisher Transform
+- technical indicator
+- John F. Ehlers
+- Gaussian normal distribution
+- extreme prices
+- turning points
+- price of an asset
+- trend indication
+- price waves
+- Fisher usage
+- Fisher parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fisher - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # fisher
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sumday
-description: OpenBB Discord Command
+description: This documentation page details the use of the sumday command in a trading
+  platform, explaining its purpose, usage, and parameters, including the concept of
+  stock tickers, total premium, and trade categorization.
+keywords:
+- sumday command
+- stock ticker
+- total premium
+- trading day
+- trade categorization
+- bid/ask
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sumday - Flow - Discord - Reference | OpenBB Bot Docs" />
 
 # sumday
 

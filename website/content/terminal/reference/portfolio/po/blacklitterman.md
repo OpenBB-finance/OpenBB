@@ -1,7 +1,26 @@
 ---
 title: blacklitterman
-description: OpenBB Terminal Function
+description: This article provides an overview of how to optimize your portfolio using
+  Black Litterman estimates. It includes a detailed guide on parameter usage, command
+  line options, and examples to get you up to speed with the utility.
+keywords:
+- Black Litterman
+- portfolio optimization
+- portfolio analysis
+- investment strategies
+- benchmarking
+- investment objectives
+- risk aversion
+- Python
+- financial data analysis
+- financial modelling
+- portfolio risk management
+- investment risk
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="blacklitterman - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # blacklitterman
 

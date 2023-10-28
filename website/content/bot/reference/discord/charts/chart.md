@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chart
-description: OpenBB Discord Command
+description: Learn how to retrieve a candlestick chart for specified stock tickers,
+  intervals, and for past days. The chart provides comprehensive trading data including
+  opening and closing prices, as well as highs and lows, and volume.
+keywords:
+- stock ticker
+- candlestick chart
+- trading data
+- chart interval
+- data visualization
+- stock market
+- financial information
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chart - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # chart
 

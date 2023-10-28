@@ -1,7 +1,23 @@
 ---
 title: plot
-description: OpenBB SDK Function
+description: Learn how to harness the power of OpenBB's financial forecasting functions
+  such as the plot and plot_chart to visualize data. These Python functions extract
+  dataframes and accept options for export format and external plot axes.
+keywords:
+- plot data visualization
+- OpenBB finance
+- OpenBBTerminal
+- Python
+- forecast
+- dataframe
+- export format
+- docusaurus tabs
+- optional axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="plot - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

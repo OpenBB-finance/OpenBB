@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: tvl
-description: OpenBB Discord Command
+description: This page provides instructions on how to use the 'TVL' command to retrieve
+  historical Total Value Locked (TVL) data for a given protocol. This data provides
+  a snapshot of the total amount of capital locked in a protocol, enabling comparison
+  of metrics between protocols and tracking their growth over time.
+keywords:
+- TVL
+- Total Value Locked
+- protocol
+- crypto
+- historical data
+- growth tracking
+- metrics comparison
+- capital
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tvl - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # tvl
 

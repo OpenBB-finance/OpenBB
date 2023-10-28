@@ -1,7 +1,32 @@
 ---
 title: nhits
-description: OpenBB SDK Function
+description: This is a Docusaurus page that displays in-depth information on forecasting
+  using the OpenBB's NhitsModel. It provides details on parameters, returns and also
+  provides source code links to the OpenBB finance's Github repository.
+keywords:
+- Docusaurus
+- nhits
+- OpenBB
+- forecasting
+- NhitsModel
+- nhits_chart
+- pd.Series
+- pd.DataFrame
+- python
+- title
+- description
+- keywords
+- metadata
+- SEO
+- marketing
+- analysis
+- TimeSeries
+- NHiTSModel
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nhits - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

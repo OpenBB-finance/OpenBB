@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: itm
-description: OpenBB Discord Command
+description: A comprehensive guide on the 'itm' command that helps to acquire In-the-Money
+  options for chosen stock ticker.
+keywords:
+- itm command
+- In-the-Money options
+- stock ticker
+- Calls and Puts
+- Out-the-Money options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="itm - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # itm
 

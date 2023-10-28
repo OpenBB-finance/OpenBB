@@ -1,7 +1,22 @@
 ---
 title: rot
-description: OpenBB Terminal Function
+description: This page provides information about the 'rot' - Rating Over Time (monthly),
+  including its usage, parameters, and a visual example. The info is sourced from
+  Finnhub.
+keywords:
+- rot
+- Rating Over Time
+- monthly rating
+- Finnhub
+- rot parameters
+- rot usage
+- data visualization
+- raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rot - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
 # rot
 

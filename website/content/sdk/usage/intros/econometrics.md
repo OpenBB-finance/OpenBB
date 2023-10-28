@@ -1,8 +1,28 @@
 ---
 title: Econometrics
-keywords: [econometrics, statistics, regression, panel data, time series, research, thesis, university, how to, usage, examples, random effects, fixed effects, path, description, loading, dataset, ]
-description: Learn about functionality and using the Econometrics menu. Its purpose is to provide the user the ability to perform statistical research on custom datasets.
+description: This documentation page guides users in the usage of the openbb Terminal's
+  Econometrics menu that allows users to load, modify, and perform statistical tests
+  on their datasets via a powerful SDK. The article explains the process of running
+  various regression models, performing tests on residuals, and how to overcome potential
+  errors during the process.
+keywords:
+- openbb Terminal
+- Econometrics menu
+- SDK
+- statistical tests
+- regression models
+- Python
+- OLS regression
+- Panel regression
+- Custom datasets
+- Descriptive Statistics
+- Unit root
+- Multicollinearity
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Econometrics - Intros - Usage | OpenBB SDK Docs" />
 
 The capabilities of the [Econometrics menu](/terminal/usage/intros/econometrics) in the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 

@@ -1,7 +1,24 @@
 ---
 title: earnings
-description: OpenBB Terminal Function
+description: This page provides documentation for the 'earnings' function. This tool
+  prints earnings dates and reported EPS of a company, enabling users to efficiently
+  track this financial data in a clear format.
+keywords:
+- docusaurus
+- metadata
+- SEO
+- earnings
+- financial data
+- EPS
+- documentation
+- parameter
+- example
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="earnings - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # earnings
 

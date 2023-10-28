@@ -1,9 +1,29 @@
 ---
 title: Pipeline of commands
 sidebar_position: 1
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: This page provides a detailed understanding of how to use OpenBB Terminal.
+  The tutorial video and walkthrough guides to help users automate their investment
+  research process by using single commands and command sequences to manipulate and
+  study data, especially GME's dark pool data. Concepts like pipelines of commands,
+  loading stocks, and use of indicators like MACD and EMA are explained.
+keywords:
+- OpenBB Terminal
+- Single command
+- Pipeline of commands
+- Command sequence
+- Automate investment research
+- Tutorial video
+- GME's dark pool data
+- Technical Analysis
+- Moving Average Convergence/Divergence indicator
+- Stock price loaded
+- Exponential moving average indicator
+- Price vs Short interest
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Pipeline of commands - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -14,13 +34,13 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 ## Single command
 
-If you understand well the terminal architecture, you understand that commands and menus are organized in the form of a tree. 
+If you understand well the terminal architecture, you understand that commands and menus are organized in the form of a tree.
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a5f10833-9693-4b39-9491-b431919db828)
 
 This means that if your intention is to explore GME's dark pool data, you simply need to navigate to the `stocks` section within the OpenBB Terminal and then proceed to the `dps` subsection (which stands for "dark pool and short" data). Upon reaching this point, the terminal will present you with several available commands that you could execute to retrieve the desired data.
 
-While all the information is in one place, having to type one command at a type is far from optimal. 
+While all the information is in one place, having to type one command at a type is far from optimal.
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/41737800-7c60-48ad-a43d-814016d81762)
 
@@ -69,5 +89,3 @@ This will do the following:
 7. `dps` - Go into Dark pool and Short (`dps`) menu
 
 8. `psi` - Go into Price vs Short interest (`psi`) menu
-
-

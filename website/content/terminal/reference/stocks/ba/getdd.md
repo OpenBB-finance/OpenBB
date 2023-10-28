@@ -1,7 +1,27 @@
 ---
 title: getdd
-description: OpenBB Terminal Function
+description: Getdd function retrieves top stocks' due diligence from Reddit with the
+  functionality of choosing a limit on the posts, number of prior days to search,
+  and the choice of searching through all flairs or focusing on specific flairs including
+  DD, technical analysis, Catalyst, News, Advice, and Chart.
+keywords:
+- stock's due diligence
+- Reddit
+- getdd
+- limit of posts
+- number of prior days
+- search through flairs
+- 'flairs: DD, technical analysis, Catalyst, News, Advice, Chart'
+- ATVI free money
+- 'PTON: The safest investment'
+- bottom on $FB
+- Congress Trading & Retail Traders
+- large market cap stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="getdd - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # getdd
 

@@ -1,7 +1,20 @@
 ---
 title: sreturn
-description: OpenBB Terminal Function
+description: The sreturn page provides information about the terra blockchain staking
+  returns history. It contains usage details, parameters, and illustrative diagrams.
+keywords:
+- sreturn
+- terra blockchain
+- staking returns history
+- usage details
+- parameters
+- diagrams
+- blockchain technology
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sreturn - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # sreturn
 

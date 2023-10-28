@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: yieldcurve
-description: OpenBB Discord Command
+description: The page provides information on how to use the yieldcurve command to
+  retrieve the US Bonds yield curve, which gives an indication of the direction of
+  interest rates.
+keywords:
+- yieldcurve
+- US Bonds
+- interest rates
+- /econ yieldcurve
+- economics command
+- financial data
+- data retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="yieldcurve - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # yieldcurve
 

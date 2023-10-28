@@ -1,8 +1,16 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: house
-description: OpenBB Telegram Command
+description: The page provides instructions on how to use the 'house' command to retrieve
+  recent house trades for a specific stock ticker.
+keywords:
+- house command
+- retrieve house trades
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="house - Government - Telegram - Reference | OpenBB Bot Docs" />
 
 # house
 

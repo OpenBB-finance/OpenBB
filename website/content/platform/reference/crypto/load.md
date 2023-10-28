@@ -1,7 +1,40 @@
 ---
 title: load
-description: OpenBB Platform Function
+description: This page provides comprehensive data about Crypto Historical Price where
+  users can load cryptocurrency historical price data, including symbol, provider,
+  date, and timespan. It features different options for data providers such as fmp
+  and polygon. Users can modify the data request according to the parameters given,
+  including timeseries, interval, multiplier, timespan, sort, and limit. The page
+  also outlines the data that will be returned, such as open, high, low, close, volume,
+  vwap, and for specific providers additional data like transactions.
+keywords:
+- Crypto Historical Price
+- cryptocurrency
+- data
+- fmp
+- polygon
+- symbol
+- date
+- provider
+- timeseries
+- interval
+- multiplier
+- timespan
+- sort
+- limit
+- adjusted
+- open
+- high
+- low
+- close
+- volume
+- vwap
+- transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Crypto - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -132,4 +165,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

@@ -1,7 +1,21 @@
 ---
 title: maxdd
-description: OpenBB Terminal Function
+description: This page provides a detailed guideline on how to use 'maxdd' command
+  in Python for managing portfolio. It allows users to show maximum portfolio drawdown
+  and it operates without parameters.
+keywords:
+- maxdd
+- portfolio
+- drawdown
+- Python
+- usage
+- command
+- no parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxdd - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # maxdd
 

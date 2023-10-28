@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: oichart
-description: OpenBB Discord Command
+description: This documentation page gives a detailed explanation of the 'oichart'
+  command used to retrieve a chart of Total Open Interest by Strike Price for a specific
+  ticker symbol. The page provides usage, parameters, and examples to analyze the
+  open interest on various strike prices and make informed decisions about the underlying
+  security.
+keywords:
+- oichart
+- Open Interest
+- Strike Price
+- Visual representation
+- ticker symbol
+- Stock Ticker
+- Expiration Date
+- Underlying security
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="oichart - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # oichart
 

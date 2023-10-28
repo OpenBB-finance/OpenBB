@@ -1,7 +1,33 @@
 ---
 title: growth
-description: OpenBB Terminal Function
+description: This documentation page discusses the various parameters and functionalities
+  of a financial growth model. It covers the growth of statement items and financial
+  ratios, including revenue, operating cash flow, assets, debt, EBIT, EPS, gross profit,
+  inventory, net income, operating income, and more. It provides usage examples and
+  parameter descriptions using Financial Modeling Prep as the data source.
+keywords:
+- financial growth
+- statement items growth
+- financial ratios
+- Revenue Growth
+- inventory growth
+- operating cash flow growth
+- Asset growth
+- Debt growth
+- Ebit growth
+- Eps growth
+- Free cash flow growth
+- Gross profit growth
+- Inventory growth
+- Net income growth
+- Operating income growth
+- Revenue growth
+- Financial Modeling Prep
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="growth - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # growth
 

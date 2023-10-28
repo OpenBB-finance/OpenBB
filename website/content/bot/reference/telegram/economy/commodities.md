@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: commodities
-description: OpenBB Telegram Command
+description: The page elaborates on the /commodities command, a tool for users to
+  access an overview of Futures and commodities along with the latest prices and day
+  changes. The command does not require any parameters.
+keywords:
+- commodities
+- Futures
+- price change
+- day overview
+- no parameters command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="commodities - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # commodities
 

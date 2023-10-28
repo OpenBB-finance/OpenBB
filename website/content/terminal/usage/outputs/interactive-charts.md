@@ -1,9 +1,27 @@
 ---
 title: Interactive Charts
 sidebar_position: 2
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Explore how to effectively utilize OpenBB's interactive charts backed
+  by open source PyWry technology. Understand various capabilities including annotation,
+  color modification, drawing tools, data export, and supplementary data overlay.
+keywords:
+- OpenBB
+- interactive charts
+- PyWry technology
+- chart annotation
+- drawing tools
+- data export
+- data overlay
+- editing chart title
+- Toolbar
+- Text Tools
+- Draw Tools
+- Export Tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Interactive Charts - Outputs - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

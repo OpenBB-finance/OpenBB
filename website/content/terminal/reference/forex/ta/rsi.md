@@ -1,7 +1,24 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: Detailed documentation on how to use the Relative Strength Index (RSI),
+  a key trading indicator. The page includes information on parameters such as n_length,
+  n_scalar, and n_drift, as well as how to interpret the RSI.
+keywords:
+- RSI
+- Relative Strength Index
+- price movements
+- overbought/oversold indicator
+- price divergence
+- n_length
+- n_scalar
+- n_drift
+- technical analysis
+- trading indicator
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsi - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # rsi
 

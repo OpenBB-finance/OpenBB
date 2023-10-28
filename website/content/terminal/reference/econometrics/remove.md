@@ -1,7 +1,18 @@
 ---
 title: remove
-description: OpenBB Terminal Function
+description: Learn how to remove a dataset from a loaded list efficiently using our
+  step-by-step guide, which includes usage, parameters setup, and examples.
+keywords:
+- remove dataset
+- dataset management
+- data management commands
+- data cleaning
+- database management
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="remove - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # remove
 

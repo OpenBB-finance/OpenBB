@@ -1,7 +1,24 @@
 ---
 title: vis
-description: OpenBB Terminal Function
+description: Use our platform to visualize important financial metrics like Balance
+  Sheet, Income, and Cash Flow Statements. Our tool provides an efficient metric visualization
+  facility and supports currency conversion for easy-use. Ideal for financial reporting
+  and analysis.
+keywords:
+- metrics
+- visualization
+- balance sheet statement metrics
+- income statement metrics
+- cash flow statement metrics
+- financial reporting
+- accounting software
+- financial analysis
+- currency conversion
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vis - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # vis
 

@@ -1,7 +1,19 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: The page provides information on viewing available presets, using the
+  view command and viewing specific custom presets. The specific custom preset example
+  is etf_config.ini.
+keywords:
+- View presets
+- Usage of view
+- View parameters
+- Custom presets
+- etf_config.ini
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="view - Screener - Etf - Reference | OpenBB Terminal Docs" />
 
 # view
 

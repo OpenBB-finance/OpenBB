@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: vol
-description: OpenBB Discord Command
+description: This page provides information on using the 'vol' command in retrieving
+  Options Volume by Strike for a specified ticker. It also includes usage examples
+  and how to add an expiration date for more specific data.
+keywords:
+- Options Volume
+- Stock Ticker
+- Expiration Date
+- Command 'vol'
+- Retrieve Ticker Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vol - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # vol
 

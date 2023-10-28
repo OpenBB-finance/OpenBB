@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cc
-description: OpenBB Telegram Command
+description: This page provides information on how to utilize the /cc command, which
+  generates an intraday 5 minute chart for a given stock ticker. It allows users to
+  visually track the stock's performance throughout the day and aids in technical
+  analysis.
+keywords:
+- stock ticker
+- /cc command
+- intraday chart
+- candlestick chart
+- technical analysis
+- short-term price movements
+- stock's performance
+- extended trading hours
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cc - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
 # cc
 

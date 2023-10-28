@@ -1,7 +1,24 @@
 ---
 title: score
-description: OpenBB Terminal Function
+description: This page provides access to cryptocurrency scores including CoinGecko,
+  Developer, Community and Sentiment scores. Learn how to access these scores for
+  any loaded coin.
+keywords:
+- cryptocurrency scores
+- CoinGecko scores
+- Developer scores
+- Community scores
+- Sentiment scores
+- Reddit scores
+- crypto metrics
+- crypto ranking
+- crypto sentiment
+- crypto statistics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="score - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # score
 

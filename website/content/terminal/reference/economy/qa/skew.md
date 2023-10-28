@@ -1,7 +1,23 @@
 ---
 title: skew
-description: OpenBB Terminal Function
+description: The documentation page of the 'skew' attribute, which is a measure of
+  the asymmetry or distortion of a symmetric distribution. It provides explanation
+  of the concept, its usage in Python and parameters details.
+keywords:
+- skew
+- asymmetry
+- symmetric distribution
+- normal distribution
+- distortion
+- deviation
+- random variable
+- parameters
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="skew - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # skew
 

@@ -1,7 +1,27 @@
 ---
 title: cash
-description: OpenBB Platform Function
+description: This is a docusaurus page about the Cash Flow Statement API. Here you
+  can find information about parameters and data returns from popular providers such
+  as FMP, Intrinio, and Polygon. The page explains the procedures for fetching financial
+  data and conditions attached to each data provider.
+keywords:
+- Docusaurus
+- Cash Flow Statement
+- Data Fetching
+- Provider Parameters
+- Financial Data
+- FMP
+- Intrinio
+- Polygon
+- Data Returns
+- Financial Statements
+- Metadata Information
+- Financial Analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cash - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -199,4 +219,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

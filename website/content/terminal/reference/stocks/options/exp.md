@@ -1,7 +1,22 @@
 ---
 title: exp
-description: OpenBB Terminal Function
+description: The 'exp' page provides comprehensive details on setting expiration dates
+  using the 'exp' command in Python. It includes information on usage, parameters,
+  and examples to assist users in understanding and effectively managing dates.
+keywords:
+- exp documentation
+- expiration date setting
+- expiry date tool
+- expiry date parameters
+- exp usage
+- exp examples
+- exp command
+- exp date selection
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exp - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # exp
 

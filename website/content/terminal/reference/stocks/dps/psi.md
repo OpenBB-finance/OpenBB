@@ -1,7 +1,21 @@
 ---
 title: psi
-description: OpenBB Terminal Function
+description: The page provides detailed information about psi command which shows
+  the price vs short interest volume data from either NYSE or NASDAQ taken from Quandl
+  or Stockgrid. It also includes usage and parameter details.
+keywords:
+- psi
+- NYSE
+- NASDAQ
+- Quandl
+- Stockgrid
+- short-interest volume
+- price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="psi - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # psi
 

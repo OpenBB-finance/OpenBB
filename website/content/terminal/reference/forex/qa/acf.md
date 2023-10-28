@@ -1,7 +1,20 @@
 ---
 title: acf
-description: OpenBB Terminal Function
+description: This page provides information about Auto-Correlation and Partial Auto-Correlation
+  Functions for diff and diff diff forex data, including its usage and parameters.
+keywords:
+- Auto-Correlation Function
+- Partial Auto-Correlation Function
+- Forex data
+- Data analysis
+- Python acf
+- Forex data analysis
+- Data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="acf - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # acf
 

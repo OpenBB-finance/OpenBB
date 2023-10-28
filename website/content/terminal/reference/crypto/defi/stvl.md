@@ -1,7 +1,22 @@
 ---
 title: stvl
-description: OpenBB Terminal Function
+description: The page provides detailed information about the stvl function. This
+  includes its usage, parameters like 'limit' and how to display TVLs for listed dApps
+  using llama.fi API.
+keywords:
+- stvl
+- TVLs
+- dApps
+- llama.fi
+- API
+- python
+- parameters
+- limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stvl - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # stvl
 

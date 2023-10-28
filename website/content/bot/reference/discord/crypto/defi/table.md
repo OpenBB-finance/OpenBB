@@ -1,8 +1,30 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: table
-description: OpenBB Discord Command
+description: This page provides commands and parameters for retrieving and managing
+  data about top DeFi protocols including total value locked, 24-hour volume, and
+  price. It also guides on how to sort and filter this data.
+keywords:
+- DeFi protocols
+- total value locked
+- /crypto defi table
+- 24 hour volume
+- price
+- sortby parameter
+- chain parameter
+- reverse parameter
+- crypto
+- table
+- sorted data
+- Market Cap
+- Total Value Locked
+- MCap
+- TVL
+- ethereum
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="table - Defi - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # table
 

@@ -1,7 +1,29 @@
 ---
 title: trans
-description: OpenBB SDK Function
+description: This section emphasizes on Transformer forecasting method implementation
+  and visualization used in OpenBB Terminal. It explains functions like how to apply
+  the approach on data, various parameters to adjust for better forecasting and display
+  the results in chart.
+keywords:
+- Transformer Forecasting
+- OpenBB Terminal
+- Time-Series Prediction
+- Forecasting Parameters
+- Data Visualization
+- Python
+- pandas series
+- pandas dataframe
+- Machine Learning
+- Activation Function
+- Multi-head Attention Mechanism
+- Encoder layers
+- Decoder layers
+- Feedforward Network
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trans - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: list
-description: OpenBB Discord Command
+description: The '/alerts list' command page helps users understand how to view a
+  list of their active alerts, including each alert's symbol, description, and threshold.
+keywords:
+- alerts list command
+- list active alerts
+- alert overview
+- alerts symbols
+- alerts threshold
+- using alerts list
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="list - Alerts - Discord - Reference | OpenBB Bot Docs" />
 
 # list
 

@@ -1,7 +1,23 @@
 ---
 title: eval
-description: OpenBB Terminal Function
+description: This page provides information about the 'eval' function for creating
+  custom data columns using mathematical expressions supported by pandas.eval(). It
+  exemplifies case sensitivity and the use of queries on loaded datasets.
+keywords:
+- eval function
+- custom data column
+- pandas.eval
+- mathematical expressions
+- datasets
+- case sensitive
+- query
+- DGS2
+- DGS5
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="eval - Economy - Reference | OpenBB Terminal Docs" />
 
 # eval
 

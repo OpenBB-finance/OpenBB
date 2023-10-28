@@ -1,7 +1,29 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: A detailed guide on how to load any cryptocurrency to perform various
+  analyses. This page includes the method to select an exchange and designate a particular
+  interval along with explaining several parameters including start and end dates.
+keywords:
+- load
+- crypto currency
+- analysis
+- Yahoo Finance
+- ccxt
+- cg
+- source
+- exchange
+- interval
+- python
+- parameters
+- coin
+- start
+- end
+- vs
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # load
 

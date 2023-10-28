@@ -1,7 +1,18 @@
 ---
 title: open
-description: OpenBB Terminal Function
+description: Learn about the command to show currently open exchanges with our detailed
+  documentation. Understand its usage with no parameters.
+keywords:
+- Command
+- Open exchanges
+- Usage
+- Parameters
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="open - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
 # open
 

@@ -1,7 +1,19 @@
 ---
 title: industry
-description: OpenBB Terminal Function
+description: This page provides information on how to view existing industries or
+  setting an industry using parameters. It includes usage, choices, and optional settings
+  for the 'industry' function.
+keywords:
+- industry
+- industry selection
+- set industry
+- industry parameters
+- industry usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="industry - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # industry
 

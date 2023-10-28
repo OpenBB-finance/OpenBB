@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: contracts
-description: OpenBB Discord Command
+description: This documentation page is about the command that allows users to retrieve
+  the top 15 government contracts by amount for a specific stock ticker.
+keywords:
+- government contracts
+- ticker
+- command
+- retrieve
+- stock
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Government - Discord - Reference | OpenBB Bot Docs" />
 
 # contracts
 

@@ -1,7 +1,55 @@
 ---
 title: load
-description: OpenBB Platform Function
+description: Information related to the 'load' function for obtaining stock historical
+  price data for specific ticker symbols. Covering parameters, returns, and data across
+  the standard, 'fmp', 'intrinio', and 'polygon' functions.
+keywords:
+- Docusaurus
+- SEO
+- metadata
+- load function
+- stock historical price
+- ticker symbols
+- fmp
+- intrinio
+- polygon
+- stock data
+- parameters
+- returns
+- open price
+- high price
+- low price
+- close price
+- volume
+- vwap
+- Volume Weighted Average Price
+- start date
+- end date
+- provider
+- timeseries
+- data granularity
+- timezone
+- interval size
+- multiplier
+- timespan
+- sort order
+- data entries
+- adjusted
+- trading times
+- data source
+- interval starting and stopping time
+- data time frequency
+- adjusted close price
+- unadjusted volume
+- price change
+- change over time
+- average trade price
+- transaction numbers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Stocks - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -164,4 +212,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

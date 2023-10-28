@@ -1,7 +1,19 @@
 ---
 title: info
-description: OpenBB Terminal Function
+description: This page provides information about ERC20 tokens using Ethplorer as
+  a source. Learn how to use our tool to display info about ERC20 tokens, including
+  how to show social media links.
+keywords:
+- ERC20 token
+- Ethplorer
+- Token info
+- Social media links
+- Python usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # info
 

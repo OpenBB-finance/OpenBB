@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: stats
-description: OpenBB Discord Command
+description: The page gives insight into the use of the command to retrieve Options
+  Statistics for a stock. It provides data on parameters like Open Interest, Volume,
+  Implied Volatility and Earnings Move.
+keywords:
+- Options Statistics
+- Stock Ticker
+- Open Interest
+- Volume
+- Implied Volatility
+- Earnings Move Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stats - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # stats
 

@@ -1,7 +1,27 @@
 ---
 title: financial
-description: OpenBB Terminal Function
+description: This page details the use of the financial function that displays filtered
+  financial data of relevant companies. It details the various parameters including
+  preset filters, data sorting instructions, stock limits and more.
+keywords:
+- financial data
+- financial filtering
+- preset filters
+- data sort
+- stock limits
+- financial parameters
+- data ascending
+- data descending
+- financial commands
+- financial programming
+- python financial commands
+- stock market commands
+- stock analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="financial - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
 # financial
 

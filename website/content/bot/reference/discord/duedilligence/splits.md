@@ -1,8 +1,17 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: splits
-description: OpenBB Discord Command
+description: Learn how to use the splits command in Docusaurus to track recent stock
+  splits for a given ticker over time. Detailed usage and examples provided.
+keywords:
+- stock splits
+- tracking stock splits
+- stock ticker
+- docusaurus command for stock splits
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="splits - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # splits
 

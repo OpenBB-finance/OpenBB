@@ -1,7 +1,25 @@
 ---
 title: bbands
-description: OpenBB Terminal Function
+description: A comprehensive guide to understanding and using Bollinger Bands for
+  optimizing trading strategies. Learn about overbought and oversold conditions, price
+  targets, and the intuitive 'bbands' command for Python.
+keywords:
+- Bollinger Bands
+- overbought conditions
+- oversold conditions
+- support level
+- resistance level
+- price target
+- bbands command
+- python
+- technical analysis
+- trading strategy
+- Bollinger Bands parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bbands - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # bbands
 

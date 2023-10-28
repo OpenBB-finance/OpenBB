@@ -1,7 +1,20 @@
 ---
 title: add
-description: OpenBB Terminal Function
+description: This page demonstrates how to use the 'add' function to input a projected
+  stock price and its chance of occurrence into a data set. The tutorial is detailed
+  and includes examples for easy comprehension.
+keywords:
+- Stock Market
+- Stock Pricing
+- Stock Options
+- Pricing Projection
+- Options Pricing
+- Price Addition
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="add - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # add
 

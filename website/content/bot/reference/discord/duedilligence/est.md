@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: est
-description: OpenBB Discord Command
+description: Detailed guide on how to retrieve earning estimates with the 'est' command
+  for various stock symbols. Ideal for investors seeking insights on potential stock
+  performance.
+keywords:
+- est command guide
+- earning estimates
+- stock symbols
+- investor tools
+- stock performance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="est - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # est
 

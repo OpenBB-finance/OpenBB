@@ -1,7 +1,49 @@
 ---
 title: metric
-description: OpenBB Terminal Function
+description: An informational page detailing the usage and parameters of the 'metric'
+  function. This function allows you to visualize various business and economic metrics
+  such as return on assets (roa), return on equity (roe), current ratio (cr), and
+  more. Understanding these metrics can aid in making informed financial and business
+  decisions.
+keywords:
+- metric visualization
+- roa
+- roe
+- cr
+- qr
+- de
+- tc
+- tcs
+- tr
+- rps
+- rg
+- eg
+- pm
+- gp
+- gm
+- ocf
+- om
+- fcf
+- td
+- ebitda
+- ebitdam
+- rec
+- mc
+- fte
+- er
+- bv
+- ss
+- pb
+- beta
+- fs
+- peg
+- ev
+- fpe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="metric - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # metric
 

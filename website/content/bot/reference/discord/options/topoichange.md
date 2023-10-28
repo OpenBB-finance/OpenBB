@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topoichange
-description: OpenBB Discord Command
+description: This page provides details on the topoichange command and its usage for
+  tracking the top 15 stocks with the highest OI Change. It can be used to monitor
+  significant changes in open interest of stocks.
+keywords:
+- topoichange
+- stocks
+- OI Change
+- open interest
+- stock market commands
+- stock name
+- stock change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topoichange - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # topoichange
 

@@ -1,7 +1,24 @@
 ---
 title: info
-description: OpenBB Terminal Function
+description: A comprehensive resource of detailed information about companies, including
+  financial stats and profile data sourced from Yahoo Finance. Ideal for getting to
+  know more about a company's performance, size, location, financial stats, and more.
+keywords:
+- business info
+- company data
+- financial details
+- stock market
+- Yahoo Finance
+- company profile
+- company information
+- marketing SEO
+- docusaurus page
+- Page SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # info
 

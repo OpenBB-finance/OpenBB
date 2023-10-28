@@ -1,7 +1,18 @@
 ---
 title: edebt
-description: OpenBB Terminal Function
+description: The page provides the information about edebt, a tool that gives access
+  to national debt statistics for various countries. The data is sourced from Wikipedia.
+keywords:
+- edebt
+- national debt statistics
+- debt data
+- economic data
+- global debt statistics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="edebt - Economy - Reference | OpenBB Terminal Docs" />
 
 # edebt
 

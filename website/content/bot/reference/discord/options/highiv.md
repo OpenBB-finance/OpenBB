@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: highiv
-description: OpenBB Discord Command
+description: The highiv command retrieves the 15 highest IV30 equity stocks by 30
+  day Implied Volatility. It's useful for traders looking to capitalize on market
+  movements.
+keywords:
+- highiv command
+- IV30 equity stocks
+- 30 day Implied Volatility
+- investment
+- high potential return
+- traders
+- market movements
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="highiv - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # highiv
 

@@ -1,7 +1,21 @@
 ---
 title: trans
-description: OpenBB Terminal Function
+description: This documentation page provides an in-depth guide on how to perform
+  Transformer Forecast using the trans function. It details usage, parameters with
+  their descriptions, defaults, whether they are optional, and their choices. It also
+  includes examples of application.
+keywords:
+- trans function
+- Transformer Forecast
+- parameter guidance
+- Python
+- programming
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trans - Forecast - Reference | OpenBB Terminal Docs" />
 
 # trans
 

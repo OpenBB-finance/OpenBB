@@ -1,7 +1,30 @@
 ---
 title: const
-description: OpenBB Platform Function
+description: This documentation is about fetching the list of major index constituents
+  including details like the constituent's name, sector, sub-sector, headquarter location,
+  date of addition to index, Central Index Key (CIK), and the founding year.
+keywords:
+- major index
+- major indices constituents
+- index constituents
+- index details
+- fetch index data
+- data provider
+- nasdaq
+- sp500
+- dowjones
+- symbol
+- sector
+- sub-sector
+- headquarter location
+- date of addition to index
+- Central Index Key (CIK)
+- founding year
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="const - Economy - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -71,4 +94,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

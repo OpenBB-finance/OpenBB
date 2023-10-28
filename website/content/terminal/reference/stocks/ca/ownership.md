@@ -1,7 +1,27 @@
 ---
 title: ownership
-description: OpenBB Terminal Function
+description: The 'ownership' documentation provides a guide on how to print stock
+  screener data of similar companies. It explains the usage, parameters, and provides
+  examples.
+keywords:
+- Stocks
+- Market data
+- Ownership
+- Finviz
+- Programming
+- Python
+- Coding examples
+- Financial data
+- Insider trades
+- Technical usage
+- Command guide
+- Financial screener
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ownership - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ownership
 

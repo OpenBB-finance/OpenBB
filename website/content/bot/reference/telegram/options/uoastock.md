@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: uoastock
-description: OpenBB Telegram Command
+description: Learn how to use the command to fetch the 20-day average options volume
+  by ticker using the /uoastock command, including special features and detailed usage
+  examples.
+keywords:
+- uoastock command
+- options volume
+- average options volume
+- 20-day average
+- trading volume
+- calls and puts
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="uoastock - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # uoastock
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: trendingst
-description: OpenBB Telegram Command
+description: The documentation page elaborates on /trendingst command usage for tracking
+  top 15 trending stocks in real-time based on discussions on StockTwits platform.
+keywords:
+- trending stocks
+- stocktwits
+- /trendingst command
+- real-time tracking
+- most discussed stocks
+- stock market
+- most popular stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trendingst - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # trendingst
 

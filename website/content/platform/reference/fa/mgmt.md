@@ -1,7 +1,24 @@
 ---
 title: mgmt
-description: OpenBB Platform Function
+description: Documentation for the 'mgmt' function for retrieving information about
+  key executives of a given company using python with support for different data providers.
+  The function returns a list of executives along with their respective details.
+keywords:
+- Key Executives
+- Company data
+- Python
+- FMP Provider
+- Data Query
+- UML
+- mgmt function
+- Management
+- SEO
+- Metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mgmt - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -70,4 +87,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

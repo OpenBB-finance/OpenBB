@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: revrepo
-description: OpenBB Telegram Command
+description: Revrepo is a command allowing the user to retrieve Reverse Repo data
+  statistics over specified days. It gives details such as Reverse Repo total, number
+  of parties, average and variations.
+keywords:
+- revrepo command
+- Reverse Repo data
+- data retrieval
+- data statistics
+- data averaging
+- data difference
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="revrepo - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # revrepo
 

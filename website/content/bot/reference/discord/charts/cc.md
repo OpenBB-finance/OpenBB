@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cc
-description: OpenBB Discord Command
+description: This documentation page provides an in-depth explanation on the /cc command
+  that retrieves an intraday 5 minute chart for a given ticker. It's a useful tool
+  for technical analysis and tracking short-term price movements.
+keywords:
+- intraday 5 minute chart
+- candlestick chart
+- technical analysis
+- short-term price movements
+- /cc command
+- stock performance visualization
+- extended trading hours
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cc - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # cc
 

@@ -1,10 +1,26 @@
 ---
 title: Add a new data point
 sidebar_position: 3
-description: Learn how to add a new data point to the OpenBB Platform.
-keywords: [openbb platform, introduction, data point, contributing, documentation,
-provider, QueryParams, Data, Fetcher, transform, extract]
+description: This documentation page explains how to add a new data point to the OpenBB
+  platform, with a focus on adding a new provider using an existing standard data
+  model. It walks through steps of identifying data types, checking standard models,
+  creating query parameters model, building the fetcher, and making the provider visible.
+keywords:
+- OpenBB platform
+- data point
+- provider
+- standard data model
+- query parameters model
+- OHLC stock data
+- StockHistorical
+- Fetcher class
+- Python
+- API endpoint
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Add a new data point - Platform Development - Contributing | OpenBB Platform Docs" />
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/standard_models) model.
 

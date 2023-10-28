@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: news
-description: OpenBB Telegram Command
+description: Learn how to use the command to retrieve the latest news for a given
+  stock ticker. The guide provides usage procedures with examples.
+keywords:
+- news
+- ticker
+- stock ticker
+- latest news
+- market news
+- stock market updates
+- AMD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - General - Telegram - Reference | OpenBB Bot Docs" />
 
 # news
 

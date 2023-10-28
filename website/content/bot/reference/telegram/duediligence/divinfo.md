@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: divinfo
-description: OpenBB Telegram Command
+description: This page provides instructions on how to use the divinfo command for
+  retrieving dividend information for any given stock, including dividend rate, yield,
+  and ex-div date.
+keywords:
+- divinfo command
+- dividend information
+- stock dividend rate
+- stock dividend yield
+- stock ex-div date
+- stock ticker
+- AAPL
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="divinfo - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # divinfo
 

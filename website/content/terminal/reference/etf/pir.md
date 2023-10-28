@@ -1,7 +1,21 @@
 ---
 title: pir
-description: OpenBB Terminal Function
+description: Create comprehensive ETF excel reports using the passive investor ETF
+  tool 'pir'. This tool generates a detailed report containing significant metrics
+  about any ETFs obtained from Yahoo Finance. Modifiable parameters include the ETF
+  symbols, report filename, and save location.
+keywords:
+- passive investor ETF
+- ETF excel report
+- Yahoo Finance ETF metrics
+- ETF report generation
+- OpenBBUserData
+- Python programming
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pir - Etf - Reference | OpenBB Terminal Docs" />
 
 # pir
 

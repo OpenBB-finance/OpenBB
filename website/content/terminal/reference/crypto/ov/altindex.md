@@ -1,7 +1,24 @@
 ---
 title: altindex
-description: OpenBB Terminal Function
+description: The altindex documentation page provides information on how to display
+  altcoin index over time, compare altcoins performance to Bitcoin, and interpret
+  if it's an Altcoin Season.
+keywords:
+- altindex
+- altcoin index
+- Bitcoin
+- Altcoin Season
+- stablecoins
+- asset backed tokens
+- cryptocurrency
+- blockchain
+- crypto tools
+- crypto comparison
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="altindex - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # altindex
 

@@ -1,7 +1,23 @@
 ---
 title: autoselect
-description: OpenBB SDK Function
+description: This page provides detailed information about autoselect feature in OpenBB
+  Terminal with its source code. It outlines parameters and returns of statistical
+  forecasting model and autoselect chart module in python.
+keywords:
+- autoselect
+- statistical forecasting
+- parameters
+- returns
+- source code
+- forecasting model
+- python
+- OpenBB Terminal
+- chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoselect - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

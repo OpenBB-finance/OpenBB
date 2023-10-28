@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: flip
-description: OpenBB Discord Command
+description: This documentation provides a guide to using the 'flip' command that
+  enables the user to simulate a coin flip. It displays how to execute the command,
+  and provides examples with no required parameters.
+keywords:
+- coin flip
+- flip
+- simulate flip
+- fun flip
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flip - Fun - Discord - Reference | OpenBB Bot Docs" />
 
 # flip
 

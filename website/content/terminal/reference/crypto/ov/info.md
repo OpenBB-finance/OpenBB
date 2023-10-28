@@ -1,7 +1,36 @@
 ---
 title: info
-description: OpenBB Terminal Function
+description: This page documents the usage of the CoinPaprika API, showing basic coin
+  information, stating its parameters, and demonstrating how to sort and display information.
+  It is a comprehensive guide for those seeking knowledge about crypto and financial
+  data.
+keywords:
+- docusaurus
+- SEO
+- metadata
+- coin information
+- CoinPaprika API
+- sort data
+- rank
+- name
+- symbol
+- price
+- volume_24h
+- circulating_supply
+- total_supply
+- max_supply
+- market_cap
+- beta_value
+- ath_price
+- parameters
+- quoted currency
+- crypto
+- financial data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # info
 

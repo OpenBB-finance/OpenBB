@@ -1,7 +1,23 @@
 ---
 title: which
-description: OpenBB Terminal Function
+description: This page provides instructions on how to show library versions of required
+  packages using the function 'which'.
+keywords:
+- docusaurus
+- which function
+- library versions
+- required packages
+- Torch version
+- Darts version
+- Commands
+- CPU
+- RAM
+- Dataset size
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="which - Forecast - Reference | OpenBB Terminal Docs" />
 
 # which
 

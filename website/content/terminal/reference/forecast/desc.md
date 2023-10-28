@@ -1,7 +1,22 @@
 ---
 title: desc
-description: OpenBB Terminal Function
+description: A page detailing how to use the 'desc' function to show descriptive statistics
+  of a dataset, including parameters and usage examples.
+keywords:
+- dataset
+- descriptive statistics
+- data analysis
+- query commands
+- data visualization
+- python
+- data loading
+- TSLA
+- usage examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="desc - Forecast - Reference | OpenBB Terminal Docs" />
 
 # desc
 

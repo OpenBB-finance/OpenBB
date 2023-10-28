@@ -1,8 +1,38 @@
 ---
 title: Fundamental Analysis
-keywords: [fundamentals, fundamental, fa, ratios, earnings, balance, income, cash, statement, statements, sec, multiples, price, ebitda, ebitdam, revenue, quarter, annual, change, company, performance, filing, filings, 10K, 8K, audit, audited, due diligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers, alphavantage, EODHD, financial modeling prep, polygon, how to, usage, examples, sdk]
-description: This guide introduces the Fundamental Analysis menu within the Stocks menu, briefly explains the features, and provides examples in context.
+description: Documentation for the FA module in the OpenBB Terminal - providing programmatic
+  access to financial analysis commands. Includes a comprehensive list of functionalities,
+  such as analysis of SEC disclosure statements, company balance sheet information,
+  earnings data, key metrics over time, estimate market cap and more. Detailed information
+  for each function and plenty of examples demonstrating their usage.
+keywords:
+- OpenBB Terminal
+- FA module
+- financial analysis
+- API keys
+- AlphaVantage
+- EODHD
+- Financial Modeling Prep
+- Polygon
+- SEC disclosure statements
+- balance sheet
+- earnings data
+- company metrics
+- market cap
+- Python
+- Jupyter Lab
+- VS Code
+- financial statement ratios
+- EPS estimates
+- cash flow
+- income statements
+- key statistics
+- stock suppliers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Fundamental Analysis - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 
 The FA module provides programmatic access to the commands from within the OpenBB Terminal. To get the most out of these functions, we recommend obtaining API keys from:
@@ -64,7 +94,7 @@ Parameters for each function are displayed using the same syntax.
 ```python
 help(openbb.stocks.fa.balance)
 
-Signature:   
+Signature:
 openbb.stocks.fa.balance(
     symbol: str,
     quarterly: bool = False,
@@ -76,7 +106,7 @@ Call signature: openbb.stocks.fa.balance(*args: Any, **kwargs: Any) -> Any
 Type:           get_balance_sheet
 String form:    <openbb_terminal.stocks.fundamental_analysis.sdk_helpers.Operation object at 0x1684e8f70>
 File:           ~/GitHub/OpenBBTerminal/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py
-Docstring:   
+Docstring:
 Get balance sheet.
 
 Parameters

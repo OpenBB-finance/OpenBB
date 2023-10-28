@@ -1,7 +1,23 @@
 ---
 title: expo
-description: OpenBB SDK Function
+description: The page explores the functionalities and parameters of the 'expo' model
+  and 'chart' functions used in Probabilistic Exponential Smoothing forecasting. These
+  functions take data as input and perform operations like backtesting, retraining
+  historical and prediction. Source code links are also shared.
+keywords:
+- Exponential Smoothing forecasting
+- OpenBBTerminal
+- expo model function
+- expo chart function
+- Probabilistic forecasting
+- source code
+- data series operations
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="expo - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

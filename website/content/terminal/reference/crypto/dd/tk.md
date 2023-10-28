@@ -1,7 +1,17 @@
 ---
 title: tk
-description: OpenBB Terminal Function
+description: Learn about usage and parameters of the tk command which displays asset's
+  tokenomics. Access source and detailed guidance here.
+keywords:
+- tk
+- asset's tokenomics
+- no parameters
+- messari.io source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tk - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # tk
 

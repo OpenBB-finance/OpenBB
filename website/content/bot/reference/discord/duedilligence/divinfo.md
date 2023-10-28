@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: divinfo
-description: OpenBB Discord Command
+description: This page provides information about using the 'divinfo' command to retrieve
+  dividend data, including rate, yield, and ex-div date for a specified stock ticker.
+keywords:
+- divinfo
+- command
+- dividend information
+- stock
+- dividend rate
+- yield
+- ex-div date
+- parameters
+- stock ticker
+- AAPL
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="divinfo - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # divinfo
 

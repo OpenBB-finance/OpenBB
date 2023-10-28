@@ -1,7 +1,35 @@
 ---
 title: change
-description: OpenBB Terminal Function
+description: A detailed guide on how to use the 'change' command for tracking active
+  blockchain addresses over time in various exchanges. It also provides instructions
+  on setting input parameters and explains their usage for more precise data.
+keywords:
+- blockchain
+- active blockchain addresses
+- tracking blockchain
+- change command
+- exchange platform
+- blockchain data tracking
+- data fetching
+- data commands
+- coinex
+- bittrex
+- binance
+- poloniex
+- blockchain analytics
+- glassnode source
+- command parameters
+- bitfinex
+- kraken
+- okex
+- bithumb
+- coinbase
+- luno
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="change - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # change
 

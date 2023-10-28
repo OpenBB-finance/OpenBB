@@ -1,7 +1,22 @@
 ---
 title: plot
-description: OpenBB Terminal Function
+description: This page provides an elaborative guide to users on how to plot data
+  based on their index with interactive examples.
+keywords:
+- Data Plotting
+- Plot usage
+- Dataset.column values
+- Plot parameters
+- Python plot guide
+- Data visualization
+- index-based plotting
+- Programming
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="plot - Forecast - Reference | OpenBB Terminal Docs" />
 
 # plot
 

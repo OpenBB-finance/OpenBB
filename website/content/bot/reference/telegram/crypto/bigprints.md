@@ -1,8 +1,25 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bigprints
-description: OpenBB Telegram Command
+description: The bigprints page offers detailed information about using the command
+  to retrieve the last 15 large print data points for a specified cryptocurrency pair.
+  This data can assist users in making informed trading decisions based on recent
+  trends.
+keywords:
+- bigprints
+- cryptocurrency
+- large prints
+- trading decisions
+- crypto
+- coin
+- days
+- /bigprints ada
+- BTC-USD
+- /crypto bigprints coin:BTC-USD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bigprints - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
 # bigprints
 

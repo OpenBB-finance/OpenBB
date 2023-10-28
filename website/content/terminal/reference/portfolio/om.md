@@ -1,7 +1,19 @@
 ---
 title: om
-description: OpenBB Terminal Function
+description: A documentation page providing information about the om function that
+  calculates the omega ratio of a selected portfolio with customizable start and end
+  parameters.
+keywords:
+- omega ratio
+- portfolio
+- start parameter
+- end parameter
+- om function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="om - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # om
 

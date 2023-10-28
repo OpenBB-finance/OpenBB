@@ -1,7 +1,23 @@
 ---
 title: dcfc
-description: OpenBB Terminal Function
+description: This page provides instructions on how to use the 'dcfc' function to
+  extract a company's discounted cash flow (DCF), stock price, and date information.
+  It further provides details on usage and parameters.
+keywords:
+- dcfc
+- discounted cash flow
+- stock price
+- financial data extraction
+- python
+- financial modeling
+- DCF
+- quarters
+- fundamental data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dcfc - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # dcfc
 

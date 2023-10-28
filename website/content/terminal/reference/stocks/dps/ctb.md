@@ -1,7 +1,21 @@
 ---
 title: ctb
-description: OpenBB Terminal Function
+description: This page provides a detailed overview on how to show the cost to borrow
+  of stocks using the ctb function. It includes usage, parameters, and examples, helping
+  users to effectively retrieve and manage data.
+keywords:
+- ctb function
+- cost to borrow
+- stock data
+- Interactive Broker
+- record retrieval
+- data management
+- Stocksera
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ctb - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ctb
 

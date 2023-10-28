@@ -1,7 +1,18 @@
 ---
 title: login
-description: OpenBB Terminal Function
+description: This page provides instructions on how to login using one-time-password
+  for 2FA. It includes parameters' description and usage.
+keywords:
+- login
+- Usage
+- Parameters
+- One time password
+- 2FA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="login - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # login
 

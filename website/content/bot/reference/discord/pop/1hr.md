@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: 1hr
-description: OpenBB Discord Command
+description: The /pop 1hr command page is about a command associated with the OpenBB
+  Bot. This command shares information about the top 15 most traded stocks in the
+  past hour across all our platforms, helping users to monitor active stocks and anticipate
+  market trends.
+keywords:
+- OpenBB Bot
+- active stocks
+- stock trading
+- stock trends
+- /pop 1hr command
+- trading platforms
+- trading strategies
+- trade updates
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="1hr - Pop - Discord - Reference | OpenBB Bot Docs" />
 
 # 1hr
 

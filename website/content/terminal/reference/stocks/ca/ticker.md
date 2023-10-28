@@ -1,7 +1,23 @@
 ---
 title: ticker
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to set and use the ticker
+  function. It is invaluable for extracting similar tickers, helping users engage
+  more with stocks.
+keywords:
+- ticker function
+- extract similar tickers
+- docusaurus documentation
+- stock market
+- financial tool
+- ticker usage
+- technical analysis
+- stock ticker
+- usage examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ticker - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ticker
 

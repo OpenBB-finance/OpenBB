@@ -1,7 +1,18 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides information on how to load portfolio risk parameters
+  using either ini or xlsx files. It demonstrates the command usage and details about
+  the 'file' parameter.
+keywords:
+- load portfolio risk parameters
+- ini files
+- xlsx files
+- parameter file usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # load
 

@@ -1,7 +1,30 @@
 ---
 title: cal
-description: OpenBB Platform Function
+description: This is a guide to using the 'cal' function to display a dividend calendar
+  between a range of start and end dates. It provides full details of parameters,
+  return values, and data labels.
+keywords:
+- Dividend calendar
+- Cal Function
+- Python
+- Data
+- Start date
+- End date
+- Provider
+- Results
+- Chart
+- Metadata
+- Symbol
+- Adjusted Dividend
+- Dividend amount
+- Record date
+- Payment date
+- Declaration date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cal - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -72,4 +95,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

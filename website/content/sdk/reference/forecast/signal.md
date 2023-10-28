@@ -1,7 +1,23 @@
 ---
 title: signal
-description: OpenBB SDK Function
+description: This documentation page provides detailed insight on 'signal', a price
+  signal based on short/long term price, with instructions on parameters to be entered
+  and returns received.
+keywords:
+- price signal
+- short/long term price
+- source code
+- openbb.forecast.signal
+- parameters
+- returns
+- dataframe
+- signal column
+- dataset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="signal - Forecast - Reference | OpenBB SDK Docs" />
 
 # signal
 
@@ -30,4 +46,3 @@ openbb.forecast.signal(dataset: pd.DataFrame, target_column: str = "close")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added signal column |
 ---
-

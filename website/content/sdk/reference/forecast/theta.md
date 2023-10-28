@@ -1,7 +1,24 @@
 ---
 title: theta
-description: OpenBB SDK Function
+description: This page provides detailed information on how to use the 'Theta' model
+  and 'Theta' chart for financial forecasting with OpenBB. It explains various parameters
+  for accurate prediction and chart display, alongside respective source code examples.
+keywords:
+- Theta model
+- Theta chart
+- OpenBB
+- Forecasting
+- Financial prediction
+- Python
+- Source code
+- SEO
+- Model parameters
+- Chart display
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="theta - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

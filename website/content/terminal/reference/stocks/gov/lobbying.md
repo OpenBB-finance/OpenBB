@@ -1,7 +1,25 @@
 ---
 title: lobbying
-description: OpenBB Terminal Function
+description: This lobbying documentation page provides lobbying details for Tesla
+  Inc. The content includes content related to the Electric Vehicle Tax Credit, Driving
+  America Forward Act, Energy Storage Tax Incentive and Deployment Act, and more.
+  The data is provided by Quiver Quant and represented in Python syntax.
+keywords:
+- Lobbying
+- Tesla Inc
+- Electric Vehicle Tax Credit
+- Driving America Forward Act
+- Storage Tax Credit
+- Energy Storage Tax Incentive and Deployment Act
+- Quiver Quant
+- Gov Stock Politics
+- Python Usage
+- Coronavirus Aid, Relief, and Economic Security Act
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lobbying - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # lobbying
 

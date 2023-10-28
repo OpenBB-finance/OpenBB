@@ -1,7 +1,18 @@
 ---
 title: act
-description: OpenBB Terminal Function
+description: The page provides a guide on the usage of 'act', a tool that enables
+  users to print insider business activity over time. It also  outlines the parameters
+  like 'raw' providing a flexibility to print raw data.
+keywords:
+- act
+- Insider activity
+- Business Insider
+- raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="act - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # act
 

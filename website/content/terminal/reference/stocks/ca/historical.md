@@ -1,7 +1,24 @@
 ---
 title: historical
-description: OpenBB Terminal Function
+description: A guide for understanding and using the 'historical' feature for price
+  comparison between similar companies, includes usage, parameters details and graphical
+  representation.
+keywords:
+- Price comparison
+- Historical prices
+- Stock analysis
+- Normalization
+- Candle data
+- Starting date
+- High, low, close prices
+- Company comparison
+- Open-high-low-close
+- Adjusted close
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="historical - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # historical
 

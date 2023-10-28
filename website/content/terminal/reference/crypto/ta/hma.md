@@ -1,7 +1,22 @@
 ---
 title: hma
-description: OpenBB Terminal Function
+description: The page covers the Hull Moving Average (HMA) - a moving average that
+  is more responsive to current price activity while maintaining smoothness. It explains
+  the usage, parameters (such as n_length and n_offset) and gives a visual representation.
+keywords:
+- Hull Moving Average
+- HMA
+- Moving Average
+- price activity
+- curve smoothness
+- n_length
+- n_offset
+- algorithm parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hma - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # hma
 

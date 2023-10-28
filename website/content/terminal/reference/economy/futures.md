@@ -1,7 +1,26 @@
 ---
 title: futures
-description: OpenBB Terminal Function
+description: This page provides information on futures/commodities from sources such
+  as Wall St. Journal and FinViz. Users can retrieve a range of commodity futures
+  (like energy, metals, meats, grains, softs) and sort the data in several ways.
+keywords:
+- futures
+- commodities
+- Wall St. Journal
+- FinViz
+- energy
+- metals
+- meats
+- grains
+- softs
+- sortby
+- reverse
+- commodity futures
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures - Economy - Reference | OpenBB Terminal Docs" />
 
 # futures
 

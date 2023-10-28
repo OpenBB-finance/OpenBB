@@ -1,27 +1,25 @@
 ---
 title: Hub Synchronization
 sidebar_position: 6
-description: Walk-through of integrating the OpenBB Terminal with the OpenBB Hub
+description: This is a documentation page for OpenBB focusing on the integration of
+  OpenBB Terminal with OpenBB Hub. Topics covered include registration, login, managing
+  API keys, default data sources, theme styles, script routines, and personal access
+  tokens.
 keywords:
-  [
-    api,
-    keys,
-    api keys,
-    data provider,
-    data,
-    free,
-    openbb_terminal,
-    openbbterminal,
-    openbb_hub,
-    hub,
-    routines,
-    synchronization,
-    sync,
-    hub sync,
-    hub synchronization,
-    hub sync,
-  ]
+- OpenBB Terminal guide
+- OpenBB Hub integration
+- Registration process
+- Login process
+- API Keys management
+- Default Data Sources
+- Theme Styles
+- Script Routines
+- Personal Access Tokens
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Hub Synchronization - Usage | OpenBB Terminal Docs" />
 
 This guide will walk you through the process of integrating the OpenBB Terminal with the OpenBB Hub to achieve optimal performance.
 

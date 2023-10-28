@@ -1,7 +1,19 @@
 ---
 title: compare
-description: OpenBB Terminal Function
+description: A documentation page for the 'compare' function used in StockAnalysis.
+  The function allows users to compare selected ETF symbols to obtain various financial
+  and trading data. Parameters, usage, and examples are provided.
+keywords:
+- StockAnalysis
+- ETF comparison
+- Financial data
+- Trading information
+- Financial analysis tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="compare - Etf - Reference | OpenBB Terminal Docs" />
 
 # compare
 

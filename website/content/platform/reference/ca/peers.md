@@ -1,7 +1,24 @@
 ---
 title: peers
-description: OpenBB Platform Function
+description: This documentation page provides detailed information about stock peers
+  including the market sector, exchange and market cap. The data is provided by the
+  'fmp' provider and includes metadata about the command execution.
+keywords:
+- stock market
+- stock peers
+- finance
+- fmp
+- data provider
+- stock metadata
+- symbol
+- market sector
+- market cap
+- exchange
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="peers - Ca - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -65,4 +82,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

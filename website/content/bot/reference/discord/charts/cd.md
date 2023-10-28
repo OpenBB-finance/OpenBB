@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cd
-description: OpenBB Discord Command
+description: This page provides comprehensive information about the 'cd' command,
+  used to retrieve a daily candlestick chart for a specific stock ticker or coin.
+  It also includes usage instructions, parameter details and examples.
+keywords:
+- cd command
+- daily candlestick chart
+- stock ticker
+- coin
+- opening and closing prices
+- high and low prices
+- performance analysis
+- command usage
+- parameter details
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cd - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # cd
 

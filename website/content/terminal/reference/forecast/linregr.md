@@ -1,7 +1,26 @@
 ---
 title: linregr
-description: OpenBB Terminal Function
+description: This documentation page details how to use and implement the 'linregr'
+  function for performing linear regression forecasts. It includes descriptive parameters,
+  usage examples, and result interpretations.
+keywords:
+- docusaurus
+- linear regression
+- forecasting
+- linregr
+- parameters
+- usage
+- examples
+- SEO
+- metadata
+- data science
+- machine learning
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="linregr - Forecast - Reference | OpenBB Terminal Docs" />
 
 # linregr
 

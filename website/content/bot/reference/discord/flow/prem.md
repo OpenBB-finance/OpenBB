@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: prem
-description: OpenBB Discord Command
+description: The page discusses the 'prem' command used for retrieving a chart displaying
+  the sum of premium for call/put options for a specific ticker. It provides usage
+  details, parameters, and examples for newcomers or experienced users to visualize
+  the changing premium amounts over time.
+keywords:
+- prem command
+- options premium
+- call/put options
+- ticker
+- stock ticker
+- premium chart
+- /flow prem usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prem - Flow - Discord - Reference | OpenBB Bot Docs" />
 
 # prem
 

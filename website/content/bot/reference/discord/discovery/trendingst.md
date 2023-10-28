@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: trendingst
-description: OpenBB Discord Command
+description: The docusaurus page explains how to use the 'trendingst' command to retrieve
+  the top 15 trending stocks from StockTwits. It covers details on how the command
+  works, its usage, and provides examples.
+keywords:
+- trending stocks
+- stocktwits
+- most discussed stocks
+- popular stocks
+- stock market trends
+- /disc trendingst
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trendingst - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # trendingst
 

@@ -1,7 +1,20 @@
 ---
 title: sh
-description: OpenBB Terminal Function
+description: A comprehensive documentation page provides information about the Sharpe
+  ratio of a selected stock. It includes parameters such as risk-free return and rolling
+  window length, along with their usage presented in Python code.
+keywords:
+- Sharpe Ratio
+- Stock
+- Risk Free Return
+- Rolling Window Length
+- Finance
+- Investment
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sh - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sh
 

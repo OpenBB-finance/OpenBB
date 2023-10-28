@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: all
-description: OpenBB Telegram Command
+description: Learn how to use the /scr all command to view all available screeners
+  during market hours and make data-driven investment decisions.
+keywords:
+- screener
+- market hours
+- data analysis
+- informed decisions
+- command
+- parameters
+- /scr all
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="all - Scr - Screeners - Telegram - Reference | OpenBB Bot Docs" />
 
 # all
 

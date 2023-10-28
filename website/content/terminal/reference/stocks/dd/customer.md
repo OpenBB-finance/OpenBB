@@ -1,7 +1,18 @@
 ---
 title: customer
-description: OpenBB Terminal Function
+description: The 'customer' page provides a list of customers from a ticker source,
+  CSIMarket. It also includes the usage of the command and its parameters.
+keywords:
+- customer
+- ticker
+- CSIMarket
+- command parameters
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="customer - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
 # customer
 

@@ -1,7 +1,18 @@
 ---
 title: divs
-description: OpenBB Terminal Function
+description: This documentation page provides explanation about the usage, and parameters
+  of the 'divs' function in showing historical dividends of a company.
+keywords:
+- divs function
+- historical dividends
+- dividend plotting
+- function parameters
+- dividend history
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="divs - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # divs
 

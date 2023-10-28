@@ -1,7 +1,25 @@
 ---
 title: bgod
-description: OpenBB Terminal Function
+description: This page provides the usage, parameters, and examples of the Breusch-Godfrey
+  autocorrelation test in Python. It's useful for individuals working with OLS Regression
+  Results and other econometrics. The BGOD page increases understanding of this functionality
+  within Python.
+keywords:
+- Breusch-Godfrey
+- Autocorrelation Test
+- OLS Regression Results
+- Econometrics
+- BGOD
+- Python
+- Metadata
+- SEO
+- Least Squares Method
+- Durbin-Watson
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bgod - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # bgod
 
@@ -30,7 +48,7 @@ bgod [-l LAGS]
 2022 Jun 01, 06:29 (🦋) /econometrics/ $ load longley -a ll
 
 2022 Jun 01, 06:29 (🦋) /econometrics/ $ ols -d ll.totemp -i ll.gnpdefl,ll.gnp,ll.unemp,ll.armed,ll.pop,ll.year
-                                 OLS Regression Results                                
+                                 OLS Regression Results
 =======================================================================================
 Dep. Variable:              ll.totemp   R-squared (uncentered):                   1.000
 Model:                            OLS   Adj. R-squared (uncentered):              1.000
@@ -39,8 +57,8 @@ Date:                Wed, 01 Jun 2022   Prob (F-statistic):                    8
 Time:                        12:29:44   Log-Likelihood:                         -117.56
 No. Observations:                  16   AIC:                                      247.1
 Df Residuals:                      10   BIC:                                      251.8
-Df Model:                           6                                                  
-Covariance Type:            nonrobust                                                  
+Df Model:                           6
+Covariance Type:            nonrobust
 ==============================================================================
                  coef    std err          t      P|t|      [0.025      0.975]
 ------------------------------------------------------------------------------

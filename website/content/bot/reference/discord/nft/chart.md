@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chart
-description: OpenBB Discord Command
+description: This documentation page provides user guidance on retrieving NFT collection
+  data using a slug-based chart command, showcasing floor price and sales count over
+  time.
+keywords:
+- NFT collection data
+- chart command
+- floor price
+- sales count
+- slug-based command
+- cryptopunks
+- bored-ape-yacht-club
+- NFT chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chart - Nft - Discord - Reference | OpenBB Bot Docs" />
 
 # chart
 

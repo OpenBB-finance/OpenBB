@@ -1,7 +1,24 @@
 ---
 title: balance
-description: OpenBB Terminal Function
+description: The 'balance' documentation page provides comprehensive instructions
+  for printing a balance sheet statement over time. The page explains expected fields,
+  usage, parameters, and provides examples. It is a helpful resource for anyone looking
+  to understand how to use the 'balance' function effectively.
+keywords:
+- balance sheet statement
+- balance page
+- financial data
+- Python
+- Alpha Vantage
+- parameters
+- documentation
+- financial analysis
+- time-series data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # balance
 

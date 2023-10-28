@@ -1,7 +1,24 @@
 ---
 title: add
-description: OpenBB Terminal Function
+description: This page guides on the usage of the 'add' command to add options to
+  the trading diagram. The command has parameters allowing the user to buy a put instead
+  of a call, short an option, and specify an option's identifier.
+keywords:
+- trade options
+- options trading
+- options diagram
+- add command
+- buy put
+- short option
+- option identifier
+- options command
+- options parameters
+- command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="add - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # add
 
@@ -44,7 +61,7 @@ add [-p] [-s] -i {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
 │ Strike Price       │ 147.00    │
 └────────────────────┴───────────┘
 
-          Current Option Positions           
+          Current Option Positions
 ┏━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Type ┃ Hold ┃ Strike ┃ Implied Volatility ┃
 ┡━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

@@ -1,7 +1,24 @@
 ---
 title: tippw
-description: OpenBB Terminal Function
+description: Learn how to use the tippw function to print the top insider purchases
+  of the week. Discover parameters and example usages that can be customized according
+  to your requirements.
+keywords:
+- tippw
+- insider purchases
+- stock market
+- financial data
+- OpenInsider
+- parameter usage
+- python commands
+- real-time data
+- stock trading
+- stock analysis tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tippw - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # tippw
 

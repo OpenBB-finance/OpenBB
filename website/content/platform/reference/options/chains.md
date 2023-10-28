@@ -1,7 +1,33 @@
 ---
 title: chains
-description: OpenBB Platform Function
+description: This page documents the usage of the 'chains' function, which retrieves
+  complete options chains for a ticker. It details the parameters required, such as
+  symbol, provider, and date, and the data returned, including contract symbol, expiration,
+  strike price, and others. The default provider is intrinio.
+keywords:
+- chains
+- ticker
+- options chain
+- intrinio
+- symbol
+- provider
+- date
+- contract symbol
+- expiration
+- strike price
+- call or put
+- volume
+- open interest
+- implied volatility
+- delta
+- gamma
+- theta
+- vega
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chains - Options - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -98,4 +124,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

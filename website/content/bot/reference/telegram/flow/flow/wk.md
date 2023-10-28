@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: wk
-description: OpenBB Telegram Command
+description: Page dedicated to explaining the 'flow wk' command, which allows users
+  to retrieve Top 20 flow by Premium for a stock with an option contact expiring that
+  week. The page provides usage, parameters, and example for the command.
+keywords:
+- flow wk command
+- stock
+- premium flow
+- option contact
+- stock ticker
+- usage
+- parameters
+- example
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wk - Flow - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flow wk
 

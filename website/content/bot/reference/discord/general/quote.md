@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: quote
-description: OpenBB Discord Command
+description: Page describing the 'quote' command, which retrieves display quote stats
+  for a stock. This includes information for 52 week high/low, market cap/float and
+  200/50 day moving averages based on the specified stock ticker.
+keywords:
+- quote command
+- display quote stats
+- stock stats
+- 52 week high/low
+- market cap/float
+- 200/50 day moving averages
+- quick access
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - General - Discord - Reference | OpenBB Bot Docs" />
 
 # quote
 

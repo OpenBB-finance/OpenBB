@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: supplier
-description: OpenBB Discord Command
+description: This page provides information on the 'supplier' command, which allows
+  users to retrieve the list of suppliers associated with a stock ticker. Usage, parameters,
+  and examples are included for a clear understanding.
+keywords:
+- supplier
+- ticker
+- stock
+- company supplier retrieval
+- AMD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="supplier - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # supplier
 

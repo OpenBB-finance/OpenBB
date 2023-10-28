@@ -1,23 +1,21 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: OpenBB is an open source investment research software platform that allows
-  users to analyze financial market data using advanced data science and machine learning
-  technologies. It aims to make investment research powerful and accessible, empowering
-  individual investors with high-quality tools by using Python programming, API access,
-  and a strong community-driven development.
+description: OpenBB is an open source investment research software aimed at analyzing
+  financial market data. It makes use of data science and machine learning to convert
+  raw data into meaningful investment understanding.
 keywords:
 - OpenBB
 - investment research software
-- financial market data
-- data science
-- machine learning
+- financial market data analysis
 - open source
-- API
+- machine learning
+- data science
+- data providers
+- premium API keys
 - Python
-- transparency
-- community
 - investment research platform
+- contributing guidelines
 ---
 
 # Introduction

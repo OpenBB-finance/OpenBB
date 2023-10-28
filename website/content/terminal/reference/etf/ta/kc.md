@@ -1,7 +1,27 @@
 ---
 title: kc
-description: OpenBB Terminal Function
+description: This documentation page provides detailed information about Keltner Channels,
+  a volatility-based band applied onto an asset's price. These channels aid in trend
+  determination by employing average true range (ATR) or volatility. The page also
+  provides comprehensive instructions about how to use and parameterize the 'kc' tool.
+keywords:
+- Keltner Channels
+- volatility-based bands
+- average true range
+- ATR
+- trend determination
+- kc
+- kc parameters
+- n_length
+- n_scalar
+- s_mamode
+- n_offset
+- kc usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kc - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # kc
 

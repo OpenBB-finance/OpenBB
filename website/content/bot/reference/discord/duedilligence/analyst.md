@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: analyst
-description: OpenBB Discord Command
+description: The page defines the usage of the command 'analyst', which allows users
+  to retrieve analyst recommendations for a specific stock ticker. Examples include
+  finding recommendations for AMD stocks.
+keywords:
+- analyst command
+- stock ticker
+- retrieve analyst recommendations
+- AMD stock
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="analyst - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # analyst
 

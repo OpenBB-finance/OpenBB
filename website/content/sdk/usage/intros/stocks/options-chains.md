@@ -1,8 +1,26 @@
 ---
 title: Options Chains
-keywords: [OpenBB, sdk, Options, stocks, derivatives, puts, calls, oi, vol, greeks, voi, volatility,  chains, usage, iv, gamma, delta, theta, strategies, skew, straddle, strangle, spread, vertical, horizontal]
-excerpt: This guide introduces the Options class and data object.
+description: A technical guide detailing how to load options chains data from six
+  different sources into memory using openbb. Reviews how to properly filter, sort,
+  and analyze this kind of data, and outlines the process for implementing various
+  options strategies. This document is heavily focused on technical processes within
+  a financial context.
+keywords:
+- Openbb
+- Options Chains Data
+- Python
+- Data Analysis
+- Option Strategies
+- SEO
+- Financial Data
+- Data Filtering
+- Data Sorting
+- Data Visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Options Chains - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 ## Overview
 

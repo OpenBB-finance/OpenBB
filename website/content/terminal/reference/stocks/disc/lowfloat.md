@@ -1,7 +1,29 @@
 ---
 title: lowfloat
-description: OpenBB Terminal Function
+description: "The LowFloat webpage provides sophisticated tools for retrieving information\
+  \ about top stocks with the lowest float. It offers a comprehensive database that\
+  \ includes stocks from Nasdaq, the New York Stock Exchange, the American Stock Exchange,\
+  \ and the Over the Counter Bulletin Board. The service not only provides a stock\u2019\
+  s float, but also provides additional key data such as the number of outstanding\
+  \ shares, short interest, and company industry."
+keywords:
+- lowfloat
+- stocks
+- stock market
+- Nasdaq
+- New York Stock Exchange
+- American Stock Exchange
+- Outstanding shares
+- Short interest
+- Company industry
+- Stock trading
+- Low float stocks
+- Stock data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lowfloat - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
 # lowfloat
 

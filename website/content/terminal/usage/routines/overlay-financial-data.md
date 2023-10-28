@@ -1,9 +1,29 @@
 ---
 title: Overlay financial data
 sidebar_position: 2
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Guide to improve financial data comparison and visualization using the
+  'hold on' command in OpenBBTerminal. Covers overlaying data on the same axes, customizing
+  chart legends and titles, analyzing FAANG companies and GDP/CPI data, and more.
+keywords:
+- hold on command
+- overlay financial data
+- same axis plotting
+- customizing charts
+- financial data comparison
+- MatLab
+- financial analysis
+- financial charts
+- OpenBBTerminal
+- FAANG companies
+- CPI
+- GDP
+- data visualization
+- SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Overlay financial data - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

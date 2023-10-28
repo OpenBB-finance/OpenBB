@@ -1,7 +1,23 @@
 ---
 title: cci
-description: OpenBB Terminal Function
+description: The page describes the usage and parameters of CCI (Commodity Channel
+  Index), a tool designed to detect beginning and ending market trends. It suggests
+  how CCI values can indicate overbought or oversold conditions and potential price
+  corrections.
+keywords:
+- Commodity Channel Index
+- CCI
+- market trends
+- overbought conditions
+- oversold conditions
+- price correction
+- CCI Parameters
+- CCI usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cci - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # cci
 

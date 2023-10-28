@@ -1,7 +1,25 @@
 ---
 title: fipo
-description: OpenBB Terminal Function
+description: This documentation page provides information and examples on using the
+  'fipo' function, a tool for retrieving future IPO date estimates from financial
+  data source Finnhub.io. This aids users in planning for upcoming IPOs by providing
+  essential details such as exchange name, company name, number of shares, expected
+  price, status, and total share value.
+keywords:
+- IPO
+- Stock market
+- future IPO dates
+- SMART FOR LIFE, INC.
+- NASDAQ Capital
+- FinTech
+- Finnhub.io
+- Stock exchange
+- Investment
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fipo - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
 # fipo
 

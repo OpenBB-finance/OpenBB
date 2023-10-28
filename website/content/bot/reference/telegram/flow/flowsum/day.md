@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: day
-description: OpenBB Telegram Command
+description: The documentation page is about the 'flowsum' command that allows users
+  to retrieve the total premium of a given stock ticker on the current trading day.
+  It provides examples and parameters of the command and explains the trade categorization
+  on the bid/ask.
+keywords:
+- flowsum
+- stock Ticker
+- trade
+- premium
+- Above Ask
+- current trading day
+- bid/ask
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="day - Flowsum - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flowsum
 

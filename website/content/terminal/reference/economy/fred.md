@@ -1,7 +1,23 @@
 ---
 title: fred
-description: OpenBB Terminal Function
+description: This documentation page provides information on using the fred command
+  to query the FRED database, plot data, and handle Macro Economic data. It includes
+  details on parameters, usage, and examples including Python code snippets.
+keywords:
+- FRED database
+- Query
+- Series ID
+- Fred command
+- Macro Economic
+- Data plotting
+- Python
+- Start date
+- End date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fred - Economy - Reference | OpenBB Terminal Docs" />
 
 # fred
 

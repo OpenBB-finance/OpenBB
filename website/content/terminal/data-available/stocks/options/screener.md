@@ -1,8 +1,27 @@
 ---
 title: Options Screener
-keywords: [Options, stocks, derivatives, puts, calls, oi, vol, greeks, bid, ask, last, lp, price, delta, theta, gamma, interest, screener, dte, expiration, expiry, screen, how to, example, template, set, view, preset]
-description: This guide introduces the user to the Options Screener, located within the Options Menu, and provides examples for how to use the set of commands.
+description: Learn how to use the versatile OpenBB options screener tool for options
+  traders, including presets configuration, viewing and setting filters, understanding
+  the output of the screener, and examples of presets in action.
+keywords:
+- OpenBB options screener
+- options trading
+- preset configuration
+- screener output
+- trading tool
+- financial screener
+- SEO improvements
+- options search
+- trading options
+- presets .ini files
+- template.ini
+- financial filters
+- stock trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Options Screener - Options - Stocks - Data Available | OpenBB Terminal Docs" />
 The OpenBB options screener is a versatile discovery tool for an options trader.
 
 <img width="1512" alt="image" src="https://user-images.githubusercontent.com/46355364/218988416-611d5381-c379-418f-8be7-24242103f9f5.png"></img>

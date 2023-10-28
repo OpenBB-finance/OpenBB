@@ -1,7 +1,26 @@
 ---
 title: autoarima
-description: OpenBB Terminal Function
+description: The AutoARIMA documentation page provides an extensive guide on how the
+  Automatic ARIMA forecast works. Details include command usage, various parameters,
+  and examples demonstrating how the forecast performs. This page is ideal for those
+  seeking to understand predictive modeling, time-series analysis, and the application
+  of ARIMA models.
+keywords:
+- AutoARIMA
+- Forecasting
+- Predictive modeling
+- ARIMA models
+- Time Series Analysis
+- Machine Learning
+- Data Analysis
+- Algorithm
+- Data Modeling
+- Statistical Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoarima - Forecast - Reference | OpenBB Terminal Docs" />
 
 # autoarima
 
@@ -44,10 +63,10 @@ autoarima [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEAS
 
 Cross Validation Time Series 1: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:2100:00,  5.31it/s]
 Forecast: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0000:00,  1.68it/s]
-AutoARIMA obtains MAPE: 2.86% 
+AutoARIMA obtains MAPE: 2.86%
 
 
-   Actual price: 138.38    
+   Actual price: 138.38
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

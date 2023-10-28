@@ -1,7 +1,26 @@
 ---
 title: autoets
-description: OpenBB SDK Function
+description: This documentation page provides comprehensive information about OpenBB's
+  'autoets' model and view function for forecasting. The documentation contains source
+  code links, parameters definitions, and expected returns for financial data.
+keywords:
+- OpenBB
+- autoets
+- forecasting
+- Error Trend Seasonality model
+- python
+- financial data
+- time series
+- source code
+- chart
+- parameters
+- returns
+- StatsForecast
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoets - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,22 @@
 ---
 title: kurtosis
-description: OpenBB Terminal Function
+description: A deeper look into Kurtosis, a measure of probability distribution of
+  a real-valued random variable. The page also demonstrates how to use it with python,
+  especially setting the window length (n_window).
+keywords:
+- Kurtosis
+- probability distribution
+- real-valued random variable
+- skewness
+- theoretical distribution
+- n_window
+- window length
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kurtosis - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # kurtosis
 

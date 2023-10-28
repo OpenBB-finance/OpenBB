@@ -1,9 +1,22 @@
 ---
 title: Data Providers
 sidebar_position: 3
-description: The OpenBB Platform offers an array of data providers.  The extension framework allows for as many, or few, required.
-keywords: [api, keys, data provider, data, free, alpha vantage, fred, polygon, intrinio, alphavantage, bitquery, sec, yfinance, community, github]
+description: Learn about the OpenBB Platform and its extension framework that allows
+  seamless integration of modules like 'openbb-yfinance'. Discover how installations
+  and removals automatically update the router when the Python interpreter is refreshed.
+keywords:
+- OpenBB Platform
+- extension framework
+- yFinance
+- install openbb-yfinance
+- Python interpreter
+- PyPI
+- openbb-qa
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Providers - Usage | OpenBB Platform Docs" />
 
 When the core OpenBB Platform package is installed, familiar components might be missing.  The extension framework allows individual pieces to be installed and removed seamlessly within the environment.
 

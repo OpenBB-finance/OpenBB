@@ -1,7 +1,25 @@
 ---
 title: earning
-description: OpenBB Platform Function
+description: The Documentation describes the use of 'Earnings Calendar' for retrieving
+  earnings data for a specified company symbol. It includes data entries like EPS,
+  Estimated EPS, Revenue, Estimated Revenue, etc. Provider 'fmp' is used for data
+  retrieval.
+keywords:
+- Earnings Calendar
+- EPS
+- Revenue
+- Python
+- Earnings Calendar Data
+- Estimated EPS
+- Estimated Revenue
+- Fiscal Date Ending
+- Provider
+- Symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="earning - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -73,4 +91,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

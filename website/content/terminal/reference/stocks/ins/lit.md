@@ -1,7 +1,30 @@
 ---
 title: lit
-description: OpenBB Terminal Function
+description: This Docusaurus page provides access to the latest insider trading information.
+  With the lit function, users can limit the number of data rows to display and view
+  pertinent details like trade date, ticker, company name, insider name, title, trade
+  type, price, qty, owned, diff own and value.
+keywords:
+- Insider trading
+- OpenInsider
+- lit function
+- data rows
+- trade date
+- ticker
+- company name
+- insider name
+- title
+- trade type
+- price
+- qty
+- owned
+- diff own
+- value
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lit - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # lit
 

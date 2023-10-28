@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topsum
-description: OpenBB Telegram Command
+description: The Topsum page provides comprehensive information on the topsum command,
+  which retrieves a summary of total block and dark pool data. The command sums all
+  darkpool prints and displays a table of the largest by symbol, together with a comparative
+  graph, without requiring any parameters.
+keywords:
+- topsum command
+- retrieve total block
+- dark pool data summary
+- sums darkpool prints
+- graph for comparison
+- no parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topsum - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
 # topsum
 

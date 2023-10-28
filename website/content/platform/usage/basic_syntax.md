@@ -1,9 +1,33 @@
 ---
 title: Basic Syntax
 sidebar_position: 2
-description: The structure of command syntax is standardized across common fields, this section outlines the format of typical parameters.
-keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client, parameters, kwargs, arguments, syntax]
+description: This page provides comprehensive information about standardized command
+  syntax for an open-source platform. Topics discussed include the structure of command
+  syntax, use of standardized parameters, usage of provider and symbol parameters,
+  handling of date and limit parameters, and more. Also explored, are the methods
+  for selecting data sources, handling different list and ticker symbol formats, and
+  dealing with command responses and warnings.
+keywords:
+- command syntax
+- standardized parameters
+- date format
+- provider parameter
+- data source selection
+- symbol parameter
+- list formats
+- ticker symbols
+- date parameter
+- time series
+- limit parameter
+- keyword arguments
+- endpoint parameters
+- command response
+- data models
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Basic Syntax - Usage | OpenBB Platform Docs" />
 
 The structure of command syntax is standardized across common fields.  This ensures that a `date` is always a `date` and the format remains consistent throughout.  Standardized parameters include, but are not limited to:
 

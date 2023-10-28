@@ -1,7 +1,30 @@
 ---
 title: seasonalnaive
-description: OpenBB SDK Function
+description: The Seasonal Naive forecasting page provides thorough documentation for
+  using and interpreting the results of the Seasonal Naive model and the Seasonal
+  Naive chart. It includes details on parameters, returns, and source code locations.
+  The page is enriched with appropriate examples aiding in easy understanding and
+  implementation of the functionalities.
+keywords:
+- Seasonal Naive forecasting
+- Source Code
+- forecast.seasonalnaive
+- forecast.seasonalnaive_chart
+- Parameters
+- Returns
+- data series
+- forecast values
+- precision
+- Display SeasonalNaive Model
+- residuals
+- forecast only
+- naive
+- external axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="seasonalnaive - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

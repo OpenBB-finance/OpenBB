@@ -1,7 +1,26 @@
 ---
 title: ch
-description: OpenBB Terminal Function
+description: This documentation outlines the usage of the 'ch' command to display
+  a list of major crypto-related hacks. It details the different parameters available
+  to sort and display the data. Included are specific examples, and the expected output.
+keywords:
+- crypto-related hacks
+- crypto hack
+- hack display
+- sort by parameters
+- crypto platform
+- hack amount
+- hack date
+- hack audit
+- hack slug
+- hack URL
+- reverse display order
+- individual crypto hack
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ch - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # ch
 

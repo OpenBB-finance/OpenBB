@@ -1,7 +1,17 @@
 ---
 title: Portfolio
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, optimization, risk, benchmark, brokers, how to, example, load, rsharpe, distr, var, metric, perf]
-description: The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a benchmark.
+description: This docusaurus page is a thorough guide on how to optimize and track
+  your portfolio using innovative features. It covers how to load your transactions,
+  compare your portfolio to a benchmark, avail various statistical measures and apply
+  portfolio optimization techniques.
+keywords:
+- portfolio optimization
+- benchmark comparison
+- portfolio metrics
+- transaction loading
+- SEO improvement
+- portfolio performance
+- docusaurus guide
 ---
 
 The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank" rel="noreferrer noopener">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank" rel="noreferrer noopener">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank" rel="noreferrer noopener">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank" rel="noreferrer noopener">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank" rel="noreferrer noopener">var</a>

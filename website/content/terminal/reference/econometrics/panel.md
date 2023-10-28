@@ -1,7 +1,26 @@
 ---
 title: panel
-description: OpenBB Terminal Function
+description: The documentation page provides a comprehensive guide to performing regression
+  analysis on Panel Data using the 'panel' command in Python. It includes information
+  about the usage, command parameters and the type of regression analysis you can
+  perform.
+keywords:
+- panel data regression
+- Python
+- data analysis
+- regression analysis
+- Pooled OLS
+- Random Effects
+- Between OLS
+- Fixed Effects
+- First Difference OLS
+- entity effects
+- time effects
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="panel - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # panel
 

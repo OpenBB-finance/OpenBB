@@ -1,8 +1,39 @@
 ---
 title: Discovery
-keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, how to, example, trending, gainers, losers]
-description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
+description: The Cryptocurrency Discovery section provides comprehensive details about
+  various trending cryptocurrencies, NFTs, and decentralized apps. Users can look
+  into the top coins, gain insights into the top NFTs and decentralized apps sorted
+  by various categories, and go deeper into a specific country's currency trends.
+keywords:
+- Cryptocurrency Discovery
+- crypto
+- NFTs
+- decentralized apps
+- Bored Ape Yacht Club
+- CryptoPunks
+- Moonbirds
+- Mutant Ape Yacht Club
+- Doodles V4
+- CLONE X - X TAKASHI MURAKAMI
+- Azuki
+- Bored Ape Kennel Club
+- Space Doodles
+- VeeFriends
+- Meebits
+- Otherdeed for Otherside
+- Fluf World
+- Cyber Kongz
+- SandVegasCasinoClub Official
+- Splinterlands
+- PancakeSwap
+- Alien Worlds
+- Farmers World
+- AtomicAssets
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - Crypto - Data Available | OpenBB Terminal Docs" />
 
 The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="/terminal/reference/crypto/disc/trending" target="_blank" rel="noreferrer noopener">trending</a>), gainers and losers (<a href="/terminal/reference/crypto/disc/gainers" target="_blank" rel="noreferrer noopener">gainers</a> and <a href="/terminal/reference/crypto/disc/losers" target="_blank" rel="noreferrer noopener">losers</a>) as well as NFTs (<a href="/terminal/reference/crypto/disc/nft" target="_blank" rel="noreferrer noopener">nft</a>) and decentralized apps (<a href="/terminal/reference/crypto/disc/dex" target="_blank" rel="noreferrer noopener">dex</a>).
 

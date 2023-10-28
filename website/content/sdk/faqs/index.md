@@ -1,23 +1,17 @@
 ---
 title: FAQs
 sidebar_position: 1
-description: Frequently Asked Questions about the OpenBB SDK
+description: This page introduces various FAQs and resources about our SDK, including
+  installation updates, import errors, general operations, data sources, bugs and
+  support, and common developer issues.
 keywords:
-  [
-    faqs,
-    questions,
-    troubleshooting,
-    answers,
-    installation,
-    updates,
-    general operation,
-    data sources,
-    bug,
-    support,
-    feedback,
-    developer issues,
-    issue,
-  ]
+- SDK
+- Installation and Updates
+- Import errors
+- General Operation
+- Data and Sources
+- Bugs, Support and Feedback
+- Developer Issues
 ---
 
 import LinkCard from "@site/src/components/General/LinkCard";

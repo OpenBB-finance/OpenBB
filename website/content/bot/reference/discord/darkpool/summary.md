@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: summary
-description: OpenBB Discord Command
+description: Learn how to retrieve a summary of all the prints by percentage of MarketCap
+  over the last x days, sorted by MarketCap. Understand the usage, parameters, and
+  see examples.
+keywords:
+- prints summary
+- MarketCap
+- Sort by MarketCap
+- /dp summary command
+- MarketCap over time
+- Market analysis
+- Financial Data Analysis
+- Short Percentage
+- Float
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summary - Darkpool - Discord - Reference | OpenBB Bot Docs" />
 
 # summary
 

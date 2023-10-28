@@ -1,7 +1,23 @@
 ---
 title: dret
-description: OpenBB Terminal Function
+description: The dret page is about getting daily returns for specific periods. Users
+  can modify periods as 3y, 5y, 10y, or select all for the entire duration. It also
+  clarifies the usage and parameters in detail.
+keywords:
+- dret
+- daily returns
+- period
+- year returns
+- 3y
+- 5y
+- 10y
+- all
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dret - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # dret
 

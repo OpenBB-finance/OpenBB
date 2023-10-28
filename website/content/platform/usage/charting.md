@@ -1,9 +1,27 @@
 ---
 title: Charting Extension
 sidebar_position: 4
-description: The OpenBB Charting Extension.
-keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client]
+description: Learn how to install and use the powerful OpenBB Charting Extension for
+  the OpenBB Platform. It utilizes PyWry and Plotly for the display of interactive
+  charts and tables - an essential tool for developers.
+keywords:
+- OpenBB Charting Extension
+- OpenBB Platform
+- REST API
+- Python Client
+- PyWry
+- Plotly
+- interactive charts
+- router pipeline
+- python interface
+- Interactive tables
+- Installation
+- OpenBBFigure
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Charting Extension - Usage | OpenBB Platform Docs" />
 
 
 The OpenBB Charting Extension supplies charting infrastructure and services to the OpenBB Platform.  Figure objects are served via REST API or Python Client.  It utilizes PyWry for handling the display of interactive charts and tables in a separate window, with a Plotly library.  The extension framework allows developers to easily insert other Python charting libraries into the router pipeline.

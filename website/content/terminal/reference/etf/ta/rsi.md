@@ -1,7 +1,26 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: This page provides detailed information about the Relative Strength Index
+  (RSI), including its calculations, interpretation and usage. It also explains the
+  various parameters involved and how to modify them.
+keywords:
+- RSI
+- Relative Strength Index
+- overbought
+- oversold
+- indicator
+- price movement
+- divergence
+- reversal
+- parameters
+- n_length
+- n_scalar
+- n_drift
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsi - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # rsi
 

@@ -1,7 +1,31 @@
 ---
 title: metrics
-description: OpenBB Platform Function
+description: This is a documentation page describing Key Metrics for a given company.
+  It defines parameters including symbol, limit, provider, period among others. It
+  lays out the standard and specific data fields of the company's financial metrics
+  such as revenue per share, net income per share, operating cash flow per share and
+  so on.
+keywords:
+- Key Metrics
+- Documentation
+- parameters
+- returns
+- data
+- symbol
+- period
+- limit
+- provider
+- revenue_per_share
+- net_income_per_share
+- operating_cash_flow_per_share
+- free_cash_flow_per_share
+- cash_per_share
+- price_to_sales_ratio
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="metrics - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -203,4 +227,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: fees
-description: OpenBB Discord Command
+description: The page provides information about how to fetch the fee rate of top
+  crypto protocols on a specified date. It helps users to compare different protocols'
+  fees, enhancing their decision-making process.
+keywords:
+- crypto
+- fees
+- comparison
+- date
+- crypto fees
+- protocol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fees - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # fees
 

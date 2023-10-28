@@ -1,7 +1,30 @@
 ---
 title: iorb
-description: OpenBB Platform Function
+description: A documentation page that provides detailed instructions on how to retrieve
+  Interest Rate on Reserve Balances (IORB) data using the 'iorb' function. The page
+  explains the parameters, returns, and data for the function.
+keywords:
+- IORB
+- Interest Rate on Reserve Balances
+- bank rate
+- central bank
+- Federal Reserve System
+- discount rate
+- start_date
+- end_date
+- provider
+- OBBject
+- results
+- warnings
+- chart
+- metadata
+- iorb function
+- economic data retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="iorb - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -69,4 +92,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

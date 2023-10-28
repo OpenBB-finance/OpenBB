@@ -1,7 +1,24 @@
 ---
 title: ycrv
-description: OpenBB Platform Function
+description: The YCRV documentation page details how to fetch US Yield Curve data.
+  The page includes parameters for date and inflation adjustment. It showcases the
+  use of 'fred' - a provider for the data query.
+keywords:
+- Yield Curve
+- US Yield Curve
+- YCRV
+- FRED
+- Inflation adjusted rates
+- Financial data provider
+- Maturity
+- Treasury rate
+- Rate
+- Date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ycrv - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -66,4 +83,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

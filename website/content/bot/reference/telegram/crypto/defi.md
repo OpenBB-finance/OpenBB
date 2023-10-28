@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: defi
-description: OpenBB Telegram Command
+description: The page provides information about the '/defi' command which retrieves
+  a chart or table of top DeFi protocols by market cap. It includes details on how
+  to use the command, its parameters, and examples.
+keywords:
+- DeFi protocols
+- market capitalization
+- DeFi market size
+- visual representation
+- DeFi landscape
+- /defi command
+- sort data
+- filter by chain
+- reverse sort order
+- show chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="defi - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
 # defi
 

@@ -1,7 +1,22 @@
 ---
 title: desc
-description: OpenBB SDK Function
+description: Detailed information on how to use the 'desc' function of the OpenBB
+  finance package in Python. The function returns statistics for a specified data
+  frame.
+keywords:
+- OpenBB finance package
+- Python
+- data frame
+- statistics
+- forecasting
+- source code
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="desc - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -1,7 +1,24 @@
 ---
 title: dvcp
-description: OpenBB Terminal Function
+description: dvcp helps you to analyze the daily trading volume for any given cryptocurrency
+  pair. It includes features for sorting and displaying the data based on different
+  parameters including coin type, quote currency, and range of days.
+keywords:
+- crypto
+- dvcp
+- crypto pair volume
+- ERC20 token
+- Sort data
+- Bitcoin
+- Ethereum
+- USDT
+- crypto trading
+- trade volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dvcp - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # dvcp
 

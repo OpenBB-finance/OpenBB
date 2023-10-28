@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: summaryflow
-description: OpenBB Telegram Command
+description: The SummaryFlow page provides instruction on using the summaryflow command,
+  which compiles detailed summaries of the flow per stock over selected periods, sorted
+  in various ways.
+keywords:
+- SummaryFlow
+- stock flow summary
+- stock analysis
+- MarketCap sort
+- short sort
+- /summaryflow usage
+- trading
+- trades tracking
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summaryflow - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # summaryflow
 

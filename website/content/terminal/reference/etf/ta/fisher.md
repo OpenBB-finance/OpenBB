@@ -1,7 +1,23 @@
 ---
 title: fisher
-description: OpenBB Terminal Function
+description: A technical documentation page highlighting the Fisher Transform, a technical
+  indicator, its usage, parameters, and purpose in identifying price turning points
+  and trends.
+keywords:
+- Fisher Transform
+- Technical Indicator
+- John F. Ehlers
+- Price Turning Points
+- Price Trends
+- Gaussian Normal Distribution
+- Isolate Price Waves
+- Python
+- Parameter Configuration
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fisher - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # fisher
 

@@ -1,9 +1,31 @@
 ---
 title: Add a custom data source
 sidebar_position: 2
-description: Add a custom data source to the OpenBB Platform.
-keywords: [openbb platform, extension, custom data source, contributing, documentation]
+description: This page provides comprehensive guidance on using the OpenBB Platform
+  for data sourcing from a CSV file, local database or API endpoint. It details the
+  standardization framework, the use of Pydantic models for data extraction, and the
+  importance of the Fetcher class. It also includes steps to define FastAPI endpoints,
+  and utilize OpenBB commands for data querying and output.
+keywords:
+- OpenBB Platform
+- standardization framework
+- data validation
+- type checking
+- data schema
+- query parameters
+- Fetcher class
+- OpenBB commands
+- FastAPI endpoints
+- data extraction
+- API endpoint
+- CSV file
+- local database
+- pydantic models
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Add a custom data source - Extension Development - Contributing | OpenBB Platform Docs" />
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 

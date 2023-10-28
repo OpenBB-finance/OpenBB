@@ -1,7 +1,25 @@
 ---
 title: bbands
-description: OpenBB Terminal Function
+description: This page provides detailed information about the Bollinger Bands (bbands),
+  a volatility indicator in technical analysis, including usage, parameters, visual
+  representation, data interpretation, and their importance in buy or sell signals
+  generation.
+keywords:
+- Bollinger Bands
+- bbands
+- technical analysis
+- volatility indicators
+- overbought conditions
+- oversold conditions
+- price targets
+- price reversal
+- support level
+- resistance level
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bbands - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # bbands
 

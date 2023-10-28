@@ -1,7 +1,31 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: The page provides detailed information about the Stochastic Oscillator
+  trading tool. It describes the principles of operation, situations of overbought
+  and oversold conditions, and offers instructions for its usage. It also specifies
+  parameters and their functionality, including time periods of fastk, slowd, and
+  slowk moving averages.
+keywords:
+- Stochastic Oscillator
+- Overbought condition
+- Oversold condition
+- Fast %D
+- Slow %D
+- Buy signal
+- Sell signal
+- Raw %K
+- Trading range
+- N_fastkperiod
+- N_slowdperiod
+- N_slowkperiod
+- Fastk moving average
+- Slowk moving average
+- Slowd moving average
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stoch - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # stoch
 

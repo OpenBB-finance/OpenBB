@@ -1,7 +1,21 @@
 ---
 title: anchor
-description: OpenBB Terminal Function
+description: This documentation covers the usage of anchor which displays earnings
+  data of a specific terra address. It also provides the option to view the history
+  of past transactions. The page provides code examples for better understanding.
+keywords:
+- anchor
+- terra
+- cryptocurrency
+- crypto
+- Blockchain
+- earnings data
+- transactions history
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="anchor - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # anchor
 

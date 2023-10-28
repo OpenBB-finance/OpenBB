@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cw
-description: OpenBB Telegram Command
+description: The page provides detailed information on using the 'cw' command to retrieve
+  the weekly candlestick chart for any specified ticker or coin. It contains parameters'
+  details and usage examples.
+keywords:
+- weekly candlestick chart
+- trading volume
+- stock ticker
+- cw command
+- opening and closing prices
+- high and low prices
+- ticker/coin
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cw - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
 # cw
 

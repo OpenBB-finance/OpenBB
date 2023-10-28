@@ -1,35 +1,18 @@
 ---
 title: Introduction
 sidebar_position: 0
+description: OpenBB Platform is a comprehensive solution built with the contribution
+  of numerous community members, facilitating the development of stable integrations
+  with third-party data providers for a robust investment research infrastructure.
 keywords:
-  [
-    getting started,
-    openbb,
-    api,
-    beginner guide,
-    how to use openbb,
-    openbb keys,
-    openbb terminal,
-    introduction,
-    intro,
-    how-to,
-    how to,
-    openbb,
-    sdk,
-    learn,
-    guide,
-    data,
-    financial data,
-    analysis,
-    open source,
-    visualization,
-    dashboard,
-    report,
-    custom,
-    jupyter,
-    jupyter notebook
-  ]
-description: The OpenBB Documentation provides guidance on how to use the OpenBB SDK, a free, custom built financial SDK that will help you make more informed decisions, faster.
+- OpenBB Platform
+- investment research infrastructure
+- third-party data providers
+- financial reports
+- applications
+- community contributions
+- data connectors
+- extensions
 ---
 
 # Introduction

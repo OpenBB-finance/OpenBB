@@ -1,7 +1,18 @@
 ---
 title: show
-description: OpenBB Terminal Function
+description: This page provides the 'show' command, used to display stock option price
+  and it's estimated chance. It comes without parameters.
+keywords:
+- show command
+- stock options
+- display prices
+- no parameters
+- stock price estimation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="show - Pricing - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # show
 

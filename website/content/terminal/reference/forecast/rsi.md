@@ -1,7 +1,24 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: This page provides a thorough explanation of how to add an RSI (Relative
+  Strength Index) to a specific dataset based on a chosen column. It provides useful
+  examples of seamless operation using Python. RSI is typically used by forecasters
+  and analysts to help identify market trends and overbought or oversold conditions.
+keywords:
+- Relative Strength Index
+- RSI
+- dataset
+- Python
+- forecast
+- analysis
+- market trends
+- overbought conditions
+- oversold conditions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsi - Forecast - Reference | OpenBB Terminal Docs" />
 
 # rsi
 

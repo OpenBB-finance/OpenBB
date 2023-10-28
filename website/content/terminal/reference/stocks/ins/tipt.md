@@ -1,7 +1,27 @@
 ---
 title: tipt
-description: OpenBB Terminal Function
+description: The page provides an overview and usage of the 'tipt' function, a tool
+  that prints the top insider purchases of the day from OpenInsider. With parameter
+  customization and examples, become more adept at monitoring insider stock purchases.
+keywords:
+- tipt function
+- insider purchases
+- OpenInsider
+- stock
+- stock monitoring
+- stock analysis
+- SEO
+- guide
+- usage
+- tutorial
+- python
+- data display
+- trade
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tipt - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # tipt
 

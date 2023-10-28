@@ -1,23 +1,19 @@
 ---
 title: FAQs
 sidebar_position: 1
-description: Frequently Asked Questions about the OpenBB Platform
+description: Discover how to deal with installations, updates, import errors, and
+  general operation. Learn more about data sources and how to handle bugs, support
+  and various developer issues.
 keywords:
-  [
-    faqs,
-    questions,
-    troubleshooting,
-    answers,
-    installation,
-    updates,
-    general operation,
-    data sources,
-    bug,
-    support,
-    feedback,
-    developer issues,
-    issue,
-  ]
+- Installation
+- Updates
+- Import errors
+- General operation
+- Data and sources
+- Bugs support
+- Feedback
+- Developer issues
+- LinkCard component
 ---
 
 import LinkCard from "@site/src/components/General/LinkCard";

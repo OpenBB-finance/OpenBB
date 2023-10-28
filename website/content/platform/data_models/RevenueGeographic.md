@@ -1,7 +1,23 @@
 ---
 title: Revenue Geographic
-description: OpenBB Platform Data Model
+description: This page provides implementation details and parameters related to the
+  RevenueGeographic data model. This includes parameters for querying data, the data
+  structure, provider options, as well as data output details about global revenue
+  distribution.
+keywords:
+- RevenueGeographic
+- RevenueGeographicQueryParams
+- RevenueGeographicData
+- data model
+- implementation details
+- revenue distribution
+- parameters
+- geographic segment data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Revenue Geographic - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -59,4 +75,3 @@ RevenueGeographicQueryParams,
 </TabItem>
 
 </Tabs>
-

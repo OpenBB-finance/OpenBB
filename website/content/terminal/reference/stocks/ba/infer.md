@@ -1,7 +1,22 @@
 ---
 title: infer
-description: OpenBB Terminal Function
+description: The documentation guide on 'infer', a tool used for quick sentiment inference
+  from latest tweets that contain the ticker using vader sentiment analysis. It provides
+  parameters to set the tweet limit and also includes examples of usage
+keywords:
+- infer
+- vader sentiment analysis
+- Twitter
+- tweets
+- ticker
+- sentiment inference
+- stock
+- limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="infer - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # infer
 

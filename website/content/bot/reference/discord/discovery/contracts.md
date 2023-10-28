@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: contracts
-description: OpenBB Discord Command
+description: The page provides details on how to retrieve the top 15 Government contracts
+  by amount for all tickers using the /disc contracts command. It gives insights into
+  the total value of Government contracts awarded to various companies, helping users
+  understand their financial health.
+keywords:
+- contracts
+- Government contracts
+- tickers
+- database
+- financial health
+- /disc contracts
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # contracts
 

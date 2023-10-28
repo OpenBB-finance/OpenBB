@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: unu
-description: OpenBB Telegram Command
+description: Learn how to use the /flow unu command to identify unusual options trades
+  exceeding $100,000 in premium and total volume. Understand the potential opportunities
+  in the options market.
+keywords:
+- unusual options trading
+- /flow unu command
+- options market opportunities
+- trading strategies
+- premium options trades
+- total volume exceeding open interest
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unu - Flow - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flow unu
 

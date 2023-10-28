@@ -1,7 +1,24 @@
 ---
 title: slopes
-description: OpenBB Terminal Function
+description: This page offers information on the 'slopes' Python function, which displays
+  the countries with the highest slope values. You can customize the data displayed
+  with parameters such as 'days back', 'reverse' for sorting options, and 'threshold'
+  for total cases.
+keywords:
+- slope
+- data sorting
+- data analysis
+- cases threshold
+- Python
+- ascending
+- descending
+- reverse
+- days back
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="slopes - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
 # slopes
 

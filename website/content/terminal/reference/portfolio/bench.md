@@ -1,7 +1,27 @@
 ---
 title: bench
-description: OpenBB Terminal Function
+description: This page provides a detailed guideline on how to load in benchmarks
+  for a portfolio based on the ticker. It elaborates the usage of the 'bench' command
+  in python, its parameters, choices and gives practical examples of its application.
+keywords:
+- benchmark
+- portfolio
+- SPDR S&P 500 ETF Trust (SPY)
+- iShares Core S&P 500 ETF (IVV)
+- Vanguard Total Stock Market ETF (VTI)
+- Vanguard S&P 500 ETF (VOO)
+- Invesco QQQ Trust (QQQ)
+- full_shares
+- shares
+- python
+- choices
+- parameters
+- Vanguard FTSE Developed Markets ETF (VEA)
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bench - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # bench
 

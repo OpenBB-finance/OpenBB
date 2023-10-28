@@ -1,7 +1,23 @@
 ---
 title: rolling
-description: OpenBB Terminal Function
+description: The page provides details on the 'rolling' function, focusing on usage
+  with Python, its parameters, especially 'n_window' for window length, and its role
+  in calculating rolling mean and standard deviation.
+keywords:
+- rolling
+- mean
+- std deviation
+- usage
+- parameters
+- python
+- n_window
+- window length
+- coding
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rolling - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # rolling
 

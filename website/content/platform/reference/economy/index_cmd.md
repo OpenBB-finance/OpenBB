@@ -1,7 +1,25 @@
 ---
 title: index
-description: OpenBB Platform Function
+description: Docusaurus page detailing how to retrieve historical index data using
+  Python. Explains various parameters such as symbol, start date, end date, provider
+  to use for the query, and various provider-specific options.
+keywords:
+- Docusaurus
+- Historical index data
+- Python
+- Parameters
+- Symbol
+- Start date
+- End date
+- Provider
+- fmp
+- polygon
+- Data retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="index - Economy - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -129,4 +147,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

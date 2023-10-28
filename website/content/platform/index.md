@@ -1,20 +1,17 @@
 ---
 title: Introduction
 sidebar_position: 0
+description: Introduction to OpenBB Platform; a convenient and powerful tool that
+  provides pre-built data connectors and libraries to design and build financial reports
+  and applications. Learn more about contributing to the platform.
 keywords:
-  [
-    getting started,
-    openbb,
-    api,
-    beginner guide,
-    how to use openbb,
-    openbb keys,
-    introduction,
-    how-to,
-    guide,
-    platform,
-  ]
-description: The OpenBB Documentation provides guidance on how to use the OpenBB Platform, an open source framework for making more informed decisions, faster.
+- OpenBB Platform
+- investment research infrastructure
+- data connectors
+- financial reports
+- OpenBB team
+- third-party data providers
+- CONTRIBUTING GUIDELINES
 ---
 
 # Introduction

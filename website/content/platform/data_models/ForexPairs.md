@@ -1,7 +1,38 @@
 ---
 title: Forex Pairs
-description: OpenBB Platform Data Model
+description: This documentation page provides comprehensive details about how to use
+  the 'ForexPairs' models in our openbb_provider package, including parameter details,
+  import statements, and data models for standard, fmp, intrinio, and polygon forex
+  pairs.
+keywords:
+- OpenBB Provider
+- ForexPairs
+- API Documentation
+- Python
+- Forex Pairs Data models
+- Standard
+- FMP
+- Intrinio
+- Polygon
+- Query Parameters
+- Data classes
+- Currency Pair
+- Stock Exchange
+- Exchange Words
+- Currency Code
+- ISO 4217
+- Currency Symbol
+- Base Currency
+- Quote Currency
+- Trading Market
+- Locale
+- Updated Timestamp
+- Delisted Timestamp
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forex Pairs - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -100,4 +131,3 @@ ForexPairsQueryParams,
 </TabItem>
 
 </Tabs>
-

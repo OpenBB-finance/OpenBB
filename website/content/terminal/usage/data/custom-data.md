@@ -1,9 +1,29 @@
 ---
 title: Custom Data
 sidebar_position: 3
-description: Custom data
-keywords: [custom]
+description: Documentation detailing usage of the OpenBB Terminal for financial data
+  aggregation, standardization, and user data import. It explains the OpenBBUserData
+  folder functions, how to modify settings, and how to import or export user data.
+keywords:
+- OpenBB Terminal
+- financial data
+- data aggregation
+- data standardization
+- OpenBBUserData folder
+- import data
+- export data
+- Econometrics
+- Portfolio
+- Portfolio Optimization
+- settings menu
+- export folder location
+- userdata command
+- user-created files
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Custom Data - Data - Usage | OpenBB Terminal Docs" />
 
 The OpenBB Terminal not only allows access to a world of financial data through our data aggregation and standardization. We also allow users to bring their own data to the terminal and export data.
 

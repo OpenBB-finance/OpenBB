@@ -1,7 +1,25 @@
 ---
 title: donchian
-description: OpenBB Terminal Function
+description: This page provides in-depth details on Donchian Channels - an indicator
+  formed by upper and lower bands around a midrange or median band, and how to use
+  it with parameters in python.
+keywords:
+- Donchian Channels
+- moving average calculations
+- security price
+- upper band
+- lower band
+- midrange
+- median band
+- python
+- parameters
+- n_length_upper
+- n_length_lower
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="donchian - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # donchian
 

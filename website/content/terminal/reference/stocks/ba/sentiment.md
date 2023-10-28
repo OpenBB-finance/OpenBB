@@ -1,7 +1,23 @@
 ---
 title: sentiment
-description: OpenBB Terminal Function
+description: The page provides a sentiment analysis tool that predicts in-depth sentiment
+  from recent tweets containing pre-specified stock tickers. It offers customizable
+  parameters including the limit of tweets to extract per hour and the number of past
+  days to extract tweets. Additionally, users can choose to show a corresponding change
+  in the stock price, enhancing the analysis.
+keywords:
+- sentiment
+- tweets analysis
+- stock market sentiment
+- Twitter data analysis
+- predictive sentiment analysis
+- Python
+- stock market data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sentiment - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sentiment
 

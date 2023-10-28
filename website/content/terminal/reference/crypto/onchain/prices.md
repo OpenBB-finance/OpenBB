@@ -1,7 +1,27 @@
 ---
 title: prices
-description: OpenBB Terminal Function
+description: This page provides information about displaying historical token prices.
+  It includes parameters to sort data by date, cap, volumeConverted, open, high, close,
+  and low values. The source of data is Ethplorer.
+keywords:
+- token prices
+- historical prices
+- Ethplorer
+- date
+- cap
+- volumeConverted
+- open
+- high
+- close
+- low
+- data sort
+- ascending order
+- descending order
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prices - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # prices
 

@@ -1,7 +1,22 @@
 ---
 title: relriskparity
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on how to build a relaxed risk parity
+  portfolio using the least squares approach. It includes usage instructions, parameters,
+  and examples.
+keywords:
+- risk parity portfolio
+- least squares approach
+- portfolio optimization
+- risk management
+- investment strategies
+- asset allocation
+- yfinance data
+- time series
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="relriskparity - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # relriskparity
 

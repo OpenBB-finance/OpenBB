@@ -1,9 +1,34 @@
 ---
 title: Data sources
 sidebar_position: 1
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: This page provides useful information on dealing with different data
+  vendors when using OpenBB's Terminal. It outlines how to select a default data source,
+  acquire API keys, and switch the data vendor using specific commands, all in an
+  effort to streamline and improve the user's experience.
+keywords:
+- OpenBB
+- Terminal
+- data vendors
+- API keys
+- data sources
+- FinancialModelingPrep
+- Polygon
+- AlphaVantage
+- EODHD
+- YahooFinance
+- command
+- source
+- stocks/fa/income
+- changing data source
+- Default data source
+- /sources
+- get --cmd
+- set --cmd
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data sources - Data - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: serverid
-description: OpenBB Discord Command
+description: /info serverid is a command in discord that retrieves the Server ID of
+  a discord room. This unique identifier is necessary for linkage and autoposting
+  features.
+keywords:
+- serverid
+- discord room
+- autoposting features
+- unique identifier
+- link account
+- info command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="serverid - Info - Discord - Reference | OpenBB Bot Docs" />
 
 # serverid
 

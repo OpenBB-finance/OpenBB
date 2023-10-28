@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ah_all
-description: OpenBB Discord Command
+description: The documentation page explains the usage, parameters, and examples of
+  the ah_all command used to retrieve all available after-hours stock market screeners,
+  including gainers, losers, and the most active ones.
+keywords:
+- after-hours screeners
+- stock market
+- trading
+- ah_all command
+- gainers
+- losers
+- most active
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ah_all - Screeners - Discord - Reference | OpenBB Bot Docs" />
 
 # ah_all
 

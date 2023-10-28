@@ -1,7 +1,24 @@
 ---
 title: warnings
-description: OpenBB Terminal Function
+description: This page provides warnings by Sean Seah regarding stock market values,
+  including consistent historical earnings per share, return on equity, return on
+  assets, and net income to long-term debt ratio. Insightful examples and customizable
+  parameters are available for financial analysis.
+keywords:
+- Sean Seah warnings
+- stock market indicators
+- financial analytics
+- historical earnings per share
+- return on equity
+- return on assets
+- net income to long-term debt ratio
+- financial analysis examples
+- customizable financial parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="warnings - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # warnings
 

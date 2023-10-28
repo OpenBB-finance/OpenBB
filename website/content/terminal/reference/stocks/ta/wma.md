@@ -1,7 +1,21 @@
 ---
 title: wma
-description: OpenBB Terminal Function
+description: Learn how to use the Weighted Moving Average (WMA) in data analysis with
+  this comprehensive guide. The WMA accentuates recent prices over past figures, thus
+  providing close follow-up of market trends.
+keywords:
+- Weighted Moving Average
+- WMA
+- data
+- data analysis
+- market trends
+- price tracking
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wma - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # wma
 

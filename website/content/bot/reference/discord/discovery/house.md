@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: house
-description: OpenBB Discord Command
+description: This page provides a detailed explanation of the 'house' command in our
+  platform, including its usage, parameters, and examples.
+keywords:
+- house command
+- recent house trades
+- trade time
+- trade size
+- trade price
+- command parameters
+- command usage
+- command examples
+- retrieve trades
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="house - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # house
 

@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: calendar
-description: OpenBB Telegram Command
+description: The documentation page for the /calendar command which retrieves an Economic
+  Calendar for the day, providing insightful details about upcoming economic events
+  and key indicators like GDP, inflation, employment, etc.
+keywords:
+- economic calendar
+- economic events
+- GDP
+- inflation
+- employment
+- economy trajectory
+- calendar command
+- economic indicators
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="calendar - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # calendar
 

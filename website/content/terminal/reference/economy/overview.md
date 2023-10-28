@@ -1,7 +1,32 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: 'A comprehensive guide to monitor different financial markets that includes
+  usage of command-line codes for the assessment of indices, US bonds, global bonds
+  and currencies. US indices include examples of DJIA, S&P 500, Nasdaq Composite,
+  and several others. The bond overview provides details about US 10 Year Treasury
+  Note, Germany 10 Year Government Bond, and more. Currencies'' commands exemplify
+  data about Euro, Japanese Yen, U.K. Pound and others. '
+keywords:
+- Market Overview
+- Indices
+- US Bonds
+- Global Bonds
+- Currencies
+- Command-line codes
+- Financial Markets
+- DJIA
+- S&P 500
+- Nasdaq Composite
+- US 10 Year Treasury Note
+- Germany 10 Year Government Bond
+- Euro
+- Japanese Yen
+- U.K. Pound
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="overview - Economy - Reference | OpenBB Terminal Docs" />
 
 # overview
 

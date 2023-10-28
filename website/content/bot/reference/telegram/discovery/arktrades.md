@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: arktrades
-description: OpenBB Telegram Command
+description: The page contains instructions on how to use the 'arktrades' command
+  to retrieve and analyze a comprehensive list of trades made by ARK. The trade data
+  is presented in a user-friendly table format.
+keywords:
+- arktrades command
+- trade data
+- ARK trades analysis
+- retrieve ARK trades
+- analyze trades
+- Easy-to-read trade data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="arktrades - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # arktrades
 

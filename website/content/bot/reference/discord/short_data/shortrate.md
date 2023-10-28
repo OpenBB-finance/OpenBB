@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: shortrate
-description: OpenBB Discord Command
+description: A comprehensive guide to using the shortrate command to check Interactive
+  Brokers' Display Short Shares spot borrow rates. Helps users make informed decisions
+  about short selling activities.
+keywords:
+- shortrate command
+- Interactive Brokers
+- spot borrow rates
+- short selling
+- Display Short Shares
+- stock ticker
+- shortrate usage
+- shortrate examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="shortrate - Short_Data - Discord - Reference | OpenBB Bot Docs" />
 
 # shortrate
 

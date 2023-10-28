@@ -1,24 +1,28 @@
 ---
 title: FAQs
 sidebar_position: 5
-description: Here we answer frequently asked questions about the OpenBB Bot from our users and community.
+description: This page offers information about OpenBB Bot, covering topics such as
+  linking your OpenBB Bot account, trying an OpenBB Bot plan, automatic plan renewals,
+  refunds, access on different platforms, individual and server plans, and troubleshooting
+  issues with slash commands.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb bot,
-  ]
+- OpenBB Bot
+- OpenBB Bot account
+- OpenBB plan
+- billing cycle
+- OpenBB Discord
+- server settings
+- integrations
+- refunds
+- subscription
+- individual plan
+- server plan
+- slash commands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FAQs | OpenBB Bot Docs" />
 
 ## Generic
 

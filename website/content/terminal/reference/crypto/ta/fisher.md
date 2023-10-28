@@ -1,7 +1,22 @@
 ---
 title: fisher
-description: OpenBB Terminal Function
+description: This page provides information about the Fisher Transform, a technical
+  indicator that converts prices into a Gaussian normal distribution. The tool helps
+  with identifying potential turning points in the price of an asset, and enables
+  users to visualize trends and price waves.
+keywords:
+- Fisher Transform
+- technical indicator
+- John F. Ehlers
+- Gaussian normal distribution
+- price turning points
+- price trends
+- price waves
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fisher - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # fisher
 

@@ -1,7 +1,29 @@
 ---
 title: exmarkets
-description: OpenBB Terminal Function
+description: The page explains the usage of exmarkets command that generates a table
+  with exchange markets data with various parameters. It provides information on how
+  to limit, sort, and view this data in a user-friendly format.
+keywords:
+- exmarkets
+- exchange markets
+- cryptocurrency
+- SEO
+- sort data
+- limit data
+- command usage
+- parameter usage
+- exchange_id
+- trust score
+- base_currency_name
+- quote_currency_name
+- market_url
+- reported_volume_24h_share
+- category
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exmarkets - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # exmarkets
 

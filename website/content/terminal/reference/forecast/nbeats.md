@@ -1,7 +1,23 @@
 ---
 title: nbeats
-description: OpenBB Terminal Function
+description: Explore how to use NBEATS, Neural Bayesian Estimation of Time Series,
+  a powerful tool for forecasting. It includes details of parameters, usage, and examples.
+keywords:
+- nbeats
+- Neural Bayesian Estimation
+- Time Series
+- forecasting
+- darts.models.forecasting
+- python library
+- data science
+- machine learning
+- API
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nbeats - Forecast - Reference | OpenBB Terminal Docs" />
 
 # nbeats
 

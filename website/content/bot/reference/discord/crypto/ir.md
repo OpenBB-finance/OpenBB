@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ir
-description: OpenBB Discord Command
+description: Learn about the /crypto ir command which allows users to retrieve the
+  issuance rate of top crypto protocols. This is an essential tool for investors seeking
+  to understand supply dynamics of crypto protocols and inform their investment decisions.
+keywords:
+- crypto protocols
+- issuance rate
+- /crypto ir command
+- investment decisions
+- supply dynamics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ir - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # ir
 

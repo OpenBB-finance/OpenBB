@@ -1,9 +1,29 @@
 ---
 title: Data Standardization
 sidebar_position: 2
-description: Learn what is data standardization and how does it work inside the OpenBB Platform.
-keywords: [openbb platform, introduction, data standardization, contributing, documentation]
+description: Our OpenBB Platform's Standardization Framework provides a set of tools
+  and guidelines that ensure consistently structured data across multiple providers.
+  Usage of these models will provide numerous benefits, such as query and output standardization,
+  out-of-the-box extensions, transparently defined schemas, consistent data types
+  and validation.
+keywords:
+- Standardization Framework
+- OpenBB Platform
+- Data consistency
+- Data Validation
+- API schemas
+- Standard Models
+- QueryParams
+- Data
+- pydantic
+- Stock Historical Query
+- Stock Historical Data
+- OpenBB Standardization Caveats
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Standardization - Contributing | OpenBB Platform Docs" />
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 

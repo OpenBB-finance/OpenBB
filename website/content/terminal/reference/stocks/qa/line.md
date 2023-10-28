@@ -1,7 +1,20 @@
 ---
 title: line
-description: OpenBB Terminal Function
+description: Learn how to create a line plot of selected data with the option to highlight
+  specific datetimes using vertical line markers and scatter markers. You can also
+  plot with y on the log scale.
+keywords:
+- line plot
+- data visualization
+- plotting data
+- scatter markers
+- vertical line markers
+- log scale
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="line - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # line
 

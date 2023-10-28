@@ -1,8 +1,25 @@
 ---
 title: Fixed Income
-keywords: [fixed income, government bonds, bonds, corporate bonds, fixed, income, interest, rates, inflation, central bank, reference, rates, sofr, sonia, ester, estr, fred, fomc, projection, ameribor, ecb, how to, example]
-description: An introduction to the Fixed Income menu - the high-level menu for the Fixed Income asset class. It contains reference rates, central bank rates, government bonds, yield curves, corporate bond benchmarks and more.
+description: This documentation page provides a comprehensive walkthrough of the Fixed
+  Income menu within a terminal application. It discusses how to access and navigate
+  the menu, extract key financial rates and indices, view and plot data using various
+  commands.
+keywords:
+- Fixed Income
+- Financial Terminal
+- Rates and Indices
+- Plotting Data
+- Central Bank Rates
+- Government Bonds
+- Corporate Bonds
+- Spreads
+- API Key
+- User Guide
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Fixed Income - Data Available | OpenBB Terminal Docs" />
 
 The Fixed Income menu is the high-level menu for the Fixed Income asset class. It contains reference rates (ESTER, SOFR, SONIA and Ameribor), central bank rates (FRED, FOMC projections and ECB key interest rates), government bonds (treasury rates for any country, us-specific rates, yield curves), corporate bonds (ICE BofA Corporate Indices, Moody's AAA and BAA Corporate Indices, Commercial Paper, Spot Rates and HQM Corporate Yield Curve) and spread (ICE BofA spreads, constant maturity spreads, and federal funds rate)
 

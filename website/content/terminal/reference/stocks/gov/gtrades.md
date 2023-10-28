@@ -1,7 +1,20 @@
 ---
 title: gtrades
-description: OpenBB Terminal Function
+description: This page provides documentation on how to use the gtrades governmental
+  trading tool, offering information on command usage, parameters, and possible settings.
+keywords:
+- gtrades
+- governmental trading
+- documentation
+- usage
+- command
+- parameters
+- settings
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="gtrades - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # gtrades
 

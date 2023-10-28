@@ -1,7 +1,18 @@
 ---
 title: equity
-description: OpenBB Terminal Function
+description: This is a documentation page for the 'equity' command, which displays
+  fund equity holdings. The page also explains how to use the command and mentions
+  that it has no parameters.
+keywords:
+- equity
+- fund equity holdings
+- finance
+- investment
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="equity - Funds - Reference | OpenBB Terminal Docs" />
 
 # equity
 

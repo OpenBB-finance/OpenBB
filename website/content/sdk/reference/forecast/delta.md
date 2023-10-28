@@ -1,7 +1,23 @@
 ---
 title: delta
-description: OpenBB SDK Function
+description: The page is a detailed guide on how to calculate the percent change of
+  a variable using the 'delta' function in the OpenBBTerminal's forecast model. It
+  demonstrates how to use the 'openbb.forecast.delta' function through Python code.
+keywords:
+- delta
+- '%change calculation'
+- variable change
+- forecast model
+- OpenBBTerminal
+- openbb.forecast.delta
+- Python
+- DataFrame
+- target_column
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="delta - Forecast - Reference | OpenBB SDK Docs" />
 
 # delta
 
@@ -26,4 +42,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

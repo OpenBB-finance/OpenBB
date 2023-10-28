@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: fgindex
-description: OpenBB Telegram Command
+description: This page provides information about the fgindex command which enables
+  the user to retrieve the Fear & Greed Index. This investor sentiment indicator measures
+  the levels of fear and greed in the stock market by observing the momentum, sentiment
+  and volume of stock trading.
+keywords:
+- fgindex command
+- Fear & Greed Index
+- investor sentiment indicator
+- CNNMoney
+- stock market
+- momentum
+- sentiment
+- volume of stock trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fgindex - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # fgindex
 

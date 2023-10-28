@@ -1,7 +1,27 @@
 ---
 title: get
-description: OpenBB Terminal Function
+description: A document page explaining the usage of the 'get' command in python.
+  It allows users to fetch similar companies from a data source for comparison. Instructions
+  and parameters for limiting the stocks and filtering by U.S. stock exchanges, Industry
+  and Sector are also included.
+keywords:
+- get
+- similar companies
+- data source
+- Finviz
+- parameters
+- python
+- Polygon
+- stocks
+- US stock exchanges
+- Industry
+- Sector
+- limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="get - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # get
 

@@ -1,7 +1,22 @@
 ---
 title: search
-description: OpenBB Terminal Function
+description: Learn how to search for ETFs by name using the FinanceDatabase or StockAnalysis.com.
+  Understand the usage, parameters, and how to incorporate them in Python.
+keywords:
+- ETF
+- search
+- FinanceDatabase
+- StockAnalysis
+- name
+- description
+- parameters
+- Python
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="search - Etf - Reference | OpenBB Terminal Docs" />
 
 # search
 

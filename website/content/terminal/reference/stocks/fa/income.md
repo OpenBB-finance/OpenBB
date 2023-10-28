@@ -1,7 +1,31 @@
 ---
 title: income
-description: OpenBB Terminal Function
+description: This page provides in-depth information on how to generate a comprehensive
+  income statement over a specific period, either quarterly or annually. It covers
+  critical financial terms such as gross profit, operating expenses, income before
+  tax, net income, and EPS among others. These metrics can be derived using Alpha
+  Vantage data source for accurate financial analysis.
+keywords:
+- income statement
+- financial data
+- quarterly reports
+- annual reports
+- financial metrics
+- Alpha Vantage
+- financial analysis
+- financial software
+- financial terms
+- gross profit
+- net income
+- operating expenses
+- income before tax
+- ebitda
+- eps
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="income - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # income
 

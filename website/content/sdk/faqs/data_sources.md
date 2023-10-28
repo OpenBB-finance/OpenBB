@@ -1,28 +1,26 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Information about data sources and providers offered through the OpenBB SDK.
+description: OpenBB is a data aggregator that provides access to data from various
+  sources. It is important to understand how to load ticker symbols, end-of-day daily
+  data, and handle certain limitations like accessing the Binance API. Feature request
+  options are available for specific data source endpoints.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    data,
-    data provider,
-    india,
-    binance
-  ]
+- OpenBB
+- data aggregators
+- data providers
+- ticker symbols
+- end-of-day daily data
+- Binance API
+- feature request
+- SDK
+- live feeds
+- load function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data and Sources - Faqs | OpenBB SDK Docs" />
 
 
 ## Data and Sources

@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: hist
-description: OpenBB Telegram Command
+description: Learn how to retrieve the historical price of options using the '/hist'
+  command, considering parameters such as ticker, expiry, strike, option type, interval,
+  and past days. This page includes examples and a detailed description of each parameter.
+keywords:
+- stock options
+- historical data
+- stock ticker
+- expiry date
+- option type
+- /hist command
+- strike price
+- chart minute interval
+- past days
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hist - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # hist
 

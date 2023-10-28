@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topshortvol
-description: OpenBB Telegram Command
+description: This documentation page for the 'topshortvol' command allows users to
+  understand the use and function of this command, i.e., retrieving the Top 15 Short
+  Interest Stocks per Finra. It's crucial for traders for making informed market decisions.
+keywords:
+- topshortvol
+- Short Interest Stocks
+- Finra
+- trading
+- traders
+- market decisions
+- stock's total short vol
+- total volume
+- trading day
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topshortvol - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
 
 # topshortvol
 

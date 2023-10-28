@@ -1,7 +1,21 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: This documentation page provides detailed information on the concept
+  of quantile, a statistical term which refers to the values that divide a set of
+  observations into specified proportions. The page also includes parameters for customizing
+  the quantile function.
+keywords:
+- Quantile
+- Distribution
+- Median
+- n_window
+- f_quantile
+- Parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantile - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # quantile
 

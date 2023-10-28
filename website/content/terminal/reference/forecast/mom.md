@@ -1,7 +1,22 @@
 ---
 title: mom
-description: OpenBB Terminal Function
+description: For the 'mom' function in a forecasting tool, this page discusses its
+  usage in Python, along with parameters and their values. Various examples of its
+  application on a TSLA dataset are illustrated to demonstrate the addition and cleaning
+  of a 'Momentum_10' column.
+keywords:
+- forecasting tool
+- add momentum
+- Python function usage
+- dataset handling
+- TSLA dataset
+- usage examples
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mom - Forecast - Reference | OpenBB Terminal Docs" />
 
 # mom
 

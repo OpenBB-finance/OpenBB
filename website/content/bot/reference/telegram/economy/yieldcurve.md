@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: yieldcurve
-description: OpenBB Telegram Command
+description: The page provides instructions on how to use the /yieldcurve command
+  to retrieve the US Bonds yield curve, a financial graph plotting the bonds' yields
+  with different maturities, which gives an indication of interest rates direction.
+keywords:
+- yield curve
+- US Bonds
+- interest rates
+- financial graph
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="yieldcurve - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # yieldcurve
 

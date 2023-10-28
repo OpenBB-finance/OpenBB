@@ -1,7 +1,24 @@
 ---
 title: volume
-description: OpenBB Terminal Function
+description: Documentation page outlining the usage, parameters, and results from
+  the volume function, which provides historical volume comparison between similar
+  companies.
+keywords:
+- volume function
+- historical volume comparison
+- stock volume
+- financial data
+- stock market analysis
+- company comparison
+- parameters
+- documentation
+- data visualization
+- stock analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="volume - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # volume
 

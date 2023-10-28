@@ -1,7 +1,30 @@
 ---
 title: rossidx
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to use the rossidx command
+  in Python to sort and display information about startups from the Ross Index. Users
+  can sort by various criteria (e.g. GitHub Stars, Company, Country), display charts,
+  and set the chart type to 'stars' or 'forks'.
+keywords:
+- rossidx
+- startups
+- Python
+- command
+- chart
+- stars
+- forks
+- sorting
+- growth chart
+- GitHub
+- company
+- country
+- city
+- founded
+- raised money
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rossidx - Oss - Alt - Reference | OpenBB Terminal Docs" />
 
 # rossidx
 

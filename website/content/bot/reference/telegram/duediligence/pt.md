@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: pt
-description: OpenBB Telegram Command
+description: The /pt command allows users to retrieve charts showing price targets,
+  current prices, and analyst ratings. Perfect for making informed decisions on stock
+  trading.
+keywords:
+- pt command
+- price targets
+- ticker
+- stock information
+- analyst ratings
+- informed decisions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pt - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # pt
 

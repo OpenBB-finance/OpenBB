@@ -1,7 +1,23 @@
 ---
 title: address
-description: OpenBB Terminal Function
+description: This page provides a guide to loading and analyzing account addresses,
+  token addresses and transaction hashes on Ethplorer with Python. Learn how to use
+  parameters for efficient analysis.
+keywords:
+- ethplorer
+- python
+- address
+- account address
+- token address
+- transaction hash
+- erc20
+- ethereum
+- analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="address - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # address
 

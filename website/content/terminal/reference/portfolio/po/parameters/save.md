@@ -1,7 +1,19 @@
 ---
 title: save
-description: OpenBB Terminal Function
+description: This documentation page provides information on the 'save' command in
+  reference to portfolio risk parameters. Learn about how to properly save your parameters
+  using python.
+keywords:
+- save
+- portfolio
+- risk parameters
+- file
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="save - Parameters - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # save
 

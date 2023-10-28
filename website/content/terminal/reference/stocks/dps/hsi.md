@@ -1,7 +1,24 @@
 ---
 title: hsi
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to use the 'hsi' tool,
+  which is designed to pull data on the top stocks that are being heavily shorted
+  according to HighShortInterest.com. It provides details on parameters, usage, and
+  examples on how to use the command line tool.
+keywords:
+- hsi tool
+- stock market data
+- short interest stocks
+- high short interest
+- stock command line tools
+- stock market research
+- stocks
+- short selling
+- stock market guide
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hsi - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # hsi
 

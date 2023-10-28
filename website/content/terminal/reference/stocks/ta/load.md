@@ -1,7 +1,27 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to load a stock ticker
+  to perform analysis, complete with usage examples and parameters. It also provides
+  information on loading Indian tickers and references to data sources.
+keywords:
+- load stock ticker
+- perform stock analysis
+- Indian stock ticker
+- stock analysis parameters
+- stock data usage
+- data source
+- start date
+- end date
+- intraday stock minutes
+- pre/after market hours
+- load custom file
+- monthly data
+- weekly data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

@@ -1,9 +1,32 @@
 ---
 title: Overview
 sidebar_position: 1
-description: At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions.  It is consumable as a Python client and Fast API.
-keywords: [basics, installation, getting started, platform, core, openbb, provider, extensions, architecture, api, Fast, rest, python, client]
+description: Information about OpenBB Platform's Python client and Fast API; details
+  on authorization, data providers, settings, responses, commands, logging, and features
+  such as dynamic command execution.
+keywords:
+- OpenBB Platform
+- Python client
+- Fast API
+- authorization
+- data providers
+- OpenBB Hub
+- local environment
+- environment variables
+- user settings
+- command execution
+- API response
+- logging
+- proxy networks
+- data cleaning
+- technical analysis
+- quantitative analysis
+- charting libraries
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Overview - Usage | OpenBB Platform Docs" />
 
 At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 

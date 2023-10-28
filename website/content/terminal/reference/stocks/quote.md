@@ -1,7 +1,22 @@
 ---
 title: quote
-description: OpenBB Terminal Function
+description: This page provides the information about the quote for a specific stock
+  ticker. It explains how to use the quote function in Python and provides the details
+  of the parameters that are used in this function. The primary parameter is the stock
+  ticker, also referred to as 's_ticker'.
+keywords:
+- Quote
+- Stock Ticker
+- Parameters
+- s_ticker
+- USAGE
+- Python
+- Stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - Stocks - Reference | OpenBB Terminal Docs" />
 
 # quote
 

@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ah
-description: OpenBB Telegram Command
+description: This page provides information on how to use the command '/ah' for retrieving
+  afterhours data for a specified stock ticker. The presentation includes usage, parameters,
+  and examples.
+keywords:
+- stock ticker
+- afterhours data
+- lowest prices
+- highest prices
+- volume traded
+- market change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ah - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # ah
 

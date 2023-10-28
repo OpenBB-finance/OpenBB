@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ta
-description: OpenBB Discord Command
+description: The /ta ticker command analysizes a stock's technical metrics including
+  moving averages, fibonacci levels, support and resistance levels. Ideal for all
+  users interested in stock markets, specifically in technical analysis.
+keywords:
+- Technical analysis
+- Stock ticker
+- Moving averages
+- Fibonacci levels
+- /ta ticker
+- Support and resistance levels
+- Technical metrics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta - General - Discord - Reference | OpenBB Bot Docs" />
 
 # ta
 

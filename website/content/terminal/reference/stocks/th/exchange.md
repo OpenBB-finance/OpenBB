@@ -1,7 +1,19 @@
 ---
 title: exchange
-description: OpenBB Terminal Function
+description: Documentation page for exchanging market information, including usage,
+  parameters and selectable choices.
+keywords:
+- Exchange
+- Market Information
+- Parameters
+- Docusaurus page
+- SEO
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exchange - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
 # exchange
 

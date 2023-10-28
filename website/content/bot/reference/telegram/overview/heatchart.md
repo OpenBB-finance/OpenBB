@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: heatchart
-description: OpenBB Telegram Command
+description: The heatchart command page explains how to retrieve a Daily Market Heat
+  Chart for day trading, illustrating performance by sector with different colors
+  indicating different performance levels.
+keywords:
+- heatchart command
+- Daily Market Heat Chart
+- market performance visualization
+- day trading
+- sectoral trading performance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="heatchart - Overview - Telegram - Reference | OpenBB Bot Docs" />
 
 # heatchart
 

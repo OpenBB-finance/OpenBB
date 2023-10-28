@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ipolist
-description: OpenBB Telegram Command
+description: The ipolist page provides information on viewing the 10 most recent and
+  upcoming IPOs, including the company name, the IPO date, and the stock exchange.
+  It serves as a tool for users to stay informed about new investment opportunities.
+keywords:
+- ipolist
+- IPOs
+- Initial Public Offerings
+- stock exchange
+- investment opportunities
+- new companies
+- upcoming IPOs
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ipolist - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # ipolist
 

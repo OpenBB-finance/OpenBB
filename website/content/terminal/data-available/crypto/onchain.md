@@ -1,8 +1,27 @@
 ---
 title: Onchain
-keywords: [cryptocurrency, onchain, hashrate, erc20, dexes, ethereum, eth, pairs, confirmed transactions, btcct, ttcp, how to, example]
-description: An Introduction to Cryptocurrency Onchain, within the Cryptocurrency Menu, with a brief overview of the features.
+description: This page provides insight into the Cryptocurrency Onchain menu. It discusses
+  how to use the menu for leveraging blockchain ledger data and scrutinizing transaction
+  data and crypto wallet balances. These features are crucial in deciding whether
+  to invest in a specific cryptocurrency. The page also provides examples of how to
+  view top traded crypto pairs and find information about specific Ethereum addresses.
+keywords:
+- Cryptocurrency
+- Onchain
+- Blockchain
+- Investing
+- Market Sentiment
+- Blockchain Ledger Data
+- Transaction Data
+- Crypto Wallet Balances
+- Top Traded Crypto Pairs
+- Ethereum Address
+- Historical Transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Onchain - Crypto - Data Available | OpenBB Terminal Docs" />
 
 The Cryptocurrency Onchain menu provides access to features that determine market sentiment by leveraging data from a blockchain ledger. This can be, among other things, blockchain hashrates (<a href="/terminal/reference/crypto/onchain/hr/" target="_blank" rel="noreferrer noopener">hr</a>), confirmed transactions (<a href="/terminal/reference/crypto/onchain/btcct/" target="_blank" rel="noreferrer noopener">btcct</a>) and top traded crypto pairs (<a href="/terminal/reference/crypto/onchain/ttcp/" target="_blank" rel="noreferrer noopener">ttcp</a>).
 

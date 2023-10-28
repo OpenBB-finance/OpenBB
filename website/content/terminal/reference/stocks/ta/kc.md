@@ -1,7 +1,27 @@
 ---
 title: kc
-description: OpenBB Terminal Function
+description: In-depth explanation and usage of the KC function for Keltner Channels;
+  including parameters, and how to utilize it to determine trend direction through
+  volatility-based bands.
+keywords:
+- Keltner Channels
+- volatility-based bands
+- asset's price
+- average true range
+- ATR
+- volatility
+- trend direction
+- Python
+- kc
+- n_length
+- n_scalar
+- s_mamode
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kc - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # kc
 

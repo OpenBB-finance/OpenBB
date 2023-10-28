@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: halts
-description: OpenBB Telegram Command
+description: The page provides information on the usage, parameters and examples of
+  the 'halts' command. This command helps users gather data on the time and halt code
+  of stocks in the exchange, excluding penny stocks.
+keywords:
+- Halts Command
+- Stock Market
+- Halt Code
+- Python Command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="halts - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # halts
 

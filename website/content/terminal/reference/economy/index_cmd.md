@@ -1,7 +1,25 @@
 ---
 title: index
-description: OpenBB Terminal Function
+description: This page provides detailed information on how to obtain indices data
+  and visualize it. The useful parameters and their respective descriptions are provided
+  to ensure efficient data manipulation. Actual examples that illustrate the usage
+  of the commands are included for better understanding.
+keywords:
+- Indices data
+- Data plot
+- Yahoo Finance
+- FinanceDatabase
+- Data intervals
+- Start date
+- End date
+- Data column
+- Data query
+- Compounded returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="index - Economy - Reference | OpenBB Terminal Docs" />
 
 # index
 

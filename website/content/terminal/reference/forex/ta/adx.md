@@ -1,7 +1,21 @@
 ---
 title: adx
-description: OpenBB Terminal Function
+description: The page provides a detailed explanation of the ADX, a Welles Wilder
+  moving average of the Directional Movement Index (DX). It explains the ADX interpretation
+  and its usage along with some relevant parameters.
+keywords:
+- ADX
+- Welles Wilder
+- Directional Movement Index
+- DX
+- ADX interpretation
+- ADX usage
+- ADX parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adx - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # adx
 

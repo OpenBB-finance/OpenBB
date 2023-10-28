@@ -1,7 +1,29 @@
 ---
 title: nco
-description: OpenBB Terminal Function
+description: Supplement to the nested cluster optimization (NCO) portfolio building
+  tool documentation. Offers comprehensive information on usage, parameters, and examples
+  of how to use the nco tool to optimize your investment portfolio. The topics covered
+  include codependence, covariance, risk measures, and cluster settings.
+keywords:
+- nested clustered optimization
+- nco
+- portfolio building
+- portfolio optimization
+- Python
+- codependence
+- covariance
+- risk measure
+- correlation matrix
+- portfolio parameters
+- cluster
+- asset allocation
+- finance
+- investment strategy
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nco - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # nco
 

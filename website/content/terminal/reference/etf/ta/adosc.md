@@ -1,7 +1,27 @@
 ---
 title: adosc
-description: OpenBB Terminal Function
+description: Explore the Accumulation/Distribution Oscillator page, also known as
+  the Chaikin Oscillator. This powerful momentum indicator analyzes the strength of
+  price moves and the underlying buying and selling pressure in a given period. Learn
+  how to use the indicator and understand its parameters like fast length and slow
+  length.
+keywords:
+- Accumulation/Distribution Oscillator
+- Chaikin Oscillator
+- momentum indicator
+- price moves
+- buying pressure
+- selling pressure
+- market turning points
+- adosc
+- stock value
+- fast length
+- slow length
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="adosc - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # adosc
 

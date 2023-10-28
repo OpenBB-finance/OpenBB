@@ -1,7 +1,20 @@
 ---
 title: select
-description: OpenBB Terminal Function
+description: The page provides detailed information on how to select a stock ticker
+  and customize industry, sector, country and market cap aligned with it. This includes
+  the usage guide and parameters to ensure smooth operations.
+keywords:
+- Select Stock Ticker
+- Ticker Parameters
+- Industry Selection
+- Sector Selection
+- Country Selection
+- Market Cap Selection
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="select - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # select
 

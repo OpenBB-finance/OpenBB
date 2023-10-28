@@ -1,9 +1,25 @@
 ---
 title: Individual
 sidebar_position: 3
-description: Learn to customize your individual OpenBB Bot experience
-keywords: [discord, telegram, individual, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Explore OpenBB's individual plan features that offer real-time charting,
+  price alerts, and a customizable watchlist to track your crypto and stock investments.
+  Register today to unlock unlimited commands
+keywords:
+- OpenBB Bot
+- OpenBB Watchlist
+- OpenBB Alerts
+- OpenBB Charting
+- Crypto Tracking
+- Stock Tracking
+- Real-time charting
+- Custom chart
+- Investment tracking
+- Price Alerts
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Individual - Customizing - Usage | OpenBB Bot Docs" />
 
 
 The individual plan offers three different capabilities - Charting, Alerts, and Watchlist. In addition to these benefits you also get unlimited commands per month after registering.

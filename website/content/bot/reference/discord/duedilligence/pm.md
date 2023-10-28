@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: pm
-description: OpenBB Discord Command
+description: This page describes the command that retrieves premarket data for a given
+  stock ticker. It is a valuable resource for those keen on understanding a stock's
+  performance before the regular market commences.
+keywords:
+- stock
+- premarket data
+- stock ticker
+- market performance
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pm - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # pm
 

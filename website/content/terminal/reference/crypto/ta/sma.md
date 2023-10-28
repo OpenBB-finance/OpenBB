@@ -1,7 +1,20 @@
 ---
 title: sma
-description: OpenBB Terminal Function
+description: A documentation page elaborating on Simple Moving Averages (sma), their
+  application in data smoothing and trend identification. It outlines usage, parameters
+  and provides visualized data.
+keywords:
+- Moving averages
+- Data smoothing
+- Trend identification
+- Simple Moving Average
+- Filtering data changes
+- sma parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sma - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # sma
 

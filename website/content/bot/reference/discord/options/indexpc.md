@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: indexpc
-description: OpenBB Discord Command
+description: Learn how to use the indexpc command to retrieve the Index Put/Call Ratio
+  for the market from market-harmonics.com, a valuable tool for identifying bearish
+  and bullish market conditions.
+keywords:
+- indexpc command
+- Index Put/Call Ratio
+- market sentiment
+- bearish and bullish market conditions
+- market-harmonics.com
+- trading decisions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indexpc - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # indexpc
 

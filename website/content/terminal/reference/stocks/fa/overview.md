@@ -1,7 +1,25 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: This page provides a command to generate an extensive overview of a company,
+  delivering important data from asset type and exchange to financial metrics by Alpha
+  Vantage. This can be particularly useful for financial analysis and understanding
+  the company's current standing in the market.
+keywords:
+- Company overview
+- Stocks information
+- Market data
+- Financial statistics
+- Alpha Vantage
+- Trading data
+- Asset info
+- Company data
+- Financial analysis
+- Business fundamentals
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="overview - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # overview
 

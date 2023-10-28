@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: watchlist_add
-description: OpenBB Telegram Command
+description: This page explains the usage of watchlist_add command which lets the
+  user add one or more stocks to their watchlist in a finance related application.
+keywords:
+- watchlist_add command
+- adding stocks to watchlist
+- finance application commands
+- stock market applications
+- user guide for watchlist_add
+- usage of watchlist_add
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="watchlist_add - Overview - Telegram - Reference | OpenBB Bot Docs" />
 
 # watchlist_add
 

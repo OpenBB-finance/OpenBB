@@ -1,7 +1,20 @@
 ---
 title: popular
-description: OpenBB Terminal Function
+description: This segment teaches you how to obtain a list of the latest popular stock
+  tickers from various subreddits using command line parameters. This tutorial contains
+  usage, a parameters guide, and an example command.
+keywords:
+- stock market
+- popular tickers
+- Reddit stock market
+- Reddit tickers
+- Python command line
+- Finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="popular - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # popular
 

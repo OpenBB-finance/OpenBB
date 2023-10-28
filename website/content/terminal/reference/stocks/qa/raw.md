@@ -1,7 +1,22 @@
 ---
 title: raw
-description: OpenBB Terminal Function
+description: This page explains the 'raw' function related to financial data manipulation,
+  including its usage, parameters and some examples on how to use it in Python. It
+  cover topics such as sorting raw data, displaying limit number of data points and
+  reverse sorting.
+keywords:
+- raw data
+- financial data
+- Python
+- data manipulation
+- sorting raw data
+- reverse sorting
+- display limit
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="raw - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # raw
 

@@ -1,7 +1,46 @@
 ---
 title: cash_growth
-description: OpenBB Platform Function
+description: This page provides information about the cash growth API method, which
+  provides detailed data for financial metrics, including a variety of growth rates.
+  This is important for data analysis and understanding of company growth.
+keywords:
+- cash flow statement
+- company growth
+- financial metrics
+- financial data
+- data analysis
+- Python
+- financial provider
+- warnings
+- charting
+- command execution
+- growth rate of net income
+- growth rate of depreciation and amortization
+- growth rate of deferred income tax
+- growth in working capital
+- growth rate accounts receivables
+- growth rate inventory
+- growth rate accounts payables
+- growth rate of investments in property, plant, and equipment
+- growth rate of net acquisitions
+- growth rate of net cash used for investing activities
+- growth rate of debt repayment
+- growth rate of common stock issued
+- growth rate of common stock repurchased
+- growth rate of dividends paid
+- growth rate of other financing activities
+- growth rate of the effect of foreign exchange changes on cash
+- growth rate of net change in cash
+- growth rate of cash at the end of the period
+- growth rate of cash at the beginning of the period
+- growth rate of operating cash flow
+- growth rate of capital expenditure
+- growth rate of free cash flow
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cash_growth - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -97,4 +136,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

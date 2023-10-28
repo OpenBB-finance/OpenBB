@@ -1,7 +1,25 @@
 ---
 title: news
-description: OpenBB Terminal Function
+description: The News page presents the latest news from the company. Users can customize
+  news updates using specific parameters such as starting date, order, and news sources.
+keywords:
+- company news
+- news updates
+- customize news
+- news sources
+- news order
+- starting date
+- latest news
+- company updates
+- article search
+- news articles
+- Python news script
+- news parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Stocks - Reference | OpenBB Terminal Docs" />
 
 # news
 

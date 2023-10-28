@@ -1,7 +1,20 @@
 ---
 title: line
-description: OpenBB Terminal Function
+description: The 'line' documentation page provides information on how to create a
+  line plot of selected data or highlight specific datetimes. It also details the
+  usage, parameters, and provides a visual representation.
+keywords:
+- line plot
+- highlight specific datetimes
+- log scale plotting
+- vertical line markers
+- scatter markers
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="line - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # line
 

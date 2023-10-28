@@ -1,7 +1,22 @@
 ---
 title: pt
-description: OpenBB Terminal Function
+description: The pt command can print the latest price targets from analysts as provided
+  by Business Insider. The command has parameters such as raw for displaying only
+  raw data, and limit for controlling the number of price targets shown.
+keywords:
+- Business Insider
+- Price Target
+- Analysts
+- Parameters
+- Raw data
+- Limit
+- Latest price targets
+- Print
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pt - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
 # pt
 

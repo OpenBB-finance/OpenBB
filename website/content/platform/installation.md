@@ -1,9 +1,42 @@
 ---
 title: Installation
 sidebar_position: 1
-description: The OpenBB Platform provides the core architecture and services to interact with data providers and extensions.
-keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
+description: This page presents the general system requirements, supported environments,
+  installation procedures, and setup for running the OpenBB Platform. It discusses
+  the prerequisites including Python version, operating system requirements, Docker
+  usage, and the process of building the platform from source.
+keywords:
+- OpenBB Platform
+- Python
+- System requirements
+- Supported environments
+- Installation
+- Docker
+- Python virtual environment
+- Installation from source
+- Windows 10
+- Mac OS Big Sur
+- Linux
+- Package installation
+- VS Code
+- PyCharm
+- Jupyter
+- GitHub
+- Conda
+- venv
+- API
+- Repository
+- pip
+- Poetry
+- Toml
+- PyPI
+- Node.js
+- npm
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation | OpenBB Platform Docs" />
 
 ## General System Requirements
 

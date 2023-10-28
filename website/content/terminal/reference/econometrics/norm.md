@@ -1,7 +1,20 @@
 ---
 title: norm
-description: OpenBB Terminal Function
+description: This page provides guidelines on using the 'norm' function to test whether
+  particular data is normally distributed. It covers functionality and parameter description,
+  and also includes histogram examples for a clear understanding.
+keywords:
+- data normalization
+- data distribution
+- histogram
+- plot
+- dataset
+- data testing
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="norm - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # norm
 

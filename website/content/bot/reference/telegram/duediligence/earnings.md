@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: earnings
-description: OpenBB Telegram Command
+description: This command allows the user to retrieve the expected earnings for a
+  given business day including company ticker, and other details. This information
+  aids in making informed decisions about their investments.
+keywords:
+- expected earnings
+- business day
+- company ticker
+- investment decisions
+- parameters
+- investment examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="earnings - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # earnings
 

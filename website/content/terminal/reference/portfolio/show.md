@@ -1,7 +1,31 @@
 ---
 title: show
-description: OpenBB Terminal Function
+description: This documentation page describes the 'show' command, which presents
+  a table of transactions with no parameters required. It includes usage, parameters,
+  and examples.
+keywords:
+- Show command
+- Transactions table
+- No parameters
+- Portfolio
+- Instructions
+- Python codes
+- Sector
+- Industry
+- Country
+- Region
+- Price
+- Quantity
+- Fees
+- Premium
+- Investment
+- Side
+- Currency
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="show - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # show
 

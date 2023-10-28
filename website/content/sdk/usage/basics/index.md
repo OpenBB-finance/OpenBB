@@ -1,8 +1,30 @@
 ---
 title: Basics
 sidebar_position: 1
-description: The OpenBB SDK is a modern investment research platform for everyone. It is a Software Development Kit that allows you to access all the data and tools you need to make better investment decisions.
-keywords: [basics, installation, commands, menus, your own data, introduction, openbb sdk, explanation, basic usage, usage, how to, openbb terminal, importing, navigation, docstrings, function, charts, display]
+description: This page provides a detailed overview of using the OpenBB SDK - a tool
+  that brings programmatic access to nearly all Terminal commands. Topics covered
+  include installation, essential terminal command usage, working with Python environments,
+  using Jupyter and various code editors, managing API keys, functionality, and navigation
+  of the SDK. There are also specifics on using function inputs and responses, as
+  well as dealing with plot themes and changing data sources. Support is offered via
+  the support page, GitHub, and Discord.
+keywords:
+- OpenBB SDK
+- Terminal commands
+- Installation
+- Python environment
+- Jupyter
+- Code Editors
+- API Keys
+- OpenBB Terminal
+- Programming
+- Conda
+- Pandas DataFrame
+- Python packages
+- Stocks
+- Screener preset
+- OpenBB Hub
+- VS Code
 ---
 
 

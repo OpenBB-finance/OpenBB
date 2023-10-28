@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: alldp
-description: OpenBB Discord Command
+description: This page provides the 'alldp' command usage to retrieve the last 15
+  darkpool trades for a specific stock ticker. It presents how to efficiently trade
+  on a private stock trading system.
+keywords:
+- alldp command
+- darkpool trades
+- stock ticker
+- private stock trading
+- efficient trades
+- retrieve trades
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alldp - Darkpool - Discord - Reference | OpenBB Bot Docs" />
 
 # alldp
 

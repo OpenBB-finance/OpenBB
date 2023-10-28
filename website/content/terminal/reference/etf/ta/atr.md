@@ -1,7 +1,26 @@
 ---
 title: atr
-description: OpenBB Terminal Function
+description: This page provides comprehensive information about the Average True Range
+  (ATR) including its usage, implementation, and parameters. It serves as a key resource
+  for understanding ATR, a widely used tool for measuring volatility in market prices.
+keywords:
+- average true range
+- volatility measure
+- ATR usage
+- ATR parameters
+- ema
+- sma
+- wma
+- hma
+- zlma
+- n_length
+- s_mamode
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="atr - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # atr
 

@@ -1,7 +1,22 @@
 ---
 title: kurtosis
-description: OpenBB Terminal Function
+description: This is a documentation page about Kurtosis, a measure of the 'tailedness'
+  of a probability distribution of a real-valued random variable.
+keywords:
+- Kurtosis
+- Probability Distribution
+- Real-valued random variable
+- Skewness
+- Theoretical Distribution
+- Sample
+- Population
+- n_window
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kurtosis - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # kurtosis
 

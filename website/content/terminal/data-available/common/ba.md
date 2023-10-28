@@ -1,8 +1,25 @@
 ---
 title: Behavioural Analysis
-keywords: [stocks, behaviour, analysis, ba, headlines, snews, wsb, watchlist, popular, spac, trending, stalking, bullbear, messages, inter, sentiment, Google, Twitter, Reddit, Stocktwits, SentimentInvestor, Cramer, Jim, mentions, regions, interest, queries, rise, trend, hist, jcrd, jctr, how to, examples]
-description: Learn the basics of the Behavioural Analysis menu. It offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction.
+description: The webpage explains the Behavioural Analysis feature, offering tools
+  to assess public sentiment of companies online, providing information on how to
+  use the feature and showing the results from various commands such as headlines,
+  snews, and sentiment.
+keywords:
+- Behavioural Analysis
+- public sentiment
+- financial analysis
+- momentum trading strategies
+- fundamental research
+- API key
+- /r/wallstreetbets
+- social sentiment
+- data scraping
+- deep learning algorithms
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Behavioural Analysis - Common - Data Available | OpenBB Terminal Docs" />
 
 The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. Navigate into the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
 

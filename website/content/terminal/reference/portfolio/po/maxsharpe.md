@@ -1,7 +1,25 @@
 ---
 title: maxsharpe
-description: OpenBB Terminal Function
+description: The maxsharpe page provides extensive information on maximizing the portfolio's
+  return/risk ratio. It provides usage and examples of parameters used in calculations
+  such as target_return, target_risk, expected_return, covariance, smoothing_factor_ewma,
+  short_allocation, and risk_measure.
+keywords:
+- maxsharpe
+- return risk ratio
+- portfolio optimization
+- target return
+- target risk
+- covariance
+- risk measure
+- short allocation
+- expected return
+- smoothing factor
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxsharpe - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # maxsharpe
 

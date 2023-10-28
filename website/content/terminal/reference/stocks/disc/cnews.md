@@ -1,7 +1,33 @@
 ---
 title: cnews
-description: OpenBB Terminal Function
+description: cnews page provides an interface to access customized news from various
+  sectors such as crypto, buybacks, politics, healthcare, and many more, sourced from
+  Seeking Alpha. Users can limit the number of news displayed and select specific
+  news type for display.
+keywords:
+- cnews
+- customized news
+- Seeking Alpha
+- top-news
+- crypto
+- issuance
+- buybacks
+- commodities
+- spacs
+- politics
+- consumer
+- energy
+- financials
+- healthcare
+- mlps
+- reits
+- technology
+- stock repurchase program
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cnews - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
 # cnews
 

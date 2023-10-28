@@ -1,7 +1,22 @@
 ---
 title: voi
-description: OpenBB Terminal Function
+description: The voi page provides a guide on how to plot Volume + Open Interest of
+  calls vs puts with parameters like minimum volume, minimum strike price and maximum
+  strike price. It's an integral part of a python-based toolkit.
+keywords:
+- voi
+- Volume
+- Open Interest
+- strike price
+- plot
+- python
+- minimum volume
+- maximum strike price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="voi - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # voi
 

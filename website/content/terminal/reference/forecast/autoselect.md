@@ -1,7 +1,24 @@
 ---
 title: autoselect
-description: OpenBB Terminal Function
+description: The autoselect page provides information on how to utilize specific parameters
+  for advanced statistical forecasting using models such as AutoARIMA, AutoETS, AutoCES,
+  MSTL, and more. It also includes examples of how to use this forecasting tool.
+keywords:
+- autoselect
+- statistical forecast
+- AutoARIMA
+- AutoETS
+- AutoCES
+- MSTL
+- seasonality
+- forecasting
+- performance per model
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoselect - Forecast - Reference | OpenBB Terminal Docs" />
 
 # autoselect
 
@@ -46,8 +63,8 @@ Cross Validation Time Series 1: 100%|██████████████�
 Forecast: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0100:00,  1.80s/it]
 
 
-  Performance per model.  
-   Best model: AutoETS    
+  Performance per model.
+   Best model: AutoETS
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━┓
 ┃ Model         ┃ MAPE   ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━┩
@@ -66,7 +83,7 @@ Forecast: 100%|█████████████████████�
 │ SeasWA        │ 8.06%  │
 └───────────────┴────────┘
 
-   Actual price: 139.50    
+   Actual price: 139.50
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

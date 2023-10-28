@@ -1,7 +1,22 @@
 ---
 title: transcript
-description: OpenBB Platform Function
+description: The documentation page provides details about fetching earnings call
+  transcripts for any company by specifying the symbol, year, and quarter. It also
+  provides information about the data provider and the metadata returned along with
+  the query results.
+keywords:
+- Earnings call transcript
+- Data provider
+- FMP
+- symbol
+- quarter
+- year
+- Metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="transcript - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -70,4 +85,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

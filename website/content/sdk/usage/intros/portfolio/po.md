@@ -1,8 +1,27 @@
 ---
 title: Portfolio Optimization
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, how to, parameters, template, examples]
-description: The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size.
+description: This page provides comprehensive instructions on Portfolio Optimization,
+  ranging from mean-variance optimization to risk parity models and hierarchical clustering
+  models. Detailed Python script examples are provided to guide the user through the
+  optimization process using methods like Risk Parity, applying Hierarchical Risk
+  Parity, and calculating portfolio returns and drawdowns.
+keywords:
+- Portfolio Optimization
+- mean-variance optimization
+- risk parity models
+- hierarchical clustering models
+- OpenBB Terminal
+- Python scripting
+- Risk Parity
+- CVaR
+- Hierarchical Risk Parity
+- portfolio returns histogram
+- portfolio drawdowns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Portfolio Optimization - Portfolio - Intros - Usage | OpenBB SDK Docs" />
 
 The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 

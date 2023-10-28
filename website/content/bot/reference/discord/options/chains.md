@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chains
-description: OpenBB Discord Command
+description: "This docusaurus page explores the 'chains' command which allows users\
+  \ to view Options Chains by Expiry for a specific stock. It also explains several\
+  \ parameters such as Stock Ticker, Expiration Date, type of options \u2013 Calls\
+  \ or Puts, and Strike Prices."
+keywords:
+- Options Chains by Expiry
+- Stock Ticker
+- Expiration Date
+- Calls or Puts
+- Minimum Strike Price
+- Maximum Strike Price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chains - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # chains
 

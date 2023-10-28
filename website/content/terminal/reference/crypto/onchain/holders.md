@@ -1,7 +1,21 @@
 ---
 title: holders
-description: OpenBB Terminal Function
+description: Detailed guide on how to display top ERC20 token holders using python,
+  with the option of sorting the data in various ways.
+keywords:
+- ERC20 token holders
+- Ethplorer
+- python
+- parameters
+- sortby
+- limit
+- reverse
+- data sorting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holders - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # holders
 

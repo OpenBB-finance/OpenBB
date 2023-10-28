@@ -1,7 +1,18 @@
 ---
 title: aprtoapy
-description: OpenBB Terminal Function
+description: APR to APY conversion tool. Use aprtoapy tool to compute APY value from
+  APR, defining the number of compounding periods per year.
+keywords:
+- aprtoapy
+- APR
+- APY
+- compounding
+- finance tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="aprtoapy - Tools - Crypto - Reference | OpenBB Terminal Docs" />
 
 # aprtoapy
 

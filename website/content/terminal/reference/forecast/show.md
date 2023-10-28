@@ -1,7 +1,22 @@
 ---
 title: show
-description: OpenBB Terminal Function
+description: This page provides detailed information and examples about how to show
+  a portion of a DataFrame using predefined parameters. Gain an improved understanding
+  on DataFrame display, database sorting, data ordering and setting column limits.
+keywords:
+- Data Display
+- Data Sorting
+- Database
+- DataFrame
+- Data Ordering
+- Column Limits
+- Python
+- Usage Examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="show - Forecast - Reference | OpenBB Terminal Docs" />
 
 # show
 

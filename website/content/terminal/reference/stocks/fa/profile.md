@@ -1,7 +1,20 @@
 ---
 title: profile
-description: OpenBB Terminal Function
+description: This documentation page provides comprehensive information about financial
+  profile command in Python. The command prints various aspects such as company description,
+  industry, sector, exchange and more.
+keywords:
+- Financial Modeling Prep
+- Python command
+- financial profile
+- sector exchange
+- company description
+- Company information
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="profile - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # profile
 

@@ -1,7 +1,29 @@
 ---
 title: unu
-description: OpenBB Terminal Function
+description: The documentation covers the essential parameters and usage of unu command
+  in fdscanner.com. Unu command is a powerful tool for displaying, sorting, and filtering
+  unusual options in market data. The user can set the limit of options to show, sort
+  data by default and optional variables, reverse the data order, and flag to show
+  puts or calls only.
+keywords:
+- unu command
+- fdscanner.com
+- market data
+- data display
+- stock options
+- Vol/OI
+- Limit
+- sortby
+- reverse
+- puts_only
+- calls_only
+- unusual options
+- Python script
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="unu - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # unu
 

@@ -1,7 +1,24 @@
 ---
 title: recom
-description: OpenBB Terminal Function
+description: This documentation page outlines the use of a Python command-line tool
+  that prints Tradingview recommendations for various stock exchanges based on selected
+  technical indicators. It also covers the usage, parameters, and provides examples
+  of applicable scripts with their outputs.
+keywords:
+- Tradingview recommendation
+- Technical indicators
+- Script
+- Stock exchange
+- Python command-line tool
+- Forex
+- Crypto
+- Screener
+- Stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="recom - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # recom
 

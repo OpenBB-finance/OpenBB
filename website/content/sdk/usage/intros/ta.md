@@ -1,8 +1,39 @@
 ---
 title: Technical Analysis
-keywords: [technical, analysis, ta, t/a, intraday, daily, indicators, signals, average, moving, exponential, rsi, fibonacci, retracement, bollinger, heltner, accumulation, distribution, obv, on-balance, volume, volatility, trend, momentum, overlap, crypto, stocks, funds, etf, etfs, how to, examples, usage, function, _chart, import statement, moving average, average true range, donchian]
-description: This guide introduces the Technical Analysis menu, which is common across many sections of the OpenBB Terminal.
+description: This documentation page provides a comprehensive guide on using the Technical
+  Analysis Module in Openbb, which is used for analyzing time-series data. It provides
+  detailed usage of functions within the ta module, demonstrating features such as
+  Momentum, Overlap, Trend, Volatility and Volume analysis plus many more techniques.
+  It also showcases how to display the chart, instead of raw data, and best practices
+  on using the module.
+keywords:
+- Technical Analysis
+- time-series data
+- pandas_ta library
+- datascience
+- python
+- SDK
+- Momentum
+- Overlap
+- Trend
+- Volatility
+- Volume
+- Fibonacci
+- charting
+- ta module
+- SMA
+- EMA
+- HMA
+- WMA
+- ZLMA
+- Moving Average
+- ATR
+- Donchian
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Technical Analysis - Intros - Usage | OpenBB SDK Docs" />
 
 The Technical Analysis module is a toolkit for analyzing time-series data, at any resolution. The functions are a collection of formulas that fit into broad categories, and they are mostly derived from the pandas_ta library:
 

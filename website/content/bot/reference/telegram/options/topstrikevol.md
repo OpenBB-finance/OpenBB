@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topstrikevol
-description: OpenBB Telegram Command
+description: This page provides information on the 'topstrikevol' command allowing
+  users to retrieve the top option strike by volume for a given security. It includes
+  the option to add an expiration date for a more detailed breakdown.
+keywords:
+- topstrikevol
+- SEO
+- option strike
+- stock ticker
+- expiration date
+- command
+- security
+- volume
+- /topstrikevol AMD
+- detail breakdown
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topstrikevol - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # topstrikevol
 

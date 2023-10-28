@@ -1,7 +1,21 @@
 ---
 title: estr
-description: OpenBB Platform Function
+description: "Detailed documentation page about the Euro Short-Term Rate (\u20ACSTR)\
+  \ function, including its parameters, return values, and data structure."
+keywords:
+- Euro Short-Term Rate
+- "\u20ACSTR"
+- finance
+- economic data
+- SEO
+- metadata
+- functions
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="estr - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -80,4 +94,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

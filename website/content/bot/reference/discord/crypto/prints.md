@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: prints
-description: OpenBB Discord Command
+description: This tutorial explains the use of the command '/crypto prints coin' to
+  retrieve the last 15 crypto prints over the last 24 hours for a specific coin. Charge
+  into the world of crypto metrics, track prices, volumes, sizes, and other associated
+  metrics.
+keywords:
+- Crypto Prints
+- Crypto metrics
+- Crypto commands
+- Bitcoin
+- Ethereum
+- Docusaurus SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prints - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # prints
 

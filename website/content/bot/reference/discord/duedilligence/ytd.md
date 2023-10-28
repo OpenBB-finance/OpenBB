@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ytd
-description: OpenBB Discord Command
+description: A documentation page explaining the 'ytd' command that retrieves the
+  year-to-date performance for a particular stock's ticker symbol. Includes usage,
+  parameter information, and examples.
+keywords:
+- ytd command
+- stock performance
+- ticker symbol
+- AAPL
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ytd - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # ytd
 

@@ -1,7 +1,22 @@
 ---
 title: wma
-description: OpenBB Terminal Function
+description: Learn how to use Weighted Moving Average (WMA) for better data analysis.
+  This page provides a guide on how to implement WMA, with more weight on recent data
+  and less on past data. It details the usage, parameters, defaults and offers a visual
+  representation for clearer understanding.
+keywords:
+- Weighted Moving Average
+- WMA
+- Data Analysis
+- Simple Moving Average
+- Python
+- n_length
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wma - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # wma
 

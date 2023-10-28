@@ -1,9 +1,20 @@
 ---
 title: Cookie Cutter
 sidebar_position: 1
-description: Learn how to develop Extensions inside the OpenBB Platform.
-keywords: [openbb platform, introduction, extensions, contributing, documentation]
+description: Walkthrough guide on using the Cookiecutter template for easy extension
+  development on the OpenBB Platform with a focus on data efficiency, instructions,
+  and sharing your extension with the community.
+keywords:
+- Cookiecutter template
+- extensions development
+- OpenBB Platform
+- API interface
+- new extension
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Cookie Cutter - Extension Development - Contributing | OpenBB Platform Docs" />
 
 We have a Cookiecutter template that will help you get started. It serves as a jumpstart for your extensions development, so you can focus on the data and not on the boilerplate.
 

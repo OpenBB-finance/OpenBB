@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: shortvol
-description: OpenBB Telegram Command
+description: Provides a 30 day history graph of the short volume vs the total volume
+  of a stock ticker. It gives an understanding of trading activity & potential future
+  price movements.
+keywords:
+- short volume
+- stock
+- trading
+- stock ticker
+- shares sold short
+- shares traded
+- future price movements
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="shortvol - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
 
 # shortvol
 

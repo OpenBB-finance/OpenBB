@@ -1,8 +1,16 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: about
-description: OpenBB Telegram Command
+description: This page provides detailed information about the /about command of OpenBB
+  Bot, including its usage and examples. No parameters required.
+keywords:
+- OpenBB Bot
+- bot command
+- social media links
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="about - Info - Telegram - Reference | OpenBB Bot Docs" />
 
 # about
 

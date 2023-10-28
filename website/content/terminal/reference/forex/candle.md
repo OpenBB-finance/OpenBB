@@ -1,7 +1,25 @@
 ---
 title: candle
-description: OpenBB Terminal Function
+description: This documentation is for the 'candle' function used to show loaded fx
+  data. It provides usage details, parameters explanations and choices, including
+  plotly, sort, reverse, raw, trendlines, moving averages, and more, along with a
+  graphical presentation.
+keywords:
+- candle function
+- loaded fx data
+- interactive plotly chart
+- sort data
+- reverse flag
+- raw data
+- trendlines
+- moving average
+- log scale
+- fx data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="candle - Forex - Reference | OpenBB Terminal Docs" />
 
 # candle
 

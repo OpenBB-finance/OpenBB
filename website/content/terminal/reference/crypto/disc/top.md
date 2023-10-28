@@ -1,7 +1,23 @@
 ---
 title: top
-description: OpenBB Terminal Function
+description: The page provides detailed usage patterns and instructions for the 'top'
+  function that displays N coins from data sources like CoinGecko, allowing users
+  to sort and filter the displayed data. The page includes details about various parameters,
+  their description, usage, and examples.
+keywords:
+- crypto
+- CoinGecko
+- data filtering
+- data sorting
+- python
+- parameters
+- usage
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # top
 

@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: borrowed
-description: OpenBB Discord Command
+description: Learn how to use the borrowed command to track the history of borrowed
+  shares and associated fees. Useful for traders and investors for comparing broker
+  fees and tracking share borrowing over time.
+keywords:
+- Stock trading
+- Share borrowing
+- Stock ticker
+- Investors
+- Traders
+- Borrowed shares
+- Broker fees
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="borrowed - Short_Data - Discord - Reference | OpenBB Bot Docs" />
 
 # borrowed
 

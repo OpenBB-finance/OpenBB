@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: pm_all
-description: OpenBB Discord Command
+description: The documentation page describes the usage of the 'pm_all' command that
+  allows users to retrieve all available pre-market screeners. The page provides examples
+  of command usage without parameters.
+keywords:
+- pm_all
+- command
+- retrieve
+- pre-market screeners
+- Parameters
+- Usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pm_all - Screeners - Discord - Reference | OpenBB Bot Docs" />
 
 # pm_all
 

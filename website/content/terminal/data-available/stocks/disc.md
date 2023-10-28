@@ -1,8 +1,26 @@
 ---
 title: Discovery
-keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, cnews, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news, how to, example]
-description: Introducing the Discovery menu within the Stocks menu. This guide will empower the user to get the most out of this set of features.
+description: This documentation page is a detailed guide on features within the Stocks
+  Discovery submenu, which provides tools for discovering trade setups, following
+  trends, and current events. Instructions to use, examples of usage, command line
+  interface comfortability, and attached images for further explanations are covered.
+keywords:
+- Stocks Discovery
+- trade setups
+- following trends
+- current events
+- command-line interface
+- stock market tool
+- Portfolio Optimization
+- Dividend Calendar
+- Cathie Wood's trades
+- Earnings schedule
+- Seeking Alpha news
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - Stocks - Data Available | OpenBB Terminal Docs" />
 The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `disc`, and pressing, `ENTER` (⏎). Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979936-5d842b62-8c0d-4800-bf7f-0fed8d70c073.png"></img>

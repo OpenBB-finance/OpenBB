@@ -1,7 +1,31 @@
 ---
 title: Historical Dividends
-description: OpenBB Platform Data Model
+description: Documentation page about implementation details of historical dividends
+  in OpenBB Provider. The page dives into class names, import statement, parameters,
+  and data.
+keywords:
+- OpenBB Provider
+- Historical Dividends
+- Parameters
+- Data
+- Python
+- Import Statement
+- HistoricalDividendsQueryParams
+- HistoricalDividendsData
+- fmp provider
+- Dividends
+- Date
+- Label
+- Adj Dividend
+- Dividend
+- Record Date
+- Payment Date
+- Declaration Date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Historical Dividends - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -57,4 +81,3 @@ HistoricalDividendsQueryParams,
 </TabItem>
 
 </Tabs>
-

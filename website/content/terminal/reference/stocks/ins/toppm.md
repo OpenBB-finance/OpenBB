@@ -1,7 +1,28 @@
 ---
 title: toppm
-description: OpenBB Terminal Function
+description: The toppm command returns a comprehensive list of top officer purchases
+  of the month. It includes insider details such as filing date, trade date, ticker,
+  company name, insider name and more. You are able to limit the number of rows displayed
+  through the -l LIMIT parameter.
+keywords:
+- toppm
+- officer purchases
+- insider data
+- trade date
+- company name
+- insider name
+- title
+- trade type
+- price
+- quantity
+- owned
+- percentage difference
+- value
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="toppm - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # toppm
 

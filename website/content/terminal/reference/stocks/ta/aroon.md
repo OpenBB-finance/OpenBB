@@ -1,7 +1,26 @@
 ---
 title: aroon
-description: OpenBB Terminal Function
+description: The page provides comprehensive details about the 'aroon' indicator,
+  a tool used in analytics to identify new trends. The explanation covers the significance
+  of the terms 'Aroon Up' and 'Aroon Down', as well as their impact on indicating
+  the occurrence and strength of upward and downward trends.
+keywords:
+- aroon
+- dawn's early light
+- trend indicator
+- upward trend
+- downward trend
+- crossovers
+- Aroon Up
+- Aroon Down
+- n_length
+- n_scalar
+- trend strength
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="aroon - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # aroon
 

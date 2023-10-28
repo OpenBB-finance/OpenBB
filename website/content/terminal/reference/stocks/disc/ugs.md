@@ -1,7 +1,23 @@
 ---
 title: ugs
-description: OpenBB Terminal Function
+description: The 'ugs' documentation page provides instructions on how to print up
+  to 25 undervalued stocks with revenue and earnings growth exceeding 25%. It includes
+  details on usage, parameters, and examples demonstrating expected outcomes.
+keywords:
+- undervalued stocks
+- stocks
+- revenue growth
+- earnings growth
+- stock market
+- financial market
+- investment
+- ugs
+- Yahoo Finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ugs - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ugs
 

@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: summary
-description: OpenBB Discord Command
+description: The page offers instructions on using a command that retrieves a summary
+  of all the flow per stock in the last x days. The summary includes details like
+  the ratio to total market capitalization, number of trades, etc. and the result
+  can be sorted in various ways like MarketCap, Float, and more.
+keywords:
+- Flow per stock
+- Total market capitalization
+- Number of trades
+- Sort by MarketCap
+- Sort by Float
+- Sort by Total
+- Sort by Short Percentage
+- Command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summary - Flow - Discord - Reference | OpenBB Bot Docs" />
 
 # summary
 

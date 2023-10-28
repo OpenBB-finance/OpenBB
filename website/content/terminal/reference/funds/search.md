@@ -1,7 +1,24 @@
 ---
 title: search
-description: OpenBB Terminal Function
+description: This page provides search features for mutual funds in a selected country
+  based on various selectable fields. It incorporates features of result sorting and
+  limiting, displayed in either ascending or descending order.
+keywords:
+- Search
+- Mutual Funds
+- Country
+- Fields
+- Python
+- Fund Info
+- Data Sorting
+- Results Limit
+- Ascending Order
+- Descending Order
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="search - Funds - Reference | OpenBB Terminal Docs" />
 
 # search
 

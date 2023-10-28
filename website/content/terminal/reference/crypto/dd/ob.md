@@ -1,7 +1,26 @@
 ---
 title: ob
-description: OpenBB Terminal Function
+description: This page explains how to retrieve the order book for any selected cryptocurrency
+  coin across numerous exchanges. It specifically instructs the use of the 'ob' command
+  in python.
+keywords:
+- python
+- order book
+- cryptocurrency
+- exchange
+- quote currency
+- cryptocurrency pairs
+- binance
+- bitfinex
+- coinbase
+- poloniex
+- crypto trading
+- trading parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ob - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # ob
 

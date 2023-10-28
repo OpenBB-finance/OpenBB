@@ -1,7 +1,20 @@
 ---
 title: acf
-description: OpenBB Terminal Function
+description: Explore Auto-Correlation and Partial Auto-Correlation Functions for diff
+  and diff diff stock data using the acf Python script command. Understand maximum
+  lags to display in plots.
+keywords:
+- Auto-Correlation
+- Partial Auto-Correlation
+- diff stock data
+- acf
+- lags
+- maximum lags
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="acf - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # acf
 

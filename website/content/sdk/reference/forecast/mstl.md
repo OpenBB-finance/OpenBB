@@ -1,7 +1,24 @@
 ---
 title: mstl
-description: OpenBB SDK Function
+description: MSTL model forecasting and charting documentation, including code and
+  parameter documentation. Details the use of OpenBB.forecast.mstl function in processing
+  time-series data for predictive analysis.
+keywords:
+- MSTL
+- forecasting
+- OpenBB.forecast.mstl
+- time-series data
+- predictive analysis
+- documentation
+- code
+- pyhon
+- model
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mstl - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

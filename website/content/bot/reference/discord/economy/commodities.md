@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: commodities
-description: OpenBB Discord Command
+description: This page provides instructions on how to use the commodities command
+  to easily get an overview of Futures and commodities prices and changes on our trading
+  platform.
+keywords:
+- commodities
+- Futures
+- prices
+- trading
+- changes
+- command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="commodities - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # commodities
 

@@ -1,8 +1,22 @@
 ---
 title: Non Fungible Token (NFT)
-keywords: [cryptocurrency, nft, Non Fungible Token, tokenomics, digital asset, art, how to, example, crypto]
-description: An Introduction to Non Fungible Token (NFT), within the Cryptocurrency Menu, with a brief overview of the features.
+description: This page provides a guide on how to use the Non Fungible Token (NFT)
+  menu for exploring statistics of specific NFTs, exemplified with the 'mutant-ape-yacht-club'
+  NFT. The page also explains navigation within the crypto menu.
+keywords:
+- Non Fungible Token
+- NFT
+- /crypto/nft
+- NFT statistics
+- crypto menu
+- nft menu
+- specific NFT
+- mutant-ape-yacht-club
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Non Fungible Token (NFT) - Crypto - Data Available | OpenBB Terminal Docs" />
 
 The Non Fungible Token (NFT) menu gives the user the ability to dive into certain NFTs (<a href="/terminal/reference/crypto/nft/stats/" target="_blank" rel="noreferrer noopener">stats</a>).
 

@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: financials
-description: OpenBB Discord Command
+description: This page provides information on the financials command which retrieves
+  total assets, cash, debt, liabilities, and revenue of a company using its stock
+  ticker. The data can be used to analyze a company's financial health.
+keywords:
+- financials
+- ticker
+- total assets
+- cash
+- debt
+- liabilities
+- revenue
+- company financial health
+- stock
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="financials - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # financials
 

@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: oi
-description: OpenBB Discord Command
+description: The documentation details about 'oi' command allows the user to retrieve
+  the Open Interest and Call/Put ratio for a specific stock. Additional functionality
+  includes setting an expiration date for a more granular breakdown.
+keywords:
+- oi command
+- Open Interest
+- Call/Put ratio
+- stock
+- expiry
+- granular breakdown
+- documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="oi - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # oi
 

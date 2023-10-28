@@ -1,7 +1,18 @@
 ---
 title: hq
-description: OpenBB Terminal Function
+description: The hq tool opens the company's headquarters location in Google Maps.
+  Sourced from Yahoo Finance, this command requires no parameters for usage.
+keywords:
+- hq
+- Google Maps
+- Yahoo Finance
+- company location
+- no parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hq - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # hq
 

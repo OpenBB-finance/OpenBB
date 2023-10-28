@@ -1,7 +1,24 @@
 ---
 title: combine
-description: OpenBB Terminal Function
+description: The page provides detailed instruction on how to use the 'combine' function
+  which is used to combine datasets or add specific columns to a dataset. This function
+  is used to streamline data analysis.
+keywords:
+- combine function
+- data analysis
+- combine datasets
+- add columns
+- dataset usage
+- TSLA.csv
+- MSFT.csv
+- parameter usage
+- docusaurus page
+- dataset combination instructions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="combine - Forecast - Reference | OpenBB Terminal Docs" />
 
 # combine
 

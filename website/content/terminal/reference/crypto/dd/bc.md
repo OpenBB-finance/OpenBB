@@ -1,7 +1,25 @@
 ---
 title: bc
-description: OpenBB Terminal Function
+description: Documentation for the 'bc' command in a blockchain context - provides
+  URLs for loaded coins on various blockchain explorer sites like etherscan.io or
+  polkascan.io for analysing blockchain data.
+keywords:
+- blockchain
+- blockchain explorers
+- blockchain URLs
+- etherescan.io
+- polkascan.io
+- blockchain data
+- crypto
+- btc.com
+- tokenview.com
+- blockchair.com
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bc - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # bc
 

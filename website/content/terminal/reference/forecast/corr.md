@@ -1,7 +1,23 @@
 ---
 title: corr
-description: OpenBB Terminal Function
+description: The page provides information about the 'corr' function used to plot
+  correlation coefficients of a given dataset. It describes parameters, usage examples
+  and visual representation for a TSLA dataset.
+keywords:
+- corr
+- plot correlation coefficients
+- parameters
+- dataset
+- forecasting
+- examples
+- TSLA
+- usage
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="corr - Forecast - Reference | OpenBB Terminal Docs" />
 
 # corr
 

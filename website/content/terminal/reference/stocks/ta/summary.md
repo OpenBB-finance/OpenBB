@@ -1,7 +1,26 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: Detailed guide on using the technical summary report provided by FinBrain's
+  API, a leading provider of deep learning algorithms for financial analysis and prediction.
+  Learn how to track market trends and indicators such as RSI, MACD, SMA, and Bollinger
+  Bands.
+keywords:
+- technical summary
+- FinBrain API
+- financial analysis
+- trading prediction
+- deep learning algorithms
+- stock trading
+- stock trends
+- RSI
+- MACD
+- SMA
+- Bollinger Bands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="summary - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # summary
 

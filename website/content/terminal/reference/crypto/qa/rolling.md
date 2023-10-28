@@ -1,7 +1,21 @@
 ---
 title: rolling
-description: OpenBB Terminal Function
+description: Learn the usage, parameters and practical details of the rolling function,
+  a vital Python tool for calculating the rolling mean and standard deviation.
+keywords:
+- Rolling function
+- Python
+- Mean calculation
+- Standard deviation
+- Programming tools
+- Window length parameter
+- Usage example
+- Data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rolling - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # rolling
 

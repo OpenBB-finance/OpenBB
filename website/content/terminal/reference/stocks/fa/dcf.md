@@ -1,7 +1,26 @@
 ---
 title: dcf
-description: OpenBB Terminal Function
+description: Discover the dcf command, a powerful and flexible tool that allows users
+  to predict and analyze the value of a company based on future cash flows and the
+  present value. This tool allows for customizable parameters, includes linear regression
+  estimates, discount factors, and multiple prediction models.
+keywords:
+- dcf
+- discounted cash flow
+- financial statements prediction
+- linear regression
+- Fama French
+- CAPM
+- cash flow analysis
+- present value
+- company value
+- stock analysis
+- financial tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dcf - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # dcf
 

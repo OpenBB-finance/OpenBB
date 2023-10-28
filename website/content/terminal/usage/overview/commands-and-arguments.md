@@ -1,9 +1,27 @@
 ---
 title: Commands and arguments
 sidebar_position: 2
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: This documentation page includes a tutorial video that provides a short
+  introduction on commands and arguments for the OpenBB Terminal. It further explains
+  the help dialogue for functions, the auto-completion feature, and global commands
+  such as help, about, support, cls, quit, exit, and reset. Also, tips for submitting
+  support requests are provided.
+keywords:
+- OpenBB Terminal
+- tutorial video
+- help arguments
+- auto-complete
+- global commands
+- support command
+- reset command
+- command line interface
+- SEO
+- metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Commands and arguments - Overview - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

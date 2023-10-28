@@ -1,7 +1,23 @@
 ---
 title: analyst
-description: OpenBB Terminal Function
+description: This page enables users to print analyst prices and ratings for a company
+  using a simple python command. Information such as 'date', 'analyst', 'category',
+  'price', and 'rating' is revealed.
+keywords:
+- Analyst data
+- Stock market data
+- Stock analyst ratings
+- Financial information
+- Command-line interface
+- Python commands
+- Finance
+- Stock prices
+- Financial data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="analyst - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
 # analyst
 

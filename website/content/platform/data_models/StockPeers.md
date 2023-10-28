@@ -1,7 +1,24 @@
 ---
 title: Stock Peers
-description: OpenBB Platform Data Model
+description: The documentation gives an overview about the 'StockPeers', 'StockPeersData'
+  and 'StockPeersQueryParams' of openbb_provider package. It elaborates the parameters
+  such as 'symbol' and 'provider', and provides details about the types and functions
+  of the 'stock_peers' class.
+keywords:
+- StockPeers
+- stock_peers
+- StockPeersData
+- StockPeersQueryParams
+- symbol
+- provider
+- fmp
+- peers_list
+- openbb_provider
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Peers - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -52,4 +69,3 @@ StockPeersQueryParams,
 </TabItem>
 
 </Tabs>
-

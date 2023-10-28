@@ -1,7 +1,22 @@
 ---
 title: set
-description: OpenBB Terminal Function
+description: This page provides documentation on how to set presets from both custom
+  and default ones for filters. Instructions for usage along with parameters are described
+  in detail.
+keywords:
+- set presets
+- custom presets
+- default presets
+- filter presets
+- set filter presets
+- instructions
+- parameters
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="set - Screen - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # set
 

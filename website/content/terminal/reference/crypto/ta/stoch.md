@@ -1,7 +1,27 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: Learn about the Stochastic Oscillator, a measurement tool in trading
+  ranges. Discover the meaning of overbought and oversold conditions and how to interpret
+  the signals from Fast %D and Slow %D. Understand how to use parameters like n_fastkperiod,
+  n_slowdperiod, and n_slowkperiod for moving averages.
+keywords:
+- Stochastic Oscillator
+- overbought condition
+- oversold condition
+- Fast %D
+- Slow %D
+- buy signal
+- sell signal
+- Raw %K
+- moving average
+- n_fastkperiod
+- n_slowdperiod
+- n_slowkperiod
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stoch - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # stoch
 

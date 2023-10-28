@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: fedrates
-description: OpenBB Telegram Command
+description: The 'fedrates' command provides easy and quick access to upcoming Federal
+  Rate decision dates. A tool with no parameters required, making it convenient for
+  users to stay informed.
+keywords:
+- fedrates
+- Federal Rate decisions
+- retrieve Federal Rate
+- upcoming Federal Rate decisions
+- rate decision dates
+- easy retrieval
+- No parameters command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fedrates - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # fedrates
 

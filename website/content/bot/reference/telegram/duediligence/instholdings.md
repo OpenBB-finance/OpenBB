@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: instholdings
-description: OpenBB Telegram Command
+description: This page provides comprehensive details on the 'instholdings' command
+  used to access the top 15 institutional holdings for any given stock. It includes
+  usage instructions and examples.
+keywords:
+- instholdings command
+- institutional holdings
+- stock ticker
+- Securities and Exchange Commission
+- stock market data
+- financial data retrieval
+- docusaurus documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="instholdings - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # instholdings
 

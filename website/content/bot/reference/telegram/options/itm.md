@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: itm
-description: OpenBB Telegram Command
+description: The page provides detailed instructions on using the 'itm' command to
+  retrieve a list of In-the-Money options for a given stock ticker symbol. The command
+  compares and delivers a total of In-the-Money and Out-the-Money Calls and Puts.
+keywords:
+- In-the-Money options
+- stock ticker symbol
+- expiry date
+- Calls and Puts
+- Out-the-Money
+- options retrieval command
+- python command
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="itm - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # itm
 

@@ -1,7 +1,31 @@
 ---
 title: derivatives
-description: OpenBB Terminal Function
+description: This page provides a comprehensive list and details on crypto derivatives.
+  Understand and sort crypto financial tools such as futures, options, and perpetual
+  contracts based on different parameters including Rank, Market, Symbol, Price, and
+  more.
+keywords:
+- crypto derivatives
+- cryptocurrency
+- Bitcoin
+- crypto futures
+- crypto options
+- perpetual contracts
+- sort by Rank
+- sort by Market
+- sort by Symbol
+- sort by Price
+- sort by Pct_Change_24h
+- sort by Contract_Type
+- sort by Basis
+- sort by Spread
+- sort by Funding_Rate
+- sort by Volume_24h
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="derivatives - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # derivatives
 

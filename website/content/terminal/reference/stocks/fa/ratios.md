@@ -1,7 +1,25 @@
 ---
 title: ratios
-description: OpenBB Terminal Function
+description: A comprehensive guide on using the 'ratios' function. It offers an in-depth
+  analysis of a company's ratios over time, which includes financial metrics like
+  Payout Ratio, Price-to-Book Ratio, Debt equity ratio, Dividend payout ratio and
+  much more.
+keywords:
+- ratios
+- financial ratios
+- debt equity ratio
+- dividend payout ratio
+- price to book ratio
+- financial modeling
+- asset turnover
+- cash flow
+- return on equity
+- operating cycle
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ratios - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ratios
 

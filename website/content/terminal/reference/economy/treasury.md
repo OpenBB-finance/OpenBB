@@ -1,7 +1,25 @@
 ---
 title: treasury
-description: OpenBB Terminal Function
+description: This page provides detailed information and instructions on how to obtain
+  and plot any set of U.S. treasuries through different parameters including maturity,
+  frequency and type. It provides flexibility with regards to date ranges.
+keywords:
+- U.S. treasuries
+- maturity
+- frequency
+- plot
+- date range
+- parameters
+- instructions
+- EconDB
+- FED
+- inflation-adjusted
+- secondary markets
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="treasury - Economy - Reference | OpenBB Terminal Docs" />
 
 # treasury
 

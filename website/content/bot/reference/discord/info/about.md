@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: about
-description: OpenBB Discord Command
+description: The 'about' page offers a detailed introduction about OpenBB Bot, including
+  pertinent links to our social media pages. Learn how to use this command effectively.
+keywords:
+- OpenBB Bot
+- bot commands
+- about page
+- social media links
+- usage guide
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="about - Info - Discord - Reference | OpenBB Bot Docs" />
 
 # about
 

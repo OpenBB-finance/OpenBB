@@ -1,7 +1,18 @@
 ---
 title: history
-description: OpenBB Terminal Function
+description: This page provides information on the account transaction history feature.
+  It shows users how to set a limit on the number of recent transactions to display.
+keywords:
+- Account transaction history
+- Usage
+- Parameters
+- Limit
+- Transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="history - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # history
 

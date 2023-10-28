@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bigprintsdp
-description: OpenBB Telegram Command
+description: This documentation page discusses how to use the command /bigprintsdp
+  to retrieve the largest combination of dark pool and block trades, providing a comprehensive
+  view of market activities over a specified number of days. The page also covers
+  usage, parameters, and examples of the command.
+keywords:
+- bigprintsdp command
+- dark pool trades
+- block trades
+- market activities
+- command usage
+- command parameters
+- command examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bigprintsdp - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
 # bigprintsdp
 

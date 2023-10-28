@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: smile
-description: OpenBB Telegram Command
+description: The page provides a user guide on how to retrieve the Options Volatility
+  Smile for a specific stock ticker and expiry, offering examples and parameters for
+  enhanced understanding.
+keywords:
+- Options Volatility Smile
+- Volatility
+- Market Sentiment
+- ticker
+- expiry
+- Minimum Strike Price
+- Maximum Strike Price
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="smile - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # smile
 

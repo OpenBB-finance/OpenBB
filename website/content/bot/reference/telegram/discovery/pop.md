@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: pop
-description: OpenBB Telegram Command
+description: The 'pop' command on OpenBB Bot allows users to retrieve the top 15 most
+  popular stock tickers for the day or hour, providing an overview of current market
+  trends.
+keywords:
+- pop command
+- OpenBB Bot
+- popular stocks
+- 1 Hour stocks
+- 1 Day stocks
+- top 15 tickers
+- stock market
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pop - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # pop
 

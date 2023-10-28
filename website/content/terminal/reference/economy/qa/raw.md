@@ -1,7 +1,24 @@
 ---
 title: raw
-description: OpenBB Terminal Function
+description: This documentation page explains the usage of the 'raw' command in Python
+  which prints raw data to console. It outlines parameters and usage, and provides
+  an example of output sorted by a specific column in either ascending or descending
+  order.
+keywords:
+- raw data
+- console
+- parameters
+- usage
+- limit
+- reverse
+- sortby
+- ascending
+- descending
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="raw - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # raw
 

@@ -1,7 +1,26 @@
 ---
 title: lt
-description: OpenBB Terminal Function
+description: Description and usage guide for the lt command, that displays trades
+  on decentralized exchanges including the ability to aggregate trades by DEX or time,
+  display trade amount in different currencies, and sort data. The command uses Python
+  language.
+keywords:
+- Display Trades
+- Decentralized Exchanges
+- Aggregated
+- DEX
+- Trade Amount
+- Currency
+- USD
+- ETH
+- BTC
+- USDT
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lt - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # lt
 

@@ -1,7 +1,21 @@
 ---
 title: lookup
-description: OpenBB Terminal Function
+description: A detailed guide on how to use the lookup command in python, showing
+  parameters such as search_text, limit, and offset and their usage.
+keywords:
+- lookup command
+- python
+- search_text
+- limit
+- offset
+- command parameters
+- usage guide
+- coding documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lookup - Degiro - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # lookup
 

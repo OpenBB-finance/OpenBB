@@ -1,19 +1,27 @@
 ---
 title: Keyboard Hotkey Macros
 sidebar_position: 7
-description: Create keyboard hotkey macros to run a sequence of commands
+description: Learn how to set hotkeys macros on a customizable keyboard for swift
+  and efficient investment research. Learn how to remap keys, assigning them custom
+  macro commands, shortcuts, or key combinations using the VIA configurator for an
+  enhanced experience, especially for OpenBB power users.
 keywords:
-  [
-    keyboard,
-    macros,
-    commands,
-    pipeline,
-    excel,
-    customizable,
-    hotkey,
-    remap,
-  ]
+- customizable keyboard
+- hotkeys macros
+- investment research
+- VIA configurator
+- Keychron
+- OpenBB power users
+- command pipeline
+- remap keys
+- macro commands
+- shortcuts
+- key combinations
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Keyboard Hotkey Macros - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

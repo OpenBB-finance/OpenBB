@@ -1,7 +1,33 @@
 ---
 title: metric
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to display a chosen metric
+  for different periods. It discusses parameters such as volatility, sharpe, sortino,
+  etc. and how to set the risk-free rate for calculations.
+keywords:
+- metric
+- risk free rate
+- volatility
+- sharpe ratio
+- sortino ratio
+- max drawdown
+- R square
+- skew
+- kurtosis
+- gain to pain
+- tracker
+- information ratio
+- tail ratio
+- common sense ratio
+- jensens alpha
+- calmar ratio
+- kelly criterion
+- payoff ratio
+- profit factor
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="metric - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # metric
 

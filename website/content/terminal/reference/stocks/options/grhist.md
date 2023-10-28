@@ -1,7 +1,25 @@
 ---
 title: grhist
-description: OpenBB Terminal Function
+description: The grhist page is dedicated to illustrating how to plot historical option
+  greeks using Python. It includes various parameters like strike price, put option,
+  greek column, OCC option symbol, raw data, among others. It also demonstrates the
+  use of a certain data visualization for better understanding.
+keywords:
+- grhist
+- historical option greeks plot
+- option greeks
+- python
+- put option
+- strike price
+- greek column
+- OCC option symbol
+- raw data
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="grhist - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # grhist
 

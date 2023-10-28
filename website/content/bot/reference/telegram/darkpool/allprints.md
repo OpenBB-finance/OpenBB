@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: allprints
-description: OpenBB Telegram Command
+description: This page provides a guide on the command 'allprints', which retrieves
+  the last 15 combinations of Dark Pool and Blocks for a given stock ticker symbol,
+  showing the date, time, price, and volume of the trades.
+keywords:
+- allprints command
+- ticker symbol
+- Dark Pool trades
+- Blocks in stock market
+- stock market trades
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="allprints - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
 # allprints
 

@@ -1,8 +1,28 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: technical
-description: OpenBB Discord Command
+description: Learn how to use the command for retrieving stock screener results based
+  on your choice of a technical signal. Provides information on how to use technical
+  signals like Top Gainers, Top Losers, Most Active, among others.
+keywords:
+- stock screener
+- technical signal
+- Top Gainers
+- Top Losers
+- Most Active
+- Most Volatile
+- Relative Volatility
+- Oversold (RSI 30)
+- Overbought (RSI 70)
+- Golden Cross
+- Death Cross
+- New 52week High
+- New 52week Low
+- Unusual Volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical - Screeners - Discord - Reference | OpenBB Bot Docs" />
 
 # technical
 

@@ -1,7 +1,27 @@
 ---
 title: Company Overview
-description: OpenBB Platform Data Model
+description: This page of our documentation provides detailed implementation details,
+  import statements, parameters, and data for the 'CompanyOverview' model used in
+  our application. This includes fields such as symbol, price, beta, company name,
+  currency, etc. Our API allows you to fetch extensive company overview data for various
+  companies.
+keywords:
+- Docusaurus
+- SEO
+- Company Overview
+- Documentation
+- Parameters
+- API
+- Data
+- Implementation
+- Python
+- Model
+- Marketing
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Company Overview - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -86,4 +106,3 @@ CompanyOverviewQueryParams,
 </TabItem>
 
 </Tabs>
-

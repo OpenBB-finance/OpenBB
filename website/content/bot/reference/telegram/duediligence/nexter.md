@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: nexter
-description: OpenBB Telegram Command
+description: Learn how to use the nexter command to retrieve the next earnings date
+  for given stock ticker symbols like 'AMD'. This page includes usage examples and
+  a list of parameters.
+keywords:
+- nexter
+- stock ticker
+- earnings date
+- command
+- AMD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nexter - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # nexter
 

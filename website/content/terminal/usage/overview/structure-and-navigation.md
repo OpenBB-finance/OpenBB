@@ -1,9 +1,27 @@
 ---
 title: Structure and Navigation
 sidebar_position: 1
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Learn about the OpenBB Terminal, an interactive Command Line Interface
+  application. Understand the structure and navigation of the terminal, functions
+  or commands input via a keyboard, and the presentation of results in the form of
+  interactive charts, tables, or text. Get introduced to terminal commands, terminal
+  menus, OpenBB Hub's theme style, and the concept of absolute paths.
+keywords:
+- OpenBB Terminal
+- CLI application
+- terminal structure
+- Terminal navigation
+- Command Line Interface
+- Interactive Charts and Tables
+- Terminal commands
+- terminal menus
+- OpenBB Hub Theme Style
+- Absolute paths
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Structure and Navigation - Overview - Usage | OpenBB Terminal Docs" />
 
 ## Structure
 

@@ -1,7 +1,23 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: Understand how to use the 'quantile' function, a key statistical tool
+  used to divide distributions. Learn about parameters including 'n_window' for window
+  length and 'f_quantile' for specifying quantile values.
+keywords:
+- quantile function
+- distribution
+- statistics
+- median
+- n_window
+- f_quantile
+- parameters
+- data analysis
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantile - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # quantile
 

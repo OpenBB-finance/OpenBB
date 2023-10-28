@@ -1,7 +1,27 @@
 ---
 title: skew
-description: OpenBB Terminal Function
+description: The 'skew' documentation page explains how this concept can be utilized
+  to measure asymmetry or distortion of a symmetric distribution, also describing
+  usage and parameters in Python. It provides insights into how skewness measures
+  deviation from a normal distribution, depicting either a right or left shift. Comprehensive
+  visual aids are also given for clarification of the skewness concept.
+keywords:
+- skew
+- asymmetry measurement
+- distortion
+- symmetric distribution
+- normal distribution
+- skewness
+- random variable distribution
+- distribution deviation
+- right-skewed
+- left-skew
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="skew - Qa - Crypto - Reference | OpenBB Terminal Docs" />
 
 # skew
 

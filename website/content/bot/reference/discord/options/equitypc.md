@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: equitypc
-description: OpenBB Discord Command
+description: The documentation page provides details on how to utilize the 'equitypc'
+  command to retrieve the Equity Put/Call Volume Ratio data from market-harmonics.com,
+  a helpful tool for gauging market sentiment.
+keywords:
+- Equity Put/Call Volume Ratio
+- Market Sentiment
+- Market Harmonics
+- Trading
+- Traders Tools
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="equitypc - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # equitypc
 

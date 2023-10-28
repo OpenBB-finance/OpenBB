@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: indices
-description: OpenBB Telegram Command
+description: Get real-time information about major US stock indices like Dow Jones,
+  S&P 500, and NASDAQ Composite. The command provides the most current index values
+  and the percentage change from the previous day.
+keywords:
+- US stock indices
+- Dow Jones
+- S&P 500
+- NASDAQ Composite
+- index values
+- percentage change
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indices - Economy - Telegram - Reference | OpenBB Bot Docs" />
 
 # indices
 

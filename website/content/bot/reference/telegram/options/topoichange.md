@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topoichange
-description: OpenBB Telegram Command
+description: The topoichange command allows the user to view the top 15 stocks with
+  the highest OI Change. It displays the stock name, the OI Change by put and call,
+  and previous levels to provide an overview of the most significant changes in the
+  stock market.
+keywords:
+- topoichange command
+- stock market
+- highest OI Change
+- OI Change by put and call
+- stock name
+- open interest
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topoichange - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # topoichange
 

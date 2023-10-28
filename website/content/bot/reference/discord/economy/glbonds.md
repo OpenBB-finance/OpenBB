@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: glbonds
-description: OpenBB Discord Command
+description: The glbonds command page provides information about the retrieval of
+  an overview of global bonds which includes details such as type of bond, rate of
+  return, yield, and yield change. This command is fundamental in making informed
+  decisions about investing in global bonds.
+keywords:
+- glbonds command
+- global bonds
+- rate of return
+- yield
+- yield change
+- investing in global bonds
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="glbonds - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # glbonds
 

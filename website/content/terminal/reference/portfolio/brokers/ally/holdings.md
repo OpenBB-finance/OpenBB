@@ -1,7 +1,17 @@
 ---
 title: holdings
-description: OpenBB Terminal Function
+description: This documentation page provides information on how to view your trading
+  accounts on Ally using a command 'holdings'.
+keywords:
+- Trading Accounts
+- Ally
+- Holdings
+- Ally Trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holdings - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # holdings
 

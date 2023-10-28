@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: equitypc
-description: OpenBB Telegram Command
+description: The page documents the usage of equitypc command to retrieve the Equity
+  Put/Call Volume Ratio from market-harmonics.com. This is a crucial indicator for
+  traders to gauge market sentiment.
+keywords:
+- equitypc
+- Equity Put/Call Volume Ratio
+- market-harmonics.com
+- equity market
+- market sentiment
+- traders
+- trading tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="equitypc - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # equitypc
 

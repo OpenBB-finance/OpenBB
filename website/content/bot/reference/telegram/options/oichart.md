@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: oichart
-description: OpenBB Telegram Command
+description: Learn how to retrieve a chart of Total Open Interest by Strike Price
+  for any given ticker symbol using the 'oichart' command. This guide covers usage,
+  parameters, and examples to help you make informed decisions about the underlying
+  security.
+keywords:
+- Open Interest Chart
+- Ticker Symbol
+- Strike Price
+- Stock
+- Expiration Date
+- oichart command
+- Open Interest analysis
+- Stock Market Analysis
+- Python command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="oichart - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # oichart
 

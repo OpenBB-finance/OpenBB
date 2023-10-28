@@ -1,9 +1,27 @@
 ---
 title: Extension QA
 sidebar_position: 3
-description: Learn how to QA your extension.
-keywords: [openbb platform, introduction, qa, contributing, extension, documentation]
+description: This documentation page provides detailed instructions on creating and
+  executing automated unit and integration tests on the OpenBB Platform. It covers
+  the process for fetching data, testing the Python and API interfaces, and generating
+  these tests.
+keywords:
+- OpenBB Platform
+- unit tests
+- integration tests
+- python interface
+- API interface
+- test generator
+- QA process
+- quality assurance
+- testing tools
+- automated testing
+- tuna import time
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Extension QA - Extension Development - Contributing | OpenBB Platform Docs" />
 
 We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 

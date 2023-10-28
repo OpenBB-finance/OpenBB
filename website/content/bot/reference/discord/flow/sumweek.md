@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sumweek
-description: OpenBB Discord Command
+description: Explore how the sumweek command allows the user to view the most prevalent
+  option flows for a given stock over a week. Understand market sentiment with this
+  tool.
+keywords:
+- sumweek command
+- stock market
+- market sentiment
+- option flow
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sumweek - Flow - Discord - Reference | OpenBB Bot Docs" />
 
 # sumweek
 

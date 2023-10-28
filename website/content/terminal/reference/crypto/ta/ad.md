@@ -1,7 +1,23 @@
 ---
 title: ad
-description: OpenBB Terminal Function
+description: This documentation explains how to use the Accumulation/Distribution
+  Line, an indicator similar to the On Balance Volume to project trends in the price
+  direction of a stock, and how to use specific parameters with the ad function to
+  get the open value of a stock.
+keywords:
+- Accumulation/Distribution Line
+- On Balance Volume
+- SEO
+- Marketing
+- Stock Value
+- Close Location Value
+- Price Trend
+- Price Flattening
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ad - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # ad
 

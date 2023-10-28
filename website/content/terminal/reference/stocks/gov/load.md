@@ -1,7 +1,28 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides comprehensive instructions and details on how to load
+  stock ticker for market analysis, using various parameters. Details on how to choose
+  the starting and ending date, intraday stock minutes, pre and post market hours
+  are provided. There are also instructions on how to load custom files and specific
+  frequency data such as monthly or weekly.
+keywords:
+- stock ticker
+- market analysis
+- intraday stock
+- prepost market
+- load stock data
+- analysis parameters
+- data frequency
+- load custom file
+- SBIN.NS
+- Indian ticker
+- monthly data
+- weekly data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

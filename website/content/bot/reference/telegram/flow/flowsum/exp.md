@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: exp
-description: OpenBB Telegram Command
+description: Detailed guide on the 'flowsum exp' command used for retrieving the total
+  premium of a given stock ticker for the current trading day, including example usage
+  and parameters explanation.
+keywords:
+- flowsum exp command
+- option premium
+- stock ticker
+- trading day
+- above ask
+- expiry
+- expiration date
+- 'subcmd: exp'
+- example usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="exp - Flowsum - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flowsum exp
 

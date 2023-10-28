@@ -1,7 +1,24 @@
 ---
 title: tob
-description: OpenBB Terminal Function
+description: This page provides insights on how to use the 'tob' function to get the
+  top of a book for a loaded ticker from a selected exchange, explaining its parameters
+  and usage.
+keywords:
+- tob function
+- top of book
+- loaded ticker
+- selected exchange
+- function usage
+- parameters
+- BZX
+- EDGX
+- BYX
+- EDGA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="tob - Stocks - Reference | OpenBB Terminal Docs" />
 
 # tob
 

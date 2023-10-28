@@ -1,7 +1,21 @@
 ---
 title: decliners
-description: OpenBB Terminal Function
+description: The decliners documentation page provides information on how to use the
+  'decliners' command to display the top ETF/Mutual fund decliners from wsj.com/market-data.
+  The command doesn't require any parameters and includes examples of usage.
+keywords:
+- ETF
+- Mutual fund
+- decliners
+- command
+- wsj.com/market-data
+- parameters
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="decliners - Disc - Etf - Reference | OpenBB Terminal Docs" />
 
 # decliners
 

@@ -1,7 +1,23 @@
 ---
 title: autoces
-description: OpenBB Terminal Function
+description: This site explores Autoces, a tool for Automatic Complex Exponential
+  Smoothing forecast, its usage, parameters, and examples.
+keywords:
+- Autoces
+- Automatic Complex Exponential Smoothing forecast
+- forecasting tool
+- parameters
+- usage
+- examples
+- seasonality
+- data analysis
+- prediction days
+- plotting historical data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoces - Forecast - Reference | OpenBB Terminal Docs" />
 
 # autoces
 
@@ -44,10 +60,10 @@ autoces [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASON
 
 Cross Validation Time Series 1: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:1300:00,  8.70it/s]
 Forecast: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0000:00,  3.23it/s]
-AutoCES obtains MAPE: 3.09% 
+AutoCES obtains MAPE: 3.09%
 
 
-   Actual price: 138.38    
+   Actual price: 138.38
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

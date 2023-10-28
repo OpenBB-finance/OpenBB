@@ -1,7 +1,21 @@
 ---
 title: beta
-description: OpenBB Terminal Function
+description: This page displays a scatter plot demonstrating the beta of two stocks
+  or ETFs, provides usage and parameters, including the reference ticker used for
+  beta calculation with a default of 'SPY'.
+keywords:
+- beta
+- stocks
+- ETFs
+- scatter plot
+- beta calculation
+- ticker
+- SPY
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="beta - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # beta
 

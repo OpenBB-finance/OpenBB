@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: arktrades
-description: OpenBB Discord Command
+description: The page provides information about the arktrades command, which allows
+  user to retrieve a list of all trades made by ARK.
+keywords:
+- arktrades
+- trades
+- ARK
+- command
+- data
+- table format
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="arktrades - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # arktrades
 

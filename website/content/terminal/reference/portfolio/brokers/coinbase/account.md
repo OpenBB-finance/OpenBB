@@ -1,7 +1,21 @@
 ---
 title: account
-description: OpenBB Terminal Function
+description: Manage and display information about your trading accounts on Coinbase
+  with options to specify currency and access all account data.
+keywords:
+- Coinbase
+- Trading accounts
+- Account information
+- Currency value
+- USD
+- Trading
+- python
+- Crypto trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="account - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # account
 

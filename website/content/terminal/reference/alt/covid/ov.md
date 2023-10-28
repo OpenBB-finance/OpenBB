@@ -1,7 +1,18 @@
 ---
 title: ov
-description: OpenBB Terminal Function
+description: This ov page includes historical cases and deaths by country, along with
+  usage instructions and on-page parameters.
+keywords:
+- ov
+- historical cases
+- deaths by country
+- usage
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ov - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
 # ov
 

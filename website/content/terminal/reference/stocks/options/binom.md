@@ -1,7 +1,24 @@
 ---
 title: binom
-description: OpenBB Terminal Function
+description: This page is an in-depth guide to using the binom function for binomial
+  option valuation. It details the usage, parameters, and provides examples to assist
+  users.
+keywords:
+- binom
+- option valuation
+- binomial option
+- Strike price
+- put value
+- European option
+- American option
+- export excel
+- plot values
+- volatility
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="binom - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # binom
 

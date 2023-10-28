@@ -1,8 +1,17 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: supplier
-description: OpenBB Telegram Command
+description: This page offers information about the 'supplier' command, which retrieves
+  a list of suppliers for a specified company using its stock ticker.
+keywords:
+- supplier command
+- stock ticker
+- company suppliers
+- retrieve suppliers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="supplier - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # supplier
 

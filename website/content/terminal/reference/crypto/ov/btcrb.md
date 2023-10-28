@@ -1,7 +1,24 @@
 ---
 title: btcrb
-description: OpenBB Terminal Function
+description: btcrb is a Python-based tool offering visualization of Bitcoin Rainbow
+  chart over time which includes halvings. Its primary data source is Glassnode and
+  it's inspired by Blockchaincenter.net.
+keywords:
+- btcrb
+- bitcoin
+- rainbow chart
+- glassnode
+- blockchaincenter.net
+- BTC
+- cryptocurrency
+- halvings
+- price data
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="btcrb - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # btcrb
 

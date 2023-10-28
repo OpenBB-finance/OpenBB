@@ -1,7 +1,21 @@
 ---
 title: obv
-description: OpenBB Terminal Function
+description: On Balance Volume (OBV) is a crucial aspect in volume analysis and technical
+  trading. This page gives an in-depth explanation on OBV describing its impact, its
+  interpretation, and usage in predicting price moves and market trends.
+keywords:
+- On Balance Volume
+- OBV
+- Volume Analysis
+- Technical Analysis
+- Market Trend
+- Price Move
+- Financial Trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="obv - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # obv
 

@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: allblocks
-description: OpenBB Telegram Command
+description: Page explaining the allblocks command in a trading platform, used to
+  retrieve and summarise the last 15 block trades of a specified security.
+keywords:
+- allblocks
+- block trades
+- security
+- stock ticker
+- trade summary
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="allblocks - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
 # allblocks
 

@@ -1,7 +1,25 @@
 ---
 title: split
-description: OpenBB Platform Function
+description: Page providing detailed documentation about Historical Stock Splits function
+  in our API. Contains information about parameters such as stock symbol and data
+  provider, return values, and detailed data descriptions. The page is particularly
+  useful for finance professionals and developers interacting with finance APIs.
+keywords:
+- Historical Stock Splits
+- Stock data
+- Stock split data
+- SEO for Finance
+- Stock Symbols
+- Stock Market
+- Market Data
+- Python Code
+- Data Providers
+- Finance API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="split - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -67,4 +85,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

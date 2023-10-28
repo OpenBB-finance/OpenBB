@@ -1,8 +1,27 @@
 ---
 title: ETF
-keywords: [etfs, exchange traded funds, fund, basket, retail, stocks, openbb terminal, sdk, how to, usage, examples, path, type, description, category, tickers, performance, metrics, holdings, screener, disc, ]
-description: Learn how to lookup any ETF and obtain an overview about the chosen ETF in the OpenBB Terminal.
+description: This documentation page provides a comprehensive guide on how to use
+  the ETF module of the OpenBB Terminal SDK for programmatic access. It covers a list
+  of functions within the ETF module, how to import the SDK, how to print contents
+  of the SDK, how to use the ETF module in various situations such as getting list
+  of ETF categories, getting ETF tickers, comparing performance metrics, getting the
+  holdings of a specific ETF, performing ETF screening, and retrieving current top
+  gainers, losers, and volume for ETFs.
+keywords:
+- OpenBB Terminal SDK
+- ETF module
+- programmatic access
+- import SDK
+- perform ETF screening
+- get ETF holdings
+- compare performance metrics
+- retrieve top gainers and losers
+- retrieve top volume for ETFs
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF - Intros - Usage | OpenBB SDK Docs" />
 
 The ETF module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.etf`
 ​

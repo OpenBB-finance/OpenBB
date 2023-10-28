@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: splits
-description: OpenBB Telegram Command
+description: Learn how to use the '/splits' command to retrieve a list of recent stock
+  splits for a given ticker. This helps in efficient tracking of stock splits over
+  time.
+keywords:
+- stock splits
+- stock ticker
+- market tracking
+- stock tracking
+- AAPL stock
+- stock command
+- market commands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="splits - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # splits
 

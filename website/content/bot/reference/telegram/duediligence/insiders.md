@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: insiders
-description: OpenBB Telegram Command
+description: This page provides information about retrieving insider transactions
+  for a given stock. It explains the /insiders command usage, parameters and provides
+  examples
+keywords:
+- insider transactions
+- stock data
+- stock ticker
+- buy/sell transactions
+- average price
+- /insiders command
+- command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="insiders - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # insiders
 

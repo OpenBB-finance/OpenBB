@@ -1,7 +1,21 @@
 ---
 title: dt
-description: OpenBB Terminal Function
+description: This page provides info on how to get daily transactions for certain
+  symbols in ethereum blockchain using the 'dt' command.
+keywords:
+- dt
+- transactions
+- symbols
+- ethereum
+- blockchain
+- flipsidecrypto
+- crypto
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dt - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # dt
 

@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: splits
-description: OpenBB Discord Command
+description: The page provides a guide on using the /disc splits command to view a
+  list of recent stock splits for all available tickers. It also provides insights
+  on how to track past stock splits using this data. The information includes the
+  ticker, date, and ratio of the split.
+keywords:
+- stock splits
+- view stock splits
+- track stock splits
+- /disc splits
+- stock splits data
+- ticker data
+- split ratio
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="splits - Discovery - Discord - Reference | OpenBB Bot Docs" />
 
 # splits
 

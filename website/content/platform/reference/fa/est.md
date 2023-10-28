@@ -1,7 +1,26 @@
 ---
 title: est
-description: OpenBB Platform Function
+description: This page provides detailed parameters and data options for retrieving
+  Analyst Estimates and stock recommendations using the est function. It further explains
+  the returned objects including results, provider name, warnings, chart object, and
+  metadata. The page also provides an enumeration of the estimated data types like
+  revenue, EBITDA, net income amongst others that can be obtained.
+keywords:
+- Analyst Estimates
+- stock recommendations
+- analyst data
+- data query
+- financial market provider
+- estimated revenue
+- estimated EBITDA
+- estimated net income
+- estimated EPS
+- fmp provider
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="est - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -87,4 +106,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

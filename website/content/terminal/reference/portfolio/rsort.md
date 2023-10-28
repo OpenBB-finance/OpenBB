@@ -1,7 +1,23 @@
 ---
 title: rsort
-description: OpenBB Terminal Function
+description: The rsort page provides users with a guide on how to use the rsort function
+  to compare their Sortino portfolio against a set benchmark. This function takes
+  into consideration the rolling window period and the risk-free rate for calculations.
+  Ideal for financial calculations relates to risk and portfolio management.
+keywords:
+- rsort
+- Sortino portfolio
+- benchmarking
+- rolling window period
+- risk free rate
+- financial calculations
+- portfolio management
+- risk management
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rsort - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # rsort
 

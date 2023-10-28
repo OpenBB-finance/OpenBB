@@ -1,30 +1,26 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: General operation and troubleshooting for the OpenBB Terminal.
+description: Learn how to overcome system-related issues by enabling the 'developer
+  mode' on Windows and MacOS. Get answers for queries and potential issues. Here,
+  you'll also get to know how to run applications that do not meet the system's security
+  policy, allow apps through firewall and get tips on portfolio management.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    developer,
-    OS,
-    BranchCache,
-    Hyper-V,
-    VcXsrv,
-    code block
-  ]
+- developer mode
+- overcome system-related issues
+- Windows
+- MacOS
+- run applications
+- system's security policy
+- allow apps through firewall
+- Portfolio management
+- Settings
+- FAQ
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="General Operation - Faqs | OpenBB Terminal Docs" />
 
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
 

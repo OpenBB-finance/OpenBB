@@ -1,7 +1,19 @@
 ---
 title: obv
-description: OpenBB Terminal Function
+description: Learn about the On Balance Volume (OBV), a trading indicator that represents
+  the cumulative total of up and down volumes. Find out how to use, interpret the
+  OBV, understand market trends and use it in your trading analysis.
+keywords:
+- On Balance Volume
+- OBV
+- Volume analysis
+- Trading indicators
+- Market trends
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="obv - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # obv
 

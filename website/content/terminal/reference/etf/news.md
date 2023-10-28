@@ -1,7 +1,21 @@
 ---
 title: news
-description: OpenBB Terminal Function
+description: The page provides information on how to print the latest news about ETF
+  using parameters such as limit, starting date, order of articles, and news sources.
+  This information is sourced from the News API.
+keywords:
+- ETF
+- News API
+- latest news
+- articles
+- bbc
+- yahoo.com
+- docusaurus
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news - Etf - Reference | OpenBB Terminal Docs" />
 
 # news
 

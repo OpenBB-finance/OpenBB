@@ -1,7 +1,28 @@
 ---
 title: fraud
-description: OpenBB Terminal Function
+description: An in-depth look at various statistical models for detecting fraud in
+  a company's reported earnings. Includes discussions on the Beneish model, Zmijewski
+  Score, and McKee Score; and use of different indices like Days Sales in Receivables
+  Index, Gross Margin Index, Asset Quality Index, and more.
+keywords:
+- Beneish model
+- Zmijewski Score
+- McKee Score
+- Days Sales in Receivables Index
+- Gross Margin Index
+- Asset Quality Index
+- Sales Growth Index
+- Depreciation Index
+- Sales General and Administrative Expenses Index
+- Leverage Index
+- Total Accruals to Total Assets
+- Fraud detection
+- Earnings manipulation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fraud - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # fraud
 

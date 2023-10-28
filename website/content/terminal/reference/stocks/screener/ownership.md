@@ -1,7 +1,25 @@
 ---
 title: ownership
-description: OpenBB Terminal Function
+description: This documentation page includes detailed information about the 'ownership'
+  feature. Users can learn about the usage, available parameters, and filtering presets
+  to extract specific ownership data of companies.
+keywords:
+- ownership
+- ownership data
+- companies data
+- usage
+- parameters
+- preset
+- filter presets
+- limit
+- reverse
+- sort
+- stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ownership - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ownership
 

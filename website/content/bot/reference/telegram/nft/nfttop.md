@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: nfttop
-description: OpenBB Telegram Command
+description: The page provides comprehensive details on the 'nfttop' command, which
+  fetches the top NFT collections from Ethereum. It includes parameter details and
+  command usage examples.
+keywords:
+- nfttop command
+- NFT collections
+- Ethereum
+- popular NFTs
+- nfttop parameters
+- command usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nfttop - Nft - Telegram - Reference | OpenBB Bot Docs" />
 
 # nfttop
 

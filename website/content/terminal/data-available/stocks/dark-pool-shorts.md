@@ -1,8 +1,17 @@
 ---
 title: Dark Pools & Short Data
-keywords: [darkpools, dps, dark, pools, dp, short, shorts, naked, selling, sales, SEC, disclosure, ATS, OTC, OTCE, NMS, borrowed, shorted, ftd, fails-to-deliver, volume, how to, example]
-description: The Introduction to Dark Pools & Short Data, within the Stocks menu, which explains how to use the menu and provides a brief explanation of the features.
+description: This documentation page introduces the dark pool and short data menu, which provides the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in NMS securities.
+keywords:
+- dark pool
+- short data
+- ftd
+- off-exchange volume
+- short interest
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dark Pools & Short Data - Stocks - Data Available | OpenBB Terminal Docs" />
 
 The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank" rel="noreferrer noopener">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/usage/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
 

@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: heatchart
-description: OpenBB Discord Command
+description: This page provides documentation about the heatchart command that allows
+  users to retrieve a graphical representation of daily market performance by sector.
+keywords:
+- heatchart command
+- daily market heat chart
+- graphical market performance by sector
+- command parameters
+- usage examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="heatchart - General - Discord - Reference | OpenBB Bot Docs" />
 
 # heatchart
 

@@ -1,7 +1,21 @@
 ---
 title: sust
-description: OpenBB Terminal Function
+description: This documentation page covers the usage of 'sust' command in fetching
+  sustainability values of a company, useful for responsible investment decisions.
+  All values are sourced from Yahoo Finance.
+keywords:
+- sust command
+- sustainability values
+- responsible investments
+- Yahoo Finance
+- ESG scores
+- corporate sustainability
+- investment tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sust - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sust
 

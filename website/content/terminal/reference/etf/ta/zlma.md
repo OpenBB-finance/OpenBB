@@ -1,7 +1,22 @@
 ---
 title: zlma
-description: OpenBB Terminal Function
+description: Zero lag exponential moving average (ZLEMA) indicator documentation.
+  Learn how to use and implement the ZLEMA in your data studies with its parameters
+  and usage. Devised by John Ehlers and Ric Way, ZLEMA aids in providing a de-lagged
+  calculation of data.
+keywords:
+- zlma
+- zero lag exponential moving average
+- John Ehlers
+- Ric Way
+- EMA
+- de-lagged data
+- moving average
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="zlma - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # zlma
 

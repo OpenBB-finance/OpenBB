@@ -1,7 +1,19 @@
 ---
 title: file
-description: OpenBB Terminal Function
+description: This documentation page provides details about the 'file' parameter usage
+  in Python code. The page also includes default files and optional choices.
+keywords:
+- file parameter
+- python code usage
+- default files
+- optional file choices
+- OpenBB_Parameters_Template
+- parameters .ini files
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="file - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # file
 

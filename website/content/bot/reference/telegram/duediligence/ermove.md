@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ermove
-description: OpenBB Telegram Command
+description: The ermove command allows users to retrieve the implied move for any
+  given stock, based on current option prices. Learn more about its usage, parameters,
+  and examples.
+keywords:
+- ermove
+- implied move
+- option prices
+- stock
+- ticker
+- expiration
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ermove - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # ermove
 

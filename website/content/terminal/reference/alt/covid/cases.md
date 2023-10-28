@@ -1,7 +1,19 @@
 ---
 title: cases
-description: OpenBB Terminal Function
+description: A detailed guide on how to use the 'cases' command to show historical
+  cases for any country. This command is simple to use as it doesn't need any parameters,
+  offering a straightforward solution for data visualization.
+keywords:
+- historical cases
+- country cases
+- cases command
+- no parameters
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cases - Covid - Alt - Reference | OpenBB Terminal Docs" />
 
 # cases
 

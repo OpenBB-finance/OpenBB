@@ -1,7 +1,26 @@
 ---
 title: rnn
-description: OpenBB Terminal Function
+description: Explore the use of Recurrent Neural Networks (RNNs) for time series forecasting.
+  It explains how to perform RNN forecasts using different architectures like Vanilla
+  RNN, LSTM, and GRU, using the Darts models forecasting library. The document covers
+  usage examples, parameters description and features of the model.
+keywords:
+- RNN forecast
+- Vanilla RNN
+- LSTM
+- GRU
+- darts.models.forecasting.rnn_model
+- parameters
+- examples
+- machine learning
+- model training
+- model prediction
+- time series analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rnn - Forecast - Reference | OpenBB Terminal Docs" />
 
 # rnn
 

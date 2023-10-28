@@ -1,7 +1,24 @@
 ---
 title: enterprise
-description: OpenBB Terminal Function
+description: The enterprise page provides insights into stock price, market capitalization,
+  enterprise value, total debt, and other financial indicators over time. This information
+  is crucial for investment decisions and financial modeling.
+keywords:
+- enterprise
+- stock price
+- market capitalization
+- enterprise value
+- total debt
+- cash and cash equivalents
+- number of shares
+- symbol
+- financial modeling
+- stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="enterprise - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # enterprise
 

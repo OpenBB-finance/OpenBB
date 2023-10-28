@@ -1,7 +1,15 @@
 ---
 title: cpis
-description: OpenBB Terminal Function
+description: This documentation pages describes the cpis command which allows users to visualize companies per industry based on sector and market cap
+keywords:
+- sector
+- industry
+- market cap
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cpis - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # cpis
 

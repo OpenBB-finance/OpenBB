@@ -1,7 +1,23 @@
 ---
 title: indexes
-description: OpenBB Terminal Function
+description: Our 'indexes' page offers data on crypto indexes coming from CoinGecko.
+  It allows users to see details of each crypto index and offers several parameters
+  for sorting and limiting the data displayed. Utilize cryptocurrency market data
+  to make informed decisions regarding your crypto investments.
+keywords:
+- cryptocurrency
+- CoinGecko
+- crypto index
+- market cap
+- cryptocurrency market data
+- crypto investment
+- data sorting parameters
+- limit parameter
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indexes - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # indexes
 

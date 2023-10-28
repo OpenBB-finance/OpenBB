@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: flip
-description: OpenBB Telegram Command
+description: Learn how to use the flip command to simulate a coin flip. Know the exact
+  usage, parameters and examples associated with it.
+keywords:
+- flip command
+- coin flip simulation
+- Heads or Tails command
+- No parameters command
+- Usage of flip command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flip - Fun - Telegram - Reference | OpenBB Bot Docs" />
 
 # flip
 

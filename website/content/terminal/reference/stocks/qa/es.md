@@ -1,7 +1,20 @@
 ---
 title: es
-description: OpenBB Terminal Function
+description: Documentation page for using the Expected Shortfall (ES) function in
+  Python. Provides detailed examples, parameter usage, and options for calculations.
+keywords:
+- Expected Shortfall
+- stock
+- distribution
+- percentile
+- ES
+- python
+- calculations
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="es - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # es
 

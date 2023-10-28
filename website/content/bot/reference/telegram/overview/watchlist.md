@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: watchlist
-description: OpenBB Telegram Command
+description: This page provides comprehensive information about the watchlist command,
+  which allows you to retrieve an overview of your watchlist, including current price,
+  high/low, volume, and change. It also covers how to obtain other related information
+  such as flow, darkpool data, technical analysis, and news.
+keywords:
+- Watchlist
+- Current price
+- High/low
+- Volume
+- Change
+- Flow
+- Darkpool data
+- Technical analysis
+- News
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="watchlist - Overview - Telegram - Reference | OpenBB Bot Docs" />
 
 # watchlist
 

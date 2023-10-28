@@ -1,7 +1,21 @@
 ---
 title: nft
-description: OpenBB Terminal Function
+description: Page covers usage and parameters of an NFT command for Dappradar. Allows
+  sorting NFTs by name, protocols, floor price, average price, market cap, and volume.
+keywords:
+- NFT
+- Dappradar
+- Sort
+- Market Cap
+- Volume
+- Floor Price
+- Avg Price
+- Protocols
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nft - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # nft
 

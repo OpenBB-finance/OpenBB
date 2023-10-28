@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: allprints
-description: OpenBB Discord Command
+description: This page's content revolves around the 'allprints' command used for
+  retrieving the last 15 combination of Dark Pool and Blocks for a specified ticker
+  symbol. It covers usage, parameters, and examples.
+keywords:
+- allprints command
+- Dark Pool and Blocks
+- stock market trades
+- ticker symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="allprints - Darkpool - Discord - Reference | OpenBB Bot Docs" />
 
 # allprints
 

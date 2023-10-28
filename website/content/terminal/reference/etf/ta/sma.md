@@ -1,7 +1,21 @@
 ---
 title: sma
-description: OpenBB Terminal Function
+description: This page provides information on Simple Moving Average (SMA), a tool
+  for trend identification and data filtering. It details SMA's usage and parameters
+  like n_length and n_offset.
+keywords:
+- Simple Moving Average
+- sma
+- Moving Average
+- trend identification
+- data filtering
+- n_length
+- n_offset
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sma - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # sma
 

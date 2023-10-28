@@ -1,7 +1,22 @@
 ---
 title: trending
-description: OpenBB Terminal Function
+description: This page provides information on trending stocks. It features a database
+  extracted from Stocktwits displaying the trending stocks along with their respective
+  tickers, watchlist counts, and a range of different company names.
+keywords:
+- Stock trending
+- Stocktwits
+- watchlist count
+- company name
+- ticker
+- stock market
+- market data
+- stockist
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="trending - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # trending
 

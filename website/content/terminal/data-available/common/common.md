@@ -1,7 +1,18 @@
 ---
 title: Common Menus
-keywords: [user, files, openbbuserdata, presets, file, portfolio, exports, imports, settings, styles, xlsx, csv, json, themes, openbb, bb, terminal, google, amazon, apple, microsoft, github, opensource, python, markets]
-description: Common Menus in the OpenBB Terminal
+description: The page explains various features available on sub-menus that can be
+  utilized across different asset classes. These features are grouped and can be found
+  under the directory trees in the 'common/'.
+keywords:
+- sub-menus
+- features
+- asset classes
+- directory trees
+- common/
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Common Menus - Common - Data Available | OpenBB Terminal Docs" />
 
 There are several sub-menus containing features that can be applied across different asset classes. These are grouped in the directory trees under `common/`.

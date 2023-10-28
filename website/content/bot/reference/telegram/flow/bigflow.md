@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bigflow
-description: OpenBB Telegram Command
+description: The page illustrates the 'bigflow' command for retrieving the top 20
+  largest flows by premium for a stock, considering the price of the option at the
+  time of the trade and the trade volume.
+keywords:
+- bigflow
+- stock analysis
+- option trading
+- stock ticker
+- trade volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bigflow - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # bigflow
 

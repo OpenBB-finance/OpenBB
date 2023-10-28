@@ -1,9 +1,35 @@
 ---
 title: AskOBB Feature
 sidebar_position: 5
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: This documentation page presents the innovative use of language learning
+  machines (LLMs), in particular, the LlamaIndex in transforming natural language
+  queries into commands in OpenBB Terminal. The page further explains the intrinsics,
+  solution process, and includes tutorial videos on how to leverage this technology
+  for efficient data retrieval.
+keywords:
+- AskOBB
+- natural language query
+- OpenBB Terminal
+- LLMs
+- LlamaIndex
+- BloombergGPT
+- financial technology
+- command classification
+- terminal commands
+- asset classes
+- cryptocurrency
+- equity
+- CLI help argument
+- Vector Index
+- OpenAI embeddings API
+- embedding
+- GPT-3.5-turbo model
+- vector
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="AskOBB Feature - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -51,7 +77,7 @@ Now that we have the context of our documentation and examples saved, it is time
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c0df6589-e22f-46b0-a272-6fa7f6762ff3)
 
-To get the LLM response, it is just another 2 lines of code with LlamaIndex: 
+To get the LLM response, it is just another 2 lines of code with LlamaIndex:
 
 ```bash
 query_engine = index.as_query_engine() response = query_engine.query(prompt_string)

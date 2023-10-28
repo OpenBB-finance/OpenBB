@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: calendar
-description: OpenBB Discord Command
+description: Get an Economic Calendar for the day and read about the key economic
+  indicators with the /econ calendar command.
+keywords:
+- economic calendar
+- economic events
+- economic indicators
+- GDP
+- inflation
+- employment
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="calendar - Economy - Discord - Reference | OpenBB Bot Docs" />
 
 # calendar
 

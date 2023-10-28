@@ -1,7 +1,21 @@
 ---
 title: newsletter
-description: OpenBB Terminal Function
+description: This page outlines the usage, parameters, choices, and examples of the
+  newsletter command, which displays DeFi related substack newsletters. It is part
+  of a larger toolkit aimed at simplifying tasks within the crypto and DeFi space.
+keywords:
+- decentralized finance
+- DeFi
+- newsletter
+- substack newsletters
+- crypto
+- python script
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="newsletter - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # newsletter
 

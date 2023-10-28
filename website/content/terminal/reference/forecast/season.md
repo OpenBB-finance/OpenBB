@@ -1,7 +1,24 @@
 ---
 title: season
-description: OpenBB Terminal Function
+description: Meta description for the 'season' function in Docusaurus. This function
+  helps to display and understand the seasonality for a given column in a dataset,
+  providing options for customization such as time lag, maximal lag order, and confidence
+  interval.
+keywords:
+- docusaurus
+- season
+- dataset
+- seasonality
+- time lag
+- maximal lag order
+- confidence interval
+- data visualization
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="season - Forecast - Reference | OpenBB Terminal Docs" />
 
 # season
 

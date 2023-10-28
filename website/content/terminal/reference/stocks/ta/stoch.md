@@ -1,7 +1,30 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: This page presents an understanding of the Stochastic Oscillator, a technical
+  analysis indicator, and its parameters. It illustrates the buy and sell signals,
+  moving averages, overbought and oversold conditions, and usage in Python. Particularly,
+  it explains the commands n_fastkperiod, n_slowdperiod, and n_slowkperiod.
+keywords:
+- Stochastic Oscillator
+- overbought condition
+- oversold condition
+- Fast %D
+- Slow %D
+- buy signal
+- sell signal
+- Raw %K
+- crossover signals
+- stoch
+- moving average
+- trading range
+- n_fastkperiod
+- n_slowdperiod
+- n_slowkperiod
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stoch - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # stoch
 

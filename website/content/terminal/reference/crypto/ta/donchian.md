@@ -1,7 +1,23 @@
 ---
 title: donchian
-description: OpenBB Terminal Function
+description: This page provides information on Donchian Channels, an indicator comprising
+  upper and lower bands around a midrange or median band. It includes details of the
+  parameters for its usage.
+keywords:
+- Donchian Channels
+- moving average calculations
+- upper and lower bands
+- highest and lowest price
+- N periods
+- security
+- Donchian Channel
+- N_LENGTH_UPPER
+- N_LENGTH_LOWER
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="donchian - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # donchian
 

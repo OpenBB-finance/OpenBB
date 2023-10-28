@@ -1,8 +1,29 @@
 ---
 title: Behavioral Analysis
-keywords: [stocks, behaviour, analysis, ba, headlines, snews, wsb, watchlist, popular, spac, trending, stalking, bullbear, messages, inter, sentiment, Google, Twitter, Reddit, Stocktwits, SentimentInvestor, Cramer, Jim, mentions, regions, interest, queries, rise, trend, hist, jcrd, jctr, how to, usage]
-description: The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction.
+description: This page provides insightful information on how to use the BA module
+  within the OpenBB Terminal. It gives detailed examples of utilizing various functions
+  in Python for stock sentiment analysis, region-based popularity, trending queries,
+  and more.
+keywords:
+- OpenBB Terminal
+- BA module
+- Python
+- Stock sentiment analysis
+- Region-based popularity
+- Trending queries
+- SDK
+- Stocktwit's messages
+- stock due diligence
+- function and modules
+- stock market
+- sentiment prediction
+- programming
+- code completion
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Behavioral Analysis - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The BA module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.ba`
 ​

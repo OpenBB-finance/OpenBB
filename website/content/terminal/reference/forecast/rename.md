@@ -1,7 +1,21 @@
 ---
 title: rename
-description: OpenBB Terminal Function
+description: The page provides detailed information on the 'rename' function from
+  a Python-based toolset, used for renaming columns in a dataset. It includes how
+  to use the function, its parameters, and relevant examples.
+keywords:
+- rename tool
+- dataset
+- parameter
+- column rename
+- dataset modification
+- python
+- data management
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rename - Forecast - Reference | OpenBB Terminal Docs" />
 
 # rename
 

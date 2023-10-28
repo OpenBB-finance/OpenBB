@@ -1,7 +1,21 @@
 ---
 title: pcr
-description: OpenBB Terminal Function
+description: This marketing webpage demonstrates the usage of the 'pcr' function that
+  displays put to call ratio for a particular ticker. It includes a detailed parameters'
+  list and a plot for visualization.
+keywords:
+- Put Call Ratio
+- AlphaQuery
+- pcr function
+- ticker
+- visualization
+- parameters description
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pcr - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # pcr
 

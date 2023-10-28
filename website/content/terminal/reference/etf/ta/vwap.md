@@ -1,7 +1,24 @@
 ---
 title: vwap
-description: OpenBB Terminal Function
+description: Learn how to use the Volume Weighted Average Price, a tool that measures
+  the average typical price by volume. It is used with intraday charts to identify
+  the general direction of the market.
+keywords:
+- VWAP
+- intraday charts
+- average price
+- volume
+- market direction
+- stock analysis
+- GOOGL
+- USD
+- financial data
+- trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vwap - Ta - Etf - Reference | OpenBB Terminal Docs" />
 
 # vwap
 

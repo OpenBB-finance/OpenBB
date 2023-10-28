@@ -1,7 +1,64 @@
 ---
 title: balance_growth
-description: OpenBB Platform Function
+description: This page is about the function 'balance_growth' which provides information
+  about the growth of company balance sheets. It mentions the parameters and returns
+  associated with the function, as well as specific data points and their descriptions
+  related to balance sheet growth.
+keywords:
+- balance_growth
+- Union[str, List[str]]
+- fmp
+- symbol
+- limit
+- provider
+- BalanceSheetGrowth
+- List[Warning_]
+- Chart
+- Metadata
+- growth_cash_and_cash_equivalents
+- growth_short_term_investments
+- growth_cash_and_short_term_investments
+- growth_net_receivables
+- growth_inventory
+- growth_other_current_assets
+- growth_total_current_assets
+- growth_property_plant_equipment_net
+- growth_goodwill
+- growth_intangible_assets
+- growth_goodwill_and_intangible_assets
+- growth_long_term_investments
+- growth_tax_assets
+- growth_other_non_current_assets
+- growth_total_non_current_assets
+- growth_other_assets
+- growth_total_assets
+- growth_account_payables
+- growth_short_term_debt
+- growth_tax_payables
+- growth_deferred_revenue
+- growth_other_current_liabilities
+- growth_total_current_liabilities
+- growth_long_term_debt
+- growth_deferred_revenue_non_current
+- growth_deferrred_tax_liabilities_non_current
+- growth_other_non_current_liabilities
+- growth_total_non_current_liabilities
+- growth_other_liabilities
+- growth_total_liabilities
+- growth_common_stock
+- growth_retained_earnings
+- growth_accumulated_other_comprehensive_income_loss
+- growth_othertotal_stockholders_equity
+- growth_total_stockholders_equity
+- growth_total_liabilities_and_stockholders_equity
+- growth_total_investments
+- growth_total_debt
+- growth_net_debt
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance_growth - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -106,4 +163,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

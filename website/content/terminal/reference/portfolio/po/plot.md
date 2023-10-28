@@ -1,7 +1,30 @@
 ---
 title: plot
-description: OpenBB Terminal Function
+description: The plot page allows users to select and plot charts for various portfolios,
+  using a range of parameters and offering several optional features. It includes
+  different types of charts such as pie, histogram, drawdown, and risk contribution
+  charts. Different risk measures can be optimized, and users can control various
+  other factors such as the calculation frequency, the max percentage of accepted
+  NaN values, and the risk-free rate.
+keywords:
+- plot
+- charts
+- portfolios
+- risk measures
+- drawdown chart
+- risk contribution chart
+- correlation matrix
+- heatmap
+- CVaR
+- EVaR
+- Maximum Drawdown
+- risk-free rate
+- significance level
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="plot - Po - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # plot
 

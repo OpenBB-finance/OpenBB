@@ -1,7 +1,22 @@
 ---
 title: lastcontracts
-description: OpenBB Terminal Function
+description: This is a page for 'lastcontracts', a tool that displays the most recent
+  government contracts. It can customize the display based on the user's preferences
+  for the limit of contracts to display, the past transaction days to cover, and to
+  show or not the total amount of contracts.
+keywords:
+- lastcontracts
+- government contracts
+- display contracts
+- past transaction days
+- limit of contracts
+- total amount of contracts
+- data display
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="lastcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # lastcontracts
 

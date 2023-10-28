@@ -1,7 +1,20 @@
 ---
 title: contracts
-description: OpenBB Terminal Function
+description: This documentation page provides information about contracts associated
+  with a ticker as sourced from QuiverQuant. Details include usage, parameters like
+  past transaction days and raw data. Also added is a snapshot of the contracts interface.
+keywords:
+- contracts
+- ticker
+- past transaction days
+- raw data
+- quiverquant
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="contracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # contracts
 

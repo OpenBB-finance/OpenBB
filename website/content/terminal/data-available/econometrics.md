@@ -1,8 +1,19 @@
 ---
 title: Econometrics
-keywords: [econometrics, statistics, regression, panel data, time series, research, thesis, university, random effects, fixed effects, indices, statistical test, autocorrelation, access, how to, example, script, routine, ]
-description: A brief guide to the Econometrics menu. It explains the general functionality, commands, and includes examples in context.
+description: This documentation page talks about user's ability to perform statistical research on custom datasets
+keywords:
+- econometrics
+- statistics
+- statistical research
+- custom datasets
+- panel regression
+- autocorrelation tests
+- heteroscedasticity
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Econometrics - Data Available | OpenBB Terminal Docs" />
 
 The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. The menu allows the user to load in his/her own dataset(s), modify the data by (for example) adding columns or setting indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank" rel="noreferrer noopener">Breusch-Godfrey autocorrelation tests</a>) as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank" rel="noreferrer noopener">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank" rel="noreferrer noopener">Fixed Effects</a>)
 

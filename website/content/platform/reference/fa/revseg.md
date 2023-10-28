@@ -1,7 +1,26 @@
 ---
 title: revseg
-description: OpenBB Platform Function
+description: Metadata for revseg page - a revenue business line data page. Describes
+  parameters like symbol, period, structure and provider for data querying. Also provides
+  info on returned data.
+keywords:
+- revseg
+- revenue business line data
+- business line revenue
+- data query
+- parameters
+- symbol
+- period
+- structure
+- provider
+- returned data
+- warnings
+- metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="revseg - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -67,4 +86,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

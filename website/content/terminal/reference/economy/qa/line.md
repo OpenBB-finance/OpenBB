@@ -1,7 +1,21 @@
 ---
 title: line
-description: OpenBB Terminal Function
+description: The page provides a detailed overview on how to use the 'line' function
+  in Python to visualize data on a line plot. It provides parameters for customizing
+  the plot such as scale, markers and highlighting specific events.
+keywords:
+- line plot
+- data visualization
+- log scale
+- line markers
+- scatter markers
+- highlight events
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="line - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # line
 

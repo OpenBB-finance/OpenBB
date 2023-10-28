@@ -1,7 +1,23 @@
 ---
 title: hma
-description: OpenBB Terminal Function
+description: Hull Moving Average (HMA) is a moving average methodology that reduces
+  lag and increases curve smoothness. This page provides detailed usage information,
+  relevant parameters, and imagery references.
+keywords:
+- Hull Moving Average
+- HMA
+- moving average
+- market analysis
+- lag reduction
+- curve smoothness
+- usage instruction
+- parameters
+- imagery
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="hma - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # hma
 

@@ -1,7 +1,23 @@
 ---
 title: watchlist
-description: OpenBB Terminal Function
+description: This page documents the 'watchlist' function which allows users to fetch
+  and print other user's watchlist of stock posts from Reddit. It demonstrates usage,
+  explains different parameters including limit for posts, and provides examples of
+  its execution.
+keywords:
+- watchlist
+- stock posts
+- post limit
+- Python
+- Reddit source
+- usage
+- parameters
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="watchlist - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # watchlist
 

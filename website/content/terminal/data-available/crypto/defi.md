@@ -1,8 +1,30 @@
 ---
 title: Decentralized Finance (DeFi)
-keywords: [cryptocurrency, defi, decentralized finance, crypto, dapps, uniswap, funding, luna, terra, blockchain, how to, example, tokens, stats, pairs, sreturn, terra, luna, lcsc]
-description: An Introduction to Cryptocurrency DeFi menu, within the Cryptocurrency Menu, with a brief overview of the features.
+description: This doc provides comprehensive information on how to access and interpret
+  Uniswap statistics, dApps' data and Luna from the Cryptocurrency Decentralized Finance
+  (DeFi) menu. This includes accessing details about tokens, stats, and pairs for
+  Uniswap. It also guides on how to get data for dApps and the terra blockchain.
+keywords:
+- Cryptocurrency
+- Decentralized Finance
+- DeFi
+- Uniswap statistics
+- dApps information
+- terra blockchain
+- luna
+- tokens
+- stats
+- pairs
+- gdapps
+- stvl
+- sreturn
+- lcsc
+- crypto menu
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Decentralized Finance (DeFi) - Crypto - Data Available | OpenBB Terminal Docs" />
 
 The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="/terminal/reference/crypto/defi/tokens" target="_blank" rel="noreferrer noopener">tokens</a>, <a href="/terminal/reference/crypto/defi/stats" target="_blank" rel="noreferrer noopener">stats</a> and <a href="/terminal/reference/crypto/defi/pairs" target="_blank" rel="noreferrer noopener">pairs</a>), information about dApps (<a href="/terminal/reference/crypto/defi/gdapps" target="_blank" rel="noreferrer noopener">gdapps</a> and <a href="/terminal/reference/crypto/defi/stvl" target="_blank" rel="noreferrer noopener">stvl</a>) as well as information about terra blockchain (<a href="/terminal/reference/crypto/defi/sreturn" target="_blank" rel="noreferrer noopener">sreturn</a>) and luna (<a href="/terminal/reference/crypto/defi/lcsc" target="_blank" rel="noreferrer noopener">lcsc</a>).
 

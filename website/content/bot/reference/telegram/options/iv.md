@@ -1,8 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: iv
-description: OpenBB Telegram Command
+description: This page guides the user on how to use the 'iv' command to retrieve
+  important information like volatility, IV rank, put/call ratios for specific ticker
+  symbols like 'AMD'. Great resource for individuals who want to extract specific
+  stock information.
+keywords:
+- command
+- information retrieval
+- option information
+- ticker symbol
+- volatility
+- IV rank
+- put/call ratio
+- stock ticker
+- AMD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="iv - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # iv
 

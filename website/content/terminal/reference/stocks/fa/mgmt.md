@@ -1,7 +1,20 @@
 ---
 title: mgmt
-description: OpenBB Terminal Function
+description: This page provides details on how to print management team details using
+  the 'mgmt' command. It also includes potential insider activity page sourced from
+  Business Insider.
+keywords:
+- management team
+- insider activity
+- Business Insider
+- mgmt
+- print management info
+- usage of mgmt
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mgmt - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # mgmt
 

@@ -1,7 +1,32 @@
 ---
 title: blip
-description: OpenBB Terminal Function
+description: This page enables usage of the 'blip' command, a tool for printing the
+  latest insider purchases 25k, sourced from OpenInsider. The usage, parameters, and
+  examples are provided to give an understanding on how to use this command effectively
+  to access insider trade data such as company name, insider name, trade type, price,
+  quantity, owned, value, etc.
+keywords:
+- blip
+- Insider Purchases
+- OpenInsider
+- stocks
+- Trade Data
+- Company Name
+- Insider Name
+- Trade Type
+- Price
+- Qty
+- Value
+- Title
+- Owned
+- Diff Own
+- Data Display
+- Limit Parameter
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="blip - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # blip
 

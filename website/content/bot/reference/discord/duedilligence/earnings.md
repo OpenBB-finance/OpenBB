@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: earnings
-description: OpenBB Discord Command
+description: Details on how to use the 'earnings' command to retrieve anticipated
+  earnings for a specified business day. Information includes company ticker, expected
+  time, sector, and float facilitating informed investment decisions.
+keywords:
+- earnings
+- investment decisions
+- company ticker
+- business day
+- sector
+- float
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="earnings - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # earnings
 

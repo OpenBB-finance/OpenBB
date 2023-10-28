@@ -1,7 +1,18 @@
 ---
 title: cancel
-description: OpenBB Terminal Function
+description: Webpage detailing how to cancel a pending order with usage, parameters
+  and special considerations.
+keywords:
+- Cancel Pending Order
+- Order Management
+- Webpage Documentation
+- Cancel Order Operation
+- API Usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cancel - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
 # cancel
 

@@ -1,7 +1,22 @@
 ---
 title: splits
-description: OpenBB Terminal Function
+description: This page provides relevant information on stock splits and reverse split
+  events since a company's IPO, referencing Yahoo Finance. Example parameters for
+  use in Python are illustrated.
+keywords:
+- stock splits
+- reverse split
+- IPO
+- Yahoo Finance
+- parameters
+- Python
+- gnus_splits
+- aapl_splits
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="splits - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # splits
 

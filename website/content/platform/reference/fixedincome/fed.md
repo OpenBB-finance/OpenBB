@@ -1,7 +1,25 @@
 ---
 title: fed
-description: OpenBB Platform Function
+description: This page provides comprehensive details about the Federal Funds Rate
+  (FED), its parameters and usage. It provides guidance on how to use 'fed' commands
+  in Python, the start and end dates, and how to choose a provider for the query.
+keywords:
+- Federal Funds Rate
+- FED
+- bank rate
+- Federal Reserve System
+- Python commands
+- query provider
+- '''fred'' provider'
+- start date
+- end date
+- '''fred'' parameters'
+- data rate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fed - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -79,4 +97,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

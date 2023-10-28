@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bio
-description: OpenBB Discord Command
+description: The Crypto Bio command retrieves key information about a specific cryptocurrency,
+  such as its current price, trading volume, and market cap. Excellent for getting
+  a quick snapshot of any given cryptocurrency's performance.
+keywords:
+- crypto
+- crypto bio
+- symbol
+- btc
+- cryptocurrency information
+- market cap
+- trading volume
+- crypto price
+- crypto metrics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bio - Crypto - Discord - Reference | OpenBB Bot Docs" />
 
 # bio
 

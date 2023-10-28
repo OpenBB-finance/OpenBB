@@ -1,7 +1,20 @@
 ---
 title: rvol
-description: OpenBB Terminal Function
+description: Rvol page shows the rolling volatility portfolio versus benchmark. It
+  is primarily used to analyse the market's volatility over different periods.
+keywords:
+- rvol
+- rolling volatility
+- portfolio
+- benchmark
+- market analysis
+- volatility analysis
+- time period
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rvol - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # rvol
 

@@ -1,8 +1,34 @@
 ---
 title: Quantitative Analysis
-keywords: [quantitative, analysis, qa, q/a, daily, indicators, signals, average, summary, normality, line, hist, cdf, bw, acf, qqplot, rolling, spread, quantile, skew, kurtosis, var, es, sh, so, om, raw, decompose, cusum, capm, beta, histogram, auto-correlation, value, median, crypto, forex, fx, cryptocurrency, stocks, examples, how to]
-description: This guide introduces the Quantitative Analysis menu, which is common across many sections of the OpenBB Terminal, briefly describes the features, and provides examples in context.
+description: The page provides an overview of Quantitative Analysis in finance and
+  its application in different asset classes like Crypto, Forex, and Stocks. It also
+  highlights its usage in making profitable investment decisions, the use of terminal
+  commands for analyzing data, and the export of data for further analysis.
+keywords:
+- Quantitative analysis
+- Asset classes
+- Finance
+- Crypto
+- Forex
+- Stocks
+- Terminal
+- Financial quantitative analysis
+- Investment decisions
+- Statistics
+- Metrics
+- Risk
+- Plots
+- Investors
+- Quantifiable statistics
+- Command summary
+- Line chart
+- Target column
+- Observation window
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quantitative Analysis - Common - Data Available | OpenBB Terminal Docs" />
 
 <a href = "https://www.investopedia.com/terms/q/quantitativeanalysis.asp" target="_blank" rel="noreferrer noopener">Quantitative analysis (QA)</a> in finance is an approach that emphasizes mathematical and statistical analysis to help determine the value of a financial asset, such as a stock or option. The ultimate goal of financial quantitative analysis is to use quantifiable statistics and metrics to assist investors in making profitable investment decisions. Quantitative analysis is different from qualitative analysis, which looks at factors such as how companies are structured, the makeup of their management teams, and what their strengths and weaknesses are.
 

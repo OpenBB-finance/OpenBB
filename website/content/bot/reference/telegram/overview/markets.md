@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: markets
-description: OpenBB Telegram Command
+description: This documentation page is about the '/markets' command which allows
+  the user to retrieve a quick summary of current market conditions, including prices
+  of the largest ETFs, and movements of stocks relative to the SMA 200/50.
+keywords:
+- /markets command
+- market conditions overview
+- largest ETFs prices
+- stocks movements
+- SMA 200/50
+- Advancers / Decliners
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="markets - Overview - Telegram - Reference | OpenBB Bot Docs" />
 
 # markets
 

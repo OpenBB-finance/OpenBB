@@ -1,7 +1,20 @@
 ---
 title: balance
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on how to display balance using a
+  Python script. It features usage instructions, parameter descriptions, and particularities
+  with the 'vs' parameter representing the quote currency.
+keywords:
+- balance
+- coin
+- currency
+- USDT
+- python script
+- quote currency
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balance - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # balance
 

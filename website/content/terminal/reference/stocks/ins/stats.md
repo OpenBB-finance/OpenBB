@@ -1,7 +1,27 @@
 ---
 title: stats
-description: OpenBB Terminal Function
+description: A documentation page detailing the usage and parameters of the 'stats'
+  function within the OpenInside software - used for filtering data using a selected
+  ticker.
+keywords:
+- OpenInsider
+- stats function
+- ticker data
+- filter data
+- software documentation
+- data visualization
+- docusaurus
+- python
+- parameters
+- hyperlinks
+- datarows
+- limit
+- Usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stats - Ins - Stocks - Reference | OpenBB Terminal Docs" />
 
 # stats
 

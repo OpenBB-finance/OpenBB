@@ -1,7 +1,22 @@
 ---
 title: heatmap
-description: OpenBB Terminal Function
+description: This page describes how to use the heatmap tool which provides an interactive
+  treemap of the SP 500 from finviz. It includes usage examples and a detailed description
+  of parameters.
+keywords:
+- heatmap tool
+- SP 500 heatmap
+- interactive treemap
+- finviz
+- usage examples
+- tool parameters
+- timeframe parameter
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="heatmap - Disc - Stocks - Reference | OpenBB Terminal Docs" />
 
 # heatmap
 

@@ -1,7 +1,18 @@
 ---
 title: all
-description: OpenBB Terminal Function
+description: This page provides insights on the 'all' exchange command, including
+  its usage and parameters. This command displays all the exchanges available.
+keywords:
+- all exchange command
+- show all exchanges
+- exchanges usage
+- command parameters
+- exchanges command documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="all - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
 # all
 

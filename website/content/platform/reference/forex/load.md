@@ -1,7 +1,38 @@
 ---
 title: load
-description: OpenBB Platform Function
+description: Documentation on how to load Forex Historical Price data using different
+  providers and parameters, and what type of data to expect in return, including date,
+  volume, price, and possible warnings.
+keywords:
+- Forex Historical Price
+- Forex data
+- load function
+- price data
+- date format
+- data provider
+- fmp
+- polygon
+- symbol pair
+- data granularity
+- timespan of data
+- sort order
+- adjusted data
+- Volume Weighted Average Price
+- open price
+- high price
+- low price
+- close price
+- start date
+- end date
+- results
+- warnings
+- chart object
+- metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Forex - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -131,4 +162,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

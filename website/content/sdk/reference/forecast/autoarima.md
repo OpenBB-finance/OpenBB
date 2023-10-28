@@ -1,7 +1,27 @@
 ---
 title: autoarima
-description: OpenBB SDK Function
+description: This documentation page discusses the use of the automatic ARIMA (AutoARIMA)
+  model for forecasting. It provides a detailed insight into the parameters involved,
+  the return types, model structures, and links to the source code. This page is specifically
+  valuable for individuals seeking understanding of OpenBB's financial forecasting
+  abilities based on time series data using Python.
+keywords:
+- ARIMA
+- Forecasting
+- AutoARIMA
+- OpenBB
+- TimeSeries
+- Python
+- Source Code
+- Parameters
+- Returns
+- Model
+- Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoarima - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

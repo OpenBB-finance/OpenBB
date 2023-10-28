@@ -1,8 +1,24 @@
 ---
 title: Portfolio Optimization
-keywords: [portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report, how to, example, mean variance, risk parity, hierarchical cluster]
-description: A brief introduction and explanation of the Portfolio Optimization menu. It allows the user to apply advanced optimization techniques to a portfolio of any type and of any size.
+description: This documentation pages describes the portfolio optimization menu which allows the user to apply advanced optimization techniques to a portfolio of any type and of any size.
+keywords:
+- portfolio
+- portfolio optimization
+- returns
+- drawdown
+- optimization
+- sharpe ratio
+- risk
+- diversification
+- correlation
+- risk parity
+- hierarchical
+- weighted
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Portfolio Optimization - Portfolio - Data Available | OpenBB Terminal Docs" />
 
 The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank" rel="noreferrer noopener">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank" rel="noreferrer noopener">risk parity models</a> and <a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank" rel="noreferrer noopener">hierarchical clustering models</a>. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.
 

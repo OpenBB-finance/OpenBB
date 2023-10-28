@@ -1,8 +1,29 @@
 ---
 title: Dark Pools and Short Data
-keywords: [darkpools, dps, dark, pools, dp, short, shorts, naked, selling, sales, SEC, disclosure, ATS, OTC, OTCE, NMS, borrowed, shorted, ftd, fails-to-deliver, volume, how to, usage, examples, CTB, POS, spos, psi, hsi]
-description: The Introduction to Dark Pools & Short Data, within the Stocks menu, which explains how to use the menu and provides a brief explanation of the features.
+description: This is SEO data for a documentation page for the DPS sub-module within
+  the OpenBB Terminal. The page provides details on using commands for US-listed equities
+  with data reported to FINRA. It covers various areas of technical trading such as
+  settlement schedules, market flow, and volume dynamics, and specifically emphasizes
+  the use of the module in conducting dark pools and shorts research.
+keywords:
+- DPS sub-module
+- OpenBB terminal
+- US-listed equities
+- FINRA
+- Interactive Brokers
+- dark pools and shorts
+- short volume
+- dark pool position
+- technical trading
+- settlement schedules
+- market flow
+- volume dynamics
+- stock market research
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dark Pools and Short Data - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The `DPS` sub-module contains the commands from the [Dark Pools and Short Data menu](https://docs.openbb.co/terminal/usage/intros/stocks/dark-pool-shorts) within the OpenBB Terminal. These functions are meant to supplement other research on technical trading factors, settlement schedules, market flow, and volume dynamics. Commands are specifically for US-listed equities, and the data is reported to [FINRA](https://www.finra.org/#/) on a lagging schedule. Some will also have a `_chart` companion.
 

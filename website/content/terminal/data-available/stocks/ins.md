@@ -1,8 +1,21 @@
 ---
 title: Insider Trading
-keywords: [Executive, director, directors, CEO, CFO, CIO, COO, DIR, sell, buy, SEC, disclosure, disclose, stats, act, lins, filter, view, set, lcb, lpsb, lit, lip, blip, blop, blcp, lis, blis, blos, blcs, topt, toppw, toppm, tipt, tippw, tippm, tist, tispw, tispm, openinsider, finviz, business, stocks, options, insider trading, insider, how to, example, retail trade, guided missiles]
-description: This guide introduces the Insider Trading submenu, within the Stocks menu, by briefly explaining the features and how to use them, and showing examples in context.
+description: This documentation page features the insider trading menu which gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions
+keywords:
+- SEC form 4 filings
+- insider
+- insider trading
+- insider activity
+- stock screener
+- reporting
+- transactions
+- trade type
+- trade date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Insider Trading - Stocks - Data Available | OpenBB Terminal Docs" />
 
 The Insider Trading menu gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions. Navigate to the Insider Trading submenu from the `stocks` menu by typing `ins` and pressing `enter`. The features in this menu function only for companies registered with the SEC, that also trade in public markets.
 

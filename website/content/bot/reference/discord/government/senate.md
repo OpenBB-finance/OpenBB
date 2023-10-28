@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: senate
-description: OpenBB Discord Command
+description: This metadata is about the '/gov senate' command in Docusaurus. It allows
+  the users to view recent trades of senate members for a specific stock ticker. The
+  user can apply the ticker of their choice.
+keywords:
+- senate
+- trades
+- senate members
+- ticker
+- gov senate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="senate - Government - Discord - Reference | OpenBB Bot Docs" />
 
 # senate
 

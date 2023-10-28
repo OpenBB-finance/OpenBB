@@ -1,7 +1,19 @@
 ---
 title: fr
-description: OpenBB Terminal Function
+description: This documentation page explains how to use the 'fr' command to display
+  an asset's fundraising details on Messari.io. The command requires no parameters.
+keywords:
+- fundraising
+- details
+- asset
+- Messari.io
+- parameters
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fr - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # fr
 

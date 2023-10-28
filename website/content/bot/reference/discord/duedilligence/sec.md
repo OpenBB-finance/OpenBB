@@ -1,8 +1,29 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sec
-description: OpenBB Discord Command
+description: The sec documentation page details how to use a feature for retrieving
+  the latest SEC filings related to a specific ticker symbol. Information available
+  includes company financials, registration statements, and periodic reports such
+  as 10-Ks, 8-Ks, and 10-Qs. Useful for investors and analysts needing current data
+  on a company's financial performance or other corporate documents.
+keywords:
+- sec command
+- retrieve SEC filings
+- financial performance
+- corporate documents
+- stock ticker
+- company financials
+- 10-Ks
+- 8-Ks
+- 10-Qs
+- registration statements
+- investors
+- analysts
+- periodic reports
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sec - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # sec
 

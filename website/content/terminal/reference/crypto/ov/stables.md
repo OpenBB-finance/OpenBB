@@ -1,7 +1,22 @@
 ---
 title: stables
-description: OpenBB Terminal Function
+description: This page offers detailed information about stablecoins ranked by market
+  capitalization. It explains the usage and parameters of the 'stables' command to
+  sort and display relevant data about different stablecoins.
+keywords:
+- Stablecoins
+- Market Capitalization
+- Cryptocurrency
+- US Dollar
+- Gold
+- Parameters
+- Data Display
+- Sorting Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stables - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # stables
 

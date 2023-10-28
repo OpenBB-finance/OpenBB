@@ -1,8 +1,34 @@
 ---
 title: Forecast
-keywords: [machine learning, statistics, artificial intelligence, deep learning, neural networks, time series, research, feature engineering, hyperparameters, ai, ml, openbb terminal, darts, u8, u8darts, pytorch, regression, linear, models]
-description: An introduction to the OpenBB Terminal's Forecast menu and machine learning toolkit.
+description: A comprehensive guide exploring the Forecast menu, a machine learning
+  toolkit providing high-level components for quickly providing state-of-the-art results.
+  Features include Data Loading, Data Exploration, Feature Engineering, Time Series
+  Forecasting, Anomaly Detection, and Miscellaneous AI Tools. This page presents real-world
+  examples and workflows for beginners and advanced users.
+keywords:
+- Docusaurus
+- SEO
+- Metadata
+- Search Engine Optimization
+- Marketing
+- Web page
+- Content
+- Forecast menu
+- Machine learning toolkit
+- Time Series Forecasting
+- Anomaly Detection
+- Feature Engineering
+- Data Exploration
+- Data Loading
+- Dataset
+- AI Tools
+- Whisper
+- YouTube
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forecast - Data Available | OpenBB Terminal Docs" />
 
 The Forecast menu is a machine learning toolkit that provides practitioners with high-level components that can quickly provide state-of-the-art results, be it with with classical or deep learning models, while also providing researchers with low-level components that can be mixed, matched and fine tuned to build new approaches and custom tuned models. Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 

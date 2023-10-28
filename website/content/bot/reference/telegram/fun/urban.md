@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: urban
-description: OpenBB Telegram Command
+description: Page documenting the 'urban' command to search word definitions on Urban
+  Dictionary. Includes usage, parameters and examples.
+keywords:
+- Urban Dictionary
+- Search word
+- Definition
+- Command
+- Parameters
+- Examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="urban - Fun - Telegram - Reference | OpenBB Bot Docs" />
 
 # urban
 

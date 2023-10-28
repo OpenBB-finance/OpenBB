@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ir
-description: OpenBB Telegram Command
+description: The /ir command enables the user to retrieve the issuance rate of the
+  top crypto protocols, helping to understand supply dynamics and inform investment
+  decisions.
+keywords:
+- crypto protocols
+- issuance rate
+- investment decisions
+- /ir command
+- supply dynamics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ir - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
 # ir
 

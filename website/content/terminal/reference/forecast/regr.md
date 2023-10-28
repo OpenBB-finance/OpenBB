@@ -1,7 +1,25 @@
 ---
 title: regr
-description: OpenBB Terminal Function
+description: This page provides a comprehensive guide on how to carry out a regression
+  forecast using regr function in darts.models. Parameters such as past covariates,
+  prediction days, train split, target dataset, and output chunk length are explained
+  in great detail. Examples and usage documentation are also provided to aid in understanding.
+keywords:
+- regression forecast
+- darts.models
+- forecasting model
+- regr function
+- regr parameters
+- past covariates
+- prediction days
+- train split
+- forecast chunk length
+- forecasting tool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="regr - Forecast - Reference | OpenBB Terminal Docs" />
 
 # regr
 

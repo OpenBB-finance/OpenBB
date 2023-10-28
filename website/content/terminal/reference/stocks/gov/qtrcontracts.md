@@ -1,7 +1,24 @@
 ---
 title: qtrcontracts
-description: OpenBB Terminal Function
+description: The qtrcontracts page provides a comprehensive guide on how to view and
+  analyze government contracts data using Quiver Quantitative. The guide includes
+  usage parameters, examples, and options for analysis such as total contracts, highest
+  sloped contracts, and highest decreasing slopes.
+keywords:
+- qtrcontracts
+- government contracts
+- Quiver Quantitative
+- stock market analysis
+- tickers
+- total contracts
+- highest sloped contracts
+- highest decreasing slopes
+- raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qtrcontracts - Gov - Stocks - Reference | OpenBB Terminal Docs" />
 
 # qtrcontracts
 

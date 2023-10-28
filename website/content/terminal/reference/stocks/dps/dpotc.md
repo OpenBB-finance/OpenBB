@@ -1,7 +1,21 @@
 ---
 title: dpotc
-description: OpenBB Terminal Function
+description: dpotc is a command that displays a barchart of dark pool (ATS) and OTC
+  (Non ATS) data. With this command, you can visually interpret financial data efficiently.
+keywords:
+- dpotc
+- dark pool data
+- OTC data
+- barchart display
+- financial data visualization
+- Non ATS
+- ATS
+- FINRA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="dpotc - Dps - Stocks - Reference | OpenBB Terminal Docs" />
 
 # dpotc
 

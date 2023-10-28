@@ -1,7 +1,21 @@
 ---
 title: coint
-description: OpenBB Terminal Function
+description: The Coint page provides users with an explanation and guideline on how
+  to show co-integration between two timeseries. It includes parameter descriptions,
+  usage, and examples.
+keywords:
+- coint
+- co-integration
+- timeseries
+- plot
+- significant
+- parameters
+- examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="coint - Econometrics - Reference | OpenBB Terminal Docs" />
 
 # coint
 

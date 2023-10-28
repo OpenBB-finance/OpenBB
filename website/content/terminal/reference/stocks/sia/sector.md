@@ -1,7 +1,19 @@
 ---
 title: sector
-description: OpenBB Terminal Function
+description: A documentation page outlining how-to instructions for setting sectors
+  in Python. It includes usage, parameters, and choices.
+keywords:
+- Python instructions
+- Setting sectors
+- Command-line arguments
+- Command Usage
+- Parameters
+- Programming documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sector - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # sector
 

@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: indexpc
-description: OpenBB Telegram Command
+description: The page provides an understanding for the /indexpc command and how it
+  can be used to retrieve the Index Put/Call Ratio from market-harmonics.com. The
+  relevance of this ratio in identifying the market sentiment for making tactical
+  trading decisions is also explained.
+keywords:
+- indexpc command
+- market sentiment
+- Index Put/Call Ratio
+- trading decisions
+- market-harmonics.com
+- bearish market conditions
+- bullish market conditions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="indexpc - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # indexpc
 

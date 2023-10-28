@@ -1,7 +1,29 @@
 ---
 title: comsplit
-description: OpenBB Platform Function
+description: This documentation page provides information about the 'comsplit' function
+  that fetches a Stock Split Calendar. It includes parameters to be set, what the
+  function returns, and the format of the data.
+keywords:
+- comsplit
+- documentation
+- Stock Split Calendar
+- start_date
+- end_date
+- provider
+- results
+- warnings
+- chart
+- metadata
+- data format
+- date
+- symbol
+- numerator
+- denominator
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="comsplit - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -69,4 +91,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

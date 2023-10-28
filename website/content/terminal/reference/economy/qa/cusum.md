@@ -1,7 +1,19 @@
 ---
 title: cusum
-description: OpenBB Terminal Function
+description: This page provides a detailed explanation on the usage, parameters and
+  functionality of the Cumulative Sum Algorithm (CUSUM) used for detecting abrupt
+  changes in data.
+keywords:
+- cusum
+- cumulative sum algorithm
+- data change detection
+- threshold
+- drift
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cusum - Qa - Economy - Reference | OpenBB Terminal Docs" />
 
 # cusum
 

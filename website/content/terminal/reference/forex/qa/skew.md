@@ -1,7 +1,21 @@
 ---
 title: skew
-description: OpenBB Terminal Function
+description: Learn about the concept of skewness as a measure of asymmetry, its relevance
+  in symmetric distribution and normal distribution, and the 'skew' command along
+  with its parameters and usage.
+keywords:
+- skewness
+- symmetric distribution
+- asymmetry
+- normal distribution
+- distortion
+- skew command
+- command parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="skew - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # skew
 

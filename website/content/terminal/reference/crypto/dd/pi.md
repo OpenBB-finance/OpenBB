@@ -1,7 +1,22 @@
 ---
 title: pi
-description: OpenBB Terminal Function
+description: This page provides a command that displays detailed project information
+  of crypto assets. The command showcases project details, technology details, public
+  repositories and disclosed vulnerabilities with examples in Python.
+keywords:
+- crypto assets
+- project information
+- technology details
+- public repositories
+- disclosed vulnerabilities
+- python
+- Bitcoin
+- BTC
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pi - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # pi
 

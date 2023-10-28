@@ -1,7 +1,25 @@
 ---
 title: macro
-description: OpenBB Terminal Function
+description: Learn how to retrieve and manipulate a variety of macro data from numerous
+  countries using various parameters and transformations. The page provides examples
+  and details of the functionalities.
+keywords:
+- macro data
+- Gross Domestic Product
+- Treasury Yields
+- Employment figures
+- Government components
+- Consumer and Producer Indices
+- EconDB
+- macro parameters
+- data transformation
+- macro programming
+- currency conversion
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="macro - Economy - Reference | OpenBB Terminal Docs" />
 
 # macro
 

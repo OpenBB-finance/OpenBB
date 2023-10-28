@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: holidays
-description: OpenBB Telegram Command
+description: Know the upcoming holidays with the /holidays command. Retrieve a list
+  of market holidays with respective dates and details like their national status.
+  Stay informed with the /holidays command.
+keywords:
+- holidays
+- market holidays
+- upcoming holidays
+- national holidays
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holidays - Discovery - Telegram - Reference | OpenBB Bot Docs" />
 
 # holidays
 

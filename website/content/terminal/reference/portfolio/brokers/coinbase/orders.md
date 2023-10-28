@@ -1,7 +1,22 @@
 ---
 title: orders
-description: OpenBB Terminal Function
+description: The page explains how open orders can be listed. It provides information
+  on usage and parameters such as limit, sortby, and reverse.
+keywords:
+- orders
+- open orders
+- parameters
+- limit
+- sortby
+- reverse
+- descending order
+- ascending order
+- raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="orders - Coinbase - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # orders
 

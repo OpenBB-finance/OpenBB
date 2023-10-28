@@ -1,8 +1,26 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sec
-description: OpenBB Telegram Command
+description: The documentation explains the 'sec' command for retrieving the latest
+  SEC filings related to a specified ticker symbol, which can include various types
+  of company financials. A valuable tool for investors and analysts requiring the
+  latest financial information or corporate documents
+keywords:
+- SEC filings
+- ticker symbol
+- stock ticker
+- financial performance
+- corporate documents
+- 10-Ks
+- 8-Ks
+- 10-Qs
+- analysts
+- investors
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="sec - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # sec
 

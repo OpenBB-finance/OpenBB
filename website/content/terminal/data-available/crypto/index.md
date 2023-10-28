@@ -1,7 +1,32 @@
 ---
 title: Cryptocurrency
-keywords: [crypto, web3, nft, blockchain, cryptocurrency, how to, example, sub-menu, menu]
-description: The Introduction to Cryptocurrency explains how to use the Cryptocurrency menu and provides a brief description of its sub-menus such as due diligence, DeFi, discovery, NFTs, and Onchain.
+description: Documentation page detailing how to use the Cryptocurrency menu providing
+  trending cryptocurrency insights, researching specific coins, and details on performing
+  technical and quantitative analysis, as well as providing access to onchain information.
+  Includes sub-menus for in-depth discovery, overview, onchain analysis, Defi, NFTs
+  and due diligence. Examples provided for navigating through features.
+keywords:
+- Cryptocurrency
+- NFT
+- Defi
+- technical analysis
+- quantitative analysis
+- onchain information
+- cryptocurrency analysis
+- coin research
+- crypto market
+- forecasts
+- Decentralized Finance
+- Non Fungible Tokens
+- crypto due diligence
+- Ethereum
+- Bitcoin
+- blockchain transactions
+- OpenSea NFT
+- crypto news sentiment
+- crypto project roadmap
+- crypto market overview
+- Altcoin season
 ---
 
 The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/usage/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/usage/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),

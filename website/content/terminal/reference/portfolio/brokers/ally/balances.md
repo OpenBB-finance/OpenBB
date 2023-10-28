@@ -1,7 +1,21 @@
 ---
 title: balances
-description: OpenBB Terminal Function
+description: Learn about the balances command and its usage in marketing accounting.
+  No parameters are involved in this command's application.
+keywords:
+- balances
+- marketing
+- account balance
+- command
+- usage
+- parameters
+- documentation
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="balances - Ally - Brokers - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # balances
 

@@ -1,7 +1,26 @@
 ---
 title: games
-description: OpenBB Terminal Function
+description: This page provides a list of top blockchain games with sorting options
+  by Name, Daily Users, and Daily Volume. Use this command to discover the most popular
+  and lucrative blockchain games.
+keywords:
+- blockchain
+- blockchain games
+- crypto games
+- daily volume
+- daily users
+- sorting
+- top games
+- Splinterlands
+- PancakeSwap
+- Alien Worlds
+- Axie Infinity
+- OpenSea
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="games - Disc - Crypto - Reference | OpenBB Terminal Docs" />
 
 # games
 

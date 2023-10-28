@@ -1,7 +1,23 @@
 ---
 title: macd
-description: OpenBB Terminal Function
+description: Explore the MACD page to understand the use and parameters of the Moving
+  Average Convergence Divergence (MACD). Learn about the significance of high and
+  low MACD values, buy and sell signals, and more.
+keywords:
+- MACD
+- Moving Average Convergence Divergence
+- Exponential Moving Averages
+- Signal line
+- Trend changes
+- Overbought conditions
+- Oversold conditions
+- Buy signal
+- Sell signal
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="macd - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # macd
 

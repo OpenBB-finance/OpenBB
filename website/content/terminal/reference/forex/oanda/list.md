@@ -1,7 +1,19 @@
 ---
 title: list
-description: OpenBB Terminal Function
+description: This page contains information on how to list the order history using
+  specific parameters such as order state and limit retrieval. It provides guidance
+  on the usage and parameters to maximize functionality.
+keywords:
+- list order history
+- Usage
+- parameters
+- state order
+- limit order retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="list - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
 # list
 

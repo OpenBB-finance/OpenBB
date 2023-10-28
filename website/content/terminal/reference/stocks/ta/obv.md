@@ -1,7 +1,22 @@
 ---
 title: obv
-description: OpenBB Terminal Function
+description: Learn about On Balance Volume (OBV), a cumulative total of the up and
+  down volume. Understand how to interpret OBV and its applications in the market
+  trend analysis. No parameters required for this command.
+keywords:
+- On Balance Volume
+- up and down volume
+- market trend analysis
+- OBV
+- price moves
+- non-confirmed move
+- strong trend
+- market is not trending
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="obv - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # obv
 

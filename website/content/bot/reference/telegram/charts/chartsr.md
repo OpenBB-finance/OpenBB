@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chartsr
-description: OpenBB Telegram Command
+description: The '/chartsr' command page provides insights on how the command can
+  be utilized by the user to retrieve data on support and resistance levels for the
+  given ticker. This can significantly improve their trading decisions.
+keywords:
+- chartsr command
+- support and resistance levels
+- ticker trading
+- trade decision making
+- stock ticker
+- trading intervals
+- AMC
+- 1d interval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chartsr - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
 # chartsr
 

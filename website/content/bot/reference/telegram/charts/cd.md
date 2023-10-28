@@ -1,8 +1,25 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cd
-description: OpenBB Telegram Command
+description: This documentation page provides an understanding of how to use the 'cd'
+  command to retrieve daily candlestick chart for a particular stock ticker or coin.
+  Instructions for usage and examples are provided.
+keywords:
+- cd command
+- candlestick chart
+- stock ticker
+- coin
+- opening price
+- closing price
+- highs and lows
+- performance analysis
+- AMD ticker
+- command usage
+- docusaurus documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cd - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
 # cd
 

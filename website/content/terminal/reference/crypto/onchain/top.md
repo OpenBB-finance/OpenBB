@@ -1,7 +1,22 @@
 ---
 title: top
-description: OpenBB Terminal Function
+description: This documentation page provides information on how to display the top
+  ERC20 tokens. It explains command usage, command parameters and provides examples.
+keywords:
+- ERC20 tokens
+- Ethplorer
+- Command usage
+- Command parameters
+- Crypto
+- Token price
+- Token holders
+- Token transfers
+- Token transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top - Onchain - Crypto - Reference | OpenBB Terminal Docs" />
 
 # top
 

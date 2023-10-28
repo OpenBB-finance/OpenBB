@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: futures
-description: OpenBB Discord Command
+description: Documentation for the futures command which allows users to retrieve
+  futures prices on the stock market. Helps in stock market automation.
+keywords:
+- futures command
+- retrieve futures prices
+- stock market automation
+- stock market commands
+- financial commands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures - General - Discord - Reference | OpenBB Bot Docs" />
 
 # futures
 

@@ -1,7 +1,23 @@
 ---
 title: cci
-description: OpenBB Terminal Function
+description: This page provides an in-depth analysis of the CCI - a tool designed
+  to spot initiating and concluding market trends. It clearly explains how to utilize
+  this tool, covering everything from normal trading range to identifying oversold
+  conditions and anticipating price correction.
+keywords:
+- CCI
+- market trends
+- overbought
+- oversold
+- price divergence
+- price correction
+- n_length
+- n_scalar
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cci - Ta - Crypto - Reference | OpenBB Terminal Docs" />
 
 # cci
 

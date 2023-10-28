@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: commands manage
-description: OpenBB Discord Command
+description: Documentation on how to use the 'commands manage' command for autoposts
+  on Discord. This includes its usage, parameters, and examples for removing or listing
+  feeds.
+keywords:
+- commands manage
+- autopost command
+- Discord autoposts
+- manage autoposts
+- remove autoposts
+- autopost parameters
+- autopost usage
+- list autoposts
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="commands manage - Autopost - Discord - Reference | OpenBB Bot Docs" />
 
 # commands manage
 
@@ -33,4 +47,3 @@ This command allows the user to remove an autopost webhook feed from the channel
 ```
 /autopost commands manage action:Remove
 ```
-

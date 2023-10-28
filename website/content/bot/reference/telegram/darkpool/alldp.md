@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: alldp
-description: OpenBB Telegram Command
+description: This page provides information on the alldp command which retrieves the
+  last 15 darkpool trades for the specified stock ticker. Basic guidelines on the
+  usage, parameters, and examples are also provided.
+keywords:
+- alldp command
+- darkpool trades
+- stock ticker
+- private stock trading
+- efficient trades
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alldp - Darkpool - Telegram - Reference | OpenBB Bot Docs" />
 
 # alldp
 

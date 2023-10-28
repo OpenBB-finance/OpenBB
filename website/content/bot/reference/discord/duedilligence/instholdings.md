@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: instholdings
-description: OpenBB Discord Command
+description: This page provides details on the instholdings command which retrieves
+  the top 15 institutional holdings for a given stock, as reported to the United States
+  Securities and Exchange Commission.
+keywords:
+- instholdings command
+- institutional holdings
+- stock
+- United States Securities and Exchange Commission
+- SEC
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="instholdings - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # instholdings
 

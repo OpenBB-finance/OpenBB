@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topvol
-description: OpenBB Discord Command
+description: The page provides detailed instructions on how to use the 'topvol' command
+  to retrieve the Top 15 Highest stock options volumes for trading. The guide also
+  gives examples and usage for better understanding.
+keywords:
+- topvol
+- stock options volumes
+- most liquid options
+- /op topvol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topvol - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # topvol
 

@@ -1,7 +1,22 @@
 ---
 title: closetrade
-description: OpenBB Terminal Function
+description: Documentation for the command 'closetrade', which allows for closing
+  trades by ID. It enables specification of the number of units to close, with relevant
+  parameters detailed.
+keywords:
+- closetrade
+- trade
+- orderID
+- units
+- close trade
+- parameters
+- trade ID
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="closetrade - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
 # closetrade
 

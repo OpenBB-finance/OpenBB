@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: wk
-description: OpenBB Telegram Command
+description: "This page provides the documentation of 'flowsum wk' command. It explains\
+  \ how to retrieve the top flow per week for Calls and Puts by stock for understanding\
+  \ the market\u2019s sentiment towards a certain stock. Parameters and usage are\
+  \ clearly detailed."
+keywords:
+- flowsum wk
+- stock market sentiment
+- Put and Call analysis
+- top flow retrieval
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wk - Flowsum - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flowsum wk
 

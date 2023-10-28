@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: top
-description: OpenBB Telegram Command
+description: The page provides instructions on using the 'flowsum top' command to
+  retrieve the daily top flow for Calls and Puts by stock, offering a snapshot of
+  market sentiment towards a specific stock and the overall market.
+keywords:
+- flowsum top command
+- retrieve daily top flow
+- Calls and Puts by stock
+- market sentiment
+- stock market overview
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="top - Flowsum - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flowsum top
 

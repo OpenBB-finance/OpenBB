@@ -1,7 +1,22 @@
 ---
 title: cg
-description: OpenBB Terminal Function
+description: This document details the Center of Gravity indicator used to anticipate
+  future price movements and to speculate the next price change of an asset, providing
+  parameter descriptions, usage, and a demonstrative chart.
+keywords:
+- Center of Gravity
+- COG
+- price movements
+- oscillator
+- market trend
+- price reversal
+- asset price speculation
+- technical analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cg - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # cg
 

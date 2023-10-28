@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: cw
-description: OpenBB Discord Command
+description: This page explains the usage of the 'cw' command, which enables the user
+  to retrieve a weekly candlestick chart for a specified ticker or coin. This chart
+  displays valuable trading information, including opening and closing prices, high
+  and low prices, and overall trading volume.
+keywords:
+- cw command
+- weekly candlestick chart
+- stock ticker
+- trading volume
+- opening and closing prices
+- high and low prices
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cw - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # cw
 

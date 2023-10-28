@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chartfib
-description: OpenBB Discord Command
+description: On this page, learn how to use the chartfib command in order to retrieve
+  Fibonacci levels for a given ticker. This information can help identify potential
+  support and resistance levels, ultimately aiding in identifying potential entry
+  and exit points in the stock market.
+keywords:
+- chartfib command
+- Fibonacci levels
+- ticker
+- stock market
+- support and resistance levels
+- potential entry and exit points
+- Stock Ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="chartfib - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # chartfib
 

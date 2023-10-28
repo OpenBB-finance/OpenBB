@@ -1,7 +1,24 @@
 ---
 title: performance
-description: OpenBB Terminal Function
+description: This page outlines the parameters and usage for retrieving performance
+  data of various stocks, using predefined filter presets. It provides different ways
+  of sorting and limiting the data output.
+keywords:
+- performance data
+- filter presets
+- stock analysis
+- top performers
+- overbought stocks
+- oversold stocks
+- stock sorting
+- stock scanning
+- stock volatility
+- stock volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="performance - Screener - Stocks - Reference | OpenBB Terminal Docs" />
 
 # performance
 

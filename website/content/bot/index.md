@@ -1,22 +1,27 @@
 ---
 title: Introduction
 sidebar_position: 0
+description: OpenBB Bot - a chatbot providing access to high-quality financial data
+  for both individual investors and online communities on Discord and Telegram. The
+  bot provides actionable market data, including stock data, options, screeners, crypto,
+  and more.
 keywords:
-  [
-    getting started,
-    openbb,
-    discord,
-    telegram,
-    slack,
-    beginner guide,
-    how to use openbb bot,
-    introduction,
-    intro,
-    how-to,
-    how to,
-    openbb bot,
-  ]
-description: OpenBB Bot is a chatting bot for investment research that provides access to high quality financial data for both individual investors and online communities.
+- OpenBB Bot
+- chatting bot
+- Discord
+- Telegram
+- financial data
+- individual investors
+- online communities
+- stock data
+- options
+- screeners
+- darkpool info
+- crypto
+- nft
+- short data
+- market data
+- informed investors
 ---
 
 # Introduction

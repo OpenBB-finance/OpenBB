@@ -1,7 +1,24 @@
 ---
 title: income
-description: OpenBB Platform Function
+description: This page provides detailed information about income statements and the
+  parameters required to optimize the retrieval of financial data for different providers.
+  It also covers return data and warnings.
+keywords:
+- income statement
+- SEO optimization
+- financial data
+- keywords
+- docusaurus
+- financial performance
+- fmp
+- intrinio
+- polygon
+- metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="income - Fa - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -241,4 +258,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

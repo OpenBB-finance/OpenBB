@@ -1,7 +1,22 @@
 ---
 title: pairs
-description: OpenBB Terminal Function
+description: The page gives a detailed overview on how to use the 'pairs' function
+  for showing available trading pairs on Coinbase. It includes usage code, parameters
+  description, and some examples.
+keywords:
+- pairs function
+- Coinbase
+- trading pairs
+- function usage
+- parameters description
+- crypto trading
+- base_currency
+- quote_currency
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pairs - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # pairs
 

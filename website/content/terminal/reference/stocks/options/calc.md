@@ -1,7 +1,22 @@
 ---
 title: calc
-description: OpenBB Terminal Function
+description: Learn about 'calc', a tool to calculate profit or loss for given option
+  settings for strikes, premium, and selling contracts with default and optional preferences.
+  Include examples and a profit chart for better understanding.
+keywords:
+- calc
+- profit calculator
+- option settings
+- put option
+- sell option
+- strike price
+- premium price
+- profit chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="calc - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # calc
 

@@ -1,7 +1,20 @@
 ---
 title: country
-description: OpenBB Terminal Function
+description: This page provides information on how to set a country for funds. It
+  explains the usage and parameters needed for this process, primarily focusing on
+  the country selection parameter.
+keywords:
+- country
+- funds
+- usage
+- parameters
+- name
+- select
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="country - Funds - Reference | OpenBB Terminal Docs" />
 
 # country
 

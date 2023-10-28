@@ -1,7 +1,25 @@
 ---
 title: season
-description: OpenBB SDK Function
+description: The page provides details on the 'openbb.forecast.season_chart' function.
+  This function is used to plot seasonality from a dataset. It includes information
+  about the parameters, the return value, and a link to the source code.
+keywords:
+- openbb.forecast.season_chart
+- season chart
+- plot seasonality
+- dataset
+- Python
+- dataframe
+- time lag
+- max lag
+- confidence interval
+- external axes
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="season - Forecast - Reference | OpenBB SDK Docs" />
 
 # season
 
@@ -35,4 +53,3 @@ openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: 
 This function does not return anything
 
 ---
-

@@ -1,8 +1,25 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: nftcollection
-description: OpenBB Telegram Command
+description: This page provides guidance on how to use the nftcollection command to
+  retrieve NFT data, including details such as owner, items number, total minted NFTs,
+  and more.
+keywords:
+- NFT
+- nftcollection
+- nft data retrieval
+- nft metadata
+- non-fungible token
+- crypto
+- cryptopunks
+- chart
+- floor price
+- sales
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nftcollection - Nft - Telegram - Reference | OpenBB Bot Docs" />
 
 # nftcollection
 

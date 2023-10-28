@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: maxpain
-description: OpenBB Telegram Command
+description: This page provides instructions on how to use the maxpain command to
+  retrieve the max pain on expiration date for any given stock. It is the most efficient
+  guide to using the maxpain feature for tracking a stock's strike price where maximum
+  financial losses may occur for the largest number of option holders.
+keywords:
+- maxpain command
+- max pain
+- stock options
+- strike price
+- expiration date
+- financial losses
+- option holders
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxpain - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # maxpain
 

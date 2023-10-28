@@ -1,7 +1,21 @@
 ---
 title: period
-description: OpenBB Terminal Function
+description: This page provides details on how to set the period parameter to define
+  the time frame as annual, quarterly, or trailing. Essential for marketing and SEO
+  strategies requiring data analysis within specific periods.
+keywords:
+- period
+- annual
+- quarterly
+- trailing
+- parameters
+- SEO
+- marketing
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="period - Sia - Stocks - Reference | OpenBB Terminal Docs" />
 
 # period
 

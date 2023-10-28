@@ -1,7 +1,29 @@
 ---
 title: cash
-description: OpenBB Terminal Function
+description: This documentation describes the 'cash' script which prints a complete
+  cash flow statement over time. It covers features including options for quarterly
+  or annual views, detailed financial factors such as accounts payable and net income,
+  and usage of the command-line interface. The data source is mentioned as Alpha Vantage.
+keywords:
+- cash flow statement
+- quarterly cash flow
+- annual cash flow
+- accounts payable
+- accounts receivable
+- net income
+- operating cash flow
+- investing activities
+- financing activities
+- Alpha Vantage source
+- Stock financial analysis
+- Command-line interface usage
+- Docusaurus page metadata
+- Parameter choices for cash script
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cash - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # cash
 

@@ -1,7 +1,20 @@
 ---
 title: mentions
-description: OpenBB Terminal Function
+description: The page provides details on how to plot weekly bars of stock's interest
+  over time with a python script. It includes usage and parameters like start date.
+keywords:
+- stock mentions
+- Python
+- Start Date Parameter
+- Interest over time
+- Google source
+- Weekly bars
+- Docusaurus SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="mentions - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # mentions
 

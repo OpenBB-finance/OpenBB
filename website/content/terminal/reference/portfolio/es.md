@@ -1,7 +1,22 @@
 ---
 title: es
-description: OpenBB Terminal Function
+description: This documentation page provides guidance on how to use the Expected
+  Shortfall (ES) function of the selected portfolio. It includes its usage, parameters
+  including distribution and percentile, and examples.
+keywords:
+- Expected Shortfall
+- ES function
+- portfolio
+- parameters
+- distribution
+- percentile
+- portfolio return
+- mean of portfolios
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="es - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # es
 

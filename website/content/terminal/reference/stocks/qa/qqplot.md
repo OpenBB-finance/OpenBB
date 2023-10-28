@@ -1,7 +1,18 @@
 ---
 title: qqplot
-description: OpenBB Terminal Function
+description: Discover the usage of QQ plot in Python to help with data visualization
+  of normal quantiles. This page provides information with no parameters required
+  to use it.
+keywords:
+- qqplot
+- normal quantiles
+- data visualization
+- python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qqplot - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # qqplot
 

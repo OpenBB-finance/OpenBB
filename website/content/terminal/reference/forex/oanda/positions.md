@@ -1,7 +1,17 @@
 ---
 title: positions
-description: OpenBB Terminal Function
+description: This documentation page provides information about the available positions,
+  along with usage instructions. The 'positions' command has no parameters.
+keywords:
+- Positions
+- Open Positions Information
+- Usage
+- No Parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="positions - Oanda - Forex - Reference | OpenBB Terminal Docs" />
 
 # positions
 

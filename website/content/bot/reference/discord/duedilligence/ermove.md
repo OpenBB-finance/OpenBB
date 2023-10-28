@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ermove
-description: OpenBB Discord Command
+description: The documentation page provides a detailed explanation of the ermove
+  command that allows users to fetch the implied stock move based on current option
+  prices. It also guides on using the stock ticker to retrieve this information.
+keywords:
+- ermove command
+- retrieve implied move
+- stock
+- option prices
+- stock movement measure
+- option's expiration
+- stock ticker
+- stock market
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ermove - Duedilligence - Discord - Reference | OpenBB Bot Docs" />
 
 # ermove
 

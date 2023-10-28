@@ -1,7 +1,26 @@
 ---
 title: bbands
-description: OpenBB Terminal Function
+description: Understand Bollinger Bands - an indicator of overbought or oversold conditions
+  in trading with parameters such as n_length, n_std, and s_mamode. The document includes
+  information on usage, parameters, and graphical representation.
+keywords:
+- Bollinger Bands
+- moving average
+- volatility
+- overbought
+- oversold
+- support
+- resistance
+- price target
+- bbands
+- n_length
+- n_std
+- s_mamode
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="bbands - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # bbands
 

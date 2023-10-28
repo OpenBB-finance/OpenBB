@@ -1,9 +1,27 @@
 ---
 title: Export data
 sidebar_position: 3
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Learn how to export financial data through the OpenBB Terminal in different
+  formats like XLSX, CSV, JSON, PNG, JPG, PDF, and SVG. Also learn to specify filename,
+  sheet name, and export directly into a chart.
+keywords:
+- OpenBB Terminal
+- financial data export
+- XLSX
+- CSV
+- JSON
+- PNG
+- JPG
+- PDF
+- SVG
+- filename specification
+- sheet name specification
+- export to chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Export data - Outputs - Usage | OpenBB Terminal Docs" />
 
 The OpenBB Terminal offers a variety of ways to export financial data. This can be through XLSX, CSV or JSON but also through PNG, JPG, PDF and SVG giving plenty of flexibility to export the data the way you desire.
 

@@ -1,16 +1,19 @@
 ---
 title: API Keys
 sidebar_position: 2
-description: API (Application Programming Interface) keys are access credentials for accessing data from a particular source. Learn how to set, manage, and access data APIs for the OpenBB Terminal.
-keywords: [api, keys, api keys, openbb terminal, data provider, data, free, alpha vantage, fred, iex, degiro, binance, coinglass, polygon, intrinio, sdk, alphavantage, bitquery, coinbase, databento, finnhub, FRED, github, glassnode, iex cloud, news API, robinhood, santiment, shroomdk, token terminal, tradier, whale alert]
+description: This documentation page describes how you can set your own API keys from each data vendor on OpenBB to leverage their datasets.
+keywords:
+- API keys
+- datasets
+- data vendors
+- subscription
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="API Keys - Data - Usage | OpenBB Terminal Docs" />
+
 API (Application Programming Interface) keys are access credentials for obtaining data from a particular data vendor. They are a string of random characters assigned, by the data provider, to an individual account.
-
-## Setting API keys through Hub (easy)
-
-Add instructions here
-
 
 ## Setting API keys through Terminal
 

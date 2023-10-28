@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: fees
-description: OpenBB Telegram Command
+description: Learn how the 'fees' function of the website provides users with the
+  fee rate of top crypto protocols on a specific date, allowing them to compare different
+  protocols' fees and make an informed decision about their crypto dealings.
+keywords:
+- fees
+- crypto protocols
+- compare fees
+- crypto decision
+- fee rate
+- crypto fee rate
+- protocol fees
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fees - Crypto - Telegram - Reference | OpenBB Bot Docs" />
 
 # fees
 

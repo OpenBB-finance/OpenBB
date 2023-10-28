@@ -1,7 +1,23 @@
 ---
 title: normality
-description: OpenBB Terminal Function
+description: This page provides information on normality tests, including usage, parameters,
+  and examples. It includes different statistical tests such as Kurtosis, Skewness,
+  Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov.
+keywords:
+- Normality tests
+- Normality Statistics
+- Kurtosis
+- Skewness
+- Jarque-Bera
+- Shapiro-Wilk
+- Kolmogorov-Smirnov
+- p-value
+- Statistic
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="normality - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # normality
 

@@ -1,7 +1,25 @@
 ---
 title: validators
-description: OpenBB Terminal Function
+description: The 'validators' documentation page provides detailed insights into Terra
+  validators, including how to sort and display data related to each validator. The
+  information includes Validator Name, Tokens Amount, Voting Power, Commission Rate,
+  Status, and Uptime.
+keywords:
+- validators
+- Terra validators
+- crypto
+- tokens amount
+- voting power
+- commission rate
+- validator status
+- uptime
+- Terra
+- Defi
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="validators - Defi - Crypto - Reference | OpenBB Terminal Docs" />
 
 # validators
 

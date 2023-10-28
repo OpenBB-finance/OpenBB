@@ -1,9 +1,30 @@
 ---
 title: Routines for Power Users
 sidebar_position: 5
-description: Learn how to set up and maintain scripts and routines in the OpenBB Terminal. These operations will help automate processes and repetitive tasks to save time and effort.
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: This documentation guides on running automated workflows in OpenBB by
+  introducing variables and arguments for routines. Explains about input variables,
+  relative time keyword variables, internal script variables and creating loops for
+  batch execution.
+keywords:
+- OpenBB
+- automated workflows
+- routines
+- arguments
+- variables
+- relative time keywords
+- internal script variables
+- loops
+- batch execution
+- OpenBBTutorial
+- Technical Analysis
+- Stock Tickers
+- Running Scripts
+- Executing Commands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Routines for Power Users - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

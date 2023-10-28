@@ -1,8 +1,17 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topvoletf
-description: OpenBB Telegram Command
+description: Learn how to use the topvoletf command to retrieve the Top 15 Highest
+  ETF options volumes for identifying the most liquid options for trading.
+keywords:
+- topvoletf
+- ETF options volumes
+- most liquid options
+- trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topvoletf - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # topvoletf
 

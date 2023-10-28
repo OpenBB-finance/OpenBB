@@ -1,7 +1,21 @@
 ---
 title: linregr
-description: OpenBB SDK Function
+description: Perform or display linear regression forecasting with OpenBB. The page
+  provides the function parameters and their explanations, as well as the return values.
+keywords:
+- linear regression
+- forecasting
+- OpenBB
+- data analysis
+- source code
+- parameters
+- returns
+- prediction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="linregr - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

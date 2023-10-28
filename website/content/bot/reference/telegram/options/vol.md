@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: vol
-description: OpenBB Telegram Command
+description: The documentation explores the 'vol' command used to retrieve a chart
+  of Options Volume by Strike for a specific ticker. Explains usage, parameters, and
+  provides examples.
+keywords:
+- vol command
+- Options Volume by Strike
+- ticker
+- expiry
+- stock ticker
+- Expiration Date
+- Market Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="vol - Options - Telegram - Reference | OpenBB Bot Docs" />
 
 # vol
 

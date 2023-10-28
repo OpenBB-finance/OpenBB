@@ -1,8 +1,27 @@
 ---
 title: Discovery
-keywords: [stocks, discovery, disc, menu, submenu, pipo, fipo, gainers, losers, ugs, gtech, active, ulc, asc, ford, arkord, upcoming, trending, lowfloat, hotpenny, rtat, divcal, dividends, short, trending, news, how to, usage, examples, filings, screener, overview]
-description: Introducing the Discovery menu, within the Stocks menu. This guide will empower the user to get the most out of this set of features.
+description: Documentation for the OpenBB SDK Disc module. The Disc module provides
+  programmatic access for Python to navigate the OpenBB Terminal, examples of functions
+  and modules aimed at stock trading operations.
+keywords:
+- OpenBB SDK Disc
+- Python
+- SDK
+- programmatic access
+- stock trading
+- terminal menus
+- code completion
+- IPO dates
+- ' Penny Stocks'
+- Top Gainers
+- Tech Stocks
+- Secure filings
+- Earnings Growth
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Discovery - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The Disc module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.disc`
 ​

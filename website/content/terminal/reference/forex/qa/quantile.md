@@ -1,7 +1,23 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: The page explores the concept of 'quantile' in statistical analysis,
+  focusing especially on its calculations, usage, parameters, and relation to 'median'
+  and distribution. A valuable resource for those interested in understanding and
+  applying observational data for better decision making.
+keywords:
+- quantile
+- distribution
+- median
+- observations
+- window length
+- descriptive statistics
+- quantile calculation
+- data analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantile - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # quantile
 

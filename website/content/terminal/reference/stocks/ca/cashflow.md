@@ -1,7 +1,20 @@
 ---
 title: cashflow
-description: OpenBB Terminal Function
+description: The documentation explains usage of the cashflow tool, which provides
+  yearly or quarterly cashflow statements for companies and allows for comparison
+  against similar companies.
+keywords:
+- cashflow statement
+- company financial data
+- financial comparison
+- quarterly financial data
+- yearly financial data
+- financial timeframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="cashflow - Ca - Stocks - Reference | OpenBB Terminal Docs" />
 
 # cashflow
 

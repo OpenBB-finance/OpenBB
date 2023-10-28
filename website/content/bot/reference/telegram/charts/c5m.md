@@ -1,8 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: c5m
-description: OpenBB Telegram Command
+description: The c5m command page details how to retrieve an intraday 5 minute chart
+  for a particular stock ticker. The chart serves as a valuable tool for technical
+  analysis and tracking short-term price movements.
+keywords:
+- c5m
+- intraday chart
+- 5 minute chart
+- ticker
+- candlestick chart
+- stock performance
+- technical analysis
+- short-term price movements
+- extended hours
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="c5m - Charts - Telegram - Reference | OpenBB Bot Docs" />
 
 # c5m
 

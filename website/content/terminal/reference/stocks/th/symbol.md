@@ -1,7 +1,21 @@
 ---
 title: symbol
-description: OpenBB Terminal Function
+description: The page offers insight into using the 'symbol' parameter in trading
+  commands. It serves as a guide to set the symbol for your trades using Python, detailing
+  its usage and parameters.
+keywords:
+- symbol trading
+- trade symbols
+- trading parameters
+- symbol selection
+- stock symbols
+- python trading commands
+- symbol choice
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="symbol - Th - Stocks - Reference | OpenBB Terminal Docs" />
 
 # symbol
 

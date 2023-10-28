@@ -1,7 +1,23 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This documentation page provides detailed information on how to load
+  stock tickers using various parameters for analysis. Users can customize their usage
+  through options like start and end dates, interval, pre/after market hours, load
+  monthly or weekly data, among others.
+keywords:
+- Stock Analysis
+- Load Stock Tickers
+- Investment Analysis
+- Financial Data
+- Stock Market
+- Yahoo Finance
+- Custom Stock Data
+- Intraday Stock
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

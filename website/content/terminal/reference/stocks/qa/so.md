@@ -1,7 +1,21 @@
 ---
 title: so
-description: OpenBB Terminal Function
+description: This page provides information on how to calculate the Sortino ratio
+  of a selected stock, including parameters for target return, adjusting the Sortino
+  ratio for comparison with the Sharpe ratio, and setting the rolling window length.
+keywords:
+- sortino ratio
+- stock analysis
+- target return
+- adjusted sortino ratio
+- rolling window length
+- sharpe ratio
+- investment strategy
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="so - Qa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # so
 

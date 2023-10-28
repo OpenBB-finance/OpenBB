@@ -1,7 +1,19 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This docusaurus page provides detailed information on how to load a stock
+  ticker to perform analysis, providing instructions on usage and descriptions of
+  various parameters.
+keywords:
+- stock ticker
+- load
+- stock analysis
+- usage instructions
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Dd - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

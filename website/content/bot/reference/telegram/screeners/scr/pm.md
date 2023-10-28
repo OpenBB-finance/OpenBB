@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: pm
-description: OpenBB Telegram Command
+description: The PM command page provides a guide for users to understand and use
+  the PM command to view the top pre-market gainers, losers, and most active stocks,
+  facilitating a comprehensive pre-market analysis.
+keywords:
+- pm command
+- pre-market gainers
+- pre-market losers
+- market movements
+- stock market
+- market opens
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="pm - Scr - Screeners - Telegram - Reference | OpenBB Bot Docs" />
 
 # pm
 

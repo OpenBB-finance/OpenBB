@@ -1,7 +1,18 @@
 ---
 title: weights
-description: OpenBB Terminal Function
+description: The page details the usage of the 'weights' parameter in viewing ETF
+  sector holdings. It also provides information about the parameters such as the minimum
+  positive float to display the sector and an option for raw data output.
+keywords:
+- ETF sector holdings
+- weights parameter
+- minimum positive float
+- raw data output
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="weights - Etf - Reference | OpenBB Terminal Docs" />
 
 # weights
 

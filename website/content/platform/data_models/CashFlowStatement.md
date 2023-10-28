@@ -1,7 +1,29 @@
 ---
 title: Cash Flow Statement
-description: OpenBB Platform Data Model
+description: This document helps understand how the standard models like CashFlowStatement,
+  CashFlowStatementQueryParams, and CashFlowStatementData are used to retrieve financial
+  data. It provides clear guidelines on how to use the query parameters to fetch data
+  from different finance data providers like fmp, intrinio, and polygon.
+keywords:
+- CashFlowStatement
+- CashFlowStatementQueryParams
+- CashFlowStatementData
+- Docusaurus
+- Python
+- financial models
+- economic data
+- query parameters
+- finance
+- financial reporting
+- financial data providers
+- fmp
+- intrinio
+- polygon
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Cash Flow Statement - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -186,4 +208,3 @@ CashFlowStatementQueryParams,
 </TabItem>
 
 </Tabs>
-

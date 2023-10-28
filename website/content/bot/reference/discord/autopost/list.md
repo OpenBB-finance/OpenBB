@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: list
-description: OpenBB Discord Command
+description: Learn about the 'autopost list' command which allows you to view all
+  webhook feeds associated with a channel set up for automatic posting. Find out how
+  and when it can be used, with examples provided.
+keywords:
+- autopost list
+- webhooks
+- automatic posting
+- channel
+- command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="list - Autopost - Discord - Reference | OpenBB Bot Docs" />
 
 # list
 

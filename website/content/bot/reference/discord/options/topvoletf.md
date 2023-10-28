@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topvoletf
-description: OpenBB Discord Command
+description: This documentation page provides an overview of the 'topvoletf' command.
+  This command retrieves the Top 15 Highest ETF options volumes, proving essential
+  for identifying the most liquid options for trading.
+keywords:
+- topvoletf
+- ETF options volumes
+- liquid options
+- options trading
+- command
+- trading data retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topvoletf - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # topvoletf
 

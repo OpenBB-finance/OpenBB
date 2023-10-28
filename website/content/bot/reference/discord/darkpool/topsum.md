@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topsum
-description: OpenBB Discord Command
+description: The documentation page is about the 'topsum' command, which retrieves
+  a total block and dark pool data summary. It also sums all darkpool prints and provides
+  a table of the largest data by symbol along with a comparison graph. This command
+  does not require any parameters.
+keywords:
+- topsum command
+- block and dark pool data summary
+- sum darkpool prints
+- largest data by symbol
+- comparison graph
+- command usage
+- no parameters command
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="topsum - Darkpool - Discord - Reference | OpenBB Bot Docs" />
 
 # topsum
 

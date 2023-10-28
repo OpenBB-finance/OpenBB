@@ -1,7 +1,21 @@
 ---
 title: autoces
-description: OpenBB SDK Function
+description: An in-depth look into OpenBB's autoces module that performs Automatic
+  Complex Exponential Smoothing on time series, particularly useful for stock market
+  prediction. It provides functionality for data forecasting and visualization.
+keywords:
+- forecasting
+- autoces
+- exponential smoothing
+- stock market prediction
+- timeseries analysis
+- OpenBB
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autoces - Forecast - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

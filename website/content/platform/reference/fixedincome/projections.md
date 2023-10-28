@@ -1,7 +1,29 @@
 ---
 title: projections
-description: OpenBB Platform Function
+description: Browse through this comprehensive guide on federal funds rate projections
+  inclusive of parameters, data, and returns. Useful commands and searches provided
+  for providers such as 'fred'. Includes python wordwrap for ease. Get details on
+  the target range, central tendencies and projection of rates.
+keywords:
+- projections
+- federal funds rate
+- target range
+- python wordwrap
+- parameters
+- provider
+- fred
+- long_run
+- returns
+- OBBject results
+- data
+- date
+- central tendency
+- projection of rates
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="projections - Fixedincome - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -82,4 +104,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

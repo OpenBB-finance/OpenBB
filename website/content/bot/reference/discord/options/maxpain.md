@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: maxpain
-description: OpenBB Discord Command
+description: The page provides information on the maxpain function that finds the
+  maximum pain on expiration date for a particular stock. It includes usage, parameters,
+  and examples.
+keywords:
+- Max Pain
+- Stock options
+- Expiration date
+- Option holders
+- Financial losses
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="maxpain - Options - Discord - Reference | OpenBB Bot Docs" />
 
 # maxpain
 

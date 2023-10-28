@@ -1,7 +1,28 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides comprehensive instructions on how to load stock tickers
+  to perform analysis. It highlights how to load Indian market stocks with '.NS' and
+  provides a link to the Yahoo finance available markets. The page features various
+  parameters to tailor analysis including adjustments for start and end dates, interval
+  times, and loading custom files.
+keywords:
+- Load stock ticker
+- Perform analysis
+- India stock market
+- .NS
+- Yahoo finance
+- Exchanges data providers
+- python
+- Parameters
+- Stock interval
+- Intraday stock minutes
+- Load monthly data
+- Load weekly data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # load
 

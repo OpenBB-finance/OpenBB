@@ -1,7 +1,22 @@
 ---
 title: rmv
-description: OpenBB Terminal Function
+description: This documentation page outlines the usage, parameters and examples for
+  the rmv command in the hedge. With rmv, you can efficiently remove one of the options
+  shown in the hedge or all of them.
+keywords:
+- rmv command
+- hedge options
+- remove option
+- stocks options
+- programming command
+- command usage
+- command parameters
+- command examples
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="rmv - Hedge - Options - Stocks - Reference | OpenBB Terminal Docs" />
 
 # rmv
 
@@ -29,7 +44,7 @@ rmv [-o OPTION [OPTION ...]] [-a]
 
 ```python
 2022 May 10, 09:32 (🦋) /stocks/options/hedge/ $ rmv Option A
-          Current Option Positions           
+          Current Option Positions
 ┏━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Type ┃ Hold ┃ Strike ┃ Implied Volatility ┃
 ┡━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

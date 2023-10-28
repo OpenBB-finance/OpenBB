@@ -1,8 +1,27 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: watchlist
-description: OpenBB Discord Command
+description: 'Learn how to use the watchlist command: add or remove stock tickers,
+  retrieve an overview on current price, high/low, volume and change; get quick access
+  to related data like flow, darkpool data, technical analysis and news.'
+keywords:
+- watchlist
+- command
+- stocks
+- ticker
+- add ticker
+- edit ticker
+- technical analysis
+- stock price
+- high/low
+- volume
+- change
+- darkpool data
+- stock news
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="watchlist - General - Discord - Reference | OpenBB Bot Docs" />
 
 # watchlist
 

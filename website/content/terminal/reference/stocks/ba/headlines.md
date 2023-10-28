@@ -1,7 +1,24 @@
 ---
 title: headlines
-description: OpenBB Terminal Function
+description: Provides information about how FinBrain Technologies collects financial
+  news headlines from numerous major sources to generate sentiment scores for over
+  4500 US stocks. It explores how they use deep learning algorithms for financial
+  analysis and prediction.
+keywords:
+- FinBrain
+- news headlines
+- financial news sources
+- sentiment scores
+- US stocks
+- deep learning algorithms
+- financial analysis
+- prediction
+- traders
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="headlines - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # headlines
 

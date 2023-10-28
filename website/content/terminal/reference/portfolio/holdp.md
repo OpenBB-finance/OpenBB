@@ -1,7 +1,19 @@
 ---
 title: holdp
-description: OpenBB Terminal Function
+description: A guide on how to use the holdp function to display holdings of assets
+  in percentage. Includes usage, parameters and additional options.
+keywords:
+- display holdings
+- assets percentage
+- holdp function
+- Holdings management
+- Portfolio management
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="holdp - Portfolio - Reference | OpenBB Terminal Docs" />
 
 # holdp
 

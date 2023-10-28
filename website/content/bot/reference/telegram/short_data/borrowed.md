@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: borrowed
-description: OpenBB Telegram Command
+description: The borrowed page outlines how to track changes in share borrowing using
+  a particular command. It is a handy tool for investors and traders, assisting with
+  comparison of broker fees and observing historic data of borrowed shares.
+keywords:
+- stock market
+- share borrowing
+- investing
+- trading
+- stock ticker
+- broker fees
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="borrowed - Short_Data - Telegram - Reference | OpenBB Bot Docs" />
 
 # borrowed
 

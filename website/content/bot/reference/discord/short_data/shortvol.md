@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: shortvol
-description: OpenBB Discord Command
+description: The page describes the 'shortvol' command used to retrieve 30-day history
+  of short volume vs total volume of a stock ticker. It can be a useful tool to predict
+  future price movements based on trade activity.
+keywords:
+- shortvol command
+- stock ticker
+- trade activity
+- price movements
+- total volume
+- short volume
+- trade data analysis
+- stock trading
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="shortvol - Short_Data - Discord - Reference | OpenBB Bot Docs" />
 
 # shortvol
 

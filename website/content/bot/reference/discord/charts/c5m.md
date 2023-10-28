@@ -1,8 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: c5m
-description: OpenBB Discord Command
+description: Learn how to use the c5m command to retrieve an intraday 5 minute chart
+  for a given ticker. This tool aids in performing technical analysis and monitoring
+  short-term stock price movements.
+keywords:
+- c5m command
+- intraday 5 minute chart
+- technical analysis
+- stock performance
+- candlestick chart
+- short-term price movements
+- stock ticker
+- trading hours
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="c5m - Charts - Discord - Reference | OpenBB Bot Docs" />
 
 # c5m
 

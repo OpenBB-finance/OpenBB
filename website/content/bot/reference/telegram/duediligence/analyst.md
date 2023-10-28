@@ -1,8 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: analyst
-description: OpenBB Telegram Command
+description: Analyze and retrieve analyst recommendations for any given stock ticker
+  using our user-friendly commands.
+keywords:
+- analyst recommendations
+- stock ticker
+- ticker
+- command
+- usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="analyst - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # analyst
 

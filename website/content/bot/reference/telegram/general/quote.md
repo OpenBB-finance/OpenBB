@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: quote
-description: OpenBB Telegram Command
+description: The 'Quote' command documentation provides detailed information on how
+  to retrieve display quote stats for a stock including the 52 week high/low, market
+  cap/float, and 200/50 day moving averages using a given stock ticker.
+keywords:
+- quote command
+- stock stats
+- 52 week high/low
+- market cap/float
+- 200/50 day moving averages
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quote - General - Telegram - Reference | OpenBB Bot Docs" />
 
 # quote
 

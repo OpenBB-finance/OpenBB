@@ -1,7 +1,25 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This documentation page supports users in stock analysis by guiding them
+  on how to load a stock ticker. It explains various parameters such as market source,
+  date ranges, pre/after market hours, and periodicity of data. It also includes guidance
+  for loading custom files and managing data at different frequencies.
+keywords:
+- Load stock ticker
+- Stock analysis
+- Data source
+- Indian ticker
+- Market analysis
+- Intraday stock minutes
+- Pre/After market hours
+- Load custom file
+- Monthly data
+- Weekly data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="load - Ta - Forex - Reference | OpenBB Terminal Docs" />
 
 # load
 

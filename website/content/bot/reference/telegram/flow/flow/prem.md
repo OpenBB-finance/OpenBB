@@ -1,8 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: prem
-description: OpenBB Telegram Command
+description: This page provides instructions on how to use the 'flow prem' command
+  to retrieve a daily chart which visually represents the sum of premiums for call/put
+  options for a given stock ticker. A clear graphic visualization will make it easier
+  for users to understand the dynamics of premium changes.
+keywords:
+- flow prem command
+- call/put options
+- options premium chart
+- daily premium data
+- premium visualization
+- stock ticker
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="prem - Flow - Flow - Telegram - Reference | OpenBB Bot Docs" />
 
 # flow prem
 

@@ -1,7 +1,19 @@
 ---
 title: snews
-description: OpenBB Terminal Function
+description: 'snews - Display stock price and headlines sentiment using VADER model.
+  No parameters. Source: Finnhub.'
+keywords:
+- snews
+- stock price
+- headlines sentiment
+- VADER model
+- Finnhub
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="snews - Ba - Stocks - Reference | OpenBB Terminal Docs" />
 
 # snews
 

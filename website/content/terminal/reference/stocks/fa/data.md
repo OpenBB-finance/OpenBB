@@ -1,7 +1,26 @@
 ---
 title: data
-description: OpenBB Terminal Function
+description: This documentation page provides information on data metrics related
+  to the company. It includes various financial and non-financial fields such as Company,
+  Sector, Industry, Index, Sales, Profit Margin, and many more.
+keywords:
+- Company Metrics
+- Data Metrics
+- Financial Data
+- Industry
+- Sector
+- Index
+- Sales
+- Profit Margin
+- Performance Metrics
+- EPS
+- Market Cap
+- P/E ratio
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="data - Fa - Stocks - Reference | OpenBB Terminal Docs" />
 
 # data
 

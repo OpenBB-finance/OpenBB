@@ -1,8 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: screener
-description: OpenBB Telegram Command
+description: The screener command page offers guidance to users on how to retrieve
+  stock screener results using different technical signals. It includes various screener
+  signals like Top Gainers, Top Losers, Most Active, etc.
+keywords:
+- Screener Command
+- Stock Screener Results
+- Technical Signals
+- Top Gainers
+- Top Losers
+- Most Active
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="screener - Screeners - Telegram - Reference | OpenBB Bot Docs" />
 
 # screener
 

@@ -1,7 +1,24 @@
 ---
 title: ad
-description: OpenBB Terminal Function
+description: An in-depth explanation of Accumulation/Distribution Line (AD), its interpretation,
+  and usage. The page also provides a Python script for the indicator and describes
+  its parameters.
+keywords:
+- Accumulation/Distribution Line (AD)
+- AD Indicator
+- Close Location Value
+- CLV
+- Stock Market Indicator
+- Python Script
+- b_use_open
+- SEO
+- On Balance Volume (OBV)
+- Volume Times
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ad - Ta - Stocks - Reference | OpenBB Terminal Docs" />
 
 # ad
 

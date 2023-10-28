@@ -1,9 +1,28 @@
 ---
 title: Interactive Tables
 sidebar_position: 1
-description: Provides a brief overview of how to interact with the OpenBB Terminal
-keywords: [finance, terminal, command line interface, cli, menu, commands]
+description: Learn how to navigate and utilize OpenBB's interactive tables using our
+  open source PyWry technology. Understand how to sort and filter columns, hide or
+  remove columns, select number of rows per page, freeze index and column headers,
+  and export the data.
+keywords:
+- OpenBB
+- interactive tables
+- PyWry technology
+- sorting columns
+- filtering columns
+- hiding columns
+- rows per page
+- freeze index
+- freeze column headers
+- exporting data
+- data visualization
+- customizing tables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Interactive Tables - Outputs - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 

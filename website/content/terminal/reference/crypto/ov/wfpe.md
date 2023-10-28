@@ -1,7 +1,23 @@
 ---
 title: wfpe
-description: OpenBB Terminal Function
+description: This wfpe documentation page covers the usage of wfpe command to check
+  cryptocurrency withdrawal fees per exchange. It includes example outputs and parameters.
+keywords:
+- wfpe
+- cryptocurrency withdrawal fee
+- coin withdrawal
+- crypto withdrawal
+- exchange withdrawal fee
+- Bitcoin withdrawal
+- Ethereum withdrawal
+- crypto trading
+- crypto exchange guides
+- crypto commands
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="wfpe - Ov - Crypto - Reference | OpenBB Terminal Docs" />
 
 # wfpe
 

@@ -1,7 +1,24 @@
 ---
 title: kurtosis
-description: OpenBB Terminal Function
+description: This page discusses the concept of kurtosis. It provides detailed insights
+  on its functioning, importance, and usage with the help of Python code.
+keywords:
+- kurtosis
+- probability distribution
+- tailedness
+- real-valued random variable
+- shape
+- theoretical distribution
+- population sample
+- Python code
+- parameters
+- n_window
+- window length
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="kurtosis - Qa - Forex - Reference | OpenBB Terminal Docs" />
 
 # kurtosis
 

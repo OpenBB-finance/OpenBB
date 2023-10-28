@@ -1,7 +1,26 @@
 ---
 title: twitter
-description: OpenBB Terminal Function
+description: This page provides information on how to use the twitter function to
+  display the last 10 tweets for a given coin. The function includes parameters such
+  as limit and sortby which can be used to customize the output. The tweets are displayed
+  with their date, user_name, status, retweet_count, and like_count.
+keywords:
+- twitter
+- tweets
+- sorting
+- limit parameter
+- ascending sort
+- descending sort
+- date
+- user_name
+- status
+- retweet_count
+- like_count
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="twitter - Dd - Crypto - Reference | OpenBB Terminal Docs" />
 
 # twitter
 

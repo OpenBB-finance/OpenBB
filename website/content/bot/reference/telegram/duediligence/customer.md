@@ -1,8 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: customer
-description: OpenBB Telegram Command
+description: Learn how to use the 'customer' command to display the customers of a
+  given company using a stock ticker symbol. Detailed usages and examples provided.
+keywords:
+- customer
+- command
+- display customers
+- stock ticker
+- ticker
+- AMD
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="customer - Duediligence - Telegram - Reference | OpenBB Bot Docs" />
 
 # customer
 
