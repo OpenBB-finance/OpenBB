@@ -14,9 +14,27 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 ## Input Variables
 
-The previous example shows the promise of this language. However, it would be exhausting to have to create one file per ticker of interest. And this is why we allow the user to create arguments within a script that will be populated at the time of execution, which provides a more efficient experience.
+When utilizing basic routines capabilities, users had to create separate routines for each specific ticker, such as `my_due_diligence_AAPL.openbb` or `my_due_diligence_TSLA.openbb`. This approach was suboptimal, considering that we had control over reading these scripts and they were meant to be used within our ecosystem.
 
-As an example, let's look into the following routine (the file can be downloaded [here](https://www.dropbox.com/s/usooz6y29r1xldb/routines_template_with_inputs.openbb?dl=1)):
+To address this limitation, we introduced the concept of arguments, inspired by the Perl language. These arguments are variables referenced within the `.openbb` script as `$ARGV` or `$ARGV[0]`, `$ARGV[1]`, and so on. They are provided in the terminal when running `exe` by adding the `--input` flag, followed by the variables separated by commas.
+
+For instance, if a routine file called `script_with_input.openbb` had the following format:
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5b0f558e-ace0-423d-a3db-b6369755cffb)
+
+And we run it in the terminal with `exe —file script_with_input.openbb —input MSFT`, what would be run would be `stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200` and so you could use the same routine for multiple tickers - **making it a more powerful automated workflow**.
+
+For instance, the example below shows how you can run the same script for MSFT but also TSLA ticker.
+
+And we run it in the terminal with exe —file script_with_input.openbb —input MSFT, what would be run would be stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200 and so you could use the same routine for multiple tickers - making it a more powerful automated workflow.
+
+For instance, the example below shows how you can run the same script for `MSFT` but also `TSLA` ticker.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/8a744571-59b9-4293-bdd7-5dd6e2c8eef3)
+
+### Example
+
+Let's look into the following routine (the file can be downloaded [here](https://www.dropbox.com/s/usooz6y29r1xldb/routines_template_with_inputs.openbb?dl=1)):
 
 ```
 # This script requires you to use arguments. This can be done with the following:
@@ -53,9 +71,22 @@ This script includes `$ARGV[0]`, `$ARGV[1]` and `$ARGV[2]`. This means that the 
 
 Note: Make sure you saved this script in the `~/OpenBBUserData/routines/` folder else you are not able to execute it.
 
+
 ## Set Variables
 
-In addition, OpenBB accepts the creation of variables inside the script. This can be useful when the user utilizes a ticker as a benchmark/reference, and therefore instead of having to change the ticker of interest in multiple places they can just change the variable. Example of script below:
+In addition to enabling users to run scripts with external variables using the keyword `ARGV`, we also support the use of internal variables within the script. These variables are defined by starting with the `$` character.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c0cc6e1e-b87c-46f4-8c94-539408745433)
+
+Which has the following output:
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/77060dfc-216e-490f-af72-3d4af5642e0f)
+
+Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
+
+### Example
+
+Example of the script below:
 
 ```
 # Set date variable
@@ -82,43 +113,45 @@ When a single element is defined, then the user can access it through the variab
 
 Note that slicing is also possible, and the same convention as python is utilized. If the user has defined inputs `AAPL,MSFT,TSLA,NVDA,GOOG` then by selecting `$ARGV[1:3]` the tickers `MSFT,TSLA` are selected.
 
-## Relative Time Kewyword Variables
 
-:::note
-**This functionality requires OpenBB V 3.1.0 or later.**
-:::
+## Relative Time Keyword Variables
 
-The previous input variables are very powerful and can be used for a wide range of functionalities - one of them being dates. E.g. a typical example could be running a script routine with `exe myscript -i TSLA,2010-01-01` where `$ARGV[1]=2010-01-01` and thus it denotes an instant of time.
+In addition to the powerful variables discussed earlier, OpenBB also supports the usage of relative keywords, particularly for working with dates. These relative keywords provide flexibility when specifying dates about the current day. There are four types of relative keywords:
 
-However, what if instead of wanting an absolute date we want a relative date? The OpenBB scripts now have the capability to recognize these. There are 4 main types of keywords:
+1. **AGO**: Denotes a time in the past relative to the present day. Valid examples include `$365DAYSAGO`, `$12MONTHSAGO`, `$1YEARSAGO`.
 
-* **AGO** - this corresponds to a time in the past relative to today. Valid examples are: `$365DAYSAGO`, `$12MONTHSAGO`, `$1YEARSAGO`.
+2. **FROMNOW**: Denotes a time in the future relative to the present day. Valid examples include `$365DAYSFROMNOW`, `$12MONTHSFROMNOW`, `$1YEARSFROMNOW`.
 
-* **FROMNOW** - this corresponds to a time in the future relative to today. Valid examples are: `$365DAYSFROMNOW`, `$12MONTHSFROMNOW`, `$1YEARSFROMNOW`.
+3. **LAST**: Refers to the last specific day of the week or month that has occurred. Valid examples include `$LASTMONDAY`, `$LASTJUNE`.
 
-* **LAST** - this refers to the last specific day of the week or month that has occurred. Valid examples are: `$LASTMONDAY`, `$LASTJUNE`.
+4. **NEXT**: Refers to the next specific day of the week or month that will occur. Valid examples include `$NEXTFRIDAY`, `$NEXTNOVEMBER`.
 
-* **NEXT** - this refers to the next specific day of the week or month that will occur. Valid examples are: `$NEXTFRIDAY`, `$NEXTNOVEMBER`.
+The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-DD`.
 
-The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-dd`.
+### Example
+
+By picking on the previous example, we can add to the load `--start` argument the keyword `$18MONTHSAGO`.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e0e9b4a2-3d8d-4f72-8029-55f009dc15ee)
+
+This will result in the following output:
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/78d6235e-15a1-47cb-a99c-19694b6af0d9)
+
 
 ## Foreach Loop
 
-:::note
-**This functionality requires OpenBB V 3.1.0 or later.**
-:::
+Finally, what scripting language would this be if there were no loops? For this, we were inspired by MatLab. The loops in OpenBB utilize the foreach and end convention, allowing for iteration through a list of variables or arguments to execute a sequence of commands.
 
-To be a powerful scripting language, we needed to introduce the concept of foreach loops. These allows to iterate through a list of variables / arguments to execute a sequence commands.
+To create a foreach loop, you need to follow these steps:
 
-In order to create a foreach loop all you need to do is:
+1. Create the loop header using the syntax: `foreach $$VAR in X` where `X` represents either an argument or a list of variables. It's worth noting that you can choose alternative names for the `$$VAR` variable, as long as the `$$` convention is maintained.
 
-1. Create the header `foreach $$VAR in X` where `X` can be an argument or a list of variables. Note that the `$$VAR` can take other naming as long as the `$$` convention is kept.
+2. Insert the commands you wish to repeat on the subsequent lines.
 
-2. Insert commands you are interested in repeating in the following lines
+3. Conclude the loop with the keyword `end`.
 
-3. Finish with a `end`.
-
-Some valid examples are shown below as reference
+### Examples
 
 ```
 # Iterates through ARGV elements from position 1 onwards
