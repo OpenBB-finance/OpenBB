@@ -45,8 +45,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# cash_growth
-
 Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
 ```python wordwrap

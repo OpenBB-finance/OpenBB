@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# income_growth
-
 Income Statement Growth. Information about the growth of the company income statement.
 
 ```python wordwrap

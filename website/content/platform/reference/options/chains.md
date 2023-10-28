@@ -32,8 +32,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# chains
-
 Get the complete options chain for a ticker.
 
 ```python wordwrap

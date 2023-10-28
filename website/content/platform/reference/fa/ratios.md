@@ -25,8 +25,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# ratios
-
 Extensive set of ratios over time. Financial ratios for a given company.
 
 ```python wordwrap

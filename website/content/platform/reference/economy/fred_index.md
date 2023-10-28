@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# fred_index
-
 Fred Historical. Historical close values for selected Fred indices.
 
 ```python wordwrap

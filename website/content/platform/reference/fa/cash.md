@@ -26,8 +26,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# cash
-
 Cash Flow Statement. Information about the cash flow statement.
 
 ```python wordwrap

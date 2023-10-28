@@ -27,8 +27,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# sonia
-
 Sterling Overnight Index Average.
     SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
     transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other

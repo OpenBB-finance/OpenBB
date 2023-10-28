@@ -29,8 +29,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# cal
-
 Dividend Calendar. Show Dividend Calendar for a given start and end dates.
 
 ```python wordwrap

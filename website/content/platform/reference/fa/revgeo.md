@@ -28,8 +28,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# revgeo
-
 Revenue Geographic. Geographic revenue data.
 
 ```python wordwrap

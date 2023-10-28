@@ -19,8 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# sofr
-
 Secured Overnight Financing Rate.
     The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
     borrowing cash overnight collateralized by Treasury securities.

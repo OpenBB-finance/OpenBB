@@ -20,8 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# estr
-
 Euro Short-Term Rate.
     The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
     the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on

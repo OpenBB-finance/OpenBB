@@ -22,8 +22,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# quote
-
 Stock Quote. Load stock data for a specific ticker.
 
 ```python wordwrap

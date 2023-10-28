@@ -28,8 +28,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# projections
-
 Fed Funds Rate Projections.
     The projections for the federal funds rate are the value of the midpoint of the
     projected appropriate target range for the federal funds rate or the projected

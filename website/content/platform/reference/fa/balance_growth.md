@@ -63,8 +63,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# balance_growth
-
 Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
 ```python wordwrap
