@@ -3,7 +3,6 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_info import EtfInfoData, EtfInfoQueryParams
 from pydantic import Field
@@ -11,13 +10,6 @@ from pydantic import Field
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
     """FMP ETF Info Query Params."""
-
-
-class FMPEtfSectorInfo(Data):
-    """FMP ETF Sector Info."""
-
-    exposure: float = Field(description="Exposure of the ETF to the sector in %.")
-    industry: str = Field(description="Industry of the sector.")
 
 
 class FMPEtfInfoData(EtfInfoData):
@@ -43,9 +35,6 @@ class FMPEtfInfoData(EtfInfoData):
     nav: Optional[float] = Field(description="Net asset value of the ETF.")
     nav_currency: Optional[str] = Field(
         alias="navCurrency", description="Currency of the ETF's net asset value."
-    )
-    sectors_list: Optional[List[FMPEtfSectorInfo]] = Field(
-        alias="sectorsList", description="List of sectors the ETF is exposed to."
     )
     website: Optional[str] = Field(description="Website link of the ETF.")
     holdings_count: Optional[int] = Field(
@@ -84,8 +73,7 @@ class FMPEtfInfoFetcher(
         query: FMPEtfInfoQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEtfInfoData]:
         """Return the transformed data."""
+        # remove "sectorList" key from data. it's handled by the sectors
         for d in data:
-            d["sectorsList"] = [
-                FMPEtfSectorInfo.model_validate(s) for s in d["sectorsList"]
-            ]
+            d.pop("sectorList", None)
         return [FMPEtfInfoData.model_validate(d) for d in data]
