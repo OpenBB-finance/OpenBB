@@ -118,7 +118,7 @@ def test_regulators_sec_schema_files(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_regulators_sec_symbol_maps(params, headers):
+def test_regulators_sec_symbol_map(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
