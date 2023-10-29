@@ -11,7 +11,7 @@ keywords:
 - predictive analysis
 - documentation
 - code
-- pyhon
+- python
 - model
 - parameters
 ---
