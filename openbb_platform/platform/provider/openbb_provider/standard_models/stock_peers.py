@@ -6,7 +6,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class StockPeersQueryParams(QueryParams):
@@ -25,7 +25,6 @@ class StockPeersQueryParams(QueryParams):
 class StockPeersData(Data):
     """Stock Peers data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     peers_list: List[str] = Field(
         default_factory=list,
         description="A list of stock peers based on sector, exchange and market cap.",

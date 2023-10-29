@@ -56,8 +56,6 @@ class ROUTER_stocks_ca(Container):
 
         StockPeers
         ----------
-        symbol : str
-            Symbol representing the entity requested in the data.
         peers_list : List[str]
             A list of stock peers based on sector, exchange and market cap.
 
