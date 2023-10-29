@@ -1,24 +1,10 @@
-import React from "react";
-import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
-import { useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
-import TerminalLetteringLogo from "@site/src/components/Icons/TerminalLetteringLogo";
-import SDKLetteringLogo from "@site/src/components/Icons/SDKLetteringLogo";
-import BotLetteringLogo from "@site/src/components/Icons/BotLetteringLogo";
+import { useLocation } from "@docusaurus/router";
+import LetteringDocsLogo from "@site/src/components/Icons/LetteringDocsLogo";
+import React from "react";
 
 function getLogo(type) {
-  /*
-  switch (type) {
-    case "terminal":
-      return <TerminalLetteringLogo />;
-    case "sdk":
-      return <SDKLetteringLogo />;
-    case "bot":
-      return <BotLetteringLogo />;
-    default:
-      return <LetteringLogo className="text-white" />;
-  }*/
-  return <LetteringLogo className="text-white" />;
+  return <LetteringDocsLogo />;
 }
 
 export default function NavbarLogo() {
@@ -29,6 +15,11 @@ export default function NavbarLogo() {
       <Link to="/" className="mb-1 md:mb-0 md:ml-0">
         {getLogo(type)}
       </Link>
+      {type === "sdk" && (
+        <div className="text-white text-xs pt-2">
+          OpenBB SDK has been deprecated in detriment of the Platform. More details here.
+        </div>
+      )}
     </div>
   );
 }
