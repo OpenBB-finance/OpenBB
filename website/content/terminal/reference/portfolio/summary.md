@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /summary - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/summary - Reference | OpenBB Terminal Docs" />
 
 Display summary of portfolio vs benchmark
 

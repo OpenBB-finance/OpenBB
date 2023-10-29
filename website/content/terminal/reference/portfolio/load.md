@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /load - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/load - Reference | OpenBB Terminal Docs" />
 
 Load your portfolio transactions.
 
