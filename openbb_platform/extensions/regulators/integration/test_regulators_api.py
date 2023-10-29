@@ -53,7 +53,16 @@ def test_regulators_sec_institutions_search(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 3, "type": "8-K", "cik": None, "provider": "sec"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 3,
+                "type": "8-K",
+                "cik": None,
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
         (
             {
                 "cik": "0001067983",
@@ -61,6 +70,7 @@ def test_regulators_sec_institutions_search(params, headers):
                 "type": "10-Q",
                 "symbol": None,
                 "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],

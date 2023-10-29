@@ -867,7 +867,7 @@ def test_stocks_multiples(params, obb):
     "params",
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
-        ({"query": "Apple", "provider": "sec", "use_cache": False}),
+        ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
     ],
 )
 @pytest.mark.integration
