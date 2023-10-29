@@ -43,7 +43,7 @@ def test_sec_symbol_map_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_sec_stock_ftd_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "limit": 3}
+    params = {"symbol": "AAPL", "limit": 1}
 
     fetcher = SecStockFtdFetcher()
     result = fetcher.test(params, credentials)
