@@ -1,9 +1,24 @@
 ---
 title: theta
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on how to perform a Theta forecast
+  using Python. Parameters with their descriptions and the process of exporting predictions
+  to a CSV file are covered as well.
+keywords:
+- Theta forecast
+- Data Analysis
+- Predictive Modelling
+- Historical Data
+- Seasonality
+- Python
+- Forecasting
+- Model Parameters
+- Profit Forecast
+- SEO
 ---
 
-# theta
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /theta - Reference | OpenBB Terminal Docs" />
 
 Perform Theta forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
 

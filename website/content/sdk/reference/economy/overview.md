@@ -1,9 +1,24 @@
 ---
 title: overview
-description: OpenBB SDK Function
+description: This page provides documentation for the OpenBBTerminal's economy overview
+  feature. The function scrapes market data, returning a DataFrame with the name,
+  price, net change, and percentage change. No parameters needed.
+keywords:
+- openbb
+- data scraping
+- Python
+- economy overview
+- market data
+- pandas DataFrame
+- OpenBBTerminal
+- net change
+- percent change
+- source code
 ---
 
-# overview
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.overview - Reference | OpenBB SDK Docs" />
 
 Scrape data for market overview
 
@@ -36,4 +51,3 @@ ov_df = openbb.economy.overview()
 ```
 
 ---
-

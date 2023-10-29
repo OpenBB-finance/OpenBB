@@ -1,9 +1,21 @@
 ---
 title: coinglass
-description: OpenBB SDK Function
+description: The page provides instructions on how to set the Coinglass key using
+  the openbb module of the OpenBBTerminal. It gives details on the parameters used
+  and their functionality, return types, and examples.
+keywords:
+- Coinglass key
+- OpenBBTerminal
+- openbb module
+- API key
+- python
+- Jupyter notebook session
+- terminal environment variables
 ---
 
-# coinglass
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.coinglass - Reference | OpenBB SDK Docs" />
 
 Set Coinglass key.
 
@@ -41,4 +53,3 @@ openbb.keys.coinglass(key="example_key")
 ```
 
 ---
-

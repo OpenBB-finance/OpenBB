@@ -1,12 +1,16 @@
 ---
 title: Stocks Screener
-keywords: [screen, screener, stock, stocks, historical, overview, valuation, financial, ownership, performance, technical, view, set, preset, presets, ini, scan, compare, tickers, metrics, amex, nasdaq, nyse, default, description, how to, example]
-description: This guide introduces the Stock Screener, within the context of the OpenBB SDK.
+description: This documentation page describes the stock screener module which allows the user to utilize presets (.ini files) to scan for stocks meeting the defined criteria.
+keywords:
+- screener
+- stocks screener
+- criteria
+- presets
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Stocks Screener - SDK | OpenBB Docs" />
+<HeadTitle title="Stocks Screener - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The Stocks Screener module imports the same screener found in the OpenBB Terminal. The screener utilizes presets (.ini files) to scan for stocks meeting the defined criteria. User-generated files are kept in the `stocks/screener` folder within the [OpenBBUserData](https://docs.openbb.co/sdk/usage/guides/data) folder.
 
@@ -75,7 +79,7 @@ These signals offer a good starting point, and results can be narrowed by creati
 
 :::note
 
-Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accpeted values.
+Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
 
 All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
 :::

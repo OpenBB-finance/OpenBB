@@ -1,9 +1,19 @@
 ---
 title: finnhub
-description: OpenBB SDK Function
+description: This page provides information on setting up the Finnhub API key in the
+  OpenBB terminal environment, with code implementation examples.
+keywords:
+- Finnhub
+- API key
+- OpenBB terminal
+- Python SDK
+- Jupyter notebook
+- Environment variables
 ---
 
-# finnhub
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.finnhub - Reference | OpenBB SDK Docs" />
 
 Set Finnhub key
 
@@ -41,4 +51,3 @@ openbb.keys.finnhub(key="example_key")
 ```
 
 ---
-

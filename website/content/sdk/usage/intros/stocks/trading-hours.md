@@ -1,12 +1,22 @@
 ---
 title: Trading Hours
-keywords: [markets, trading, hours, stocks, time, global, world, location, open, close, exchange, how to, usage, examples]
-description: An Introduction to the Trading Hours menu, within the Stocks menu. This set of features displays the status of international markets.
+description: The Trading Hours sub-module provides functions for checking the status
+  and hours of operation for markets globally. It allows users to understand which
+  exchanges are currently open, all exchanges and their status, details for individual
+  exchanges, and a list of closed exchanges.
+keywords:
+- Trading Hours
+- Market Status
+- Stock Exchanges
+- Open Exchanges
+- Closed Exchanges
+- Individual Exchange Details
+- Global Markets
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Trading Hours - SDK | OpenBB Docs" />
+<HeadTitle title="Trading Hours - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The Trading Hours sub-module is a set of functions for checking the status and hours of operation for markets globally.
 

@@ -1,9 +1,23 @@
 ---
 title: roc
-description: OpenBB SDK Function
+description: This documentation page provides information and implementation details
+  about the 'roc' (Rate of Change) function in OpenBB, used to calculate momentum
+  oscillations in a given dataset.
+keywords:
+- OpenBB
+- roc function
+- Rate of Change
+- openbb.forecast.roc
+- momentum oscillation
+- Python
+- Forecasting
+- Data Analysis
+- Dataframe
 ---
 
-# roc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.roc - Reference | OpenBB SDK Docs" />
 
 A momentum oscillator, which measures the percentage change between the current
 
@@ -32,4 +46,3 @@ openbb.forecast.roc(dataset: pd.DataFrame, target_column: str = "close", period:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added ROC column |
 ---
-

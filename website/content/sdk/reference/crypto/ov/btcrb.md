@@ -1,12 +1,28 @@
 ---
 title: btcrb
-description: OpenBB SDK Function
+description: btcrb is a feature of the OpenBB Terminal that allows users to access
+  historical bitcoin price data and view it in a rainbow chart. At its core, btcrb
+  provides Python methods for retrieving this data over a specified date range and
+  visualizing it using Matplotlib.
+keywords:
+- Bitcoin
+- OpenBB Terminal
+- btcrb
+- Price Data
+- Rainbow Chart
+- Data Retrieval
+- Historical Bitcoin Data
+- Matplotlib Visualization
+- Cryptocurrency
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.btcrb - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# btcrb
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +54,6 @@ openbb.crypto.ov.btcrb(start_date: str = "2010-01-01", end_date: Optional[str] =
 | pd.DataFrame | price over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +84,6 @@ openbb.crypto.ov.btcrb_chart(start_date: str = "2010-01-01", end_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

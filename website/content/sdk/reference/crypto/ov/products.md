@@ -1,12 +1,26 @@
 ---
 title: products
-description: OpenBB SDK Function
+description: Documentation for the functions related to the retrieval and visualization
+  of financial products using the OpenBBTerminal and CoinGecko API. Covers aspects
+  such as sorting of data, ascending and descending configuration, product charts
+  and exporting data.
+keywords:
+- OpenBBTerminal financial products
+- CoinGecko API
+- openbb.crypto.ov.products
+- Financial data sorting
+- Data ascending and descending
+- products_chart
+- Financial products chart
+- Data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.products - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# products
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
 | pd.DataFrame | Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +82,6 @@ openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

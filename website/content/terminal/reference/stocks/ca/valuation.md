@@ -1,9 +1,24 @@
 ---
 title: valuation
-description: OpenBB Terminal Function
+description: This documentation page explains the usage of the 'valuation' command
+  which prints screener data of similar companies. It includes examples and details
+  about the parameters
+keywords:
+- valuation
+- python
+- screener data
+- similar companies
+- parameters
+- command usage
+- enterprise SEO
+- data printing
+- documentation
+- examples
 ---
 
-# valuation
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/valuation - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 

@@ -1,12 +1,29 @@
 ---
 title: ross
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about the 'ross'
+  functions of the OpenBB Terminal. These functions help to retrieve and visualize
+  data about startups from the ROSS index.
+keywords:
+- OpenBB Terminal
+- ross function
+- data retrieval
+- startups data
+- ROSS index
+- Python
+- visualization
+- dataframe
+- chart
+- data sort
+- growth line chart
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.oss.ross - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ross
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +50,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | list of startups |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +85,6 @@ openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

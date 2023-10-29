@@ -1,9 +1,28 @@
 ---
 title: usbonds
-description: OpenBB SDK Function
+description: This page provides a comprehensive guide on how to use OpenBB-finance's
+  us bonds data scraping function from OpenBBTerminal's wsj_model python script. The
+  function returns a dataframe containing bond's name, its coupon rate, yield and
+  change in yield.
+keywords:
+- us bonds
+- data scraping
+- OpenBB-finance
+- OpenBBTerminal
+- economy
+- wsj_model
+- python
+- parameters
+- dataframe
+- name
+- coupon rate
+- yield
+- change in yield
 ---
 
-# usbonds
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.usbonds - Reference | OpenBB SDK Docs" />
 
 Scrape data for us bonds
 
@@ -27,4 +46,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, coupon rate, yield and change in yield |
 ---
-

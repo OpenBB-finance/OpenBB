@@ -1,9 +1,23 @@
 ---
 title: paexport
-description: OpenBB Terminal Function
+description: Detailed usage guide and parameters of the 'paexport' Python command.
+  This includes instructions on setting the start and end date, along with the usage
+  of different currencies.
+keywords:
+- paexport
+- usage
+- parameters
+- start date
+- end date
+- currency
+- python
+- command
+- USD
 ---
 
-# paexport
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/degiro/paexport /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

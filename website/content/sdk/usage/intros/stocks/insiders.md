@@ -1,11 +1,27 @@
 ---
 title: Insiders
-keywords: [stocks, insiders, transactions, form-4, sec, ceo, cfo, major holder, director, sale, award, grant, option]
-description: This guide introduces the Stocks Insiders module by briefly explaining the functions and how to use them.
+description: This page of our marketing website gives a detailed overview of how to
+  use the 'Insiders' module of the OpenBB Terminal. It teaches users how to access
+  and utilize various functions of the module to gather information about insider
+  trading activity, latest CEO/CFO purchases and sales, insider transactions based
+  on predetermined filters and much more. The guide also provides information on how
+  to pull up ticker-specific details and covers how to use different commands.
+keywords:
+- Insiders module
+- OpenBB Terminal
+- Insider trading activity
+- CEOs purchases and sales
+- Insider transactions filter
+- Ticker-specific details
+- Python commands
+- Stock data
+- Insider data
 ---
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-`<HeadTitle title="Stocks Insiders - SDK | OpenBB Docs" />`
+<HeadTitle title="Insiders - Stocks - Intros - Usage | OpenBB SDK Docs" />
+
 
 ## Overview
 
@@ -24,7 +40,7 @@ help(openbb.stocks.ins)
 ```python
 Type:        property
 String form: <property object at 0x7f3df1102f70>
-Docstring:  
+Docstring:
 Stocks Insiders Submodule
 
 Attributes:
@@ -241,7 +257,7 @@ OwnChangeMinPct =
 OwnChangeMaxPct =
 ```
 
-The sector industrial classification is also selectable.  Most of the included presets are for filtering by industry.  For example, `Mortgages`.  
+The sector industrial classification is also selectable.  Most of the included presets are for filtering by industry.  For example, `Mortgages`.
 
 **Do not include `.ini` in the preset name.**
 

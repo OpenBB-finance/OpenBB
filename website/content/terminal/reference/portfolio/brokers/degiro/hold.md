@@ -1,9 +1,17 @@
 ---
 title: hold
-description: OpenBB Terminal Function
+description: The document page provides instructions on how to use the 'hold' command
+  in Python, which requires no parameters.
+keywords:
+- hold command
+- usage
+- no parameters
+- python
 ---
 
-# hold
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/degiro/hold /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

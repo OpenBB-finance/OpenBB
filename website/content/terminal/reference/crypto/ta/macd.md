@@ -1,9 +1,23 @@
 ---
 title: macd
-description: OpenBB Terminal Function
+description: Explore the MACD page to understand the use and parameters of the Moving
+  Average Convergence Divergence (MACD). Learn about the significance of high and
+  low MACD values, buy and sell signals, and more.
+keywords:
+- MACD
+- Moving Average Convergence Divergence
+- Exponential Moving Averages
+- Signal line
+- Trend changes
+- Overbought conditions
+- Oversold conditions
+- Buy signal
+- Sell signal
 ---
 
-# macd
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/macd - Reference | OpenBB Terminal Docs" />
 
 The Moving Average Convergence Divergence (MACD) is the difference between two Exponential Moving Averages. The Signal line is an Exponential Moving Average of the MACD. The MACD signals trend changes and indicates the start of new trend direction. High values indicate overbought conditions, low values indicate oversold conditions. Divergence with the price indicates an end to the current trend, especially if the MACD is at extreme high or low values. When the MACD line crosses above the signal line a buy signal is generated. When the MACD crosses below the signal line a sell signal is generated. To confirm the signal, the MACD should be above zero for a buy, and below zero for a sell.
 

@@ -1,9 +1,26 @@
 ---
 title: minrisk
-description: OpenBB SDK Function
+description: This page provides a detailed explanation of the 'minrisk' function provided
+  by OpenBB, used in portfolio optimization to decrease risk. It includes information
+  about the function's parameters, return structure, and usage examples.
+keywords:
+- portfolio optimization
+- minrisk function
+- risk minimization
+- portfolio weights
+- instructions
+- parameters
+- returns
+- examples
+- OpenBB
+- sharpe ratio
+- return volatility
+- financial portfolio
 ---
 
-# minrisk
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.minrisk - Reference | OpenBB SDK Docs" />
 
 Optimize minimum risk weights
 
@@ -75,4 +92,3 @@ weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
 ```
 
 ---
-

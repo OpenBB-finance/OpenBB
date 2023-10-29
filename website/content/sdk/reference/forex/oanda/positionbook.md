@@ -1,12 +1,30 @@
 ---
 title: positionbook
-description: OpenBB SDK Function
+description: Improve your understanding of the positionbook functionality on the OpenBBTerminal.
+  Discover how to request position book data and plot a position book for an instrument
+  if Oanda provides one. Detailed source codes and parameter descriptions are provided
+  to facilitate its usage.
+keywords:
+- positionbook
+- python
+- plotting
+- source code
+- Oanda
+- forex
+- OpenBBTerminal
+- data frame
+- parameters
+- currency pair
+- matplotlib
+- axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.positionbook - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# positionbook
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +56,6 @@ openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str
 | Union[pd.DataFrame, bool] | Position book data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +85,6 @@ openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", exte
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,29 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: This page provides detailed documentation for the 'load' function of
+  the OpenBB portfolio optimization engine. It includes source code, parameters detail,
+  return type, and coding examples.
+keywords:
+- OpenBB
+- portfolio optimization
+- po.load function
+- OpenBB portfolio
+- PoEngine
+- openbb_terminal.sdk
+- coding examples
+- source code
+- software documentation
+- parameters detail
+- portfolio allocation
+- AAPL
+- MSFT
+- AMZN
+- Python code
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.load - Reference | OpenBB SDK Docs" />
 
 Load portfolio optimization engine
 
@@ -48,4 +68,3 @@ weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ---
-

@@ -1,9 +1,22 @@
 ---
 title: tsne
-description: OpenBB Terminal Function
+description: Documentation page about TSNE method for comparing similar companies,
+  detailing usage, parameters, and examples. It describes how to implement TSNE method
+  using sklearn in Python.
+keywords:
+- TSNE
+- sklearn
+- comparison
+- similar companies
+- Python
+- parameters
+- usage
+- documentation
 ---
 
-# tsne
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/tsne - Reference | OpenBB Terminal Docs" />
 
 Get similar companies to compare with using sklearn TSNE.
 

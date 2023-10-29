@@ -1,9 +1,21 @@
 ---
 title: candle
-description: OpenBB SDK Function
+description: This page provides a comprehensive guide on how to use the 'candle' function
+  in OpenBB Terminal. This function, primarily meant for stock evaluations, provides
+  a detailed candle plot of any given ticker. Features include adjustable parameters
+  for added customizability.
+keywords:
+- OpenBB Terminal
+- stock evaluation
+- python
+- candle function
+- candle plot
+- ticker
 ---
 
-# candle
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.candle - Reference | OpenBB SDK Docs" />
 
 Show candle plot of loaded ticker.
 

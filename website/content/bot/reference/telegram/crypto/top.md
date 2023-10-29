@@ -1,10 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: top
-description: OpenBB Telegram Command
+description: The page provides instructions on the use of the 'top' command, a feature
+  to retrieve top cryptocurrencies by market capitalization, inclusive of component
+  parameters and usage examples.
+keywords:
+- cryptocurrencies
+- market capitalization
+- top command
+- user instructions
+- command usage
+- sortby parameter
+- category filter
+- reverse sort
 ---
 
-# top
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto: top - Telegram Reference | OpenBB Bot Docs" />
 
 This command will retrieve the top cryptocurrencies, ranked by market capitalization, allowing the user to quickly get a snapshot of the current market.
 

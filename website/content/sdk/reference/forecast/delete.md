@@ -1,9 +1,19 @@
 ---
 title: delete
-description: OpenBB SDK Function
+description: OpenBB's delete function page. The function takes the data and column
+  parameters. There are no return values.
+keywords:
+- openbb.forecast.delete
+- delete function
+- data parameter
+- column parameter
+- python
+- source code
 ---
 
-# delete
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.delete - Reference | OpenBB SDK Docs" />
 
 None
 
@@ -26,4 +36,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

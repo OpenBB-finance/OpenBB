@@ -1,12 +1,33 @@
 ---
 title: Forex
-keywords: [forex, currency, money, hedge, dollar, euro, pound, currencies, market, openbb sdk, how to, usage, examples, import statement, load, average true range, forward rate, path, type, description]
-description: The Forex menu enables you to load any combination of currencies (e.g. USDEUR or JPYGBP), show current quote and historical data as well as forward rates.
+description: This page describes the Forex module provided by OpenBB SDK, demonstrating
+  its functionalities such as getting currency pair data, loading historical OHLC
+  data, executing broker integration for Oanda account holders, etc. It explains how
+  to use and showcases relevant examples of these functions for improved understanding.
+keywords:
+- OpenBB SDK
+- Forex module
+- currency pair data
+- Keys module
+- Oanda broker integration
+- OHLC Chart
+- Forward Rates
+- list of currency symbols
+- Load historical OHLC Data
+- Realtime Currency Exchange Rate
+- Forex functions
+- AlphaVantage
+- Polygon
+- YahooFinance
+- Real-time exchange rates
+- Average True Range
+- Forward Rates
+- Term structure
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Forex - SDK | OpenBB Docs" />
+<HeadTitle title="Forex - Intros - Usage | OpenBB SDK Docs" />
 
 The Forex module provides a way for users to get currency pair data, from a number of sources. API keys for them are handled by the Keys module. After importing the entire OpenBB SDK, no further action is required to authorize the sources. This module also provides Oanda account holders with broker integration.
 

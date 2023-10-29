@@ -1,12 +1,36 @@
 ---
 title: Government
-keywords: [government, house, senate, politician, lobby, lobbyist, contract, contractor, spending, budget, treasury, trading, buys, sells, ticker, tickers, companies, listing, exchange, how to, usage, examples, import, statement, contracts, histcont, lobbying, lastcontracts, ]
-description: This guide introduces the Government submenu, within the Stocks menu, by briefly explaining the features and how to use them, showing examples in context.
+description: "The page provides comprehensive information about the Government module\u2014\
+  that offers programmatic access to OpenBB Terminal functions. It includes details\
+  \ about commands available, how to use them with Python, and examples. It serves\
+  \ as a vital resource for those interested in examining US government data related\
+  \ to publicly traded companies."
+keywords:
+- Government module
+- programmatic access
+- OpenBB Terminal
+- fundamental and macroeconomic research
+- US data
+- commands
+- ticker-specific
+- non-specific
+- Python
+- openbb.stocks.gov
+- Contracts Awarded to a Company
+- Reported Trades in a Company's Stock
+- US Congress and Senate
+- Quarterly Total Amount Paid to a Company by the Government
+- Latest Invoices Paid by the US Treasury Department
+- Recorded Lobbying Efforts by a Company
+- Ranking Companies by Total Amount Rewarded
+- Top Buyers in Office
+- Corporate Lobbyist Activity
+- Top Sellers in Office
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Government - SDK | OpenBB Docs" />
+<HeadTitle title="Government - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
 The Government module provides programmatic access to the same functions from the [OpenBB Terminal](https://docs.openbb.co/terminal/usage/intros/stocks/gov). They provide an excellent supplement to fundamental and macroeconomic research. Please note that this module will only return data from the USA.
 

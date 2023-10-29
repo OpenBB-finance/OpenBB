@@ -1,9 +1,20 @@
 ---
 title: oi
-description: OpenBB Terminal Function
+description: This page provides a detailed explanation on how to plot open interest
+  using various parameters such as min, max, calls, and puts. It also includes usage
+  examples.
+keywords:
+- Open interest
+- Plotting
+- Python
+- Tutorial
+- Parameters
+- Option trading
 ---
 
-# oi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/oi - Reference | OpenBB Terminal Docs" />
 
 Plot open interest. Open interest represents the number of contracts that exist.
 

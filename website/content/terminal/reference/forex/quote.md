@@ -1,9 +1,20 @@
 ---
 title: quote
-description: OpenBB Terminal Function
+description: This documentation page provides information regarding the usage and
+  parameters of the 'quote' function in python which fetches the current exchange
+  rate.
+keywords:
+- Documentation
+- Python
+- Exchange Rate
+- Quote Function
+- Current Rate
+- Usage and Parameters
 ---
 
-# quote
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex /quote - Reference | OpenBB Terminal Docs" />
 
 Get current exchange rate quote
 

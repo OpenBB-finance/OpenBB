@@ -1,12 +1,27 @@
 ---
 title: recom
-description: OpenBB SDK Function
+description: This page offers details on tradingview recommendations based on technical
+  indicators with an emphasis on Model and Chart tabs. This includes information on
+  parameters, returns, and source code.
+keywords:
+- Tradingview recommendation
+- Technical indicators
+- Model
+- Chart
+- Parameters
+- Returns
+- Source code
+- OpenBB
+- Stocks
+- Tradingview TA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ta.recom - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# recom
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +55,6 @@ openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "
 | pd.DataFrame | Dataframe of tradingview recommendations based on technical indicators |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +86,6 @@ openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

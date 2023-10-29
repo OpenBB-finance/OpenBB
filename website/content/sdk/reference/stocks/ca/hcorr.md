@@ -1,12 +1,27 @@
 ---
 title: hcorr
-description: OpenBB SDK Function
+description: The page gives detailed guidelines on how to use the hcorr function in
+  OpenBB Terminal to gather historical price correlation data. It further explains
+  the process to create correlation heatmaps based on historical price comparison.
+keywords:
+- OpenBB Terminal
+- historical price correlation
+- chart
+- documentation
+- OpenBB
+- finance
+- finance tools
+- correlation matrix
+- Python
+- finance source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.hcorr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hcorr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, can
 | ---- | ----------- |
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe with correlation matrix, Dataframe with historical prices for all comparison stocks |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -74,8 +87,6 @@ openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = Non
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

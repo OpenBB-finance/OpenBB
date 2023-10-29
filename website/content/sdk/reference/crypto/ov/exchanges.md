@@ -1,9 +1,19 @@
 ---
 title: exchanges
-description: OpenBB SDK Function
+description: This page provides information about how to show top crypto exchanges
+  through OpenBB's API with detailed parameters, return types and examples.
+keywords:
+- crypto exchanges
+- OpenBB API
+- python
+- CoinGecko
+- DataFrame
+- cryptocurrency
 ---
 
-# exchanges
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.exchanges - Reference | OpenBB SDK Docs" />
 
 Show top crypto exchanges.
 
@@ -39,4 +49,3 @@ exchanges = openbb.crypto.ov.exchanges()
 ```
 
 ---
-

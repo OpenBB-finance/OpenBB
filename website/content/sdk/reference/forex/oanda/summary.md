@@ -1,12 +1,30 @@
 ---
 title: summary
-description: OpenBB SDK Function
+description: This is a comprehensive documentation on the functionality of creating
+  an Oanda account summary using OpenBB-Finance. Covers Python source codes, parameters
+  and returns on model and chart tabs for summary creation.
+keywords:
+- Oanda account summary
+- Python
+- Source Code
+- OpenBB finance
+- forex
+- oanda_model.py
+- oanda_view.py
+- account ID
+- TabItem
+- Tabs
+- pd.DataFrame
+- Union
+- summary chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.summary - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# summary
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +55,6 @@ openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Account summary data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +82,6 @@ openbb.forex.oanda.summary_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

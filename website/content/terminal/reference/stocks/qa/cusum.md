@@ -1,9 +1,20 @@
 ---
 title: cusum
-description: OpenBB Terminal Function
+description: Learn to use the Cumulative Sum Algorithm (CUSUM) to effortlessly detect
+  abrupt changes in your data. Understand parameters like threshold and drift to improve
+  your data analysis.
+keywords:
+- cumulative sum algorithm
+- CUSUM
+- abrupt changes detection
+- data analysis
+- threshold
+- drift
 ---
 
-# cusum
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/cusum - Reference | OpenBB Terminal Docs" />
 
 Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 

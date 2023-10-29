@@ -1,9 +1,23 @@
 ---
 title: chart
-description: OpenBB SDK Function
+description: Extend your technical analysis with the OpenBB crypto chart function.
+  This feature allows loading of cryptocurrency data, optional title configuration
+  based on Coin and Currency, and control over plot scale (linear or log). Source
+  code is available.
+keywords:
+- Technical Analysis
+- OpenBB crypto chart
+- Cryptocurrency data
+- Python
+- matplotlib axes
+- linear plot scale
+- log plot scale
+- pd.DataFrame
 ---
 
-# chart
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.chart - Reference | OpenBB SDK Docs" />
 
 Load data for Technical Analysis
 
@@ -32,4 +46,3 @@ openbb.crypto.chart(prices_df: pd.DataFrame, to_symbol: str = "", from_symbol: s
 This function does not return anything
 
 ---
-

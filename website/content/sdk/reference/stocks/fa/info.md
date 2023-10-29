@@ -1,9 +1,19 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This page provides information on retrieving ticker symbol information
+  using OpenBB.fa.info method, leveraging yfinance data.
+keywords:
+- OpenBB
+- fa.info method
+- yfinance data
+- stock ticker symbol
+- Python
+- Pandas DataFrame
 ---
 
-# info
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.info - Reference | OpenBB SDK Docs" />
 
 Gets ticker symbol info
 
@@ -30,4 +40,3 @@ openbb.stocks.fa.info(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of yfinance information |
 ---
-

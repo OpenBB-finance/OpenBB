@@ -1,12 +1,30 @@
 ---
 title: wfpe
-description: OpenBB SDK Function
+description: This page explains how to use OpenBB's wfpe function, which scrapes coin
+  withdrawal fees per exchange and presents them visually or in data format. It provides
+  detailed parameters and returns information for both the model and view aspects
+  of the function.
+keywords:
+- OpenBB
+- wfpe function
+- coin withdrawal fees
+- crypto exchange
+- data scraping
+- data visualization
+- Python
+- parameters
+- returns
+- Model
+- View
+- source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.wfpe - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# wfpe
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +55,6 @@ openbb.crypto.ov.wfpe(symbol: str)
 | List | - str: Overall statistics (exchanges, lowest, average and median)<br/>- pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +83,6 @@ openbb.crypto.ov.wfpe_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,25 @@
 ---
 title: Futures
-keywords: [forex, currency, money, hedge, dollar, euro, futures, future, interest, rates, forwards, commodities, bonds, treasuries, bond, gold, oil, openbb terminal, sdk, how to, usage, examples, path, type, description, import statement, search, curve, historical]
-description: Learn how to use and see examples of the Futures menu, which provides historical prices and the current term structure for an asset.
+description: Learn how to use the Futures module of the OpenBB SDK in a Python script
+  or Jupyter Notebook. This guide includes descriptions of each function and examples
+  of how to access futures forward curve data and chart, search available futures,
+  and fetch and visualize historical data.
+keywords:
+- OpenBB SDK
+- Python Script
+- Futures module
+- Futures Forward Curve Data
+- Futures Forward Curve Chart
+- Search Available Futures
+- Historical OHLC+V Data
+- Chart Historical Price
+- Individual Contracts
+- Jupyter Notebook
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Futures - SDK | OpenBB Docs" />
+<HeadTitle title="Futures - Intros - Usage | OpenBB SDK Docs" />
 
 The functions from the OpenBB Terminal Futures menu is part of the SDK layer, and provides methods for programmatically accessing the data and charts associated with them. Get started by importing the OpenBB SDK to the Python script or Jupyter Notebook file.
 

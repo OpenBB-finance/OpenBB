@@ -1,12 +1,32 @@
 ---
 title: Discovery
-keywords: [cryptocurrency, discovery, nft, app, decentralized, coins, function, sub-module, openbb.crypto, openbb sdk, sdk, import statement, load, candles, find, active address, trades, coin_list, baas, trending, news]
-description: An Introduction to Cryptocurrency Discovery, within the Cryptocurrency Menu, with a brief overview of the features.
+sidebar_position: 2
+description: This page provides detailed instructions on how to use the Discovery
+  sub-module within the 'openbb.crypto.disc' to find new trends in Crypto markets.
+  The module enables users to search coins on CoinGecko by category, access a list
+  of coins available on CoinGecko, search CoinPaprika, view top coins, DeFi applications,
+  NFTs, and games by daily volume and users, and more. It also provides examples in
+  Python for better understanding.
+keywords:
+- openbb.crypto.disc
+- Crypto markets
+- CoinGecko
+- Coins search
+- DeFi applications
+- Python Examples
+- NFTs
+- Crypto trends
+- Market insights
+- Crypto trading pairs
+- market_cap
+- trending coins
+- Top DeFi games
+- CoinPaprika search
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discovery - SDK | OpenBB Docs" />
+<HeadTitle title="Discovery - Crypto - Intros - Usage | OpenBB SDK Docs" />
 
 The Discovery sub-module contains the tools for finding new trends in Crpyto markets and making new discoveries. The commands within the menu are listed below along with a short description. The module is accessed by entering, `openbb.crypto.disc`, and then a `.` activates code completion and type hints.
 

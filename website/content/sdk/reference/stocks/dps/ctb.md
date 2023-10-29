@@ -1,9 +1,25 @@
 ---
 title: ctb
-description: OpenBB SDK Function
+description: The page provides information about the function that returns the cost
+  to borrow of stocks using Interactive Broker. The source code of the function is
+  available. No parameters are needed for the function.
+keywords:
+- stocks
+- cost to borrow
+- Interactive Broker
+- Source Code
+- openbb.stocks.dps.ctb()
+- Parameters
+- pd.DataFrame
+- Return type
+- Python
+- OpenBB-finance
+- OpenBBTerminal
 ---
 
-# ctb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.ctb - Reference | OpenBB SDK Docs" />
 
 Get stocks with highest cost to borrow [Source: Interactive Broker]
 
@@ -27,4 +43,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Cost to borrow |
 ---
-

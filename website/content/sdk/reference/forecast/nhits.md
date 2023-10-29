@@ -1,12 +1,35 @@
 ---
 title: nhits
-description: OpenBB SDK Function
+description: This is a Docusaurus page that displays in-depth information on forecasting
+  using the OpenBB's NhitsModel. It provides details on parameters, returns and also
+  provides source code links to the OpenBB finance's Github repository.
+keywords:
+- Docusaurus
+- nhits
+- OpenBB
+- forecasting
+- NhitsModel
+- nhits_chart
+- pd.Series
+- pd.DataFrame
+- python
+- title
+- description
+- keywords
+- metadata
+- SEO
+- marketing
+- analysis
+- TimeSeries
+- NHiTSModel
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.nhits - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# nhits
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -58,8 +81,6 @@ openbb.forecast.nhits(data: Union[pd.Series, pd.DataFrame], target_column: str =
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[NHiTSModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best BRNN Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -118,8 +139,6 @@ openbb.forecast.nhits_chart(data: Union[pd.Series, pd.DataFrame], target_column:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,25 @@
 ---
 title: top_coins
-description: OpenBB SDK Function
+description: This OpenBBTerminal page provides insights on how to get top crypto coins
+  from sources like CoinGecko and CoinMarketCap using the 'openbb.crypto.disc.top_coins'
+  function. Parameters, return types, and usage examples are clearly illustrated.
+keywords:
+- top cryptp coins
+- source code
+- OpenBBTerminal
+- CoinGecko
+- openbb.crypto.disc.top_coins
+- parameters
+- returns
+- pd.DataFrame
+- examples
+- CoinMarketCap
+- limit parameter
 ---
 
-# top_coins
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.top_coins - Reference | OpenBB SDK Docs" />
 
 Get top cryptp coins.
 
@@ -47,4 +63,3 @@ top_coins = openbb.crypto.disc.top_coins(source="CoinMarketCap", limit=30)
 ```
 
 ---
-

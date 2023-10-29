@@ -1,12 +1,24 @@
 ---
 title: kurtosis
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about Kurtosis
+  Indicator and how to plot rolling kurtosis with OpenBB-finance's tool. It includes
+  source code links and parameters needed for these python functions.
+keywords:
+- OpenBB-finance
+- Kurtosis Indicator
+- Python
+- Plotting Kurtosis
+- Quantitative Analysis
+- Dataframe
+- Python Functions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.kurtosis - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# kurtosis
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.qa.kurtosis(data: pd.DataFrame, window: int = 14)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of rolling kurtosis |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +82,6 @@ openbb.qa.kurtosis_chart(symbol: str, data: pd.DataFrame, target: str, window: i
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,23 @@
 ---
 title: cdf
-description: OpenBB Terminal Function
+description: This page provides detailed information about the 'cdf' function, a cumulative
+  distribution function. It includes usage, parameters, and examples.
+keywords:
+- cdf
+- cumulative distribution function
+- usage
+- parameters
+- examples
+- export
+- csv
+- json
+- xlsx
+- dataframe
 ---
 
-# cdf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/cdf - Reference | OpenBB Terminal Docs" />
 
 Cumulative distribution function
 

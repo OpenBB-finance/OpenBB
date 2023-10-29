@@ -1,9 +1,18 @@
 ---
 title: rates
-description: OpenBB Terminal Function
+description: The 'rates' page in our documentation provides insights on how to access
+  historical death and case rates for a given country using our data visualization
+  tool. No parameters are required.
+keywords:
+- Rates documentation
+- Historical death rates
+- Country cases rates
+- Data visualization
 ---
 
-# rates
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt/covid/rates - Reference | OpenBB Terminal Docs" />
 
 Show historical death/cases rates for a country.
 

@@ -1,12 +1,25 @@
 ---
 title: splits
-description: OpenBB SDK Function
+description: This page pertains to the splits and reverse splits events details of
+  stocks, showcasing how to fetch them using the openbb.stocks.fa.splits() function
+  and display them with openbb.stocks.fa.splits_chart() function.
+keywords:
+- Stock splits
+- Reverse stock splits
+- Python
+- openbb.stocks.fa.splits
+- openbb.stocks.fa.splits_chart
+- Dataframe
+- Fundamental analysis
+- Yahoo Finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.splits - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# splits
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.stocks.fa.splits(symbol: str)
 | pd.DataFrame | Dataframe of forward and reverse splits |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +79,6 @@ openbb.stocks.fa.splits_chart(symbol: str, export: str = "", external_axes: Opti
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

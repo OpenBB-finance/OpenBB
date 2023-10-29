@@ -1,12 +1,35 @@
 ---
 title: Fixed Income
-keywords: [fixed income, government bonds, bonds, corporate bonds, fixed, income, interest, rates, inflation, central bank, reference, rates, sofr, sonia, ester, estr, how to, usage, examples, deposit, lending, refinancing, maturity, rate]
-description: Learn how to use and see examples of the Fixed Income menu in the OpenBB SDK. It is the high-level menu for the Fixed Income asset class. It contains reference rates, central bank rates, government bonds, yield curves, corporate bond benchmarks and more.
+description: Learn how to use the Fixed Income module of the openbb Terminal Python
+  SDK for data related to fixed income assets, including central bank rates, government
+  bonds, corporate bonds, spread data and more. Make effective use of the various
+  functions available within this SDK, illustrated with detailed examples.
+keywords:
+- Fixed Income
+- ESTER
+- SOFR
+- SONIA
+- Ameribor
+- FRED
+- FOMC projections
+- ECB key interest rates
+- government bonds
+- treasury rates
+- yield curves
+- corporate bonds
+- ICE BofA Corporate Indices
+- Moody's AAA and BAA Corporate Indices
+- Commercial Paper
+- Spot Rates
+- HQM Corporate Yield Curve
+- openbb.fixedincome module
+- python SDK
+- bond indices
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Fixed Income - SDK | OpenBB Docs" />
+<HeadTitle title="Fixed Income - Intros - Usage | OpenBB SDK Docs" />
 
 The Fixed Income module is the high-level menu for the Fixed Income asset class. It contains reference rates (ESTER, SOFR, SONIA and Ameribor), central bank rates (FRED, FOMC projections and ECB key interest rates), government bonds (treasury rates for any country, us-specific rates, yield curves), corporate bonds (ICE BofA Corporate Indices, Moody's AAA and BAA Corporate Indices, Commercial Paper, Spot Rates and HQM Corporate Yield Curve) and spread (ICE BofA spreads, constant maturity spreads, and federal funds rate)
 

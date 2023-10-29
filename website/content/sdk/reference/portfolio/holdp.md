@@ -1,12 +1,26 @@
 ---
 title: holdp
-description: OpenBB SDK Function
+description: This page provides comprehensive details on 'holdp', a function of the
+  OpenBBTerminal. It includes information on how to get holdings of assets in percentage,
+  parameters for the function, and examples of its use.
+keywords:
+- OpenBBTerminal
+- holdp function
+- asset holding
+- Percentage of assets
+- PortfolioEngine
+- Portfolio management
+- Python functions
+- openbb.portfolio
+- Holdings calculation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.holdp - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# holdp
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -47,8 +61,6 @@ output = openbb.portfolio.holdp(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -81,8 +93,6 @@ openbb.portfolio.holdp_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

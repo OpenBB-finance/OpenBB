@@ -1,10 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chains
-description: OpenBB Telegram Command
+description: This documentation page is about the /chains command, which helps users
+  retrieve Options Chain by Expiry. This crucial tool provides an overview of the
+  bid, ask, and open interest of options contracts for a specific stock.
+keywords:
+- chains command
+- Options Chain by Expiry
+- bid
+- ask
+- open interest
+- stock options contracts
+- stock ticker
+- expiration date
+- calls or puts
+- strike price
 ---
 
-# chains
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: chains - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve Options Chain by Expiry, which gives an overview of the bid, ask, and open interest of options contracts for a specific stock.
 

@@ -1,9 +1,24 @@
 ---
 title: line
-description: OpenBB SDK Function
+description: The page describes the 'line' function of the OpenBB library, used for
+  displaying line plots of data. It provides the source code link and details the
+  parameters, usage, and examples of the function within the domain of quantitative
+  analysis and data visualization using Python.
+keywords:
+- openbb
+- line plot
+- quantitative analysis
+- data visualization
+- python
+- pd.Series
+- matplotlib
+- datetime
+- source code
 ---
 
-# line
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.line - Reference | OpenBB SDK Docs" />
 
 Display line plot of data
 
@@ -45,4 +60,3 @@ openbb.qa.line(data=df["Adj Close"])
 ```
 
 ---
-

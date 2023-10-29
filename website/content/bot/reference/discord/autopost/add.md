@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: commands add
-description: OpenBB Discord Command
+description: This documentation page provides in-depth insight on how to use the 'add'
+  command in the context of autoposting with OpenBB bot. It gives details of usage,
+  parameters and even provides a few illustrative examples.
+keywords:
+- OpenBB bot
+- autopost commands
+- autoposting
+- commands add
+- usage parameters
+- automated notifications
 ---
 
-# commands add
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="autopost: commands add - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to add an autopost command to a channel. It allows the user to receive notifications from OpenBB bot in the channel without having to manually query them. This can be used for all commands that appear in the list when you run "autopost commands add"
 

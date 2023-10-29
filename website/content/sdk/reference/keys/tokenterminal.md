@@ -1,9 +1,24 @@
 ---
 title: tokenterminal
-description: OpenBB SDK Function
+description: This documentation page deals with the 'tokenterminal' function of the
+  OpenBB finance terminal. It allows users to set a Token Terminal key, which, depending
+  on the parameters, can be limited to the current session or applied globally. A
+  use-case example is also included.
+keywords:
+- OpenBB
+- Token Terminal Key
+- API Key
+- Python
+- SDK
+- Finance Terminal
+- tokenterminal Function
+- Terminal Environment Variables
+- Jupyter Notebook
 ---
 
-# tokenterminal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.tokenterminal - Reference | OpenBB SDK Docs" />
 
 Set Token Terminal key.
 
@@ -41,4 +56,3 @@ openbb.keys.tokenterminal(key="example_key")
 ```
 
 ---
-

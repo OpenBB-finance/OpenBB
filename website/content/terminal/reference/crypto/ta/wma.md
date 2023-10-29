@@ -1,9 +1,23 @@
 ---
 title: wma
-description: OpenBB Terminal Function
+description: A comprehensive guide about Weighted Moving Average (WMA), its special
+  features, usage, inclusion of parameters like window lengths and offset. Also, providing
+  an illustrative diagram about WMA.
+keywords:
+- Weighted Moving Average
+- WMA
+- n_length
+- n_offset
+- WMA parameters
+- WMA usage
+- WMA diagram
+- window lengths
+- offset
 ---
 
-# wma
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/wma - Reference | OpenBB Terminal Docs" />
 
 A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a corresponding Simple Moving Average.
 

@@ -1,9 +1,21 @@
 ---
 title: binance
-description: OpenBB SDK Function
+description: This documentation page provides information on how to set Binance keys
+  using the openbb_terminal sdk, including a detailed overlook of the parameters and
+  returns.
+keywords:
+- binance
+- API key
+- API secret
+- openbb_terminal sdk
+- Python
+- Jupyter notebook session
+- terminal environment variables
 ---
 
-# binance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.binance - Reference | OpenBB SDK Docs" />
 
 Set Binance key
 
@@ -47,4 +59,3 @@ key="example_key",
     )
 ```
 ---
-

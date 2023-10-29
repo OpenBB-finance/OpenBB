@@ -1,12 +1,25 @@
 ---
 title: Alternative
-keywords: [alternative data, alternative, data, alt, openbb terminal, sdk, how to, usage, oss, covid, examples]
-description: The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated.
+description: This documentation page explains the functionalities provided by the
+  Alternative module of the OpenBB SDK, offering programmatic access to commands within
+  the OpenBB Terminal. It covers functions related to open source software (OSS) and
+  Covid data, and provides examples of usage using the Python language.
+keywords:
+- OpenBB SDK
+- Alternative module
+- open source software
+- Covid data
+- Python
+- programmatic access
+- GitHub API key
+- repositories statistics
+- global deaths
+- cases slope
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Alternative - SDK | OpenBB Docs" />
+<HeadTitle title="Alternative - Intros - Usage | OpenBB SDK Docs" />
 
 The Alternative module provides programmatic access to the commands from within the OpenBB Terminal. Import the OpenBB SDK module, and then access the functions similarly to how the Terminal menus are navigated. The code completion will be activated upon entering `.`, after, `openbb.alt`
 

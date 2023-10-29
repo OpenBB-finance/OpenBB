@@ -1,12 +1,29 @@
 ---
 title: nonzero
-description: OpenBB SDK Function
+description: Documentation page for OpenBB's nonzero function and nonzero_chart function.
+  These functions are used to retrieve addresses with a non-zero balance of a certain
+  symbol and plot them respectively.
+keywords:
+- OpenBB
+- nonzero function
+- nonzero_chart function
+- addresses with non-zero balance
+- cryptocurrency
+- Python
+- dataframe
+- BTC
+- chart plotting
+- source code
+- export data
+- due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.nonzero - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# nonzero
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +56,6 @@ openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: 
 | pd.DataFrame | addresses with non-zero balances |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +87,6 @@ openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

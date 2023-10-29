@@ -1,9 +1,23 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: The page provides usage instructions for 'hist' command in Python that
+  creates histograms with density and rug. It also includes details about parameters
+  and the default value.
+keywords:
+- hist
+- histogram
+- density
+- rug
+- parameters
+- n_bins
+- Usage
+- python
+- coding
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/hist - Reference | OpenBB Terminal Docs" />
 
 Histogram with density and rug
 

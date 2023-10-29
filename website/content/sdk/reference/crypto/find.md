@@ -1,9 +1,28 @@
 ---
 title: find
-description: OpenBB SDK Function
+description: 'The page provides the information about a function that can find similar
+  coins by coin name, symbol or id. The tool supports multiple data sources including:
+  CoinGecko, CoinPaprika, Binance, and Coinbase and can return the data in a Pandas
+  DataFrame format.'
+keywords:
+- find similar coin
+- cryptocurrency
+- Cryptocurrency search
+- CoinGecko
+- CoinPaprika
+- Binance
+- Coinbase
+- Python
+- Data source of coins
+- OpenBB Terminal
+- data frame
+- openbb.crypto.find
+- Crypto search function
 ---
 
-# find
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.find - Reference | OpenBB SDK Docs" />
 
 Find similar coin by coin name,symbol or id.
 
@@ -42,4 +61,3 @@ openbb.crypto.find("polka", "CoinGecko", "name", 25)
 ```
 
 ---
-

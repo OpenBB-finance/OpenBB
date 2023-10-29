@@ -1,12 +1,26 @@
 ---
 title: close
-description: OpenBB SDK Function
+description: Documentation for methods used in closing trades and viewing charts in
+  the OpenBB fin-tech software. The page gives a detailed explanation about their
+  use, parameters, and return values.
+keywords:
+- OpenBB
+- finance software
+- trade
+- chart
+- documentation
+- source code
+- Oanda
+- forex
+- function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.close - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# close
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str 
 | Union[pd.DataFrame, bool] | Close trades data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +82,6 @@ openbb.forex.oanda.close_chart(accountID: str, orderID: str = "", units: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

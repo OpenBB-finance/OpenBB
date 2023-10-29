@@ -1,9 +1,20 @@
 ---
 title: type
-description: OpenBB Terminal Function
+description: Learn how to show the type of the columns of your dataset or change the
+  type of a specific column using Docusaurus. This guide also provides usage, parameters
+  and examples.
+keywords:
+- Docusaurus
+- Dataset Column Types
+- Change Column Type
+- Code Examples
+- Type Function Parameters
+- Type Function Usage
 ---
 
-# type
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /type - Reference | OpenBB Terminal Docs" />
 
 Show the type of the columns of the dataset and/or change the type of the column
 

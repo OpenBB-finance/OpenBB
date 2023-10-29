@@ -1,9 +1,21 @@
 ---
 title: globe
-description: OpenBB SDK Function
+description: This docusaurus page represents the 'globe' function of OpenBBTerminal
+  which retrieves a DataFrame with global cryptocurrency market data from a specified
+  source; default is CoinGecko.
+keywords:
+- OpenBBTerminal
+- crypto market data
+- globe function
+- CoinGecko
+- coinpaprika
+- DataFrame
+- global crypto data
 ---
 
-# globe
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.globe - Reference | OpenBB SDK Docs" />
 
 Get global crypto market data.
 
@@ -46,4 +58,3 @@ global_market_data = openbb.crypto.ov.globals(source="coinpaprika")
 ```
 
 ---
-

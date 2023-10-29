@@ -1,9 +1,28 @@
 ---
 title: key
-description: OpenBB Terminal Function
+description: This documentation provides users with key metrics data about a company
+  using Alpha Vantage API. It presents data fields like Market capitalization, EBITDA,
+  EPS, PE ratio, and more.
+keywords:
+- Alpha Vantage API
+- Market capitalization
+- EBITDA
+- EPS
+- PE ratio
+- PEG ratio
+- Price to book ratio
+- Return on equity TTM
+- Payout ratio
+- Price to sales ratio TTM
+- Dividend yield
+- 50 day moving average
+- Analyst target price
+- Beta
 ---
 
-# key
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/key - Reference | OpenBB Terminal Docs" />
 
 Gives main key metrics about the company (it's a subset of the Overview data from Alpha Vantage API). The following fields are expected: Market capitalization, EBITDA, EPS, PE ratio, PEG ratio, Price to book ratio, Return on equity TTM, Payout ratio, Price to sales ratio TTM, Dividend yield, 50 day moving average, Analyst target price, Beta [Source: Alpha Vantage API]
 

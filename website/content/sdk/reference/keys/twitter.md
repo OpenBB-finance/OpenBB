@@ -1,9 +1,27 @@
 ---
 title: twitter
-description: OpenBB SDK Function
+description: This page explains how to set a Twitter API key in OpenBB Terminal, including
+  a detailed explanation of parameters and example code. Learn how to use OpenBB to
+  interact with Twitter's API.
+keywords:
+- Twitter API
+- OpenBB Terminal
+- API key
+- Python
+- Coding examples
+- Jupyter notebook
+- SDK
+- openbb keys twitter
+- Environment variables
+- API secret
+- API token
+- persist
+- show_output
 ---
 
-# twitter
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.twitter - Reference | OpenBB SDK Docs" />
 
 Set Twitter key
 
@@ -49,4 +67,3 @@ key="example_key",
     )
 ```
 ---
-

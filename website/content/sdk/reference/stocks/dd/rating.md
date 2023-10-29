@@ -1,9 +1,23 @@
 ---
 title: rating
-description: OpenBB SDK Function
+description: The page provides detailed information about the OpenBBTerminal's functionality
+  to fetch ratings for a given stock ticker using the Financial Modeling Prep source.
+  The code is written in Python and returns data in pd.DataFrame format.
+keywords:
+- OpenBBTerminal
+- Stock Ticker
+- Ratings
+- Financial Modeling Prep
+- Python
+- Source Code
+- pd.DataFrame
+- Stock Market
+- Financial Data
 ---
 
-# rating
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dd.rating - Reference | OpenBB SDK Docs" />
 
 Get ratings for a given ticker. [Source: Financial Modeling Prep]
 
@@ -30,4 +44,3 @@ openbb.stocks.dd.rating(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Rating data |
 ---
-

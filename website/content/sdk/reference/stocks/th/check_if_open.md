@@ -1,9 +1,26 @@
 ---
 title: check_if_open
-description: OpenBB SDK Function
+description: SEO metadata for a Python function 'check_if_open' within OpenBB-finance's
+  OpenBBTerminal. This function checks if a particular market (Bursa) is open for
+  trading.
+keywords:
+- OpenBB-finance
+- OpenBBTerminal
+- Stocks
+- Trading hours
+- Bursa
+- Check market open
+- OpenBB
+- Python
+- Source code
+- pandas
+- Dataframe
+- Exchange
 ---
 
-# check_if_open
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.th.check_if_open - Reference | OpenBB SDK Docs" />
 
 Check if market open helper function
 
@@ -26,4 +43,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

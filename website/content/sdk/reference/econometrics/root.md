@@ -1,12 +1,26 @@
 ---
 title: root
-description: OpenBB SDK Function
+description: Detailed explanation of OpenBB's econometrics Python library focusing
+  on the functionality of unit root tests including ADF and KPSS tests. The page features
+  instructions on how to conduct these tests with Python, making it beneficial for
+  data analysts and those interested in data series analysis.
+keywords:
+- Docusaurus
+- OpenBB
+- Econometrics
+- ADF test
+- KPSS test
+- Data series
+- Python
+- Data Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.root - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# root
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str =
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +85,6 @@ openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

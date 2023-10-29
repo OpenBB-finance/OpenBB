@@ -1,12 +1,30 @@
 ---
 title: gdpc
-description: OpenBB SDK Function
+description: The page provides details on using the 'gdpc' function of OpenBBTerminal.
+  It allows plotting and exporting United States' GDP per Capita data. The page also
+  gives link to the source code and gives examples of how to use the functions with
+  Python.
+keywords:
+- GDP per Capita
+- gdpc
+- OpenBBTerminal
+- Real GDP
+- United States Economy
+- plotting tool
+- economy model
+- Python
+- Data visualization
+- Raw data
+- Export data
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.gdpc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gdpc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +54,6 @@ openbb.economy.gdpc(start_year: int = 2010)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of GDP per Capita |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +85,6 @@ openbb.economy.gdpc_chart(start_year: int = 2010, raw: bool = False, export: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

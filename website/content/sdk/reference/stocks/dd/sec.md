@@ -1,9 +1,26 @@
 ---
 title: sec
-description: OpenBB SDK Function
+description: This page provides the source code and related information for using
+  OpenBB's SEC filings feature. Retrieve stock ticker information from platforms like
+  Market Watch. Written in Python, the feature returns SEC filings data in a pd.DataFrame
+  format.
+keywords:
+- SEC filings
+- stock ticker
+- Market Watch
+- source code
+- python
+- OpenBB
+- stocks
+- due diligence
+- marketwatch model
+- pd.DataFrame
+- symbol
 ---
 
-# sec
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dd.sec - Reference | OpenBB SDK Docs" />
 
 Get SEC filings for a given stock ticker. [Source: Market Watch]
 
@@ -30,4 +47,3 @@ openbb.stocks.dd.sec(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | SEC filings data |
 ---
-

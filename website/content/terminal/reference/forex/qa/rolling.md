@@ -1,9 +1,24 @@
 ---
 title: rolling
-description: OpenBB Terminal Function
+description: This page contains information about the 'Rolling Mean' and 'Standard
+  Deviation' in Python data analysis. It covers usage, parameters, and provides visual
+  representations.
+keywords:
+- rolling
+- mean
+- std deviation
+- usage
+- parameters
+- n_window
+- window length
+- python
+- data analysis
+- statistics
 ---
 
-# rolling
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/rolling - Reference | OpenBB Terminal Docs" />
 
 Rolling mean and std deviation
 
