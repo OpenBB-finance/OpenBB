@@ -5,7 +5,6 @@ description: The page delivers documentation for the Python program 'fib', used 
   definition, and visual outputs.
 keywords:
 - fibonacci retracement levels
-- Python
 - fib program
 - period parameter
 - start parameter

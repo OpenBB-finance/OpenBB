@@ -7,8 +7,6 @@ keywords:
 - FRED
 - OpenBB-finance
 - Series ID
-- Python
-- Dataframe
 - Information retrieval
 - FRED series notes database
 - openbb.economy.fred_ids

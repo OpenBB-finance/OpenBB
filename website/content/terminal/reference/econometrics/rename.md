@@ -4,11 +4,9 @@ description: The 'rename' page in our documentation explains how to change the n
   of columns in a dataset using a specific command. This includes detailed parameter
   explanations and usage examples.
 keywords:
-- documentation
 - rename
 - dataset
 - parameters
-- command
 - examples
 - column renaming
 - usage

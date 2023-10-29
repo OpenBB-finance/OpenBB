@@ -5,7 +5,6 @@ description: This page provides detailed information on how to retrieve and disp
   functionality. Learn how to use On-chain model's parameters to sort and limit transactions
   as required for Ethplorer, including the export of data.
 keywords:
-- OpenBB Terminal
 - OpenBB Crypto OnChain
 - Blockchain balance
 - Historical transactions
@@ -14,11 +13,8 @@ keywords:
 - Ethplorer
 - Balance historical transactions
 - Sort by timestamp
-- Dataframe
 - Sort in ascending order
 - export dataframe to file
-- pd.DataFrame
-- Python
 - Crypto
 ---
 

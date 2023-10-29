@@ -10,7 +10,6 @@ keywords:
 - Fred command
 - Macro Economic
 - Data plotting
-- Python
 - Start date
 - End date
 ---

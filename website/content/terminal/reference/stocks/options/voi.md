@@ -9,7 +9,6 @@ keywords:
 - Open Interest
 - strike price
 - plot
-- python
 - minimum volume
 - maximum strike price
 ---

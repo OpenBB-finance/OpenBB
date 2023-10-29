@@ -7,7 +7,6 @@ description: The page explains the 'mktcap' function of OpenBB Terminal's portfo
 keywords:
 - market capitalization
 - portfolio optimization
-- openbb
 - PoEngine
 - portfolio engine
 - frequency of returns

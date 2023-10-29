@@ -6,12 +6,10 @@ description: Documentation on OpenBB Terminal's feature for SEC filings analysis
 keywords:
 - SEC filings analysis
 - Machine learning
-- OpenBB Terminal
 - Stocks
 - Fundamental analysis
 - Ticker symbol
 - Eclect.us
-- Python
 - Source code
 ---
 

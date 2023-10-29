@@ -7,7 +7,6 @@ description: This page provides comprehensive documentation for the 'th' functio
 keywords:
 - token history
 - Ethplorer
-- python
 - command parameters
 - sortby
 - reverse

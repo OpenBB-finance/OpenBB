@@ -7,10 +7,7 @@ keywords:
 - hma
 - hull moving average
 - stock technical analysis
-- OpenBB
-- Python
 - pandas
-- DataFrame
 - SMA window
 ---
 

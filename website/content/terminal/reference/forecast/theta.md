@@ -5,15 +5,12 @@ description: This page provides a detailed guide on how to perform a Theta forec
   to a CSV file are covered as well.
 keywords:
 - Theta forecast
-- Data Analysis
 - Predictive Modelling
 - Historical Data
 - Seasonality
-- Python
 - Forecasting
 - Model Parameters
 - Profit Forecast
-- SEO
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

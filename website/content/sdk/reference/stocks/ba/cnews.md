@@ -4,15 +4,12 @@ description: This page provides details about the 'cnews' function of the OpenBB
   capable of fetching company news. The function uses the company ticker and optional
   dates of search as parameters.
 keywords:
-- OpenBB Terminal
 - cnews function
 - company news
 - Finnhub
 - company ticker
 - news articles
 - search dates
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

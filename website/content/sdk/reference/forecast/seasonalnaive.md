@@ -19,7 +19,6 @@ keywords:
 - residuals
 - forecast only
 - naive
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

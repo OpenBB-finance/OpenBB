@@ -7,7 +7,6 @@ keywords:
 - spacc
 - SPACs
 - subreddit
-- python
 - tool
 - posts
 - limit

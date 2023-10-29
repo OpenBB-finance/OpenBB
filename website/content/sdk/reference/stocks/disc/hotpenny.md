@@ -5,7 +5,6 @@ description: 'The page provides documentation on how to use the hotpenny functio
   different columns such as Ticker, Price, Change, $ Volume, Volume, # Trades.'
 keywords:
 - hot penny stocks
-- OpenBB
 - stocks DataFrame
 - stock trading
 - financial data

@@ -6,7 +6,6 @@ description: Learn how to navigate and utilize OpenBB's interactive tables using
   remove columns, select number of rows per page, freeze index and column headers,
   and export the data.
 keywords:
-- OpenBB
 - interactive tables
 - PyWry technology
 - sorting columns

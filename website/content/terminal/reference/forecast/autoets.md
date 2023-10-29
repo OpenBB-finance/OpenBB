@@ -8,7 +8,6 @@ keywords:
 - ETS forecasting
 - automatic ETS
 - Error Trend Seasonality
-- python
 - forecast
 - parameters
 - prediction

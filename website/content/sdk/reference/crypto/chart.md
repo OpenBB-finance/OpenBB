@@ -8,11 +8,9 @@ keywords:
 - Technical Analysis
 - OpenBB crypto chart
 - Cryptocurrency data
-- Python
 - matplotlib axes
 - linear plot scale
 - log plot scale
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

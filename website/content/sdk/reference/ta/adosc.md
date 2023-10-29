@@ -5,17 +5,13 @@ description: Technical page discussing the calculation and plotting of the AD Os
 keywords:
 - AD Oscillator
 - technical indicator
-- source code
 - parameter description
 - calculate
 - plot
 - technical analysis
-- openbb
-- pd.DataFrame
 - fast value
 - slow value
 - volume model
-- OpenBBTerminal
 - TabItem
 - docusaurus
 ---

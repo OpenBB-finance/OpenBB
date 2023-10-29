@@ -11,7 +11,6 @@ keywords:
 - sratio function
 - dataframe
 - matplotlib
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

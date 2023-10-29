@@ -8,10 +8,8 @@ keywords:
 - option chain
 - openbb.stocks.options.api
 - Nasdaq
-- Python
 - expiration dates
 - stock market API
-- OpenBB
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

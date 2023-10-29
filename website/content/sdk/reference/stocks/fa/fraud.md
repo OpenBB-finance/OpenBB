@@ -4,13 +4,10 @@ description: This is an informational page about Fetching fraud ratios based on 
   using OpenBB's stocks.fa.fraud function in Python. This function accepts a stock
   ticker symbol and returns fraud ratios in a pandas DataFrame format.
 keywords:
-- OpenBB Terminal
 - fraud ratios
-- Python
 - fundamental analysis
 - stock ticker symbol
 - pandas DataFrame
-- source code
 - OpenBB.finance
 ---
 

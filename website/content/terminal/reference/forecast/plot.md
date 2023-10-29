@@ -11,7 +11,6 @@ keywords:
 - Data visualization
 - index-based plotting
 - Programming
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

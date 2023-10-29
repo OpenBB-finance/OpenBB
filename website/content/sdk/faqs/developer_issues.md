@@ -14,7 +14,6 @@ keywords:
 - whl files
 - JSONDecodeError
 - CRLF error
-- OpenBB
 - VS Code integrated terminal
 ---
 

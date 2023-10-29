@@ -8,7 +8,6 @@ keywords:
 - exchanges
 - coin
 - crypto
-- python
 - parameters
 - sorted data
 - ascend

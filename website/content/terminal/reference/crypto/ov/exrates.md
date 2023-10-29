@@ -11,7 +11,6 @@ keywords:
 - limit
 - reverse
 - parameters
-- Python
 - fiats
 - commodity
 ---

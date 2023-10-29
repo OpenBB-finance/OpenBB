@@ -16,7 +16,6 @@ keywords:
 - distribution deviation
 - right-skewed
 - left-skew
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

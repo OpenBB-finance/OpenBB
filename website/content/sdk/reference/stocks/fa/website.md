@@ -6,7 +6,6 @@ keywords:
 - yfinance
 - website
 - stock ticker symbol
-- openbb
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

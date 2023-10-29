@@ -7,7 +7,6 @@ keywords:
 - tradier
 - api key
 - openbb terminal
-- python
 - sdk
 - openbb keys tradier
 - terminal environment variables

@@ -5,7 +5,6 @@ description: Detailed guide on how to display top ERC20 token holders using pyth
 keywords:
 - ERC20 token holders
 - Ethplorer
-- python
 - parameters
 - sortby
 - limit

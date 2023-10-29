@@ -8,15 +8,12 @@ keywords:
 - search
 - query
 - tickers
-- OpenBB
 - stocks
 - country
 - sector
 - industry
 - exchange_country
 - limit
-- pd.DataFrame
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

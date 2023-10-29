@@ -11,9 +11,7 @@ keywords:
 - Returns
 - chart
 - machine learning
-- OpenBB Terminal
 - predict
-- Python
 - AI
 - Neural networks
 ---

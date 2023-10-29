@@ -7,7 +7,6 @@ description: This page provides a detailed look into the Random Effects Model de
 keywords:
 - random effects model
 - regression variables
-- OpenBB
 - data science
 - Python code
 - econometrics
@@ -15,7 +14,6 @@ keywords:
 - independent variable
 - dependent variable
 - dataset
-- source code
 - github
 ---
 

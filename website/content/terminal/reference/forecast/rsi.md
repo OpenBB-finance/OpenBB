@@ -8,7 +8,6 @@ keywords:
 - Relative Strength Index
 - RSI
 - dataset
-- Python
 - forecast
 - analysis
 - market trends

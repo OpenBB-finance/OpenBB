@@ -4,7 +4,6 @@ description: This documentation page describes how to set the Walert key in Open
   finance's Terminal. It details the parameters, return types and provides examples
   for setting the API key.
 keywords:
-- OpenBB Terminal
 - API key set
 - Walert key
 - Python code

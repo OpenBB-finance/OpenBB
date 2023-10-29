@@ -18,8 +18,6 @@ keywords:
 - Limit
 - Export
 - External_axes
-- Dataframe
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

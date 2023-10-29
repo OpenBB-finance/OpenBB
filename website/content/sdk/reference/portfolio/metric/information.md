@@ -4,7 +4,6 @@ description: Documentation for the 'information' function of the OpenBB financia
   library. It calculates the information ratio for different time periods based on
   portfolio transactions.
 keywords:
-- OpenBB
 - financial library
 - information ratio
 - portfolio transactions

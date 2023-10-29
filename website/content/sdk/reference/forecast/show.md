@@ -7,8 +7,6 @@ keywords:
 - OpenBB finance
 - Documentation
 - Programming
-- Data Analysis
-- Python
 - show function
 - show_chart function
 - Source Code

@@ -12,8 +12,6 @@ keywords:
 - crypto analysis
 - exchange selection
 - coin symbol
-- start date
-- end date
 - quote currency
 ---
 

@@ -7,7 +7,6 @@ keywords:
 - Yahoo Finance data
 - sector industry analysis
 - finance database
-- Python
 - OpenBB stocks
 - filter by industry
 - filter by sector

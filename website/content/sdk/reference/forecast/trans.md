@@ -6,11 +6,9 @@ description: This section emphasizes on Transformer forecasting method implement
   the results in chart.
 keywords:
 - Transformer Forecasting
-- OpenBB Terminal
 - Time-Series Prediction
 - Forecasting Parameters
 - Data Visualization
-- Python
 - pandas series
 - pandas dataframe
 - Machine Learning

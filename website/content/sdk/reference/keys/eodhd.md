@@ -5,13 +5,10 @@ description: This is a documentation page for the 'set Eodhd key' functionality 
   return values, and an example on how to use the function.
 keywords:
 - eodhd
-- openbb
 - api key
-- python
 - parameters
 - returns
 - examples
-- source code
 - jupyter
 - terminal environment variables
 ---

@@ -8,10 +8,7 @@ description: Comprehensive guide to install the OpenBB Terminal and SDK from sou
   setup and package management through Conda and Poetry are also included, along with
   troubleshooting tips and community support.
 keywords:
-- OpenBB Terminal
-- SDK
 - Installation
-- Python
 - Miniconda
 - Git
 - Microsoft C++ Build Tools

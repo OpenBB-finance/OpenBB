@@ -2,7 +2,7 @@
 title: orderbook
 description: This documentation page hosts information on 'Orderbook' operations in
   forex trading using the 'Oanda' platform, powered by 'OpenBB'. It includes Python
-  source code, various parameters, and return types. Also addressed is ploting an
+  source code, various parameters, and return types. Also addressed is plotting an
   'Orderbook' chart with 'matplotlib'.
 keywords:
 - orderbook
@@ -10,12 +10,9 @@ keywords:
 - forex
 - currency pair
 - accountID
-- OpenBB
 - orderbook chart
 - matplotlib
 - pandas DataFrame
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

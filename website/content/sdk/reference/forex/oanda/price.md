@@ -9,8 +9,6 @@ keywords:
 - oanda
 - price request
 - price view
-- python
-- source code
 - currency pair
 - functions
 - parameters

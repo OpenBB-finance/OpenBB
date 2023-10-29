@@ -10,10 +10,8 @@ keywords:
 - historical yield
 - tyld function
 - tyld_chart function
-- Python
 - data retrieval
 - data display
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

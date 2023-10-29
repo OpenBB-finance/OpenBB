@@ -15,9 +15,7 @@ keywords:
 - model
 - view
 - chart
-- source code
 - OpenBB-finance
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

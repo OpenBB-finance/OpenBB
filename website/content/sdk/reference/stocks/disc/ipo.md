@@ -6,12 +6,7 @@ description: Navigate through the IPO calendar using OpenBB's Python toolkit. Th
 keywords:
 - IPO
 - IPO calendar
-- OpenBB
-- start date
-- end date
-- Python
 - Source code
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

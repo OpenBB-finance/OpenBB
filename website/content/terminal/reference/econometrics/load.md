@@ -6,7 +6,6 @@ description: This documentation page covers the function 'load', which is utiliz
 keywords:
 - Load Function
 - Dataset
-- Python
 - StatsModels
 - Data Loading
 - Documentation

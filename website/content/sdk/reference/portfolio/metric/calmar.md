@@ -12,7 +12,6 @@ keywords:
 - portfolio management
 - risk measurement
 - Python library
-- OpenBB Terminal
 - benchmark performance
 - financial data analysis
 ---

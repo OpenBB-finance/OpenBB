@@ -4,7 +4,6 @@ description: Documentation for Demark Sequential Indicator, a technical indicato
   in Python. Detailed usage and parameter information is available.
 keywords:
 - Demark Sequential Indicator
-- Python
 - Technical Indicator
 - Parameters
 - Usage

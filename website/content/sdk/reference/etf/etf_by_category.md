@@ -10,7 +10,6 @@ keywords:
 - ETF selection
 - financial data
 - finance database model
-- python
 - etf_by_category function
 ---
 

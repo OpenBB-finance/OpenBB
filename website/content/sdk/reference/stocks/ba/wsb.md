@@ -8,14 +8,11 @@ keywords:
 - OpenBB-finance
 - reddit_model.py
 - openbb.stocks.ba.wsb
-- Python
-- Dataframe
 - reddit submissions
 - Parameters
 - Limit
 - New
 - Returns
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

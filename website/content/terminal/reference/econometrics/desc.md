@@ -7,7 +7,6 @@ description: Easily analyze data with the desc command in Python. Generate compr
 keywords:
 - data analysis
 - descriptive statistics
-- Python
 - dataset
 - econometrics
 - statistics for dataset

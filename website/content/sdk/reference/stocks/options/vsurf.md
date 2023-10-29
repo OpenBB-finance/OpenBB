@@ -9,10 +9,8 @@ keywords:
 - vSurf_Chart
 - IV Surface
 - vol surface
-- OpenBBTerminal
 - options
 - ticker symbol
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

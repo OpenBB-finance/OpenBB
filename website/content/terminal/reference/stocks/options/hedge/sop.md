@@ -4,7 +4,6 @@ description: The sop command in this documentation demonstrates how to view sele
   options in a stock hedge. It provides usage, parameter details, and practical examples.
 keywords:
 - sop
-- command
 - parameters
 - options
 - stocks

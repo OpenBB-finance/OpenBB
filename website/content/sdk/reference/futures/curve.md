@@ -5,12 +5,9 @@ description: The documentation page provides detailed instructions on how to ret
   The API functions interact with data from Yahoo Finance and include customization
   options for data representation and export format.
 keywords:
-- OpenBB
 - curve futures
-- Python
 - Yahoo Finance
 - futures data
-- source code
 - data visualization
 - matplotlib
 - API documentation

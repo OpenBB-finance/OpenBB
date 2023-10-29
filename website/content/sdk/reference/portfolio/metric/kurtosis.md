@@ -8,14 +8,9 @@ keywords:
 - portfolio metrics
 - kurtosis
 - portfolio and benchmark
-- Python
-- finance
 - data analysis
-- OpenBBTerminal
-- source code
 - PortfolioEngine class instance
 - portfolio load
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

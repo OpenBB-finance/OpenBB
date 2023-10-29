@@ -8,7 +8,6 @@ keywords:
 - upcoming earnings release dates
 - Seeking Alpha
 - stock market
-- investment
 - financial data
 - finance documentation
 - stock earnings

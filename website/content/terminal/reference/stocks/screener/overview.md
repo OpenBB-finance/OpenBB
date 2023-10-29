@@ -14,7 +14,6 @@ keywords:
 - data sorting
 - table elements
 - stock analysis
-- python
 - commands
 - parameters
 - pre-set filtering

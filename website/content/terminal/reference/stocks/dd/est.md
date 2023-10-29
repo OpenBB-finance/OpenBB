@@ -11,7 +11,6 @@ keywords:
 - stock market
 - business
 - financial data
-- investment
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,12 +6,10 @@ description: The page discusses the data sources and functionalities of OpenBB, 
   data, and requesting features.
 keywords:
 - data aggregator
-- OpenBB
 - troubleshooting guide
 - data sources
 - ticker symbols
 - load function
-- OpenBB Terminal
 - feature request
 - data providers
 ---

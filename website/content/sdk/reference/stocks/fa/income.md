@@ -4,7 +4,6 @@ description: This page is a detailed guide on how to use the 'income' function p
   by OpenBBTerminal. This function fetches income statements for a given stock symbol
   from selected data sources like YahooFinance or AlphaVantage.
 keywords:
-- OpenBBTerminal
 - income statement
 - stock
 - symbol
@@ -12,7 +11,6 @@ keywords:
 - YahooFinance
 - AlphaVantage
 - OpenBBTerminal income
-- Python
 - Financial Analysis
 - fundamental analysis
 ---

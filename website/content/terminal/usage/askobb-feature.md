@@ -9,7 +9,6 @@ description: This documentation page presents the innovative use of language lea
 keywords:
 - AskOBB
 - natural language query
-- OpenBB Terminal
 - LLMs
 - LlamaIndex
 - BloombergGPT

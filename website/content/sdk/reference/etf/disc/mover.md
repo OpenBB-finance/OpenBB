@@ -10,7 +10,6 @@ keywords:
 - gainers
 - decliners
 - active
-- pd.DataFrame
 - etf volume
 - etf price
 - etf change

@@ -10,7 +10,6 @@ keywords:
 - Ticker data
 - historical data
 - future expiry date
-- start date
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

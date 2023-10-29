@@ -5,7 +5,6 @@ description: Provides access to aggregated data of trades executed on Decentrali
   even sort the data as required.
 keywords:
 - dex_trades_monthly
-- OpenBBTerminal
 - Decentralized Exchanges
 - Trades data
 - openbb_crypto_onchain
@@ -13,7 +12,6 @@ keywords:
 - USD
 - limit
 - ascend
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -8,7 +8,6 @@ keywords:
 - Mutual Funds
 - Country
 - Fields
-- Python
 - Fund Info
 - Data Sorting
 - Results Limit

@@ -10,8 +10,6 @@ keywords:
 - Key Ratios
 - Stock Ticker Symbol
 - Quarterly Data
-- Python
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

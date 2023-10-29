@@ -4,9 +4,6 @@ description: This documentation page provides information on using OpenBBTermina
   Python code to obtain government contract data from QuiverQuant. It guides how to
   use the lastcontracts model and view functions for data analysis and export.
 keywords:
-- Python
-- OpenBB
-- OpenBBTerminal
 - Government contracts
 - QuiverQuant
 - Data analysis

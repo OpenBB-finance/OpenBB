@@ -4,7 +4,6 @@ description: A detailed guide on how to use the lookup command in python, showin
   parameters such as search_text, limit, and offset and their usage.
 keywords:
 - lookup command
-- python
 - search_text
 - limit
 - offset

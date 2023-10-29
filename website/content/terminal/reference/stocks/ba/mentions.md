@@ -4,7 +4,6 @@ description: The page provides details on how to plot weekly bars of stock's int
   over time with a python script. It includes usage and parameters like start date.
 keywords:
 - stock mentions
-- Python
 - Start Date Parameter
 - Interest over time
 - Google source

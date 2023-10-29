@@ -5,8 +5,6 @@ description: This Docusaurus page provides instructions on how to print raw data
   and sortby. Examples of usage and output are provided.
 keywords:
 - Raw data
-- python
-- command
 - sort
 - Limit
 - reverse

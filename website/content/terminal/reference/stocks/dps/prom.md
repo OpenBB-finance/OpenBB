@@ -6,7 +6,6 @@ keywords:
 - prom
 - dark pool
 - ATS data
-- ticker
 - trade activity
 - linear regression
 - data filtering

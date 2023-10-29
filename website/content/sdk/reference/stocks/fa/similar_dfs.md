@@ -10,7 +10,6 @@ keywords:
 - similar_dfs
 - dataframes
 - similar companies
-- OpenBB
 - stocks
 - fundamental analysis
 - yfinance.info function

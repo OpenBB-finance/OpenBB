@@ -5,7 +5,6 @@ description: The page provides usage details for the command 'normality' which e
   statistics like Kurtosis, Skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov.
 keywords:
 - normality tests
-- python
 - kurtosis
 - skewness
 - Jarque-Bera

@@ -4,7 +4,7 @@ description: The documentation page provides information on how to set Reddit AP
   keys using openbb_terminal's Python SDK. It lays out detailed procedures to establish
   Reddit's client id and client secret for authentication. The page also explains
   defaults and optional parameters including user credentials and options for API
-  key persistance.
+  key persistence.
 keywords:
 - Reddit API
 - openbb keys

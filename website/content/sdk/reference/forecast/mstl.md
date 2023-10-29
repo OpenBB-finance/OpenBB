@@ -9,9 +9,7 @@ keywords:
 - OpenBB.forecast.mstl
 - time-series data
 - predictive analysis
-- documentation
 - code
-- pyhon
 - model
 - parameters
 ---

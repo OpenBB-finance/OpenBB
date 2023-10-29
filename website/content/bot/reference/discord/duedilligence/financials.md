@@ -5,7 +5,6 @@ description: This page provides information on the financials command which retr
   ticker. The data can be used to analyze a company's financial health.
 keywords:
 - financials
-- ticker
 - total assets
 - cash
 - debt

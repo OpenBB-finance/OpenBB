@@ -4,12 +4,10 @@ description: This page of the OpenBB Terminal documentation provides details on 
   to return a selection of ETFs based on description filtered by total assets using
   the 'ld' function. It includes source code links, input parameters, and their returns.
 keywords:
-- OpenBB Terminal
 - ETF selection
 - description filter
 - total assets filter
 - '''ld'' function'
-- source code
 - parameter description
 - ETF return
 ---

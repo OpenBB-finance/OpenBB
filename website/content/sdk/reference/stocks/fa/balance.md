@@ -5,8 +5,6 @@ description: This page provides detailed information for retrieving balance shee
   return type of the function, as well as examples of its use for different data sources
   specifically for the stock symbol 'AAPL'.
 keywords:
-- OpenBBTerminal
-- Python
 - balance sheet
 - financial data
 - YahooFinance

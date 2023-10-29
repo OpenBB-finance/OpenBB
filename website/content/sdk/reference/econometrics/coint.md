@@ -5,7 +5,6 @@ description: This page is dedicated to the `coint` functionality of OpenBB Termi
   and get the results back as a Dataframe or a dictionary. This page provides the
   source code and detailed description of parameters specific to the function.
 keywords:
-- OpenBB Terminal
 - cointegration tests
 - coint
 - data analysis
@@ -15,7 +14,6 @@ keywords:
 - openbb.econometrics.coint
 - openbb.econometrics.coint_chart
 - parameters description
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

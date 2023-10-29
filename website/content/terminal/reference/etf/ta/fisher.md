@@ -11,7 +11,6 @@ keywords:
 - Price Trends
 - Gaussian Normal Distribution
 - Isolate Price Waves
-- Python
 - Parameter Configuration
 ---
 

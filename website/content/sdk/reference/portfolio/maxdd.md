@@ -5,12 +5,9 @@ description: Documentation page providing details about the maximum drawdown cal
   returns, and source code links.
 keywords:
 - maxdd
-- OpenBBTerminal
 - PortfolioEngine
 - maximum drawdown
 - portfolio
-- documentation
-- source code
 - examples
 - parameters
 ---

@@ -13,7 +13,6 @@ keywords:
 - coinpaprika_view
 - cryptocurrency chart generation
 - cryptocurrency tracking
-- source code
 - cryptocurrency parameters
 - BTC
 ---

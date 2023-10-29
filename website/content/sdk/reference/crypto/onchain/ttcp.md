@@ -9,16 +9,13 @@ keywords:
 - Crypto Trade
 - Crypto Pairs
 - Decentralized Exchange
-- OpenBB
 - Onchain Data
 - Trade Analysis
 - Ethereum
 - Uniswap
 - Bitquery Model
 - Bitquery View
-- Python
 - Data Visualization
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

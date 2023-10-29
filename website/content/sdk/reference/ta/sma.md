@@ -12,7 +12,6 @@ keywords:
 - dataframe
 - pricing
 - programming
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

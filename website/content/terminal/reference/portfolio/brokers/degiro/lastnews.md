@@ -6,7 +6,6 @@ keywords:
 - lastnews
 - news display
 - limit parameter
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

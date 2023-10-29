@@ -4,7 +4,6 @@ description: This page provides information about using the 'divinfo' command to
   dividend data, including rate, yield, and ex-div date for a specified stock ticker.
 keywords:
 - divinfo
-- command
 - dividend information
 - stock
 - dividend rate

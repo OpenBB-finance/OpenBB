@@ -10,7 +10,6 @@ keywords:
 - NFT collection stats
 - OpenSea data
 - NFT data
-- Python
 - slug
 - data export
 ---

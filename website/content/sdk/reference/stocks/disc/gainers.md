@@ -7,9 +7,6 @@ keywords:
 - Top gainers
 - Stocks
 - Yahoo Finance
-- OpenBB Terminal
-- Python
-- Dataframe
 - Source Code
 - Stock Market
 ---

@@ -10,9 +10,7 @@ keywords:
 - risk_free_rate
 - openbb.portfolio.metric.sharpe
 - financial metrics
-- OpenBB Terminal
 - OpenBB finance
-- Python
 - portfolio analysis
 - benchmark
 - portfolio management

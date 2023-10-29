@@ -10,7 +10,6 @@ keywords:
 - data source
 - Finviz
 - parameters
-- python
 - Polygon
 - stocks
 - US stock exchanges

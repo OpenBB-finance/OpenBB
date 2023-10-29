@@ -9,7 +9,6 @@ keywords:
 - shortrate command
 - borrow rate
 - interactive brokers
-- ticker
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

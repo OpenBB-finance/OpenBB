@@ -6,7 +6,6 @@ keywords:
 - etf
 - holdings
 - ETF ticker
-- command
 - usage
 - parameters
 - examples

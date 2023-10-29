@@ -12,9 +12,7 @@ keywords:
 - CoinPaprika
 - Binance
 - Coinbase
-- Python
 - Data source of coins
-- OpenBB Terminal
 - data frame
 - openbb.crypto.find
 - Crypto search function

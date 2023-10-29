@@ -4,7 +4,6 @@ description: Learn how to use the 'pick' function to plot option hedge diagrams.
   parameters like amount investment and what options to pick.
 keywords:
 - Option hedge diagrams
-- Python
 - Investment
 - Long call
 - Long put

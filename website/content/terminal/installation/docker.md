@@ -6,7 +6,6 @@ description: Instructions for installing OpenBB Terminal via Docker on different
   Desktop installation, displaying charts in Docker, and how to pull and run OpenBB
   Terminal Docker image.
 keywords:
-- OpenBB Terminal
 - Docker
 - Installation
 - Windows

@@ -9,7 +9,6 @@ keywords:
 - bw
 - data visualization
 - yearly bw plot
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

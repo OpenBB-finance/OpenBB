@@ -6,10 +6,8 @@ description: This documentation page provides a detailed overview of the 'show' 
   for different econometrics datasets by sorting and displaying datasets in an organized
   manner.
 keywords:
-- DataFrame
 - Database
 - Data sorting
-- Python
 - Data visualization
 - Show function
 - Econometrics

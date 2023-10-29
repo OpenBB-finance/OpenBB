@@ -8,7 +8,6 @@ keywords:
 - CoinPaprika API
 - cryptocurrency market data
 - OpenBB finance
-- Python
 - cryptocurrency
 - data fetching
 - market tables

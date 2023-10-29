@@ -8,7 +8,6 @@ keywords:
 - trans function
 - Transformer Forecast
 - parameter guidance
-- Python
 - programming
 - examples
 ---

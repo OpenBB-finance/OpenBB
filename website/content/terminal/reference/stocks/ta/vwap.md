@@ -13,8 +13,6 @@ keywords:
 - examples
 - stocks
 - analysis
-- start date
-- end date
 - offset
 - GOOGL stock
 ---

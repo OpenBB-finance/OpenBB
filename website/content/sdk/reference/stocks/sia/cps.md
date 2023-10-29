@@ -10,7 +10,6 @@ keywords:
 - OpenBB terminal
 - sector industry analysis
 - finance database
-- SEO
 - stock market
 - metadata
 - market cap analysis

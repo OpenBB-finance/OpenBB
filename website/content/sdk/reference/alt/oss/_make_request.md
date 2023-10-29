@@ -6,12 +6,10 @@ description: This is a documentation page for the '_make_request' helper method 
 keywords:
 - make_request
 - scraping
-- Python
 - code
 - BeautifulSoup
 - URL
 - helper method
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

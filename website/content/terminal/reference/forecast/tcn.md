@@ -13,9 +13,7 @@ keywords:
 - examples
 - docusaurus
 - metadata
-- SEO
 - marketing website page
-- python
 - code examples
 - machine learning model
 ---

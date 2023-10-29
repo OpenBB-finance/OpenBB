@@ -9,7 +9,6 @@ keywords:
 - openbb.stocks.ca.cashflow function
 - parameters
 - dataframe of cashflow comparisons
-- Python
 - timeframe
 - quarter
 - export

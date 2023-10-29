@@ -9,7 +9,6 @@ keywords:
 - heteroscedasticity test
 - OLS
 - econometrics
-- python
 - bpag command
 - data analysis
 ---

@@ -8,7 +8,6 @@ keywords:
 - watchlist
 - stock posts
 - post limit
-- Python
 - Reddit source
 - usage
 - parameters

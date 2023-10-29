@@ -15,7 +15,6 @@ keywords:
 - Scatterplot
 - Linear regression
 - Open source finance
-- OpenBB
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

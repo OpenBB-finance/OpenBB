@@ -6,7 +6,6 @@ description: This page provides a comprehensive guide on how to get the Weighted
 keywords:
 - Weighted Moving Average
 - WMA
-- OpenBB
 - Stock Analysis
 - Python Function
 - Technical Analysis

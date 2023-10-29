@@ -4,14 +4,11 @@ description: This site provides an extensive guide to retrieving earnings data o
   any stock ticker using the OpenBB Terminal. The page includes detailed parameters
   descriptions and practical examples.
 keywords:
-- OpenBB Terminal
 - earnings data
 - stock ticker
-- Python
 - AlphaVantage
 - YahooFinance
 - quarterly data
-- DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

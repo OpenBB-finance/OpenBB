@@ -10,12 +10,11 @@ keywords:
 - sector allocation
 - benchmark comparison
 - portfolio management
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /alloc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/alloc - Reference | OpenBB Terminal Docs" />
 
 Show your allocation to each asset or sector compared to the benchmark.
 

@@ -11,9 +11,7 @@ keywords:
 - Limit
 - Export data format
 - Docusaurus page metadata
-- Python
 - Source code
-- OpenBBTerminal
 - OpenBB-finance
 - Metadata SEO
 ---

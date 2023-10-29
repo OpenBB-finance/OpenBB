@@ -7,8 +7,6 @@ keywords:
 - binance
 - openbb.crypto.dd
 - cryptocurrency
-- python
-- source code
 - due diligence
 - openbb terminal
 - trading parameters

@@ -10,7 +10,6 @@ keywords:
 - data analysis
 - market trends
 - price tracking
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

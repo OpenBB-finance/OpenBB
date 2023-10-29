@@ -6,10 +6,7 @@ description: OpenBBTerminal offers user-friendly, Python-based tools to gauge in
   past insider activities.
 keywords:
 - OpenBB Finance
-- OpenBBTerminal
 - Stock Insider Activity
-- Python
-- Data Analysis
 - Business Insider
 - Financial Data
 - Stock Market

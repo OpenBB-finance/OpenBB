@@ -4,12 +4,10 @@ description: This page provides the source code and explanation on how to get ke
   metrics from OpenBB's stocks fundamental analysis. Detailed parameters and return
   value are provided.
 keywords:
-- OpenBB
 - key metrics
 - stocks
 - fundamental analysis
 - dataframe
-- source code
 - symbol
 - stock ticker
 ---

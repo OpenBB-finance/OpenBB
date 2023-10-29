@@ -8,7 +8,6 @@ keywords:
 - API
 - key setting
 - Jupyter notebook
-- python
 - openbb_terminal
 - environment variables
 ---

@@ -11,7 +11,6 @@ keywords:
 - lower band
 - midrange
 - median band
-- python
 - parameters
 - n_length_upper
 - n_length_lower

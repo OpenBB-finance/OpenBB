@@ -7,7 +7,6 @@ description: Page provides a detailed overview on the usage of OpenBB's Communit
   model from Nixtla, and the options to save, download, and share scripts.
 keywords:
 - Community Routines
-- OpenBB Terminal
 - Investment Research
 - Investment Scripts
 - TimeGPT-1 Model

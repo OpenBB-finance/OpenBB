@@ -5,10 +5,8 @@ description: This page provides information on how to set the Degiro key using t
   fields like secret, persist and show_output. It also includes code examples for
   better understanding.
 keywords:
-- OpenBB
 - Degiro key
 - Set Degiro key
-- Python
 - username
 - password
 - persist

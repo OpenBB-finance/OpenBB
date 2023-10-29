@@ -10,7 +10,6 @@ keywords:
 - UNI
 - LUNA
 - DOT
-- openbb
 - coinbase
 - available pairs
 - symbol

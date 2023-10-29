@@ -7,14 +7,11 @@ description: This page provides information on how to use OpenBB's onchain tools
 keywords:
 - Docusaurus
 - Onchain
-- OpenBB
 - ethplorer
 - Ethereum blockchain
 - Blockchain balance
 - Tokens
 - ETH balance
-- Python
-- Dataframe
 - Source code
 ---
 

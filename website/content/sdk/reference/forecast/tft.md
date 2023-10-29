@@ -10,8 +10,6 @@ keywords:
 - Temporal Fusion Transformer forecasting
 - OpenBB finance
 - Temporal Fusion Transformer chart
-- Python
-- SEO
 - Machine Learning
 - Data analysis
 - Predictive modeling

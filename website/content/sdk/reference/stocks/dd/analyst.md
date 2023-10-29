@@ -6,7 +6,6 @@ description: This documentation page provides details on retrieving analyst data
 keywords:
 - Analyst
 - Finviz
-- OpenBB
 - Analyst Data
 - Stocks
 - Price Targets

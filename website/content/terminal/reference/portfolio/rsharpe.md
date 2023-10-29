@@ -10,13 +10,12 @@ keywords:
 - risk free rate
 - portfolio period
 - portfolio calculation
-- financial analysis
 - financial tools
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /rsharpe - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/rsharpe - Reference | OpenBB Terminal Docs" />
 
 Show rolling sharpe portfolio vs benchmark
 

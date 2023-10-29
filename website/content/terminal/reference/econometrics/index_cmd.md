@@ -13,7 +13,6 @@ keywords:
 - panel data regression
 - drop column
 - data management
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

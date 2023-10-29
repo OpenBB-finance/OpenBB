@@ -9,7 +9,6 @@ keywords:
 - std deviation
 - usage
 - parameters
-- python
 - n_window
 - window length
 - coding

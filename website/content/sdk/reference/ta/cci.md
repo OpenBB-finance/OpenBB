@@ -9,8 +9,6 @@ keywords:
 - Commodity channel index
 - technical indicator
 - dataframe
-- OpenBB
-- Python
 - Source code
 - Parameters
 - Returns

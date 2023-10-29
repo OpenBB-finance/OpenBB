@@ -6,22 +6,16 @@ description: Improve your understanding of the Anchor protocol with the help of 
   descriptions, and the functionality.
 keywords:
 - docusaurus
-- documentation
-- SEO
 - anchor protocol
 - earnings data
 - terra address
-- source code
-- python
 - parameters
 - returns
-- pd.DataFrame
 - model
 - view chart
 - plot
 - transactions history
 - export
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

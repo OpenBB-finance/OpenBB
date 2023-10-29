@@ -7,7 +7,6 @@ keywords:
 - TradingView
 - technical analysis
 - tv command
-- python
 - no parameters
 ---
 

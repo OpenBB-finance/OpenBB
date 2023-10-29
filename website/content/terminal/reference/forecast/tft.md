@@ -7,7 +7,6 @@ description: This page provides detailed instructions on how to perform temporal
 keywords:
 - Temporal Fusion Transformer
 - Temporal forecasting
-- Python
 - Data analysis
 - TFT parameters
 - Model prediction

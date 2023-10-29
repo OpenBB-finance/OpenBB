@@ -10,7 +10,6 @@ keywords:
 - mutualfunds shareholders
 - Yahoo Finance
 - shareholder table
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

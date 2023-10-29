@@ -14,7 +14,6 @@ keywords:
 - Market Cap
 - Excluding international exchanges
 - Data visualization
-- Python
 - Parameter description
 - Returns
 ---

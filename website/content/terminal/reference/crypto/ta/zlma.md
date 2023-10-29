@@ -15,7 +15,6 @@ keywords:
 - zlma
 - N_LENGTH
 - N_OFFSET
-- Python
 - parameters
 ---
 

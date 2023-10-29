@@ -9,7 +9,6 @@ keywords:
 - statsmodels
 - regression
 - openbb.econometrics.ols
-- pd.DataFrame
 - Dependent variable series
 - Independent variables series
 - RegressionResultsWrapper

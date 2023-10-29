@@ -7,9 +7,7 @@ keywords:
 - Luna supply
 - Terra ecosystem
 - Supply history data
-- Dataframe
 - Chart
-- Python
 - Supply type
 - Day count
 - Export type

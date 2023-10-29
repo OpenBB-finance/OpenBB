@@ -11,7 +11,6 @@ keywords:
 - metadata
 - ownership
 - minted NFTs
-- command
 - slug
 ---
 

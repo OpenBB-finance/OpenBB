@@ -8,12 +8,9 @@ keywords:
 - openbb stocks
 - fa fama raw
 - Data Frame
-- financial analysis
 - coding in Python
-- source code
 - fundamental analysis
 - DCF model
-- OpenBB Terminal
 - OpenBB-finance
 ---
 

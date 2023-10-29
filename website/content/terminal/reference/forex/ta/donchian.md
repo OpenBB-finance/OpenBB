@@ -20,7 +20,6 @@ keywords:
 - n_length_upper
 - n_length_lower
 - length
-- python
 - usage
 - donchian
 ---

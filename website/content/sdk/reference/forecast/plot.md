@@ -6,8 +6,6 @@ description: Learn how to harness the power of OpenBB's financial forecasting fu
 keywords:
 - plot data visualization
 - OpenBB finance
-- OpenBBTerminal
-- Python
 - forecast
 - dataframe
 - export format

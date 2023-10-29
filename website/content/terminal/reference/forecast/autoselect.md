@@ -13,7 +13,6 @@ keywords:
 - seasonality
 - forecasting
 - performance per model
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

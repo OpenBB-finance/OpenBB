@@ -10,8 +10,6 @@ keywords:
 - Returns
 - Symbol
 - Dataframe of holdings
-- pd.DataFrame
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

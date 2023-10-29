@@ -7,7 +7,6 @@ description: This page explains the 'raw' function related to financial data man
 keywords:
 - raw data
 - financial data
-- Python
 - data manipulation
 - sorting raw data
 - reverse sorting

@@ -7,15 +7,13 @@ keywords:
 - maxdd
 - portfolio
 - drawdown
-- Python
 - usage
-- command
 - no parameters
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /maxdd - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/maxdd - Reference | OpenBB Terminal Docs" />
 
 Show portfolio maximum drawdown
 

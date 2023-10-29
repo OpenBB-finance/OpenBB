@@ -6,15 +6,12 @@ description: This page provides details on corporate lobbying, including paramet
 keywords:
 - Corporate lobbying details
 - Source code
-- Python
 - openbb.stocks.gov.lobbying
 - Parameters
 - symbol
 - Ticker symbol
 - limit
 - Returns
-- pd.DataFrame
-- Dataframe
 - corporate lobbying data
 ---
 

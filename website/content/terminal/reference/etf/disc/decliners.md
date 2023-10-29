@@ -7,7 +7,6 @@ keywords:
 - ETF
 - Mutual fund
 - decliners
-- command
 - wsj.com/market-data
 - parameters
 - examples

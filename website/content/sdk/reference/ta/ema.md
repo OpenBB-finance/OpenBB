@@ -8,13 +8,9 @@ keywords:
 - exponential moving average
 - technical analysis
 - stock
-- finance
-- OpenBB
 - overlap model
 - dataframe
 - pd.Series
-- python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

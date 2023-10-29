@@ -5,20 +5,15 @@ description: This page provides the documentation for the 'gtrades' function in 
   to get the government trading data for a specific ticker, while the 'view' tab provides
   instructions for displaying this data as a chart.
 keywords:
-- OpenBB
 - stock trading
 - government trading data
-- ticker
-- documentation
 - quiverquant.com
-- Python
 - gtrades function
 - model
 - view
 - congress
 - senate
 - house
-- DataFrame
 - trades chart
 ---
 

@@ -8,8 +8,6 @@ keywords:
 - OpenBB finance
 - data visualization
 - data modelling
-- Python
-- source code
 - datasets
 - econometrics
 - tabs

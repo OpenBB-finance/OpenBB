@@ -4,15 +4,12 @@ description: The page provides documentation for the 'candles' function in the O
   crypto module. It describes how a candle chart can be plotted from a provided DataFrame,
   and the various parameters that can be adjusted.
 keywords:
-- OpenBB Terminal
 - crypto.candles
 - candle chart
 - Binance source
 - Python script
 - data visualization
 - OpenBB crypto module
-- documentation
-- DataFrame
 - matplotlib
 - OHLCV
 ---

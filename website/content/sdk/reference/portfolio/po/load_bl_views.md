@@ -7,7 +7,6 @@ keywords:
 - load_bl_views
 - OpenBB portfolio optimization
 - Black Litterman model
-- Python
 - Excel file loading
 - p_views matrix
 ---

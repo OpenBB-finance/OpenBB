@@ -13,7 +13,6 @@ keywords:
 - cryptocurrency
 - halvings
 - price data
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

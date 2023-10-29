@@ -17,7 +17,6 @@ keywords:
 - Start
 - Words
 - Choices
-- Python
 - Google
 - COVID
 - WW3

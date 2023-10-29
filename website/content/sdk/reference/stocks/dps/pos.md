@@ -11,7 +11,6 @@ keywords:
 - openbb.stocks.dps.pos
 - parameters
 - returns
-- pd.DataFrame
 - Data in ascending order
 ---
 

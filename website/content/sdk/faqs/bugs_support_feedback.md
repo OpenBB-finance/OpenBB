@@ -6,7 +6,6 @@ description: This page provides information on how to deal with bugs, get suppor
   process for patches, how to report a bug, and ways to request new features or provide
   suggestions for improvements.
 keywords:
-- OpenBB Terminal
 - bug reporting
 - support
 - feedback
@@ -16,7 +15,6 @@ keywords:
 - investors
 - feature request
 - machine learning
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

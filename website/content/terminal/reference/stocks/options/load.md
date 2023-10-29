@@ -12,7 +12,6 @@ keywords:
 - command line interface
 - trading tool
 - trading instructions
-- OpenBB Terminal
 - TSLA
 ---
 

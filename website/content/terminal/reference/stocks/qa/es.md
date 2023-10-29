@@ -8,7 +8,6 @@ keywords:
 - distribution
 - percentile
 - ES
-- python
 - calculations
 ---
 

@@ -8,7 +8,6 @@ keywords:
 - arkord
 - ARK Investment Management
 - stocks
-- investment
 - buys
 - sells
 - fund

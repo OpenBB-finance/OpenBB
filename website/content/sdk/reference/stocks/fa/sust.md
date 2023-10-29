@@ -4,14 +4,11 @@ description: This page provides information on how to get sustainability metrics
   a stock, using the OpenBB platform which relies on Yahoo Finance. It includes necessary
   parameters and return values.
 keywords:
-- OpenBB
 - sustainability metrics
 - Yahoo Finance
 - stock
 - ticker symbol
 - dataframe
-- python
-- source code
 - fundamental analysis
 ---
 

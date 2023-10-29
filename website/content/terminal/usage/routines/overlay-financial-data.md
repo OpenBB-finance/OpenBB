@@ -11,14 +11,11 @@ keywords:
 - customizing charts
 - financial data comparison
 - MatLab
-- financial analysis
 - financial charts
-- OpenBBTerminal
 - FAANG companies
 - CPI
 - GDP
 - data visualization
-- SEO
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

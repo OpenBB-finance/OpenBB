@@ -9,7 +9,6 @@ keywords:
 - CoinGecko
 - data filtering
 - data sorting
-- python
 - parameters
 - usage
 - examples

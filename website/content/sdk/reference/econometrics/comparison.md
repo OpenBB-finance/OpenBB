@@ -8,7 +8,6 @@ keywords:
 - regression results comparison
 - econometrics
 - openbb terminal
-- python
 - export data
 - PanelModelComparison
 ---

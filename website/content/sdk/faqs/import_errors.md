@@ -6,8 +6,6 @@ description: This page provides solutions for common import errors when installi
   dealing with SSL certificate authorization, and configuring proxy connections.
 keywords:
 - Import Errors
-- OpenBB
-- SDK
 - SciPy
 - ModuleNotFoundError
 - virtual environment

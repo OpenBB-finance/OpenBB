@@ -6,8 +6,6 @@ description: This page presents the 'load' function, used to perform analysis on
 keywords:
 - load function
 - symbol analysis
-- OpenBB Terminal
-- Python
 - YahooFinance data extraction
 - weekly and monthly data
 - verbose information

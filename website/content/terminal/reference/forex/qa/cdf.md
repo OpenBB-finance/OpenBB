@@ -6,8 +6,6 @@ description: This page provides exhaustive details about the 'cdf' (Cumulative D
 keywords:
 - cdf
 - cumulative distribution function
-- python
-- command
 - parameters
 - arguments
 - export

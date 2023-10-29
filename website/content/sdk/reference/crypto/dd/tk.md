@@ -9,7 +9,6 @@ keywords:
 - openbb.crypto.dd
 - coin tokenomics
 - coin tokenomics plot
-- Python
 - programming
 - function documentation
 ---

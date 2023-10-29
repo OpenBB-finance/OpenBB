@@ -11,7 +11,6 @@ keywords:
 - docusaurus
 - command usage
 - data management
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

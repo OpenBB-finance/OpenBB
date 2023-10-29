@@ -6,7 +6,6 @@ keywords:
 - qqplot
 - display
 - normal quantiles
-- Python
 - parameters
 ---
 

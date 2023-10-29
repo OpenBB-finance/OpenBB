@@ -10,7 +10,6 @@ keywords:
 - CoinGecko
 - trading pairs
 - page paging
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

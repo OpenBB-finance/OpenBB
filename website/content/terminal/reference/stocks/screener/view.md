@@ -6,7 +6,6 @@ description: The page provides information on the 'view' function which allows o
 keywords:
 - view
 - presets
-- python
 - parameters
 - preset options
 - usage

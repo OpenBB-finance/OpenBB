@@ -5,7 +5,6 @@ description: This page provides information on the 'gov' command, enabling the d
 keywords:
 - gov
 - asset governance
-- command
 - no parameters
 - usage
 - messari.io source

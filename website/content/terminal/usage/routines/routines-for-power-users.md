@@ -6,7 +6,6 @@ description: This documentation guides on running automated workflows in OpenBB 
   relative time keyword variables, internal script variables and creating loops for
   batch execution.
 keywords:
-- OpenBB
 - automated workflows
 - routines
 - arguments

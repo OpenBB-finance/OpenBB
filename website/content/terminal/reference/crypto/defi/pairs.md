@@ -15,7 +15,6 @@ keywords:
 - parameters
 - examples
 - crypto currencies
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

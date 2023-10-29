@@ -5,12 +5,9 @@ description: Documentation page that describes the crypto hack function of the O
   cryptocurrency scripts.
 keywords:
 - crypto hack
-- OpenBBTerminal
 - crypto hack slug
 - cryptocurrency
 - rekt model
-- Python
-- source code
 - OpenBB-finance
 ---
 

@@ -11,12 +11,9 @@ keywords:
 - model
 - chart
 - dataframe
-- python
-- OpenBB
 - price
 - volume
 - export
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

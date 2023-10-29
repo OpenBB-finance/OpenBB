@@ -4,12 +4,9 @@ description: This page provides documentation on how to set the Ethplorer key in
   OpenBB finance terminal. It includes explanations of the parameters and gives examples
   of how to use this function.
 keywords:
-- OpenBBTerminal
 - Ethplorer
 - API key
-- Python
 - Documentation
-- SDK
 - Finance
 - Example
 - Source Code

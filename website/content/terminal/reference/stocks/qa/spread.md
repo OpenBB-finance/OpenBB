@@ -6,7 +6,6 @@ description: The 'spread' page shows the rolling spread measurement. Users can l
 keywords:
 - spread
 - rolling spread measurement
-- python
 - n_window
 - window length
 ---

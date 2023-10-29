@@ -7,13 +7,11 @@ description: This documentation page discusses two features of the software, foc
   the feature to visualize top coins withdrawal fees. Also elaborates on how to limit
   searches, export data, with the inclusion of python script.
 keywords:
-- OpenBBTerminal
 - python code
 - withdrawal fees
 - crypto coins
 - scraping data
 - data visualization
-- source code
 - parameters
 - data export
 - coin search

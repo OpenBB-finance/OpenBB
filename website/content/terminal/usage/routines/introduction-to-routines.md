@@ -9,7 +9,6 @@ keywords:
 - OpenBB Routines
 - automated processes
 - repetitive tasks
-- financial analysis
 - data collection
 - basic script
 - routine execution

@@ -7,9 +7,7 @@ description: A comprehensive guide for MSTL - Multiple Seasonalities and Trend u
 keywords:
 - MSTL forecast
 - Multiple Seasonalities and Trend
-- Python
 - Predictive Modeling
-- Data Analysis
 - Time Series Forecasting
 - Loess Forecast
 - Seasonality

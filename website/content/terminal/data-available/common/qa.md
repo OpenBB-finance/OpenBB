@@ -17,7 +17,6 @@ keywords:
 - Statistics
 - Metrics
 - Risk
-- Plots
 - Investors
 - Quantifiable statistics
 - Command summary
@@ -47,7 +46,6 @@ Enter the menu, through one of the asset classes listed above, by entering `qa` 
 The menu is divided into five categories of functions:
 
 - Statistics
-- Plots
 - Rolling Metrics
 - Risk
 - Other

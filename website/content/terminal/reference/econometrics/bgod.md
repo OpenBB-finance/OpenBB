@@ -10,9 +10,7 @@ keywords:
 - OLS Regression Results
 - Econometrics
 - BGOD
-- Python
 - Metadata
-- SEO
 - Least Squares Method
 - Durbin-Watson
 ---

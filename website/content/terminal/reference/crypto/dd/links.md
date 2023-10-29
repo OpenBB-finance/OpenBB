@@ -5,7 +5,6 @@ description: The 'links' command is utilized to display an asset's links. This c
 keywords:
 - links
 - asset's links
-- command
 - parameters
 - asset information
 ---

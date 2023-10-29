@@ -7,7 +7,6 @@ keywords:
 - portfolio management
 - command line function
 - programming documentation
-- python
 - remove portfolios
 ---
 

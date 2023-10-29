@@ -6,7 +6,6 @@ description: Detailed information on how to fetch recent cryptocurrency posts fr
 keywords:
 - CryptoPanic
 - News Aggregator
-- OpenBB
 - News Filtering
 - Python Code
 - Cryptocurrency News

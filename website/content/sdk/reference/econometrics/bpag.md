@@ -8,7 +8,6 @@ keywords:
 - heteroscedasticity
 - Breusch-Pagan Test
 - OLS Model
-- source code
 - econometrics
 - regression model
 - bpag_chart

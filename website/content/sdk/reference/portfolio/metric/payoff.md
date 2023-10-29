@@ -6,8 +6,6 @@ description: Documentation for openbb.portfolio.metric.payoff function. This fun
 keywords:
 - payoff ratio
 - portfolio
-- openbb
-- DataFrame
 - time periods
 - portfolio metric
 - no losing trades

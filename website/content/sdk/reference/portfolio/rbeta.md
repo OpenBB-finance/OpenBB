@@ -11,7 +11,6 @@ keywords:
 - rbeta
 - rbeta_chart
 - rolling beta
-- SEO
 - SEO metadata
 - metadata optimization
 - code examples

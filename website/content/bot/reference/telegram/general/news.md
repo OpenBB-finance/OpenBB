@@ -4,7 +4,6 @@ description: Learn how to use the command to retrieve the latest news for a give
   stock ticker. The guide provides usage procedures with examples.
 keywords:
 - news
-- ticker
 - stock ticker
 - latest news
 - market news

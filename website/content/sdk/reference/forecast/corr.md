@@ -5,15 +5,12 @@ description: This page shares details on how to use 'corr' and 'corr_chart' func
   a given DataFrame, and 'corr_chart' function plots correlation coefficients for
   dataset features.
 keywords:
-- OpenBB Terminal
 - forecast module
 - corr function
 - correlation coefficients
 - data analysis
 - corr_chart function
 - plot correlation coefficients
-- Python
-- DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

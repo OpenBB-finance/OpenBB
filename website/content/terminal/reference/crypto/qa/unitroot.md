@@ -11,7 +11,6 @@ keywords:
 - KPSS
 - regression
 - programming
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

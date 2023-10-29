@@ -5,9 +5,7 @@ description: This page provides documentation on how to use the gtrades governme
 keywords:
 - gtrades
 - governmental trading
-- documentation
 - usage
-- command
 - parameters
 - settings
 ---

@@ -6,7 +6,6 @@ description: This page provides information on the 'performance' command in the 
   Perf Month, Perf Quart, Perf Half, Perf Year, and more. The command is shown in
   use along with sample output.
 keywords:
-- Python
 - performance command
 - Finviz
 - stock screener

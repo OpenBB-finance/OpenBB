@@ -7,7 +7,6 @@ keywords:
 - cancel pending order
 - Oanda
 - forex
-- openbb
 - python function
 ---
 

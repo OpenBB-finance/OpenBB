@@ -5,11 +5,7 @@ description: This is the documentation page of perfmap, a tool that opens Finviz
 keywords:
 - Finviz
 - performance map
-- OpenBBTerminal
 - economy model
-- python
-- source code
-- documentation
 - SP500
 - ETF
 - world map

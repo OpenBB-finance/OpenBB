@@ -4,11 +4,9 @@ description: Documentation page for OpenBB Terminal's modules 'mentions' and 'me
   These modules analyze and visualize the interest over time for a particular stock's
   symbol using Google's API.
 keywords:
-- OpenBB Terminal
 - Stock market analysis
 - Google API
 - Stock interest
-- Python
 - Data visualization
 - Finance
 ---

@@ -10,7 +10,6 @@ keywords:
 - Usage
 - Parameters
 - n_bins
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

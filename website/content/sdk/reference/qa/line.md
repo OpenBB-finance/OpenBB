@@ -5,15 +5,12 @@ description: The page describes the 'line' function of the OpenBB library, used 
   parameters, usage, and examples of the function within the domain of quantitative
   analysis and data visualization using Python.
 keywords:
-- openbb
 - line plot
 - quantitative analysis
 - data visualization
-- python
 - pd.Series
 - matplotlib
 - datetime
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

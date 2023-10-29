@@ -9,7 +9,6 @@ keywords:
 - R2 Score
 - PortfolioEngine
 - openbb.portfolio.metric.rsquare
-- DataFrame
 - openbb.portfolio.load
 ---
 

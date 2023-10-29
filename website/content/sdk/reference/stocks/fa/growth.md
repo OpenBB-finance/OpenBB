@@ -9,9 +9,7 @@ keywords:
 - OpenBBTerminal source code
 - Get financial statement growth
 - Stock ticker symbol
-- Dataframe
 - Fundamental Analysis
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -12,7 +12,6 @@ keywords:
 - time intervals
 - parameters
 - defaults
-- SEO
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

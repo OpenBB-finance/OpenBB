@@ -16,8 +16,7 @@ keywords:
 - keywords generation
 - content-related keywords
 - blockchain platforms
-- cryptocurrency
-- documentation SEO
+- cryptocurrency SEO
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -11,7 +11,6 @@ keywords:
 - parameters
 - n_window
 - window length
-- python
 - data analysis
 - statistics
 ---

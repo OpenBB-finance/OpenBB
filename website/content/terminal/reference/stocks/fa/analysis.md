@@ -6,8 +6,6 @@ keywords:
 - analysis
 - SEC filings
 - NLP model
-- python
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

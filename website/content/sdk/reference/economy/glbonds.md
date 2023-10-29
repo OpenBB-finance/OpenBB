@@ -6,13 +6,9 @@ keywords:
 - glbonds
 - data scraping
 - global bonds
-- OpenBB
-- python
-- DataFrame
 - yield
 - rate
 - change
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

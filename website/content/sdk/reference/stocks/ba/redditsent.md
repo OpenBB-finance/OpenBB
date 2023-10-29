@@ -9,7 +9,6 @@ keywords:
 - Reddit posts
 - Behavioral analysis
 - Python function
-- OpenBBTerminal
 - Ticker symbol
 - post categorization
 - Comprehensive search

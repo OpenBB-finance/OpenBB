@@ -7,7 +7,6 @@ description: A comprehensive guide exploring the Forecast menu, a machine learni
   examples and workflows for beginners and advanced users.
 keywords:
 - Docusaurus
-- SEO
 - Metadata
 - Search Engine Optimization
 - Marketing

@@ -7,7 +7,6 @@ keywords:
 - blockchain games
 - daily volume
 - daily users
-- source code
 - parameters
 - data sorting
 - data limit

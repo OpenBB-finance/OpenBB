@@ -4,7 +4,6 @@ description: Implement our economic calendar for selected countries and specific
   functionality in your application using OpenBB. Use it to analyze global economic
   trends or forecast market movements.
 keywords:
-- OpenBB
 - economic calendar
 - financial market events
 - global economy

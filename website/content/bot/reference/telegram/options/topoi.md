@@ -5,7 +5,6 @@ description: Understand how to use the topoi command to retrieve the Top Open In
   the most actively traded stocks and options.
 keywords:
 - topoi
-- command
 - Open Interest
 - stocks
 - trading

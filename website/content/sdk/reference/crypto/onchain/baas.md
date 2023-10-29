@@ -14,7 +14,6 @@ keywords:
 - sort data
 - data ascending
 - Export dataframe
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

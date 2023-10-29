@@ -11,11 +11,9 @@ keywords:
 - EDGX
 - BYX
 - EDGA
-- OpenBB Terminal
 - OpenBB Stocks
 - Dataframe of Bids
 - OpenBB finance
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

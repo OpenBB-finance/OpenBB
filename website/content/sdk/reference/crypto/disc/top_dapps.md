@@ -6,17 +6,13 @@ description: This documentation page provides detailed instructions on how to ge
 keywords:
 - docusaurus page
 - top decentralized applications
-- SEO
 - Metadata
 - daily volume
 - daily users
-- source code
 - chart
 - cryptocurrency
 - dataframe
 - data sorting
-- python
-- OpenBB
 - DappRadar
 - export dataframe
 ---

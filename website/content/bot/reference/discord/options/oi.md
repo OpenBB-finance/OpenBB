@@ -10,7 +10,6 @@ keywords:
 - stock
 - expiry
 - granular breakdown
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

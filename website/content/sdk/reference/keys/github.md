@@ -7,11 +7,7 @@ description: The page guides users on how to set a GitHub API key using the Open
 keywords:
 - github
 - API key
-- openbb
 - key set
-- OpenBBTerminal
-- Python
-- source code
 - terminal environment variables
 - Jupyter notebook session
 - key persistence

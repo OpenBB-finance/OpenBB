@@ -7,7 +7,6 @@ keywords:
 - nexter
 - stock ticker
 - earnings date
-- command
 - AMD
 ---
 

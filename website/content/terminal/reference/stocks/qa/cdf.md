@@ -6,7 +6,6 @@ description: The 'cdf' page outlines the usage and parameters of the cumulative 
 keywords:
 - Cumulative distribution function
 - cdf
-- python
 - coding
 - parameters
 - examples

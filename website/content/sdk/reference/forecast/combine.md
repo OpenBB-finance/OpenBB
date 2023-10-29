@@ -6,7 +6,6 @@ description: Learn how to use the combine function in OpenBB programming library
 keywords:
 - Combine function
 - Data manipulation
-- OpenBB
 - Dataframes
 - Forecasting model
 - Python library

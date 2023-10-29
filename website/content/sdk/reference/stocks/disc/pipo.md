@@ -9,7 +9,6 @@ keywords:
 - open source code
 - Finnhub
 - dataframe
-- OpenBBTerminal
 - num_days_behind
 - start_date
 ---

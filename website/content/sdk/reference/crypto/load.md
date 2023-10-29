@@ -5,20 +5,15 @@ description: The documentation page describes the crypto currency load function 
   such as symbol, start date, interval, exchange, vs_currency, end_date and the source
   of the data. It then returns a PD DataFrame with price and volume data.
 keywords:
-- OpenBB Terminal
 - cryptocurrency
 - crypto load
 - crypto currency data
-- source code
 - parameters
-- Python
 - CCXT
 - CoinGecko
 - YahooFinance
 - Binance
 - PD Dataframe
-- end date
-- start date
 - interval
 - exchange
 - vs currency

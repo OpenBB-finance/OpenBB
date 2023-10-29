@@ -10,7 +10,6 @@ keywords:
 - earnings growth
 - stock market
 - financial market
-- investment
 - ugs
 - Yahoo Finance
 ---

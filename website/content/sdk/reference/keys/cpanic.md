@@ -4,13 +4,11 @@ description: This page contains detailed information regarding the cpanic functi
   of OpenBB Terminal. It explains how to set the Cpanic key including parameters,
   results, and examples.
 keywords:
-- OpenBB Terminal
 - Python SDK
 - API key management
 - cpanic function
 - environment variables
 - Jupyter notebook
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

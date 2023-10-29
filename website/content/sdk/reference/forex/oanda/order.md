@@ -4,8 +4,6 @@ description: This page provides detailed documentation on how to create buy/sell
   orders using OpenBB Terminal's 'forex.oanda' module. It includes source code, function
   definitions, parameters, and return information to successfully place orders.
 keywords:
-- OpenBB
-- OpenBB Terminal
 - Forex
 - Oanda
 - Order

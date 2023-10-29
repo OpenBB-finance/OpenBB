@@ -6,12 +6,9 @@ description: This page covers the get_mt function, its usage, parameters and ret
 keywords:
 - get_mt function
 - messari timeseries
-- OpenBBTerminal
-- Python
 - Model
 - Chart
 - Source code
-- pd.DataFrame
 - query
 - export dataframe
 - crypto dd

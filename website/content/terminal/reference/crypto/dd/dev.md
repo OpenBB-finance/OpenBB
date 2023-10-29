@@ -11,7 +11,7 @@ keywords:
 - crypto command
 - crypto tool
 - software development
-- code devlopment
+- code development
 - pull request
 - commits
 - forks

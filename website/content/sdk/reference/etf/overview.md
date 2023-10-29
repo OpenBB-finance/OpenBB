@@ -6,10 +6,6 @@ description: This page provides an overview of how to get ETF data using OpenBB'
 keywords:
 - ETF
 - overview data
-- OpenBB
-- python
-- source code
-- pd.DataFrame
 - stock overview data
 ---
 

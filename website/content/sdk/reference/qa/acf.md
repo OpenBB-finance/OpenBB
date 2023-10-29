@@ -5,14 +5,10 @@ description: This page provides a detailed description and source code of acf - 
   in returns. One can understand how to use the function, its parameters, and view
   examples of its use.
 keywords:
-- OpenBBTerminal
 - auto correlation
 - quantitive analysis
-- OpenBB
 - quantitative_analysis.qa_view.py
 - plots
-- pd.DataFrame
-- python
 - openbb.qa.acf
 - codes
 - parameters

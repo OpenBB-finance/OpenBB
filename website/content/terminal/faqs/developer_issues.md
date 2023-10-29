@@ -16,7 +16,6 @@ keywords:
 - JSONDecodeError
 - line break errors
 - VS Code terminal
-- OpenBB Terminal
 - poetry
 - conda
 - pip

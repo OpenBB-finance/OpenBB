@@ -8,7 +8,6 @@ keywords:
 - circulating supply
 - blockchain API
 - cryptocurrency
-- Python
 - data visualization
 - btccp
 - data extraction

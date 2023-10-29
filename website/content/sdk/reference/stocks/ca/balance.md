@@ -5,10 +5,8 @@ description: "This page provides a detailed view on the balance data obtained th
   \ for the function and return type are conventionally presented."
 keywords:
 - balance data
-- OpenBB Terminal
 - stocks comparison analysis
 - marketwatch model
-- Python
 - tickers comparison
 - quarterly statements
 - data export

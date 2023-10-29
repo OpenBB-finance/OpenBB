@@ -12,7 +12,6 @@ keywords:
 - stock market
 - stock analysis
 - limit
-- python
 - parameters
 ---
 

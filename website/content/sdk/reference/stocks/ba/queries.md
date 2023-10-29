@@ -4,13 +4,10 @@ description: Learn how to get related queries from Google API using the `openbb.
   function in the OpenBB Terminal. This page includes parameters, return types, and
   source code.
 keywords:
-- OpenBB Terminal
 - Google API
 - Queries
 - Behavioral analysis
 - Stock ticker symbol
-- Dataframe
-- Python
 - Source code
 - Marketing SEO
 ---

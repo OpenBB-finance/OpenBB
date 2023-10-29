@@ -9,7 +9,6 @@ keywords:
 - openbb.stocks.fa.cal()
 - stock fundamental analysis
 - Python finance library
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

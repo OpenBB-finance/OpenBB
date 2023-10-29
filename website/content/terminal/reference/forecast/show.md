@@ -7,10 +7,8 @@ keywords:
 - Data Display
 - Data Sorting
 - Database
-- DataFrame
 - Data Ordering
 - Column Limits
-- Python
 - Usage Examples
 ---
 

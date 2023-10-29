@@ -8,15 +8,11 @@ keywords:
 - trading pair info
 - coinbase
 - crypto trading
-- OpenBB
 - cryptocurrency trading
 - API
-- Python
 - ETH-USDT
 - UNI-ETH
 - dataframe
-- source code
-- documentation
 - due diligence
 ---
 

@@ -10,7 +10,6 @@ keywords:
 - Stock data
 - Stockgrid
 - Python code
-- OpenBB
 - Data visualization
 - Data export
 - Market days

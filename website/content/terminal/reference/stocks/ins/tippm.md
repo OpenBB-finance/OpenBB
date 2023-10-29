@@ -9,7 +9,6 @@ keywords:
 - stock information
 - data display
 - Asana, Inc.
-- Python
 - parameter
 - examples
 ---

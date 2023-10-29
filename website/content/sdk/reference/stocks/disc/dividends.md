@@ -5,14 +5,9 @@ description: This page provides documentation on how to access the dividend cale
   Date. Users are guided on how to use it and understand the returned DataFrame.
 keywords:
 - dividends
-- OpenBB Terminal
 - Ex-Dividend Date
-- Python
-- Dataframe
 - dividend calendar
-- documentation
 - stock market
-- finance
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

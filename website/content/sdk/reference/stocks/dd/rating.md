@@ -4,13 +4,10 @@ description: The page provides detailed information about the OpenBBTerminal's f
   to fetch ratings for a given stock ticker using the Financial Modeling Prep source.
   The code is written in Python and returns data in pd.DataFrame format.
 keywords:
-- OpenBBTerminal
 - Stock Ticker
 - Ratings
 - Financial Modeling Prep
-- Python
 - Source Code
-- pd.DataFrame
 - Stock Market
 - Financial Data
 ---

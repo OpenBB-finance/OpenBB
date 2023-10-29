@@ -7,9 +7,7 @@ keywords:
 - docusaurus
 - project description
 - blockchain
-- python
 - crypto projects
-- SEO
 - metadata
 - usage
 ---

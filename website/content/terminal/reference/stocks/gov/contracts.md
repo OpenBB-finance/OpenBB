@@ -5,11 +5,9 @@ description: This documentation page provides information about contracts associ
   past transaction days and raw data. Also added is a snapshot of the contracts interface.
 keywords:
 - contracts
-- ticker
 - past transaction days
 - raw data
 - quiverquant
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

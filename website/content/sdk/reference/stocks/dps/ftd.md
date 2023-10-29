@@ -8,7 +8,6 @@ keywords:
 - stock data
 - chart view
 - model view
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -4,7 +4,6 @@ description: Learn how to retrieve information about pending orders using the 'p
   command in Python. Note that this command does not require any parameters.
 keywords:
 - pending orders
-- python
 - no parameters
 ---
 

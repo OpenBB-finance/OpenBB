@@ -4,12 +4,10 @@ description: This docusaurus page represents the 'globe' function of OpenBBTermi
   which retrieves a DataFrame with global cryptocurrency market data from a specified
   source; default is CoinGecko.
 keywords:
-- OpenBBTerminal
 - crypto market data
 - globe function
 - CoinGecko
 - coinpaprika
-- DataFrame
 - global crypto data
 ---
 

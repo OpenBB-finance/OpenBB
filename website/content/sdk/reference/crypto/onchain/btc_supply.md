@@ -8,8 +8,6 @@ keywords:
 - Bitcoin circulating supply
 - BTC supply
 - Blockchain information
-- Python
-- OpenBBTerminal
 - Cryptocurrency
 - Onchain
 - Data

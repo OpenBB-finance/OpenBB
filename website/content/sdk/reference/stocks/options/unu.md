@@ -5,7 +5,6 @@ description: The documentation page provides details about the 'unu' command fro
   data from fdscanner.com and display the unusual options table. It lists parameters,
   returns, and gives examples of usage.
 keywords:
-- openbb
 - stocks
 - options
 - unu

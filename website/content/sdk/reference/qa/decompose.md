@@ -8,8 +8,6 @@ keywords:
 - decompose
 - seasonal decomposition
 - quantitative analysis
-- OpenBB
-- source code
 - multiplicative
 - dataframe
 - DecomposeResult

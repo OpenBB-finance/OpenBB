@@ -5,14 +5,10 @@ description: This documentation page provides information and source code regard
   parameters and returns.
 keywords:
 - ERC20 token info
-- source code
 - Ethplorer
 - parameters
 - returns
-- python
-- DataFrame
 - OpenBB finance
-- OpenBBTerminal
 - cryptocurrency
 - onchain
 ---

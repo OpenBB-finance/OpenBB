@@ -10,7 +10,6 @@ keywords:
 - data summary
 - data distribution
 - data interpretation
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

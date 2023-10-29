@@ -7,8 +7,6 @@ description: This page provides detailed instructions on how to use the rossidx 
 keywords:
 - rossidx
 - startups
-- Python
-- command
 - chart
 - stars
 - forks

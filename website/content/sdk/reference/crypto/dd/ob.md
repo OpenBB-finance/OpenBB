@@ -5,7 +5,6 @@ description: This documentation page provides detailed information about operati
   library. Learn about the parameters required and the response for each function
   call.
 keywords:
-- OpenBB
 - orderbook
 - openbb.crypto.dd
 - cryptocurrency
@@ -16,7 +15,6 @@ keywords:
 - exchange id
 - crypto trading
 - matplotlib.axes._axes.Axes
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

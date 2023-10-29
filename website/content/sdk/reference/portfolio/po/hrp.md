@@ -10,7 +10,6 @@ keywords:
 - openbb.portfolio.po
 - risk management
 - asset allocation
-- Python
 - portfolio management
 - financial modeling
 ---

@@ -10,7 +10,6 @@ keywords:
 - strike price
 - put option
 - OCC option symbol
-- Python
 - code example
 ---
 

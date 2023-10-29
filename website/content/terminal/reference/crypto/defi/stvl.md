@@ -9,7 +9,6 @@ keywords:
 - dApps
 - llama.fi
 - API
-- python
 - parameters
 - limit
 ---

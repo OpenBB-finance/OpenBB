@@ -4,7 +4,6 @@ description: This page provides detailed documentation on how to use OpenBB's 'f
   function in Python script. It explains parameters and returns related to different
   financial instruments.
 keywords:
-- OpenBB
 - OpenBB future function
 - Python script
 - financial instruments
@@ -17,7 +16,6 @@ keywords:
 - Bonds
 - Currencies
 - Finviz
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,13 +6,9 @@ description: Documentation for the 'customer' function in the OpenBB Terminal. T
   the source code.
 keywords:
 - customer
-- OpenBB Terminal
 - stocks
-- ticker
 - due diligence
-- python
 - dataframe
-- pd.DataFrame
 - symbol
 - limit
 ---

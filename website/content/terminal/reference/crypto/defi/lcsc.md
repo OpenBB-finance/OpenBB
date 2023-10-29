@@ -16,7 +16,6 @@ keywords:
 - dayCount
 - URL extraction
 - parameters
-- python
 - range
 ---
 

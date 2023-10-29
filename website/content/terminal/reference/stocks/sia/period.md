@@ -9,7 +9,6 @@ keywords:
 - quarterly
 - trailing
 - parameters
-- SEO
 - marketing
 ---
 

@@ -5,17 +5,13 @@ description: The _retry_session function in OpenBBTerminal is a Python helper me
   for number of retries and a backoff factor. It returns a session object from the
   requests library.
 keywords:
-- openbb
 - _retry_session
 - url
 - retries
 - backoff_factor
 - requests.Session
-- Python
 - session mount
 - retry scheme
-- source code
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

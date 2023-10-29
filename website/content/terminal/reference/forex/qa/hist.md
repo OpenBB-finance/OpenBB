@@ -10,7 +10,6 @@ keywords:
 - rug
 - bins
 - parameters
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

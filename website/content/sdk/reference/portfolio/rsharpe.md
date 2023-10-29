@@ -10,7 +10,6 @@ keywords:
 - risk-free rate
 - rolling sharpe ratio
 - chart display
-- source code
 - plotting
 ---
 

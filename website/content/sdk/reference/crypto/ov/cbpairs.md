@@ -5,9 +5,7 @@ description: This page provides in-depth information on how to use different fun
   code supplied from OpenBB-finance/OpenBBTerminal project on GitHub.
 keywords:
 - OpenBB-finance
-- OpenBBTerminal
 - GitHub
-- source code
 - cryptocurrency
 - trading pairs
 - coinbase

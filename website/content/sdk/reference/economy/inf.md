@@ -5,11 +5,9 @@ description: 'This page discusses two main functions of the OpenBBTerminal: one 
   model function retrieves historical inflation data from AlphaVantage and returns
   a DataFrame, while the chart function presents this data using a customizable interface.'
 keywords:
-- OpenBBTerminal
 - Inflation Data
 - AlphaVantage
 - Data Visualization
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

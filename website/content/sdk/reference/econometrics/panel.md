@@ -9,7 +9,6 @@ description: Tutorial on how to use OpenBB Terminal's econometric functions with
   outcomes.
 keywords:
 - Docusaurus
-- OpenBB Terminal
 - Econometrics
 - Panel Regression
 - Fixed Effects

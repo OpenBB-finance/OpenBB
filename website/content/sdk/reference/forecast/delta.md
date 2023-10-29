@@ -8,10 +8,7 @@ keywords:
 - '%change calculation'
 - variable change
 - forecast model
-- OpenBBTerminal
 - openbb.forecast.delta
-- Python
-- DataFrame
 - target_column
 ---
 

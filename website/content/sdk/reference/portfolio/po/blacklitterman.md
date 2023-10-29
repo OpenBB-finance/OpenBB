@@ -8,8 +8,6 @@ description: The page describes the Python method for the Black Litterman model 
 keywords:
 - Black Litterman model
 - Portfolio optimization
-- Python
-- OpenBB
 - Portfolio weights
 - Risk management
 - Return estimates

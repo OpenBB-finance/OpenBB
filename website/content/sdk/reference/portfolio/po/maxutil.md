@@ -7,7 +7,6 @@ description: Documentation page of the maxutil module in the OpenBB Terminal's p
 keywords:
 - Docusaurus SEO
 - Portfolio Optimization
-- OpenBB Terminal
 - maxutil function
 - Portfolio Management Tools
 - Python in Finance

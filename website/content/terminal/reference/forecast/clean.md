@@ -9,7 +9,6 @@ keywords:
 - dropping NaN values
 - data cleaning parameters
 - dataset cleaning
-- Python
 - data processing
 - usage examples
 ---

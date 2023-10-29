@@ -10,7 +10,6 @@ keywords:
 - EMA Period
 - Spy Hold Comparison
 - Buy and Hold Comparison
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

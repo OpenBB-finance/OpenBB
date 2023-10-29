@@ -12,7 +12,6 @@ keywords:
 - portfolio calculations
 - cumulative returns
 - risk free rate
-- python
 - data frame
 - openbb.portfolio
 - portfolio engine

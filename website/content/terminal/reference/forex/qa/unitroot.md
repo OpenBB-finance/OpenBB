@@ -8,7 +8,6 @@ keywords:
 - ADF
 - KPSS
 - regression type
-- python
 - code examples
 ---
 

@@ -7,15 +7,12 @@ keywords:
 - Terra assets
 - historical data
 - address
-- OpenBB Terminal
 - GET request
 - Draw chart
-- Python
 - aterra
 - meta data
 - parameters
 - returns
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

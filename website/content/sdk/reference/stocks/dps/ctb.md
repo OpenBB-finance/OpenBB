@@ -10,11 +10,8 @@ keywords:
 - Source Code
 - openbb.stocks.dps.ctb()
 - Parameters
-- pd.DataFrame
 - Return type
-- Python
 - OpenBB-finance
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

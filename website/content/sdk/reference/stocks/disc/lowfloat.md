@@ -5,8 +5,6 @@ description: This page explains the lowfloat function from the openbb.stocks.dis
   parameters and return types.
 keywords:
 - lowfloat
-- DataFrame
-- Python
 - openbb.stocks.disc
 - ShortInt
 - Float

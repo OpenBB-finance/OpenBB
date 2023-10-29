@@ -8,7 +8,6 @@ keywords:
 - bw
 - plot
 - data visualization
-- python
 - parameters
 - yearly plot
 ---

@@ -11,9 +11,6 @@ keywords:
 - Volatility Model
 - Volatility View
 - OHLC Prices
-- OpenBB
-- OpenBBTerminal
-- Python
 - Documentation
 ---
 

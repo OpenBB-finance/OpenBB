@@ -10,16 +10,12 @@ keywords:
 - Cosmos
 - Polkadot
 - Kusama
-- source code
 - model view
 - chart view
-- OpenBB
 - cryptocurrency
 - openbb.crypto.ov.platforms()
 - openbb.crypto.ov.platforms_chart()
 - CoinPaprika
-- Python
-- pd.DataFrame
 - dataframe export
 ---
 

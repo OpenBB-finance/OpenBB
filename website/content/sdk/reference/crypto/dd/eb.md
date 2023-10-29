@@ -6,12 +6,10 @@ description: This page provides documentation on how to use the OpenBBTerminal's
   in the crypto market.
 keywords:
 - OpenBB finance
-- OpenBBTerminal
 - OpenBB crypto
 - Cryptocurrency due diligence
 - Glassnode model
 - Glassnode view
-- Python
 - Data analysis
 - Bitcoin
 - Exchange addresses

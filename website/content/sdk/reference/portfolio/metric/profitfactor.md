@@ -8,7 +8,6 @@ keywords:
 - profitfactor function
 - PortfolioEngine
 - code example
-- Python
 - openbb.portfolio.load
 - trading portfolio
 - profit factor

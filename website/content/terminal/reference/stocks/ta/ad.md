@@ -11,7 +11,6 @@ keywords:
 - Stock Market Indicator
 - Python Script
 - b_use_open
-- SEO
 - On Balance Volume (OBV)
 - Volume Times
 ---

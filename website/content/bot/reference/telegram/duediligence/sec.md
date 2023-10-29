@@ -15,7 +15,6 @@ keywords:
 - 10-Qs
 - analysts
 - investors
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

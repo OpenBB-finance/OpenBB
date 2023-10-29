@@ -11,7 +11,6 @@ keywords:
 - Most active stocks
 - Finance
 - API documentation
-- Python
 - Data Frame
 - Yahoo Finance
 - Intraday trading

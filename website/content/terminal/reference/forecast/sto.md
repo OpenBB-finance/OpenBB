@@ -7,9 +7,7 @@ keywords:
 - Stochastic Oscillator
 - sto command
 - Predictive Model Analysis
-- Data Analysis
 - Technical Indicator
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

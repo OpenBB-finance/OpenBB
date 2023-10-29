@@ -6,10 +6,8 @@ description: This page provides documentation for the 'add' function in an Econo
 keywords:
 - Econometrics
 - Data manipulation
-- Dataframe
 - Add function
 - Computations
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

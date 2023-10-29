@@ -8,7 +8,6 @@ keywords:
 - Random Walk with Drift forecasting
 - forecasting model
 - parameter description
-- source code
 - OpenBB-finance
 - model object
 - rwd view
@@ -21,10 +20,7 @@ keywords:
 - export
 - residuals
 - forecast only
-- start date
-- end date
 - naive
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

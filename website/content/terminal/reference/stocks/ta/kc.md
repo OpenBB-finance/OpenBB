@@ -11,7 +11,6 @@ keywords:
 - ATR
 - volatility
 - trend direction
-- Python
 - kc
 - n_length
 - n_scalar

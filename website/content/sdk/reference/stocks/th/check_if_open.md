@@ -5,16 +5,12 @@ description: SEO metadata for a Python function 'check_if_open' within OpenBB-fi
   trading.
 keywords:
 - OpenBB-finance
-- OpenBBTerminal
 - Stocks
 - Trading hours
 - Bursa
 - Check market open
-- OpenBB
-- Python
 - Source code
 - pandas
-- Dataframe
 - Exchange
 ---
 

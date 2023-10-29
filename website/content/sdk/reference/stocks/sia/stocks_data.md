@@ -8,8 +8,6 @@ keywords:
 - finance key
 - financial statement
 - stock analysis
-- OpenBBTerminal
-- Python
 - programming
 - code documentation
 ---

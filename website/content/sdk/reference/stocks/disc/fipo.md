@@ -7,9 +7,6 @@ keywords:
 - Future IPOs
 - IPO dates
 - Finnhub source
-- OpenBB
-- Python
-- DataFrame
 - Financial data
 - Stocks discovery
 - Fipo

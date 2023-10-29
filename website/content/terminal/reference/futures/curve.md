@@ -8,10 +8,8 @@ keywords:
 - curve usage
 - futures curve
 - financial parameter
-- ticker
 - financial trading
 - YahooFinance
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

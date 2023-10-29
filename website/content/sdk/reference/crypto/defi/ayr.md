@@ -6,23 +6,17 @@ description: This documentation page provides a detailed overview of the Anchor 
   and returns.
 keywords:
 - docusaurus
-- SEO
-- metadata
-- documentation page
+- metadata page
 - Anchor Yield Reserve
 - crypto
 - defi
-- openbb
 - ayr
 - ayr_chart
 - crypto.defi
-- python
 - matplotlib
-- pd.DataFrame
 - dataframe
 - parameters
 - returns
-- source code
 - 30-day history
 ---
 

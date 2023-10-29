@@ -6,14 +6,10 @@ description: This documentation page provides methods to get NFT collections, it
 keywords:
 - Docusaurus
 - Marketing
-- SEO
-- OpenBB
 - NFT
 - Collections
 - Chart
 - nftpricefloor
-- Python
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

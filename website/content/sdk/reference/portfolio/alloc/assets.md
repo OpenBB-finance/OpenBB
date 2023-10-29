@@ -5,12 +5,10 @@ description: This tutorial page provides information about the 'assets' function
   The 'assets' function is used to display a portfolio's asset allocation as compared
   to the benchmark.
 keywords:
-- OpenBB Terminal
 - Portfolio module
 - assets function
 - portfolio asset allocation
 - benchmark comparison
-- Python
 - function parameters
 ---
 

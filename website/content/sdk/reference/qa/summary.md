@@ -7,9 +7,7 @@ description: This page contains documentation for methods of calculating and dis
   provided for each method.
 keywords:
 - summary statistics
-- OpenBB Terminal
 - quantitative analysis
-- pd.DataFrame
 - OpenBB.qa
 - summary_chart
 - export data

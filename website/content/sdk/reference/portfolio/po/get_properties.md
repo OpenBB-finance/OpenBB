@@ -8,8 +8,6 @@ keywords:
 - get_properties
 - openbb_portfolio
 - Python code
-- source code
-- OpenBBTerminal
 - optimizer_model
 ---
 

@@ -3,13 +3,11 @@ title: available_indices
 description: A documentation page for the available_indices function in the OpenBBTerminal
   module. This function returns the available indices without requiring parameters.
 keywords:
-- OpenBBTerminal
 - available_indices
 - indices
 - function
 - no parameters
 - dictionary
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

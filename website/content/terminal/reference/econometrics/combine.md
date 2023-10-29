@@ -7,7 +7,6 @@ description: This page provides comprehensive documentation on the 'combine' fun
 keywords:
 - combine
 - datasets
-- python
 - columns
 - parameters
 - add columns

@@ -13,10 +13,8 @@ keywords:
 - crypto
 - fiats
 - commodity
-- source code
 - parameters
 - returns
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

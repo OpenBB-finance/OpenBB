@@ -9,7 +9,6 @@ keywords:
 - exponential smoothing
 - stock market prediction
 - timeseries analysis
-- OpenBB
 - data visualization
 ---
 

@@ -8,12 +8,11 @@ keywords:
 - holdp function
 - Holdings management
 - Portfolio management
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /holdp - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/holdp - Reference | OpenBB Terminal Docs" />
 
 Display holdings of assets (in percentage)
 

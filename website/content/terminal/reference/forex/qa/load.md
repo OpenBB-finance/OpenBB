@@ -13,7 +13,6 @@ keywords:
 - source
 - exchange
 - interval
-- python
 - parameters
 - coin
 - start

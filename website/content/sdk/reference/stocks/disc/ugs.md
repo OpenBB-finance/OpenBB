@@ -10,7 +10,6 @@ keywords:
 - PE ratio
 - PEG ratio
 - undervalued stocks
-- OpenBBTerminal
 - yahoofinance model
 ---
 

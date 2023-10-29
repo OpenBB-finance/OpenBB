@@ -8,9 +8,7 @@ keywords:
 - top 10 stocks
 - Stock Tickers
 - Dataframe of tickers
-- OpenBB
 - Stock Discovery
-- Python
 - No parameters function
 ---
 

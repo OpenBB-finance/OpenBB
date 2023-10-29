@@ -15,7 +15,6 @@ keywords:
 - multiple transactions
 - filing date
 - trade date
-- ticker
 - company name
 - insider name
 - title

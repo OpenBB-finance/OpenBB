@@ -6,10 +6,8 @@ keywords:
 - OpenBB stocks
 - process_candle
 - Stock DataFrame
-- Python
 - Panda's DataFrame
 - Stock market
-- Plotting
 - Finance
 ---
 

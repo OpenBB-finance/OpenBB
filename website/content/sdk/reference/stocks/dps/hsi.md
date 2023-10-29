@@ -14,7 +14,6 @@ keywords:
 - stock market
 - financial data
 - exchange
-- ticker
 - company
 - outstd
 - industry

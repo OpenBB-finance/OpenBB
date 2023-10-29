@@ -15,7 +15,6 @@ keywords:
 - python code
 - plot sentiments
 - export format
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,7 +6,6 @@ description: The documentation page provides a comprehensive guide to performing
   perform.
 keywords:
 - panel data regression
-- Python
 - data analysis
 - regression analysis
 - Pooled OLS

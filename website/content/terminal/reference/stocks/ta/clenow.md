@@ -8,7 +8,6 @@ keywords:
 - volatility adjusted momentum
 - marketing website page
 - lookback period for regression
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

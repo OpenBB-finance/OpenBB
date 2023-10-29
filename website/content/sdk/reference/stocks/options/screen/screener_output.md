@@ -5,11 +5,8 @@ description: This documentation page cover the usage of screener output for Open
   and parameters for sorting and export formatting. There are also links to the source
   code and Python command line instructions.
 keywords:
-- OpenBB Terminal
 - screener output
 - preset filters
-- python
-- source code
 - export formatting
 - command line instructions
 ---

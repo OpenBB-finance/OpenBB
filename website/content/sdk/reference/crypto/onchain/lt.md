@@ -4,7 +4,6 @@ description: Docusaurus page containing OpenBBTerminal's onchain lt model and vi
   that depict trades happening on Decentralized Exchanges - aggregated per DEX or
   time. Also includes code snippets, parameter details, and return values.
 keywords:
-- OpenBBTerminal
 - onchain
 - lt model
 - Decentralized Exchanges

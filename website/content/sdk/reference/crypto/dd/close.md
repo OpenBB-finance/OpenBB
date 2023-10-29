@@ -10,8 +10,6 @@ keywords:
 - ETH
 - closing price
 - OpenBB crypto library
-- Python
-- DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

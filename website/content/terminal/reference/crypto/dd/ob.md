@@ -4,7 +4,6 @@ description: This page explains how to retrieve the order book for any selected 
   coin across numerous exchanges. It specifically instructs the use of the 'ob' command
   in python.
 keywords:
-- python
 - order book
 - cryptocurrency
 - exchange

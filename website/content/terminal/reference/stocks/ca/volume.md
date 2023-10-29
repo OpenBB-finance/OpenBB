@@ -11,7 +11,6 @@ keywords:
 - stock market analysis
 - company comparison
 - parameters
-- documentation
 - data visualization
 - stock analysis
 ---

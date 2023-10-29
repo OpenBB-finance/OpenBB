@@ -9,7 +9,6 @@ keywords:
 - Search function
 - Data sorting
 - Data categories
-- SEO
 - metadata
 - docusaurus
 - bitcoin

@@ -6,8 +6,6 @@ keywords:
 - logout
 - usage
 - parameters
-- command
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

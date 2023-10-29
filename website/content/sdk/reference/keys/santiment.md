@@ -7,8 +7,6 @@ keywords:
 - Santiment key
 - API key
 - OpenBB-Terminal
-- Python
-- SDK
 - SEO for Documentation
 - Document SEO
 - Persist Key

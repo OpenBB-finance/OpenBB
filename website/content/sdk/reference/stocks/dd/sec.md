@@ -8,13 +8,9 @@ keywords:
 - SEC filings
 - stock ticker
 - Market Watch
-- source code
-- python
-- OpenBB
 - stocks
 - due diligence
 - marketwatch model
-- pd.DataFrame
 - symbol
 ---
 

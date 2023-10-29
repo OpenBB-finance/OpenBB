@@ -9,7 +9,6 @@ keywords:
 - IPO
 - Yahoo Finance
 - parameters
-- Python
 - gnus_splits
 - aapl_splits
 ---

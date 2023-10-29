@@ -8,7 +8,6 @@ keywords:
 - preset
 - parameters
 - filter presets
-- python
 - oversold_under_5dol
 - potential_reversals
 - top_performers_all

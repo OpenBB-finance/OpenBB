@@ -4,11 +4,9 @@ description: Detailed documentation for 'dret' function of OpenBB Terminal, allo
   calculation of daily returns and visualization of these returns through charts.
   This function manipulates and interprets portfolio data.
 keywords:
-- OpenBB Terminal
 - dret
 - portfolio
 - returns
-- Python
 - PortfolioEngine
 - visualization
 - dret_chart

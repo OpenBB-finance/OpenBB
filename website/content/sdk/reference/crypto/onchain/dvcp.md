@@ -6,13 +6,11 @@ description: This documentation page contains information about dvcp, a function
   source code links, detailed information about parameters and returned data.
 keywords:
 - dvcp
-- OpenBB
 - cryptocurrency
 - daily volume
 - ERC20 token
 - data model
 - chart view
-- source code
 - parameters
 - returned data
 ---

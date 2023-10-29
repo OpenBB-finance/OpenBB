@@ -13,7 +13,6 @@ keywords:
 - Metric value launch details
 - Export data
 - Docusaurus page
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -7,7 +7,6 @@ keywords:
 - Yearly Returns
 - Portfolio Management
 - Quantitative Finance
-- Python
 - Data Visualization
 - Open source
 - Finance Library

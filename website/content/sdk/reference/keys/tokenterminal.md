@@ -5,11 +5,8 @@ description: This documentation page deals with the 'tokenterminal' function of 
   on the parameters, can be limited to the current session or applied globally. A
   use-case example is also included.
 keywords:
-- OpenBB
 - Token Terminal Key
 - API Key
-- Python
-- SDK
 - Finance Terminal
 - tokenterminal Function
 - Terminal Environment Variables

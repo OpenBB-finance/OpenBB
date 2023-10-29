@@ -5,10 +5,7 @@ description: The macro_parameters function in openbb economy section. It does no
   Find the source code here.
 keywords:
 - macro parameters
-- openbb
 - economy
-- python
-- source code
 - dictionary
 ---
 

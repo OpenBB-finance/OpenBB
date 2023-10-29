@@ -5,9 +5,7 @@ description: 'The OpenBB project: how to set your Stocksera API key using Python
   for the stocksera method.'
 keywords:
 - Stocksera
-- OpenBB
 - API Key
-- Python
 - Jupyter Notebook
 - Environment Variables
 ---

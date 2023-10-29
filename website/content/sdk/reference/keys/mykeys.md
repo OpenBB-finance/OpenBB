@@ -7,13 +7,9 @@ keywords:
 - API keys
 - OpenBB finance
 - mykeys function
-- Python
-- OpenBBTerminal
 - Parameters
 - Return types
 - Examples
-- pd.DataFrame
-- SDK
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

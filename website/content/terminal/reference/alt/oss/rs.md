@@ -8,9 +8,7 @@ keywords:
 - repository
 - rs command
 - Github
-- source code
 - openbb-finance/openbbterminal
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

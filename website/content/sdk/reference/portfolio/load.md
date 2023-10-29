@@ -11,7 +11,6 @@ keywords:
 - full shares
 - risk free rate
 - portfolio calculations
-- Python
 - openbb_terminal sdk
 - Portfolio management
 ---

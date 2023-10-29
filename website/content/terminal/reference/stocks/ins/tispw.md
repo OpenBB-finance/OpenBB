@@ -11,7 +11,6 @@ keywords:
 - data display
 - parameters
 - datarows
-- python
 - command line tool
 ---
 

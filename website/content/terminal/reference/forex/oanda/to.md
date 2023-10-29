@@ -12,7 +12,6 @@ keywords:
 - Finance
 - Trading
 - Foreign Exchange
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

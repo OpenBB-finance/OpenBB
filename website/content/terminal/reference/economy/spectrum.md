@@ -22,7 +22,6 @@ keywords:
 - Finviz
 - Basic materials sector
 - Communication services sector
-- Python
 - Programming
 ---
 

@@ -5,12 +5,9 @@ description: This page explains how to set a Twitter API key in OpenBB Terminal,
   interact with Twitter's API.
 keywords:
 - Twitter API
-- OpenBB Terminal
 - API key
-- Python
 - Coding examples
 - Jupyter notebook
-- SDK
 - openbb keys twitter
 - Environment variables
 - API secret

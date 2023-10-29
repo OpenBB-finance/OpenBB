@@ -5,9 +5,7 @@ description: This page provides detailed information on how to get income data f
   code and the parameters needed for these operations.
 keywords:
 - income data
-- OpenBB
 - financial functions
-- source code
 - parameters
 - Marketwatch
 - income statements
@@ -17,7 +15,6 @@ keywords:
 - data export
 - financial comparison
 - ticker comparison
-- Python
 - financial data analysis
 ---
 

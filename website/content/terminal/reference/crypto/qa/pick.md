@@ -6,7 +6,6 @@ description: The page provides detailed information about the 'pick' command whi
 keywords:
 - pick
 - target variable
-- python
 - parameters
 - stock analysis
 - stock market

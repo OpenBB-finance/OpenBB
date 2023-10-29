@@ -3,12 +3,9 @@ title: sectors
 description: SEO for the 'sectors' documentation page of the OpenBB finance that elaborates
   about portfolio sector allocation compared to the benchmark.
 keywords:
-- OpenBB
-- finance
 - portfolio
 - sector allocation
 - benchmark
-- source code
 - parameters
 - returns
 - examples

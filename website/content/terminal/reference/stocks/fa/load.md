@@ -12,7 +12,6 @@ keywords:
 - .NS
 - Yahoo finance
 - Exchanges data providers
-- python
 - Parameters
 - Stock interval
 - Intraday stock minutes

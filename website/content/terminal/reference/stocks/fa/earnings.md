@@ -6,14 +6,11 @@ description: This page provides documentation for the 'earnings' function. This 
 keywords:
 - docusaurus
 - metadata
-- SEO
 - earnings
 - financial data
 - EPS
-- documentation
 - parameter
 - example
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

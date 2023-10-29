@@ -7,7 +7,6 @@ description: Learn how to use the load function within OpenBBTerminal's stocks m
   as a pandas DataFrame.
 keywords:
 - symbol analysis
-- OpenBBTerminal
 - start_date
 - interval
 - end_date
@@ -18,8 +17,6 @@ keywords:
 - monthly data
 - verbose
 - data extraction
-- Python
-- pd.DataFrame
 - dataframe
 ---
 

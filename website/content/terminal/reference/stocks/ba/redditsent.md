@@ -8,7 +8,6 @@ keywords:
 - redditsent
 - sentiment analysis
 - Reddit
-- ticker
 - search sorting
 - company search
 - subreddits

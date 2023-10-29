@@ -11,8 +11,6 @@ keywords:
 - data searching
 - text query
 - series notes database
-- Python
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

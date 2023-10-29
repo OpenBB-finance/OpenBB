@@ -4,12 +4,9 @@ description: Documentation for methods used in closing trades and viewing charts
   the OpenBB fin-tech software. The page gives a detailed explanation about their
   use, parameters, and return values.
 keywords:
-- OpenBB
 - finance software
 - trade
 - chart
-- documentation
-- source code
 - Oanda
 - forex
 - function

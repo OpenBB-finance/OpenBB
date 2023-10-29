@@ -7,7 +7,6 @@ description: This documentation page provides detailed information about OpenBB 
   querying.
 keywords:
 - Macroeconomic data
-- OpenBB Terminal
 - Federal Reserve of St. Louis
 - FRED
 - OECD

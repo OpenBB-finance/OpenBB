@@ -4,7 +4,6 @@ description: Documentation for the 'pcr' function from the OpenBB Terminal platf
   Contains model and chart views to get and display the put call ratio of certain
   stock options.
 keywords:
-- OpenBB Terminal
 - pcr function
 - put call ratio
 - stock options

@@ -7,7 +7,6 @@ keywords:
 - exchange
 - swap
 - international exchanges
-- command
 - parameters
 ---
 

@@ -8,7 +8,6 @@ keywords:
 - days-to-cover
 - stockgrid
 - OpenBB-finance
-- pd.DataFrame
 - stock data
 - floating short
 ---

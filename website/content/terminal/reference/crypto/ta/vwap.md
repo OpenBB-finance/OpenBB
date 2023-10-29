@@ -9,7 +9,6 @@ keywords:
 - intraday charts
 - average typical price
 - stock analysis
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

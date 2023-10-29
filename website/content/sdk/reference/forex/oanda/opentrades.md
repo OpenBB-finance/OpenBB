@@ -5,13 +5,10 @@ description: This page provides information on the 'opentrades' function in the 
   open trades using the forex Oanda module, complete with source code for reference.
 keywords:
 - opentrades
-- OpenBB
 - forex
 - Oanda
 - trade data
 - open trades chart
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

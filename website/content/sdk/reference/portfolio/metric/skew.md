@@ -10,7 +10,6 @@ keywords:
 - financial metrics
 - portfolio metrics
 - Python financial analysis
-- OpenBBTerminal
 - skew function
 - OpenBBTerminal examples
 ---

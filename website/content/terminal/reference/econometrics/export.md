@@ -8,11 +8,9 @@ keywords:
 - dataset
 - Excel
 - CSV
-- Python
 - econometrics
 - data export
 - export command
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

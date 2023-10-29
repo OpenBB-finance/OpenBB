@@ -5,13 +5,10 @@ description: This page documents the functions for retrieving and displaying cry
   'view', each with descriptions of available parameters and returns.
 keywords:
 - docusaurus
-- SEO
 - metadata
 - cryptocurrency
-- OpenBB Terminal
 - CoinGecko
 - coins data
-- Python
 - dataframe
 - model
 - view

@@ -3,15 +3,12 @@ title: rise
 description: Discover top rising related queries for a stock's symbol with the OpenBB
   rise tool. Analyze market behavior and spot trends.
 keywords:
-- OpenBB
 - stock analysis
 - market trends
 - rising queries
 - stock symbol use
 - OpenBB rise tool
 - behavioral analysis
-- Python
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

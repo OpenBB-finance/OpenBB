@@ -4,13 +4,11 @@ description: This page provides documentation for ldapps functions used in the O
   finance terminal. These functions retrieve and display information about listed
   DeFi protocols, their current Total Valued Locked (TVL), and changes to it.
 keywords:
-- OpenBB
 - DeFi protocols
 - ldapps
 - dApps
 - cryptocurrency
 - Total Valued Locked (TVL)
-- Python
 - dataframe
 ---
 

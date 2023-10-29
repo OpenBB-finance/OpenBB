@@ -10,7 +10,6 @@ keywords:
 - moving average convergence divergence
 - plotting macd
 - macd signal
-- python
 - data visualization
 - momentum model
 - momentum view

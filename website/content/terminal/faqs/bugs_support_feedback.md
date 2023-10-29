@@ -6,7 +6,6 @@ description: Familiarize yourself with common issues and bug reports within our 
   support for OpenBB Terminal. You'll also learn how to provide feedback and request
   specific features within the platform.
 keywords:
-- OpenBB Terminal
 - GitHub
 - bugs
 - patches

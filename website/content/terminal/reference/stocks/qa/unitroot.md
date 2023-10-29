@@ -12,7 +12,6 @@ keywords:
 - fuller_reg
 - kpss_reg
 - regression
-- python
 - stock
 - statistics
 ---

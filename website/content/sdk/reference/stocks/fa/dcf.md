@@ -7,8 +7,6 @@ keywords:
 - dcf
 - stocks
 - FMP
-- source code
-- openbb
 - fundamental analysis
 - fmp model
 - parameters

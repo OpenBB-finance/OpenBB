@@ -3,13 +3,10 @@ title: categories_keys
 description: This page provides documentation on the 'categories_keys' function from
   OpenBB, which retrieves a list of categories keys in the cryptocurrency domain.
 keywords:
-- OpenBB
 - categories_keys
-- documentation
 - cryptocurrency
 - category keys
 - crypto categories
-- Python
 - function
 ---
 

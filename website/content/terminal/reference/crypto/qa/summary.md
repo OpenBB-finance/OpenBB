@@ -5,12 +5,10 @@ description: This page provides a guide on how to use the 'summary' command for 
   detailed statistical insights on data points such as open, high, low, close, volume
   and more.
 keywords:
-- Python
 - Summary Statistics
 - Command
 - No parameters
 - Stocks
-- Data Analysis
 - Open
 - High
 - Low

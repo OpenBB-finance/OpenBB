@@ -5,7 +5,6 @@ description: The markets page provides detailed information on how to use the Op
   API allows the user to import and view detailed coin information, with the functionality
   of sorting the data based on different parameters.
 keywords:
-- OpenBB
 - cryptocurrency
 - API
 - CoinPaprika

@@ -5,15 +5,12 @@ description: 'The page provides information about two central functions of the O
   analysis, analyzing standard deviation, variance and create spread charts. The descriptions
   include source code, parameters, and return values.'
 keywords:
-- OpenBBTerminal
 - Standard Deviation
 - Variance
-- pd.DataFrame
 - Quantitative Analysis
 - Rolling model
 - Spread
 - Spread chart
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

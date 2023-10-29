@@ -8,10 +8,7 @@ keywords:
 - statistical forecasting
 - parameters
 - returns
-- source code
 - forecasting model
-- python
-- OpenBB Terminal
 - chart
 ---
 

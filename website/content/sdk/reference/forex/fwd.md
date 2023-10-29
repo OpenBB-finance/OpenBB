@@ -7,7 +7,6 @@ description: This documentation page provides the syntax and details for extract
 keywords:
 - fwd function
 - fxempire
-- OpenBBTerminal
 - Forward rates
 - forex
 - OpenBB.finance
@@ -16,8 +15,6 @@ keywords:
 - EUR
 - parameters
 - returns
-- pd.DataFrame
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

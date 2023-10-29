@@ -5,7 +5,6 @@ description: The documentation page describes the usage of the 'pm_all' command 
   of command usage without parameters.
 keywords:
 - pm_all
-- command
 - retrieve
 - pre-market screeners
 - Parameters

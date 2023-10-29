@@ -4,11 +4,8 @@ description: This documentation details how to use OpenBBTerminal's 'clean' func
   to clean up NaNs in a pandas DataFrame. It outlines the parameters, return values,
   and available methods for filling and dropping NaN values.
 keywords:
-- OpenBBTerminal
-- Python
 - econometrics
 - clean data
-- DataFrame
 - NaN handling
 - machine learning
 - dataset cleaning

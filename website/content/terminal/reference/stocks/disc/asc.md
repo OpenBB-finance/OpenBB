@@ -11,7 +11,6 @@ keywords:
 - stock market analysis
 - financial data analysis
 - stock market tools
-- Python
 - financial programming
 - stock information display
 ---

@@ -9,7 +9,6 @@ keywords:
 - financial assets
 - ticker symbols
 - FinBrain's API
-- OpenBB Terminal
 - Python protocols
 - model view
 - chart view

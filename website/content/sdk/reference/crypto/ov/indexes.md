@@ -6,7 +6,6 @@ description: The documentation page covers the retrieval and visualization of cr
 keywords:
 - CoinGecko API
 - crypto indexes
-- OpenBB
 - pycoingecko_model
 - pycoingecko_view
 - data sort

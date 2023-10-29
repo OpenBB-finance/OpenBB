@@ -11,7 +11,6 @@ keywords:
 - ethereum blockchain
 - transaction history
 - ethplorer
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

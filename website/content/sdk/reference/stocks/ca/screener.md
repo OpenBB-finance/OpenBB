@@ -3,12 +3,9 @@ title: screener
 description: This documentation page provides an overview of the Screener feature
   in the OpenBB Terminal, demonstrating how to use it to compare similar companies.
 keywords:
-- OpenBB Terminal
 - Stock Screener
 - Comparison Analysis
 - Similar Companies
-- Data Analysis
-- Python
 - Finviz
 - Finnhub
 - Polygon

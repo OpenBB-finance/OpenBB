@@ -4,7 +4,6 @@ description: Learn the usage, parameters and practical details of the rolling fu
   a vital Python tool for calculating the rolling mean and standard deviation.
 keywords:
 - Rolling function
-- Python
 - Mean calculation
 - Standard deviation
 - Programming tools

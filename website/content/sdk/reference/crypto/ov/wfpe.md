@@ -5,18 +5,15 @@ description: This page explains how to use OpenBB's wfpe function, which scrapes
   detailed parameters and returns information for both the model and view aspects
   of the function.
 keywords:
-- OpenBB
 - wfpe function
 - coin withdrawal fees
 - crypto exchange
 - data scraping
 - data visualization
-- Python
 - parameters
 - returns
 - Model
 - View
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

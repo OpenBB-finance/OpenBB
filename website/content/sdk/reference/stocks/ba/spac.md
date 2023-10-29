@@ -6,8 +6,6 @@ description: A detailed documentation page on the SPAC function from OpenBB's fi
 keywords:
 - SPAC
 - Reddit Analysis
-- Python
-- OpenBB
 - subreddits
 - Financial Analysis
 - Data Extraction

@@ -5,12 +5,10 @@ description: Find how to get a 5 year monthly historical performance for a given
   with this method, get a detailed data analysis.
 keywords:
 - Historical performance
-- OpenBB
 - 5 year monthly history
 - Dividends
 - Ticker symbol
 - Data analysis
-- Python
 - Source code
 - Fundamental analysis
 - Pandas DataFrame

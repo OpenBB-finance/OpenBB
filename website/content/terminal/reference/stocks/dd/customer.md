@@ -4,7 +4,6 @@ description: The 'customer' page provides a list of customers from a ticker sour
   CSIMarket. It also includes the usage of the command and its parameters.
 keywords:
 - customer
-- ticker
 - CSIMarket
 - command parameters
 - usage

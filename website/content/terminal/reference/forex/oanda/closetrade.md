@@ -11,7 +11,6 @@ keywords:
 - close trade
 - parameters
 - trade ID
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

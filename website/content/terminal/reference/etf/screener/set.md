@@ -6,7 +6,6 @@ keywords:
 - set command
 - preset
 - etf_config.ini
-- python
 - set usage
 - set parameters
 - filter presets

@@ -12,7 +12,6 @@ keywords:
 - parameters
 - returns
 - examples
-- OpenBB
 - sharpe ratio
 - return volatility
 - financial portfolio

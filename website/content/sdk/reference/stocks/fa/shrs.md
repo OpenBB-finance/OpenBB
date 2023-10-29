@@ -10,7 +10,6 @@ keywords:
 - Source Code
 - Parameters
 - Python Coding
-- OpenBB
 - Stock Ticker Symbol
 - Institutional Holder
 - Data frame

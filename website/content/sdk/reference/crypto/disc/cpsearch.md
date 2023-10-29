@@ -9,8 +9,6 @@ keywords:
 - coinPaprika
 - cryptocurrency
 - search
-- OpenBBTerminal
-- python
 - crypto discovery
 - search parameters
 - coinPaprika API

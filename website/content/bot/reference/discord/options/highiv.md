@@ -7,7 +7,6 @@ keywords:
 - highiv command
 - IV30 equity stocks
 - 30 day Implied Volatility
-- investment
 - high potential return
 - traders
 - market movements

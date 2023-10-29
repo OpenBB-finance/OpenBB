@@ -9,7 +9,6 @@ keywords:
 - Robinhood
 - account info
 - trading
-- finance
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

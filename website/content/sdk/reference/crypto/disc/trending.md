@@ -4,14 +4,12 @@ description: This page provides detailed information on trending coins. Users ca
   learn how to return and view a table of trending coins from CoinGecko using OpenBB's
   Python functions.
 keywords:
-- OpenBB
 - CoinGecko
 - trending coins
 - Python functions
 - cryptocurrency
 - crypto trends
 - dataframe
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

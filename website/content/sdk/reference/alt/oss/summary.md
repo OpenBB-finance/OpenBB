@@ -5,15 +5,11 @@ description: This documentation page contains comprehensive information on OpenB
   library and display it in a chart view. Includes source code links and detailed
   parameter descriptions for usage.
 keywords:
-- OpenBB
 - Repository Summary
 - Chart View
 - Source Code
-- Python
 - Github
 - Docusaurus
-- SEO
-- Dataframe
 - API
 ---
 

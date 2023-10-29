@@ -10,9 +10,7 @@ keywords:
 - coin comparison
 - fetch data
 - APIs usage
-- OpenBBTerminal
 - python functions
-- documentation
 - coin calculation
 - pr model
 - pr chart

@@ -7,7 +7,6 @@ keywords:
 - hotpenny
 - penny stocks
 - stock market
-- financial analysis
 - trade changes
 - stock volume
 - stock price

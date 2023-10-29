@@ -6,10 +6,8 @@ description: This is a comprehensive guide on how to use OpenBB's quantitative a
   using the ES chart. Both the Model and Chart have been clearly explained in the
   context of their parameters and return types.
 keywords:
-- OpenBB
 - Quantitative Analysis
 - Expected Shortfall
-- pd.DataFrame
 - Percentile
 - ES Chart
 - Portfolio

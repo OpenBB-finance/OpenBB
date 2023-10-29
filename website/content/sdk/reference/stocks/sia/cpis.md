@@ -4,17 +4,14 @@ description: cpis and cpis_chart functions are powerful tools in the OpenBBTermi
   that inform about the number of companies per industry in a specific sector and
   market cap, and visualise the data respectively.
 keywords:
-- OpenBBTerminal
 - cpis
 - cpis_chart
 - sector analysis
 - industry analysis
 - company information
 - data visualization
-- python
 - market capitalization
 - stock analysis
-- financial analysis
 - technology industry
 ---
 

@@ -7,12 +7,10 @@ description: This page contains details about the arkord function, which returns
 keywords:
 - ARK
 - Orders
-- Dataframe
 - filter
 - buys only
 - sells only
 - fund
-- DataFrame
 - ARK orders data frame
 - shares
 - weight

@@ -12,7 +12,6 @@ keywords:
 - index values
 - percentage change
 - real-time overview
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

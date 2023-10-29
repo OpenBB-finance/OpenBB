@@ -9,7 +9,6 @@ keywords:
 - Economic Predictions
 - Additive Seasonality
 - Multiplicative Seasonality
-- Python
 - Models
 - Forecast Parameters
 - Time Series Analysis

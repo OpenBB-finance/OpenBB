@@ -7,12 +7,10 @@ keywords:
 - openbb.economy.indices()
 - US indices
 - Documentation
-- Dataframe
 - Name
 - Price
 - Net change
 - Percent change
-- Python
 - Source code
 ---
 

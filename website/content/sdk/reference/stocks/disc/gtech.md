@@ -9,10 +9,8 @@ keywords:
 - revenue growth
 - earnings growth
 - Yahoo Finance
-- OpenBB
 - stocks discovery
 - python code
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -11,7 +11,6 @@ keywords:
 - coin
 - cryptocurrency
 - frequency interval
-- Python
 - Glassnode
 ---
 

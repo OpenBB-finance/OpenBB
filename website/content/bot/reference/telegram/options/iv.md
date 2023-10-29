@@ -5,7 +5,6 @@ description: This page guides the user on how to use the 'iv' command to retriev
   symbols like 'AMD'. Great resource for individuals who want to extract specific
   stock information.
 keywords:
-- command
 - information retrieval
 - option information
 - ticker symbol

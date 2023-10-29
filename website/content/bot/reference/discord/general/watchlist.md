@@ -5,9 +5,7 @@ description: 'Learn how to use the watchlist command: add or remove stock ticker
   to related data like flow, darkpool data, technical analysis and news.'
 keywords:
 - watchlist
-- command
 - stocks
-- ticker
 - add ticker
 - edit ticker
 - technical analysis

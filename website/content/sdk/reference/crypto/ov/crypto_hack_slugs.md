@@ -6,8 +6,6 @@ keywords:
 - crypto hack slugs
 - OpenBB finance
 - cryptocurrency
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

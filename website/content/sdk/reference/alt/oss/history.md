@@ -11,7 +11,6 @@ keywords:
 - chart display
 - repo summary plot
 - export dataframe
-- external axes
 - software documentation
 ---
 

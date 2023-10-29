@@ -5,7 +5,6 @@ description: This page provides a guide on how to use the command 'yret' for det
   and their usage.
 keywords:
 - yret
-- command
 - usage
 - parameters
 - end of year returns
@@ -14,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /yret - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/yret - Reference | OpenBB Terminal Docs" />
 
 End of the year returns
 

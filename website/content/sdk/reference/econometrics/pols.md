@@ -11,7 +11,6 @@ keywords:
 - openbb.econometrics.pols
 - regression_variables
 - data
-- DataFrame
 - PooledOLS model
 - Dependent variable
 - Independent variable

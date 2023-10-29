@@ -5,13 +5,11 @@ description: The page provides detailed documentation on 'smartstake' function o
   current session or globally in terminal environment. Includes examples of usage
   and link to source code.
 keywords:
-- openbb
 - SmartStake API key
 - API key setting
 - Python function
 - docusaurus documentation
 - programming
-- SDK
 - environment variables
 ---
 

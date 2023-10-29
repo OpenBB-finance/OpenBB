@@ -4,10 +4,8 @@ description: Learn how to implement twitter functions for cryptocurrency through
   OpenBB Terminal documentation. Access information such as code usage, parameters,
   return types etc.
 keywords:
-- OpenBB Terminal
 - Cryptocurrency
 - Twitter
-- Python
 - Code Documentation
 - Sort Data
 - CSV

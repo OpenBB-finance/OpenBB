@@ -4,12 +4,10 @@ description: This documentation page provides detailed information about the 'ro
   functions of the OpenBB Terminal. These functions help to retrieve and visualize
   data about startups from the ROSS index.
 keywords:
-- OpenBB Terminal
 - ross function
 - data retrieval
 - startups data
 - ROSS index
-- Python
 - visualization
 - dataframe
 - chart

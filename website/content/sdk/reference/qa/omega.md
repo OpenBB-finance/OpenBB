@@ -5,11 +5,9 @@ description: Learn about the omega series and ratio in the OpenBB quantitative a
   and plot the omega ratio from stock dataframes.
 keywords:
 - omega series
-- OpenBB
 - quantitative analysis
 - numpy
 - pandas
-- python
 - dataframe
 - stock data
 - threshold range

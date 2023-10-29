@@ -10,7 +10,6 @@ keywords:
 - daily stock
 - tsla stock
 - pick
-- python
 - stock parameter selection
 - stock market
 - stock data manipulation

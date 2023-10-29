@@ -6,7 +6,6 @@ description: This page provides comprehensive instructions on the command '/fun 
 keywords:
 - urban dictionary
 - word search
-- command
 - usage
 - examples
 - parameters

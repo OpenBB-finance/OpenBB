@@ -14,7 +14,6 @@ keywords:
 - btc.com
 - tokenview.com
 - blockchair.com
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

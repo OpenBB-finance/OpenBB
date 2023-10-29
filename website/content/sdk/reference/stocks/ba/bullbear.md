@@ -4,13 +4,9 @@ description: This page provides information on how to use OpenBB's bullbear func
   that fetches sentiment for a ticker from stocktwits. Detailed info about parameters
   and returns are included.
 keywords:
-- OpenBB
 - bullbear function
 - stocktwits
 - sentiment analysis
-- ticker
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -8,7 +8,6 @@ keywords:
 - stock ticker
 - stock market
 - quotes
-- finance
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

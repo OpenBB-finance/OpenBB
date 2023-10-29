@@ -11,8 +11,6 @@ keywords:
 - CoinGecko
 - API
 - Crypto analysis
-- OpenBBTerminal
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

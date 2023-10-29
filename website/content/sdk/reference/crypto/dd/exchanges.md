@@ -6,8 +6,6 @@ keywords:
 - helper method
 - CCXT
 - exchanges
-- source code
-- OpenBB
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

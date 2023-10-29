@@ -6,7 +6,6 @@ description: This docusaurus page provides comprehensive information on the 'cpc
   to exclude international exchanges. Detailed parameters and return values are provided,
   along with source code links for those who require in-depth understanding.
 keywords:
-- OpenBB Terminal
 - cpci function
 - number of companies per country
 - industry-based company distribution
@@ -14,7 +13,6 @@ keywords:
 - finance database
 - industry selection
 - python code
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

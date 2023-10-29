@@ -7,8 +7,6 @@ keywords:
 - OpenBB terminal
 - Messari key
 - API key
-- Python
-- SDK
 - Parameters
 - openbb.keys.messari function
 - example usage

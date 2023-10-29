@@ -5,14 +5,9 @@ description: Access analysts' estimates for given ticker symbols utilizing OpenB
   data types.
 keywords:
 - analysts' estimates
-- ticker
-- OpenBB
 - business insider
-- source code
 - stocks
 - due diligence
-- Python
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

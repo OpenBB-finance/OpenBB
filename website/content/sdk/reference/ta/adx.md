@@ -5,9 +5,7 @@ description: This page provides extensive information about the ADX technical in
   and visualising the ADX technical indicator on OHLC price data using OpenBBTerminal.
 keywords:
 - ADX technical indicator
-- Python
 - Dataframe with OHLC price data
-- OpenBBTerminal
 - Technical Analysis
 - ADX chart
 - Plot ADX Indicator

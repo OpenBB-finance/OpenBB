@@ -10,7 +10,6 @@ keywords:
 - DEAR systems
 - stock data
 - data analysis
-- Python
 - finance analysis
 - Indian stock market
 - trading parameters

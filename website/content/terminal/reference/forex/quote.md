@@ -5,7 +5,6 @@ description: This documentation page provides information regarding the usage an
   rate.
 keywords:
 - Documentation
-- Python
 - Exchange Rate
 - Quote Function
 - Current Rate

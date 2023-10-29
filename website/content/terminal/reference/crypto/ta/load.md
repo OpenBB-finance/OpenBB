@@ -11,11 +11,8 @@ keywords:
 - cg
 - exchange selection
 - data interval
-- python
 - load function
 - cryptocurrency symbol
-- start date
-- end date
 - quote currency
 ---
 
