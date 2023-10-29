@@ -5,12 +5,10 @@ description: Learn how to use the Text Sentiment Analysis function of OpenBB's R
   insights into stock market trends.
 keywords:
 - Text sentiment analysis
-- OpenBB
 - Stock market sentiment
 - Behavioural analysis
 - Comment analysis
 - Post analysis
-- Python
 - Reddit model
 ---
 

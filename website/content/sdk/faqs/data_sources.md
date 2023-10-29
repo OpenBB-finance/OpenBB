@@ -6,14 +6,12 @@ description: OpenBB is a data aggregator that provides access to data from vario
   data, and handle certain limitations like accessing the Binance API. Feature request
   options are available for specific data source endpoints.
 keywords:
-- OpenBB
 - data aggregators
 - data providers
 - ticker symbols
 - end-of-day daily data
 - Binance API
 - feature request
-- SDK
 - live feeds
 - load function
 ---

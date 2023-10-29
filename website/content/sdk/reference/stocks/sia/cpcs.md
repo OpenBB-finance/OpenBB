@@ -5,13 +5,11 @@ description: This documentation page provides information on how to use cpcs, a 
   in a specific sector. Multiple parameters are available to allow customised queries.
   Source code links are also provided.
 keywords:
-- OpenBB
 - CPCS feature
 - number of companies per country
 - specific sector
 - market cap
 - finance software
-- source code
 - customize queries
 - parameters
 ---

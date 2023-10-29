@@ -10,8 +10,6 @@ keywords:
 - stock analysis parameters
 - stock data usage
 - data source
-- start date
-- end date
 - intraday stock minutes
 - pre/after market hours
 - load custom file

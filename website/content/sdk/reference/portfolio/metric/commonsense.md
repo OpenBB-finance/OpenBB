@@ -9,9 +9,6 @@ keywords:
 - PortfolioEngine
 - openbb.portfolio.load
 - openbb.portfolio.metric.commonsense
-- Python
-- OpenBB
-- SDK
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

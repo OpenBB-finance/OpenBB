@@ -8,7 +8,6 @@ keywords:
 - grhist
 - historical option greeks plot
 - option greeks
-- python
 - put option
 - strike price
 - greek column

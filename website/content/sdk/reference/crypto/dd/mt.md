@@ -13,7 +13,6 @@ keywords:
 - end_date
 - interval_frequency
 - export_dataframe
-- openbb
 - cryptocurrency_due_diligence
 - openbb_terminal
 - OpenBB-finance

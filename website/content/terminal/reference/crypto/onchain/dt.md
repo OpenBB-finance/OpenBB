@@ -10,7 +10,6 @@ keywords:
 - blockchain
 - flipsidecrypto
 - crypto
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

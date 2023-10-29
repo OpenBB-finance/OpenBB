@@ -7,12 +7,9 @@ keywords:
 - sto
 - stochastic oscillator
 - momentum indicator
-- source code
 - forecasting
-- openbb
 - k & d columns
 - dataset
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

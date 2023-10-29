@@ -4,7 +4,6 @@ description: Guidance on how to use 8ball command in the system to get an answer
   a specific question from the 8-ball.
 keywords:
 - 8ball
-- command
 - question
 - answer
 - user

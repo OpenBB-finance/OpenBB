@@ -10,13 +10,10 @@ keywords:
 - Finnhub
 - stock sentiment analysis
 - OpenBB finance
-- Python
 - trading strategies
 - data visualization
 - matplotlib
 - sentiment over time
-- SEO
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,11 +6,8 @@ description: An OpenBBTerminal documentation page describing how to use the open
 keywords:
 - ETF
 - Finance Database
-- Python
-- openbb
 - name filter
 - Information Retrieval
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -7,7 +7,6 @@ description: This page provides a detailed understanding of how to use OpenBB Te
   study data, especially GME's dark pool data. Concepts like pipelines of commands,
   loading stocks, and use of indicators like MACD and EMA are explained.
 keywords:
-- OpenBB Terminal
 - Single command
 - Pipeline of commands
 - Command sequence

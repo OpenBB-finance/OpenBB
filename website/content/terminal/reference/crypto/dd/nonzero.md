@@ -11,7 +11,6 @@ keywords:
 - assets
 - data fetching
 - api
-- python
 - parameters
 ---
 

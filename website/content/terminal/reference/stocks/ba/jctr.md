@@ -7,7 +7,6 @@ keywords:
 - cramer recommendation
 - loaded ticker
 - no parameters command
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

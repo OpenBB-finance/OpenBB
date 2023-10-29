@@ -6,11 +6,9 @@ description: The page explores the functionalities and parameters of the 'expo' 
   historical and prediction. Source code links are also shared.
 keywords:
 - Exponential Smoothing forecasting
-- OpenBBTerminal
 - expo model function
 - expo chart function
 - Probabilistic forecasting
-- source code
 - data series operations
 - parameters
 ---

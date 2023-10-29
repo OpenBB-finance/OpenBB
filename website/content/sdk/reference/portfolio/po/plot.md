@@ -11,7 +11,6 @@ keywords:
 - chart
 - portfolio
 - example
-- investment
 - pie
 - hist
 - dd
@@ -21,7 +20,6 @@ keywords:
 - category
 - parameters
 - returns
-- OpenBB
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

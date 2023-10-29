@@ -6,10 +6,8 @@ description: This page pertains to the splits and reverse splits events details 
 keywords:
 - Stock splits
 - Reverse stock splits
-- Python
 - openbb.stocks.fa.splits
 - openbb.stocks.fa.splits_chart
-- Dataframe
 - Fundamental analysis
 - Yahoo Finance
 ---

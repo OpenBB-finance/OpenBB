@@ -8,10 +8,7 @@ keywords:
 - ticker profile
 - stock ticker symbol
 - openbb.stocks.fa.profile
-- Python
-- pd.DataFrame
 - fundamental analysis
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

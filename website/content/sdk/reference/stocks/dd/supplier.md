@@ -5,10 +5,8 @@ description: Detailed documentation on the supplier function of OpenBBTerminal. 
   the source code path, and the parameters involved.
 keywords:
 - supplier
-- ticker
 - CSIMarket
 - Source Code
-- OpenBBTerminal
 - stocks
 - due diligence
 - csimarket model.py

@@ -8,7 +8,6 @@ keywords:
 - stock screener
 - Yahoo Finance
 - OpenBB finance
-- OpenBBTerminal
 - stocks
 - dark pool shorts
 - yahoofinance model

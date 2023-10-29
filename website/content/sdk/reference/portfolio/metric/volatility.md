@@ -9,7 +9,6 @@ keywords:
 - benchmark
 - openbb.portfolio.metric.volatility
 - portfolio_engine
-- pd.DataFrame
 - openbb.portfolio.load
 ---
 

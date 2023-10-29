@@ -8,7 +8,6 @@ keywords:
 - holdp function
 - Holdings management
 - Portfolio management
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -8,9 +8,7 @@ keywords:
 - ulc
 - Yahoo Finance
 - undervalued large cap stocks
-- OpenBB
 - stocks
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

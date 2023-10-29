@@ -6,7 +6,6 @@ keywords:
 - Granger test
 - Econometrics
 - OpenBB terminal
-- Python
 - Source code
 - Function parameters
 - function return

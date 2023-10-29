@@ -11,7 +11,6 @@ keywords:
 - theoretical distribution
 - n_window
 - window length
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

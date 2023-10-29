@@ -10,7 +10,6 @@ keywords:
 - crypto dominance
 - crypto symbol
 - market cap dominance chart
-- OpenBBTerminal
 - OpenBB Python functions
 - cryptocurrency due diligence
 - cryptocurrency market data

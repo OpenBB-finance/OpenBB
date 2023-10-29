@@ -5,10 +5,7 @@ description: This page provides a detailed guide on the usage of the 'openbb.qa.
   particularly from a Pandas DataFrame. It also includes parameters, returns, and
   examples for a better understanding.
 keywords:
-- OpenBB
-- Data Analysis
 - Histogram
-- Python
 - Quantitative Analysis
 - Data Visualization
 - Pandas DataFrame

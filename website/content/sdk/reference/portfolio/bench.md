@@ -5,12 +5,10 @@ description: This page discusses the 'bench' function, part of the OpenBB Termin
   on the parameters, method of application, and examples utilizing Python for portfolio
   management.
 keywords:
-- OpenBB Terminal
 - portfolio benchmark
 - portfolio management
 - portfolio load
 - financial data
-- Python
 - portfolio operations
 ---
 

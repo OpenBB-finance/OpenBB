@@ -5,11 +5,9 @@ description: This page provides information on the 'topstrikevol' command allowi
   the option to add an expiration date for a more detailed breakdown.
 keywords:
 - topstrikevol
-- SEO
 - option strike
 - stock ticker
 - expiration date
-- command
 - security
 - volume
 - /topstrikevol AMD

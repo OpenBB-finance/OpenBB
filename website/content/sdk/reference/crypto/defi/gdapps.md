@@ -9,7 +9,6 @@ keywords:
 - TVL
 - gdapps
 - openbb.crypto.defi
-- pd.DataFrame
 - DeFi protocols
 - Chart
 - matplotlib

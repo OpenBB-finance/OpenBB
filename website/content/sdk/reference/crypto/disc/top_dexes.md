@@ -8,10 +8,8 @@ keywords:
 - dexes
 - decetralized exchange
 - daily volume
-- source code
 - data model
 - data view
-- OpenBBTerminal
 - dappradar
 ---
 

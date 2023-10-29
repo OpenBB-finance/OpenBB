@@ -10,7 +10,6 @@ keywords:
 - Simple Moving Average
 - SMA
 - data filtering
-- python
 - sma command
 - n_length
 - n_offset

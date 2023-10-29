@@ -11,7 +11,6 @@ keywords:
 - dpotc_chart
 - barchart
 - matplotlib
-- source code
 - Export dataframe data
 ---
 

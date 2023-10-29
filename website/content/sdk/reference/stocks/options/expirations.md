@@ -6,13 +6,11 @@ description: Find option chain expirations using the OpenBBTerminal. It allows t
 keywords:
 - option chain
 - Nasdaq
-- OpenBBTerminal
 - option expiration
 - symbol
 - data source
 - Tradier
 - dataframe
-- Python
 - SPX
 ---
 

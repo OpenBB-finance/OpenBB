@@ -5,7 +5,6 @@ description: This page provides a comprehensive detail on 'Aroon' - an indicator
   and downward trends as well as crossovers.
 keywords:
 - aroon
-- SEO
 - marketing
 - trend
 - indicator

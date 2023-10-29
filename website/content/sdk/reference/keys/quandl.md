@@ -5,7 +5,6 @@ description: This documentation page describes how to set the Quandl Key in Open
 keywords:
 - Quandl Key
 - OpenBB finance
-- Python
 - API key
 - Jupyter notebook
 - terminal environment variables

@@ -5,7 +5,6 @@ description: This page provides information on the 'supplier' command, which all
   and examples are included for a clear understanding.
 keywords:
 - supplier
-- ticker
 - stock
 - company supplier retrieval
 - AMD

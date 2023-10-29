@@ -10,7 +10,6 @@ keywords:
 - Parameters
 - s_ticker
 - USAGE
-- Python
 - Stocks
 ---
 

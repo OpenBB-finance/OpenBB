@@ -12,7 +12,6 @@ keywords:
 - cash flow statement metrics
 - financial reporting
 - accounting software
-- financial analysis
 - currency conversion
 ---
 

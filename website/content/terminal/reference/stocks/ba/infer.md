@@ -8,7 +8,6 @@ keywords:
 - vader sentiment analysis
 - Twitter
 - tweets
-- ticker
 - sentiment inference
 - stock
 - limit

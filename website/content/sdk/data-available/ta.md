@@ -11,8 +11,6 @@ keywords:
 - time-series data
 - pandas_ta library
 - datascience
-- python
-- SDK
 - Momentum
 - Overlap
 - Trend

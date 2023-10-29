@@ -7,9 +7,6 @@ keywords:
 - openbb.stocks.ca
 - stock volume
 - Yahoo Finance
-- Python
-- documentation
-- source code
 - docusaurus
 - parameter description
 - volume_chart

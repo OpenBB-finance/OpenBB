@@ -6,8 +6,6 @@ description: Documentation page on how to optimize portfolio with Risk Parity us
 keywords:
 - Risk Parity
 - Portfolio Optimization
-- Python
-- OpenBB Terminal
 - Risk Budgeting Approach
 - Portfolio Engine
 - Investment Strategies

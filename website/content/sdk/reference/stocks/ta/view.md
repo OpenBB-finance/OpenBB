@@ -3,13 +3,10 @@ title: view
 description: Technical analysis with OpenBB - Learn how to use finviz model and view
   chart using stock ticker. Detailed examples, parameters, and source code included.
 keywords:
-- OpenBB
 - technical analysis
 - finviz model
 - view chart
 - stock ticker
-- Python
-- source code
 - matplotlib
 ---
 

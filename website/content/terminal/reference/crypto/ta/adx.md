@@ -9,7 +9,6 @@ keywords:
 - Directional Movement Index
 - DX
 - trend strength
-- python
 - parameters
 - n_length
 - n_scalar

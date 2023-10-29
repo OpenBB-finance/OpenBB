@@ -6,9 +6,7 @@ description: The 'qqplot' page provides information on how to use the 'qqplot' f
   from Apple.
 keywords:
 - qqplot
-- OpenBB
 - quantitative analysis
-- python
 - data analysis
 - matplotlib
 - Pandas Dataframe

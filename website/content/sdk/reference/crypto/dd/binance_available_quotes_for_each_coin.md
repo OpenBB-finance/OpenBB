@@ -4,7 +4,6 @@ description: This page provides a detailed guide to the helper methods in OpenBB
   that, for every coin available on Binance, add all quote assets. It includes how
   to use the function and what it will return.
 keywords:
-- OpenBB Terminal
 - Binance
 - cryptocurrency
 - quote assets

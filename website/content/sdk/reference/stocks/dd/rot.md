@@ -5,13 +5,11 @@ description: This webpage contains detailed methods and code snippets to retriev
   code in Python, and links to the source code in GitHub.
 keywords:
 - stock ratings
-- python
 - Finnhub api
 - data visualization
 - open source
 - stock market
 - financial markets
-- OpenBBTerminal
 - investment research
 - due diligence
 ---

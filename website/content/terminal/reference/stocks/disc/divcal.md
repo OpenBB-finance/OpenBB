@@ -13,7 +13,6 @@ keywords:
 - record date
 - annual dividend
 - announcement date
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

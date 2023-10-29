@@ -12,7 +12,6 @@ keywords:
 - f_quantile
 - parameters
 - data analysis
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

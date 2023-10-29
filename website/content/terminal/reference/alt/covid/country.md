@@ -7,7 +7,6 @@ keywords:
 - Parameters
 - Country Selection
 - Data Selection
-- Data Analysis
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

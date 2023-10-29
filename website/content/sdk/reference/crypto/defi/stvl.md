@@ -11,8 +11,6 @@ keywords:
 - OpenBB-terminal
 - defi
 - dataframe
-- python
-- source code
 - plotting
 - export
 - returns

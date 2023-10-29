@@ -4,15 +4,12 @@ description: Documentation for Center of Gravity Indicator function 'cg' and its
   representation 'cg_chart' in the OpenBB Terminal. Explanation of their source code,
   parameters, and returns are covered.
 keywords:
-- OpenBB Terminal
 - Center of Gravity Indicator
 - Technical Analysis
 - Source Code
-- Python
 - Parameters
 - Returns
 - Charts
-- pd.DataFrame
 - pd.Series
 - matplotlib
 ---

@@ -5,12 +5,10 @@ description: This page provides details on how to get the maximum drawdown ratio
   application. Learn how to effectively use and apply this feature in your portfolio
   management practice.
 keywords:
-- OpenBB
 - Portfolio Management
 - Benchmarking
 - Maximum Drawdown
 - Metrics
-- Python
 - PortfolioEngine
 - Portfolio analysis
 - Market analysis

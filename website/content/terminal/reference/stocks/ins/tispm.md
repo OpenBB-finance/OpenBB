@@ -9,7 +9,6 @@ keywords:
 - insider sales
 - stock marketing
 - trade date
-- ticker
 - company name
 - insider name
 - title

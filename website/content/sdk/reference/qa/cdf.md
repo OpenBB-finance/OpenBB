@@ -5,11 +5,7 @@ description: The page provides details about the 'cdf' function in the OpenBB SD
   return values, and provides a working example.
 keywords:
 - Cumulative Distribution Function
-- Plotting
-- Data Analysis
 - Quantitative Analysis
-- DataFrame
-- Python
 - OpenBB SDK
 - clf function
 ---

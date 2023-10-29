@@ -8,7 +8,6 @@ keywords:
 - data analysis
 - query commands
 - data visualization
-- python
 - data loading
 - TSLA
 - usage examples

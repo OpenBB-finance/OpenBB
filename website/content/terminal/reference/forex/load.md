@@ -12,9 +12,6 @@ keywords:
 - intervals of intraday data
 - start date of data
 - currency pairs
-- finance
-- documentation
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

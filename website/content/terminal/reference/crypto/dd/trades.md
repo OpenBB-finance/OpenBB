@@ -12,7 +12,6 @@ keywords:
 - quote currency
 - bitfinex
 - binance
-- python
 - usage
 ---
 

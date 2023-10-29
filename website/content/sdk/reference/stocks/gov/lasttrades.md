@@ -12,7 +12,6 @@ keywords:
 - senate
 - house
 - representative
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

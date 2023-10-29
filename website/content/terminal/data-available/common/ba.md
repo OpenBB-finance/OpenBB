@@ -7,7 +7,6 @@ description: The webpage explains the Behavioural Analysis feature, offering too
 keywords:
 - Behavioural Analysis
 - public sentiment
-- financial analysis
 - momentum trading strategies
 - fundamental research
 - API key

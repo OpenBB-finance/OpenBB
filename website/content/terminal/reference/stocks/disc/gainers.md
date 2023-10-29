@@ -6,7 +6,6 @@ description: This page provides a method to print the top 25 stock gainers using
 keywords:
 - stock market
 - top gainers
-- Python
 - Yahoo Finance
 - stock limit display
 ---

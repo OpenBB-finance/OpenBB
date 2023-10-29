@@ -11,7 +11,6 @@ keywords:
 - sentiment scores
 - US stocks
 - deep learning algorithms
-- financial analysis
 - prediction
 - traders
 ---

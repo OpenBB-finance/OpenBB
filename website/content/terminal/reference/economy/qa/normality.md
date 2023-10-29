@@ -5,7 +5,6 @@ description: This page on the marketing website provides details on the 'normali
   around running normality tests in Python.
 keywords:
 - Normality command
-- Python
 - Normality Statistics
 - Kurtosis
 - Skewness

@@ -8,7 +8,6 @@ keywords:
 - Portfolio
 - HERC
 - Risk Measurement
-- Python
 - SEO improvement
 - Financial trading
 - Financial portfolio

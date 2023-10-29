@@ -8,7 +8,6 @@ keywords:
 - Additive time series
 - Multiplicative time series
 - Time series analysis
-- Python
 - Stocks
 - Parameter details
 - Usage examples

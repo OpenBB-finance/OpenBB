@@ -11,7 +11,6 @@ keywords:
 - csv
 - json
 - xlsx
-- python
 - help
 ---
 

@@ -5,7 +5,6 @@ description: Learn how to get the price for a selected instrument using the 'pri
 keywords:
 - price
 - instrument
-- command
 - parameters
 - usage
 ---

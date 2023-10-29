@@ -10,7 +10,6 @@ keywords:
 - line markers
 - scatter markers
 - highlight events
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

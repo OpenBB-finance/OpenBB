@@ -6,7 +6,6 @@ description: This page provides the syntax and details of the 'watchlist' functi
 keywords:
 - Watchlist
 - Reddit
-- OpenBB
 - Python function
 - Behavioral Analysis
 - Source Code

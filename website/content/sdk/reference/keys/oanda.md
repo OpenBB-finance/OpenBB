@@ -5,7 +5,6 @@ description: This page explains how to set the Oanda key using the OpenBB Termin
 keywords:
 - oanda
 - set key
-- OpenBB Terminal
 - parameters
 - examples
 - account

@@ -6,10 +6,8 @@ description: This documentation page provides detailed information about Kurtosi
 keywords:
 - OpenBB-finance
 - Kurtosis Indicator
-- Python
 - Plotting Kurtosis
 - Quantitative Analysis
-- Dataframe
 - Python Functions
 ---
 

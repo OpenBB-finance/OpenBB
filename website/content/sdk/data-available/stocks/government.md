@@ -8,13 +8,11 @@ description: "The page provides comprehensive information about the Government m
 keywords:
 - Government module
 - programmatic access
-- OpenBB Terminal
 - fundamental and macroeconomic research
 - US data
 - commands
 - ticker-specific
 - non-specific
-- Python
 - openbb.stocks.gov
 - Contracts Awarded to a Company
 - Reported Trades in a Company's Stock

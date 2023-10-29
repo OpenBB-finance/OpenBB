@@ -7,7 +7,6 @@ description: This page provides instructions on how to use the 'create' command 
 keywords:
 - price alerts
 - trading symbols
-- ticker
 - condition
 - price
 - creation command

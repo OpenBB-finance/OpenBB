@@ -9,7 +9,6 @@ keywords:
 - ETFs
 - scatter plot
 - beta calculation
-- ticker
 - SPY
 ---
 

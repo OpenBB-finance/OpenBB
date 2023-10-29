@@ -6,9 +6,7 @@ description: This page provides a list of suppliers from a ticker provided, sour
 keywords:
 - supplier
 - CSIMarket
-- ticker
 - Parameters
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

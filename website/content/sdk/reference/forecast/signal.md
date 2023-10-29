@@ -6,7 +6,6 @@ description: This documentation page provides detailed insight on 'signal', a pr
 keywords:
 - price signal
 - short/long term price
-- source code
 - openbb.forecast.signal
 - parameters
 - returns

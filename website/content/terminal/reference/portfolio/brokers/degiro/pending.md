@@ -6,9 +6,7 @@ description: This page discusses the 'pending' concept, its usage in Python, and
 keywords:
 - pending
 - usage
-- python
 - parameters
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

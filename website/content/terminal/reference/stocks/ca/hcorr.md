@@ -12,7 +12,6 @@ keywords:
 - financial tools
 - data visualization
 - type_candle
-- start date
 - display_full_matrix
 ---
 

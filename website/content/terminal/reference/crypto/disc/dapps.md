@@ -18,8 +18,6 @@ keywords:
 - OpenSea
 - Katana
 - Magic Eden
-- SEO
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

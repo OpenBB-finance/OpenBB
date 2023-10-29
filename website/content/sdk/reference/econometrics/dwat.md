@@ -4,7 +4,6 @@ description: Detailed explanation of Durbin Watson autocorrelation test calculat
   and chart visualisation using OpenBBTerminal's econometrics functions.
 keywords:
 - Docusaurus
-- OpenBBTerminal
 - Econometrics
 - Durbin Watson
 - Autocorrelation

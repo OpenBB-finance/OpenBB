@@ -4,7 +4,6 @@ description: Learn how to monitor unique ethereum address transactions using Ope
   ueat. Explore how to use the ueat function and chart for effective insights.
 keywords:
 - ueat
-- OpenBB
 - ethereum address transactions
 - crypto onchain
 - bitquery model

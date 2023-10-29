@@ -9,7 +9,6 @@ keywords:
 - Pull Request
 - Issue
 - command line tool
-- Python
 - development activity
 - frequency intervals
 - start and end dates

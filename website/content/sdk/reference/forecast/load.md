@@ -7,14 +7,10 @@ keywords:
 - load
 - custom file
 - dataframe
-- OpenBB
 - forecast
-- python
-- source code
 - parameters
 - data_files
 - data_examples
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -8,8 +8,6 @@ keywords:
 - symbols
 - names
 - openbb.etf.symbols()
-- source code
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

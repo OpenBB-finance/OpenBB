@@ -10,7 +10,6 @@ keywords:
 - risk free rate
 - portfolio period
 - portfolio calculation
-- financial analysis
 - financial tools
 ---
 

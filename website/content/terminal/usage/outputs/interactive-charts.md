@@ -5,7 +5,6 @@ description: Explore how to effectively utilize OpenBB's interactive charts back
   by open source PyWry technology. Understand various capabilities including annotation,
   color modification, drawing tools, data export, and supplementary data overlay.
 keywords:
-- OpenBB
 - interactive charts
 - PyWry technology
 - chart annotation

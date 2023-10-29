@@ -7,7 +7,6 @@ description: This page provides an insight into the 'active' command used to dis
 keywords:
 - Active command
 - Intraday tickers
-- Python
 - Most actively traded
 - Stocks
 - Yahoo Finance

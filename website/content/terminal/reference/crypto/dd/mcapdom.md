@@ -10,7 +10,6 @@ keywords:
 - asset's percentage share
 - frequency interval
 - initial date
-- end date
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

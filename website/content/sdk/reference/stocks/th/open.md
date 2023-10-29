@@ -4,9 +4,7 @@ description: Documentation page offering extensive details on how 'open' feature
   in OpenBB finance and their source code. This feature showcases open exchanges and
   how to display them.
 keywords:
-- OpenBB
 - Finance Software
-- Python
 - Open
 - Exchanges
 - Trading hours

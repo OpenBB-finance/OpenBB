@@ -11,7 +11,6 @@ keywords:
 - shares traded
 - transaction type
 - average price
-- ticker
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

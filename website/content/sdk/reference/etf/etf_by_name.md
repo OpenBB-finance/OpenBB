@@ -10,7 +10,6 @@ keywords:
 - Symbol
 - Name Search
 - StockAnalysis
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

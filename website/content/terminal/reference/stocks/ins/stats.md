@@ -11,7 +11,6 @@ keywords:
 - software documentation
 - data visualization
 - docusaurus
-- python
 - parameters
 - hyperlinks
 - datarows

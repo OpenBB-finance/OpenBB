@@ -6,7 +6,6 @@ description: This page provides useful information on dealing with different dat
   acquire API keys, and switch the data vendor using specific commands, all in an
   effort to streamline and improve the user's experience.
 keywords:
-- OpenBB
 - Terminal
 - data vendors
 - API keys
@@ -16,7 +15,6 @@ keywords:
 - AlphaVantage
 - EODHD
 - YahooFinance
-- command
 - source
 - stocks/fa/income
 - changing data source

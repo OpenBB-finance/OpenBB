@@ -10,9 +10,6 @@ keywords:
 - historical unemployment data
 - AlphaVantage
 - data visualization
-- Python
-- DataFrame
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

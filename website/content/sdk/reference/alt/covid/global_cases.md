@@ -6,14 +6,10 @@ description: The 'global_cases' page provides code and instructions for getting 
 keywords:
 - Covid-19
 - historical data
-- Python
-- DataFrame
 - openbb.alt.covid.global_cases
 - global cases
 - country specific data
 - programming
-- source code
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

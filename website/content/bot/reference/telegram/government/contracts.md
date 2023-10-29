@@ -8,7 +8,6 @@ keywords:
 - government contracts
 - specific ticker
 - stock ticker
-- command
 - optional parameter
 ---
 

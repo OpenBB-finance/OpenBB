@@ -8,7 +8,6 @@ keywords:
 - asset
 - Messari.io
 - parameters
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

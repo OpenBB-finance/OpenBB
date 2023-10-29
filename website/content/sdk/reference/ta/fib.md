@@ -10,8 +10,6 @@ keywords:
 - plotting function
 - financial market analytics
 - technical analysis
-- OpenBB
-- OpenBBTerminal
 - data visualization
 - Fibonacci levels chart
 ---

@@ -9,7 +9,6 @@ keywords:
 - RWD
 - Forecast
 - Statsforecast
-- Python
 - Dataset
 - Seasonality
 - Residuals

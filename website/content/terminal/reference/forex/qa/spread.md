@@ -9,7 +9,6 @@ keywords:
 - parameters
 - n_window
 - window length
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

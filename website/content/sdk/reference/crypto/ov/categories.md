@@ -11,10 +11,8 @@ keywords:
 - crypto market capitalization
 - data sorting
 - data visualization
-- OpenBBTerminal
 - openbb.crypto.ov.categories
 - openbb.crypto.ov.categories_chart
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

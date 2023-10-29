@@ -6,7 +6,6 @@ description: This page provides information on the Stochastic oscillator method 
   to plot the Stochastic oscillator signal with various parameters.
 keywords:
 - Stochastic oscillator
-- OpenBB Terminal
 - Technical Analysis
 - Python code
 - Online documentation

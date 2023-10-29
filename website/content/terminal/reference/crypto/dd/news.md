@@ -9,7 +9,6 @@ keywords:
 - cryptopanic
 - cryptocurrency
 - aggregator platform
-- python
 - coin
 - filter options
 - crypto news

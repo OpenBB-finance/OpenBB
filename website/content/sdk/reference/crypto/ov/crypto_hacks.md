@@ -9,7 +9,6 @@ keywords:
 - Cryptocurrency
 - OpenBB crypto
 - Crypto hack data
-- OpenBBTerminal
 - Crypto data sorting
 ---
 

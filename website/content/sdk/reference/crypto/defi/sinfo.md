@@ -5,7 +5,6 @@ description: Learn how to get staking info for a given Terra account using OpenB
   the chosen address, displaying staking info for the provided Terra account address,
   and exporting dataframe data to csv, json, or xlsx file.
 keywords:
-- OpenBB
 - Terra blockchain
 - staking info
 - luna delegations
@@ -16,7 +15,6 @@ keywords:
 - defi
 - cryptocurrency
 - dataframe
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

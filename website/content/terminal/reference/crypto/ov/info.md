@@ -6,7 +6,6 @@ description: This page documents the usage of the CoinPaprika API, showing basic
   data.
 keywords:
 - docusaurus
-- SEO
 - metadata
 - coin information
 - CoinPaprika API

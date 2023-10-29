@@ -5,7 +5,6 @@ description: This page explains how to get information on pending orders using t
   with OANDA, detailing parameters and returns including the AccountID. The page also
   provides a link to the relevant source code on GitHub.
 keywords:
-- OpenBB Terminal
 - Forex
 - OANDA
 - AccountID

@@ -10,7 +10,6 @@ keywords:
 - python coding
 - finance model
 - stock options
-- source code
 - days to expiration
 ---
 

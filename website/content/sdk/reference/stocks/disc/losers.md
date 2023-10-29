@@ -11,10 +11,7 @@ keywords:
 - stocks
 - discovery
 - stock market
-- finance
-- openbb
 - yahoofinance_model.py
-- pd.DataFrame
 - Stock Losers
 ---
 

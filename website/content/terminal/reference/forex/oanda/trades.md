@@ -5,7 +5,6 @@ description: This page provides information on how to retrieve open trades using
 keywords:
 - trades
 - open trades
-- command
 - no parameters
 - usage details
 - python command

@@ -5,8 +5,6 @@ description: This page explains the usage of the 'losers' command in stocks soft
   with specific parameters and examples.
 keywords:
 - stocks
-- finance
-- investment
 - market losers
 - stock market
 - Yahoo Finance

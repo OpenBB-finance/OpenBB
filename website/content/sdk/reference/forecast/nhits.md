@@ -6,18 +6,14 @@ description: This is a Docusaurus page that displays in-depth information on for
 keywords:
 - Docusaurus
 - nhits
-- OpenBB
 - forecasting
 - NhitsModel
 - nhits_chart
 - pd.Series
-- pd.DataFrame
-- python
 - title
 - description
 - keywords
 - metadata
-- SEO
 - marketing
 - analysis
 - TimeSeries

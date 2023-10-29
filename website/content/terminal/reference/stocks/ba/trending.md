@@ -8,7 +8,6 @@ keywords:
 - Stocktwits
 - watchlist count
 - company name
-- ticker
 - stock market
 - market data
 - stockist

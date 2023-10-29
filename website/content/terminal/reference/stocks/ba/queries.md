@@ -12,12 +12,10 @@ keywords:
 - stock's query
 - function
 - Google source
-- Python
 - limit
 - parameters
 - examples
 - output
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

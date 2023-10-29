@@ -5,12 +5,9 @@ description: This page provides documentation for the OpenBB Terminal SDK functi
   Python code examples and explains parameters and returns in detail.
 keywords:
 - Docusaurus documentation
-- SEO
 - OpenBB Terminal SDK
-- Python
 - Economy indices
 - Yahoo Finance data
-- DataFrame
 - Data visualization
 - Python code examples
 - Data intervals

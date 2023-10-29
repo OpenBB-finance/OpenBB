@@ -16,7 +16,6 @@ keywords:
 - Jupyter
 - Code Editors
 - API Keys
-- OpenBB Terminal
 - Programming
 - Conda
 - Pandas DataFrame

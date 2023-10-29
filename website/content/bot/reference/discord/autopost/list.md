@@ -8,7 +8,6 @@ keywords:
 - webhooks
 - automatic posting
 - channel
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

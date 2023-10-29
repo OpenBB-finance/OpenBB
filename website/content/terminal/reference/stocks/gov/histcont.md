@@ -9,7 +9,6 @@ keywords:
 - historical contracts
 - raw data
 - data visualization
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -7,7 +7,6 @@ description: This page provides a detailed guide on setting up a Coinbase key us
 keywords:
 - coinbase
 - coinbase key setup
-- openbb
 - API key set
 - openbb_terminal
 - terminal environment variables

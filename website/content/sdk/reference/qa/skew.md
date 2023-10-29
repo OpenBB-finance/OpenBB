@@ -4,13 +4,11 @@ description: This documentation page provides details on the function openbb.qa.
   used for rolling skewness indicator calculations and plotting. It includes parameters
   description and links to the source code.
 keywords:
-- OpenBB
 - Quantitative Analysis
 - Skewness Indicator
 - Python Coding
 - Source Code
 - Financial Data Analysis
-- DataFrame
 - Rolling Skew
 - Skew Chart
 - Parameters

@@ -5,7 +5,6 @@ description: This is a documentation for GH development activity tool by OpenBB 
   given cryptocurrency with adjustable time intervals. Source codes for model and
   chart representations are included.
 keywords:
-- OpenBB
 - GH tool
 - developer activity
 - cryptocurrency
@@ -13,8 +12,6 @@ keywords:
 - time interval
 - model
 - chart
-- source code
-- python
 - dataframe
 ---
 

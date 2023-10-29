@@ -9,7 +9,6 @@ keywords:
 - ftd
 - datetime parameter
 - raw data
-- python
 - data print
 - data analysis
 ---

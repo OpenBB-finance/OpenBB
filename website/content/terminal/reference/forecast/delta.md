@@ -7,7 +7,6 @@ keywords:
 - Delta function
 - Dataset
 - Column specific change
-- Python
 - Data analysis
 - Forecasting
 - Command line parameters

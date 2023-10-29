@@ -6,8 +6,6 @@ description: The 'dividend' feature of the OpenBB library allows optimized weigh
 keywords:
 - dividend
 - portfolio optimization
-- OpenBB
-- Python
 - po model
 - portfolio engine
 - weights allocation

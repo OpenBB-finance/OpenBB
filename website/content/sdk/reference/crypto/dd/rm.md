@@ -13,7 +13,6 @@ keywords:
 - function parameters
 - plotting
 - matplotlib
-- OpenBB
 - crypto symbol
 - python programming
 - dataframe

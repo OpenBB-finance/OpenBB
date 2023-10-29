@@ -14,7 +14,6 @@ keywords:
 - company specifics
 - stock search
 - data groups
-- SEO
 - metadata
 - technical analysis
 - trading hours

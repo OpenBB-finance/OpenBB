@@ -9,7 +9,6 @@ keywords:
 - Ownership
 - Finviz
 - Programming
-- Python
 - Coding examples
 - Financial data
 - Insider trades

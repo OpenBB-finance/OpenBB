@@ -8,7 +8,6 @@ keywords:
 - emacross
 - Exponential Moving Average
 - EMA period
-- python
 - long EMA
 - short EMA
 - spy hold comparison

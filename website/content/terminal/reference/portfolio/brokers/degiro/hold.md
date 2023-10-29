@@ -6,7 +6,6 @@ keywords:
 - hold command
 - usage
 - no parameters
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -9,9 +9,7 @@ keywords:
 - User
 - Posts
 - Stocktwits
-- OpenBB
 - Source code
-- Python
 - Post limit
 ---
 

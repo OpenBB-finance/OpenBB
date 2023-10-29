@@ -8,8 +8,6 @@ keywords:
 - CoinPaprika
 - crypto
 - pandas.DataFrame
-- OpenBB
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

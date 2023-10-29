@@ -7,11 +7,8 @@ description: 'This page of the documentation is dedicated to the OpenBB''s etf s
   them better understand and utilize the ETF screener.'
 keywords:
 - ETF screening
-- Python
-- OpenBB
 - Source code
 - ETF scraping
-- Dataframe
 - Data sorting
 - Data visualization
 - Financial data analysis

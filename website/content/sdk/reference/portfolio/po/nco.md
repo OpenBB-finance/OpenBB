@@ -7,9 +7,7 @@ keywords:
 - Non-Convex Optimization
 - portfolio optimization
 - financial software
-- OpenBB
 - financial modeling
-- python
 - risk measures
 - portfolio performance measures
 - Sharpe ratio

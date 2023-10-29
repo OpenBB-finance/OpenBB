@@ -11,7 +11,6 @@ keywords:
 - performance calculations
 - trades performance
 - portfolio load
-- DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

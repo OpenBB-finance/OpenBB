@@ -5,7 +5,6 @@ description: Learn the usage of vsurf, a Python tool for plotting a 3D volatilit
 keywords:
 - vsurf
 - 3D volatility surface
-- Python
 - IV
 - OI
 - LP

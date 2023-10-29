@@ -5,7 +5,6 @@ description: This page of the documentation provides information about OpenBB's 
   Total Value Locked (TVL) of a specified DeFi protocol, while the view function allows
   for the plotting of TVL data across various decentralized applications (dApps).
 keywords:
-- OpenBB
 - dtvl model
 - dtvl view
 - DeFi protocol
@@ -15,11 +14,8 @@ keywords:
 - crypto
 - dataframe
 - matplotlib
-- Python
 - export data
-- source code
 - function parameters
-- finance
 - digital assets
 - crypto analytics
 ---

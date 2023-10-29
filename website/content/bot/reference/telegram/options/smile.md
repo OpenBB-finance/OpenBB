@@ -7,7 +7,6 @@ keywords:
 - Options Volatility Smile
 - Volatility
 - Market Sentiment
-- ticker
 - expiry
 - Minimum Strike Price
 - Maximum Strike Price

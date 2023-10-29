@@ -7,10 +7,8 @@ keywords:
 - Put Call Ratio
 - AlphaQuery
 - pcr function
-- ticker
 - visualization
 - parameters description
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

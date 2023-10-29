@@ -8,8 +8,6 @@ keywords:
 - Efficient Frontier
 - Portfolio Optimization
 - Financial Models
-- Python
-- OpenBB Terminal
 - Risk Measure
 - Portfolio Simulation
 - Stock Portfolio

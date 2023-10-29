@@ -5,9 +5,7 @@ description: The page provides details on how to calculate the Average True Rang
 keywords:
 - Average True Range
 - stock ticker
-- OpenBB
 - forecast
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

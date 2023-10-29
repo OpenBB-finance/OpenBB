@@ -6,12 +6,10 @@ description: The page provides comprehensive documentation and source code for f
 keywords:
 - U.S. treasury rates
 - EconDB
-- OpenBBTerminal
 - data frequency
 - treasury maturities
 - economy.treasury
 - economy.treasury_chart
-- Python
 - Data Visualization
 - Source Code
 - Parameters

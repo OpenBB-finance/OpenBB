@@ -10,11 +10,9 @@ keywords:
 - market cap model
 - market cap chart
 - Stock ticker symbol
-- Python
 - Financial analysis
 - Fundamental analysis
 - Stock market data
-- Dataframe
 - Source code
 ---
 

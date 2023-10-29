@@ -4,14 +4,12 @@ description: This page provides a comprehensive guide on how to use two function
   stat and chart, in the OpenBBTerminal for COVID-19 data analysis. They are used
   for retrieving and visualising historical cases and deaths by country.
 keywords:
-- OpenBBTerminal
 - stat function
 - chart function
 - COVID-19 data analysis
 - historical cases and deaths
 - Country-wise data
 - Data visualisation
-- Python
 - pandas DataFrame
 ---
 

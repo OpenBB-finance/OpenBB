@@ -8,7 +8,6 @@ keywords:
 - cumulative sum algorithm
 - data change detection
 - algorithm usage
-- python
 - threshold
 - drift
 ---

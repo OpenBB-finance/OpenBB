@@ -7,11 +7,7 @@ keywords:
 - paexport
 - usage
 - parameters
-- start date
-- end date
 - currency
-- python
-- command
 - USD
 ---
 

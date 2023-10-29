@@ -11,7 +11,6 @@ keywords:
 - resistance level
 - price target
 - bbands command
-- python
 - technical analysis
 - trading strategy
 - Bollinger Bands parameters

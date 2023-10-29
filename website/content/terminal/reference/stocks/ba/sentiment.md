@@ -11,7 +11,6 @@ keywords:
 - stock market sentiment
 - Twitter data analysis
 - predictive sentiment analysis
-- Python
 - stock market data
 ---
 

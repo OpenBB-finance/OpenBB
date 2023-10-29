@@ -12,7 +12,6 @@ keywords:
 - ARIMA models
 - Time Series Analysis
 - Machine Learning
-- Data Analysis
 - Algorithm
 - Data Modeling
 - Statistical Analysis

@@ -4,11 +4,9 @@ description: This page provides information regarding the 'get last messages for
   given ticker' function in the OpenBB Terminal. It explains the usage and parameters
   of the function.
 keywords:
-- OpenBB Terminal
 - stock messages
 - stock ticker
 - Stocktwits messages
-- Python
 - data analysis
 - behavioural analysis on stocks
 ---

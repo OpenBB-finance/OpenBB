@@ -7,7 +7,6 @@ keywords:
 - Density
 - Rug
 - Hist guide
-- Python
 - n_bins parameter
 - Usage examples
 ---

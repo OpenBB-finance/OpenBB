@@ -8,8 +8,6 @@ keywords:
 - forex
 - Oanda
 - account ID
-- OpenBB
-- source code
 - function parameters
 - python code
 ---

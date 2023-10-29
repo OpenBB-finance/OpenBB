@@ -10,8 +10,6 @@ keywords:
 - Exchange withdrawal fees
 - Scrapes exchange withdrawal fees
 - openbb.crypto.ov.ewf_chart
-- Python
-- pd.DataFrame
 - Model
 - Chart
 - Source Code

@@ -11,7 +11,6 @@ keywords:
 - period
 - risk_free_rate
 - calculations
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

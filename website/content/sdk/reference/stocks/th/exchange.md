@@ -7,11 +7,9 @@ description: This documentation page provides details on the 'exchange' function
 keywords:
 - exchange
 - trading hours
-- openbb
 - model
 - view
 - chart
-- source code
 - parameters
 - returns
 - dataframe

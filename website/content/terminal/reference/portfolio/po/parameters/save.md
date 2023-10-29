@@ -8,7 +8,6 @@ keywords:
 - portfolio
 - risk parameters
 - file
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

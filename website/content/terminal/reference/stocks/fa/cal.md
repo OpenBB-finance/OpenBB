@@ -6,7 +6,6 @@ keywords:
 - Company Earnings
 - Earnings Calendar
 - Revenue Estimates
-- Python
 - Yahoo Finance
 ---
 

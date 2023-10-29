@@ -6,7 +6,6 @@ description: Documentation page for the tokenomics function in OpenBBTerminal's 
 keywords:
 - tokenomics
 - coin
-- OpenBBTerminal
 - cryptocurrency
 - pycoingecko_model
 - crypto
@@ -14,10 +13,8 @@ keywords:
 - symbol
 - coin symbol
 - tokenomics source code
-- pd.DataFrame
 - Metric
 - Value
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

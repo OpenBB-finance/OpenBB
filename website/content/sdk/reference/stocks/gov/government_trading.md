@@ -4,7 +4,6 @@ description: This page documents the government_trading function, which returns 
   most recent transactions by members of government like congress, senate, house,
   and others. The source code and parameters are provided for reference.
 keywords:
-- OpenBB Terminal
 - government trading
 - recent transactions
 - congress trading
@@ -15,7 +14,6 @@ keywords:
 - corporate lobbying
 - ticker symbol
 - trade data
-- Python
 - Data Frame
 ---
 

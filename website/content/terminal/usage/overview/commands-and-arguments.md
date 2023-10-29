@@ -7,7 +7,6 @@ description: This documentation page includes a tutorial video that provides a s
   such as help, about, support, cls, quit, exit, and reset. Also, tips for submitting
   support requests are provided.
 keywords:
-- OpenBB Terminal
 - tutorial video
 - help arguments
 - auto-complete
@@ -15,7 +14,6 @@ keywords:
 - support command
 - reset command
 - command line interface
-- SEO
 - metadata
 ---
 

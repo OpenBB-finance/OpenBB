@@ -17,7 +17,6 @@ keywords:
 - james.ini
 - example.ini
 - dd.ini
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

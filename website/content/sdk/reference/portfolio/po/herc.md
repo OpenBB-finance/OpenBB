@@ -8,8 +8,6 @@ description: The page provides detailed documentation for the Hierarchical Equal
 keywords:
 - HERC Method
 - Portfolio Optimization
-- OpenBB Terminal
-- Python
 - Risk Management
 - Hierarchical Equal Risk Contribution
 - Financial Modelling

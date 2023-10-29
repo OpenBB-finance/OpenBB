@@ -5,10 +5,7 @@ description: This page provides information about accessing global currencies da
   net change, and percent change of multiple currencies.
 keywords:
 - global currencies data
-- Python
 - data scraping
-- DataFrame
-- OpenBB
 - economy.currencies
 - price
 - net change

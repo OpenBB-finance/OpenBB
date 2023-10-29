@@ -10,7 +10,6 @@ keywords:
 - name
 - description
 - parameters
-- Python
 - usage
 ---
 

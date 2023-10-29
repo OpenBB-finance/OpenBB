@@ -14,7 +14,6 @@ keywords:
 - high value transactions
 - transaction tracking
 - data retrieval
-- OpenBB Terminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

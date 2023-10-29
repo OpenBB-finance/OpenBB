@@ -7,7 +7,6 @@ keywords:
 - qqplot
 - normal quantiles
 - data visualization
-- python
 - no parameters
 ---
 

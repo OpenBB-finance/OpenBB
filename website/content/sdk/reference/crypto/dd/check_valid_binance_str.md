@@ -6,9 +6,6 @@ keywords:
 - binance
 - symbol
 - cryptocurrency
-- openbb
-- Python
-- source code
 - due diligence
 - check_valid_binance_str
 ---

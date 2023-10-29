@@ -11,7 +11,6 @@ keywords:
 - weighted portfolio
 - asset allocation
 - risk measures
-- financial analysis
 - investment strategy
 ---
 

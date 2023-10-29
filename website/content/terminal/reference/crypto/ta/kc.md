@@ -11,7 +11,6 @@ keywords:
 - average true range
 - ATR
 - trend direction
-- Python
 - N_LENGTH
 - N_SCALAR
 - mamode

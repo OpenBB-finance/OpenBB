@@ -6,9 +6,6 @@ description: The page provides information on the two functions `openbb.stocks.t
   closed exchanges but does not return anything.
 keywords:
 - closed exchanges
-- Python
-- pd.DataFrame
-- OpenBB
 - Stocks
 - Trading hours
 - openbb.stocks.th.closed()

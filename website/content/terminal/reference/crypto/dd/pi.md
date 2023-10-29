@@ -9,7 +9,6 @@ keywords:
 - technology details
 - public repositories
 - disclosed vulnerabilities
-- python
 - Bitcoin
 - BTC
 ---

@@ -5,14 +5,12 @@ description: Learn how to use the macro recorder in OpenBB to start saving comma
   and automate common tasks with scripts. This page guides you through the process
   of recording, saving, and accessing your recorded routines.
 keywords:
-- OpenBB
 - macro recorder
 - script routines
 - global commands
 - Excel's VBA methods
 - command recording
 - routine script
-- OpenBB Terminal
 - terminal main menu
 - exe --file
 - OpenBBUserData

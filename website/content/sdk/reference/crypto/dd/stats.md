@@ -7,9 +7,7 @@ keywords:
 - crypto stats
 - coinbase trading
 - data export
-- OpenBBTerminal
 - API parameters
-- Python
 - dataframe
 - crypto trading
 - base currency

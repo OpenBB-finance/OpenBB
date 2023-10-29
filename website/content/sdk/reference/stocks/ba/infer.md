@@ -4,13 +4,11 @@ description: This page is a detailed guide for using OpenBB's terminal to access
   analyze Twitter data, providing tips for inferring market sentiment from tweets
   and visualizing data.
 keywords:
-- OpenBB
 - terminal guidance
 - Twitter data analysis
 - market sentiment
 - social media analytics
 - VADER sentiment analysis
-- python
 - data visualization
 - programming code
 ---

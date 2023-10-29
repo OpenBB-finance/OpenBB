@@ -5,7 +5,6 @@ description: This page provides technical documentation around functions related
   functions for obtaining and sorting contract addresses for any given blockchain
   platform using CoinPaprika as the data source.
 keywords:
-- OpenBB Terminal
 - cryptocurrency
 - contracts
 - CoinPaprika

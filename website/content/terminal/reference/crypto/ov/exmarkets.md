@@ -7,7 +7,6 @@ keywords:
 - exmarkets
 - exchange markets
 - cryptocurrency
-- SEO
 - sort data
 - limit data
 - command usage

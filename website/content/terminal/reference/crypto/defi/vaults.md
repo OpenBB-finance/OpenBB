@@ -7,7 +7,6 @@ keywords:
 - defi
 - blockchain
 - protocol
-- command
 - vaults
 - cryptocurrency
 - ethereum

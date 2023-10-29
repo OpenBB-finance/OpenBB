@@ -5,13 +5,10 @@ description: This page provides insightful information on how to use the BA modu
   in Python for stock sentiment analysis, region-based popularity, trending queries,
   and more.
 keywords:
-- OpenBB Terminal
 - BA module
-- Python
 - Stock sentiment analysis
 - Region-based popularity
 - Trending queries
-- SDK
 - Stocktwit's messages
 - stock due diligence
 - function and modules

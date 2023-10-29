@@ -7,7 +7,6 @@ keywords:
 - presets
 - usage
 - parameters
-- python
 - view
 ---
 

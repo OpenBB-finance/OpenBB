@@ -6,18 +6,13 @@ description: Improve your knowledge of OpenBB's fundamental analysis tools for s
   'divs' and 'divs_chart' functions for tickers like 'AAPL'.
 keywords:
 - docusaurus
-- SEO
 - metadata
-- documentation
 - dividends chart
 - fundamental analysis
 - historical data
-- source code
 - ticker symbol
 - dividend history
-- openbb
 - stocks
-- python
 - AAPL
 - matplotlib
 - pandas DataFrame

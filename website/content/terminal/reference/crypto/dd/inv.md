@@ -4,8 +4,6 @@ description: Documentation page for the 'inv' command - displaying asset's inves
   This command runs without parameters and is a part of financial data analysis tools.
 keywords:
 - asset investors
-- investment
-- finance
 - financial data
 - data analysis
 - Python commands

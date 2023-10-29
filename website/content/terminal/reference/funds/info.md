@@ -6,7 +6,6 @@ keywords:
 - Fund Information
 - Usage
 - Command Parameters
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -10,7 +10,6 @@ keywords:
 - crypto trading
 - trading
 - blockchain
-- python
 - 1inch
 - Uniswap
 - trade parameters

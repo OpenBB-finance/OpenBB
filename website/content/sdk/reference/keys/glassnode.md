@@ -7,8 +7,6 @@ keywords:
 - Glassnode
 - API key
 - Environment variable
-- Python
-- OpenBB
 - Jupyter notebook
 ---
 

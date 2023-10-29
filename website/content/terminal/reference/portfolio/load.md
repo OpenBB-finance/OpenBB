@@ -13,7 +13,6 @@ keywords:
 - examples
 - portfolio
 - stocks
-- investment
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

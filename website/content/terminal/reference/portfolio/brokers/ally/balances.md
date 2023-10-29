@@ -6,11 +6,8 @@ keywords:
 - balances
 - marketing
 - account balance
-- command
 - usage
 - parameters
-- documentation
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

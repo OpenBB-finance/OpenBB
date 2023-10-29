@@ -7,7 +7,6 @@ keywords:
 - market hours
 - data analysis
 - informed decisions
-- command
 - parameters
 - /scr all
 ---

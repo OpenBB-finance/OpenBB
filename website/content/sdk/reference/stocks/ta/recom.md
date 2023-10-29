@@ -11,7 +11,6 @@ keywords:
 - Parameters
 - Returns
 - Source code
-- OpenBB
 - Stocks
 - Tradingview TA
 ---

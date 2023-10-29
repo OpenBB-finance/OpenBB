@@ -7,7 +7,6 @@ keywords:
 - unit root tests
 - dataset
 - econometrics
-- python
 - ADF
 - KPSS
 - regression

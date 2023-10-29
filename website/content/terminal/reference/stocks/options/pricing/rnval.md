@@ -8,7 +8,6 @@ keywords:
 - risk neutral value
 - options
 - stock options
-- python
 - strike price
 - risk-free rate
 ---

@@ -8,7 +8,6 @@ keywords:
 - FRED Key
 - OpenBB terminal
 - API key
-- Python
 - Jupyter notebook session
 - terminal environment variables
 - Status of key set

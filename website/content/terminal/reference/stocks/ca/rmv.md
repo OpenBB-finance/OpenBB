@@ -6,7 +6,6 @@ description: The 'rmv' documentation page explains how to use the Python command
 keywords:
 - rmv
 - remove similar tickers
-- Python
 - command line tool
 - API
 - parameters

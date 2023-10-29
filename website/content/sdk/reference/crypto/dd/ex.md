@@ -7,9 +7,7 @@ description: This page provides code documentation and examples for retrieving a
 keywords:
 - cryptocurrency
 - CoinPaprika
-- OpenBBTerminal
 - cryptocurrency exchanges
-- python
 - data sort
 - data visualization
 - BTC

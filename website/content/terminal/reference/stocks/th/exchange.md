@@ -7,7 +7,6 @@ keywords:
 - Market Information
 - Parameters
 - Docusaurus page
-- SEO
 - Documentation
 ---
 

@@ -10,7 +10,6 @@ keywords:
 - current price
 - target prices
 - analyst ratings
-- ticker
 - informed decisions
 ---
 

@@ -5,7 +5,6 @@ description: 'This page provides technical documentation for two imperative feat
   its corresponding chart display. Learn about their parameters, return types, and
   source code.'
 keywords:
-- OpenBB
 - Cryptocurrency
 - Impermanent Loss
 - Impermanent Loss Model

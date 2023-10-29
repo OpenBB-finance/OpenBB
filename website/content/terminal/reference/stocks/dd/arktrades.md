@@ -6,12 +6,10 @@ description: The page documents the ArkTrades tool. This tool provides trade det
 keywords:
 - arktrades
 - trades
-- ticker
 - ARK funds
 - limit rows
 - show symbol
 - table
-- documentation
 - stocks
 - trade data
 - sell

@@ -6,8 +6,6 @@ description: This is a documentation page for the 'equity' command, which displa
 keywords:
 - equity
 - fund equity holdings
-- finance
-- investment
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

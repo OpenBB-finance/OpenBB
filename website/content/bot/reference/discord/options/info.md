@@ -4,7 +4,6 @@ description: An in-depth guide on how to efficiently retrieve option information
   as volatility, IV rank, put/call ratio for a specific ticker symbol using the 'op
   info ticker' command.
 keywords:
-- command
 - option information
 - volatility
 - IV rank

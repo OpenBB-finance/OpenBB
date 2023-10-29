@@ -5,8 +5,6 @@ description: This documentation discusses the use of 'property' function in Open
   with different parameters, its returns, and provides usage examples.
 keywords:
 - Portfolio Optimization
-- OpenBB Terminal
-- Python
 - Financial Data
 - OpenBB Portfolio
 - Property Function

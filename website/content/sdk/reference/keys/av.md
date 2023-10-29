@@ -5,10 +5,7 @@ description: This documentation page provides detailed instructions on how to se
   information on returns, and usage examples.
 keywords:
 - Alpha Vantage key
-- OpenBB Terminal
 - API key
-- SDK
-- Python
 - Functions
 - Global settings
 - Environment variables

@@ -5,22 +5,17 @@ description: Learn about using the functions grhist, syncretism model, and syncr
   functions are clearly explained and the source code is provided for in-depth understanding.
   The page also delineates parameters and return values.
 keywords:
-- OpenBBTerminal
 - stocks
 - options
 - grhist
 - syncretism model
-- Python
-- source code
 - historical greeks
 - strike price
 - put option
 - OCC option symbol
-- Plots
 - grhist chart
 - Greek variable
 - export data
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

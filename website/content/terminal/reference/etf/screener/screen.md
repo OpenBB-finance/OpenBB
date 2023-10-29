@@ -7,7 +7,6 @@ keywords:
 - ETF Screen
 - Stock Analysis
 - Data Scraping
-- Python
 - Github Repository
 - CLI
 - Parameters

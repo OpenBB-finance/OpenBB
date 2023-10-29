@@ -8,7 +8,6 @@ keywords:
 - implied move
 - option prices
 - stock
-- ticker
 - expiration
 ---
 

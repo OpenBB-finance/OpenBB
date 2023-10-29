@@ -10,7 +10,6 @@ keywords:
 - portfolio optimization
 - financial tool
 - financial software
-- python
 - usage
 - parameters
 - examples

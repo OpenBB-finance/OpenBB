@@ -7,12 +7,9 @@ description: This page provides instructions on how to extract crypto derivative
 keywords:
 - CoinGecko API
 - crypto derivatives
-- Python
 - data extraction
 - cryptocurrency
 - data sorting
-- OpenBB
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

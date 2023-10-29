@@ -7,10 +7,7 @@ keywords:
 - Yahoo Finance
 - small cap stocks
 - earnings growth rates
-- OpenBB
 - stocks
-- python
-- DataFrame
 - aggressive small cap stocks
 ---
 

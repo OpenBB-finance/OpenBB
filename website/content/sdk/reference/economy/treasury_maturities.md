@@ -10,7 +10,6 @@ keywords:
 - Treasury Maturities
 - EconDB
 - Source Code
-- OpenBBTerminal
 - Python Code
 - Economy
 - Financial Instruments

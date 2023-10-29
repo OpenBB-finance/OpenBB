@@ -8,15 +8,12 @@ description: This page offers detailed instructions and examples on how to use t
   and financial databases including FRED and AlphaVantage.
 keywords:
 - Economy
-- OpenBB
 - jupyter notebook
 - API
 - FRED
 - AlphaVantage
-- Python
 - Financial analysis
 - Data Visualization
-- SEO
 - Quandl
 - Nasdaq
 ---

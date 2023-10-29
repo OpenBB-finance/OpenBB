@@ -9,7 +9,6 @@ keywords:
 - parameters
 - Fibonacci trading
 - trading strategies
-- financial analysis
 - stock analysis
 - trading charts
 ---

@@ -12,7 +12,6 @@ keywords:
 - build tools
 - build applications
 - existing architecture
-- OpenBB Terminal
 - installation source code
 - PyPI
 ---

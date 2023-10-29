@@ -5,7 +5,6 @@ description: This is a comprehensive documentation on the functionality of creat
   and returns on model and chart tabs for summary creation.
 keywords:
 - Oanda account summary
-- Python
 - Source Code
 - OpenBB finance
 - forex
@@ -14,7 +13,6 @@ keywords:
 - account ID
 - TabItem
 - Tabs
-- pd.DataFrame
 - Union
 - summary chart
 ---

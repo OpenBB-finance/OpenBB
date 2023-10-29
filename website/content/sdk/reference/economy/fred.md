@@ -5,7 +5,6 @@ description: The page includes detailed information on the 'fred' function in th
   series data from the Federal Reserve Economic Data (FRED) database. It also lists
   out function parameters and return type.
 keywords:
-- OpenBBTerminal
 - fred function
 - Federal Reserve Economic Data
 - FRED
@@ -15,10 +14,7 @@ keywords:
 - return type
 - visualization
 - code
-- SEO
 - metadata
-- documentation
-- source code
 - data retrieval
 - data analysis
 ---

@@ -3,16 +3,13 @@ title: load
 description: The page provides information on loading custom files into a dataframe
   in OpenBB. It offers the function definition, parameters, and returns
 keywords:
-- OpenBB
 - dataframe
 - load function
 - custom files
 - parameters
 - returns
-- pd.DataFrame
 - Statsmodels examples
 - Export folder
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

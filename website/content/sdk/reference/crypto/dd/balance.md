@@ -8,16 +8,12 @@ keywords:
 - account holdings
 - asset
 - Binance
-- OpenBB
 - cryptocurrency
-- source code
 - dataframe
 - parameters
 - balance_chart function
 - export dataframe
 - USDT
-- Python
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

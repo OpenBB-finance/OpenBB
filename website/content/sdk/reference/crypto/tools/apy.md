@@ -9,11 +9,9 @@ keywords:
 - compounding times
 - cryptocurrency
 - openbb.crypto.tools
-- Python
 - dataframe
 - narrative version
 - export data
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

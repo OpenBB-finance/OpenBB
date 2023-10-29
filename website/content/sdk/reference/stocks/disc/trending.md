@@ -4,11 +4,9 @@ description: The Trending page provides a list of trending articles from OpenBB,
   allows customization of the quantity of articles displayed with a default value
   set at 5.
 keywords:
-- OpenBB
 - Trending articles
 - Source code
 - Stocks discovery
-- Python
 - Article limit customization
 ---
 

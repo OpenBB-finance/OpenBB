@@ -7,7 +7,6 @@ keywords:
 - last_price
 - api request
 - OpenBB.finance
-- OpenBBTerminal
 - stocks
 - options
 - tradier_model.py

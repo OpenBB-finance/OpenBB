@@ -6,7 +6,6 @@ description: The documentation explores the 'vol' command used to retrieve a cha
 keywords:
 - vol command
 - Options Volume by Strike
-- ticker
 - expiry
 - stock ticker
 - Expiration Date

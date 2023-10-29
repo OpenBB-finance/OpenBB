@@ -5,7 +5,6 @@ description: Docusaurus page focuses on the usage of the OpenBB Terminal Portfol
   module, detailing its features and examples of use like portfolio performance benchmarking,
   risk metrics calculation or maximum drawdown calculation.
 keywords:
-- OpenBB Terminal
 - portfolio module
 - performance benchmarking
 - risk metrics

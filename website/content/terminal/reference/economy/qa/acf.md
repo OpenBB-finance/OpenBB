@@ -8,7 +8,6 @@ keywords:
 - partial auto-correlation
 - acf
 - stock data
-- python
 - lags
 - acf function
 - diff

@@ -15,7 +15,6 @@ keywords:
 - finviz data
 - data presentation
 - data sorting
-- SEO
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

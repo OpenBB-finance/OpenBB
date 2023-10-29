@@ -10,7 +10,6 @@ keywords:
 - lit function
 - data rows
 - trade date
-- ticker
 - company name
 - insider name
 - title

@@ -8,7 +8,6 @@ description: 'The page covers two main aspects of the OpenBB finance platform: R
 keywords:
 - Regression Forecasting
 - Source code
-- Python
 - OpenBB finance
 - parameters
 - returns

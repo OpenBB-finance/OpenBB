@@ -8,8 +8,6 @@ keywords:
 - Bitquery
 - API Key
 - Setting Key
-- openbb
-- Python
 - Environment Variables
 - Jupyter Notebook
 - Terminal

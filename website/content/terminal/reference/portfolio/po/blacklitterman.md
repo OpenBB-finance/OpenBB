@@ -11,7 +11,6 @@ keywords:
 - benchmarking
 - investment objectives
 - risk aversion
-- Python
 - financial data analysis
 - financial modelling
 - portfolio risk management

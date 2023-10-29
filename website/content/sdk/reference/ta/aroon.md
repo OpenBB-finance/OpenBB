@@ -7,13 +7,10 @@ description: This documentation page provides an in-depth overview of the Aroon 
 keywords:
 - aroon
 - technical indicator
-- OpenBBTerminal
 - openbb.ta
 - openbb.ta.aroon
 - openbb.ta.aroon_chart
 - trend indicators
-- pd.DataFrame
-- python
 - OHLC price data
 - plotting
 - matplotlib
@@ -22,7 +19,6 @@ keywords:
 - window
 - symbol
 - export
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

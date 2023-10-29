@@ -6,7 +6,6 @@ description: This page provides information about the Dupont tool, which deconst
 keywords:
 - dupont
 - return on equity
-- investment
 - raw data
 ---
 

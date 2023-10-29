@@ -11,8 +11,6 @@ keywords:
 - Descending
 - Exporting Data
 - Source Code
-- Python
-- OpenBB Terminal
 - Docusaurus Page SEO
 ---
 

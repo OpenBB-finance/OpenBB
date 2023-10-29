@@ -10,8 +10,6 @@ keywords:
 - dataframe
 - standard deviation
 - mean
-- OpenBB
-- Python
 - Stock ticker
 - window
 ---

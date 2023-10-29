@@ -5,12 +5,9 @@ description: This page explains the 'getdd' function. This function fetches due 
   stock ticker, number of posts to fetch, and number of days back to fetch the posts,
   along with the return type are described.
 keywords:
-- OpenBB
 - getdd function
 - stock ticker
 - subreddits
-- source code
-- python
 - dataframe
 - due diligence posts
 - number of posts

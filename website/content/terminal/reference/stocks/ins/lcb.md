@@ -6,7 +6,6 @@ description: This page documents the usage of the lcb function, which is a Pytho
   information is sourced from OpenInsider.
 keywords:
 - lcb
-- documentation
 - cluster buys
 - openinsider
 - python code

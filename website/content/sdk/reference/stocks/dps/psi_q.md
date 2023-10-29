@@ -6,15 +6,12 @@ description: The psi_q documentation page explains the usage of the psi_q functi
 keywords:
 - psi_q
 - short interest
-- OpenBBTerminal
 - stock
 - plot
 - code
 - function
-- documentation
 - parameters
 - returns
-- source code
 - NYSE
 - NASDAQ
 ---

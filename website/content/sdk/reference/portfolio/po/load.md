@@ -4,14 +4,12 @@ description: This page provides detailed documentation for the 'load' function o
   the OpenBB portfolio optimization engine. It includes source code, parameters detail,
   return type, and coding examples.
 keywords:
-- OpenBB
 - portfolio optimization
 - po.load function
 - OpenBB portfolio
 - PoEngine
 - openbb_terminal.sdk
 - coding examples
-- source code
 - software documentation
 - parameters detail
 - portfolio allocation

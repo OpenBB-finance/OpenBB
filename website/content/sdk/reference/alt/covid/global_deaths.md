@@ -10,7 +10,6 @@ keywords:
 - historical death data
 - python function
 - dataframe
-- SEO
 - country specific statistics
 ---
 

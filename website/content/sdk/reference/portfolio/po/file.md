@@ -5,13 +5,10 @@ description: This page provides detailed information on the functionality and us
   application. Examples and parameters are discussed extensively to ensure user familiarity
   with the method.
 keywords:
-- OpenBB Terminal
 - portfolio optimization
 - load portfolio
-- python
 - PoEngine
 - parameters
-- source code
 - examples
 - maxsharpe
 - risk_free_rate

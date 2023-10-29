@@ -5,7 +5,6 @@ description: The page details the function openbb.portfolio.po.maxdecorr(), an o
   provides examples.
 keywords:
 - maxdecorr
-- OpenBB
 - portfolio optimization
 - portfolio_engine
 - log_returns
@@ -16,7 +15,6 @@ keywords:
 - Graphical Lasso Covariance method
 - j-LoGo Covariance method
 - spectral method
-- Python
 - programming
 ---
 

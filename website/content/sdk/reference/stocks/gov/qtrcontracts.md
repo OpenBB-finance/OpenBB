@@ -5,14 +5,12 @@ description: Documentation on the use of qtrcontracts function in Python for ana
   chart functions.
 keywords:
 - qtrcontracts function
-- Python
 - quarterly contracts analytics
 - OpenBB finance
 - Model function
 - Chart function
 - Parameter settings
 - Source code
-- Dataframe
 - matplotlib.axes._axes.Axes
 - Total analysis
 - Momentum analysis

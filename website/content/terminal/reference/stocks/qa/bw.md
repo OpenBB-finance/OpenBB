@@ -6,7 +6,6 @@ keywords:
 - Box and Whisker plot
 - bw command
 - Parameter usage
-- Python
 - Plot Visualization
 ---
 

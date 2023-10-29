@@ -9,10 +9,8 @@ keywords:
 - contracts_chart
 - quiverquant.com
 - government contracts
-- ticker
 - trading data
 - parameters
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

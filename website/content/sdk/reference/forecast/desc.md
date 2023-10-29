@@ -5,11 +5,9 @@ description: Detailed information on how to use the 'desc' function of the OpenB
   frame.
 keywords:
 - OpenBB finance package
-- Python
 - data frame
 - statistics
 - forecasting
-- source code
 - parameters
 - returns
 ---

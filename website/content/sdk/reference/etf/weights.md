@@ -6,9 +6,7 @@ description: This page provides the function to return the sector weightings all
 keywords:
 - ETF
 - sector weightings allocation
-- OpenBB
 - yfinance model
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,7 +6,6 @@ description: This documentation outlines the functionality of the screener_data 
   values, with links to the source code.
 keywords:
 - Screener data
-- OpenBB Terminal
 - Python library
 - Source code
 - Stocks

@@ -11,7 +11,6 @@ keywords:
 - Return intervals
 - distr function
 - distr_chart function
-- Python
 - Source Code
 ---
 

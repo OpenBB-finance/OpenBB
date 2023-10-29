@@ -9,8 +9,6 @@ keywords:
 - insider activity
 - Finviz
 - OpenBB.finance
-- python
-- OpenBBTerminal
 - functions
 ---
 

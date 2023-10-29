@@ -4,7 +4,6 @@ description: This documentation page provides information on how to use the 'tcn
   functionality of OpenBBTerminal. This enables you to perform Temporal Convolutional
   Network (TCN) forecasting and display the forecast using OpenBB Platform's resources.
 keywords:
-- OpenBBTerminal
 - Temporal Convolutional Network
 - TCN forecasting
 - OpenBB platform

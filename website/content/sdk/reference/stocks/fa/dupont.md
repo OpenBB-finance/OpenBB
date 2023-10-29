@@ -4,10 +4,8 @@ description: This page provides source code for the function openbb.stocks.fa.du
   that returns the dupont ratio breakdown for a given stock ticker symbol.
 keywords:
 - dupont ratios
-- source code
 - Stock ticker symbol
 - openbb.stocks.fa.dupont
-- pd.DataFrame
 - dupont ratio breakdown
 ---
 

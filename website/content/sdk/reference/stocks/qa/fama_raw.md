@@ -11,7 +11,6 @@ keywords:
 - quantitative analysis
 - factors model
 - stocks
-- pd.DataFrame
 - Fama French Model
 ---
 

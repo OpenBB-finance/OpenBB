@@ -12,7 +12,6 @@ keywords:
 - repo categories
 - filter
 - sort
-- python
 - usage
 ---
 

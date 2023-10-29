@@ -5,8 +5,6 @@ description: This page provides a detailed explanation on how to plot open inter
   examples.
 keywords:
 - Open interest
-- Plotting
-- Python
 - Tutorial
 - Parameters
 - Option trading

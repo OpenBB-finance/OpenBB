@@ -6,13 +6,10 @@ description: Detailed explanation of OpenBB's econometrics Python library focusi
   data analysts and those interested in data series analysis.
 keywords:
 - Docusaurus
-- OpenBB
 - Econometrics
 - ADF test
 - KPSS test
 - Data series
-- Python
-- Data Analysis
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -6,19 +6,15 @@ description: This page provides documentation for the Big Mac Index functionalit
   for individuals looking to utilize the OpenBB economic dataset for data analysis.
 keywords:
 - bigmac
-- OpenBB
 - docusaurus
-- documentation
 - Big Mac Index
 - economy
 - country_codes
 - dataframe
 - matplotlib
 - USD equivalent
-- source code
 - parameters
 - returns
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

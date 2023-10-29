@@ -13,7 +13,6 @@ keywords:
 - maximal lag order
 - confidence interval
 - data visualization
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

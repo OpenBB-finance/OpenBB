@@ -4,14 +4,11 @@ description: This documentation page provides details on the Keltner Channels fu
   implemented in the OpenBB Terminal. It includes a guide for using the Keltner Channels
   analytical model and the chart plotting function.
 keywords:
-- OpenBB Terminal
 - Keltner Channels
 - technical analysis
 - volatility model
 - chart plotting
 - financial data analysis
-- Python
-- Dataframe
 - Data visualization
 - ema filter
 ---

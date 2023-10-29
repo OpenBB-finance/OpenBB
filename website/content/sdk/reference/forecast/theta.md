@@ -6,12 +6,9 @@ description: This page provides detailed information on how to use the 'Theta' m
 keywords:
 - Theta model
 - Theta chart
-- OpenBB
 - Forecasting
 - Financial prediction
-- Python
 - Source code
-- SEO
 - Model parameters
 - Chart display
 ---

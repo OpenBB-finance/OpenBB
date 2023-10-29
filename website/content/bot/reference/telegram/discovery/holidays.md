@@ -8,7 +8,6 @@ keywords:
 - market holidays
 - upcoming holidays
 - national holidays
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

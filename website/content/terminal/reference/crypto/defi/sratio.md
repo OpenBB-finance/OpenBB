@@ -7,7 +7,6 @@ keywords:
 - terra blockchain
 - staking ratio history
 - fcd.terra.dev
-- python
 - parameters
 - limit
 ---

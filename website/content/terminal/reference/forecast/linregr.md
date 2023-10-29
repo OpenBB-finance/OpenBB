@@ -11,11 +11,9 @@ keywords:
 - parameters
 - usage
 - examples
-- SEO
 - metadata
 - data science
 - machine learning
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

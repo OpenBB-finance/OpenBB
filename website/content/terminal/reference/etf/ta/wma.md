@@ -7,9 +7,7 @@ description: Learn how to use Weighted Moving Average (WMA) for better data anal
 keywords:
 - Weighted Moving Average
 - WMA
-- Data Analysis
 - Simple Moving Average
-- Python
 - n_length
 - n_offset
 ---

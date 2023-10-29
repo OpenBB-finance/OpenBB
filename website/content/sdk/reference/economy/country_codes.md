@@ -6,11 +6,9 @@ description: This is the Country Codes page for the Bigmac index in the OpenBBTe
 keywords:
 - Country codes
 - Bigmac index
-- OpenBBTerminal
 - OpenBB finance
 - Economy
 - ISO-3 codes
-- Python
 - Source Code
 - Parameters
 - Returns

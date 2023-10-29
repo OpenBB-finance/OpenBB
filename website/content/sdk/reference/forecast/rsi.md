@@ -11,9 +11,7 @@ keywords:
 - price changes
 - OpenBB.finance
 - forecast
-- Python
 - Pandas DataFrame
-- source code
 - RSI calculation
 ---
 

@@ -11,7 +11,6 @@ keywords:
 - Trading
 - Stock markets
 - Financial data
-- Python
 - Script
 ---
 

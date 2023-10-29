@@ -5,8 +5,6 @@ description: Documentation for the OpenBB SDK Disc module. The Disc module provi
   and modules aimed at stock trading operations.
 keywords:
 - OpenBB SDK Disc
-- Python
-- SDK
 - programmatic access
 - stock trading
 - terminal menus

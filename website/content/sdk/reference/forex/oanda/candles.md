@@ -11,14 +11,10 @@ keywords:
 - granularity
 - data points
 - Oanda
-- OpenBB
 - currency pair
 - Source Code
-- Python
 - matplotlib
-- pd.DataFrame
 - additional charts
-- external axes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -5,7 +5,6 @@ description: The page provides detailed documentation on how to get all events r
   provides insights into how to sort, limit and export these events using the OpenBBTerminal
   methods.
 keywords:
-- OpenBBTerminal
 - cryptocurrency events
 - cryptocurrency futures trading
 - cryptocurrency conferences

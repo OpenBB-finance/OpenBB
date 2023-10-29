@@ -6,9 +6,6 @@ description: The page explains how to get historical option pricing using the Op
 keywords:
 - Option Pricing
 - Historical data
-- openbb
-- SDK
-- Python
 - ChartExchange
 - Tradier
 ---

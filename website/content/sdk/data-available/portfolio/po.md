@@ -10,7 +10,6 @@ keywords:
 - mean-variance optimization
 - risk parity models
 - hierarchical clustering models
-- OpenBB Terminal
 - Python scripting
 - Risk Parity
 - CVaR

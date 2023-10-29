@@ -5,16 +5,13 @@ description: 'This webpage provides comprehensive documentation about the ''hist
   codes, parameters, returning values for two main functionalities: viewing historical
   price of stocks and creating a chart for those stocks.'
 keywords:
-- OpenBBTerminal
 - historical stock price
 - stock chart
 - python codes
 - parameters
-- documentation
 - dataframe
 - preset loaded
 - type candle
-- start date
 - MinMax normalization
 ---
 

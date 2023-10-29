@@ -14,7 +14,6 @@ keywords:
 - OpenBB Crypto DD Change
 - Plot Change Chart
 - OpenBB Crypto DD Change Chart
-- Python
 - Documentation
 - Source Code Link
 ---

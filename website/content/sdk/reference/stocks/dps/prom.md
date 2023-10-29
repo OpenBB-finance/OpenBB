@@ -9,7 +9,6 @@ keywords:
 - Trading tool
 - Linear regression
 - Dark pool data
-- OpenBB Terminal
 - Dark pool trades activity
 - Stocks analysis
 - Data visualization

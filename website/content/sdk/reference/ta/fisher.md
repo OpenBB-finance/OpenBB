@@ -7,9 +7,7 @@ description: Documentation page about Fisher Transform, a technical analysis ind
 keywords:
 - Fisher Transform
 - technical analysis
-- finance
 - OpenBB library
-- pd.DataFrame
 - OHLC prices
 - indicator window
 ---

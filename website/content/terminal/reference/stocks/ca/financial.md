@@ -4,10 +4,8 @@ description: This page provides an explanation of the 'financial' command in Pyt
   including its usage, parameters, and examples. The 'financial' command prints screener
   data of similar companies, aiding in financial analysis and investment decisions.
 keywords:
-- Python
 - financial command
 - stock screener
-- financial analysis
 - investment decisions
 - Finviz
 ---

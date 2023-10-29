@@ -4,10 +4,8 @@ description: This page provides information on how to retrieve and manipulate fu
   data using the OpenBB economy function. It includes examples and descriptions for
   parameters such as data source and future type.
 keywords:
-- OpenBB
 - economy
 - futures data
-- Dataframe
 - Finviz
 - WSJ
 - Indices

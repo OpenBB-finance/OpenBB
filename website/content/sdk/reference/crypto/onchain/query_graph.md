@@ -8,8 +8,6 @@ keywords:
 - helper methods
 - graphql api
 - bitquery.io
-- source code
-- python
 - openbb.crypto.onchain.query_graph
 - parameters
 - url

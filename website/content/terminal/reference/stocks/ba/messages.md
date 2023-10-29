@@ -7,7 +7,6 @@ keywords:
 - messages
 - Stocktwits
 - message board
-- python
 - parameters
 - limit
 ---

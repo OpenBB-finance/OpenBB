@@ -8,7 +8,6 @@ keywords:
 - ETF options volumes
 - liquid options
 - options trading
-- command
 - trading data retrieval
 ---
 

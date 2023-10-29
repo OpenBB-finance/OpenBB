@@ -11,9 +11,7 @@ keywords:
 - Stocks fundamental analysis
 - AV model
 - Stock ticker symbol
-- Python
 - Dataframe of fundamentals
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

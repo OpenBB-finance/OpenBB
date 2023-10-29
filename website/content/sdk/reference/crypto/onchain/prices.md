@@ -11,10 +11,8 @@ keywords:
 - onchain
 - tokens
 - Ethplorer
-- OpenBB
 - cryptocurrency
 - API
-- Python
 - dataframe
 ---
 

@@ -6,7 +6,6 @@ description: This page provides the function to get all available trading pairs 
 keywords:
 - Binance
 - Trading pairs
-- DataFrame
 - baseAsset
 - quoteAsset
 - Crypto Trading

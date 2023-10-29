@@ -5,9 +5,7 @@ description: Perform or display linear regression forecasting with OpenBB. The p
 keywords:
 - linear regression
 - forecasting
-- OpenBB
 - data analysis
-- source code
 - parameters
 - returns
 - prediction

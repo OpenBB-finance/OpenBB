@@ -6,9 +6,7 @@ description: Documentation for the FA module in the OpenBB Terminal - providing 
   earnings data, key metrics over time, estimate market cap and more. Detailed information
   for each function and plenty of examples demonstrating their usage.
 keywords:
-- OpenBB Terminal
 - FA module
-- financial analysis
 - API keys
 - AlphaVantage
 - EODHD
@@ -19,7 +17,6 @@ keywords:
 - earnings data
 - company metrics
 - market cap
-- Python
 - Jupyter Lab
 - VS Code
 - financial statement ratios

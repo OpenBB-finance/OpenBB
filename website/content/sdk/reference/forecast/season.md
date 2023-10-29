@@ -8,13 +8,10 @@ keywords:
 - season chart
 - plot seasonality
 - dataset
-- Python
 - dataframe
 - time lag
 - max lag
 - confidence interval
-- external axes
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

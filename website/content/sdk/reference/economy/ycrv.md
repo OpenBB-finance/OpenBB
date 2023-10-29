@@ -3,7 +3,6 @@ title: ycrv
 description: This documentation page guides users on how to use the 'ycrv' function
   in OpenBB software to retrieve and display yield curve data.
 keywords:
-- OpenBB
 - ycrv
 - yield curve
 - Treasury rates

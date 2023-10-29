@@ -8,7 +8,6 @@ keywords:
 - premarket data
 - stock ticker
 - market performance
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

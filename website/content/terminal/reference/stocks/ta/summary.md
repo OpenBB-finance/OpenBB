@@ -7,7 +7,6 @@ description: Detailed guide on using the technical summary report provided by Fi
 keywords:
 - technical summary
 - FinBrain API
-- financial analysis
 - trading prediction
 - deep learning algorithms
 - stock trading

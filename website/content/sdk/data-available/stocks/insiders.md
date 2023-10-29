@@ -8,7 +8,6 @@ description: This page of our marketing website gives a detailed overview of how
   to pull up ticker-specific details and covers how to use different commands.
 keywords:
 - Insiders module
-- OpenBB Terminal
 - Insider trading activity
 - CEOs purchases and sales
 - Insider transactions filter

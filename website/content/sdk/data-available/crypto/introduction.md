@@ -11,14 +11,12 @@ description: This Docusaurus page is dedicated to providing a detailed guide on 
 keywords:
 - Docusaurus
 - Cryptocurrency
-- OpenBB Terminal
 - Web Application
 - Crypto Module
 - SDK Functions
 - Digital Assets
 - Onchain Metrics
 - Data visualisation
-- Python
 - CCXT
 - Trending Coins
 - Liquidity Measurement

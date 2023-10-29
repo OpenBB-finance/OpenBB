@@ -9,7 +9,6 @@ keywords:
 - Currency value
 - USD
 - Trading
-- python
 - Crypto trading
 ---
 

@@ -9,7 +9,6 @@ keywords:
 - scorr_chart function
 - correlation sentiments
 - similar companies
-- OpenBB
 - FinBrain
 - FinViz
 - Finnhub
@@ -17,7 +16,6 @@ keywords:
 - heatmap plot
 - sentiment analysis
 - stock comparison
-- Python
 - matplotlib axes
 ---
 

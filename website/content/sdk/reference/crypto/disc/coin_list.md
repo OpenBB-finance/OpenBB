@@ -6,9 +6,6 @@ keywords:
 - Coin List
 - CoinGecko
 - Source Code
-- Python
-- pd.DataFrame
-- OpenBBTerminal
 - Cryptocurrency
 - Discovery
 - pycoingecko_model

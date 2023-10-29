@@ -7,7 +7,6 @@ keywords:
 - c5m
 - intraday chart
 - 5 minute chart
-- ticker
 - candlestick chart
 - stock performance
 - technical analysis

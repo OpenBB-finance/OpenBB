@@ -6,7 +6,6 @@ keywords:
 - delete column
 - data management
 - dataset
-- Python
 - data analysis
 - command usage
 - parameters

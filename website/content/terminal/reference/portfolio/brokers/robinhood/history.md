@@ -9,7 +9,6 @@ keywords:
 - historical data
 - interval data
 - span of data
-- python
 - usage
 ---
 

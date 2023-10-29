@@ -8,9 +8,7 @@ keywords:
 - Cumulative Sum Algorithm
 - CUSUM
 - quantitative analysis
-- source code
 - parameters description
-- Python
 - OpenBB SDK
 ---
 

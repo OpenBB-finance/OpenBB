@@ -11,7 +11,6 @@ keywords:
 - Sample
 - Population
 - n_window
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

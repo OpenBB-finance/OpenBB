@@ -4,16 +4,12 @@ description: A details documentation page about how to use process_chains functi
   of openbb.stocks.options in Python. This function takes API response from Tradier
   and returns a DataFrame with available options.
 keywords:
-- OpenBB Terminal
 - stocks
 - options
 - process chains
-- Python
 - API
 - Tradier
-- DataFrame
 - options trading
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

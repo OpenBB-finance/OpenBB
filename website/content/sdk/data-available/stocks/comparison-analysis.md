@@ -5,7 +5,6 @@ description: Learn how to use the CA module of the OpenBB Terminal SDK for funct
   comparison and more using Python. Discover the list of similar companies, historical
   volume data comparison and more.
 keywords:
-- OpenBB Terminal
 - OpenBB Terminal SDK
 - CA module OpenBB
 - Python SDK for OpenBB Terminal

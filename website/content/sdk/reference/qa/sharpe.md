@@ -9,11 +9,8 @@ keywords:
 - Quantitative Analysis
 - Risk-Free Rate
 - Data Visualization
-- Python
 - Finance
-- OpenBB
 - Financial Models
-- Data Analysis
 - Programming
 ---
 

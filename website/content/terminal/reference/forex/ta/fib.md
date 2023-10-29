@@ -7,8 +7,6 @@ keywords:
 - fibonacci retracement
 - financial tool
 - trading
-- financial analysis
-- python
 - parameters
 ---
 

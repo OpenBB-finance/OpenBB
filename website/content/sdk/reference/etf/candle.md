@@ -5,12 +5,9 @@ description: This page provides a comprehensive guide on how to use the 'candle'
   a detailed candle plot of any given ticker. Features include adjustable parameters
   for added customizability.
 keywords:
-- OpenBB Terminal
 - stock evaluation
-- python
 - candle function
 - candle plot
-- ticker
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

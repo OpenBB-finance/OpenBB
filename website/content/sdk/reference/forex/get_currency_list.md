@@ -10,7 +10,6 @@ keywords:
 - Forex
 - Open source finance platform
 - Finance
-- Python
 - Function Documentation
 ---
 

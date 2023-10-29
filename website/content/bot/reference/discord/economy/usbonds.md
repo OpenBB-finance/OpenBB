@@ -9,8 +9,6 @@ keywords:
 - bond yields
 - usbonds command
 - economic data
-- finance
-- investment
 - financial markets
 - economy
 - money market

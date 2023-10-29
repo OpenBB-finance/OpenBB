@@ -13,8 +13,6 @@ keywords:
 - openbb.stocks.fa.hq
 - fundamental analysis
 - yahoo finance model
-- python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

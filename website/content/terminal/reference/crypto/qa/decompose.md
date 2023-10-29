@@ -13,7 +13,6 @@ keywords:
 - Parameters
 - Usage
 - Marketing
-- SEO
 - Stocks
 ---
 

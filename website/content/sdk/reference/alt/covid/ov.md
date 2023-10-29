@@ -5,7 +5,6 @@ description: This documentation page provides detailed information on the 'ov' m
   the parameters required to run these models, and returns in the form of a DataFrame.
 keywords:
 - docusaurus
-- documentation
 - ov model
 - historical data
 - cases

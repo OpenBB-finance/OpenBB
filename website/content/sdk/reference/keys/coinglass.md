@@ -5,10 +5,8 @@ description: The page provides instructions on how to set the Coinglass key usin
   and their functionality, return types, and examples.
 keywords:
 - Coinglass key
-- OpenBBTerminal
 - openbb module
 - API key
-- python
 - Jupyter notebook session
 - terminal environment variables
 ---

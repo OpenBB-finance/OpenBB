@@ -5,7 +5,6 @@ description: This page provides a guide on how to use the command 'yret' for det
   and their usage.
 keywords:
 - yret
-- command
 - usage
 - parameters
 - end of year returns

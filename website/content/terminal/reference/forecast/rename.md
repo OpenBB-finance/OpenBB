@@ -9,7 +9,6 @@ keywords:
 - parameter
 - column rename
 - dataset modification
-- python
 - data management
 ---
 

@@ -10,7 +10,6 @@ keywords:
 - sector allocation
 - benchmark comparison
 - portfolio management
-- python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

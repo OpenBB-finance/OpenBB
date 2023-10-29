@@ -3,7 +3,6 @@ title: exmarkets
 description: Documentation for the exmarkets API functions from OpenBBTerminal's Cryptocurrency
   Overview tool. Lists markets by exchange ID and manages charts.
 keywords:
-- OpenBBTerminal
 - exmarkets
 - API
 - Cryptocurrency Overview Tool

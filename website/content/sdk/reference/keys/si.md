@@ -8,7 +8,6 @@ keywords:
 - API key
 - OpenBB terminal
 - terminal environment variables
-- Python
 - Jupyter notebook
 ---
 

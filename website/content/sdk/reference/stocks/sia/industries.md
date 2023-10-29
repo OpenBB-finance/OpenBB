@@ -6,14 +6,11 @@ description: The documentation page provides information and source code on how 
 keywords:
 - Finance Database
 - Yahoo Finance data
-- source code
-- OpenBBTerminal
 - openbb.stocks.sia.industries
 - industries
 - country filter
 - sector filter
 - sector analysis
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

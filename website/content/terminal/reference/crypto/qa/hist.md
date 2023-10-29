@@ -11,7 +11,6 @@ keywords:
 - parameters
 - n_bins
 - Usage
-- python
 - coding
 ---
 

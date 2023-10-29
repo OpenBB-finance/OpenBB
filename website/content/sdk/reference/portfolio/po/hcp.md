@@ -9,16 +9,12 @@ keywords:
 - portfolio optimization
 - hierarchical clustering
 - stock returns
-- OpenBBTerminal
 - Hierarchical Risk Parity
 - Nested Clustered Optimization
 - covariance matrix
-- investment
 - risk measures
 - stocks
 - portfolio management
-- Python
-- financial analysis
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

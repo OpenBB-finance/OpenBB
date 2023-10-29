@@ -5,7 +5,6 @@ description: The OpenBB Terminal's documentation page for the 'show' function, w
   class instance. It includes parameters, return types and example usage.
 keywords:
 - Portfolio transactions
-- OpenBB Terminal
 - PortfolioEngine class instance
 - Portfolio engine
 - pandas DataFrame

@@ -8,7 +8,6 @@ keywords:
 - historical stock prices
 - data visualization
 - Python code
-- OpenBB Terminal
 - Yahoo Finance
 - stock market analysis
 - stock price chart

@@ -4,11 +4,8 @@ description: This documents discusses useful functionalities for understanding g
   Decentralized Finances. The content includes source code, parameters, and the returns.
 keywords:
 - Decentralized Finances
-- OpenBB Terminal
 - cryptocurrency
 - CoinGecko
-- Python
-- source code
 - parameters
 - returns
 - dataframe

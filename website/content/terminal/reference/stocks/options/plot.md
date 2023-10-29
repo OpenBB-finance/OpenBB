@@ -6,7 +6,6 @@ description: Plot documentation page provides information on how to show a plot 
   more. It also shows usage examples and available customizations.
 keywords:
 - plot
-- python
 - show plot
 - trade date
 - strike

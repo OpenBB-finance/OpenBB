@@ -9,7 +9,6 @@ description: Guide to the Cryptocurrency Due Diligence menu command in the crypt
 keywords:
 - Cryptocurrency Due Diligence
 - crypto
-- command
 - load
 - Coin
 - coin metrics

@@ -5,12 +5,9 @@ description: The documentation page provides a brief explanation on how to use t
   code and instructions on its parameters and return type.
 keywords:
 - FMP
-- OpenBBTerminal
 - stocks
 - fundamental analysis
 - ticker quote
-- python
-- pd.DataFrame
 - symbol
 ---
 

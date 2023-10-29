@@ -6,12 +6,8 @@ description: A technical guide detailing how to load options chains data from si
   options strategies. This document is heavily focused on technical processes within
   a financial context.
 keywords:
-- Openbb
 - Options Chains Data
-- Python
-- Data Analysis
 - Option Strategies
-- SEO
 - Financial Data
 - Data Filtering
 - Data Sorting

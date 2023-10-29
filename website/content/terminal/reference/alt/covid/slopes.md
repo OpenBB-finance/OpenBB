@@ -9,7 +9,6 @@ keywords:
 - data sorting
 - data analysis
 - cases threshold
-- Python
 - ascending
 - descending
 - reverse

@@ -6,12 +6,10 @@ keywords:
 - nfts
 - Top NFTs
 - crypto
-- OpenBB
 - cryptocurrency
 - DappRadar
 - crypto discovery
 - NFT collections
-- Dataframe
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

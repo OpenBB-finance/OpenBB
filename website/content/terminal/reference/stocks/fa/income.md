@@ -12,7 +12,6 @@ keywords:
 - annual reports
 - financial metrics
 - Alpha Vantage
-- financial analysis
 - financial software
 - financial terms
 - gross profit

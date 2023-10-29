@@ -4,7 +4,6 @@ description: This page provides a detailed guide on the usage of the 'candle' co
   in Python, a tool for displaying historic stock data. It covers functionalities
   such as plot display, data sorting and trendline addition.
 keywords:
-- Python
 - candle command
 - historic stock data
 - data visualization

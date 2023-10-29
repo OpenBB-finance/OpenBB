@@ -4,9 +4,7 @@ description: This documentation page provides code and information about retriev
   and visualizing BTC confirmed transactions using OpenBB. It includes python code
   and detailed parameters' description for the functions.
 keywords:
-- OpenBB
 - BTC confirmed transactions
-- Python
 - API
 - blockchain.info
 - Data Export

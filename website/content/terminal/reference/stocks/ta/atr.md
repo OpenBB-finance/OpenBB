@@ -8,7 +8,6 @@ keywords:
 - Averge True Range
 - atr
 - volatility measurement
-- python
 - trading algorithms
 - financial markets
 - technical analysis

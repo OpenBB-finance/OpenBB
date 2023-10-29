@@ -6,7 +6,6 @@ description: Discover how to calculate the Clenow Volatility Adjusted Momentum u
 keywords:
 - Clenow
 - Volatility Adjusted Momentum
-- Python
 - Lookback period
 - Regression
 ---

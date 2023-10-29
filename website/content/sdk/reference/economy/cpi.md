@@ -8,8 +8,6 @@ keywords:
 - cpi
 - consumer price index
 - Alpha Vantage
-- OpenBBTerminal
-- Python
 - dataframe
 - matplotlib
 - economy

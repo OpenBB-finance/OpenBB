@@ -7,7 +7,6 @@ description: The page provides detailed information about Sentiment Analysis fun
 keywords:
 - API
 - Sentiment Analysis
-- OpenBB
 - Finance
 - Terminal
 - FinBrain
@@ -17,7 +16,6 @@ keywords:
 - Finnhub_peers
 - Polygon_peers
 - Data visualization
-- Python
 - matplotlib
 - Data Export
 - Sentiment chart

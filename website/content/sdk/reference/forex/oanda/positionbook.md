@@ -6,12 +6,9 @@ description: Improve your understanding of the positionbook functionality on the
   to facilitate its usage.
 keywords:
 - positionbook
-- python
 - plotting
-- source code
 - Oanda
 - forex
-- OpenBBTerminal
 - data frame
 - parameters
 - currency pair

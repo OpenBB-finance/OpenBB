@@ -4,10 +4,8 @@ description: Learn how to use the 'customer' command to display the customers of
   given company using a stock ticker symbol. Detailed usages and examples provided.
 keywords:
 - customer
-- command
 - display customers
 - stock ticker
-- ticker
 - AMD
 ---
 

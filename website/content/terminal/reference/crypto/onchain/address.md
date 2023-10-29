@@ -5,7 +5,6 @@ description: This page provides a guide to loading and analyzing account address
   parameters for efficient analysis.
 keywords:
 - ethplorer
-- python
 - address
 - account address
 - token address

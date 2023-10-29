@@ -4,13 +4,11 @@ description: The page provides documentation on how to get and display news for 
   given term using OpenBB's Python functions. It also describes parameters used in
   these functions and links to the related source codes.
 keywords:
-- OpenBB
 - Documentation
 - Python functions
 - News retrieval
 - NewsAPI
 - Source code
-- Dataframe
 - Parameters
 ---
 

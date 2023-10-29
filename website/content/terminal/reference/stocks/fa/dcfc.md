@@ -8,7 +8,6 @@ keywords:
 - discounted cash flow
 - stock price
 - financial data extraction
-- python
 - financial modeling
 - DCF
 - quarters

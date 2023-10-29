@@ -7,8 +7,6 @@ keywords:
 - delete function
 - data parameter
 - column parameter
-- python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

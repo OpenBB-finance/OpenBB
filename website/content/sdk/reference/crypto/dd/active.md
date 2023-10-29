@@ -7,9 +7,6 @@ keywords:
 - cryptocurrency
 - active addresses
 - data visualization
-- source code
-- OpenBBTerminal
-- python
 - docusaurus documentation
 - due diligence
 - time intervals

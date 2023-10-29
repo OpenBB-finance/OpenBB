@@ -5,7 +5,6 @@ description: Documentation detailing usage of the OpenBB Terminal for financial 
   aggregation, standardization, and user data import. It explains the OpenBBUserData
   folder functions, how to modify settings, and how to import or export user data.
 keywords:
-- OpenBB Terminal
 - financial data
 - data aggregation
 - data standardization

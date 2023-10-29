@@ -5,12 +5,9 @@ description: This page provides comprehensive details of the 'relriskparity' fun
   of parameters and return value, along with Python code examples demonstrating its
   usage.
 keywords:
-- documentation
 - Relriskparity function
 - Portfolio optimization
-- Python
 - Relaxed Risk Parity
-- OpenBB Terminal
 - openbb.portfolio.po.relriskparity function
 - Function parameters
 - Python code example

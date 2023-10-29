@@ -7,7 +7,6 @@ keywords:
 - senate
 - trades
 - senate members
-- ticker
 - gov senate
 ---
 

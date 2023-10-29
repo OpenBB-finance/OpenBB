@@ -5,12 +5,9 @@ description: Documentation for 'Ticker quote', a function of OpenBB's Stock Mode
   return any values, it solely utilizes inputted symbols.
 keywords:
 - Ticker quote
-- OpenBB
 - YahooFinance
 - Stock model
-- Python
 - symbol
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

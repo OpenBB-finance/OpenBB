@@ -9,9 +9,7 @@ keywords:
 - ARIMA
 - Forecasting
 - AutoARIMA
-- OpenBB
 - TimeSeries
-- Python
 - Source Code
 - Parameters
 - Returns

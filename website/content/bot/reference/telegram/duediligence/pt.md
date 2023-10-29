@@ -6,7 +6,6 @@ description: The /pt command allows users to retrieve charts showing price targe
 keywords:
 - pt command
 - price targets
-- ticker
 - stock information
 - analyst ratings
 - informed decisions

@@ -5,9 +5,7 @@ description: This page provides information about how to show top crypto exchang
 keywords:
 - crypto exchanges
 - OpenBB API
-- python
 - CoinGecko
-- DataFrame
 - cryptocurrency
 ---
 

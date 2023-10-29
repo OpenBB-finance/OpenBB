@@ -13,7 +13,6 @@ keywords:
 - Invesco QQQ Trust (QQQ)
 - full_shares
 - shares
-- python
 - choices
 - parameters
 - Vanguard FTSE Developed Markets ETF (VEA)

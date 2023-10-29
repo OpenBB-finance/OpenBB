@@ -15,7 +15,6 @@ keywords:
 - Parameter details
 - Return types
 - Source code
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

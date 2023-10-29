@@ -4,12 +4,10 @@ description: Detailed documentation page explaining how to request the orders li
   from Oanda using OpenBB's terminal. It covers both Model and Chart methods, each
   with separate tabs explaining the parameters needed.
 keywords:
-- OpenBB
 - Oanda
 - orders list
 - Forex
 - API documentation
-- Python
 - order_state
 - order_count
 - accountID

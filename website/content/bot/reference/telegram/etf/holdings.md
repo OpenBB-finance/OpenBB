@@ -8,7 +8,6 @@ keywords:
 - ETF Holdings
 - ETF Ticker
 - Holdings
-- Python
 - Programming
 - Command
 ---

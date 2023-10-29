@@ -7,9 +7,7 @@ keywords:
 - maxdd
 - portfolio
 - drawdown
-- Python
 - usage
-- command
 - no parameters
 ---
 

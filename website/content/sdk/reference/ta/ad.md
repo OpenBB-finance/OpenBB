@@ -5,12 +5,9 @@ description: This page provides information about how to implement and plot the 
   It includes the source code, required parameters, and the outputs from these functions.
 keywords:
 - Docusaurus
-- SEO
 - Metadata
-- OpenBB
 - Technical Indicator
 - AD indicator
-- Python
 - Pandas DataFrame
 - Chart
 ---

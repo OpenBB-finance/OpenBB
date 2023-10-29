@@ -15,7 +15,6 @@ keywords:
 - ETH
 - BTC
 - USDT
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

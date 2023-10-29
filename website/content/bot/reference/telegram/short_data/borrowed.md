@@ -6,7 +6,6 @@ description: The borrowed page outlines how to track changes in share borrowing 
 keywords:
 - stock market
 - share borrowing
-- investing
 - trading
 - stock ticker
 - broker fees

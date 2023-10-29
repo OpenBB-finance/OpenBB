@@ -5,11 +5,8 @@ description: This page provides documentation and source code for OpenBB's Quant
   plot rolling quantile data using Python.
 keywords:
 - Docusaurus
-- OpenBB
 - Quantile
-- Python
 - Source Code
-- Data Analysis
 - Quantitative Analysis
 - Plotting Data
 - Rolling Quantile

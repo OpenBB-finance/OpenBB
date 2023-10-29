@@ -10,8 +10,6 @@ keywords:
 - data frames
 - historical data
 - OpenBB finance
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

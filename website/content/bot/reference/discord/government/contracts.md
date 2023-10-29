@@ -4,8 +4,6 @@ description: This documentation page is about the command that allows users to r
   the top 15 government contracts by amount for a specific stock ticker.
 keywords:
 - government contracts
-- ticker
-- command
 - retrieve
 - stock
 ---

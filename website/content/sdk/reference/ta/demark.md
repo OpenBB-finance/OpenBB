@@ -6,12 +6,10 @@ description: This page provides comprehensive documentation on the demark sequen
   indicators, and also how to plot these indicators.
 keywords:
 - demark sequential indicator
-- source code
 - technical analysis
 - plot indicators
 - OpenBB terminal
 - OpenBB finance
-- Python
 - GitHub link
 - OpenBB stocks
 - matplotlib.axes

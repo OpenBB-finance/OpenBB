@@ -5,8 +5,6 @@ description: Analyze and retrieve analyst recommendations for any given stock ti
 keywords:
 - analyst recommendations
 - stock ticker
-- ticker
-- command
 - usage
 ---
 

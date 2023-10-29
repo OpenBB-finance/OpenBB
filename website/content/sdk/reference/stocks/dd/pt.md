@@ -4,13 +4,11 @@ description: This documentation pertains to OpenBB's APIs for retrieving and vis
   analysts' price targets for stocks. Two key functions are discussed, one to retrieve
   the data and the other to generate charts.
 keywords:
-- OpenBB
 - API documentation
 - stock price targets
 - data retrieval
 - data visualization
 - analysts' price targets
-- SDK
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

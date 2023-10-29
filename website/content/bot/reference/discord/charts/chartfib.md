@@ -7,7 +7,6 @@ description: On this page, learn how to use the chartfib command in order to ret
 keywords:
 - chartfib command
 - Fibonacci levels
-- ticker
 - stock market
 - support and resistance levels
 - potential entry and exit points

@@ -10,7 +10,6 @@ keywords:
 - Sharpe Ratio
 - Portfolio Management
 - Financial Risk Measure
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

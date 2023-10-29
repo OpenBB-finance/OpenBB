@@ -5,7 +5,6 @@ description: This documentation page is related to the upcoming() function in Op
   The page includes source code, function parameters, and return types.
 keywords:
 - OpenBB.stocks.disc.upcoming
-- DataFrame
 - Upcoming earnings
 - Source Code
 - Number of pages

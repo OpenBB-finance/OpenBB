@@ -5,14 +5,12 @@ description: This documentation page explains the usage of the 'valuation' comma
   about the parameters
 keywords:
 - valuation
-- python
 - screener data
 - similar companies
 - parameters
 - command usage
 - enterprise SEO
 - data printing
-- documentation
 - examples
 ---
 

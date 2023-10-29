@@ -9,7 +9,6 @@ keywords:
 - Sector analysis
 - Industry filter
 - Country filter
-- OpenBB Terminal
 - Stocks
 ---
 

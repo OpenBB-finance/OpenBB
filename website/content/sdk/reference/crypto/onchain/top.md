@@ -6,16 +6,12 @@ description: Documentation for the OpenBB project's top 50 crypto tokens functio
   and the type of data rendered.
 keywords:
 - Docusaurus
-- SEO
 - Metadata
 - Top 50 Tokens
-- OpenBB
 - Cryptocurrency
 - ERC20
 - Ethplorer
-- Python
 - Cryptocurrency Rank
-- DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

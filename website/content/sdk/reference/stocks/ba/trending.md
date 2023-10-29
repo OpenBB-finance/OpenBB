@@ -6,10 +6,8 @@ description: Learn how to obtain trending tickers from Stocktwits using the Open
 keywords:
 - trending tickers
 - stocktwits
-- OpenBB Terminal
 - python code
 - watchlist count
-- Dataframe
 - financial data analysis
 ---
 

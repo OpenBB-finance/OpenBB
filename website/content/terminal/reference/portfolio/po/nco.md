@@ -9,7 +9,6 @@ keywords:
 - nco
 - portfolio building
 - portfolio optimization
-- Python
 - codependence
 - covariance
 - risk measure
@@ -17,7 +16,6 @@ keywords:
 - portfolio parameters
 - cluster
 - asset allocation
-- finance
 - investment strategy
 ---
 

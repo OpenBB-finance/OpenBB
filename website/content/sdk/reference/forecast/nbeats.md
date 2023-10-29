@@ -9,7 +9,6 @@ keywords:
 - forecast parameters
 - training models
 - machine learning
-- Python
 - data science
 - time series prediction
 ---

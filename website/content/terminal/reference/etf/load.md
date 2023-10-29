@@ -8,7 +8,6 @@ keywords:
 - load
 - ETF
 - analysis
-- ticker
 - parameters
 - date
 - holdings

@@ -8,7 +8,6 @@ keywords:
 - portfolio country allocation
 - portfolio management
 - financial modelling
-- Python
 - function documentation
 ---
 

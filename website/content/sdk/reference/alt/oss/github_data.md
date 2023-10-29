@@ -6,8 +6,6 @@ description: This page provides the function 'openbb.alt.oss.github_data' to ret
 keywords:
 - github data
 - repository stats
-- source code
-- python
 - openbb.alt.oss.github_data
 - github api endpoint
 - params

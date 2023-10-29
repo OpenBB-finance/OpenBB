@@ -10,12 +10,9 @@ keywords:
 - forex
 - currency pair
 - accountID
-- OpenBB
 - orderbook chart
 - matplotlib
 - pandas DataFrame
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

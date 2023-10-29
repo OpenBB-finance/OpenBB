@@ -9,7 +9,6 @@ keywords:
 - Alternative module
 - open source software
 - Covid data
-- Python
 - programmatic access
 - GitHub API key
 - repositories statistics

@@ -4,13 +4,11 @@ description: This documentation page provides details on how to use the 'pipo' f
   to retrieve past IPOs dates; instructions for its usage, parameters and clear examples
   are provided.
 keywords:
-- documentation
 - pipo
 - past IPOs dates
 - function usage
 - parameters instructions
 - examples
-- python
 - IPOs
 - dates
 ---

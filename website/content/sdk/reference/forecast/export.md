@@ -5,11 +5,8 @@ description: Enhance your grasp of the openbb.forecast.export function from the 
   and does not return anything. Chances to learn more about Python source code.
 keywords:
 - openbb.forecast.export
-- OpenBBTerminal
 - forecasting
 - data export
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

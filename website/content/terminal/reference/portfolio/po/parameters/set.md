@@ -6,7 +6,6 @@ description: This documentation page provides an understanding of the different 
 keywords:
 - portfolio optimization models
 - set command
-- Python
 - maxsharpe
 - minrisk
 - maxutil

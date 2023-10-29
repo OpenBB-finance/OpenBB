@@ -8,7 +8,6 @@ keywords:
 - prem command
 - options premium
 - call/put options
-- ticker
 - stock ticker
 - premium chart
 - /flow prem usage

@@ -5,7 +5,6 @@ description: This page provides detailed guidance on how to use the omega ratio 
 keywords:
 - omega ratio
 - stock analysis
-- python
 - financial analytics
 - stock market
 ---

@@ -8,11 +8,8 @@ keywords:
 - finviz
 - stock ticker symbol
 - dataframe
-- openbb
 - openbb_terminal
 - sdk
-- python
-- source code
 - IWV
 ---
 

@@ -8,11 +8,8 @@ keywords:
 - balance sheet statement
 - balance page
 - financial data
-- Python
 - Alpha Vantage
 - parameters
-- documentation
-- financial analysis
 - time-series data
 ---
 

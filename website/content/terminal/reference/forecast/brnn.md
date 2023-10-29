@@ -14,7 +14,6 @@ keywords:
 - data analysis
 - datusaurus models
 - forecasts
-- Python
 - parameters
 - covariates
 - train split

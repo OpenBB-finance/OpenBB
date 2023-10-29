@@ -10,7 +10,6 @@ keywords:
 - Python functions
 - data analysis
 - SEO optimization
-- documentation
 - filling methods
 - dropping methods
 ---

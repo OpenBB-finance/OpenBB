@@ -21,7 +21,6 @@ keywords:
 - export_pred_raw
 - parameters
 - usage examples
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

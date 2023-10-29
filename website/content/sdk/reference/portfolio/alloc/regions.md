@@ -12,7 +12,6 @@ keywords:
 - portfolio allocation
 - parameters
 - example usage
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

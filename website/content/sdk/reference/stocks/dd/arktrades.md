@@ -12,9 +12,7 @@ keywords:
 - ARK trades
 - Stock Ticker
 - Stock Trades
-- Python
 - GitHub Source Code
-- pd.DataFrame
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

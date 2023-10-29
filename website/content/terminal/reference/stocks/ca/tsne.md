@@ -8,10 +8,8 @@ keywords:
 - sklearn
 - comparison
 - similar companies
-- Python
 - parameters
 - usage
-- documentation
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

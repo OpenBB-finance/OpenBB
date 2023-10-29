@@ -4,14 +4,10 @@ description: This documentation page talks about the 'show' function from OpenBB
   portfolio optimization module. It details how to display portfolio optimization
   results using categories and portfolio engines.
 keywords:
-- OpenBB
 - portfolio optimization
 - portfolio engine
 - show function
-- Python
 - investment categories
-- SEO
-- documentation
 - usage examples
 - weights
 - performance

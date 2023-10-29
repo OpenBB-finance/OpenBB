@@ -5,7 +5,6 @@ description: This page provides a detailed guide for testing normality in data s
   how to export data and use external axes for plotting.
 keywords:
 - Econometrics
-- Python
 - OpenBB-finance
 - Data normality test
 - Timeseries

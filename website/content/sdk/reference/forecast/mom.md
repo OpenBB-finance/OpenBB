@@ -7,9 +7,7 @@ keywords:
 - momentum oscillator
 - mom function
 - OpenBB forecast module
-- DataFrame
 - MOM column
-- source code
 - parameters
 ---
 

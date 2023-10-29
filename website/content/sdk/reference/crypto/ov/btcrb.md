@@ -6,7 +6,6 @@ description: btcrb is a feature of the OpenBB Terminal that allows users to acce
   visualizing it using Matplotlib.
 keywords:
 - Bitcoin
-- OpenBB Terminal
 - btcrb
 - Price Data
 - Rainbow Chart
@@ -14,7 +13,6 @@ keywords:
 - Historical Bitcoin Data
 - Matplotlib Visualization
 - Cryptocurrency
-- Python
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

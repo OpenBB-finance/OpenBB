@@ -6,7 +6,6 @@ description: Detailed documentation on the 'compare' function, a python command 
 keywords:
 - compare
 - Panel regression models
-- python
 - activated
 - models
 - results

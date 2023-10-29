@@ -5,7 +5,6 @@ description: This docusaurus page provides detailed information about the 'topsh
   data for traders.
 keywords:
 - topshortvol
-- command
 - Finra
 - trading data
 - short vol

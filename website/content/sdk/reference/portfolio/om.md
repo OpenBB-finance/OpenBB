@@ -7,13 +7,10 @@ description: Learn how to use the omega ratio function to guide your portfolio m
 keywords:
 - omega ratio
 - portfolio management
-- OpenBB Terminal
 - PortfolioEngine class
 - financial transactions
 - annualized target return
 - portfolio load
-- python
-- source code
 - chart view
 ---
 

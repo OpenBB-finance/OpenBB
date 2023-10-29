@@ -10,8 +10,6 @@ keywords:
 - sort by column
 - ascending order
 - Finviz
-- OpenBB
-- Python
 - GitHub
 - dataframe
 ---

@@ -17,7 +17,6 @@ keywords:
 - asset analysis
 - market trends
 - financial trading tools
-- financial analysis
 - crypto analysis
 - stock analysis
 - forex analysis

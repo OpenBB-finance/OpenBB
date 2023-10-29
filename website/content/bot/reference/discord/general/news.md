@@ -5,8 +5,6 @@ description: A documentation page describing how to use the 'news' command to re
 keywords:
 - news
 - stock market
-- ticker
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

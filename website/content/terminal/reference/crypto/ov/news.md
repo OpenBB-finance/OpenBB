@@ -7,7 +7,6 @@ keywords:
 - cryptopanic
 - crypto news
 - news aggregation
-- python
 - data filtering
 - region based
 - sorted data

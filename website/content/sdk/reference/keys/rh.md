@@ -7,12 +7,8 @@ description: This page provides detailed information on setting the Robinhood ke
   and terminal environment variables.
 keywords:
 - Robinhood
-- openbb
 - keys
 - username and password
-- Python
-- source code
-- SDK
 - API key
 - Jupyter notebook session
 - terminal environment variables

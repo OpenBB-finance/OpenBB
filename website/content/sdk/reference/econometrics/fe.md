@@ -11,7 +11,6 @@ keywords:
 - regressors
 - Fixed Effects
 - PanelOLS model
-- Python
 - regression model
 ---
 

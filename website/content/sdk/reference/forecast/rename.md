@@ -7,8 +7,6 @@ keywords:
 - rename column
 - dataframe
 - openbb forecast
-- Python
-- source code
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

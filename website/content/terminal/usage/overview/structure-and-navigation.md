@@ -7,7 +7,6 @@ description: Learn about the OpenBB Terminal, an interactive Command Line Interf
   interactive charts, tables, or text. Get introduced to terminal commands, terminal
   menus, OpenBB Hub's theme style, and the concept of absolute paths.
 keywords:
-- OpenBB Terminal
 - CLI application
 - terminal structure
 - Terminal navigation

@@ -7,11 +7,9 @@ keywords:
 - latest insider purchases
 - OpenInsider
 - stock market
-- investment
 - trading
 - stock transactions
 - stock trading script
-- python
 - data display
 ---
 

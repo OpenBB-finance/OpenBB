@@ -13,7 +13,6 @@ keywords:
 - EMA
 - de-lagged data
 - moving average
-- Python
 - n_length
 - n_offset
 ---

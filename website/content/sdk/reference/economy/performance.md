@@ -6,9 +6,7 @@ description: This page provides detailed information on retrieving group perform
 keywords:
 - OpenBB economy module
 - group performance data
-- Python
 - Finviz
-- Dataframe
 - Performance data retrieval
 - Source code
 - Programming

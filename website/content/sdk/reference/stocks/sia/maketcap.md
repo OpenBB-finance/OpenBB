@@ -9,8 +9,6 @@ keywords:
 - Finance Database
 - stocks
 - finance data analysis
-- OpenBB
-- source code
 - function
 - parameters
 - returns

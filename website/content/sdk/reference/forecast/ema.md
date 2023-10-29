@@ -9,8 +9,6 @@ keywords:
 - Price trend
 - Forecast
 - Dataset
-- Python
-- OpenBB Terminal
 - Source code
 ---
 

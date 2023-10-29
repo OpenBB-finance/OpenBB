@@ -7,12 +7,10 @@ description: The page provides details on using the 'gdpc' function of OpenBBTer
 keywords:
 - GDP per Capita
 - gdpc
-- OpenBBTerminal
 - Real GDP
 - United States Economy
 - plotting tool
 - economy model
-- Python
 - Data visualization
 - Raw data
 - Export data

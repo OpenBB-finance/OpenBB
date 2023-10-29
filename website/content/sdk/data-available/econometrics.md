@@ -8,10 +8,8 @@ description: This documentation page guides users in the usage of the openbb Ter
 keywords:
 - openbb Terminal
 - Econometrics menu
-- SDK
 - statistical tests
 - regression models
-- Python
 - OLS regression
 - Panel regression
 - Custom datasets

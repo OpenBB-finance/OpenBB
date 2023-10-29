@@ -7,14 +7,9 @@ description: This documentation page provides detailed information on how to ret
 keywords:
 - News
 - Feedparser
-- OpenBB
-- Python
-- SDK
 - Source Code
 - openbb news
 - News Article Search
-- Dataframe
-- OpenBBTerminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

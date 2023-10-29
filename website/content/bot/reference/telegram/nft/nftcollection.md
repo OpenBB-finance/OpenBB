@@ -14,7 +14,6 @@ keywords:
 - chart
 - floor price
 - sales
-- command
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
