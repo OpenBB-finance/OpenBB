@@ -505,20 +505,20 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-0.1.0a4-py3-none-any.whl", hash = "sha256:f4a42ac3b7b8fec4b4b900576f08560216184f55e1a0b13ecc015853c660730a"},
-    {file = "openbb_core-0.1.0a4.tar.gz", hash = "sha256:9656dfe18cbfbaa61a37da1b39af7330af5004b4a5edb4809af82ae7b25c95ea"},
+    {file = "openbb_core-0.1.0a5-py3-none-any.whl", hash = "sha256:f22c68911b6f6e7b129b50d7c32731b1c9bbfda6b365a04824c2ab2c9437ef05"},
+    {file = "openbb_core-0.1.0a5.tar.gz", hash = "sha256:f39458e650c489be0707aea539f3d695b4b98d49e28664087d3bb67266cf4d6f"},
 ]
 
 [package.dependencies]
 fastapi = ">=0.103.1,<0.104.0"
 html5lib = ">=1.1,<2.0"
 importlib_metadata = ">=6.8.0,<7.0.0"
-openbb-provider = ">=0.1.0a2,<0.2.0"
+openbb-provider = ">=0.1.0a3,<0.2.0"
 pandas = ">=1.5.3"
 posthog = ">=3.0.1,<4.0.0"
 python-jose = ">=3.3.0,<4.0.0"
@@ -529,13 +529,13 @@ websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_provider-0.1.0a3-py3-none-any.whl", hash = "sha256:d589e5fade39737b99f770295926d472faaeb7f4b9d963a6cafa362293c92303"},
-    {file = "openbb_provider-0.1.0a3.tar.gz", hash = "sha256:7f37432fca541a07f132efae1885a1d320d6746e814a7ef986bc2d7ca65916c8"},
+    {file = "openbb_provider-0.1.0a4-py3-none-any.whl", hash = "sha256:317e1d9d634c480da4dfd320befb42840200bee186a1de687a0f93d8ea39316e"},
+    {file = "openbb_provider-0.1.0a4.tar.gz", hash = "sha256:a6b78275b5f697b1d4c928904928e23657277f702ab4cbd5a03e9022f63e8e6f"},
 ]
 
 [package.dependencies]
@@ -548,7 +548,7 @@ urllib3 = "<2.0.0"
 
 [[package]]
 name = "openbb-regulators"
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "Markets and Agency Regulators extension for OpenBB"
 optional = false
 python-versions = "*"
@@ -1522,4 +1522,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "5ed0d404e3e0f841254b312de9e3f6b12484b80574b7f307478769aaa92d8917"
+content-hash = "80f84c6b5aee040ffe6130a6281f3a14a5af0bcea5d6fe58f345abba2049215b"

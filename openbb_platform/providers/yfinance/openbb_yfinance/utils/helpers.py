@@ -1,6 +1,5 @@
 """yfinance helpers module."""
 
-
 from datetime import (
     date as dateType,
     datetime,
@@ -11,7 +10,8 @@ from typing import Any, Literal, Optional, Union
 import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
-from openbb_yfinance.utils.references import MONTHS
+
+from .references import MONTHS
 
 
 def get_futures_data() -> pd.DataFrame:
@@ -78,6 +78,7 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
     return pd.DataFrame({"Last Price": futures_curve, "expiration": futures_index})
 
 
+# pylint: disable=too-many-arguments,unused-argument
 def yf_download(
     symbol: str,
     start_date: Optional[Union[str, dateType]] = None,
@@ -94,10 +95,10 @@ def yf_download(
     repair: bool = False,
     rounding: bool = False,
     group_by: Literal["symbol", "column"] = "column",
+    keep_adjusted: bool = False,
     **kwargs: Any,
 ) -> pd.DataFrame:
-    """Base level yFinance OHLC helper function for returning any ticker and interval available."""
-
+    """Get yFinance OHLC data for any ticker and interval available."""
     symbol = symbol.upper()
     _start_date = start_date
 
@@ -165,7 +166,7 @@ def yf_download(
         if interval not in ["1m", "2m", "5m", "15m", "30m", "90m", "60m", "1h"]:
             data["date"] = data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d")
 
-        if actions is False:
+        if keep_adjusted is False:
             data = data.drop(columns=["Adj Close"])
 
         data.columns = data.columns.str.lower().to_list()

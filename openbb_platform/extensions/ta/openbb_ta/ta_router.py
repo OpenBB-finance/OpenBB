@@ -1222,7 +1222,7 @@ def kc(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
+    >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, mamode="ema", offset=0)
     """
 
     df = basemodel_to_df(data, index=index)

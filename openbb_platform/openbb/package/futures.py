@@ -74,7 +74,7 @@ class ROUTER_futures(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.futures.curve(symbol="AAPL")
+        >>> obb.futures.curve(symbol="VX")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -178,7 +178,7 @@ class ROUTER_futures(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.futures.load(symbol="AAPL")
+        >>> obb.futures.load(symbol="ES")
         """  # noqa: E501
 
         inputs = filter_inputs(

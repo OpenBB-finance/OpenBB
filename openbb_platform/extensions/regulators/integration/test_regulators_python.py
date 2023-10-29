@@ -16,8 +16,8 @@ def obb(pytestconfig):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "TSLA"}),
-        ({"symbol": "SQQQ"}),
+        ({"symbol": "TSLA", "provider": "sec"}),
+        ({"symbol": "SQQQ", "provider": "sec"}),
     ],
 )
 @pytest.mark.integration
@@ -32,8 +32,30 @@ def test_regulators_sec_cik_map(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 3, "type": "8-K"}),
-        ({"cik": "0001067983", "limit": 3, "type": "10-Q"}),
+        ({"query": "berkshire hathaway", "provider": "sec"}),
+    ],
+)
+@pytest.mark.integration
+def test_regulators_sec_institutions_search(params, obb):
+    result = obb.regulators.sec.institutions_search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "limit": 3, "type": "8-K", "cik": None, "provider": "sec"}),
+        (
+            {
+                "cik": "0001067983",
+                "limit": 3,
+                "type": "10-Q",
+                "symbol": None,
+                "provider": "sec",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -46,7 +68,16 @@ def test_regulators_sec_filings(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "2022"}), ({"url": "https://xbrl.fasb.org/us-gaap/2014/entire/"})],
+    [
+        ({"query": "2022", "provider": "sec", "url": None}),
+        (
+            {
+                "query": "",
+                "provider": "sec",
+                "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_regulators_sec_schema_files(params, obb):
@@ -59,8 +90,8 @@ def test_regulators_sec_schema_files(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "0000909832"}),
-        ({"query": "0001067983"}),
+        ({"query": "0000909832", "provider": "sec"}),
+        ({"query": "0001067983", "provider": "sec"}),
     ],
 )
 @pytest.mark.integration
@@ -74,7 +105,7 @@ def test_regulators_sec_symbol_map(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({})],
+    [({"provider": "sec"})],
 )
 @pytest.mark.integration
 def test_regulators_sec_rss_litigation(params, obb):
@@ -86,7 +117,7 @@ def test_regulators_sec_rss_litigation(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "oil", "use_cache": False})],
+    [({"query": "oil", "use_cache": False, "provider": "sec"})],
 )
 @pytest.mark.integration
 def test_regulators_sec_sic_search(params, obb):

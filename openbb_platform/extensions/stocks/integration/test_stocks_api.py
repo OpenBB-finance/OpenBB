@@ -556,6 +556,7 @@ def test_stocks_fa_revseg(params, headers):
                 "symbol": "AAPL",
                 "type": "10-K",
                 "limit": 100,
+                "cik": None,
                 "use_cache": False,
                 "provider": "sec",
             }
@@ -943,7 +944,7 @@ def test_stocks_quote(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "AAPL", "provider": "cboe"})],
 )
 @pytest.mark.integration
 def test_stocks_info(params, headers):
@@ -958,7 +959,9 @@ def test_stocks_info(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 3})],
+    [
+        ({"symbol": "AAPL", "limit": 3, "provider": "sec", "skip_reports": None}),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_ftd(params, headers):
