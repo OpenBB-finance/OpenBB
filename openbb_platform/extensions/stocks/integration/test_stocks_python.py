@@ -902,14 +902,25 @@ def test_stocks_info(params, obb):
         (
             {
                 "provider": "intrinio",
+                "symbol": None,
                 "start_date": "2021-01-01",
                 "end_date": "2021-12-31",
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None
             }
         ),
         (
             {
                 "provider": "intrinio",
+                "symbol": None,
                 "start_date": "2023-01-01",
+                "end_date": None,
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None
             }
         ),
     ],

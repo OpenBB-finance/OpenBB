@@ -19,7 +19,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
+        ({"query": None, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
@@ -35,8 +35,19 @@ def test_etf_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "IOO", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
-        ({"symbol": "MISL", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
