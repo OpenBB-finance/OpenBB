@@ -908,7 +908,7 @@ def test_stocks_info(params, obb):
                 "limit": 300,
                 "status": None,
                 "min_value": None,
-                "max_value": None
+                "max_value": None,
             }
         ),
         (
@@ -920,7 +920,7 @@ def test_stocks_info(params, obb):
                 "limit": 300,
                 "status": None,
                 "min_value": None,
-                "max_value": None
+                "max_value": None,
             }
         ),
     ],
