@@ -24,7 +24,9 @@ keywords:
 - informed investors
 ---
 
-# Introduction
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB Bot Docs" />
 
 OpenBB Bot is a chatting bot for Discord and Telegram which provides access to high quality financial data for both individual investors and online communities.
 

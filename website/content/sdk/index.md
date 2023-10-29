@@ -15,7 +15,9 @@ keywords:
 - extensions
 ---
 
-# Introduction
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB SDK Docs" />
 
 OpenBB Platform is created and maintained by the OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers.
 
