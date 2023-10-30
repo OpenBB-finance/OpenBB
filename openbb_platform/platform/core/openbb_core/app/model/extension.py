@@ -15,17 +15,12 @@ class Extension:
         Parameters
         ----------
         name : str
-            Name of the provider.
+            Name of the extension.
         required_credentials : Optional[List[str]], optional
             List of required credentials, by default None
         """
         self.name = name
-        if required_credentials is None:
-            self.required_credentials: List = []
-        else:
-            self.required_credentials = []
-            for rq in required_credentials:
-                self.required_credentials.append(f"{self.name.lower()}_{rq}")
+        self.required_credentials = required_credentials or []
 
     @property
     def obbject_accessor(self) -> Callable:
@@ -39,7 +34,7 @@ class Extension:
         ```python
         from openbb_core.app.model.extension import Extension
 
-        ext = Extension(name="example", required_credentials=["api_key"])
+        ext = Extension(name="example", required_credentials=["some_api_key"])
 
         @ext.obbject_accessor
         class Example:
@@ -47,7 +42,7 @@ class Extension:
                 self._obbject = obbject
 
             def hello(self):
-                api_key = self._obbject._credentials.example_api_key
+                api_key = self._obbject._credentials.some_api_key
                 print(f"Hello, this is my credential: {api_key}!")
         ```
 
