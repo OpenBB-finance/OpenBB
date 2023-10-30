@@ -954,20 +954,31 @@ def test_stocks_info(params, headers):
         (
             {
                 "provider": "intrinio",
+                "symbol": None,
                 "start_date": "2021-01-01",
                 "end_date": "2021-12-31",
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
+                "symbol": None,
                 "start_date": "2023-01-01",
+                "end_date": None,
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_stocks_ipo_calendar(params, headers):
+def test_stocks_calendar_ipo(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

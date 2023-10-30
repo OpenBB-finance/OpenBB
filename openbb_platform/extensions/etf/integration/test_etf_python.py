@@ -37,15 +37,16 @@ def test_etf_search(params, obb):
     [
         (
             {
-                "provider": "intrinio",
+                "provider": "yfinance",
                 "start_date": "2021-01-01",
-                "end_date": "2021-12-31",
+                "end_date": "2021-12-31"
             }
         ),
         (
             {
-                "provider": "intrinio",
+                "provider": "yfinance",
                 "start_date": "2023-01-01",
+                "end_date": None
             }
         ),
     ],
