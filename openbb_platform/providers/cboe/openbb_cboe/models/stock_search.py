@@ -56,7 +56,7 @@ class CboeStockSearchFetcher(
         """Return the raw data from the CBOE endpoint."""
 
         data = {}
-        symbols = get_cboe_directory().reset_index()
+        symbols = get_cboe_directory().reset_index().replace("nan", None)
         target = "name" if query.is_symbol is False else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")
@@ -65,8 +65,6 @@ class CboeStockSearchFetcher(
         return data
 
     @staticmethod
-    def transform_data(
-        query: CboeStockSearchQueryParams, data: dict, **kwargs: Any
-    ) -> List[CboeStockSearchData]:
+    def transform_data(data: Dict, **kwargs: Any) -> List[CboeStockSearchData]:
         """Transform the data to the standard format."""
         return [CboeStockSearchData.model_validate(d) for d in data["results"]]
