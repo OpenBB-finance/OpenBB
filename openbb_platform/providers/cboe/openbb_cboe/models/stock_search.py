@@ -56,11 +56,7 @@ class CboeStockSearchFetcher(
         """Return the raw data from the CBOE endpoint."""
 
         data = {}
-<<<<<<< HEAD
-        symbols = get_cboe_directory().reset_index()
-=======
         symbols = get_cboe_directory().reset_index().replace("nan", None)
->>>>>>> 5c0b856816e091f17a5ee6804fe0bf3c12333f34
         target = "name" if query.is_symbol is False else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx].to_dict("records")
