@@ -2,7 +2,7 @@ from typing import List, Optional
 
 
 class Extension:
-    """Serves as extension entry point and must be created by each provider."""
+    """Serves as extension entry point and must be created by each extension package."""
 
     def __init__(
         self,
