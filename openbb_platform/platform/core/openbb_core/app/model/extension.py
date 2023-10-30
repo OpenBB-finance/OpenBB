@@ -28,7 +28,7 @@ class Extension:
                 self.required_credentials.append(f"{self.name.lower()}_{rq}")
 
     @property
-    def accessor(self) -> Callable:
+    def obbject_accessor(self) -> Callable:
         """Extend an OBBject, inspired by pandas.
 
         Set the following as entry_point in your extension .toml file and install it:
@@ -41,7 +41,7 @@ class Extension:
 
         entry_point = Extension(name="example", required_credentials=["api_key"])
 
-        @entry_point.accessor
+        @entry_point.obbject_accessor
         class Example:
             def __init__(self, obbject):
                 self._obbject = obbject
