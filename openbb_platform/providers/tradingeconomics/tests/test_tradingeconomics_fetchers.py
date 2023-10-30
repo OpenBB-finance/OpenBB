@@ -20,7 +20,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_te_earnings_calendar_fetcher(credentials=test_credentials):
+def test_tradingeconomics_economic_calendar_fetcher(credentials=test_credentials):
     params = {
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
