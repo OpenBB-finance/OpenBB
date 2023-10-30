@@ -18,6 +18,6 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction - Common - Menus | OpenBB Terminal Docs" />
+<HeadTitle title="Common Menus | OpenBB Terminal Docs" />
 
 Sub-menus containing features that can be applied across different asset classes are grouped here.  These are grouped in the directory trees under `common/`.

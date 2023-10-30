@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Technical Analysis - Common - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Technical Analysis - Common Menus | OpenBB Terminal Docs" />
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
