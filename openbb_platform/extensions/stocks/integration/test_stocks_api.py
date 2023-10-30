@@ -929,30 +929,6 @@ def test_stocks_search(params, headers):
     [
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
-        (
-            {
-                "symbol": "CLOV",
-                "timestamp": "2023-10-26",
-                "provider": "polygon",
-                "limit": 1000,
-                "timestamp_lte": None,
-                "timestamp_gte": None,
-                "timestamp_gt": None,
-                "timestamp_lt": None,
-            }
-        ),
-        (
-            {
-                "symbol": "CLOV",
-                "provider": "polygon",
-                "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
-                "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
-                "limit": 5000,
-                "timestamp_gte": None,
-                "timestamp_lte": None,
-                "timestamp": None,
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -993,6 +969,46 @@ def test_stocks_ftd(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/stocks/ftd?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "CLOV",
+                "timestamp": "2023-10-26",
+                "provider": "polygon",
+                "limit": 1000,
+                "timestamp_lte": None,
+                "timestamp_gte": None,
+                "timestamp_gt": None,
+                "timestamp_lt": None,
+            }
+        ),
+        (
+            {
+                "symbol": "CLOV",
+                "provider": "polygon",
+                "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
+                "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
+                "limit": 5000,
+                "timestamp_gte": None,
+                "timestamp_lte": None,
+                "timestamp": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_nbbo(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/nbbo?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

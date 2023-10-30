@@ -1,4 +1,4 @@
-"""Polygon Stock Quotes Model."""
+"""Polygon Stock NBBO Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
@@ -13,8 +13,8 @@ from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
-class PolygonStockQuoteQueryParams(StockQuoteQueryParams):
-    """Polygon Stock Quote query params."""
+class PolygonStockNBBOQueryParams(StockQuoteQueryParams):
+    """Polygon Stock NBBO query params."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
@@ -70,8 +70,8 @@ class PolygonStockQuoteQueryParams(StockQuoteQueryParams):
     )
 
 
-class PolygonStockQuoteData(Data):
-    """Polygon Stock Quote data."""
+class PolygonStockNBBOData(Data):
+    """Polygon Stock NBBO data."""
 
     ask_exchange: Optional[Union[int, str]] = Field(
         default=None,
@@ -157,17 +157,17 @@ class PolygonStockQuoteData(Data):
         )
 
 
-class PolygonStockQuoteFetcher(
-    Fetcher[PolygonStockQuoteQueryParams, List[PolygonStockQuoteData]]
+class PolygonStockNBBOFetcher(
+    Fetcher[PolygonStockNBBOQueryParams, List[PolygonStockNBBOData]]
 ):
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonStockQuoteQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonStockNBBOQueryParams:
         """Transform the query parameters."""
-        return PolygonStockQuoteQueryParams(**params)
+        return PolygonStockNBBOQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockQuoteQueryParams,
+        query: PolygonStockNBBOQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -222,6 +222,6 @@ class PolygonStockQuoteFetcher(
     def transform_data(
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[PolygonStockQuoteData]:
+    ) -> List[PolygonStockNBBOData]:
         """Transform the data."""
-        return [PolygonStockQuoteData.model_validate(d) for d in data]
+        return [PolygonStockNBBOData.model_validate(d) for d in data]

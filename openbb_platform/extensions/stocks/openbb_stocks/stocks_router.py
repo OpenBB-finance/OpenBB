@@ -99,6 +99,17 @@ def info(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="StockNBBO")
+def nbbo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Stock Quote. Load stock data for a specific ticker."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="StockFTD")
 def ftd(
     cc: CommandContext,
