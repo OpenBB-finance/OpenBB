@@ -29,6 +29,10 @@ keywords:
 - Altcoin season
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Introduction - Crypto - Menus | OpenBB Terminal Docs" />
+
 The Crypto menu has functions and sub-menus for the discovery and analysis of digtal assets.  Enter, from the main menu, by typing `crypto` into the Terminal.
 
 ![crypto](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/63ebe2a5-27c2-4ca5-bdfe-2c1d51dde69d)
