@@ -69,8 +69,6 @@ class Extension:
         """Register a custom accessor"""
 
         def decorator(accessor):
-            # Here we need to prevent the user from using provider names as accessor names
-
             if hasattr(cls, name):
                 warnings.warn(
                     f"registration of accessor '{repr(accessor)}' under name "
