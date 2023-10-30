@@ -42,6 +42,8 @@ class CredentialsLoader:
         formatted: Dict[str, Tuple[object, None]] = {}
         for origin, creds in required_credentials.items():
             for c in creds:
+                if c in formatted:
+                    raise ValueError(f"Credential '{c}' already in use.")
                 formatted[c] = (
                     Optional[OBBSecretStr],
                     Field(
@@ -72,8 +74,9 @@ class CredentialsLoader:
 
     def load(self) -> BaseModel:
         """Load credentials from providers"""
-        self.from_obbject()
+        # We load providers first to give them priority choosing credential names
         self.from_providers()
+        self.from_obbject()
         return create_model(  # type: ignore
             "Credentials",
             __config__=ConfigDict(validate_assignment=True),
