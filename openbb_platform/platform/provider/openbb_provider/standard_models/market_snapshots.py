@@ -6,6 +6,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class MarketSnapshotsQueryParams(QueryParams):
@@ -15,22 +16,22 @@ class MarketSnapshotsQueryParams(QueryParams):
 class MarketSnapshotsData(Data):
     """Market Snapshots Data"""
 
-    symbol: str = Field(description="The stock symbol.")
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     open: Optional[float] = Field(
-        description="The opening price of the stock on the current trading day.",
+        description=DATA_DESCRIPTIONS.get("open", ""),
         default=None,
     )
     high: Optional[float] = Field(
-        description="The highest price of the stock on the current trading day.",
+        description=DATA_DESCRIPTIONS.get("high", ""),
         default=None,
     )
     low: Optional[float] = Field(
-        description="The lowest price of the stock on the current trading day.",
+        description=DATA_DESCRIPTIONS.get("low", ""),
         default=None,
     )
     close: Optional[float] = Field(
-        description="The closing price of the stock on the current trading day.",
+        description=DATA_DESCRIPTIONS.get("close", ""),
         default=None,
     )
     prev_close: Optional[float] = Field(
@@ -41,5 +42,5 @@ class MarketSnapshotsData(Data):
         description="The change, as a percent.", default=None
     )
     volume: Optional[int] = Field(
-        description="The volume of the stock on the current trading day.", default=None
+        description=DATA_DESCRIPTIONS.get("volume", ""), default=None
     )

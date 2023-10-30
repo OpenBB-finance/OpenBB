@@ -964,4 +964,3 @@ def test_stocks_market_snapshots(params, obb):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
-    
