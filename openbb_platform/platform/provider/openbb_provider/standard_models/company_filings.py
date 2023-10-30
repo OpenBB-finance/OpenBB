@@ -117,9 +117,11 @@ SEC_FORM_TYPES = Literal[
 class CompanyFilingsQueryParams(QueryParams):
     """Company Filings Query Params."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
     limit: Optional[int] = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=300, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -127,7 +129,7 @@ class CompanyFilingsQueryParams(QueryParams):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
 
 
 class CompanyFilingsData(Data):
