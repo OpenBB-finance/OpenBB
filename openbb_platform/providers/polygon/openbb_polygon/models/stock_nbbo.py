@@ -4,26 +4,24 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_polygon.utils.helpers import get_data_one, map_exchanges, map_tape
-from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_quote import StockQuoteQueryParams
+from openbb_provider.standard_models.stock_nbbo import (
+    StockNBBOData,
+    StockNBBOQueryParams,
+)
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
-class PolygonStockNBBOQueryParams(StockQuoteQueryParams):
+class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
     """Polygon Stock NBBO query params."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " If a list is supplied, only the first symbol will be processed."
-    )
     limit: Optional[int] = Field(
         default=25,
         description=(
-            QUERY_DESCRIPTIONS.get("interval", "")
+            QUERY_DESCRIPTIONS.get("limit", "")
             + " Up to ten million records will be returned. Pagination occurs in groups of 50,000."
             + " Remaining limit values will always return 50,000 more records unless it is the last page."
             + " High volume tickers will require multiple max requests for a single day's NBBO records."
@@ -70,7 +68,7 @@ class PolygonStockNBBOQueryParams(StockQuoteQueryParams):
     )
 
 
-class PolygonStockNBBOData(Data):
+class PolygonStockNBBOData(StockNBBOData):
     """Polygon Stock NBBO data."""
 
     ask_exchange: Optional[Union[int, str]] = Field(
