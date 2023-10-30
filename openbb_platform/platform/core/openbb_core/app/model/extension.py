@@ -5,37 +5,7 @@ from typing import Callable, List, Optional
 class Extension:
     """Serves as extension entry point and must be created by each extension package.
 
-    Steps to create an extension:
-
-    1. Set the following as entry_point in your extension .toml file and install it:
-    ```toml
-        [tool.poetry.plugins."openbb_obbject_extension"]
-        example = "openbb_example:ext"
-    ```
-
-    2. Extension code:
-    ```python
-        from openbb_core.app.model.extension import Extension
-        ext = Extension(name="example", required_credentials=["some_api_key"])
-    ```
-
-    3. Optionally declare an obbject accessor, it will use the extension name:
-    ```python
-        @ext.obbject_accessor
-        class Example:
-            def __init__(self, obbject):
-                self._obbject = obbject
-
-            def hello(self):
-                api_key = self._obbject._credentials.some_api_key
-                print(f"Hello, this is my credential: {api_key}!")
-    ```
-
-    Usage:
-    >>> from openbb import obb
-    >>> obbject = obb.stock.load("AAPL")
-    >>> obbject.example.hello()
-    Hello, this is my credential: None!
+    See README.md for more information on how to create an extension.
     """
 
     def __init__(
