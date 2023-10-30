@@ -1,6 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import Any, Dict, Generic, List, Literal, Optional, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, Dict, Generic, List, Literal, Optional, TypeVar
 
 import pandas as pd
 from numpy import ndarray
@@ -204,8 +204,23 @@ class OBBject(Tagged, Generic[T]):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe().reset_index()  # type: ignore
-        return df.to_dict(orient=orient)
+        df = self.to_dataframe()  # type: ignore
+        transpose = False
+        if orient == "list":
+            transpose = True
+            if not isinstance(self.results, dict):
+                transpose = False
+            else:  # Only enter the loop if self.results is a dictionary
+                for key, value in self.results.items():
+                    if not isinstance(value, dict):
+                        transpose = False
+                        break
+        if transpose:
+            df = df.T
+        results = df.to_dict(orient=orient)
+        if orient == "list" and "index" in results:
+            del results["index"]
+        return results
 
     def to_chart(self, **kwargs):
         """
