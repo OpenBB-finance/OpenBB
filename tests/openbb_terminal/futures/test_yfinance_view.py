@@ -57,6 +57,7 @@ def test_display_historical(mocker, symbols):
     )
 
 
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(

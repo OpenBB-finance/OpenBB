@@ -17,17 +17,19 @@ The OpenBB Platform provides a convenient way to access raw financial data from 
 The command below provides access to the core functionalities behind the OpenBB Platform.
 
 ```bash
-pip install openbb==4.0.0a2
+pip install openbb==4.0.0a4
 ```
+
+> Note that the version `4.0.0a4` is an example and you should replace it with the latest version available.
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
 # Install single extension, e.g. openbb-charting
-pip install openbb[charting]==4.0.0a2
+pip install openbb[charting]==4.0.0a4
 
 # Install all available extensions
-pip install openbb[all]==4.0.0a2
+pip install openbb[all]==4.0.0a4
 ``````
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
@@ -100,7 +102,7 @@ Populate this file with the following template and replace the values with your 
 The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
 
 ```bash
-uvicorn openbb_core.api.rest_api:app
+uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.

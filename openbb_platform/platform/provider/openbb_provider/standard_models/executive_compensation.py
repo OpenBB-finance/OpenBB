@@ -7,11 +7,11 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, NonNegativeFloat, validator
+from pydantic import Field, NonNegativeFloat, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class ExecutiveCompensationQueryParams(QueryParams):
@@ -19,7 +19,7 @@ class ExecutiveCompensationQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -30,7 +30,7 @@ class ExecutiveCompensationQueryParams(QueryParams):
 class ExecutiveCompensationData(Data):
     """Return Executive Compensation Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(
         default=None, description="Central Index Key (CIK) of the company."
     )
@@ -50,7 +50,7 @@ class ExecutiveCompensationData(Data):
     total: NonNegativeFloat = Field(description="Total compensation of the executive.")
     url: str = Field(description="URL of the filing data.")
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

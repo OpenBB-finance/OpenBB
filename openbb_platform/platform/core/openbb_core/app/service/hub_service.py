@@ -13,6 +13,7 @@ from openbb_core.app.model.hub.hub_user_settings import HubUserSettings
 from openbb_core.app.model.profile import Profile
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.env import Env
+from pydantic import SecretStr
 from requests import get, post, put
 
 
@@ -81,7 +82,6 @@ class HubService:
             hub_user_settings = self._get_user_settings(self._session)
             if hub_user_settings:
                 profile = Profile(
-                    active=True,
                     hub_session=self._session,
                 )
                 credentials = self.hub2sdk(hub_user_settings)
@@ -124,9 +124,9 @@ class HubService:
         raise HTTPException(status_code, detail)
 
     def _get_session_from_sdk_token(self, token: str) -> HubSession:
-        """Get session from SDK personal access token."""
+        """Get session from Platform personal access token."""
         if not token:
-            raise OpenBBError("SDK personal access token not found.")
+            raise OpenBBError("Platform personal access token not found.")
 
         self.check_token_expiration(token)
 
@@ -155,7 +155,7 @@ class HubService:
 
     def _post_logout(self, session: HubSession) -> bool:
         """Post logout."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -176,7 +176,7 @@ class HubService:
 
     def _get_user_settings(self, session: HubSession) -> HubUserSettings:
         """Get user settings."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -197,7 +197,7 @@ class HubService:
         self, session: HubSession, settings: HubUserSettings
     ) -> bool:
         """Put user settings."""
-        access_token = session.access_token
+        access_token = session.access_token.get_secret_value()
         token_type = session.token_type
         authorization = f"{token_type.title()} {access_token}"
 
@@ -216,7 +216,7 @@ class HubService:
 
     @classmethod
     def hub2sdk(cls, settings: HubUserSettings) -> Credentials:
-        """Convert Hub user settings to SDK models."""
+        """Convert Hub user settings to Platform models."""
         credentials = Credentials(
             alpha_vantage_api_key=settings.features_keys.API_KEY_ALPHAVANTAGE,
             fred_api_key=settings.features_keys.API_FRED_KEY,
@@ -229,10 +229,11 @@ class HubService:
 
     @classmethod
     def sdk2hub(cls, credentials: Credentials) -> HubUserSettings:
-        """Convert SDK models to Hub user settings."""
+        """Convert Platform models to Hub user settings."""
 
         def get_cred(cred: str) -> Optional[str]:
-            return getattr(credentials, cred, None)
+            secret_str: Optional[SecretStr] = getattr(credentials, cred, None)
+            return secret_str.get_secret_value() if secret_str else None
 
         features_keys = FeaturesKeys(
             API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
@@ -257,6 +258,6 @@ class HubService:
                 options={"verify_signature": False, "verify_exp": True},
             )
         except ExpiredSignatureError as e:
-            raise OpenBBError("SDK personal access token expired.") from e
+            raise OpenBBError("Platform personal access token expired.") from e
         except JWTError as e:
-            raise OpenBBError("Failed to decode SDK token.") from e
+            raise OpenBBError("Failed to decode Platform token.") from e

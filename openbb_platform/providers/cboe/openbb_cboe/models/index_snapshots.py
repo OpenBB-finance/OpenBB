@@ -128,9 +128,16 @@ class CboeIndexSnapshotsFetcher(
             data = data[list(EUR_INDEX_COLUMNS.keys())]
             data.columns = list(EUR_INDEX_COLUMNS.values())
 
+        data["change_percent"] = data["change_percent"].fillna(0.0)
+
         return data.reset_index().to_dict("records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeIndexSnapshotsData]:
+    def transform_data(
+        query: CboeIndexSnapshotsQueryParams, data: dict, **kwargs: Any
+    ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
+        for item in data:
+            item["name"] = item["name"].replace("/", "-")
+
         return [CboeIndexSnapshotsData.model_validate(d) for d in data]

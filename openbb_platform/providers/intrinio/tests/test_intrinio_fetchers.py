@@ -13,7 +13,9 @@ from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetch
 from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -30,8 +32,9 @@ def vcr_config():
 def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
-        "start_date": date(2023, 1, 23),
-        "end_date": date(2023, 5, 23),
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+        "interval": "1d",
     }
 
     fetcher = IntrinioStockHistoricalFetcher()

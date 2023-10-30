@@ -142,7 +142,9 @@ class PolygonBalanceSheetFetcher(
 
     @staticmethod
     def transform_data(
+        query: PolygonBalanceSheetQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[PolygonBalanceSheetData]:
         transformed_data = []
 

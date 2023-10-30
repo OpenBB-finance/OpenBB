@@ -3,7 +3,6 @@
 # IMPORT STANDARD
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_cboe.utils.helpers import get_settlement_prices
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.futures_curve import (
@@ -41,13 +40,13 @@ class CboeFuturesCurveFetcher(
         query: CboeFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
 
         query.symbol = query.symbol.upper()
         FUTURES = get_settlement_prices(settlement_date=query.date)
         if len(FUTURES) == 0:
-            return pd.DataFrame()
+            return []
 
         if query.symbol not in FUTURES["product"].unique().tolist():
             raise RuntimeError(
@@ -64,6 +63,8 @@ class CboeFuturesCurveFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        query: CboeFuturesCurveQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[CboeFuturesCurveData]:
         return [CboeFuturesCurveData.model_validate(d) for d in data]

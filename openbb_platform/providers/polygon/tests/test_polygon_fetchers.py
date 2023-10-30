@@ -15,7 +15,9 @@ from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -34,6 +36,7 @@ def test_polygon_stock_historical_fetcher(credentials=test_credentials):
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
+        "interval": "1d",
     }
 
     fetcher = PolygonStockHistoricalFetcher()

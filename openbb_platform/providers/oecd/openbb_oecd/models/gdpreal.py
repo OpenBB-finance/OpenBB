@@ -62,7 +62,11 @@ class OECDGDPRealFetcher(Fetcher[OECDGDPRealQueryParams, List[OECDGDPRealData]])
         **kwargs: Any,
     ) -> dict:
         units = {"qoq": "PC_CHGPP", "yoy": "PC_CHGPY", "idx": "IDX"}[query.units]
-        url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.{'VOLIDX' if units == 'IDX' else 'TOT'}.{units}.Q/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
+        url = (
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.QGDP.{'VOLIDX' if units == 'IDX' else 'TOT'}"
+            f".{units}.Q/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en"
+            f"&startPeriod={query.start_date}&endPeriod={query.end_date}"
+        )
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
         # Sometimes there is weird unicode characters in the column names, so we need to rename them.
         # Even changing the encoding on the fetch doesn't seem to help.
@@ -80,5 +84,7 @@ class OECDGDPRealFetcher(Fetcher[OECDGDPRealQueryParams, List[OECDGDPRealData]])
         return data_df.to_dict(orient="records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[OECDGDPRealData]:
+    def transform_data(
+        query: OECDGDPRealQueryParams, data: dict, **kwargs: Any
+    ) -> List[OECDGDPRealData]:
         return [OECDGDPRealData.model_validate(d) for d in data]

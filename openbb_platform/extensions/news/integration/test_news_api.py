@@ -1,24 +1,17 @@
-import base64
-
 import pytest
 import requests
-from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
 def headers():
-    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
-    userpass_bytes = userpass.encode("ascii")
-    base64_bytes = base64.b64encode(userpass_bytes)
-
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+    return {}
 
 
 @pytest.mark.parametrize(
     "params",
     [
-        ({"limit": 20}),
+        ({"limit": 20, "provider": "benzinga"}),
         (
             {
                 "display": "full",
@@ -42,13 +35,22 @@ def headers():
         (
             {
                 "provider": "fmp",
-                "limit": 20,
+                "limit": 30,
             }
         ),
         (
             {
                 "provider": "intrinio",
                 "limit": 20,
+            }
+        ),
+        (
+            {
+                "provider": "biztoc",
+                "filter": "tag",
+                "tag": "federalreserve",
+                "source": "bloomberg",
+                "term": "MSFT",
             }
         ),
     ],

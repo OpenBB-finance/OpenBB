@@ -1,6 +1,6 @@
 # OpenBB FRED Provider
 
-This extension integrates the [FRED](https://fred.stlouisfed.org/docs/api/fred/) data provider into the OpenBB SDK.
+This extension integrates the [FRED](https://fred.stlouisfed.org/docs/api/fred/) data provider into the OpenBB Platform.
 
 ## Installation
 

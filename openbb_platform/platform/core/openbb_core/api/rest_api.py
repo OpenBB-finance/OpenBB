@@ -15,8 +15,8 @@ from openbb_core.env import Env
 logger = logging.getLogger("uvicorn.error")
 
 app = FastAPI(
-    title="OpenBB SDK API",
-    description="This is the OpenBB SDK API.",
+    title="OpenBB Platform API",
+    description="This is the OpenBB Platform API.",
     version="0.0.1",
     terms_of_service="http://example.com/terms/",
     contact={

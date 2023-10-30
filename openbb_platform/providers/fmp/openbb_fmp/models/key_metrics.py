@@ -94,6 +94,8 @@ class FMPKeyMetricsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPKeyMetricsData]:
+    def transform_data(
+        query: FMPKeyMetricsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPKeyMetricsData]:
         """Return the transformed data."""
         return [FMPKeyMetricsData.model_validate(d) for d in data]

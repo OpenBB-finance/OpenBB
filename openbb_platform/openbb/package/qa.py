@@ -3,9 +3,11 @@
 from typing import List, Literal, Union
 
 import pandas
+import typing_extensions
 from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 from openbb_qa.qa_models import (
@@ -15,8 +17,6 @@ from openbb_qa.qa_models import (
     SummaryModel,
     UnitRootModel,
 )
-from pydantic import validate_call
-from typing_extensions import Annotated
 
 
 class ROUTER_qa(Container):
@@ -36,7 +36,7 @@ class ROUTER_qa(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def capm(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[CAPMModel]:
@@ -52,12 +52,12 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def kurtosis(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
         """Get the Kurtosis.
 
@@ -87,7 +87,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def normality(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[NormalityModel]:
@@ -122,7 +122,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def om(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -161,13 +161,13 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def quantile(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
-        quantile_pct: Annotated[float, Ge(ge=0)] = 0.5,
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
+        quantile_pct: typing_extensions.Annotated[float, Ge(ge=0)] = 0.5,
     ) -> OBBject[List[Data]]:
         """Get Quantile.
 
@@ -200,13 +200,13 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def sh(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         rfr: float = 0.0,
-        window: Annotated[int, Gt(gt=0)] = 252,
+        window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
     ) -> OBBject[List[Data]]:
         """Get Sharpe Ratio.
 
@@ -239,12 +239,12 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def skew(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        window: Annotated[int, Gt(gt=0)],
+        window: typing_extensions.Annotated[int, Gt(gt=0)],
     ) -> OBBject[List[Data]]:
         """Get Skewness.
 
@@ -274,13 +274,13 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def so(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
         target_return: float = 0.0,
-        window: Annotated[int, Gt(gt=0)] = 252,
+        window: typing_extensions.Annotated[int, Gt(gt=0)] = 252,
         adjusted: bool = False,
     ) -> OBBject[List[Data]]:
         """Get Sortino Ratio.
@@ -319,7 +319,7 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def summary(
         self, data: Union[List[Data], pandas.DataFrame], target: str
     ) -> OBBject[SummaryModel]:
@@ -348,12 +348,12 @@ class ROUTER_qa(Container):
             **inputs,
         )
 
-    @validate_call(config=dict(arbitrary_types_allowed=True))
+    @validate(config=dict(arbitrary_types_allowed=True))
     def unitroot(
         self,
         data: Union[List[Data], pandas.DataFrame],
         target: str,
-        fuller_reg: Literal["c", "ct", "ctt", "nc"] = "c",
+        fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
         kpss_reg: Literal["c", "ct"] = "c",
     ) -> OBBject[UnitRootModel]:
         """Get Unit Root Test.

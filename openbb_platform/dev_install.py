@@ -1,3 +1,4 @@
+"""Install for development script."""
 # noqa: S603,PLW1510,T201
 import subprocess
 import sys
@@ -21,9 +22,12 @@ openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
+openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-oecd = { path = "./providers/oecd", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-forex = { path = "./extensions/forex", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
@@ -31,10 +35,10 @@ openbb-stocks = { path = "./extensions/stocks", develop = true }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
+openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
-openbb-oecd= { path = "./providers/oecd", optional = true, develop = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
@@ -51,7 +55,7 @@ pyproject_toml["tool"]["poetry"]["dependencies"] = toml.loads(LOCAL_DEPS)["tool"
 TEMP_PYPROJECT = toml.dumps(pyproject_toml)
 
 
-def install_local(extras: bool = False):
+def install_local(_extras: bool = False):
     """Install the Platform locally for development purposes.
 
     Installs the Platform in editable mode, instead of copying the source code to
@@ -60,12 +64,12 @@ def install_local(extras: bool = False):
 
     Parameters
     ----------
-    extras : bool, optional
+    _extras : bool, optional
         Whether to install the Platform with the extra dependencies, by default False
     """
-    orginal_lock = LOCK.read_text()
-    orginal_pyproject = PYPROJECT.read_text()
-    extras_args = ["-E", "all"] if extras else []
+    original_lock = LOCK.read_text()
+    original_pyproject = PYPROJECT.read_text()
+    extras_args = ["-E", "all"] if _extras else []
 
     try:
         # we create a temporary pyproject.toml
@@ -73,10 +77,10 @@ def install_local(extras: bool = False):
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(  # noqa: PLW1510
-            CMD + ["lock", "--no-update"], cwd=PLATFORM_PATH  # noqa: S603
+            CMD + ["lock", "--no-update"], cwd=PLATFORM_PATH, check=True  # noqa: S603
         )
         subprocess.run(  # noqa: PLW1510
-            CMD + ["install"] + extras_args, cwd=PLATFORM_PATH  # noqa: S603
+            CMD + ["install"] + extras_args, cwd=PLATFORM_PATH, check=True  # noqa: S603
         )
 
     except (Exception, KeyboardInterrupt) as e:
@@ -85,14 +89,17 @@ def install_local(extras: bool = False):
 
     # we restore the original pyproject.toml
     with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-        f.write(orginal_pyproject)
+        f.write(original_pyproject)
 
     # we restore the original poetry.lock
     with open(LOCK, "w", encoding="utf-8", newline="\n") as f:
-        f.write(orginal_lock)
+        f.write(original_lock)
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
+
+    # pylint: disable=use-a-generator
     extras = any([arg.lower() in ["-e", "--extras"] for arg in args])
+
     install_local(extras)

@@ -33,7 +33,7 @@ class InstitutionalOwnershipQueryParams(QueryParams):
 class InstitutionalOwnershipData(Data):
     """Institutional Ownership Data."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(default=None, description="CIK of the company.")
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     investors_holding: int = Field(description="Number of investors holding the stock.")

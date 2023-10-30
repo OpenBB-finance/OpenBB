@@ -14,7 +14,10 @@ class GDPRealQueryParams(QueryParams):
 
     units: Literal["idx", "qoq", "yoy"] = Field(
         default="yoy",
-        description="Units to get real GDP in.  Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
+        description=QUERY_DESCRIPTIONS.get("units", "")
+        + " Either idx (indicating 2015=100), "
+        + "qoq (previous period) "
+        + "or yoy (same period, previous year).)",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -33,3 +36,6 @@ class GDPRealData(Data):
     value: Optional[float] = Field(
         default=None, description="Nominal GDP value on the date."
     )
+
+
+QUERY_DESCRIPTIONS

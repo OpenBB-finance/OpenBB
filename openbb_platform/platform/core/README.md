@@ -17,6 +17,8 @@
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
       - [System settings](#system-settings)
+      - [Preferences](#preferences)
+        - [Available preferences and its descriptions](#available-preferences-and-its-descriptions)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
@@ -26,13 +28,13 @@
     - [5.1 HTTPS](#51-https)
     - [5.2 Docker](#52-docker)
     - [5.3 Authentication](#53-authentication)
-        - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
-        - [5.3.2 Custom authentication](#532-custom-authentication)
+      - [5.3.1 HTTP Basic Auth](#531-http-basic-auth)
+      - [5.3.2 Custom authentication](#532-custom-authentication)
   - [6. Front-end typing](#6-front-end-typing)
 
 ## 1. Introduction
 
-This directory contains the OpenBB SDK's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
+This directory contains the OpenBB Platform's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
 
 
 ## 2. How to install?
@@ -258,6 +260,47 @@ from openbb import obb
 obb.system
 ```
 
+#### Preferences
+
+Check your preferences by adjusting the `user_settings.json` file inside your **home** directory.
+If you want to proceed with the default settings, you don't have to touch this file.
+
+Here is an example of how your `user_settings.json` file can look like:
+
+```json
+{
+    "chart_style": "light",
+    "table_style": "light",
+    "plot_enable_pywry": true,
+    "plot_pywry_width": 800,
+    "plot_pywry_height": 800,
+    "request_timeout": 30,
+    "metadata": false,
+    "output_type": "dataframe"
+}
+```
+
+> Note that the user preferences shouldn't be confused with environment variables.
+
+##### Available preferences and its descriptions
+
+|Preference           |Default                         |Description                                                                                                                                                                                                                                                                                                                  |
+|---------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|data_directory       |/home/OpenBBUserData            |When launching the application for the first time  this directory will be created. It serves as the default location where the application stores usage artifacts  such as logs and exports.                                                                                                                                 |
+|export_directory     |/home/OpenBBUserData/exports    |The OpenBB Charting Extension provides the capability to export images in various formats. This is the directory where it attempts to save such exports.                                                                                                                                                             |
+|user_styles_directory|/home/OpenBBUserData/styles/user|The OpenBB Charting Extension supports custom stylization. This directory is the location where it looks for user-defined styles. If no user styles are found in this directory  the application will proceed with the default styles.                                                                               |
+|charting_extension   |openbb_charting                 |Name of the charting extension to be used with the application.                                                                                                                                                                                                                                                              |
+|chart_style          |dark                            |The default color style to use with the OpenBB Charting Extension plots. Options include "dark" and "light".                                                                                                                                                                                                                 |
+|plot_enable_pywry    |True                            |Whether the application should enable PyWry. If PyWry is disabled  the image will open in your default browser  otherwise  it will be displayed within your editor or in a separate PyWry window.                                                                                                                            |
+|plot_pywry_width     |1400                            |PyWry window width.                                                                                                                                                                                                                                                                                                          |
+|plot_pywry_height    |762                             |PyWry window height.                                                                                                                                                                                                                                                                                                         |
+|plot_open_export     |False                           |Controls whether the "Save As" window should pop up as soon as the image is displayed.                                                                                                                                                                                                                                       |
+|table_style          |dark                            |The default color style to use with the OpenBB Charting Extension tables. Options are "dark" and "light".                                                                                                                                                                                                                    |
+|request_timeout      |15                              |Specifies the timeout duration for HTTP requests.                                                                                                                                                                                                                                                                            |
+|metadata             |True                            |Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.|
+|output_type          |OBBject                         |Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe`, `numpy`  or `polars`  will render the application's API non-functional.                                                                        |
+
+
 #### Coverage
 
 Obtain the coverage of providers and commands.
@@ -297,7 +340,7 @@ from openbb import obb
 # Login with personal access token
 obb.account.login(pat="your_pat", remember_me=True)  # pragma: allowlist secret
 
-# Login with email, password or SDK token
+# Login with email, password or Platform token
 obb.account.login(email="your_email", password="your_password", remember_me=True)  # pragma: allowlist secret
 
 # Change a credential
@@ -313,11 +356,13 @@ obb.account.refresh()
 obb.account.logout()
 ```
 
+> Note: credentials are stored as Pydantic `SecretStr` objects. This means that they will be masked when printed or displayed in a Jupyter Notebook. To get the actual value, use `obb.user.credentials.polygon_api_key.get_secret_value()`.
+
 ### 4.1.4. Command execution
 
 How do we execute commands?
 
-OpenBB SDK core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
+OpenBB Platform core is a REST API powered by FastAPI. We use this feature to run commands both in a web server setting and also in the `openbb` python package.
 
 If you are using the `openbb` package, running the command below triggers a "request" to the `CommandRunner` class. The "request" will be similar to the one found in [4.2 Dynamic version](#42-dynamic-version). This will hit the endpoint matching the command and return the result.
 
@@ -335,7 +380,7 @@ obb.stocks.load(
 
 ### 4.1.5. Environment variables
 
-The OS environment is only read once before the program starts, so make sure you change the variable before importing the SDK. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
+The OS environment is only read once before the program starts, so make sure you change the variable before importing the Platform. We use the prefix "OPENBB_" to avoid polluting the environment (no pun intended).
 
 To apply an environment variable use one of the following:
 
@@ -400,7 +445,7 @@ extra: ...              # Extra info.
 
 ## 5. REST API
 
-OpenBB SDK comes with a ready to use Rest API built with FastAPI. Start the application using this command:
+OpenBB Platform comes with a ready to use Rest API built with FastAPI. Start the application using this command:
 
 ```bash
 uvicorn openbb_core.api.rest_api:app --reload

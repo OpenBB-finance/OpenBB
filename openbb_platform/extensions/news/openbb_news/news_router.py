@@ -22,5 +22,5 @@ def globalnews(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Global News."""
+    """Global News. Global news data."""
     return OBBject(results=Query(**locals()).execute())

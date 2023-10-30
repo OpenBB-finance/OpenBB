@@ -9,7 +9,7 @@ from openbb_provider.standard_models.ameribor_rates import (
     AMERIBORData,
     AMERIBORQueryParams,
 )
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 AMERIBOR_PARAMETER_TO_FRED_ID = {
     "overnight": "AMERIBOR",
@@ -49,7 +49,7 @@ class FREDAMERIBORData(AMERIBORData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
@@ -81,6 +81,8 @@ class FREDAMERIBORFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDAMERIBORData]]]:
+    def transform_data(
+        query: FREDAMERIBORQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDAMERIBORData]]]:
         keys = ["date", "value"]
         return [FREDAMERIBORData(**{k: x[k] for k in keys}) for x in data]

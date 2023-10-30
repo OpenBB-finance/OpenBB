@@ -14,6 +14,7 @@ from openbb_core.app.service.hub_service import (
     HubUserSettings,
     OpenBBError,
 )
+from pydantic import SecretStr
 
 
 @pytest.fixture
@@ -41,7 +42,7 @@ def test_connect_with_email_password():
 
 
 def test_connect_with_sdk_token():
-    """Test connect with SDK personal access token."""
+    """Test connect with Platform personal access token."""
     mock_hub_session = MagicMock(spec=HubSession)
     with patch(
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
@@ -86,7 +87,7 @@ def test_get_session_from_email_password():
 
 
 def test_get_session_from_sdk_token():
-    """Test get session from SDK personal access token."""
+    """Test get session from Platform personal access token."""
 
     with patch(
         "openbb_core.app.service.hub_service.post",
@@ -126,7 +127,7 @@ def test_disconnect():
         ),
     ):
         mock_hub_session = MagicMock(
-            spec=HubSession, access_token="token", token_type="Bearer"
+            spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
         hub_service = HubService(session=mock_hub_session)
 
@@ -144,7 +145,7 @@ def test_get_user_settings():
         ),
     ):
         mock_hub_session = MagicMock(
-            spec=HubSession, access_token="token", token_type="Bearer"
+            spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
 
         user_settings = HubService()._get_user_settings(mock_hub_session)
@@ -161,7 +162,7 @@ def test_put_user_settings():
         ),
     ):
         mock_hub_session = MagicMock(
-            spec=HubSession, access_token="token", token_type="Bearer"
+            spec=HubSession, access_token=SecretStr("token"), token_type="Bearer"
         )
         mock_user_settings = MagicMock(spec=HubUserSettings)
 
@@ -182,17 +183,17 @@ def test_hub2sdk():
 
     credentials = HubService.hub2sdk(mock_user_settings)
     assert isinstance(credentials, Credentials)
-    assert credentials.fmp_api_key == "fmp"
-    assert credentials.polygon_api_key == "polygon"
-    assert credentials.fred_api_key == "fred"
+    assert credentials.fmp_api_key.get_secret_value() == "fmp"
+    assert credentials.polygon_api_key.get_secret_value() == "polygon"
+    assert credentials.fred_api_key.get_secret_value() == "fred"
 
 
 def test_sdk2hub():
     """Test sdk2hub."""
     mock_credentials = MagicMock(spec=Credentials)
-    mock_credentials.fmp_api_key = "fmp"
-    mock_credentials.polygon_api_key = "polygon"
-    mock_credentials.fred_api_key = "fred"
+    mock_credentials.fmp_api_key = SecretStr("fmp")
+    mock_credentials.polygon_api_key = SecretStr("polygon")
+    mock_credentials.fred_api_key = SecretStr("fred")
 
     user_settings = HubService.sdk2hub(mock_credentials)
     assert isinstance(user_settings, HubUserSettings)

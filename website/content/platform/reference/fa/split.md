@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # split
 
-Historical Stock Splits.
+Historical Stock Splits. Historical stock splits data.
 
 ```python wordwrap
 split(symbol: Union[str, List[str]], provider: Literal[str] = fmp)

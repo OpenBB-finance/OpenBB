@@ -25,7 +25,7 @@ def const(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the constituents of an index."""
+    """Major Indices Constituents. Constituents of an index."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -36,7 +36,7 @@ def cpi(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """CPI."""
+    """CPI. Consumer Price Index."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -47,7 +47,7 @@ def index(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get historical  levels for an index."""
+    """Major Indices Historical. Historical  levels for an index."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -58,7 +58,7 @@ def european_index(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get historical close values for select European indices."""
+    """European Index Historical. Historical close values for selected European indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -80,7 +80,7 @@ def available_indices(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Lists of available indices from a provider."""
+    """Available Indices. Available indices for a given provider."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -91,7 +91,7 @@ def risk(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Market Risk Premium."""
+    """Market Risk Premium. Historical market risk premium."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -102,7 +102,7 @@ def index_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Search for indices."""
+    """Index Search. Search for indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -113,7 +113,7 @@ def index_snapshots(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get current  levels for all indices from a provider."""
+    """Index Snapshots. Current levels for all indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -124,7 +124,10 @@ def cot_search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Fuzzy search and list of curated Commitment of Traders Reports series information."""
+    """
+    Curated Commitment of Traders Reports.
+    Fuzzy search and list of curated Commitment of Traders Reports series information.
+    """
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -135,7 +138,7 @@ def cot(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Lookup Commitment of Traders Reports by series ID."""
+    """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -146,7 +149,7 @@ def sp500_multiples(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical S&P 500 multiples and Shiller PE ratios."""
+    """S&P 500 Multiples. Historical S&P 500 multiples and Shiller PE ratios."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -157,7 +160,7 @@ def fred_index(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Fred Historical."""
+    """Fred Historical. Historical close values for selected Fred indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -185,6 +188,17 @@ def gdpreal(
 
 @router.command(model="GDPForecast")
 def gdpforecast(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """GDP Data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EconomicCalendar")
+def econcal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

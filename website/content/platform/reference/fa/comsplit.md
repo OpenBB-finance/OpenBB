@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # comsplit
 
-Stock Split Calendar.
+Stock Split Calendar. Show Stock Split Calendar.
 
 ```python wordwrap
 comsplit(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fmp)

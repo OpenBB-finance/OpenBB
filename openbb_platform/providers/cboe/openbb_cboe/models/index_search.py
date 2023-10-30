@@ -28,33 +28,42 @@ class CboeIndexSearchData(IndexSearchData):
     """CBOE Company Search Data."""
 
     isin: Optional[str] = Field(
-        description="ISIN code for the index. Valid only for European indices."
+        description="ISIN code for the index. Valid only for European indices.",
+        default=None,
     )
     region: Optional[str] = Field(
-        description="Region for the index. Valid only for European indices"
+        description="Region for the index. Valid only for European indices",
+        default=None,
     )
-    description: Optional[str] = Field(description="Description for the index.")
+    description: Optional[str] = Field(
+        description="Description for the index.", default=None
+    )
     data_delay: Optional[int] = Field(
-        description="Data delay for the index. Valid only for US indices."
+        description="Data delay for the index. Valid only for US indices.", default=None
     )
-    currency: Optional[str] = Field(description="Currency for the index.")
+    currency: Optional[str] = Field(description="Currency for the index.", default=None)
     time_zone: Optional[str] = Field(
-        description="Time zone for the index. Valid only for US indices."
+        description="Time zone for the index. Valid only for US indices.", default=None
     )
     open_time: Optional[time] = Field(
-        description="Opening time for the index. Valid only for US indices."
+        description="Opening time for the index. Valid only for US indices.",
+        default=None,
     )
     close_time: Optional[time] = Field(
-        description="Closing time for the index. Valid only for US indices."
+        description="Closing time for the index. Valid only for US indices.",
+        default=None,
     )
     tick_days: Optional[str] = Field(
-        description="The trading days for the index. Valid only for US indices."
+        description="The trading days for the index. Valid only for US indices.",
+        default=None,
     )
     tick_frequency: Optional[str] = Field(
-        description="Tick frequency for the index. Valid only for US indices."
+        description="Tick frequency for the index. Valid only for US indices.",
+        default=None,
     )
     tick_period: Optional[str] = Field(
-        description="Tick period for the index. Valid only for US indices."
+        description="Tick period for the index. Valid only for US indices.",
+        default=None,
     )
 
 
@@ -84,13 +93,15 @@ class CboeIndexSearchFetcher(
         if query.europe is False:
             symbols = get_cboe_index_directory().reset_index()
 
-        target = "name" if not query.symbol else "symbol"
+        target = "name" if not query.is_symbol else "symbol"
         idx = symbols[target].str.contains(query.query, case=False)
         result = symbols[idx]
 
         return result.to_dict("records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[CboeIndexSearchData]:
+    def transform_data(
+        query: CboeIndexSearchQueryParams, data: dict, **kwargs: Any
+    ) -> List[CboeIndexSearchData]:
         """Transform the data to the standard format."""
         return [CboeIndexSearchData.model_validate(d) for d in data]

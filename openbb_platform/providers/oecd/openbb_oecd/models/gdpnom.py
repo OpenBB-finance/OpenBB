@@ -53,7 +53,11 @@ class OECDGDPNomFetcher(Fetcher[OECDGDPNomQueryParams, List[OECDGDPNomData]]):
         **kwargs: Any,
     ) -> dict:
         unit = "MLN_USD" if query.units == "usd" else "USD_CAP"
-        url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{unit}.A/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
+        url = (
+            f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.{unit}.A/OECD"
+            "?contentType=csv&detail=code&separator=comma&csv-lang=en"
+            f"&startPeriod={query.start_date}&endPeriod={query.end_date}"
+        )
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
         # Sometimes there is weird unicode characters in the column names, so we need to rename them.
         # Even changing the encoding on the fetch doesn't seem to help.
@@ -71,5 +75,7 @@ class OECDGDPNomFetcher(Fetcher[OECDGDPNomQueryParams, List[OECDGDPNomData]]):
         return data_df.to_dict(orient="records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[OECDGDPNomData]:
+    def transform_data(
+        query: OECDGDPNomQueryParams, data: dict, **kwargs: Any
+    ) -> List[OECDGDPNomData]:
         return [OECDGDPNomData.model_validate(d) for d in data]

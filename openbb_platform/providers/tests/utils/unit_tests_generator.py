@@ -85,7 +85,7 @@ def write_test_credentials(path: str, provider: str) -> None:
     )
 
     template = """
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
 
 
 @pytest.fixture(scope="module")

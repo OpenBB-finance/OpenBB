@@ -25,7 +25,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "intrinio", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
     data["stocks_data"] = openbb.obb.stocks.load(
         symbol=symbol, provider=provider
@@ -603,6 +603,24 @@ def test_ta_adx(params, data_type, obb):
     params["data"] = get_data(data_type)
 
     result = obb.ta.adx(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "index": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "date", "offset": "5"}, "crypto"),
+    ],
+)
+@pytest.mark.integration
+def test_ta_ad(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.ta.ad(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -20,7 +20,9 @@ from openbb_cboe.models.stock_info import CboeStockInfoFetcher
 from openbb_cboe.models.stock_search import CboeStockSearchFetcher
 from openbb_core.app.service.user_service import UserService
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -55,7 +57,12 @@ def test_cboe_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_stock_historical_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+        "interval": "1d",
+    }
 
     fetcher = CboeStockHistoricalFetcher()
     result = fetcher.test(params, credentials)

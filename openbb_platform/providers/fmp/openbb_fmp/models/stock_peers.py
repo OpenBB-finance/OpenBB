@@ -50,6 +50,9 @@ class FMPStockPeersFetcher(
         return get_data_one(url, **kwargs)
 
     @staticmethod
-    def transform_data(data: Dict) -> FMPStockPeersData:
+    def transform_data(
+        query: FMPStockPeersQueryParams, data: dict, **kwargs: Any
+    ) -> FMPStockPeersData:
         """Return the transformed data."""
+        data.pop("symbol")
         return FMPStockPeersData.model_validate(data)

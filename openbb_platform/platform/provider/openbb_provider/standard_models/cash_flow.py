@@ -1,16 +1,14 @@
 """Cash Flow Statement Data Model."""
 
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field, NonNegativeInt, field_validator, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data, StrictInt
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class CashFlowStatementQueryParams(QueryParams):
@@ -24,7 +22,7 @@ class CashFlowStatementQueryParams(QueryParams):
         default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -36,9 +34,9 @@ class CashFlowStatementData(Data):
     """Cash Flow Statement Data."""
 
     symbol: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    date: dateType = Field(description="Date of the fetched statement.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date" ""))
     period: Optional[str] = Field(
         default=None, description="Reporting period of the statement."
     )
@@ -138,3 +136,6 @@ class CashFlowStatementData(Data):
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
+
+
+DATA_DESCRIPTIONS.get("date", "")

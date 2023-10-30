@@ -68,9 +68,23 @@ class OECDGDPForecastFetcher(
     ) -> dict:
         units = query.period[0].upper()
         if query.type == "real":
-            url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
+            url = (
+                "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH."
+                + units
+                + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
+                + str(query.start_date)
+                + "&endPeriod="
+                + str(query.end_date)
+            )
         elif query.type == "nominal":
-            url = f"https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH.{units}/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod={query.start_date}&endPeriod={query.end_date}"
+            url = (
+                "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH."
+                + units
+                + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
+                + str(query.start_date)
+                + "&endPeriod="
+                + str(query.end_date)
+            )
 
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
         # Sometimes there is weird unicode characters in the column names, so we need to rename them.
@@ -91,5 +105,7 @@ class OECDGDPForecastFetcher(
         return data_df.to_dict(orient="records")
 
     @staticmethod
-    def transform_data(data: dict) -> List[OECDGDPForecastData]:
+    def transform_data(
+        query: OECDGDPForecastQueryParams, data: dict, **kwargs: Any
+    ) -> List[OECDGDPForecastData]:
         return [OECDGDPForecastData.model_validate(d) for d in data]

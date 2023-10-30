@@ -9,7 +9,7 @@ from openbb_provider.standard_models.iorb_rates import (
     IORBData,
     IORBQueryParams,
 )
-from pydantic import validator
+from pydantic import field_validator
 
 
 class FREDIORBQueryParams(IORBQueryParams):
@@ -21,7 +21,7 @@ class FREDIORBData(IORBData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @validator("rate", pre=True, check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
         try:
             return float(v)
@@ -51,6 +51,8 @@ class FREDIORBFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: dict) -> List[Dict[str, List[FREDIORBData]]]:
+    def transform_data(
+        query: FREDIORBQueryParams, data: dict, **kwargs: Any
+    ) -> List[Dict[str, List[FREDIORBData]]]:
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]

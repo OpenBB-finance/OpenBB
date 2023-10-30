@@ -6,7 +6,9 @@ from openbb_oecd.models.gdpforecast import OECDGDPForecastFetcher
 from openbb_oecd.models.gdpnom import OECDGDPNomFetcher
 from openbb_oecd.models.gdpreal import OECDGDPRealFetcher
 
-test_credentials = UserService().default_user_settings.credentials.dict()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")

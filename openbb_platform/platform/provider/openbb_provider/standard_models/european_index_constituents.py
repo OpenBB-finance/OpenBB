@@ -3,7 +3,7 @@
 
 from typing import List, Set, Union
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -15,7 +15,7 @@ class EuropeanIndexConstituentsQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -26,7 +26,10 @@ class EuropeanIndexConstituentsQueryParams(QueryParams):
 class EuropeanIndexConstituentsData(Data):
     """European Index Constituents data."""
 
-    symbol: str = Field(description="Symbol of the constituent company in the index.")
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", "")
+        + " The symbol is the constituent company in the index."
+    )
     price: float = Field(
         description="Current price of the constituent company in the index."
     )
@@ -36,7 +39,7 @@ class EuropeanIndexConstituentsData(Data):
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
 
-    @validator("symbol", pre=True, check_fields=False, always=True)
+    @field_validator("symbol", mode="before", check_fields=False)
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

@@ -123,6 +123,8 @@ class FMPStockMultiplesFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPStockMultiplesData]:
+    def transform_data(
+        query: FMPStockMultiplesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPStockMultiplesData]:
         """Return the transformed data."""
         return [FMPStockMultiplesData.model_validate(d) for d in data]
