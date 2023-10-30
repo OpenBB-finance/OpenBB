@@ -27,6 +27,64 @@ class Extension:
             for rq in required_credentials:
                 self.required_credentials.append(f"{self.name.lower()}_{rq}")
 
+    @property
+    def accessor(self) -> Callable:
+        """Extend an OBBject, inspired by pandas.
+
+        Set the following as entry_point in your extension .toml file and install it:
+        [tool.poetry.plugins."openbb_obbject_extension"]
+        example = "openbb_example:entry_point"
+
+        Extension code:
+        ```python
+        from openbb_core.app.model.extension import Extension, extend_obbject
+
+        entry_point = Extension(name="example", required_credentials=["api_key"])
+
+        @entry_point.accessor
+        class Example:
+            def __init__(self, obbject):
+                self._obbject = obbject
+
+            def hello(self):
+                api_key = self._obbject._credentials.example_api_key
+                print(f"Hello, this is my credential: {api_key}!")
+        ```
+
+        Usage:
+        >>> from openbb import obb
+        >>> obbject = obb.stock.load("AAPL")
+        >>> obbject.example.hello()
+        Hello, this is my credential: None!
+        """
+        # pylint: disable=import-outside-toplevel
+        # Avoid circular imports
+
+        from openbb_core.app.model.obbject import OBBject
+
+        return self.register_accessor(self.name, OBBject)
+
+    @staticmethod
+    def register_accessor(name, cls) -> Callable:
+        """Register a custom accessor"""
+
+        def decorator(accessor):
+            # Here we need to prevent the user from using provider names as accessor names
+
+            if hasattr(cls, name):
+                warnings.warn(
+                    f"registration of accessor '{repr(accessor)}' under name "
+                    f"'{repr(name)}' for type '{repr(cls)}' is overriding a preexisting "
+                    f"attribute with the same name.",
+                    UserWarning,
+                )
+            setattr(cls, name, CachedAccessor(name, accessor))
+            # pylint: disable=protected-access
+            cls._accessors.add(name)
+            return accessor
+
+        return decorator
+
 
 class CachedAccessor:
     """CachedAccessor"""
@@ -41,60 +99,3 @@ class CachedAccessor:
         accessor_obj = self._accessor(obj)
         object.__setattr__(obj, self._name, accessor_obj)
         return accessor_obj
-
-
-def register_accessor(name, cls) -> Callable:
-    """Register a custom accessor"""
-
-    def decorator(accessor):
-        # Here we need to prevent the user from using provider names as accessor names
-
-        if hasattr(cls, name):
-            warnings.warn(
-                f"registration of accessor '{repr(accessor)}' under name "
-                f"'{repr(name)}' for type '{repr(cls)}' is overriding a preexisting "
-                f"attribute with the same name.",
-                UserWarning,
-            )
-        setattr(cls, name, CachedAccessor(name, accessor))
-        # pylint: disable=protected-access
-        cls._accessors.add(name)
-        return accessor
-
-    return decorator
-
-
-def extend_obbject(name: str) -> Callable:
-    """Extend an OBBject, inspired by pandas.
-
-    Set the following as entry_point in your extension .toml file and install it:
-    [tool.poetry.plugins."openbb_obbject_extension"]
-    example = "openbb_example:entry_point"
-
-    Extension code:
-    ```python
-    from openbb_core.app.model.extension import Extension, extend_obbject
-
-    entry_point = Extension(name="example", required_credentials=["api_key"])
-
-    @extend_obbject(name="example")
-    class Example:
-        def __init__(self, obbject):
-            self._obbject = obbject
-
-        def hello(self):
-            api_key = self._obbject._credentials.example_api_key
-            print(f"Hello, this is my credential: {api_key}!")
-    ```
-
-    Usage:
-    >>> from openbb import obb
-    >>> obbject = obb.stock.load("AAPL")
-    >>> obbject.example.hello()
-    Hello, this is my credential: None!
-    """
-    # pylint: disable=import-outside-toplevel
-    # Avoid circular imports
-    from openbb_core.app.model.obbject import OBBject
-
-    return register_accessor(name, OBBject)
