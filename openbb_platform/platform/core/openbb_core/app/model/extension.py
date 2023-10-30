@@ -19,7 +19,7 @@ class Extension:
         ext = Extension(name="example", required_credentials=["some_api_key"])
     ```
 
-    3. Optionally declare an obbject accessor:
+    3. Optionally declare an obbject accessor, it will use the extension name:
     ```python
         @ext.obbject_accessor
         class Example:
