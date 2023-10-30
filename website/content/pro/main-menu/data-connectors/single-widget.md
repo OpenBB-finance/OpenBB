@@ -12,4 +12,4 @@ If your endpoint requires additional headers, don't worry. You can easily add th
 
 In addition, if your API endpoint doesn't return a a simple JSON but a nested architecture, you will be prompted with a "Data Key" parameter which you can use to grab the data of interest.
 
-If you want to do something more custom, you should look into creating [your own backend](docs/docs/pro/main-menu/data-connectors/advanced.md), or reach out to OpenBB for support.
+If you want to do something more custom, you should look into creating [your own backend](/pro/main-menu/data-connectors/advanced.md), or reach out to OpenBB for support.
