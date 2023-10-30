@@ -3,7 +3,7 @@
 import json
 from datetime import date as dateType
 from io import StringIO
-from typing import Any, List, Literal, Optional, TypeVar, Union
+from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
 
 import requests
 from openbb_provider import helpers

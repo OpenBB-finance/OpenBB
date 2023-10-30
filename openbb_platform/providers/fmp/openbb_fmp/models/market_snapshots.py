@@ -111,6 +111,6 @@ class FMPMarketSnapshotsFetcher(
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict]) -> List[FMPMarketSnapshotsData]:
+    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPMarketSnapshotsData]:
         """Return the transformed data."""
         return [FMPMarketSnapshotsData.model_validate(d) for d in data]

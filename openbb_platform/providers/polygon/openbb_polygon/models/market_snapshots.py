@@ -10,7 +10,7 @@ from openbb_provider.standard_models.market_snapshots import (
     MarketSnapshotsQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class PolygonMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -67,6 +67,23 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
     last_trade_timestamp: Optional[datetime] = Field(
         description="The last trade timestamp.", default=None
     )
+
+    @field_validator(
+        "last_updated",
+        "quote_timestamp",
+        "last_trade_timestamp",
+        mode="before",
+        check_fields=False,
+    )
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return (
+            pd.to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert(
+                "US/Eastern"
+            )
+            if v
+            else None
+        )
 
 
 class PolygonMarketSnapshotsFetcher(
@@ -140,7 +157,10 @@ class PolygonMarketSnapshotsFetcher(
                 ):  # Only returned if the subscription includes trades
                     last_trade_price.append(response[i]["lastTrade"]["p"])
                     last_trade_size.append(response[i]["lastTrade"]["s"])
-                    last_trade_conditions.append(response[i]["lastTrade"]["c"])
+                    if "c" in response[i]["lastTrade"]:
+                        last_trade_conditions.append(response[i]["lastTrade"]["c"])
+                    else:
+                        last_trade_conditions.append(None)
                     last_trade_exchange.append(response[i]["lastTrade"]["x"])
                     last_trade_timestamp.append(response[i]["lastTrade"]["t"])
                 open.append(response[i]["day"]["o"])
@@ -225,15 +245,6 @@ class PolygonMarketSnapshotsFetcher(
 
             results = pd.DataFrame(data=data).transpose()
             results.columns = columns
-            results["last_updated"] = pd.DatetimeIndex(
-                results["last_updated"], tz="UTC"
-            ).values.astype("datetime64[s]")
-            results["last_trade_timestamp"] = pd.DatetimeIndex(
-                results["last_trade_timestamp"], tz="UTC"
-            ).values.astype("datetime64[s]")
-            results["quote_timestamp"] = pd.DatetimeIndex(
-                results["quote_timestamp"], tz="UTC"
-            ).values.astype("datetime64[s]")
 
         return results.sort_values(by="change_percent", ascending=False).to_dict(
             "records"
@@ -241,6 +252,7 @@ class PolygonMarketSnapshotsFetcher(
 
     @staticmethod
     def transform_data(
-        data: dict,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[PolygonMarketSnapshotsData]:
         return [PolygonMarketSnapshotsData.model_validate(d) for d in data]
