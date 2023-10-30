@@ -100,6 +100,7 @@ class QuandlEconomicCalendarFetcher(
                 )
                 for event in response:
                     event["date"] = date
+                    event["actual"] = event.get("actual", "").replace("&nbsp;", "-")
                 data.extend(response)
             except Exception:  # noqa: S112
                 continue
