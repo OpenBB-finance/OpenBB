@@ -435,11 +435,19 @@ def test_economy_gdpforecast(params, obb):
     [
         (
             {
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "country": "portugal",
-                "importance": "Low",
-                "group": "gdp",
+                "provider": "quandl",
+                "start_date": "2023-10-01",
+                "end_date": "2023-10-20",
+                "country": "France",
+            }
+        ),
+        (
+            {
+                "importance": 3,
+                "provider": "tradingeconomics",
+                "start_date": "2023-08-01",
+                "end_date": "2023-09-06",
+                "country": "Germany",
             }
         ),
     ],
