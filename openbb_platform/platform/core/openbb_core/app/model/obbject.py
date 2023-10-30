@@ -190,8 +190,7 @@ class OBBject(Tagged, Generic[T]):
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
     ) -> Dict[str, List]:
-
-        """Convert results field to list of values.
+        """Convert results field to a dictionary uisng any of pandas to_dict options.
 
         Parameters
         ----------
