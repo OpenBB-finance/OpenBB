@@ -976,6 +976,21 @@ def test_stocks_ftd(params, headers):
 
 @pytest.mark.parametrize(
     "params",
+    [({"symbol": "AAPL,NVDA,QQQ,INTC", "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/price_performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
     [
         (
             {
