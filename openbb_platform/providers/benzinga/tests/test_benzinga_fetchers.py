@@ -3,7 +3,9 @@ from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher
 from openbb_benzinga.models.stock_news import BenzingaStockNewsFetcher
 from openbb_core.app.service.user_service import UserService
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
