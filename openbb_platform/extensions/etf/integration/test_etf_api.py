@@ -20,7 +20,9 @@ def headers():
 
 @pytest.mark.parametrize(
     "params",
-    [({})],
+    [
+        ({"query": "", "provider": "fmp"}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_search(params, headers):
