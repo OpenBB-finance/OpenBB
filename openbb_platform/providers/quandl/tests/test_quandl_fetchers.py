@@ -1,10 +1,11 @@
 import datetime
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_quandl.models.cot import QuandlCotFetcher
 from openbb_quandl.models.cot_search import QuandlCotSearchFetcher
-from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher
 from openbb_quandl.models.economic_calendar import QuandlEconomicCalendarFetcher
+from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"

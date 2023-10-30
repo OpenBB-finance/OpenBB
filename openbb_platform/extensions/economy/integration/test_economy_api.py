@@ -504,7 +504,7 @@ def test_economy_gdpforecast(params, headers):
         ),
         (
             {
-                "importance": 3,
+                "importance": "high",
                 "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

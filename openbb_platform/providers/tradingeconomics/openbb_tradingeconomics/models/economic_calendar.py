@@ -17,14 +17,14 @@ from pydantic import Field, field_validator
 
 
 class TEEarningsCalendarQueryParams(EconomicCalendarQueryParams):
-    """FMP Economic Calendar Query.
+    """TE Economic Calendar Query.
 
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
 
-    importance: Literal[1, 2, 3] = Field(
-        default=3,
-        description="Importance of the event. (1-Low, 2-Medium, 3-High)",
+    importance: Literal["low", "medium", "high"] = Field(
+        default="high",
+        description="Importance of the event.",
     )
     group: Optional[
         Literal[
@@ -94,8 +94,8 @@ class TEEarningsCalendarData(EconomicCalendarData):
         default=None, description="Trading Economics projections"
     )
     url: Optional[str] = Field(default=None, description="Trading Economics URL")
-    importance: Optional[Literal[0, 1, 2, 3]] = Field(
-        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
+    importance: Optional[Literal["Low", "Medium", "High"]] = Field(
+        default=None, description="Importance of the event."
     )
     currency: Optional[str] = Field(default=None, description="Currency of the data.")
     unit: Optional[str] = Field(default=None, description="Unit of the data.")

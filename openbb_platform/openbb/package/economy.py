@@ -578,8 +578,8 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'quandl' if there is
             no default.
-        importance : Literal[1, 2, 3]
-            Importance of the event. (1-Low, 2-Medium, 3-High) (provider: tradingeconomics)
+        importance : Literal['low', 'medium', 'high']
+            Importance of the event. (provider: tradingeconomics)
         group : Optional[Union[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]]
             Grouping of events (provider: tradingeconomics)
 
@@ -627,8 +627,8 @@ class ROUTER_economy(Container):
             Trading Economics projections (provider: tradingeconomics)
         url : Optional[Union[str]]
             Trading Economics URL (provider: tradingeconomics)
-        importance : Optional[Union[Literal[0, 1, 2, 3]]]
-            Importance of the event. 1-Low, 2-Medium, 3-High (provider: tradingeconomics)
+        importance : Optional[Union[Literal['Low', 'Medium', 'High']]]
+            Importance of the event. (provider: tradingeconomics)
         currency : Optional[Union[str]]
             Currency of the data. (provider: tradingeconomics)
         unit : Optional[Union[str]]

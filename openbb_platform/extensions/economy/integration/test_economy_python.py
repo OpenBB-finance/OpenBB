@@ -443,7 +443,7 @@ def test_economy_gdpforecast(params, obb):
         ),
         (
             {
-                "importance": 3,
+                "importance": "high",
                 "provider": "tradingeconomics",
                 "start_date": "2023-08-01",
                 "end_date": "2023-09-06",
