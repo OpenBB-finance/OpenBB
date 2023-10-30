@@ -1,9 +1,19 @@
 ---
 title: rise
-description: OpenBB SDK Function
+description: Discover top rising related queries for a stock's symbol with the OpenBB
+  rise tool. Analyze market behavior and spot trends.
+keywords:
+- stock analysis
+- market trends
+- rising queries
+- stock symbol use
+- OpenBB rise tool
+- behavioral analysis
 ---
 
-# rise
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.rise - Reference | OpenBB SDK Docs" />
 
 Get top rising related queries with this stock's query [Source: google].
 
@@ -31,4 +41,3 @@ openbb.stocks.ba.rise(symbol: str, limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing rising related queries |
 ---
-

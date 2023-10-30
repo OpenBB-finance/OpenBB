@@ -1,9 +1,26 @@
 ---
 title: ldapps
-description: OpenBB Terminal Function
+description: This documentation page provides detailed information on how to display
+  and interpret data on Decentralized Applications (dApps) listed on DeFi Llama including
+  parameters, usage and examples.
+keywords:
+- DeFi Llama
+- dApps
+- Decentralized Applications
+- ldapps command
+- Usage
+- Parameters
+- Examples
+- Crypto
+- Crypto Sorting
+- Crypto Commands
+- Blockchain
+- Decentralized Finance
 ---
 
-# ldapps
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/ldapps - Reference | OpenBB Terminal Docs" />
 
 Display information about listed dApps on DeFi Llama. [Source: https://docs.llama.fi/api]
 

@@ -1,10 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: senate
-description: OpenBB Telegram Command
+description: Detailed instructions on how to use the 'senate' command to track the
+  trades of senate members for specific stock tickers.
+keywords:
+- senate command
+- trades of senate members
+- specific ticker
+- stock ticker
+- financial commands
 ---
 
-# senate
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="government: senate - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows a user to view the recent trades of senate members for a specific ticker.
 

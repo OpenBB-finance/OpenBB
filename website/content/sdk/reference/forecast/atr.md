@@ -1,9 +1,16 @@
 ---
 title: atr
-description: OpenBB SDK Function
+description: The page provides details on how to calculate the Average True Range
+  using a specific stock ticker with the help of the Python package, OpenBB.
+keywords:
+- Average True Range
+- stock ticker
+- forecast
 ---
 
-# atr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.atr - Reference | OpenBB SDK Docs" />
 
 Calculate the Average True Range of a variable based on a a specific stock ticker.
 
@@ -26,4 +33,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

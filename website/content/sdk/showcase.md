@@ -1,13 +1,24 @@
 ---
 title: Showcase
 sidebar_position: 6
-description: Showcasing apps created by users using the OpenBB SDK
-keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
+description: A showcase of projects built using OpenBB SDK, providing you with examples
+  and real use cases of how our SDK has been used in different projects. Get in touch
+  with us to list your project.
+keywords:
+- OpenBB SDK
+- project showcase
+- software development kit
+- open source
+- Streamlit Dashboard
+- Kulbinderdio project
+- Economy
+- ETF
+- Stocks
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Showcase - SDK | OpenBB Docs" />
+<HeadTitle title="Showcase | OpenBB SDK Docs" />
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 

@@ -1,9 +1,18 @@
 ---
 title: trending
-description: OpenBB Terminal Function
+description: Discover top trending coins on CoinGecko in the last 24 hours. Our expert
+  tool provides market rankings based on the latest data for efficient crypto tracking.
+keywords:
+- trending coins
+- CoinGecko
+- market ranking
+- crypto tracking
+- cryptocurrency
 ---
 
-# trending
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/disc/trending - Reference | OpenBB Terminal Docs" />
 
 Discover trending coins (Top-7) on CoinGecko in the last 24 hours
 

@@ -1,9 +1,25 @@
 ---
 title: collections
-description: OpenBB Terminal Function
+description: Understand how to use Python code for tracking NFT collections. The guide
+  includes scripts and examples showcasing how to display the floor price and sales
+  over time for top collections including CryptoPunks, Bored Ape Yacht Club, and others.
+keywords:
+- NFT Collections
+- floor price
+- sales over time
+- top collections
+- CryptoPunks
+- Bored Ape Yacht Club
+- Mutant Ape Yacht Club
+- Otherdeed for Otherside
+- Moonbirds
+- ethereum
+- python code for NFTs
 ---
 
-# collections
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/nft/collections - Reference | OpenBB Terminal Docs" />
 
 NFT Collections [Source: https://nftpricefloor.com/]
 

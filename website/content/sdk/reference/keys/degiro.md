@@ -1,9 +1,24 @@
 ---
 title: degiro
-description: OpenBB SDK Function
+description: This page provides information on how to set the Degiro key using the
+  OpenBB terminal. You'll learn about parameters like username, password, and optional
+  fields like secret, persist and show_output. It also includes code examples for
+  better understanding.
+keywords:
+- Degiro key
+- Set Degiro key
+- username
+- password
+- persist
+- show_output
+- Jupyter notebook
+- terminal environment variables
+- api key change
 ---
 
-# degiro
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.degiro - Reference | OpenBB SDK Docs" />
 
 Set Degiro key
 
@@ -48,4 +63,3 @@ username="example_username",
     )
 ```
 ---
-

@@ -1,9 +1,33 @@
 ---
 title: pick
-description: OpenBB Terminal Function
+description: The page provides detailed information about the 'pick' command which
+  is used to change target variables for stock market analysis, using Python. It lists
+  the usage, parameters, and examples for easier understanding.
+keywords:
+- pick
+- target variable
+- parameters
+- stock analysis
+- stock market
+- examples
+- usage
+- Open
+- High
+- Low
+- Close
+- Adj Close
+- Volume
+- date_id
+- OC_High
+- OC_Low
+- Returns
+- LogRet
+- TSLA
 ---
 
-# pick
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 

@@ -1,9 +1,20 @@
 ---
 title: bench
-description: OpenBB SDK Function
+description: This page discusses the 'bench' function, part of the OpenBB Terminal,
+  which allows users to load benchmarks into their portfolio. It provides details
+  on the parameters, method of application, and examples utilizing Python for portfolio
+  management.
+keywords:
+- portfolio benchmark
+- portfolio management
+- portfolio load
+- financial data
+- portfolio operations
 ---
 
-# bench
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.bench - Reference | OpenBB SDK Docs" />
 
 Load benchmark into portfolio
 
@@ -41,4 +52,3 @@ output = openbb.portfolio.bench(p, symbol="SPY")
 ```
 
 ---
-

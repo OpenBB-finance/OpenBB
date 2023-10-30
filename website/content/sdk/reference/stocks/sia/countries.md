@@ -1,9 +1,21 @@
 ---
 title: countries
-description: OpenBB SDK Function
+description: This documentation page discusses how to retrieve all countries in Yahoo
+  Finance data based on sector or industry. It provides an analysis method using the
+  OpenBB stocks sia function with Python.
+keywords:
+- Yahoo Finance data
+- sector industry analysis
+- finance database
+- OpenBB stocks
+- filter by industry
+- filter by sector
+- countries data
 ---
 
-# countries
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.countries - Reference | OpenBB SDK Docs" />
 
 Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]
 
@@ -31,4 +43,3 @@ openbb.stocks.sia.countries(industry: str = "", sector: str = "")
 | ---- | ----------- |
 | list | List of possible countries |
 ---
-

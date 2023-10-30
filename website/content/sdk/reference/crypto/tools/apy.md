@@ -1,12 +1,25 @@
 ---
 title: apy
-description: OpenBB SDK Function
+description: This documentation page provides information about the apy and apr functions
+  in openbb.crypto.tools. It features source code links, parameter descriptions, return
+  values, and the option to view the chart or export data.
+keywords:
+- apy
+- apr
+- compounding times
+- cryptocurrency
+- openbb.crypto.tools
+- dataframe
+- narrative version
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.tools.apy - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# apy
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.crypto.tools.apy(apr: float, compounding_times: int)
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +81,6 @@ openbb.crypto.tools.apy_chart(apr: float, compounding_times: int, narrative: boo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

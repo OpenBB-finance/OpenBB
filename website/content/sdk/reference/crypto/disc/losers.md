@@ -1,12 +1,24 @@
 ---
 title: losers
-description: OpenBB SDK Function
+description: The 'Losers' page on OpenBBTerminal provides functions that allow users
+  to find out which cryptocurrencies suffered the largest losses during a given time
+  period. Documentation includes information on parameters, return types, and source
+  code.
+keywords:
+- Cryptocurrency
+- Losers
+- Price changes
+- CoinGecko
+- API
+- Crypto analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.losers - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# losers
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +51,6 @@ openbb.crypto.disc.losers(interval: str = "1h", limit: int = 50, sortby: str = "
 | pd.DataFrame | Top Losers  - coins which lost most in price in given period of time.<br/>Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +81,6 @@ openbb.crypto.disc.losers_chart(interval: str = "1h", limit: int = 20, export: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

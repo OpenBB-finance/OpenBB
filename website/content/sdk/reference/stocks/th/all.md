@@ -1,12 +1,26 @@
 ---
 title: all
-description: OpenBB SDK Function
+description: Documentation detail of OpenBB's all exchanges and chart display functions.
+  OpenBB provides functionalities to fetch all available exchanges and display them
+  in a chart format.
+keywords:
+- OpenBB Documentation
+- OpenBB Exchanges API
+- OpenBB Chart Display
+- Python scripts
+- API Documentation
+- Open source financial tools
+- OpenBB Source Code
+- Stock Exchange Data
+- Extracting Exchange Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.th.all - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# all
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -34,8 +48,6 @@ This function does not take any parameters.
 | pd.DataFrame | All available exchanges |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -60,8 +72,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,27 @@
 ---
 title: vaults
-description: OpenBB Terminal Function
+description: This page provides a detailed description on how to use and interact
+  with DeFi Vaults using various blockchains and DeFi protocols. It provides useful
+  commands, parameters, and examples.
+keywords:
+- defi
+- blockchain
+- protocol
+- vaults
+- cryptocurrency
+- ethereum
+- terra
+- beefy
+- apy
+- tvl
+- parameters
+- examples
+- osmosis
 ---
 
-# vaults
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/vaults - Reference | OpenBB Terminal Docs" />
 
 Display Top DeFi Vaults. [Source: https://coindix.com/]
 

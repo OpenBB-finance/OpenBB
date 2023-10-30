@@ -1,12 +1,24 @@
 ---
 title: listorders
-description: OpenBB SDK Function
+description: Detailed documentation page explaining how to request the orders list
+  from Oanda using OpenBB's terminal. It covers both Model and Chart methods, each
+  with separate tabs explaining the parameters needed.
+keywords:
+- Oanda
+- orders list
+- Forex
+- API documentation
+- order_state
+- order_count
+- accountID
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.listorders - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# listorders
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +79,6 @@ openbb.forex.oanda.listorders_chart(accountID: str, order_state: str = "PENDING"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

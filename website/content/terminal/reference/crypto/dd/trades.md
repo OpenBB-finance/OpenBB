@@ -1,9 +1,23 @@
 ---
 title: trades
-description: OpenBB Terminal Function
+description: This page provides a comprehensive guide on how to get the latest trades
+  for a selected coin, demonstrating usage in Python. It explains the parameters required
+  and supports a variety of exchanges, including Binance and Bitfinex.
+keywords:
+- trades
+- cryptocurrency
+- coin
+- exchange
+- parameters
+- quote currency
+- bitfinex
+- binance
+- usage
 ---
 
-# trades
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/trades - Reference | OpenBB Terminal Docs" />
 
 Get the latest trades for selected coin
 

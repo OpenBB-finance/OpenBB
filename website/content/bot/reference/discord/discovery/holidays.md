@@ -1,10 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: holidays
-description: OpenBB Discord Command
+description: The page provides detailed guidance on how to use the 'holidays' command
+  to retrieve a list of upcoming market holidays, including their dates and types.
+  This is particularly useful for users seeking to stay informed about upcoming events.
+keywords:
+- holidays
+- market holidays
+- upcoming holidays
+- national holidays
 ---
 
-# holidays
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="discovery: holidays - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a list of upcoming market holidays. The command will return a list of holidays, including their respective dates, along with any other pertinent details, such as whether they are national holidays or not. This command is suitable for any user who needs to stay up to date with upcoming holidays.
 

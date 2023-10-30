@@ -1,36 +1,25 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: TBD
+description: This page provides comprehensive insights about installing and updating
+  the OpenBB Terminal. It discusses system requirements, installation process, common
+  errors and their solutions. Information about updating the OpenBB Terminal through
+  different methods is also covered.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    pypi,
-    c++,
-    miniconda,
-    library,
-    arm,
-    library,
-    error,
-    raspberry pi,
-  ]
+- OpenBB Terminal installation
+- Updating OpenBB Terminal
+- System requirements for OpenBB Terminal
+- Installation errors with OpenBB Terminal
+- Python pip installation
+- Microsoft Visual C++
+- Homebrew installation
+- libomp
+- Conda installation issue
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - Terminal | OpenBB Docs" />
+<HeadTitle title="Installation and Updates - Faqs | OpenBB Terminal Docs" />
 
 ## Installation and Updates
 

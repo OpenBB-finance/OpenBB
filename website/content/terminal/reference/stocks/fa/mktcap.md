@@ -1,9 +1,22 @@
 ---
 title: mktcap
-description: OpenBB Terminal Function
+description: The mktcap page describes the usage and parameters of the market cap
+  estimate over time. The source for this data is Yahoo Finance. A Python line command
+  is used to fetch and display this information.
+keywords:
+- mktcap
+- market cap estimate
+- Yahoo Finance
+- python commands
+- financial data
+- parameters
+- starting date
+- data visualisation
 ---
 
-# mktcap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/mktcap - Reference | OpenBB Terminal Docs" />
 
 Market Cap estimate over time. [Source: Yahoo Finance]
 

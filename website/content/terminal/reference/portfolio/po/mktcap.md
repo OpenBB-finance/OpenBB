@@ -1,9 +1,22 @@
 ---
 title: mktcap
-description: OpenBB Terminal Function
+description: The mktcap page provides comprehensive usage, parameters and examples
+  for creating a market cap weighted portfolio. The page is very useful for investors
+  and financial analysts looking for systematic ways to allocate their investments
+  based on market cap measurements.
+keywords:
+- mktcap
+- portfolio
+- market cap
+- weighted portfolio
+- asset allocation
+- risk measures
+- investment strategy
 ---
 
-# mktcap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/mktcap - Reference | OpenBB Terminal Docs" />
 
 Returns a portfolio that is weighted based on Market Cap.
 

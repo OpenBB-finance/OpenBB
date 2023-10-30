@@ -1,34 +1,27 @@
 ---
 title: MacOS
 sidebar_position: 2
-description: Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions of the installers available for MacOS, Intel-based and Apple Silicon (M1).
+description: Step-by-step instructions for installing the OpenBB Terminal on MacOS.
+  This guide covers installation for both Intel-based computers and Apple Silicon
+  (M1) devices, and includes instructions for preliminaries like installing Rosetta
+  for M1 users.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    big sur,
-    intel,
-    intel-based,
-    apple silicon,
-    m1,
-    dmg file
-  ]
+- OpenBB Terminal Installation
+- MacOS installation guide
+- OpenBB on Mac Intel
+- OpenBB on Mac M1
+- Rosetta installation
+- PKG installer
+- OpenBB Terminal application
+- MacOS Big Sur installation
+- MacOS Monterey installation
+- Apple Silicon installation
+- Unverified developer warning
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="MacOS - Terminal | OpenBB Docs" />
+<HeadTitle title="MacOS - Installation | OpenBB Terminal Docs" />
 
 import InstallerButton from "@site/src/components/General/InstallerButton";
 

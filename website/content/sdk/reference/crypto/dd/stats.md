@@ -1,12 +1,26 @@
 ---
 title: stats
-description: OpenBB SDK Function
+description: Discover the statistics module of openbb.crypto.dd using symbol trading
+  pair and explore the possibility of exporting data to desired file format. Find
+  detailed parameters and return values to improve your experience.
+keywords:
+- crypto stats
+- coinbase trading
+- data export
+- API parameters
+- dataframe
+- crypto trading
+- base currency
+- ETH-USDT
+- UNI-ETH
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.stats - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# stats
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.crypto.dd.stats(symbol: str)
 | pd.DataFrame | 24h stats for chosen trading pair |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +79,6 @@ openbb.crypto.dd.stats_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

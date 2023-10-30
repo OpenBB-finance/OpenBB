@@ -1,12 +1,24 @@
 ---
 title: indexes
-description: OpenBB SDK Function
+description: The documentation page covers the retrieval and visualization of crypto
+  indexes using the CoinGecko API in the OpenBB platform. It details parameters, source
+  code, and return values for related methods.
+keywords:
+- CoinGecko API
+- crypto indexes
+- pycoingecko_model
+- pycoingecko_view
+- data sort
+- crypto data visualization
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.indexes - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# indexes
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ openbb.crypto.ov.indexes(sortby: str = "Name", ascend: bool = True)
 | pd.DataFrame | Name, Id, Market, Last, MultiAsset |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +80,6 @@ openbb.crypto.ov.indexes_chart(sortby: str = "Name", ascend: bool = True, limit:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

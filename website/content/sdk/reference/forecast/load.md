@@ -1,9 +1,21 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: Documentation for the 'load' function from the OpenBB forecast library.
+  This function permits to load a custom file into a DataFrame within Python. It covers
+  instructions, source code, parameters, and returns.
+keywords:
+- load
+- custom file
+- dataframe
+- forecast
+- parameters
+- data_files
+- data_examples
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.load - Reference | OpenBB SDK Docs" />
 
 Load custom file into dataframe.
 
@@ -32,4 +44,3 @@ openbb.forecast.load(file: str, data_files: Optional[Dict[Any, Any]] = None, dat
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with custom data |
 ---
-

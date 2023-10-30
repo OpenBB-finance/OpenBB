@@ -1,12 +1,24 @@
 ---
 title: vsurf
-description: OpenBB SDK Function
+description: A documentation page that guides how to use vsurf method which gets the
+  IV surface for calls and puts for stock ticker symbol and how to utilize vsurf_chart
+  to display the vol surface. Includes source code, data types and defaults.
+keywords:
+- Docusaurus
+- vSurf
+- vSurf_Chart
+- IV Surface
+- vol surface
+- options
+- ticker symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.vsurf - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# vsurf
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +48,6 @@ openbb.stocks.options.vsurf(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of DTE, Strike and IV |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +79,6 @@ openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", z: str = "IV", 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

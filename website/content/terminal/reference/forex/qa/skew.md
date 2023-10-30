@@ -1,9 +1,21 @@
 ---
 title: skew
-description: OpenBB Terminal Function
+description: Learn about the concept of skewness as a measure of asymmetry, its relevance
+  in symmetric distribution and normal distribution, and the 'skew' command along
+  with its parameters and usage.
+keywords:
+- skewness
+- symmetric distribution
+- asymmetry
+- normal distribution
+- distortion
+- skew command
+- command parameters
 ---
 
-# skew
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/skew - Reference | OpenBB Terminal Docs" />
 
 Skewness is a measure of asymmetry or distortion of symmetric distribution. It measures the deviation of the given distribution of a random variable from a symmetric distribution, such as normal distribution. A normal distribution is without any skewness, as it is symmetrical on both sides. Hence, a curve is regarded as skewed if it is shifted towards the right or the left.
 

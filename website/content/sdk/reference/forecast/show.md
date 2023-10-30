@@ -1,12 +1,23 @@
 ---
 title: show
-description: OpenBB SDK Function
+description: Detailed documentation of OpenBB finance's 'show' and 'show_chart' functions.
+  Learn how to effectively use these functions in your data analysis with clear instructions
+  and direct source code links.
+keywords:
+- OpenBB finance
+- Documentation
+- Programming
+- show function
+- show_chart function
+- Source Code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.show - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# show
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +44,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -59,8 +68,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,21 +1,26 @@
 ---
 title: Server
 sidebar_position: 3
-description: Learn to customize your OpenBB Bot server experience.
-keywords: [discord, telegram, server, customizing, customization, how to, explanation, openbb bot, openbb, guide, bot guide]
+description: Learn about OpenBB Bot's Server plan that offers powerful features such
+  as auto posting for Discord, custom charting, and a billboard for advertising. Perfect
+  for optimizing your server operations.
+keywords:
+- OpenBB Bot Server Plan
+- Discord Server Optimisation
+- Auto Posting in Discord
+- OpenBB Auto Posting Categories
+- Custom Charting
+- OpenBB Bot Billboard
+- OpenBB HUB
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Server - Bot | OpenBB Docs" />
-
-## Customizing your Server Bot Experience
+<HeadTitle title="Server - Customizing - Usage | OpenBB Bot Docs" />
 
 The Server plan for OpenBB Bot offers three different capabilities - Charting, BillBoard, and Auto Posting. Any server that registers with us on the [OpenBB HUB](https://my.openbb.co) gets access to set up one Auto Posting for free. Once you have paid plan you have full access to all these features.
 
-## Server
-
-### Auto Posting (Feeds) (Discord Only)
+## Auto Posting (Feeds) (Discord Only)
 
 Auto Posting is our most powerful feature for Discord Servers - We offer the ability to push updates into the server for Flow, Darkpool, or Heatmap/Charts. Once you set up your account you will be able to query the bot directly in your server like below :
 
@@ -47,7 +52,7 @@ For a further breakdown on what each Flow Auto Post entails - See below
 |   Whale   |    "Premium > $1.000,000" & "Days to Expiration < 45"         |
 
 
-### Auto Posting (Commands) (Discord Only)
+## Auto Posting (Commands) (Discord Only)
 
 Much like Feeds we now offer Commands to be set up as autoposts as well - These behave in the same way but can be setup to autopost bot commands.
 
@@ -65,14 +70,14 @@ Below are a few examples of autoposts set up as commands in a server :
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/flow+example.png" alt="earnings command autopost openBB" width="40%" height="40%" />
 
-### Charting
+## Charting
 
 Custom charting works the same way as Individual charting but it will apply to your full server. If you want everyone in your server to use the "Classic" theme and have RSI + 50d SMA then it will display that way for all users in your server (unless they have already registered their own individual account).
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/server-charting.png" alt="server charting openBB" width="70%" height="70%" />
 
-### BillBoard
+## Billboard
 
-BillBoard is a way to advertise to your users when they run a command on the bot. Within your server you can set your own text to display on applicable commands as they are run.
+Billboard is a way to advertise to your users when they run a command on the bot. Within your server you can set your own text to display on applicable commands as they are run.
 
 <img src="https://openbb-assets.s3.amazonaws.com/docs/bot_docs/billboard.png" alt="billboard openBB" width="70%" height="70%" />

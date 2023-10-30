@@ -1,9 +1,20 @@
 ---
 title: combine
-description: OpenBB Terminal Function
+description: This page provides comprehensive documentation on the 'combine' function,
+  including its usage with Python, parameters, and clear, practical examples. Combine
+  is essential when dealing with datasets, particularly when you need to add specific
+  columns.
+keywords:
+- combine
+- datasets
+- columns
+- parameters
+- add columns
 ---
 
-# combine
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /combine - Reference | OpenBB Terminal Docs" />
 
 The columns you want to add to a dataset. The first argument is the dataset to add columns inand the remaining could be: datasetX.column2,datasetY.column3
 
@@ -36,7 +47,7 @@ combine [-d {}] [-c COLUMNS]
 
 2022 May 31, 04:55 (🦋) /econometrics/ $ show nile
 
-  Dataset nile | Showing 10 of 100 rows  
+  Dataset nile | Showing 10 of 100 rows
 ┏━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 ┃   ┃ year    ┃ volume  ┃ nile_2_volume ┃
 ┡━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━┩

@@ -1,9 +1,24 @@
 ---
 title: shrs
-description: OpenBB SDK Function
+description: This page provides information about a utility that fetches shareholder
+  data from Yahoo for a given stock. It includes a source code link and explains parameters
+  of the utility module. Uses Python language for coding.
+keywords:
+- Shareholders
+- Yahoo
+- Stocks
+- Source Code
+- Parameters
+- Python Coding
+- Stock Ticker Symbol
+- Institutional Holder
+- Data frame
+- Major Holders
 ---
 
-# shrs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.shrs - Reference | OpenBB SDK Docs" />
 
 Get shareholders from yahoo
 
@@ -31,4 +46,3 @@ openbb.stocks.fa.shrs(symbol: str, holder: str = "institutional")
 | ---- | ----------- |
 | pd.DataFrame | Major holders |
 ---
-

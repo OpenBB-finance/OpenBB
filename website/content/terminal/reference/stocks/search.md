@@ -1,9 +1,22 @@
 ---
 title: search
-description: OpenBB Terminal Function
+description: The 'search' documentation provides a detailed guide to using various
+  search commands on our platform. This includes usage, parameters, and term definitions
+  for finding company tickers, filtering stocks based on country, sector, industry
+  or specific exchange country.
+keywords:
+- Search Documentation
+- Company Tickers
+- Stock Market Search
+- Search By Country
+- Search By Sector
+- Search By Industry
+- Search By Exchange Country
 ---
 
-# search
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks /search - Reference | OpenBB Terminal Docs" />
 
 Show companies matching the search query
 

@@ -1,9 +1,23 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: The 'load' function allows users to load their portfolio transactions
+  from a given file, optionally assigning a name and setting a risk-free rate. The
+  loaded portfolio details will be presented in a detailed table showcasing each transaction.
+keywords:
+- load
+- portfolio transactions
+- parameters
+- risk free rate
+- file
+- name
+- examples
+- portfolio
+- stocks
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/load - Reference | OpenBB Terminal Docs" />
 
 Load your portfolio transactions.
 

@@ -1,9 +1,22 @@
 ---
 title: toppw
-description: OpenBB Terminal Function
+description: The documentation page for 'toppw' which stands for 'top officer purchases
+  of the week', sourced from OpenInsider. Displays insider trading data including
+  filing date, trade date, ticker, company name, and related details.
+keywords:
+- toppw
+- insider trading
+- OpenInsider
+- stock market
+- officer purchases
+- trade data
+- data display
+- stock ticker
 ---
 
-# toppw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/toppw - Reference | OpenBB Terminal Docs" />
 
 Print top officer purchases of the week. [Source: OpenInsider]
 

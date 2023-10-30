@@ -1,12 +1,30 @@
 ---
 title: topsells
-description: OpenBB SDK Function
+description: Explore the topsells documentation page for detailed instructions on
+  how to use the openbb.stocks.gov.topsells function. This function is used to get
+  top sell government trading data from quiverquant.com. It covers different types
+  of government data including congress, senate, and house. The function allows for
+  customization such as defining the number of past transaction months. Samples of
+  source codes are also provided with relevant links for reference.
+keywords:
+- topsells
+- trading
+- government data
+- quiverquant.com
+- openbb.stocks.gov
+- congress
+- senate
+- house
+- past transactions months
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.topsells - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# topsells
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +55,6 @@ openbb.stocks.gov.topsells(gov_type: str = "congress", past_transactions_months:
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of top government sell trading |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +88,6 @@ openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_m
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

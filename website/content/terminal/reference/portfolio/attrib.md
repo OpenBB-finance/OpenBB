@@ -1,9 +1,23 @@
 ---
 title: attrib
-description: OpenBB Terminal Function
+description: The page provides detailed information on how to use the 'attrib' command
+  in order to display portfolio attribution compared to the S&P 500. It invites to
+  choose between relative or absolute attribution values and to view raw attribution
+  values in a table. The users can select the period for which they want to calculate
+  the attribution.
+keywords:
+- portfolio attribution
+- S&P 500 comparison
+- attribution calculation
+- relative attribution values
+- absolute attribution values
+- attrib command
+- raw attribution values
 ---
 
-# attrib
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/attrib - Reference | OpenBB Terminal Docs" />
 
 Displays sector attribution of the portfolio compared to the S&P 500
 

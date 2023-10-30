@@ -1,9 +1,24 @@
 ---
 title: tokens
-description: OpenBB Terminal Function
+description: Detailed guidance on displaying trade-able tokens on Uniswap DEX including
+  parameters, usage, and examples. Useful for those interested in DeFi and cryptocurrency
+  trading.
+keywords:
+- Uniswap DEX
+- tokens
+- cryptocurrency
+- trading
+- blockchain
+- DeFi
+- crypto trading
+- tradeVolumeUSD
+- totalLiquidity
+- txCount
 ---
 
-# tokens
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/tokens - Reference | OpenBB Terminal Docs" />
 
 Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
 

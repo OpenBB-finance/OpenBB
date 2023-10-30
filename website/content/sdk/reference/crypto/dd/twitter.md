@@ -1,12 +1,26 @@
 ---
 title: twitter
-description: OpenBB SDK Function
+description: Learn how to implement twitter functions for cryptocurrency through our
+  OpenBB Terminal documentation. Access information such as code usage, parameters,
+  return types etc.
+keywords:
+- Cryptocurrency
+- Twitter
+- Code Documentation
+- Sort Data
+- CSV
+- JSON
+- XLSX
+- Export Dataframe
+- CoinPaprika API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.twitter - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# twitter
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool
 | pd.DataFrame | Twitter timeline for given coin.<br/>Columns: date, user_name, status, retweet_count, like_count |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +84,6 @@ openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

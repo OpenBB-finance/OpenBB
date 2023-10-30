@@ -1,9 +1,19 @@
 ---
 title: crypto_hack
-description: OpenBB SDK Function
+description: Documentation page that describes the crypto hack function of the OpenBBTerminal,
+  its parameters and return values. Ideal for those who interact with OpenBB-finance's
+  cryptocurrency scripts.
+keywords:
+- crypto hack
+- crypto hack slug
+- cryptocurrency
+- rekt model
+- OpenBB-finance
 ---
 
-# crypto_hack
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.crypto_hack - Reference | OpenBB SDK Docs" />
 
 Get crypto hack
 
@@ -30,4 +40,3 @@ openbb.crypto.ov.crypto_hack(slug: str)
 | ---- | ----------- |
 | Union[str, None] | Crypto hack |
 ---
-

@@ -1,9 +1,20 @@
 ---
 title: growth
-description: OpenBB SDK Function
+description: This page provides information on how to get financial statement growth
+  using OpenBB's financial analysis function. Included are parameters required, return
+  types and the link to the source code.
+keywords:
+- Financial Statement Growth
+- OpenBB Finance
+- OpenBBTerminal source code
+- Get financial statement growth
+- Stock ticker symbol
+- Fundamental Analysis
 ---
 
-# growth
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.growth - Reference | OpenBB SDK Docs" />
 
 Get financial statement growth
 
@@ -32,4 +43,3 @@ openbb.stocks.fa.growth(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of financial statement growth |
 ---
-

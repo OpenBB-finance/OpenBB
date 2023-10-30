@@ -1,12 +1,29 @@
 ---
 title: anchor_data
-description: OpenBB SDK Function
+description: Improve your understanding of the Anchor protocol with the help of our
+  documentation providing detailed instructions on how to retrieve and plot earnings
+  data for a specific Terra address. Skim through the parameters, the types, the given
+  descriptions, and the functionality.
+keywords:
+- docusaurus
+- anchor protocol
+- earnings data
+- terra address
+- parameters
+- returns
+- model
+- view chart
+- plot
+- transactions history
+- export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.anchor_data - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# anchor_data
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +53,6 @@ openbb.crypto.defi.anchor_data(address: str = "")
 | ---- | ----------- |
 | Tuple[pd.DataFrame, pd.DataFrame, str] | - pd.DataFrame: Earnings over time in UST<br/>- pd.DataFrame: History of transactions<br/>- str:              Overall statistics |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +85,6 @@ openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_t
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

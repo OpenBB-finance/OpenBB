@@ -1,9 +1,18 @@
 ---
 title: qqplot
-description: OpenBB Terminal Function
+description: The qqplot page focuses on providing information on how to display a
+  QQ plot vs normal quantiles using Python. The command has no parameters and includes
+  a practical example.
+keywords:
+- qqplot
+- normal quantiles
+- data visualization
+- no parameters
 ---
 
-# qqplot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/qqplot - Reference | OpenBB Terminal Docs" />
 
 Display QQ plot vs normal quantiles
 

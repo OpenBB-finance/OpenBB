@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: holdings
-description: OpenBB Discord Command
+description: The metadata for this page is optimized for SEO and pertains to the holdings
+  for an ETF, including its use, parameters and examples, using a specific command.
+keywords:
+- etf
+- holdings
+- ETF ticker
+- usage
+- parameters
+- examples
 ---
 
-# etf holdings
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf: holdings - Discord Reference | OpenBB Bot Docs" />
 
 This command returns the holdings for an ETF sorted by percent of ETF.
 

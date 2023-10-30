@@ -1,9 +1,21 @@
 ---
 title: tippm
-description: OpenBB Terminal Function
+description: This page provides information on the 'tippm' Python function which prints
+  data on the top insider purchases of the month. It includes usage details, parameters,
+  and examples of data rows from various companies such as Asana, Inc.
+keywords:
+- tippm
+- insider purchases
+- stock information
+- data display
+- Asana, Inc.
+- parameter
+- examples
 ---
 
-# tippm
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/tippm - Reference | OpenBB Terminal Docs" />
 
 Print top insider purchases of the month. [Source: OpenInsider]
 

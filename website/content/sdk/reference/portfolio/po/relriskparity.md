@@ -1,9 +1,22 @@
 ---
 title: relriskparity
-description: OpenBB SDK Function
+description: This page provides comprehensive details of the 'relriskparity' function
+  in OpenBB Terminal's portfolio optimization module. It contains a thorough explanation
+  of parameters and return value, along with Python code examples demonstrating its
+  usage.
+keywords:
+- Relriskparity function
+- Portfolio optimization
+- Relaxed Risk Parity
+- openbb.portfolio.po.relriskparity function
+- Function parameters
+- Python code example
+- po_model.py
 ---
 
-# relriskparity
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.relriskparity - Reference | OpenBB SDK Docs" />
 
 Optimize with Relaxed Risk Parity using the least squares approach
 
@@ -74,4 +87,3 @@ weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
 ```
 
 ---
-

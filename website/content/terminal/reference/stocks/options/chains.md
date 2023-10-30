@@ -1,9 +1,31 @@
 ---
 title: chains
-description: OpenBB Terminal Function
+description: Detailed guide on how to display option chains with python usage. Documentation
+  includes parameters for call options, put options, strike price, ask size, bid size,
+  volume, open interest and others, along with their default values and options.
+keywords:
+- option chains
+- parameters
+- python usage
+- call options
+- put options
+- strike price
+- ask size
+- bid size
+- volume
+- open interest
+- delta
+- gamma
+- theta
+- vega
+- ask iv
+- bid iv
+- mid iv
 ---
 
-# chains
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/chains - Reference | OpenBB Terminal Docs" />
 
 Display option chains
 

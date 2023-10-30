@@ -1,36 +1,28 @@
 ---
 title: PyPI
 sidebar_position: 4
-description: This section provides steps to install the OpenBB Terminal from PyPI. This installation type supports Windows, macOS and Linux systems.
+description: This page provides a comprehensive guide on how to install OpenBB Terminal
+  and SDK from PyPI across multiple operating system platforms. It lists all required
+  software and provides how-to steps to prepare the virtual environment, install the
+  main package and its toolkits, verify the installation, and upgrade to the latest
+  or nightly build versions.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    pypi,
-    miniconda,
-    git,
-    c++,
-    rosetta2,
-    libomp,
-    vcxsrv,
-    gtk
-  ]
+- OpenBB Terminal installation
+- OpenBB SDK installation
+- PyPI installation guide
+- how to install OpenBB Terminal
+- how to install OpenBB SDK
+- software requirements for OpenBB installation
+- preparing virtual environment for OpenBB
+- installing OpenBB toolkits
+- verifying OpenBB installation
+- updating OpenBB SDK
+- OpenBB nightly builds
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="PyPI - Terminal | OpenBB Docs" />
+<HeadTitle title="PyPI - Installation | OpenBB Terminal Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

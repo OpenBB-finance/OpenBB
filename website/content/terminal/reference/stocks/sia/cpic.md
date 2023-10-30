@@ -1,9 +1,24 @@
 ---
 title: cpic
-description: OpenBB Terminal Function
+description: This is a documentation page for CPIC, a tool that displays companies
+  per industry based on country and market cap. It allows users to adjust parameters
+  such as the maximum number of industries to display and the minimum percentage to
+  display an industry.
+keywords:
+- CPIC
+- companies per industry
+- country
+- market cap
+- maximum industries to display
+- minimum percentage to display industry
+- raw data
+- business tool
+- data visualization
 ---
 
-# cpic
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/sia/cpic - Reference | OpenBB Terminal Docs" />
 
 Companies per Industry based on Country and Market Cap
 

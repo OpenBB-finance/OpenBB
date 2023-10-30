@@ -1,12 +1,28 @@
 ---
 title: topbuys
-description: OpenBB SDK Function
+description: This documentation page covers the top buy government trading on OpenBB
+  Terminal, providing detailed information on relevant python functions and parameters.
+  It features source code and explanations for different data types and optional parameters.
+keywords:
+- top buy government trading
+- python functions
+- parameters
+- data types
+- quiverquant.com
+- congress
+- senate
+- house
+- pandas DataFrame
+- matplotlib
+- trading data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.topbuys - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# topbuys
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +53,6 @@ openbb.stocks.gov.topbuys(gov_type: str = "congress", past_transactions_months: 
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of top government buy trading |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +86,6 @@ openbb.stocks.gov.topbuys_chart(gov_type: str = "congress", past_transactions_mo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

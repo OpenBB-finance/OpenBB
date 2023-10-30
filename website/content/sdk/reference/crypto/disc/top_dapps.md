@@ -1,12 +1,28 @@
 ---
 title: top_dapps
-description: OpenBB SDK Function
+description: This documentation page provides detailed instructions on how to get
+  top decentralized applications by daily volume and users. Also includes code for
+  creating and displaying a chart of such applications.
+keywords:
+- docusaurus page
+- top decentralized applications
+- Metadata
+- daily volume
+- daily users
+- chart
+- cryptocurrency
+- dataframe
+- data sorting
+- DappRadar
+- export dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.top_dapps - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# top_dapps
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +53,6 @@ openbb.crypto.disc.top_dapps(sortby: str = "", limit: int = 10)
 | pd.DataFrame | Top decentralized exchanges.<br/>Columns: Name, Category, Protocols, Daily Users, Daily Volume [$] |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +82,6 @@ openbb.crypto.disc.top_dapps_chart(limit: int = 10, export: str = "", sortby: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

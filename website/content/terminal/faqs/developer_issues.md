@@ -1,32 +1,29 @@
 ---
 title: Developer Issues
 sidebar_position: 6
-description: Help with issues commonly faced by developers.
+description: This page helps with frequently asked questions regarding debugging,
+  GitHub pull requests, and common error resolutions. The guide includes steps on
+  how to launch in debug mode, switching branches, handling missing dependencies like
+  wheel, dealing with .whl files, understanding JSONDecodeError, correcting line break
+  errors, and using VS Code terminal.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    error,
-    branch,
-    VS Code,
-    .whl
-  ]
+- debug mode
+- GitHub pull requests
+- error resolutions
+- missing dependencies
+- wheel
+- .whl file errors
+- JSONDecodeError
+- line break errors
+- VS Code terminal
+- poetry
+- conda
+- pip
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Developer Issues - Terminal | OpenBB Docs" />
+<HeadTitle title="Developer Issues - Faqs | OpenBB Terminal Docs" />
 
 <details><summary>How do I launch in debug mode?</summary>
 
@@ -36,7 +33,7 @@ When installed from source, the OpenBB Terminal can be launched in debug mode.  
 python terminal.py --debug
 ```
 
-Operate the Terminal normally, and errors will trigger an interrupt which prints the traceback with the error.  Charts and tables will also include a developer tools button, located at the top-left of the window, for identifying issues specific to the PyWry interactive window.  
+Operate the Terminal normally, and errors will trigger an interrupt which prints the traceback with the error.  Charts and tables will also include a developer tools button, located at the top-left of the window, for identifying issues specific to the PyWry interactive window.
 
 </details>
 

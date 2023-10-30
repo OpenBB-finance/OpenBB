@@ -1,12 +1,23 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: The page provides documentation on how to get and display news for a
+  given term using OpenBB's Python functions. It also describes parameters used in
+  these functions and links to the related source codes.
+keywords:
+- Documentation
+- Python functions
+- News retrieval
+- NewsAPI
+- Source code
+- Parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.news - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# news
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +51,6 @@ openbb.etf.news(query: str, limit: int = 10, start_date: Optional[str] = None, s
 | List[Tuple[pd.DataFrame, dict]] | List of tuples containing news df in first index,<br/>dict containing title of news df. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +83,6 @@ openbb.etf.news_chart(query: str, limit: int = 3, start_date: Optional[str] = No
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,22 @@
 ---
 title: gainers
-description: OpenBB Terminal Function
+description: This page provides details on the 'gainers' functionality, including
+  descriptions, parameters, usage, and examples. The gainers functionality displays
+  the coins that have gained the most in a selected time period.
+keywords:
+- gainers
+- crypto
+- coins
+- market cap
+- volume
+- time intervals
+- parameters
+- defaults
 ---
 
-# gainers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/disc/gainers - Reference | OpenBB Terminal Docs" />
 
 Shows Largest Gainers - coins which gain the most in given period. You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d} You can look on only N number of records with --limit, You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
 

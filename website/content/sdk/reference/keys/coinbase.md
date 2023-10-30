@@ -1,9 +1,23 @@
 ---
 title: coinbase
-description: OpenBB SDK Function
+description: This page provides a detailed guide on setting up a Coinbase key using
+  the OpenBBTerminal. Learn how to input your API key, secret, and passphrase. Understand
+  the functionality of persist and show_output parameters in the context of your Jupyter
+  notebook session and terminal environment variables.
+keywords:
+- coinbase
+- coinbase key setup
+- API key set
+- openbb_terminal
+- terminal environment variables
+- coinbase API
+- API secret
+- coinbase passphrase
 ---
 
-# coinbase
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.coinbase - Reference | OpenBB SDK Docs" />
 
 Set Coinbase key
 
@@ -49,4 +63,3 @@ key="example_key",
     )
 ```
 ---
-

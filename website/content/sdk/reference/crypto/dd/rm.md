@@ -1,12 +1,31 @@
 ---
 title: rm
-description: OpenBB SDK Function
+description: The page consists of two main components or features. Initially, it details
+  a function designed to return the roadmap for each individual cryptocurrency, explaining
+  how data can be sorted and what the output will look like. Later, it describes a
+  function aimed at plotting the roadmap for each cryptocurrency, including details
+  on the parameters users will need to understand and adjust for the purpose of the
+  function.
+keywords:
+- cryptocurrency
+- roadmap
+- data sorting
+- function parameters
+- plotting
+- matplotlib
+- crypto symbol
+- python programming
+- dataframe
+- reverse order
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.rm - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rm
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +56,6 @@ openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
 | ---- | ----------- |
 | pd.DataFrame | roadmap |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +88,6 @@ openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

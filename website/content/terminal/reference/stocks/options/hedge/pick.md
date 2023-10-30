@@ -1,9 +1,20 @@
 ---
 title: pick
-description: OpenBB Terminal Function
+description: Learn how to use the 'pick' function to plot option hedge diagrams. Discover
+  parameters like amount investment and what options to pick.
+keywords:
+- Option hedge diagrams
+- Investment
+- Long call
+- Long put
+- Short call
+- Short put
+- Seed investment
 ---
 
-# pick
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/hedge/pick /options - Reference | OpenBB Terminal Docs" />
 
 This function plots option hedge diagrams
 

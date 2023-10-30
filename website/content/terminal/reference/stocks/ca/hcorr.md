@@ -1,9 +1,23 @@
 ---
 title: hcorr
-description: OpenBB Terminal Function
+description: The page presents a correlation heatmap 'hcorr' based on historical price
+  comparison between similar companies. This tool assists in understanding and visualizing
+  stock market trends.
+keywords:
+- hcorr
+- correlation heatmap
+- price comparison
+- historical data
+- stock market trends
+- financial tools
+- data visualization
+- type_candle
+- display_full_matrix
 ---
 
-# hcorr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/hcorr - Reference | OpenBB Terminal Docs" />
 
 Correlation heatmap based on historical price comparison between similar companies.
 

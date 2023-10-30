@@ -1,9 +1,25 @@
 ---
 title: market
-description: OpenBB Terminal Function
+description: This page provides a command to fetch market data for a loaded coin,
+  offering detailed metrics like Market Cap, Supply, Circulating Supply, Price, Volume,
+  Price Change Percentage and more. Examples are provided for a better understanding.
+keywords:
+- Market Data
+- Coin Metrics
+- Market Cap
+- Supply
+- Circulating Supply
+- Price
+- Volume
+- Price Change Percentage
+- Fully Diluted Valuation
+- Total Volume
+- High/Low 24h
 ---
 
-# market
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/market - Reference | OpenBB Terminal Docs" />
 
 Market data for loaded coin. There you find metrics like: Market Cap, Supply, Circulating Supply, Price, Volume and many others.
 

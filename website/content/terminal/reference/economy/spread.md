@@ -1,9 +1,24 @@
 ---
 title: spread
-description: OpenBB Terminal Function
+description: 'Documentation page for ''spread'' software: a tool designed to generate
+  bond spread matrix. This tool is parametrizable, allowing users to customize its
+  outputs.'
+keywords:
+- spread software
+- bond spread matrix
+- financial tools
+- bond spread matrix generator
+- bond spread
+- financial software
+- customizable finance tool
+- bond rates
+- finance heatmap
+- financial data visualization
 ---
 
-# spread
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /spread - Reference | OpenBB Terminal Docs" />
 
 Generate bond spread matrix.
 

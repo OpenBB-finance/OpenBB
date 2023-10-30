@@ -1,12 +1,23 @@
 ---
 title: defi
-description: OpenBB SDK Function
+description: This documents discusses useful functionalities for understanding global
+  Decentralized Finances. The content includes source code, parameters, and the returns.
+keywords:
+- Decentralized Finances
+- cryptocurrency
+- CoinGecko
+- parameters
+- returns
+- dataframe
+- defi
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.defi - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# defi
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +44,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Metric, Value |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -63,8 +72,6 @@ openbb.crypto.ov.defi_chart(export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

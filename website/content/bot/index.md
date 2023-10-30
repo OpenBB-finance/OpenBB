@@ -1,26 +1,32 @@
 ---
-sidebar_position: 1
+title: Introduction
+sidebar_position: 0
+description: OpenBB Bot - a chatbot providing access to high-quality financial data
+  for both individual investors and online communities on Discord and Telegram. The
+  bot provides actionable market data, including stock data, options, screeners, crypto,
+  and more.
 keywords:
-  [
-    getting started,
-    openbb,
-    discord,
-    telegram,
-    slack,
-    beginner guide,
-    how to use openbb bot,
-    introduction,
-    intro,
-    how-to,
-    how to,
-    openbb bot,
-  ]
-description: OpenBB Bot is a chatting bot for investment research that provides access to high quality financial data for both individual investors and online communities.
+- OpenBB Bot
+- chatting bot
+- Discord
+- Telegram
+- financial data
+- individual investors
+- online communities
+- stock data
+- options
+- screeners
+- darkpool info
+- crypto
+- nft
+- short data
+- market data
+- informed investors
 ---
 
-import Card from "@site/src/components/General/Card";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-# OpenBB Bot
+<HeadTitle title="OpenBB Bot Docs" />
 
 OpenBB Bot is a chatting bot for Discord and Telegram which provides access to high quality financial data for both individual investors and online communities.
 
@@ -28,30 +34,4 @@ With OpenBB Bot, we offer free access to hundreds of commands ranging from stock
 
 OpenBB Bot was created to give individual users access to high quality financial data. We know our users love to invest and they also want to be part of a community and share ideas with their friends quickly and easily. Our Bot allows quick access to actionable market data to make you and your community better informed investors.
 
----
-
-<Card
-	type="bot"
-	title="What is OpenBB Bot?"
-	description="OpenBB Bot is a chatting bot for investment research that provides access to high quality financial data for both individual investors and online communities."
- />
-
-<Card
-	type="bot"
-	title="How can I add OpenBB Bot to my community?"
-	description="Instructions to add OpenBB Bot to your community can be found under the installation section."
-/>
-
----
-
-### Getting Started
-
-To know more about OpenBB Bot, you can start by reading the [Installation Guide](/bot/installation).
-
-### Using OpenBB Bot
-
-To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/guides/discord).
-
-### Bot Reference
-
-The Reference section is a complete list of all functions available for OpenBB Bot. It can be found [here](/bot/reference/discord).
+<img width="819" alt="bot" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f65788ea-cab6-40a2-a1d9-282051a27083" />

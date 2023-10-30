@@ -1,12 +1,25 @@
 ---
 title: pending
-description: OpenBB SDK Function
+description: This page explains how to get information on pending orders using the
+  OpenBB Terminal. The documentation includes specific source code for the Forex market
+  with OANDA, detailing parameters and returns including the AccountID. The page also
+  provides a link to the relevant source code on GitHub.
+keywords:
+- Forex
+- OANDA
+- AccountID
+- Pending orders
+- OpenBB Forex OANDA Pending
+- Source Code
+- Pending chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.pending - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pending
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.forex.oanda.pending(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Pending orders data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +77,6 @@ openbb.forex.oanda.pending_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

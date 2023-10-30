@@ -1,12 +1,27 @@
 ---
 title: balance
-description: OpenBB SDK Function
+description: This page provides documentation on the 'balance' functions, enabling
+  users to view account holdings for particular assets. It dives into the specifics
+  of how to use these functions to retrieve data from Binance and display it efficiently.
+keywords:
+- balance functions
+- account holdings
+- asset
+- Binance
+- cryptocurrency
+- dataframe
+- parameters
+- balance_chart function
+- export dataframe
+- USDT
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.balance - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# balance
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.crypto.dd.balance(from_symbol: str, to_symbol: str = "USDT")
 | pd.DataFrame | Dataframe with account holdings for an asset |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +82,6 @@ openbb.crypto.dd.balance_chart(from_symbol: str, to_symbol: str = "USDT", export
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

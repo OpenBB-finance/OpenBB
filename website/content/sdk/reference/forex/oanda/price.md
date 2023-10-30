@@ -1,12 +1,26 @@
 ---
 title: price
-description: OpenBB SDK Function
+description: This marketing page provides information on how to request and view forex
+  prices with the modules in OpenBB-finance. It outlines parameters and returns for
+  each featured function.
+keywords:
+- OpenBB-finance
+- forex prices
+- oanda
+- price request
+- price view
+- currency pair
+- functions
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.price - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# price
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.forex.oanda.price(accountID: str = "REPLACE_ME", instrument: Optional[str
 | Union[Dict[str, str], bool] | The currency pair price or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +80,6 @@ openbb.forex.oanda.price_chart(account: str, instrument: Optional[str] = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

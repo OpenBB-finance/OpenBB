@@ -1,13 +1,24 @@
 ---
 title: Installation
 sidebar_position: 1
-description: The OpenBB SDK provides programmatic access to all Terminal functions. This layer of code allows users to build their own tools and applications on top of the existing architecture. Follow these steps to install on a local machine.
-keywords: [installation, installer, install, guide, mac, windows, linux, python, github, macos, how to, explanation, openbb, sdk, api, pip, pypi,]
+description: Learn about the OpenBB SDK that provides programmatic access to all Terminal
+  functions, allowing users to build their own tools and applications on the existing
+  architecture. Understand how it is part of the OpenBB Terminal and the installation
+  process.
+keywords:
+- OpenBB SDK
+- programmatic access
+- Terminal functions
+- build tools
+- build applications
+- existing architecture
+- installation source code
+- PyPI
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation - SDK | OpenBB Docs" />
+<HeadTitle title="Installation | OpenBB SDK Docs" />
 
 The OpenBB SDK provides programmatic access to all Terminal functions and much more. This layer of code allows users to build their own tools and applications on top of the existing architecture.
 
