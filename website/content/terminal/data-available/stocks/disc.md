@@ -21,7 +21,7 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Discovery - Stocks - Data Available | OpenBB Terminal Docs" />
-The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `disc`, and pressing, `ENTER` (⏎). Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
+The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="/terminal/data-available/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `disc`, and pressing, `ENTER` (⏎). Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979936-5d842b62-8c0d-4800-bf7f-0fed8d70c073.png"></img>
 

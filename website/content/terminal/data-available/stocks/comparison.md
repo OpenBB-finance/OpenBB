@@ -11,7 +11,7 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Comparison Analysis - Stocks - Data Available | OpenBB Terminal Docs" />
-The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/usage/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
+The Comparison Analysis menu provides the user with tools for comparison (similar) stocks. It is not necessary to load a ticker from the <a href="/terminal/data-available/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218978432-a47e817c-30c6-4dbb-bb86-52a1eb83901d.png"></img>
 

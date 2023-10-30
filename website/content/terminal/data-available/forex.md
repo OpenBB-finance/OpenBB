@@ -30,7 +30,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Forex - Data Available | OpenBB Terminal Docs" />
 
-The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/usage/intros/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.
+The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/data-available/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/data-available/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.
 
 ### How to use
 
@@ -120,7 +120,7 @@ Lastly, insights in the forward valuations can also be given with <a href="/term
 └───────────────┴────────┴────────┴────────┴───────────┘
 ```
 
-Furthermore, the ability exists to take the currency pair to the <a href="/terminal/usage/intros/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> menu by typing `ta`.
+Furthermore, the ability exists to take the currency pair to the <a href="/terminal/data-available/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> menu by typing `ta`.
 
 ### Examples
 
@@ -135,7 +135,7 @@ Then, let's see how this currency pair has changed over the last years with `can
 
 ![Candle with Moving Averages](https://user-images.githubusercontent.com/46355364/176427947-26346800-173b-4195-8a58-1add2a66ae31.png)
 
-Now it's time to take this to the <a href="/terminal/usage/intros/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Analysis</a> menu by typing `qa`. This returns the following. Within this menu we can show some rolling statistics, for example show the rolling values for the mean and standard deviation of the currency pair:
+Now it's time to take this to the <a href="/terminal/data-available/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Analysis</a> menu by typing `qa`. This returns the following. Within this menu we can show some rolling statistics, for example show the rolling values for the mean and standard deviation of the currency pair:
 
 ![Rolling Statistics for Forex](https://user-images.githubusercontent.com/46355364/176428039-4dcff70e-84e2-441d-9710-4d3f06af4175.png)
 

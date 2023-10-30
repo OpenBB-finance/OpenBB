@@ -16,7 +16,7 @@ keywords:
 ---
 
 The Portfolio menu, and its sub-menus, are dedicated to properly explaining and optimizing your own portfolio. With features to load your own orderbook (transactions) it is possible to compare your results to that of a <a href="https://www.investopedia.com/terms/b/benchmark.asp" target="_blank" rel="noreferrer noopener">benchmark</a>. For example, you are able to load both your portfolio and a benchmark (<a href="/terminal/reference/portfolio/load" target="_blank" rel="noreferrer noopener">load</a> and <a href="/terminal/reference/portfolio/bench" target="_blank" rel="noreferrer noopener">bench</a>), then have the option to look into the performance compared to the benchmark asking the question "_What if I invested all my money in the benchmark instead?_" (<a href="/terminal/reference/portfolio/perf" target="_blank" rel="noreferrer noopener">perf</a>) as well as see a wide variety of statistics and metrics (<a href="/terminal/reference/portfolio/rsharpe/" target="_blank" rel="noreferrer noopener">rsharpe</a>, <a href="/terminal/reference/portfolio/distr" target="_blank" rel="noreferrer noopener">distr</a>, <a href="/terminal/reference/portfolio/var" target="_blank" rel="noreferrer noopener">var</a>
-and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferrer noopener">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/usage/intros/portfolio/po/" target="_blank" rel="noreferrer noopener">Portfolio Optimization menu</a>.
+and <a href="/terminal/reference/portfolio/metric" target="_blank" rel="noreferrer noopener">metric</a>). Next to that, with these findings you can apply optimization techniques to your portfolio through the <a href="/terminal/data-available/portfolio/po/" target="_blank" rel="noreferrer noopener">Portfolio Optimization menu</a>.
 
 ## How to use
 
@@ -28,7 +28,7 @@ The first step in using this menu is loading a portfolio with <a href="/terminal
 
 :::note If you wish to load in your own Excel holdings file, please follow the following steps:
 1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/03wjjf1lfkqjmtn/holdings_example.xlsx?dl=0).
-2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
 3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own orders). This is the default template that is also loaded in with `load --example`.
 4. Open up the OpenBB Terminal, go to `portfolio` and type `load --file`. Your Excel file should then be one of the options.
 :::

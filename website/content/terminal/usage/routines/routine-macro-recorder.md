@@ -40,7 +40,7 @@ The following shows the output from this pipeline of commands.
 
 ![Routines](https://user-images.githubusercontent.com/46355364/223204998-70d9e5da-f84e-4c22-90c4-576dcf87c1df.png)
 
-Because there was a `record` and `stop` at the `start` and `end` respectively, a routine script was created. This file cane be found inside the `routines` folder within the `OpenBBUserData` folder (more on exporting and import data [here](https://docs.openbb.co/terminal/usage/guides/data)).
+Because there was a `record` and `stop` at the `start` and `end` respectively, a routine script was created. This file cane be found inside the `routines` folder within the `OpenBBUserData` folder (more on exporting and import data [here](/terminal/usage/data/custom-data)).
 
 Now, you should be able to access the routine file from the terminal main menu by doing `/exe --file` and using the auto-completer. Note that the naming of the file will differ for you based on the time you are executing the script.
 

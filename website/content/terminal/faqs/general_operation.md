@@ -37,7 +37,7 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/installation) to download the most recent release.
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](/terminal/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
 
@@ -45,7 +45,7 @@ Do note that it is also possible that the menu or command has been deprecated. I
 
 <details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
 
-Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/installation/docker](https://docs.openbb.co/terminal/installation/docker)
+Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [/terminal/installation/docker](/terminal/installation/docker)
 
 </details>
 
@@ -77,19 +77,19 @@ Files can be formatted as either `.csv` or `.xlsx` files, and the required colum
 
 `[Date,Type,Ticker,Side,Price,Quantity,Fees,Investment,Currency,Sector,Industry,Country,Region]`
 
-See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for more information.
+See the guide [here](/sdk/data-available/portfolio/introduction) for more information.
 
 </details>
 
 <details><summary>How do I change the chart styles?</summary>
 
-See the guide [here](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal#styles).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](https://docs.openbb.co/terminal/usage/basics#charts) for more information on working with the charts.
+See the guide [here](/terminal/usage/guides/customizing-the-terminal#styles).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
 
 </details>
 
 <details><summary>Can I change the colors of the text in the Terminal?</summary>
 
-Yes, use the `colors` command under the `/settings` menu: [https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal)
+Yes, use the `colors` command under the `/settings` menu: [/terminal/usage/guides/customizing-the-terminal](/terminal/usage/guides/customizing-the-terminal)
 
 </details>
 
@@ -118,7 +118,7 @@ rnn -d SPY
 
 <details><summary>How do I find stocks from India, or another country?</summary>
 
-Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](https://docs.openbb.co/terminal/usage/intros/stocks#search).
+Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](/terminal/data-available/stocks#search).
 
 As an example, try this:
 

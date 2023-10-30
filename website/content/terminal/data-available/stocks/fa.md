@@ -15,11 +15,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Fundamental Analysis - Stocks - Data Available | OpenBB Terminal Docs" />
 
-The Fundamental Analysis menu is a set of tools for measuring a company's intrinsic value, relative to the market price. Functions within this menu are generally microeconomic factors. The purpose is to harness data reported in financial statements and estimate the tangible value of a share. Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are <a href="/terminal/usage/intros/stocks/screener/" target="_blank" rel="noreferrer noopener">screeners</a> to compare fundamentals across groups of companies.
+The Fundamental Analysis menu is a set of tools for measuring a company's intrinsic value, relative to the market price. Functions within this menu are generally microeconomic factors. The purpose is to harness data reported in financial statements and estimate the tangible value of a share. Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are <a href="/terminal/data-available/stocks/screener/" target="_blank" rel="noreferrer noopener">screeners</a> to compare fundamentals across groups of companies.
 
 ### How to use
 
-Enter the submenu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>.  Note all functions in this submenu can add a ticker argument with the `-t` flag.
+Enter the submenu from the <a href="/terminal/data-available/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a>.  Note all functions in this submenu can add a ticker argument with the `-t` flag.
 
 ```
 (🦋) /stocks/ $ fa

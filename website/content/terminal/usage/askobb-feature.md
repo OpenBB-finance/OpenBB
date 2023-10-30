@@ -3,27 +3,13 @@ title: AskOBB Feature
 sidebar_position: 5
 description: This documentation page presents the innovative use of language learning
   machines (LLMs), in particular, the LlamaIndex in transforming natural language
-  queries into commands in OpenBB Terminal. The page further explains the intrinsics,
-  solution process, and includes tutorial videos on how to leverage this technology
-  for efficient data retrieval.
+  queries into commands in OpenBB Terminal.
 keywords:
 - AskOBB
 - natural language query
 - LLMs
 - LlamaIndex
 - BloombergGPT
-- financial technology
-- command classification
-- terminal commands
-- asset classes
-- cryptocurrency
-- equity
-- CLI help argument
-- Vector Index
-- OpenAI embeddings API
-- embedding
-- GPT-3.5-turbo model
-- vector
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -13,7 +13,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Dark Pools & Short Data - Stocks - Data Available | OpenBB Terminal Docs" />
 
-The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank" rel="noreferrer noopener">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/usage/intros/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
+The purpose of this menu is to provide the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in a <a href="https://www.law.cornell.edu/cfr/text/17/242.600" target="_blank" rel="noreferrer noopener">NMS security</a>. There are also commands for looking at market as a whole. Enter the submenu from the <a href="/terminal/data-available/stocks" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `dps`, and hitting `ENTER` (⏎).
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979380-df541217-ecc3-4a4c-b23b-4fcfe891f69f.png"></img>
 

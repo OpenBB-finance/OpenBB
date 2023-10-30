@@ -99,7 +99,7 @@ As a starting point, let's use the example above.
 
 1. Create a new text file with the name `routines_template.openbb` and copy and paste the routine above. For simplicity you can also download the template file **[here](https://www.dropbox.com/s/73g9qx9xgtbb2ec/routines_template.openbb?dl=1)**.
 
-2. Move the file inside the `routines` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `routines` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
 
 3. Open up the OpenBB Terminal, and type `exe --file routines_template`. If you changed the name of the file, then replace `routines_template` with such. As long as the file remains in the `routines` folder, you will be able to find your file through OpenBB Terminal's auto-completer capability.
 

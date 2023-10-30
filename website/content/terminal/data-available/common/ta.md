@@ -30,10 +30,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
-- [Crypto](https://docs.openbb.co/terminal/usage/intros/crypto)
-- [Stocks](https://docs.openbb.co/terminal/usage/intros/stocks)
-- [ETF](https://docs.openbb.co/terminal/usage/intros/etf)
-- [Forex](https://docs.openbb.co/terminal/usage/intros/forex)
+- [Crypto](/terminal/data-available/crypto)
+- [Stocks](/terminal/data-available/stocks)
+- [ETF](/terminal/data-available/etf)
+- [Forex](/terminal/data-available/forex)
 
 The commands are divided by categories that define their purpose for general-use:
 
@@ -44,7 +44,7 @@ The commands are divided by categories that define their purpose for general-use
 - Volume - Singling out volume
 - Custom - Multiple indicators and Fibonacci retracements
 
-All commands in this menu will rely on the interval and window chosen when loading an asset for analysis.  Refer to the directory tree on the left side of the page, [here](https://docs.openbb.co/terminal/reference), for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is [Investopedia](https://www.investopedia.com/terms/t/technicalanalysis.asp).  The menu employs the [Pandas-TA Library](https://github.com/twopirllc/pandas-ta).  Submit a [feature request](https://openbb.co/request-a-feature) to let us know which indicators we should add next!
+All commands in this menu will rely on the interval and window chosen when loading an asset for analysis.  Refer to the directory tree on the left side of the page, [here](/terminal/reference), for information on individual commands. To get a better understanding of what these features are, and the formulas behind them, a number of sources should be consulted; but, a good starting point is [Investopedia](https://www.investopedia.com/terms/t/technicalanalysis.asp).  The menu employs the [Pandas-TA Library](https://github.com/twopirllc/pandas-ta).  Submit a [feature request](https://openbb.co/request-a-feature) to let us know which indicators we should add next!
 
 ### How to Use
 

@@ -39,7 +39,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 Most commands will require obtaining API keys from various data providers. OpenBB provides methods for consuming these data feeds, but has no control over the quality or quantity of data provided to an end-user. **No API Keys are required to get started using the Terminal**.
 
-See the list of data providers [here](https://docs.openbb.co/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal. You can also request a new data source through this [form](https://openbb.co/request-a-feature).
+See the list of data providers [here](/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal. You can also request a new data source through this [form](https://openbb.co/request-a-feature).
 
 :::note
 OpenBB doesn't store any financial data in its servers. We aggregate access to multiple data sources through API calls and standardize that interaction to provide users a seamless experience when dealing with different data vendors
@@ -91,7 +91,7 @@ The default data vendor can be selected with more ease through the OpenBB Hub. I
 
 ### Setting default source through Terminal
 
-The default data source for each command (where multiple sources are available) can be defined within the [`/sources`](https://docs.openbb.co/terminal/usage/guides/changing-sources) menu.
+The default data source for each command (where multiple sources are available) can be defined within the [`/sources`](/terminal/usage/guides/changing-sources) menu.
 
 For example, if you would like to change the default data provider for the `income` command from the `stocks/fa` menu you can first run the command `get --cmd stocks/fa/income`. This returns the following:
 

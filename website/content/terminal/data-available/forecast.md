@@ -41,7 +41,7 @@ The Forecast menu can be called from any location with the command:
 
 ![The Forecast Menu](https://user-images.githubusercontent.com/85772166/233540050-071524c6-f374-4241-aa31-cf33b7685e22.png)
 
-There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](https://docs.openbb.co/terminal/usage/intros/crypto) and [`/stocks` menu](https://docs.openbb.co/terminal/usage/intros/stocks)
+There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/data-available/crypto) and [`/stocks` menu](/terminal/data-available/stocks)
 
 The menu is divided into sections for:
 
@@ -58,7 +58,7 @@ and the functions within these groups are described in the following sections.
 
 #### With the Load Command
 
-If the Forecast menu has not been entered directly through the [`/crypto`](https://docs.openbb.co/terminal/usage/intros/crypto) or [`/stocks`](https://docs.openbb.co/terminal/usage/intros/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
+If the Forecast menu has not been entered directly through the [`/crypto`](/terminal/data-available/crypto) or [`/stocks`](/terminal/data-available/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
 
 ![Loading Data](https://user-images.githubusercontent.com/85772166/233540104-2aad880e-c077-448a-9aff-9d2f18baf19e.png)
 
@@ -150,7 +150,7 @@ To save all of the combined changes within a dataset, export it to a new file.
 export -d SPY --type csv
 ```
 
-This creates a new file in the [OpenBBUserData folder](https://docs.openbb.co/terminal/usage/guides/data).
+This creates a new file in the [OpenBBUserData folder](/terminal/usage/data/custom-data).
 
 ### Feature Engineering
 
@@ -463,7 +463,7 @@ We will continue this workflow by:
 - Adding some correlation analysis.
 - Train models with `past_covariates`.
 
-For practice, let's start fresh and rebuild the same dataset.  The [OpenBB Routine Scripts](https://docs.openbb.co/terminal/usage/guides/scripts-and-routines) can make quick work out of this chore.  Copy the block below and create a new `.openbb` file, in `~/OpenBBUserData/routines/`, to follow along.
+For practice, let's start fresh and rebuild the same dataset.  The [OpenBB Routine Scripts](/terminal/usage/guides/scripts-and-routines) can make quick work out of this chore.  Copy the block below and create a new `.openbb` file, in `~/OpenBBUserData/routines/`, to follow along.
 
 ```console
 /stocks

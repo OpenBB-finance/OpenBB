@@ -33,9 +33,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Quantitative Analysis menu is a common menu to three asset classes:
 
-- <a href = "/terminal/usage/intros/crypto/" target="_blank" rel="noreferrer noopener">Crypto</a>
-- <a href = "/terminal/usage/intros/forex/" target= "_blank"  rel="noreferrer noopener">Forex</a>
-- <a href = "/terminal/usage/intros/stocks/" target = "_blank"  rel="noreferrer noopener">Stocks</a>
+- <a href = "/terminal/data-available/crypto/" target="_blank" rel="noreferrer noopener">Crypto</a>
+- <a href = "/terminal/data-available/forex/" target= "_blank"  rel="noreferrer noopener">Forex</a>
+- <a href = "/terminal/data-available/stocks/" target = "_blank"  rel="noreferrer noopener">Stocks</a>
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218976291-b31cf033-636d-4534-8327-062b8d573263.png"></img>
 
@@ -118,7 +118,7 @@ deviate from the defaulted comparison, $SPY.
 
 ![Beta](https://user-images.githubusercontent.com/46355364/218977134-52b00eec-a7f5-4dc9-ba62-343d0b546d30.png)
 
-Most outputs are equipped with an `--export` flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like <a href="/terminal/usage/intros/econometrics/" target="_blank" rel="noreferrer noopener"> Econometrics</a>. Additional information on each specific command is displayed by attaching `-h` to it.
+Most outputs are equipped with an `--export` flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like <a href="/terminal/data-available/econometrics/" target="_blank" rel="noreferrer noopener"> Econometrics</a>. Additional information on each specific command is displayed by attaching `-h` to it.
 
 ### Examples
 

@@ -57,7 +57,7 @@ The location of this folder can be set by the user from the `/settings` menu. Th
 
 ## Import data
 
-Menus, such as [Econometrics](https://docs.openbb.co/terminal/usage/intros/econometrics) or [Portfolio](https://docs.openbb.co/terminal/usage/intros/portfolio), allow the user to import their own dataset. Files available to import will be included with the selections made available by auto-complete. In the Econometrics menu, this is activated after pressing the space bar with `load -f `
+Menus, such as [Econometrics](/terminal/data-available/econometrics) or [Portfolio](/terminal/data-available/portfolio), allow the user to import their own dataset. Files available to import will be included with the selections made available by auto-complete. In the Econometrics menu, this is activated after pressing the space bar with `load -f `
 
 ![Importing Data](https://user-images.githubusercontent.com/85772166/204921760-38742f6c-ec78-4009-9c23-54dcb0504524.png)
 

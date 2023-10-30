@@ -32,7 +32,7 @@ The first step in using this menu is loading a portfolio with <a href="/terminal
 
 :::note If you wish to load in your own Excel allocation file, please follow the following steps:
 1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/wp1lcq86exyngjy/allocation_example.xlsx?dl=0).
-2. Move the file inside the `portfolio/allocation` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `portfolio/allocation` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
 3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own allocation). This is the default template that is also loaded in with `load --example`.
 4. Open up the OpenBB Terminal, go to `portfolio/po` and type `load --file`. Your Excel file should then be one of the options.
 :::
@@ -41,7 +41,7 @@ Furthermore, given the amount of options you can choose from in each command and
 
 :::note If you wish to load in your own Excel or ini parameter file, please follow the following steps:
 1. Download the file that can be used as a template: [xlsx](https://www.dropbox.com/s/qfhd7ntj7mlwsuc/parameters_template.xlsx?dl=0) (recommended) or [ini](https://www.dropbox.com/s/3ehwg3hiwm89hgo/parameters_template.ini?dl=0) (advanced).
-2. Move the file inside the `portfolio/optimization` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/guides/data) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `portfolio/optimization` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
 3. Open the file and set parameters as you wish.
 4. Open up the OpenBB Terminal, go to `portfolio/po` and type `file --file`. The file should then be one of the options.
 :::

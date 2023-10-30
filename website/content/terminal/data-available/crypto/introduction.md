@@ -30,9 +30,9 @@ keywords:
 - Altcoin season
 ---
 
-The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/usage/intros/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/usage/intros/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
-NFT (<a href="/terminal/usage/intros/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
-(<a href="/terminal/usage/intros/crypto/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/usage/intros/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/usage/intros/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/usage/intros/crypto/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
+The Cryptocurrency menu allows you to discover trending cryptocurrency (<a href="/terminal/data-available/crypto/disc/" target="_blank" rel="noreferrer noopener">disc</a>). Additionally, you can also perform research of a specific coin (<a href="/terminal/data-available/crypto/dd" target="_blank" rel="noreferrer noopener">dd</a>),
+NFT (<a href="/terminal/data-available/crypto/nft" target="_blank" rel="noreferrer noopener">nft</a>) or most lucrative Defi project
+(<a href="/terminal/data-available/crypto/defi" target="_blank" rel="noreferrer noopener">defi</a>). It does so by handing you tools to (among other things) perform technical analysis (<a href="/terminal/data-available/common/ta/" target="_blank" rel="noreferrer noopener">ta</a>), quantitative analysis (<a href="/terminal/data-available/common/qa" target="_blank" rel="noreferrer noopener">qa</a>), and give you access to onchain information (<a href="/terminal/data-available/crypto/onchain/" target="_blank" rel="noreferrer noopener">onchain</a>).
 
 ### How to use
 
@@ -103,14 +103,14 @@ To view the candle chart for the loaded crypto, you can call `candle`. This will
 
 The Cryptocurrency menu has an extensive list of available sub-menus ranging from due diligence to NFT to onchain analysis. To find more information about each menu, you can click on one of the following:
 
-- [Introduction to Cryptocurrency Discovery](/terminal/usage/intros/crypto/disc): discovers top trending, top gainers or losers coins, as well as top NFTs, dApps and exchanges based on prices.
-- [Introduction to Cryptocurrency Overview](/terminal/usage/intros/crypto/ov/): gives the overview of the cryptocurrency market, including global Defi market, stablecoins, exchanges as well as latest news.
-- [Introduction to Cryptocurrency Onchain](/terminal/usage/intros/crypto/onchain/): provides information on different blockchains, whales transaction and traded volumes on certain crypto pair. You can also specify a Ethereum address and look up past transactions and balance history.
-- [Introduction to Cryptocurrency Decentralized Finance (DeFi)](/terminal/usage/intros/crypto/defi/): explore the decentralized finance market through a variety of indicators and data, from lending interests, staking ratio, Uniswap pools to top Defi dApps.
-- [Introduction to Non Fungible Tokens (NFTs)](/terminal/usage/intros/crypto/nft/): Discover latest NFT drops and OpenSea's NFT Collection statistics.
-- [Introduction to Cryptocurrency Due Diligence](/terminal/usage/intros/crypto/dd/): performs due diligence on a chosen coin based on, among other things, tokenomics, roadmaps, news, and community.
-- [Introduction to Technical Analysis](/terminal/usage/intros/common/ta/): analyzes the chosen coin's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
-- [Introduction to Forecasting Menu](/terminal/usage/intros/forecast/): applies advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting
+- [Introduction to Cryptocurrency Discovery](/terminal/data-available/crypto/disc): discovers top trending, top gainers or losers coins, as well as top NFTs, dApps and exchanges based on prices.
+- [Introduction to Cryptocurrency Overview](/terminal/data-available/crypto/ov/): gives the overview of the cryptocurrency market, including global Defi market, stablecoins, exchanges as well as latest news.
+- [Introduction to Cryptocurrency Onchain](/terminal/data-available/crypto/onchain/): provides information on different blockchains, whales transaction and traded volumes on certain crypto pair. You can also specify a Ethereum address and look up past transactions and balance history.
+- [Introduction to Cryptocurrency Decentralized Finance (DeFi)](/terminal/data-available/crypto/defi/): explore the decentralized finance market through a variety of indicators and data, from lending interests, staking ratio, Uniswap pools to top Defi dApps.
+- [Introduction to Non Fungible Tokens (NFTs)](/terminal/data-available/crypto/nft/): Discover latest NFT drops and OpenSea's NFT Collection statistics.
+- [Introduction to Cryptocurrency Due Diligence](/terminal/data-available/crypto/dd/): performs due diligence on a chosen coin based on, among other things, tokenomics, roadmaps, news, and community.
+- [Introduction to Technical Analysis](/terminal/data-available/common/ta/): analyzes the chosen coin's historical data extensively with moving averages and momentum, trend, volatility and volume indicators.
+- [Introduction to Forecasting Menu](/terminal/data-available/forecast/): applies advanced AI and Machine Learning models to form prediction of future stock prices including Recurrent Neural Network (RNN), Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting
 
 ### Examples
 
