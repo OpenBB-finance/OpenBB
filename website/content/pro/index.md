@@ -1,5 +1,8 @@
 ---
-sidebar_position: 1
+title: Introduction
+sidebar_position: 0
 ---
 
-# OpenBB Pro
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB Terminal Pro Docs" />

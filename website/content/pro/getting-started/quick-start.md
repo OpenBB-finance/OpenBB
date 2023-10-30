@@ -1,4 +1,5 @@
 ---
+title: Quick start guide
 sidebar_position: 2
 ---
 

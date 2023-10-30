@@ -1,8 +1,9 @@
 ---
+title: Free trial
 sidebar_position: 2
 ---
 
-# Getting Started with OpenBB Terminal Pro Free Trial
+# Getting Started with Free Trial
 
 To unlock the powerful features of **OpenBB Terminal Pro**, follow these steps:
 
