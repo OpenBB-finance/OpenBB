@@ -6,6 +6,7 @@ from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFet
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
+from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -16,7 +17,9 @@ from openbb_yfinance.models.major_indices_historical import (
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -150,5 +153,18 @@ def test_y_finance_available_indices_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFinanceAvailableIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "IOO",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
+
+    fetcher = YFinanceEtfHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

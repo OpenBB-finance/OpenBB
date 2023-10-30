@@ -236,15 +236,8 @@ def test_economy_risk(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "D", "symbol": True}),
-        (
-            {
-                "europe": True,
-                "provider": "cboe",
-                "query": "A",
-                "symbol": False,
-            }
-        ),
+        ({"query": "D", "is_symbol": True}),
+        ({"europe": True, "provider": "cboe", "query": "A", "is_symbol": False}),
     ],
 )
 @pytest.mark.integration

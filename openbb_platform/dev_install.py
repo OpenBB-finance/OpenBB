@@ -27,6 +27,7 @@ openbb-oecd = { path = "./providers/oecd", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-forex = { path = "./extensions/forex", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
@@ -34,6 +35,7 @@ openbb-stocks = { path = "./extensions/stocks", develop = true }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
+openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }

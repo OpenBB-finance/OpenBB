@@ -8,14 +8,19 @@ from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class StockNewsQueryParams(QueryParams):
     """Stock news query."""
 
-    symbols: str = Field(min_length=1, description="Comma separated list of symbols.")
+    symbols: str = Field(
+        min_length=1,
+        description=QUERY_DESCRIPTIONS.get("symbols", "")
+        + " Here it is a separated list of symbols.",
+    )
     limit: Optional[NonNegativeInt] = Field(
-        default=20, description="Number of results to return per page."
+        default=20, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbols", mode="before")
@@ -28,7 +33,10 @@ class StockNewsQueryParams(QueryParams):
 class StockNewsData(Data):
     """Stock News data."""
 
-    date: datetime = Field(description="Published date of the news.")
+    date: datetime = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+        + " Here it is the date of the news."
+    )
     title: str = Field(description="Title of the news.")
     image: Optional[str] = Field(default=None, description="Image URL of the news.")
     text: Optional[str] = Field(default=None, description="Text/body of the news.")

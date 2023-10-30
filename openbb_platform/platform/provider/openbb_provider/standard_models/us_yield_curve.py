@@ -8,6 +8,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class USYieldCurveQueryParams(QueryParams):
@@ -15,7 +16,8 @@ class USYieldCurveQueryParams(QueryParams):
 
     date: Optional[dateType] = Field(
         default=None,
-        description="Date to get Yield Curve data.  Defaults to the most recent FRED entry.",
+        description=QUERY_DESCRIPTIONS.get("date", "")
+        + " Defaults to the most recent FRED entry.",
     )
     inflation_adjusted: Optional[bool] = Field(
         default=False, description="Get inflation adjusted rates."

@@ -166,7 +166,7 @@ def test_economy_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -265,15 +265,8 @@ def test_economy_risk(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "D", "symbol": True, "provider": "cboe"}),
-        (
-            {
-                "europe": True,
-                "provider": "cboe",
-                "query": "A",
-                "symbol": False,
-            }
-        ),
+        ({"query": "D", "is_symbol": True, "provider": "cboe"}),
+        ({"europe": True, "provider": "cboe", "query": "A", "is_symbol": False}),
     ],
 )
 @pytest.mark.integration
@@ -367,7 +360,7 @@ def test_economy_sp500_multiples(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/sp500_multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

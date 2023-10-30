@@ -12,7 +12,7 @@ def test_hub_session():
         username="mock_username",
         primary_usage="mock_primary_usage",
     )
-    assert session.access_token == "mock_access_token"
+    assert session.access_token.get_secret_value() == "mock_access_token"
     assert session.token_type == "mock_token_type"
     assert session.email == "mock_email"
     assert session.user_uuid == "mock_user_uuid"

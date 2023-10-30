@@ -17,10 +17,8 @@ class FREDCPIData(CPIData):
     """CPI data."""
 
 
-class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[Dict[str, List[FREDCPIData]]]]):
+class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
     """FRED CPI Fetcher."""
-
-    data_type = FREDCPIData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
@@ -29,7 +27,7 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[Dict[str, List[FREDCPIData
     @staticmethod
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> dict:
+    ) -> Dict:
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
@@ -41,23 +39,31 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[Dict[str, List[FREDCPIData
         series_dict = {}
         fred = Fred(api_key)
         for item in step_3:
-            loc = f"{item['country']}-{item['frequency']}-{item['units']}"
+            loc = f"{item['country']}"
             temp = fred.get_series(
                 item["series_id"], query.start_date, query.end_date, **kwargs
             )
-            series_dict[loc] = temp
+            temp = [{"date": item["date"], "value": item["value"]} for item in temp]
+            series_dict[loc] = [item for item in temp if item["value"] != "."]
 
         return series_dict
 
     @staticmethod
     def transform_data(
-        query: FREDCPIQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDCPIData]]]:
-        for key, value in data.items():
-            data[key] = [
-                FREDCPIData(date=x["date"], value=x["value"])
-                for x in value
-                if x["value"] != "."
-            ]
+        query: FREDCPIQueryParams, data: Dict, **kwargs: Any
+    ) -> List[FREDCPIData]:
+        transformed_data = {}
 
-        return [data]
+        # Iterate over the series_dict
+        for country, data_list in data.items():
+            for item in data_list:
+                # If the date is not in the dictionary, add it
+                if item["date"] not in transformed_data:
+                    transformed_data[item["date"]] = {"date": item["date"]}
+                # Update the dictionary with the country's value data
+                transformed_data[item["date"]].update({country: item["value"]})
+
+        # Convert the dictionary to a list of dictionaries
+        transformed_data = list(transformed_data.values())
+
+        return [FREDCPIData.model_validate(item) for item in transformed_data]

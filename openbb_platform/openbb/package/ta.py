@@ -1,15 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
 import pandas
+import typing_extensions
 from annotated_types import Ge, Gt
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from typing_extensions import Annotated
 
 
 class ROUTER_ta(Container):
@@ -102,8 +102,8 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        fast: Annotated[int, Gt(gt=0)] = 3,
-        slow: Annotated[int, Gt(gt=0)] = 10,
+        fast: typing_extensions.Annotated[int, Gt(gt=0)] = 3,
+        slow: typing_extensions.Annotated[int, Gt(gt=0)] = 10,
         offset: int = 0,
     ) -> OBBject[List[Data]]:
         """
@@ -267,9 +267,9 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        length: Annotated[int, Gt(gt=0)] = 14,
+        length: typing_extensions.Annotated[int, Gt(gt=0)] = 14,
         mamode: Literal["rma", "ema", "sma", "wma"] = "rma",
-        drift: Annotated[int, Ge(ge=0)] = 1,
+        drift: typing_extensions.Annotated[int, Ge(ge=0)] = 1,
         offset: int = 0,
     ) -> OBBject[List[Data]]:
         """
@@ -324,7 +324,7 @@ class ROUTER_ta(Container):
         target: str = "close",
         index: str = "date",
         length: int = 50,
-        std: Annotated[float, Ge(ge=0)] = 2,
+        std: typing_extensions.Annotated[float, Ge(ge=0)] = 2,
         mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
         offset: int = 0,
     ) -> OBBject[List[Data]]:
@@ -393,8 +393,8 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        length: Annotated[int, Gt(gt=0)] = 14,
-        scalar: Annotated[float, Gt(gt=0)] = 0.015,
+        length: typing_extensions.Annotated[int, Gt(gt=0)] = 14,
+        scalar: typing_extensions.Annotated[float, Gt(gt=0)] = 0.015,
     ) -> OBBject[List[Data]]:
         """
         The CCI is designed to detect beginning and ending market trends.
@@ -437,7 +437,7 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        length: Annotated[int, Gt(gt=0)] = 14,
+        length: typing_extensions.Annotated[int, Gt(gt=0)] = 14,
     ) -> OBBject[List[Data]]:
         """
         The Center of Gravity indicator, in short, is used to anticipate future price movements
@@ -484,7 +484,7 @@ class ROUTER_ta(Container):
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
         target: str = "close",
-        period: Annotated[int, Gt(gt=0)] = 90,
+        period: typing_extensions.Annotated[int, Gt(gt=0)] = 90,
     ) -> OBBject[List[Data]]:
         """
         Clenow Volatility Adjusted Momentum.
@@ -665,8 +665,8 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        lower_length: Annotated[int, Gt(gt=0)] = 20,
-        upper_length: Annotated[int, Gt(gt=0)] = 20,
+        lower_length: typing_extensions.Annotated[int, Gt(gt=0)] = 20,
+        upper_length: typing_extensions.Annotated[int, Gt(gt=0)] = 20,
         offset: int = 0,
     ) -> OBBject[List[Data]]:
         """
@@ -781,9 +781,9 @@ class ROUTER_ta(Container):
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
         close_column: Literal["close", "adj_close"] = "close",
-        period: Annotated[int, Gt(gt=0)] = 120,
-        start_date: Optional[str] = None,
-        end_date: Optional[str] = None,
+        period: typing_extensions.Annotated[int, Gt(gt=0)] = 120,
+        start_date: Union[str, None] = None,
+        end_date: Union[str, None] = None,
     ) -> OBBject[List[Data]]:
         """Create Fibonacci Retracement Levels.
 
@@ -827,8 +827,8 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        length: Annotated[int, Gt(gt=0)] = 14,
-        signal: Annotated[int, Gt(gt=0)] = 1,
+        length: typing_extensions.Annotated[int, Gt(gt=0)] = 14,
+        signal: typing_extensions.Annotated[int, Gt(gt=0)] = 1,
     ) -> OBBject[List[Data]]:
         """
         The Fisher Transform is a technical indicator created by John F. Ehlers
@@ -932,10 +932,10 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        conversion: Annotated[int, Gt(gt=0)] = 9,
-        base: Annotated[int, Gt(gt=0)] = 26,
-        lagging: Annotated[int, Gt(gt=0)] = 52,
-        offset: Annotated[int, Gt(gt=0)] = 26,
+        conversion: typing_extensions.Annotated[int, Gt(gt=0)] = 9,
+        base: typing_extensions.Annotated[int, Gt(gt=0)] = 26,
+        lagging: typing_extensions.Annotated[int, Gt(gt=0)] = 52,
+        offset: typing_extensions.Annotated[int, Gt(gt=0)] = 26,
         lookahead: bool = False,
     ) -> OBBject[List[Data]]:
         """
@@ -982,10 +982,10 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        length: Annotated[int, Gt(gt=0)] = 20,
-        scalar: Annotated[float, Gt(gt=0)] = 20,
+        length: typing_extensions.Annotated[int, Gt(gt=0)] = 20,
+        scalar: typing_extensions.Annotated[float, Gt(gt=0)] = 20,
         mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
-        offset: Annotated[int, Ge(ge=0)] = 0,
+        offset: typing_extensions.Annotated[int, Ge(ge=0)] = 0,
     ) -> OBBject[List[Data]]:
         """
         Keltner Channels are volatility-based bands that are placed
@@ -1018,7 +1018,7 @@ class ROUTER_ta(Container):
         --------
         >>> from openbb import obb
         >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-        >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, ma_mode="ema", offset=0)
+        >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, mamode="ema", offset=0)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1272,9 +1272,9 @@ class ROUTER_ta(Container):
         self,
         data: Union[List[Data], pandas.DataFrame],
         index: str = "date",
-        fast_k_period: Annotated[int, Ge(ge=0)] = 14,
-        slow_d_period: Annotated[int, Ge(ge=0)] = 3,
-        slow_k_period: Annotated[int, Ge(ge=0)] = 3,
+        fast_k_period: typing_extensions.Annotated[int, Ge(ge=0)] = 14,
+        slow_d_period: typing_extensions.Annotated[int, Ge(ge=0)] = 3,
+        slow_k_period: typing_extensions.Annotated[int, Ge(ge=0)] = 3,
     ) -> OBBject[List[Data]]:
         """
         The Stochastic Oscillator measures where the close is in relation

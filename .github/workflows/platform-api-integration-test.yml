@@ -57,6 +57,7 @@ jobs:
             ./openbb_platform/providers/quandl \
             ./openbb_platform/providers/yfinance \
             ./openbb_platform/providers/oecd \
+            ./openbb_platform/providers/biztoc \
             ./openbb_platform/extensions/charting \
             ./openbb_platform/extensions/futures \
             ./openbb_platform/extensions/qa \
@@ -90,7 +91,8 @@ jobs:
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
               "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
-              "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}"
+              "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}",
+              "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}"
             }
           }' > ~/.openbb_platform/user_settings.json
 

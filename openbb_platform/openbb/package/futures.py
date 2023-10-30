@@ -1,15 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import List, Literal, Union
 
+import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
-from typing_extensions import Annotated
 
 
 class ROUTER_futures(Container):
@@ -24,16 +24,16 @@ class ROUTER_futures(Container):
     @validate
     def curve(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        date: Annotated[
-            Optional[datetime.date],
-            OpenBBCustomParameter(description="Historical date to search curve for."),
+        date: typing_extensions.Annotated[
+            Union[datetime.date, None],
+            OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        provider: Optional[Literal["cboe", "yfinance"]] = None,
-        **kwargs,
+        provider: Union[Literal["cboe", "yfinance"], None] = None,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Futures Historical Price. Futures historical data.
 
@@ -41,9 +41,9 @@ class ROUTER_futures(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Optional[datetime.date]
-            Historical date to search curve for.
-        provider : Optional[Literal['cboe', 'yfinance']]
+        date : Union[datetime.date, None]
+            A specific date to get data for.
+        provider : Union[Literal['cboe', 'yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -51,9 +51,9 @@ class ROUTER_futures(Container):
         Returns
         -------
         OBBject
-            results : List[FuturesCurve]
+            results : Union[List[FuturesCurve]]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'yfinance']]
+            provider : Union[Literal['cboe', 'yfinance'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -66,10 +66,16 @@ class ROUTER_futures(Container):
         ------------
         expiration : str
             Futures expiration month.
-        price : Optional[float]
+        price : Optional[Union[float]]
             The close price of the symbol.
-        symbol : Optional[str]
-            The trading symbol for the tenor of future. (provider: cboe)"""  # noqa: E501
+        symbol : Optional[Union[str]]
+            The trading symbol for the tenor of future. (provider: cboe)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.futures.curve(symbol="VX")
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={
@@ -90,28 +96,28 @@ class ROUTER_futures(Container):
     @validate
     def load(
         self,
-        symbol: Annotated[
+        symbol: typing_extensions.Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        expiration: Annotated[
-            Optional[str],
+        expiration: typing_extensions.Annotated[
+            Union[str, None],
             OpenBBCustomParameter(description="Future expiry date with format YYYY-MM"),
         ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
-        **kwargs,
+        provider: Union[Literal["yfinance"], None] = None,
+        **kwargs
     ) -> OBBject[List[Data]]:
         """Futures Historical Price. Futures historical data.
 
@@ -119,19 +125,19 @@ class ROUTER_futures(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        expiration : Optional[str]
+        expiration : Union[str, None]
             Future expiry date with format YYYY-MM
-        provider : Optional[Literal['yfinance']]
+        provider : Union[Literal['yfinance'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        interval : Optional[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]
+        interval : Optional[Union[Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
             Data granularity. (provider: yfinance)
-        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+        period : Optional[Union[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]]
             Time period of the data to return. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
@@ -143,9 +149,9 @@ class ROUTER_futures(Container):
         Returns
         -------
         OBBject
-            results : List[FuturesHistorical]
+            results : Union[List[FuturesHistorical]]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Union[Literal['yfinance'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -167,7 +173,13 @@ class ROUTER_futures(Container):
         close : float
             The close price of the symbol.
         volume : float
-            The volume of the symbol."""  # noqa: E501
+            The volume of the symbol.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.futures.load(symbol="ES")
+        """  # noqa: E501
 
         inputs = filter_inputs(
             provider_choices={

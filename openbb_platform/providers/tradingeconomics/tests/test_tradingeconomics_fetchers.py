@@ -4,7 +4,9 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_tradingeconomics.models.economic_calendar import TEEconomicCalendarFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump()
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
