@@ -33,7 +33,7 @@ class Extension:
 
         Set the following as entry_point in your extension .toml file and install it:
         [tool.poetry.plugins."openbb_obbject_extension"]
-        example = "openbb_example:entry_point"
+        example = "openbb_example:ext"
 
         Extension code:
         ```python
