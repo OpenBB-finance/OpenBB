@@ -37,7 +37,7 @@ class Extension:
 
         Extension code:
         ```python
-        from openbb_core.app.model.extension import Extension, extend_obbject
+        from openbb_core.app.model.extension import Extension
 
         entry_point = Extension(name="example", required_credentials=["api_key"])
 
