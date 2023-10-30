@@ -10,10 +10,14 @@ keywords:
 - asset classes
 - directory trees
 - common/
+- quant
+- quantitative
+- technical
+- analysis
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction - Common - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Introduction - Common - Menus | OpenBB Terminal Docs" />
 
-There are several sub-menus containing features that can be applied across different asset classes. These are grouped in the directory trees under `common/`.
+Sub-menus containing features that can be applied across different asset classes are grouped here.  These are grouped in the directory trees under `common/`.
