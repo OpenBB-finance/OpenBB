@@ -28,12 +28,12 @@ def write_init_test_template(http_method: str, path: str):
     """Write some common initialization for the tests with the defined template."""
     http_template_imports = {"get": "", "post": "import json"}
     template = http_template_imports[http_method]
-    template += """
+    template += """import base64
+
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
-import base64
 from openbb_core.env import Env
+from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -43,6 +43,10 @@ def headers():
     base64_bytes = base64.b64encode(userpass_bytes)
 
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+
+
+# pylint: disable=redefined-outer-name
+
 """
 
     with open(path, "w") as f:
