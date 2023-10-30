@@ -34,13 +34,8 @@ class CredentialsLoader:
 
         return formatted
 
-    def from_providers(self) -> None:
-        """Load credentials from providers"""
-        for c in ProviderInterface().required_credentials:
-            self.credentials.add(c)
-
-    def from_extensions(self) -> None:
-        """Load credentials from extensions"""
+    def from_obbject(self) -> None:
+        """Load credentials from OBBject extensions"""
         for entry_point in sorted(entry_points(group="openbb_obbject_extension")):
             try:
                 entry = entry_point.load()
@@ -51,10 +46,20 @@ class CredentialsLoader:
                 traceback.print_exception(type(e), e, e.__traceback__)
                 raise LoadingError(f"Invalid extension '{entry_point.name}'") from e
 
+    def from_providers(self) -> None:
+        """Load credentials from providers"""
+        for c in ProviderInterface().required_credentials:
+            self.credentials.add(c)
+
+    def from_routers(self) -> None:
+        """Load credentials from routers"""
+        # Placeholder for future use if needed
+
     def load(self) -> BaseModel:
         """Load credentials from providers"""
+        self.from_obbject()
         self.from_providers()
-        self.from_extensions()
+        self.from_routers()
         return create_model(  # type: ignore
             "Credentials",
             __config__=ConfigDict(validate_assignment=True),
