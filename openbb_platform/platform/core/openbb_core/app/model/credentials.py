@@ -42,8 +42,9 @@ class CredentialsLoader:
         formatted: Dict[str, Tuple[object, None]] = {}
         for origin, creds in required_credentials.items():
             for c in creds:
-                if c in formatted:
-                    raise ValueError(f"Credential '{c}' already in use.")
+                # Not sure we should do this, if you require the same credential it breaks
+                # if c in formatted:
+                #     raise ValueError(f"Credential '{c}' already in use.")
                 formatted[c] = (
                     Optional[OBBSecretStr],
                     Field(
