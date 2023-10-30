@@ -119,3 +119,14 @@ def price_performance(
 ) -> OBBject[BaseModel]:
     """Price performance as a return, over different periods."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CalendarIpo")
+def calendar_ipo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical IPO Calendar."""
+    return OBBject(results=Query(**locals()).execute())

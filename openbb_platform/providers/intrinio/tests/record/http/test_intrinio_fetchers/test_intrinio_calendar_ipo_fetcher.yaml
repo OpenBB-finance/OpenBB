@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/ipos?api_key=MOCK_API_KEY&page_size=300&status=upcoming
+  response:
+    body:
+      string: !!binary |
+        H4sIAP71N2UAA8yXbXOiSBCA/wrF5yADiIDfjGbXTdRkfcnmcnVFTWCCc8EZahg0Ziv//RowRhRz
+        3kvdhfKD090z093TTw/8VCmjkuLYT7KHmAY+f3wkgrIoVdu//lRpqLZVmnD/bjB8GL2oZ6qkwRMR
+        IB2OxjAMsSQwMJFpaQbSTBtkqcQyg/lqlgR8AWuBjDwHc8yi3Hb0y+QCJMVGPl7wjEm1bTYNG+UP
+        TJ9jQfxE0ACsWRbHFZEf8xVJYYbhNarG/pxG80JlGu+qoFzfQKiyfCHerrW7S6nZrlWqMGMgDsiC
+        gC4T8XYKCXxBEi4qUp4QVg0giHm6F9OSx9liOwrx2n/LUClZEfK0J1pwJud7MshwgtlabW8OC8b+
+        3Q/UZDWHxXC+oTrsdPvKqDOdjTsDZXwxuZ6NuxcTZXADJjGh25XpExhDzgzPRch11dci3kxQ+b5d
+        noA7p2WbRN364h86kkoePPlvRVAapM+Rz1+GwlvvuIaDuTKC8hE4VsYk5ZkISFq6FvAwN5mNpvkg
+        E4KwYJ0LJr3DUHNXeEol8XcV7dkEdI80orvpK+12pZtKiHGaVuRwgAss1n5MU5nXdVuKjLy+nu2A
+        8nLJfq+CMurcdvZIQfBzTiClM+l1vh+w4lkFK3uktPZxqCvuPVAO6h5Asez/gBN1LmWStnV9tVo1
+        QNmI+FLviGBOlyTVSRhhoUPCsG54lmlahp6XoYGaLdszLWQiz7Z1uTDhsVpGaNp+auDGXC7U/x++
+        aDQaoKimADYlno+U/kVnMO0rw96ZMhh0j3JXxH6Uuxf+ddCz6rjb+nAqdyO8xEqf4FjOwSnlGwve
+        gbv4PvkQuE14NcTlml3k1PPzr8g4d23X+2Goh/Dt6C9bah2G7xbnXVc9DUghvHEVyC/TWQ2Q1t8G
+        0kSG3TLt0++u5tGryz64uSzncwHpOq7dtAogm45TlCj8tx2kZ7GE03j+RCy+LPm9u645+03Zz0qP
+        lR4Ul8TxWV74jWM0loEfpTG6uXd6t3U0br04lcY9t/4ijmWEdTiC5hBHb9q9mra8ozjm+snQ+gDH
+        3OLWck7D8e7aWw4qR3LV61ZoNDTkaeYpNNa9SHqu7RhN07FPf5G0jtJoHOJYrA57/Gs8Vsh7yFLK
+        SJquqCANiFlnZJXqc74gep4Z5BgmsOZalk6Y/hQGnBHtC41Jqo1JBEkXWFLOtAkkrthCwyzUbgSJ
+        KaQPTgb+8zQhAaRVe+QiH8KRk1D7Vn4FaDfFV4B2vfkKUP9Rp2i2ENzTxdUN7yymbRqmkwehh5Zn
+        Gyj8RI3iMnTi6LAqN0BeMb6KJWdKjyxJzJM8tUqXi2SDZn2/KMI/fnu7gova23vrzKn94s/cO7Fz
+        lCHXNA5QHPYNY3x12T83j/aNQt9yj/cN5PTRzX33g77xG0RInqWf4LfTe/0DAAD//wMAIYKCBbAO
+        AAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 24 Oct 2023 16:51:10 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

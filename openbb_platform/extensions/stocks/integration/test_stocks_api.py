@@ -987,3 +987,43 @@ def test_stocks_price_performance(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "symbol": None,
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": None,
+                "start_date": "2023-01-01",
+                "end_date": None,
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
