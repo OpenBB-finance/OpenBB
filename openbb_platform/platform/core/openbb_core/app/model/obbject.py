@@ -1,6 +1,6 @@
 """The OBBject."""
 from re import sub
-from typing import Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import Any, Dict, Generic, List, Literal, Optional, TYPE_CHECKING, TypeVar
 
 import pandas as pd
 from numpy import ndarray
@@ -13,6 +13,12 @@ from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.utils import basemodel_to_df
+
+if TYPE_CHECKING:
+    try:
+        from polars import DataFrame as PolarsDataFrame
+    except ImportError:
+        PolarsDataFrame = None
 
 T = TypeVar("T")
 PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
@@ -163,16 +169,33 @@ class OBBject(Tagged, Generic[T]):
 
         return df
 
+    def to_polars(self) -> "PolarsDataFrame":
+        """Convert results field to polars dataframe."""
+        try:
+            from polars import from_pandas  # pylint: disable=import-outside-toplevel
+        except ImportError as exc:
+            raise ImportError(
+                "Please install polars: `pip install polars pyarrow`  to use this method."
+            ) from exc
+
+        return from_pandas(self.to_dataframe().reset_index())
+
     def to_numpy(self) -> ndarray:
         """Convert results field to numpy array."""
         return self.to_dataframe().reset_index().to_numpy()
 
-    def to_dict(self, orient: str = "") -> Dict[str, List]:
+    def to_dict(
+        self,
+        orient: Literal[
+            "dict", "list", "series", "split", "tight", "records", "index"
+        ] = "list",
+    ) -> Dict[str, List]:
+
         """Convert results field to list of values.
 
         Parameters
         ----------
-        orient : str, optional
+        orient : Literal["dict", "list", "series", "split", "tight", "records", "index"]
             Value to pass to `.to_dict()` method
 
 
@@ -181,35 +204,8 @@ class OBBject(Tagged, Generic[T]):
         Dict[str, List]
             Dictionary of lists.
         """
-        if isinstance(self.results, dict) and all(
-            isinstance(v, dict) for v in self.results.values()
-        ):
-            results: Dict[str, List] = {}
-            for _, v in self.results.items():
-                for kk, vv in v.items():
-                    if kk not in results:
-                        results[kk] = []
-                    results[kk].append(vv)
-
-            return results
-
         df = self.to_dataframe().reset_index()  # type: ignore
-        if orient:
-            return df.to_dict(orient=orient)
-        results = {}
-        for field in df.columns:
-            f = df[field].tolist()
-            results[field] = f[0] if len(f) == 1 else f
-
-        # remove index from results
-        if "index" in results:
-            del results["index"]
-
-        return results
-
-    def to_records(self) -> List[Dict]:
-        """Convert results field to list of dictionaries."""
-        return self.model_dump()["results"]
+        return df.to_dict(orient=orient)
 
     def to_chart(self, **kwargs):
         """
