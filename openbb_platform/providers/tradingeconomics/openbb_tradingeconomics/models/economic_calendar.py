@@ -2,7 +2,7 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from dateutil import parser
 from openbb_provider.abstract.fetcher import Fetcher
@@ -10,9 +10,10 @@ from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
+from openbb_provider.utils.countries import country_list
 from openbb_provider.utils.helpers import make_request
-from openbb_tradingeconomics.utils import countries, url_generator
-from pydantic import field_validator
+from openbb_tradingeconomics.utils import url_generator
+from pydantic import Field, field_validator
 
 
 class TEEarningsCalendarQueryParams(EconomicCalendarQueryParams):
@@ -20,6 +21,28 @@ class TEEarningsCalendarQueryParams(EconomicCalendarQueryParams):
 
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
+
+    importance: Literal[1, 2, 3] = Field(
+        default=3,
+        description="Importance of the event. (1-Low, 2-Medium, 3-High)",
+    )
+    group: Optional[
+        Literal[
+            "interest rate",
+            "inflation",
+            "bonds",
+            "consumer",
+            "gdp",
+            "government",
+            "housing",
+            "labour",
+            "markets",
+            "money",
+            "prices",
+            "trade",
+            "business",
+        ]
+    ] = Field(default=None, description="Grouping of events")
 
     @field_validator("country", mode="before")
     @classmethod
@@ -30,11 +53,10 @@ class TEEarningsCalendarQueryParams(EconomicCalendarQueryParams):
             return None
         if isinstance(country, str):
             country = [country]
-
-        for c in country:
-            if c not in countries.country_list:
-                raise ValueError(f"{c} is not a valid country")
-        return country
+        countries = list(map(lambda x: x.lower(), country))
+        if any(c not in country_list for c in countries):
+            raise ValueError(f"'{country}' is not a valid country")
+        return countries
 
 
 class TEEarningsCalendarData(EconomicCalendarData):
@@ -60,6 +82,23 @@ class TEEarningsCalendarData(EconomicCalendarData):
         "previous": "Previous",
         "revised": "Revised",
     }
+
+    category: Optional[str] = Field(default=None, description="Category of event.")
+    reference: Optional[str] = Field(
+        default=None,
+        description="Abbreviated period for which released data refers to.",
+    )
+    source: Optional[str] = Field(default=None, description="Source of the data.")
+    sourceurl: Optional[str] = Field(default=None, description="Source URL.")
+    forecast: Optional[str] = Field(
+        default=None, description="Trading Economics projections"
+    )
+    url: Optional[str] = Field(default=None, description="Trading Economics URL")
+    importance: Optional[Literal[0, 1, 2, 3]] = Field(
+        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
+    )
+    currency: Optional[str] = Field(default=None, description="Currency of the data.")
+    unit: Optional[str] = Field(default=None, description="Unit of the data.")
 
     @field_validator("date", mode="before")
     @classmethod

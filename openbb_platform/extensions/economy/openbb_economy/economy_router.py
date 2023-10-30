@@ -204,5 +204,5 @@ def econcal(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """GDP Data."""
+    """Economic Calendar Data."""
     return OBBject(results=Query(**locals()).execute())

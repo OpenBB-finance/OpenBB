@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Literal, Optional, Union
+from typing import List, Optional, Union
 
 from pydantic import Field
 
@@ -25,27 +25,6 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    importance: Literal[1, 2, 3] = Field(
-        default=3,
-        description="Importance of the event. (1-Low, 2-Medium, 3-High)",
-    )
-    group: Optional[
-        Literal[
-            "interest rate",
-            "inflation",
-            "bonds",
-            "consumer",
-            "gdp",
-            "government",
-            "housing",
-            "labour",
-            "markets",
-            "money",
-            "prices",
-            "trade",
-            "business",
-        ]
-    ] = Field(default=None, description="Grouping of events")
     # TODO: Probably want to figure out the list we can use.
     country: Optional[Union[str, List[str]]] = Field(
         default=None,
@@ -60,14 +39,7 @@ class EconomicCalendarData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     country: Optional[str] = Field(default=None, description="Country of event.")
-    category: Optional[str] = Field(default=None, description="Category of event.")
     event: Optional[str] = Field(default=None, description="Event name.")
-    reference: Optional[str] = Field(
-        default=None,
-        description="Abbreviated period for which released data refers to.",
-    )
-    source: Optional[str] = Field(default=None, description="Source of the data.")
-    sourceurl: Optional[str] = Field(default=None, description="Source URL.")
     actual: Optional[str] = Field(default=None, description="Latest released value.")
     previous: Optional[str] = Field(
         default=None,
@@ -77,12 +49,3 @@ class EconomicCalendarData(Data):
         default=None,
         description="Average forecast among a representative group of economists.",
     )
-    forecast: Optional[str] = Field(
-        default=None, description="Trading Economics projections"
-    )
-    url: Optional[str] = Field(default=None, description="Trading Economics URL")
-    importance: Optional[Literal[0, 1, 2, 3]] = Field(
-        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
-    )
-    currency: Optional[str] = Field(default=None, description="Currency of the data.")
-    unit: Optional[str] = Field(default=None, description="Unit of the data.")
