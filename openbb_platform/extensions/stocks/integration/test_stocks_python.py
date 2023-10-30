@@ -894,3 +894,18 @@ def test_stocks_info(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"provider": "fmp", "market": "EURONEXT"}),
+        ({"provider": "polygon"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_market_snapshots(params, obb):
+    result = obb.stocks.market_snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
