@@ -19,7 +19,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "", "provider": "fmp"}),
+        ({"query": None, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
