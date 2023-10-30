@@ -837,6 +837,8 @@ Go to: https://ultimainsights.ai/openbb
 
 Click on, "Get Started", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://ultimainsights.ai/openbb) and click "Generate Key". Copy the API key to the clipboard, and enter this key into the OpenBB Terminal with:
 
+Click on the "Get started" button for Ultima Pro or "Just Want the API Key" to get an Ultima API key for yout OpenBB account. Once you sign-up and confirm you want to start a trial with Ultima, Copy the API key to your clipboard and enter this key into the OpenBB Terminal with:
+
 ```console
 /keys/ultima REPLACE_WITH_KEY
 ```
