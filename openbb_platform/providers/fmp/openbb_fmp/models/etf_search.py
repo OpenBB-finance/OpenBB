@@ -96,10 +96,10 @@ class FMPEtfSearchFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
-            3,
-            "stock-screener",
-            api_key,
-            {"isEtf": True, "limit": 10000},
+            version=3,
+            endpoint="stock-screener",
+            api_key=api_key,
+            query={"isEtf": True, "limit": 10000},
             exclude=["symbol"],
         )
 
