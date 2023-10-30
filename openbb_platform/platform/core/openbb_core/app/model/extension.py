@@ -39,9 +39,9 @@ class Extension:
         ```python
         from openbb_core.app.model.extension import Extension
 
-        entry_point = Extension(name="example", required_credentials=["api_key"])
+        ext = Extension(name="example", required_credentials=["api_key"])
 
-        @entry_point.obbject_accessor
+        @ext.obbject_accessor
         class Example:
             def __init__(self, obbject):
                 self._obbject = obbject
