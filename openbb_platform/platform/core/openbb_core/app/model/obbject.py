@@ -57,7 +57,7 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _credentials: BaseModel
+    _credentials: ClassVar[Optional[BaseModel]] = None
     _accessors: ClassVar[Set[str]] = set()
 
     def __repr__(self) -> str:
