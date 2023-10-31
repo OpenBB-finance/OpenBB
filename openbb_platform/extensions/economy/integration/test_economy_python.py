@@ -449,7 +449,7 @@ def test_economy_gdpforecast(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_economy_econcal(params, obb):
+def test_economy_calendar(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.econcal(**params)

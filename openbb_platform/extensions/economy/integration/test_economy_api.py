@@ -510,7 +510,7 @@ def test_economy_gdpforecast(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_economy_econcal(params, headers):
+def test_economy_calendar(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
