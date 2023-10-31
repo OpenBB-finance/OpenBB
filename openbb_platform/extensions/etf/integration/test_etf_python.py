@@ -138,6 +138,23 @@ def test_etf_holdings(params, obb):
 
 @pytest.mark.parametrize(
     "params",
+    [
+        ({"symbol": "IOO"}),
+        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_date(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.holdings_date(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
     [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
 )
 @pytest.mark.integration
@@ -173,20 +190,6 @@ def test_etf_disc_losers(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.losers(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"symbol": "AAPL"})],
-)
-@pytest.mark.integration
-def test_etf_holdings_date(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.holdings_date(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
