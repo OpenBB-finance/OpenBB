@@ -1,0 +1,139 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 7e6e31df-039f-4acf-aa39-c14bf6bb2ade
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.ultimainsights.ai/v1/getOpenBBProInsights/AAPL,MSFT
+  response:
+    body:
+      string: "[\n  {\n    \"8k_filings\": [],\n    \"articles\": [\n      {\n        \"headline\":
+        \"... Apple Inc.&#39;s ambitious goal for India to account for approximately
+        ... Apple originally unveiled the Double Tap feature at its September product
+        launch&nbsp;...\",\n        \"publishedDate\": \"2023-10-30 11:55:28\",\n
+        \       \"publisher\": \"Firstpost\",\n        \"riskCategory\": \"Competition
+        News\",\n        \"summary\": \"Apple India reports a 50% surge in revenue
+        for FY23, reaching Rs 50,000 crore. Profit margin increases by 76.4% YoY.
+        Sales of new-generation devices and cost reductions contribute to the financial
+        success.\",\n        \"url\": \"https://www.firstpost.com/tech/news-analysis/apple-is-minting-big-money-in-india-revenue-touches-rs-50000-crore-profit-up-by-76-per-cent-in-2023-13319062.html\"\n
+        \     },\n      {\n        \"headline\": \"Apple to post solid earnings; guidance
+        may be weak, Morgan Stanley says. Oct. 30, 2023 11:47 AM ETApple Inc. (AAPL)By:
+        Christiana&nbsp;...\",\n        \"publishedDate\": \"2023-10-30 16:05:07\",\n
+        \       \"publisher\": \"Seeking Alpha\",\n        \"riskCategory\": \"Financial
+        News\",\n        \"summary\": \"Morgan Stanley expects Apple to post better-than-expected
+        results for Q4 and guide below consensus for Q1. The bank is cautious about
+        the December quarter due to iPhone supply shortages and uneven consumer spending.
+        However, it remains bullish on Apple over the next 12 months with a $210 price
+        target.\",\n        \"url\": \"https://seekingalpha.com/news/4026321-apple-solid-earnings-guidance-weak-morgan-stanley\"\n
+        \     },\n      {\n        \"headline\": \"Apple price target is lowered,
+        geopolitical issues are affecting demand \\u2013 Oppenheimer. Oct. 30, 2023
+        2:27 PM ETApple Inc. (AAPL)GOOG, MSFT&nbsp;...\",\n        \"publishedDate\":
+        \"2023-10-30 18:41:11\",\n        \"publisher\": \"Seeking Alpha\",\n        \"riskCategory\":
+        \"Financial News\",\n        \"summary\": \"Oppenheimer lowers Apple's price
+        target to $200 amid demand concerns in China and geopolitical conflict. Analyst
+        predicts weaker iPhone, Mac, and iPad shipments. Apple's Scary Fast Event
+        expected to announce new M3 processors and updates to iMac and MacBook Pro
+        lines.\",\n        \"url\": \"https://seekingalpha.com/news/4026435-apple-price-target-is-lowered-geopolitical-issues-are-affecting-demand-oppenheimer\"\n
+        \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
+        {},\n    \"industry_summary\": [\n      {\n        \"headline\": \"Apple India
+        Revenue Surge\",\n        \"publishedDate\": \"2023-10-30 11:55:28\",\n        \"publisher\":
+        \"Firstpost\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Apple India's revenue surged by nearly 50% to Rs 50,000 crore in FY23, with
+        a 76.4% increase in profit margin. The majority of revenue came from iPhone,
+        Mac, and iPad sales.\",\n        \"url\": \"https://www.firstpost.com/tech/news-analysis/apple-is-minting-big-money-in-india-revenue-touches-rs-50000-crore-profit-up-by-76-per-cent-in-2023-13319062.html\"\n
+        \     },\n      {\n        \"headline\": \"Apple Solid Earnings\",\n        \"publishedDate\":
+        \"2023-10-30 16:05:07\",\n        \"publisher\": \"Seeking Alpha\",\n        \"riskCategory\":
+        \"Financial News\",\n        \"summary\": \"Apple is expected to post better-than-expected
+        results for the fiscal fourth quarter, with growth in iPhone and Services
+        revenue. Shares are up 0.8%.\",\n        \"url\": \"https://seekingalpha.com/news/4026321-apple-solid-earnings-guidance-weak-morgan-stanley\"\n
+        \     },\n      {\n        \"headline\": \"Apple Price Target Lowered\",\n
+        \       \"publishedDate\": \"2023-10-30 18:41:11\",\n        \"publisher\":
+        \"Seeking Alpha\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
+        \"Apple's price target for 2024 is lowered to $200 by Oppenheimer amid demand
+        concerns in China and geopolitical conflict. iPhone, Mac, and iPad shipments
+        expected to be weaker than previously expected.\",\n        \"url\": \"https://seekingalpha.com/news/4026435-apple-price-target-is-lowered-geopolitical-issues-are-affecting-demand-oppenheimer\"\n
+        \     },\n      {\n        \"headline\": \"Apple Supercharges 24-inch iMac\",\n
+        \       \"publishedDate\": \"2023-10-30 21:10:00\",\n        \"publisher\":
+        \"Apple\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Apple unveils the new 24-inch iMac with the M3 chip, offering up to 2x faster
+        performance than previous models. It features a 4.5K Retina display, faster
+        wireless connectivity, and seamless integration with iPhone.\",\n        \"url\":
+        \"https://www.apple.com/newsroom/2023/10/apple-supercharges-24-inch-imac-with-new-m3-chip/\"\n
+        \     }\n    ],\n    \"metadata\": {\n      \"has_industry_summary\": true,\n
+        \     \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
+        false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
+        3,\n      \"n_pr_articles_with_summaries\": 3\n    },\n    \"pr_articles\":
+        [\n      {\n        \"headline\": \"APPLE SUPERCHARGES 24-INCH IMAC WITH NEW
+        M3 CHIP\",\n        \"publishedDate\": \"2023-10-30 21:10:00\",\n        \"publisher\":
+        \"Apple\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Apple unveils new 24-inch iMac with M3 chip, offering up to 2x faster performance
+        and 4.5K Retina display. Available for order starting today.\",\n        \"url\":
+        \"https://www.apple.com/newsroom/2023/10/apple-supercharges-24-inch-imac-with-new-m3-chip/\"\n
+        \     },\n      {\n        \"headline\": \"APPLE UNVEILS THE NEW MACBOOK PRO
+        FEATURING THE M3 FAMILY OF CHIPS, MAKING THE WORLD'S BEST PRO LAPTOP EVEN
+        BETTER\",\n        \"publishedDate\": \"2023-10-30 20:28:00\",\n        \"publisher\":
+        \"Apple\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Apple unveils new MacBook Pro with M3 chips, offering improved performance
+        and capabilities. Models available in space black. Orders start today, availability
+        on November 7.\",\n        \"url\": \"https://www.apple.com/newsroom/2023/10/apple-unveils-new-macbook-pro-featuring-m3-chips/\"\n
+        \     },\n      {\n        \"headline\": \"APPLE UNVEILS M3, M3 PRO, AND M3
+        MAX, THE MOST ADVANCED CHIPS FOR A PERSONAL COMPUTER\",\n        \"publishedDate\":
+        \"2023-10-30 20:28:00\",\n        \"publisher\": \"Apple Newsroom\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Apple unveils M3, M3 Pro, and
+        M3 Max chips, the most advanced for Mac. Features include faster CPU, next-gen
+        GPU, and support for unified memory. Significant performance improvements
+        for MacBook Pro and iMac.\",\n        \"url\": \"https://www.apple.com/newsroom/2023/10/apple-unveils-m3-m3-pro-and-m3-max-the-most-advanced-chips-for-a-personal-computer/\"\n
+        \     }\n    ],\n    \"ticker\": \"AAPL\"\n  },\n  {\n    \"8k_filings\":
+        [],\n    \"articles\": [\n      {\n        \"headline\": \"Microsoft Corporation
+        announced today the purchase of approximately 347 ... corporate community
+        as an engaging and supportive partner to Rome and Floyd&nbsp;...\",\n        \"publishedDate\":
+        \"2023-10-30 18:00:36\",\n        \"publisher\": \"All On Georgia\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Microsoft to invest $1 billion
+        in Rome, GA data center campus, creating 150 high paying new jobs.\",\n        \"url\":
+        \"https://allongeorgia.com/chattooga-local-news/microsoft-to-invest-1-billion-in-rome-ga-data-center-campus/\"\n
+        \     },\n      {\n        \"headline\": \"Microsoft: Could A Stock Split
+        Be Coming Soon? Oct. 30, 2023 9:00 AM ETMicrosoft Corporation (MSFT)AAPL,
+        AMZN, DIS, GOOG, GOOGL, KO, NOW, ORCL&nbsp;...\",\n        \"publishedDate\":
+        \"2023-10-30 14:45:35\",\n        \"publisher\": \"Seeking Alpha\",\n        \"riskCategory\":
+        \"Financial News\",\n        \"summary\": \"MSFT may consider a stock split
+        in the future as it continues to grow and invest in the business. The company
+        has a strong track record of growth and resilience during economic downturns.
+        It faces competition and cybersecurity risks but remains an attractive investment
+        with dividend growth and capital appreciation potential.\",\n        \"url\":
+        \"https://seekingalpha.com/article/4644339-microsoft-could-a-stock-split-be-coming-soon\"\n
+        \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
+        {},\n    \"industry_summary\": [],\n    \"metadata\": {\n      \"has_industry_summary\":
+        false,\n      \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
+        false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
+        3,\n      \"n_pr_articles_with_summaries\": 1\n    },\n    \"pr_articles\":
+        [\n      {\n        \"headline\": \"MICROSOFT AND OCTOPAI TO CO-SELL LEADING
+        INNOVATIVE DATA MANAGEMENT INTEGRATION\",\n        \"publishedDate\": \"2023-10-30
+        07:30:00\",\n        \"publisher\": \"Business Wire\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Microsoft and Octopai partner
+        to co-sell innovative data management integration solutions on the Microsoft
+        Azure Marketplace.\",\n        \"url\": \"https://www.businesswire.com/news/home/20231024266948/en/Microsoft-and-Octopai-to-Co-Sell-Leading-Innovative-Data-Management-Integration\"\n
+        \     }\n    ],\n    \"ticker\": \"MSFT\"\n  }\n]\n"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '8846'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 31 Oct 2023 20:59:19 GMT
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+    status:
+      code: 200
+      message: OK
+version: 1
