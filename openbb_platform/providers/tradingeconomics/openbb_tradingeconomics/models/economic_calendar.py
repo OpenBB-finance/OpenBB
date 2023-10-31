@@ -90,23 +90,6 @@ class TEEconomicCalendarData(EconomicCalendarData):
         "revised": "Revised",
     }
 
-    category: Optional[str] = Field(default=None, description="Category of event.")
-    reference: Optional[str] = Field(
-        default=None,
-        description="Abbreviated period for which released data refers to.",
-    )
-    source: Optional[str] = Field(default=None, description="Source of the data.")
-    sourceurl: Optional[str] = Field(default=None, description="Source URL.")
-    forecast: Optional[str] = Field(
-        default=None, description="Trading Economics projections"
-    )
-    url: Optional[str] = Field(default=None, description="Trading Economics URL")
-    importance: Optional[Literal[1, 2, 3]] = Field(
-        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
-    )
-    currency: Optional[str] = Field(default=None, description="Currency of the data.")
-    unit: Optional[str] = Field(default=None, description="Unit of the data.")
-
     @field_validator("date", mode="before")
     @classmethod
     def validate_date(cls, v: str) -> datetime:
