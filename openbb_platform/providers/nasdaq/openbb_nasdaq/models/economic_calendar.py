@@ -1,4 +1,4 @@
-"""Nasdaq Earnings Calendar fetcher."""
+"""Nasdaq Economic Calendar fetcher."""
 
 
 from datetime import datetime, timedelta
