@@ -1,19 +1,13 @@
-import base64
 from datetime import time
 
 import pytest
 import requests
-from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
 def headers():
-    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
-    userpass_bytes = userpass.encode("ascii")
-    base64_bytes = base64.b64encode(userpass_bytes)
-
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+    return {}
 
 
 @pytest.mark.parametrize(
@@ -555,7 +549,19 @@ def test_stocks_fa_revseg(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"})],
+    [
+        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "type": "10-K",
+                "limit": 100,
+                "cik": None,
+                "use_cache": False,
+                "provider": "sec",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_fa_filings(params, headers):
@@ -902,7 +908,10 @@ def test_stocks_multiples(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "AAPl", "is_symbol": True})],
+    [
+        ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_search(params, headers):
@@ -935,7 +944,7 @@ def test_stocks_quote(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "AAPL", "provider": "cboe"})],
 )
 @pytest.mark.integration
 def test_stocks_info(params, headers):
