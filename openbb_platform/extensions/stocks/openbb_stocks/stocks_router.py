@@ -11,11 +11,12 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+from pydantic import BaseModel
+
 from openbb_stocks.ca.ca_router import router as ca_router
 from openbb_stocks.disc.disc_router import router as disc_router
 from openbb_stocks.fa.fa_router import router as fa_router
 from openbb_stocks.options.options_router import router as options_router
-from pydantic import BaseModel
 
 # TODO: Uncomment once they have some commands.
 # from openbb_stocks.gov.gov_router import router as gov_router
@@ -107,7 +108,7 @@ def ftd(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Gets reported Fail-to-deliver (FTD) data."""
+    """Get reported Fail-to-deliver (FTD) data."""
     return OBBject(results=Query(**locals()).execute())
 
 
