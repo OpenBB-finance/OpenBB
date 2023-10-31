@@ -88,7 +88,6 @@ def holdings(
     return OBBject(results=Query(**locals()).execute())
 
 
-
 @router.command(model="EtfHoldingsDate")
 def holdings_date(
     cc: CommandContext,
