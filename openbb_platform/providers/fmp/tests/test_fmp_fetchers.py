@@ -33,6 +33,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -473,5 +474,14 @@ def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "India"}
 
     fetcher = FMPEtfSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_price_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
+
+    fetcher = FMPPricePerformanceFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

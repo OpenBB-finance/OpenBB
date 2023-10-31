@@ -910,12 +910,63 @@ def test_stocks_info(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "provider": "intrinio",
+                "symbol": None,
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": None,
+                "start_date": "2023-01-01",
+                "end_date": None,
+                "limit": 300,
+                "status": None,
+                "min_value": None,
+                "max_value": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, obb):
+    result = obb.stocks.calendar_ipo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"symbol": "AAPL", "limit": 3, "provider": "sec", "skip_reports": None}),
     ],
 )
 @pytest.mark.integration
 def test_stocks_ftd(params, obb):
     result = obb.stocks.fa.shrs(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL,NVDA,QQQ,INTC", "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.price_performance(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
