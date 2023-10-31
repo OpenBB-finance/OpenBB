@@ -17,7 +17,7 @@ from pydantic import Field, field_validator
 
 
 class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
-    """Quandl Economic Calendar Query.
+    """Nasdaq Economic Calendar Query.
 
     Source: https://api.nasdaq.com/api
     """
@@ -38,7 +38,7 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):
-    """Quandl Earnings Calendar Data."""
+    """Nasdaq Earnings Calendar Data."""
 
     __alias_dict__ = {
         "event": "eventName",
