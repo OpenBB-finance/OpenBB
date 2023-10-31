@@ -9,7 +9,7 @@ from openbb_provider.standard_models.dwpcr_rates import (
     DiscountWindowPrimaryCreditRateData,
     DiscountWindowPrimaryCreditRateParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 DWPCR_PARAMETER_TO_FRED_ID = {
     "daily_excl_weekend": "DPCREDIT",
@@ -32,6 +32,14 @@ class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateDat
     """DiscountWindowPrimaryCreditRateParams Data."""
 
     __alias_dict__ = {"rate": "value"}
+
+    @field_validator("rate", mode="before", check_fields=False)
+    @classmethod
+    def value_validate(cls, v):
+        try:
+            return float(v)
+        except ValueError:
+            return None
 
 
 class FREDDiscountWindowPrimaryCreditRateFetcher(
