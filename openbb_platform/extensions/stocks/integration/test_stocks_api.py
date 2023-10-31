@@ -1047,6 +1047,7 @@ def test_stocks_price_performance(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 300,
+                "provider": "intrinio",
             }
         ),
         (
@@ -1055,6 +1056,7 @@ def test_stocks_price_performance(params, headers):
                 "start_date": None,
                 "end_date": None,
                 "limit": 300,
+                "provider": "intrinio",
             }
         ),
     ],
