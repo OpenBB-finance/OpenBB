@@ -4,7 +4,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Set, Union
 
-from dateutil import parser
+from dateutil.parser import ParserError, parse
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
@@ -40,11 +40,6 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
         "event": "eventName",
     }
     description: Optional[str] = Field(default=None, description="Event description.")
-
-    @field_validator("date", mode="before")
-    @classmethod
-    def validate_date(cls, input_date: str) -> datetime:
-        return parser.parse(input_date)
 
 
 class NasdaqEconomicCalendarFetcher(
@@ -91,7 +86,11 @@ class NasdaqEconomicCalendarFetcher(
                     .get("rows", [])
                 )
                 for event in response:
-                    event["date"] = date + " " + event.pop("gmt", "")
+                    gmt = event.pop("gmt", "")
+                    try:
+                        event["date"] = parse(date + " " + gmt)
+                    except ParserError:
+                        event["date"] = parse(date)
                     event["actual"] = event.get("actual", "").replace("&nbsp;", "-")
                     event["previous"] = event.get("previous", "").replace("&nbsp;", "-")
                     event["consensus"] = event.get("consensus", "").replace(
