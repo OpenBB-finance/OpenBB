@@ -101,6 +101,10 @@ class NasdaqEconomicCalendarFetcher(
                 for event in response:
                     event["date"] = date
                     event["actual"] = event.get("actual", "").replace("&nbsp;", "-")
+                    event["previous"] = event.get("previous", "").replace("&nbsp;", "-")
+                    event["consensus"] = event.get("consensus", "").replace(
+                        "&nbsp;", "-"
+                    )
                 data.extend(response)
             except Exception:  # noqa: S112
                 continue
