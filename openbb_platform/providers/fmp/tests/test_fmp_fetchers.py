@@ -14,6 +14,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
+from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
@@ -36,6 +37,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -463,6 +465,15 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = FMPEconomicCalendarFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "India"}
 
@@ -503,5 +514,14 @@ def test_fmp_etf_holdings_date_fetcher(credentials=test_credentials):
     params = {"symbol": "IOO"}
 
     fetcher = FMPEtfHoldingsDateFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_price_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
+
+    fetcher = FMPPricePerformanceFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

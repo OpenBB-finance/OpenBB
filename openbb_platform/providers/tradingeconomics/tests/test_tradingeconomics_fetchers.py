@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_tradingeconomics.models.economic_calendar import TEEarningsCalendarFetcher
+from openbb_tradingeconomics.models.economic_calendar import TEEconomicCalendarFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -20,12 +20,12 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_te_earnings_calendar_fetcher(credentials=test_credentials):
+def test_tradingeconomics_economic_calendar_fetcher(credentials=test_credentials):
     params = {
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
     }
 
-    fetcher = TEEarningsCalendarFetcher()
+    fetcher = TEEconomicCalendarFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

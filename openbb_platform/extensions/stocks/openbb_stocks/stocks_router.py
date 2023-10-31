@@ -106,5 +106,27 @@ def ftd(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Gets reported Fail-to-deliver (FTD) data."""
+    """Get reported Fail-to-deliver (FTD) data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="PricePerformance")
+def price_performance(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Price performance as a return, over different periods."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CalendarIpo")
+def calendar_ipo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical IPO Calendar."""
     return OBBject(results=Query(**locals()).execute())

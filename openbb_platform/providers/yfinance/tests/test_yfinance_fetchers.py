@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_yfinance.models.active import YFActiveFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
@@ -10,7 +11,9 @@ from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
+from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
+from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
@@ -167,5 +170,32 @@ def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceEtfHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_active_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFActiveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_gainers_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFGainersFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_losers_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFLosersFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

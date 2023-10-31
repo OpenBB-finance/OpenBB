@@ -11,7 +11,10 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_etf.disc.disc_router import router as disc_router
+
 router = Router(prefix="")
+router.include_router(disc_router)
 
 # pylint: disable=unused-argument
 
@@ -63,6 +66,17 @@ def sectors(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="PricePerformance")
+def price_performance(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Price performance as a return, over different periods."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="EtfHoldings")
 def holdings(
     cc: CommandContext,
@@ -74,6 +88,7 @@ def holdings(
     return OBBject(results=Query(**locals()).execute())
 
 
+
 @router.command(model="EtfHoldingsDate")
 def holdings_date(
     cc: CommandContext,
@@ -81,5 +96,5 @@ def holdings_date(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the holdings for an individual ETF."""
+    """Get the holdings filing date for an individual ETF."""
     return OBBject(results=Query(**locals()).execute())

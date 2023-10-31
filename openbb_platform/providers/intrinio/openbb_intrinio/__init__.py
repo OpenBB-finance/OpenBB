@@ -2,6 +2,7 @@
 
 
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
+from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
@@ -20,15 +21,16 @@ intrinio_provider = Provider(
     historical financial market data to businesses and developers through an API.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockHistorical": IntrinioStockHistoricalFetcher,
-        "ForexPairs": IntrinioForexPairsFetcher,
-        "StockNews": IntrinioStockNewsFetcher,
-        "GlobalNews": IntrinioGlobalNewsFetcher,
-        "StockQuote": IntrinioStockQuoteFetcher,
-        "OptionsChains": IntrinioOptionsChainsFetcher,
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CashFlowStatement": IntrinioCashFlowStatementFetcher,
-        "IncomeStatement": IntrinioIncomeStatementFetcher,
+        "CalendarIpo": IntrinioCalendarIpoFetcher,
+        "ForexPairs": IntrinioForexPairsFetcher,
         "FredHistorical": IntrinioFredHistoricalFetcher,
+        "GlobalNews": IntrinioGlobalNewsFetcher,
+        "IncomeStatement": IntrinioIncomeStatementFetcher,
+        "OptionsChains": IntrinioOptionsChainsFetcher,
+        "StockHistorical": IntrinioStockHistoricalFetcher,
+        "StockNews": IntrinioStockNewsFetcher,
+        "StockQuote": IntrinioStockQuoteFetcher,
     },
 )
