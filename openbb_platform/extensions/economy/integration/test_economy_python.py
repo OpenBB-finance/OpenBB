@@ -443,10 +443,12 @@ def test_economy_gdpforecast(params, obb):
         ),
         (
             {
+                "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "mexico,sweden",
-                "provider": "tradingeconomics",
+                "importance": "medium",
+                "group": "gdp",
             }
         ),
         (
