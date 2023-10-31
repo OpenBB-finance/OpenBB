@@ -95,3 +95,17 @@ def test_etf_sectors(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_etf_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

@@ -61,3 +61,14 @@ def sectors(
 ) -> OBBject[BaseModel]:
     """ETF Sector weighting."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="PricePerformance")
+def price_performance(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Price performance as a return, over different periods."""
+    return OBBject(results=Query(**locals()).execute())
