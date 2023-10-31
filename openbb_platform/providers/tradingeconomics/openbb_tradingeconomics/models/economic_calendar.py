@@ -2,14 +2,13 @@
 
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Literal, Optional, Set, Union
+from typing import Any, Dict, List, Literal, Optional, Set, Union
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_provider.utils.countries import country_list
 from openbb_provider.utils.helpers import make_request
 from openbb_tradingeconomics.utils import countries, url_generator
 from pandas import to_datetime

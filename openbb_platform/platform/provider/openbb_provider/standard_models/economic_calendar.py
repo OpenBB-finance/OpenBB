@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
 from pydantic import Field
 
