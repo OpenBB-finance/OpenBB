@@ -198,3 +198,20 @@ def ice_bofa(
     outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="MoodyCorporateBondIndex")
+def moody(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Moody Corporate Bond Index.
+    Moody's Aaa and Baa are investment bonds that acts as an index of
+    the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.
+    These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year
+    Treasury Bill as an indicator of the interest rate.
+    """
+    return OBBject(results=Query(**locals()).execute())

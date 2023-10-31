@@ -13,6 +13,7 @@ from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
+from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_provider.abstract.provider import Provider
 
 fred_provider = Provider(
@@ -35,5 +36,6 @@ fred_provider = Provider(
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
         "ICEBofA": FREDICEBofAFetcher,
+        "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
     },
 )

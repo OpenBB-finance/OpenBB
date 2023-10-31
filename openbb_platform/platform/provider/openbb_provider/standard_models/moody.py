@@ -22,13 +22,13 @@ class MoodyCorporateBondIndexParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    type_: Literal["yield", "yield_to_worst", "total_return", "spread"] = Field(
-        default="yield",
+    type_: Literal["aaa", "baa"] = Field(
+        default="aaa",
         description="The type of series.",
     )
 
 
-class MoodyCorporateBondIndexAData(Data):
+class MoodyCorporateBondIndexData(Data):
     """Moody Corporate Bond Index Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
