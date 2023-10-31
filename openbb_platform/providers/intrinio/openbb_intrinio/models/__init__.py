@@ -1,1 +1,1 @@
-"""yfinance models directory."""
+"""Intrinio models directory."""
