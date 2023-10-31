@@ -1,8 +1,8 @@
-"""Quandl Earnings Calendar fetcher."""
+"""Nasdaq Earnings Calendar fetcher."""
 
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 from dateutil import parser
 from openbb_provider.abstract.fetcher import Fetcher
@@ -10,7 +10,6 @@ from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_provider.utils.countries import country_list
 from openbb_provider.utils.errors import EmptyDataError
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, field_validator
@@ -21,24 +20,18 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
     Source: https://api.nasdaq.com/api
     """
+
     country: Optional[Union[str, List[str]]] = Field(
         default=None,
         description="Country of the event",
     )
 
-    @field_validator("country", mode="before")
+    @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def validate_country(
-        cls, country: Optional[Union[str, List[str]]]
-    ) -> Optional[List[str]]:
-        if country is None:
-            return None
-        if isinstance(country, str):
-            country = [country]
-        countries = list(map(lambda x: x.lower(), country))
-        if any(c not in country_list for c in countries):
-            raise ValueError(f"'{country}' is not a valid country")
-        return countries
+    def validate_country(cls, v: Union[str, List[str], Set[str]]):
+        """Validate the country input."""
+        countries = v.split(",") if isinstance(v, str) else v
+        return list(map(lambda v: v.lower(), countries))
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):

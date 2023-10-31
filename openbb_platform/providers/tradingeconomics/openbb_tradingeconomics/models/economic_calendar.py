@@ -10,7 +10,7 @@ from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from openbb_provider.utils.countries import country_list
+from openbb_quandl.utils.countries import country_list
 from openbb_tradingeconomics.utils import url_generator
 from pandas import to_datetime
 from pydantic import Field, field_validator
