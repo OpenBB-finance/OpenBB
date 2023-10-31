@@ -32,6 +32,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -61,6 +62,15 @@ def vcr_config():
             ("apikey", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_fmp_company_filings_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL", "limit": 100}
+
+    fetcher = FMPCompanyFilingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
@@ -351,15 +361,6 @@ def test_fmp_key_metrics_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_company_filings_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = FMPCompanyFilingsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_fmp_treasury_rates_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 5, 10)}
 
@@ -463,5 +464,14 @@ def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "India"}
 
     fetcher = FMPEtfSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_price_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
+
+    fetcher = FMPPricePerformanceFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
