@@ -14,11 +14,11 @@
   - [4.1 Static version](#41-static-version)
     - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
+      - [Extensions](#extensions)
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
+        - [Preferences](#preferences)
       - [System settings](#system-settings)
-      - [Preferences](#preferences)
-        - [Available preferences and its descriptions](#available-preferences-and-its-descriptions)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
@@ -63,7 +63,7 @@ poetry install
 Build a Python package:
 
 ```bash
-poetry new openbb-sdk-my_extension
+poetry new openbb-platform-my_extension
 ```
 
 ### Command
@@ -235,11 +235,52 @@ date
 }
 ```
 
+#### Extensions
+
+Steps to create an `OBBject` extension:
+
+1. Set the following as entry point in your extension .toml file and install it:
+
+    ```toml
+    ...
+    [tool.poetry.plugins."openbb_obbject_extension"]
+    example = "openbb_example:ext"
+    ```
+
+2. Extension code:
+
+    ```python
+    from openbb_core.app.model.extension import Extension
+    ext = Extension(name="example", required_credentials=["some_api_key"])
+    ```
+
+3. Optionally declare an `OBBject` accessor, it will use the extension name:
+
+    ```python
+    @ext.obbject_accessor
+    class Example:
+        def __init__(self, obbject):
+            self._obbject = obbject
+
+        def hello(self):
+            api_key = self._obbject._credentials.some_api_key
+            print(f"Hello, this is my credential: {api_key}!")
+    ```
+
+    Usage:
+
+    ```shell
+    >>> from openbb import obb
+    >>> obbject = obb.stock.load("AAPL")
+    >>> obbject.example.hello()
+    Hello, this is my credential: None!
+    ```
+
 ### 4.1.2. Utilities
 
 #### User settings
 
-These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
+These are your user settings, you can change them anytime and they will be applied. Don't forget to `obb.account.save()` if you want these changes to persist.
 
 ```python
 from openbb import obb
@@ -248,16 +289,6 @@ obb.user.profile
 obb.user.credentials
 obb.user.preferences
 obb.user.defaults
-```
-
-#### System settings
-
-Check your system settings.
-
-```python
-from openbb import obb
-
-obb.system
 ```
 
 #### Preferences
@@ -282,7 +313,7 @@ Here is an example of how your `user_settings.json` file can look like:
 
 > Note that the user preferences shouldn't be confused with environment variables.
 
-##### Available preferences and its descriptions
+These are the available preferences and respective descriptions:
 
 |Preference           |Default                         |Description                                                                                                                                                                                                                                                                                                                  |
 |---------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -300,6 +331,15 @@ Here is an example of how your `user_settings.json` file can look like:
 |metadata             |True                            |Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.|
 |output_type          |OBBject                         |Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe`, `numpy`  or `polars`  will render the application's API non-functional.                                                                        |
 
+#### System settings
+
+Check your system settings.
+
+```python
+from openbb import obb
+
+obb.system
+```
 
 #### Coverage
 
@@ -389,7 +429,7 @@ To apply an environment variable use one of the following:
     ```python
     import os
     os.environ["OPENBB_DEBUG_MODE"] = "True"
-    from openbb import sdk
+    from openbb import obb
     ```
 
 2. Persistent: create a `.env` file in `/.openbb_platform` folder inside your home directory with
