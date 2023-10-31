@@ -22,6 +22,12 @@ keywords:
 - research websites
 - stocks screener
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stocks - Menus | OpenBB Terminal Docs" />
+
+
 The Stocks menu is the high-level menu for the Public Equity asset class. It contains functions for searching and loading company market data, showing candle charts, quotes and company specifics via a large selection of sub-menus. The sub-menus break the functions down into groups based on the type of data they return. The items in the stocks menu are listed below with a short description. Refer to each sub-menu's introductory guide for a more detailed explanation of the functions within.
 
 ## Menu Contents
