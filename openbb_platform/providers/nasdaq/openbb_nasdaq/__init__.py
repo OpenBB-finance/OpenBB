@@ -1,4 +1,4 @@
-"""nasdaq provider module."""
+"""Nasdaq provider module."""
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
 from openbb_provider.abstract.provider import Provider
 
