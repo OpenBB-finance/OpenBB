@@ -75,3 +75,25 @@ def price_performance(
 ) -> OBBject[BaseModel]:
     """Price performance as a return, over different periods."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfHoldings")
+def holdings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the holdings for an individual ETF."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfHoldingsDate")
+def holdings_date(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the holdings filing date for an individual ETF."""
+    return OBBject(results=Query(**locals()).execute())

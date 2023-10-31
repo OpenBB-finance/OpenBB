@@ -105,6 +105,64 @@ def test_etf_sectors(params, headers):
 
 @pytest.mark.parametrize(
     "params",
+    [
+        (
+            {
+                "symbol": "IOO",
+                "date": "2023-01-01",
+                "cik": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "SPY",
+                "date": "2023-04-20",
+                "cik": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "MISL",
+                "date": "2023-04-20",
+                "cik": "0001329377",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/holdings?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "IOO"}),
+        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_date(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/holdings_date?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
     [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
 )
 @pytest.mark.integration
