@@ -1,14 +1,16 @@
-"""Test stocks extension."""
+"""Python interface integration tests for the stocks extension."""
 from datetime import time
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+# pylint: disable=too-many-lines,redefined-outer-name
 
+
+# pylint: disable=import-outside-toplevel,inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -985,12 +987,13 @@ def test_stocks_price_performance(params, obb):
     [
         (
             {
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
+                "symbol": "UBER",
+                "start_date": "2018-01-01",
                 "end_date": "2023-06-06",
                 "limit": 300,
+                "provider": "intrinio",
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration

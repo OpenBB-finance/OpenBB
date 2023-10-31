@@ -160,6 +160,7 @@ def test_y_finance_available_indices_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip(reason="Fails on the CI because of yfinance cache.")
 @pytest.mark.record_http
 def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
     params = {
