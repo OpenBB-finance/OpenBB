@@ -144,3 +144,19 @@ def iorb(
     United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="DiscountWindowPrimaryCreditRate")
+def dwpcr(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Discount Window Primary Credit Rate.
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
+    The rates central banks charge are set to stabilize the economy.
+    In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+    """
+    return OBBject(results=Query(**locals()).execute())
