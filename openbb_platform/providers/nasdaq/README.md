@@ -1,13 +1,13 @@
 # OpenBB Quandl Provider
 
-This extension integrates the [Quandl](https://data.nasdaq.com/publishers/QDL) data provider into the OpenBB Platform.
+This extension integrates the [Nasdaq](https://www.nasdaq.com) data provider into the OpenBB Platform.
 
 ## Installation
 
 To install the extension:
 
 ```bash
-pip install openbb-quandl
+pip install openbb-nasdaq
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/feature/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).
