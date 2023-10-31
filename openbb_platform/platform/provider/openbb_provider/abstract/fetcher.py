@@ -55,8 +55,7 @@ class Fetcher(Generic[Q, R]):
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         if not data:
             raise EmptyDataError()
-        result = cls.transform_data(query=query, data=data, **kwargs)
-        return result
+        return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
     def query_params_type(self) -> Q:
