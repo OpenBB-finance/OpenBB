@@ -22,12 +22,6 @@ def generate_url(in_query):
     # Converting the input query to a dict of params that are not None
     query = {k: v for k, v in in_query.dict().items() if v is not None}
 
-    IMPORTANCES = {"low": 1, "medium": 2, "high": 3}
-
-    # Convert importance to a number
-    if "importance" in query:
-        query["importance"] = IMPORTANCES[query["importance"].lower()]
-
     # Nothing -- just a snapshot
     if not query:
         return "https://api.tradingeconomics.com/calendar?c="
