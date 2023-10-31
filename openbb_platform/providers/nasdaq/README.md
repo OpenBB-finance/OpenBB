@@ -1,4 +1,4 @@
-# OpenBB Quandl Provider
+# OpenBB Nasdaq Provider
 
 This extension integrates the [Nasdaq](https://www.nasdaq.com) data provider into the OpenBB Platform.
 
