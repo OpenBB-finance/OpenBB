@@ -10,7 +10,8 @@ from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
-from openbb_tradingeconomics.utils import countries, url_generator
+from openbb_provider.utils.countries import country_list
+from openbb_tradingeconomics.utils import url_generator
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
@@ -34,21 +35,21 @@ GROUPS = Literal[
 
 
 class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
-    """FMP Economic Calendar Query.
+    """TE Economic Calendar Query.
 
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
 
+    country: Optional[Union[str, List[str]]] = Field(
+        default=None,
+        description="Country of the event",
+    )
+    # TODO: Probably want to figure out the list we can use.
     importance: IMPORTANCE = Field(
         default=None,
         description="Importance of the event.",
     )
     group: GROUPS = Field(default=None, description="Grouping of events")
-    # TODO: Probably want to figure out the list we can use.
-    country: Optional[Union[str, List[str]]] = Field(
-        default=None,
-        description="Country of the event",
-    )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
@@ -141,7 +142,7 @@ class TEEconomicCalendarFetcher(
             country = [country] if isinstance(country, str) else country
 
             for c in country:
-                if c.replace("_", " ").lower() not in countries.country_list:
+                if c.replace("_", " ").lower() not in country_list:
                     raise ValueError(f"{c} is not a valid country")
             query.country = country
 

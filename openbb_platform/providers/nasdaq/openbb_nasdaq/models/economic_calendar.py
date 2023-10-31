@@ -21,6 +21,10 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
     Source: https://api.nasdaq.com/api
     """
+    country: Optional[Union[str, List[str]]] = Field(
+        default=None,
+        description="Country of the event",
+    )
 
     @field_validator("country", mode="before")
     @classmethod
@@ -43,10 +47,6 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     __alias_dict__ = {
         "event": "eventName",
     }
-
-    time: Optional[str] = Field(
-        default=None, alias="gmt", description="GMT of release (in HH:MM format)."
-    )
     description: Optional[str] = Field(default=None, description="Event description.")
 
     @field_validator("date", mode="before")
@@ -99,7 +99,7 @@ class NasdaqEconomicCalendarFetcher(
                     .get("rows", [])
                 )
                 for event in response:
-                    event["date"] = date
+                    event["date"] = date + " " + event.pop("gmt", "")
                     event["actual"] = event.get("actual", "").replace("&nbsp;", "-")
                     event["previous"] = event.get("previous", "").replace("&nbsp;", "-")
                     event["consensus"] = event.get("consensus", "").replace(
