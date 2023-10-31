@@ -1,9 +1,8 @@
-"""FMP Price Performance Model"""
-
+"""FMP Price Performance Model."""
 
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import get_data_one
+from openbb_fmp.utils.helpers import create_url, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.recent_performance import (
     RecentPerformanceData,
@@ -59,14 +58,15 @@ class FMPPricePerformanceFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = f"https://financialmodelingprep.com/api/v3/stock-price-change/{query.symbol}?apikey={api_key}"
-
-        data = get_data_one(url, **kwargs)
-        return data if 0 in data else {0: data}
+        url = create_url(3, "stock-price-change", api_key, query)
+        return get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(
+        query: FMPPricePerformanceQueryParams,
         data: Dict,
         **kwargs: Any,
     ) -> List[FMPPricePerformanceData]:
+        """Return the transformed data."""
+        data = data if 0 in data else {0: data}
         return [FMPPricePerformanceData.model_validate(data[i]) for i in data]
