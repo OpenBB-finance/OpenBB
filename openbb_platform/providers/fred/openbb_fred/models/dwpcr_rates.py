@@ -1,4 +1,4 @@
-"""FRED PROJECTION Fetcher."""
+"""Discount Window Primary Credit Rate Fetcher."""
 
 
 from typing import Any, Dict, List, Literal, Optional
