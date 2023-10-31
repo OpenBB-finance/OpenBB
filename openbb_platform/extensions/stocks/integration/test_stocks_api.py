@@ -1,8 +1,11 @@
+"""API integration tests for stocks extension."""
 from datetime import time
 
 import pytest
 import requests
 from openbb_provider.utils.helpers import get_querystring
+
+# pylint: disable=too-many-lines,redefined-outer-name
 
 
 @pytest.fixture(scope="session")
@@ -997,6 +1000,53 @@ def test_stocks_disc_active(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/stocks/disc/active?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/price_performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": None,
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "limit": 300,
+            }
+        ),
+        (
+            {
+                "symbol": "UBER",
+                "start_date": None,
+                "end_date": None,
+                "limit": 300,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -58,7 +58,12 @@ class FMPPricePerformanceFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(3, "stock-price-change", api_key, query)
+        url = create_url(
+            version=3,
+            endpoint=f"stock-price-change/{query.symbol}",
+            api_key=api_key,
+            exclude=["symbol"],
+        )
         return get_data_one(url, **kwargs)
 
     @staticmethod

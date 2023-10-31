@@ -1,14 +1,16 @@
-"""Test stocks extension."""
+"""Python interface integration tests for the stocks extension."""
 from datetime import time
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+# pylint: disable=too-many-lines,redefined-outer-name
 
+
+# pylint: disable=import-outside-toplevel,inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -944,6 +946,51 @@ def test_stocks_disc_active(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.active(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": None,
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "limit": 300,
+            }
+        ),
+        (
+            {
+                "symbol": "UBER",
+                "start_date": None,
+                "end_date": None,
+                "limit": 300,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.calendar_ipo(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
