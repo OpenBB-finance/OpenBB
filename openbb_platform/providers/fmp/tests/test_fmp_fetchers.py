@@ -14,7 +14,12 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
+from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
+from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
+from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
+from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -460,10 +465,55 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = FMPEconomicCalendarFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "India"}
 
     fetcher = FMPEtfSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "IOO"}
+
+    fetcher = FMPEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_sectors_fetcher(credentials=test_credentials):
+    params = {"symbol": "IOO"}
+
+    fetcher = FMPEtfSectorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
+    params = {"symbol": "IOO", "date": date(2023, 4, 22)}
+
+    fetcher = FMPEtfHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_holdings_date_fetcher(credentials=test_credentials):
+    params = {"symbol": "IOO"}
+
+    fetcher = FMPEtfHoldingsDateFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
