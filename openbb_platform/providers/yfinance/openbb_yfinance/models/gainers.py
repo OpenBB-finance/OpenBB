@@ -35,7 +35,7 @@ class YFGainersData(EquityPerformanceData):
     }
 
     market_cap: str = Field(
-        description="Market Cap displayed in billions.",
+        description="Market Cap.",
     )
     avg_volume_3_months: float = Field(
         description="Average volume over the last 3 months in millions.",
@@ -59,7 +59,7 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
         query: YFGainersQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> pd.DataFrame:
         """Get data from YF."""
         headers = {"user_agent": "Mozilla/5.0"}
         html = requests.get(
@@ -73,20 +73,21 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
             .dropna(how="all", axis=1)
             .replace(float("NaN"), "")
         )
-        df["% Change"] = df["% Change"].str.replace("%", "")
-        df["Volume"] = df["Volume"].str.replace("M", "").astype(float) * 1000000
-        df["Avg Vol (3 month)"] = (
-            df["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
-        )
-        df = df.apply(pd.to_numeric, errors="ignore")
-        return df.to_dict(orient="records")
+        return df
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: List[Dict],
+        data: pd.DataFrame,
         **kwargs: Any,
     ) -> List[YFGainersData]:
         """Transform data."""
+        data["% Change"] = data["% Change"].str.replace("%", "")
+        data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
+        data["Avg Vol (3 month)"] = (
+            data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
+        )
+        data = data.apply(pd.to_numeric, errors="ignore")
+        data = data.to_dict(orient="records")
         data = sorted(data, key=lambda d: d["% Change"], reverse=query.sort == "desc")
         return [YFGainersData.model_validate(d) for d in data]

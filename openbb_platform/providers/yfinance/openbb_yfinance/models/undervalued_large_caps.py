@@ -1,4 +1,4 @@
-"""Yahoo Finance active fetcher."""
+"""Yahoo Finance undervalued large caps fetcher."""
 import re
 from typing import Any, Dict, List, Optional
 
@@ -9,18 +9,19 @@ from openbb_provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from pandas import DataFrame
 from pydantic import Field
 
 
-class YFActiveQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance active QueryParams.
+class YFUndervaluedLargeCapsQueryParams(EquityPerformanceQueryParams):
+    """YF asset performance undervalued large caps QueryParams.
 
-    Source: https://finance.yahoo.com/screener/predefined/most_actives
+    Source: https://finance.yahoo.com/screener/predefined/undervalued_large_caps
     """
 
 
-class YFActiveData(EquityPerformanceData):
-    """YF asset performance active Data."""
+class YFUndervaluedLargeCapsData(EquityPerformanceData):
+    """YF asset performance undervalued large caps Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -34,8 +35,8 @@ class YFActiveData(EquityPerformanceData):
         "pe_ratio_ttm": "PE Ratio (TTM)",
     }
 
-    market_cap: str = Field(
-        description="Market Cap displayed in billions.",
+    market_cap: float = Field(
+        description="Market Cap.",
     )
     avg_volume_3_months: float = Field(
         description="Average volume over the last 3 months in millions.",
@@ -46,24 +47,26 @@ class YFActiveData(EquityPerformanceData):
     )
 
 
-class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
-    """YF asset performance active Fetcher."""
+class YFUndervaluedLargeCapsFetcher(
+    Fetcher[YFUndervaluedLargeCapsQueryParams, List[YFUndervaluedLargeCapsData]]
+):
+    """YF asset performance undervalued large caps Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFActiveQueryParams:
+    def transform_query(params: Dict[str, Any]) -> YFUndervaluedLargeCapsQueryParams:
         """Transform query params."""
-        return YFActiveQueryParams(**params)
+        return YFUndervaluedLargeCapsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFActiveQueryParams,
+        query: YFUndervaluedLargeCapsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> pd.DataFrame:
+    ) -> DataFrame:
         """Get data from YF."""
         headers = {"user_agent": "Mozilla/5.0"}
         html = requests.get(
-            "https://finance.yahoo.com/screener/predefined/most_actives",
+            "https://finance.yahoo.com/screener/predefined/undervalued_large_caps",
             headers=headers,
             timeout=10,
         ).text
@@ -78,16 +81,17 @@ class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: List[Dict],
+        data: DataFrame,
         **kwargs: Any,
-    ) -> List[YFActiveData]:
+    ) -> List[YFUndervaluedLargeCapsData]:
         """Transform data."""
         data["% Change"] = data["% Change"].str.replace("%", "")
         data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
         data["Avg Vol (3 month)"] = (
             data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
         )
+        data["Market Cap"] = data["Market Cap"].str.replace("B", "")
         data = data.apply(pd.to_numeric, errors="ignore")
         data = data.to_dict(orient="records")
-        data = sorted(data, key=lambda d: d["Volume"], reverse=query.sort == "desc")
-        return [YFActiveData.model_validate(d) for d in data]
+        data = sorted(data, key=lambda d: d["Market Cap"], reverse=query.sort == "desc")
+        return [YFUndervaluedLargeCapsData.model_validate(d) for d in data]
