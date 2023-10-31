@@ -905,3 +905,99 @@ def test_stocks_info(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_gainers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.gainers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_losers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.losers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_active(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.active(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_ftd(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.ftd(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "limit": 300,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.calendar_ipo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
