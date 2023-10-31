@@ -1,11 +1,12 @@
-from datetime import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_wsj.models.active import WSJActiveFetcher
 from openbb_wsj.models.gainers import WSJGainersFetcher
 from openbb_wsj.models.losers import WSJLosersFetcher
-from openbb_wsj.models.active import WSJActiveFetcher
 
-test_credentials = UserService().default_user_settings.credentials.model_dump(mode="json")
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -13,9 +14,10 @@ def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
-            ('token', 'MOCK_TOKEN'),
+            ("token", "MOCK_TOKEN"),
         ],
     }
+
 
 @pytest.mark.record_http
 def test_wsj_gainers_fetcher(credentials=test_credentials):
@@ -24,7 +26,6 @@ def test_wsj_gainers_fetcher(credentials=test_credentials):
     fetcher = WSJGainersFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
-
 
 
 @pytest.mark.record_http
@@ -36,7 +37,6 @@ def test_wsj_losers_fetcher(credentials=test_credentials):
     assert result is None
 
 
-
 @pytest.mark.record_http
 def test_wsj_active_fetcher(credentials=test_credentials):
     params = {}
@@ -44,5 +44,3 @@ def test_wsj_active_fetcher(credentials=test_credentials):
     fetcher = WSJActiveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
-
-
