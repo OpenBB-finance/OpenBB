@@ -14,6 +14,7 @@ from openbb_provider.standard_models.stock_news import (
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
+
 class UltimaStockNewsQueryParams(StockNewsQueryParams):
     """Ultima Stock News query.
 
@@ -56,7 +57,7 @@ class UltimaStockNewsFetcher(
 
         base_url = "https://api.ultimainsights.ai/v1/getOpenBBProInsights"
 
-        querystring = str(query).split('=')[1].split("'")[1].replace(' ', '')
+        querystring = str(query).split("=")[1].split("'")[1].replace(" ", "")
 
         data = []
         url = f"{base_url}/{querystring}"
@@ -74,13 +75,15 @@ class UltimaStockNewsFetcher(
     ) -> List[UltimaStockNewsData]:
         results = []
         for ele in data:
-            for key in ['8k_filings', 'articles', 'industry_summary']:
+            for key in ["8k_filings", "articles", "industry_summary"]:
                 for item in ele[key]:
                     # manual assignment required for Pydantic to work
-                    item['ticker'] = ele['ticker']
-                    item['date'] = datetime.strptime(item['publishedDate'], '%Y-%m-%d %H:%M:%S')
-                    item['title'] = item['headline']
-                    item['url'] = item['url']
-                    item['publisher'] = item['publisher']
+                    item["ticker"] = ele["ticker"]
+                    item["date"] = datetime.strptime(
+                        item["publishedDate"], "%Y-%m-%d %H:%M:%S"
+                    )
+                    item["title"] = item["headline"]
+                    item["url"] = item["url"]
+                    item["publisher"] = item["publisher"]
                     results.append(UltimaStockNewsData.model_validate(item))
         return results

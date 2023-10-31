@@ -14,7 +14,10 @@ def get_data(url: str, **kwargs: Any) -> Dict:
     if "Bearer" not in auth:
         auth = f"Bearer {auth}"
     result = helpers.make_request(
-        url, timeout=10, headers={"accept": "application/json", "Authorization": auth}, **kwargs
+        url,
+        timeout=10,
+        headers={"accept": "application/json", "Authorization": auth},
+        **kwargs,
     )
     if result.status_code != 200:
         data = result.json()
