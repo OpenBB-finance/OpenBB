@@ -6,6 +6,7 @@ from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.errors import EmptyDataError
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D", bound=Data)
@@ -52,7 +53,10 @@ class Fetcher(Generic[Q, R]):
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
-        return cls.transform_data(query=query, data=data, **kwargs)
+        if not data:
+            raise EmptyDataError()
+        result = cls.transform_data(query=query, data=data, **kwargs)
+        return result
 
     @classproperty
     def query_params_type(self) -> Q:
