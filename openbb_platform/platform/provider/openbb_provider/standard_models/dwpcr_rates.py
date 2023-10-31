@@ -8,7 +8,7 @@ from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class DiscountWindowPrimaryCreditRateParams(QueryParams):
@@ -26,3 +26,6 @@ class DiscountWindowPrimaryCreditRateParams(QueryParams):
 
 class DiscountWindowPrimaryCreditRateData(Data):
     """Discount Window Primary Credit Rate Data."""
+
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    rate: float = Field(description="Discount Window Primary Credit Rate.")

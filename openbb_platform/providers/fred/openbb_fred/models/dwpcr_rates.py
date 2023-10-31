@@ -31,6 +31,8 @@ class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateP
 class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateData):
     """DiscountWindowPrimaryCreditRateParams Data."""
 
+    __alias_dict__ = {"rate": "value"}
+
 
 class FREDDiscountWindowPrimaryCreditRateFetcher(
     Fetcher[
@@ -70,8 +72,4 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
     def transform_data(
         query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
     ) -> List[Dict[str, List[FREDDiscountWindowPrimaryCreditRateData]]]:
-        keys = ["date", "value"]
-        return [
-            FREDDiscountWindowPrimaryCreditRateData(**{k: x[k] for k in keys})
-            for x in data
-        ]
+        return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]
