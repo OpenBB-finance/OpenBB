@@ -34,7 +34,7 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):
-    """Nasdaq Earnings Calendar Data."""
+    """Nasdaq Economic Calendar Data."""
 
     __alias_dict__ = {
         "event": "eventName",
