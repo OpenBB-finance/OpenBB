@@ -1,119 +1,148 @@
 ---
 title: Behavioural Analysis
-description: The webpage explains the Behavioural Analysis feature, offering tools
-  to assess public sentiment of companies online, providing information on how to
-  use the feature and showing the results from various commands such as headlines,
-  snews, and sentiment.
+description: The page introduces the Behavioural Analysis sub-menu, within the Stocks menu, of the OpenBB Terminal.
 keywords:
 - Behavioural Analysis
 - public sentiment
 - momentum trading strategies
-- fundamental research
+- stocks
+- companies
+- reddit
+- twitter
+- stocktwits
+- x
+- google
 - API key
 - /r/wallstreetbets
 - social sentiment
-- data scraping
 - deep learning algorithms
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Behavioural Analysis - Common - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Behavioural Analysis - Stocks - Menus | OpenBB Terminal Docs" />
 
-The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. Navigate into the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks</a> menu by entering, `ba`; or, using absolute paths from anywhere in the Terminal: `/stocks/ba`
+The Behavioural Analysis menu offers the user tools for gauging the overall public sentiment of a company online. The complexity of the tools range from message board scrapers to deep learning algorithms for financial analysis and prediction. Sentiment is particularly useful for momentum trading strategies, discovery, and general fundamental research. 
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218975466-a52343f6-9f43-4ecc-88ac-f47afbd7f128.png"></img>
+## Usage
 
-### How to use
+Navigate into the menu from the Stocks menu by entering, `ba`. Or, by using the absolute path from anywhere in the Terminal:
 
-Some data sources will require a valid API key, which can be obtained for free and then set using the [Keys menu](https://docs.openbb.co/terminal/usage/guides/api-keys). As with every command, using the `-h` argument displays the help dialogue. Running the <a href="/terminal/reference/stocks/ba/headlines/" target="_blank" rel="noreferrer noopener">headlines</a> command returns the following:
-
-```
-(🦋) /stocks/ba/ $ headlines
+```console
+/stocks/ba
 ```
 
-<img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170244924-ffe6cd15-8d17-4690-bf44-d2b496dbc310.png"></img>
+![Screenshot 2023-10-31 at 1 50 04 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/5946bc28-95a8-4402-a546-68be140aa025)
 
-Alternatively, running the <a href="/terminal/reference/stocks/ba/snews/" target="_blank" rel="noreferrer noopener">snews</a> command returns the following:
+### Trending
 
-```
-(🦋) /stocks/ba/ $ snews
-```
+The `trending` command gets the list of trending tickers, according to Stocktwits.
 
-<img alt="headlines" src="https://user-images.githubusercontent.com/46355364/170243359-9d1302f0-3394-4e05-8360-0e59a1cb6e54.png"></img>
-
-The Reddit functions will return popular tickers and posts, or measure sentiment for a particular stock. An example would be by looking at the threads that pop up on <a href="https://www.reddit.com/r/wallstreetbets/" target="_blank" rel="noreferrer noopener">/r/wallstreetbets</a>, famous for the <a href="https://en.wikipedia.org/wiki/R/wallstreetbets" target="_blank" rel="noreferrer noopener">GameStop short squeeze</a>:
-
-```
-(🦋) /stocks/ba/ $ wsb
-
-2022-05-23 10:00:12 - Daily Discussion Thread for May 23, 2022
-https://old.reddit.com/r/wallstreetbets/comments/uvwq8z/daily_discussion_thread_for_may_23_2022/
-
-Reddit Submission
-
-| Subreddit      | Flair            | Score | # Comments | Upvote % | Awards      |
-| -------------- | ---------------- | ----- | ---------- | -------- | ----------- |
-| wallstreetbets | Daily Discussion | 195   | 9168       | 88%      | 3 Silver    |
-|                |                  |       |            |          | 2 Helpful   |
-|                |                  |       |            |          | 1 Wholesome |
-|                |                  |       |            |          | 1 Got the   |
-
-2022-05-21 11:34:21 - Most Anticipated Earnings Releases for the week beginning
-May 23rd, 2022
-https://old.reddit.com/r/wallstreetbets/comments/uul9fs/most_anticipated_earnings_releases_for_the_week/
-
-Reddit Submission
-
-| Subreddit      | Flair           | Score | # Comments | Upvote % | Awards           |
-| -------------- | --------------- | ----- | ---------- | -------- | ---------------- |
-| wallstreetbets | Earnings Thread | 960   | 1325       | 97%      | 1 Silver         |
-|                |                 |       |            |          | 5 Helpful        |
-|                |                 |       |            |          | 3 Wholesome      |
-|                |                 |       |            |          | 1 Take My Energy |
-|                |                 |       |            |          | 1 Sne            |
+```console
+/stocks/ba/trending
 ```
 
-The Behavioural Analysis menu also has the ability to scan for sentiment on multiple platforms including Twitter and Google with <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a>, <a href="/terminal/reference/stocks/ba/infer/" target="_blank" rel="noreferrer noopener">infer</a> and <a href="/terminal/reference/stocks/ba/queries/" target="_blank" rel="noreferrer noopener">queries</a>.
+| Ticker   |   Watchlist Count | Name                                            |
+|:---------|------------------:|:------------------------------------------------|
+| AMD      |            468973 | Advanced Micro Devices Inc.                     |
+| NVDA     |            447556 | NVIDIA Corp                                     |
+| XRP.X    |            158654 | Ripple                                          |
+| CHK      |             61074 | Chesapeake Energy Corp. - Ordinary Shares - New |
+| PINS     |             44549 | PINTEREST INC                                   |
+| CRSP     |             34881 | CRISPR Therapeutics AG                          |
+| CAT      |             29787 | Caterpillar Inc.                                |
+| FSLR     |             28779 | First Solar Inc                                 |
+| CVS      |             26361 | CVS Health Corp                                 |
+| SAVE     |             24589 | Spirit Airlines Inc                             |
+| SRPT     |             18634 | Sarepta Therapeutics Inc                        |
+| Z        |             18152 | Zillow Group Inc                                |
+| BUD      |             13161 | Anheuser-Busch InBev                            |
+| MTCH     |             12638 | Match Group Inc.                                |
+| UEC      |             12473 | Uranium Energy Corp                             |
+| CZR      |             10943 | Caesars Entertainment Inc                       |
+| CCJ      |             10108 | Cameco Corp.                                    |
+| ANET     |              9235 | Arista Networks Inc                             |
+| CELH     |              9012 | Celsius Holdings Inc                            |
+| LTHM     |              8206 | Livent Corp                                     |
+| MPC      |              7307 | Marathon Petroleum Corp                         |
+| PAYC     |              5425 | Paycom Software Inc                             |
+| ZI       |              5061 | ZoomInfo Technologies Inc.                      |
+| SPRC     |              3789 | SCISPARC LTD                                    |
+| ELF      |              3658 | e.l.f. Beauty Inc                               |
+| XDC.X    |              3073 | XinFin Network                                  |
+| KRL.X    |              2385 | Kryll                                           |
+| FRSH     |              1935 | Freshworks Inc                                  |
+| MTZ      |              1544 | Mastec Inc.                                     |
+| VERV     |              1054 | Verve Therapeutics Inc                          |
 
+### Bullbear
+
+`bullbear` gives a fast sentiment synopsis from the most recent Stocktwits posts.
+
+```console
+/stocks/ba/load crsp/bullbear
 ```
-(🦋) /stocks/ba/ $ sentiment -c
-From 2022-05-23 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-22 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-21 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-20 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-19 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-18 retrieving 360 tweets (15 tweets/hour)
-From 2022-05-17 retrieving 360 tweets (15 tweets/hour)
 
-(🦋) /stocks/ba/ $ infer
-From: 2022-05-23 18:21:12
-To:   2022-05-23 18:30:36
-100 tweets were analyzed.
-Frequency of approx 1 tweet every 6 seconds.
-The summed compound sentiment of GME is: 18.42
-The average compound sentiment of GME is: 0.18
-Of the last 100 tweets, 41.00 % had a higher positive sentiment
-Of the last 100 tweets, 19.00 % had a higher negative sentiment
+```console
+Watchlist count: 34881
 
-(🦋) /stocks/ba/ $ queries
-
- Top GME's related queries
-
-| query           | value |
-|-----------------|-------|
-| stock gme       | 100%  |
-| amc             | 29%   |
-| amc stock       | 24%   |
-| gme price       | 23%   |
-| gme stock price | 14%   |
-| gme share       | 7%    |
-| gme share price | 6%    |
-| reddit          | 6%    |
-| gme reddit      | 6%    |
-| bb              | 5%    |
+Last 15 sentiment messages:
+Bullish: 80.0%
+Bearish: 20.0%
 ```
 
-The <a href="/terminal/reference/stocks/ba/sentiment/" target="_blank" rel="noreferrer noopener">sentiment</a> command returns the following:
+```console
+/stocks/ba/load amd/bullbear
+```
 
-<img alt="sentiment" src="https://user-images.githubusercontent.com/46355364/170243539-1ea3fc6a-d7ec-4991-a6bb-ed5879753328.png"></img>
+```console
+Watchlist count: 468973
+
+Last 12 sentiment messages:
+Bullish: 50.0%
+Bearish: 50.0%
+```
+
+### Redditsent
+
+`redditsent` will crawl through posts related to the ticker and give it a score based on how polarizing the message is.
+
+![Screenshot 2023-10-31 at 2 28 52 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/71e6a3c9-ece8-45a4-afca-150211ae7c43)
+
+### Queries
+
+The `queries` command shows the terms people are including when searching for the company on Google.
+
+```console
+/stocks/ba/load amd/queries
+```
+
+| query       | value   |
+|:------------|:--------|
+| amd ryzen   | 100%    |
+| amd radeon  | 67%     |
+| radeon      | 62%     |
+| amd stock   | 52%     |
+| amd ryzen 5 | 47%     |
+| intel       | 46%     |
+| amd ryzen 7 | 25%     |
+| nvidia      | 23%     |
+| amd driver  | 22%     |
+| amd cpu     | 21%     |
+
+```console
+/stocks/ba/load intc/queries
+```
+
+| query            | value   |
+|:-----------------|:--------|
+| stock intc       | 100%    |
+| intc price       | 36%     |
+| stock price intc | 32%     |
+| amd              | 15%     |
+| amd stock        | 12%     |
+| aapl             | 9%      |
+| msft             | 8%      |
+| intc share       | 7%      |
+| nvda             | 7%      |
+| tsla             | 7%      |
