@@ -20,7 +20,7 @@ from openbb_stocks.options.options_router import router as options_router
 # TODO: Uncomment once they have some commands.
 # from openbb_stocks.gov.gov_router import router as gov_router
 # from openbb_stocks.ins.ins_router import router as ins_router
-# from openbb_stocks.dps.dps_router import router as dps_router
+from openbb_stocks.dps.dps_router import router as dps_router
 
 
 router = Router(prefix="")
@@ -28,7 +28,7 @@ router.include_router(fa_router)
 router.include_router(ca_router)
 router.include_router(options_router)
 
-# router.include_router(dps_router)
+router.include_router(dps_router)
 # router.include_router(gov_router)
 # router.include_router(ins_router)
 
@@ -96,17 +96,6 @@ def info(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Stock Info. Get general price and performance metrics of a stock."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="StockFTD")
-def ftd(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Get reported Fail-to-deliver (FTD) data."""
     return OBBject(results=Query(**locals()).execute())
 
 
