@@ -18,8 +18,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
     </iframe>
 </div>
 
-The main features are:
-
 ## Bring your own data
 
 The OpenBB Terminal Pro allows professionals to bring any data into their research environment. Whether that is a .csv file, a private endpoint, a RSS feed or even embed a SEC filing directly. The only limit is the user's creativity.

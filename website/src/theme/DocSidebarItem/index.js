@@ -29,7 +29,7 @@ function shouldHideItem(item, productPath) {
 export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
-  const isPro = pathname.startsWith("/pro")
+  const isPro = pathname.startsWith("/pro");
 
   if (isIFrame) {
     const firstTwoPathSegments = pathname.split("/").slice(0, 3).join("/");
@@ -39,14 +39,11 @@ export default function DocSidebarItem({ item, ...props }) {
     }
   }
 
-  if(isPro) {
-    if(!item.href?.startsWith("/pro")) {
-      return null;
-    }
-  } else {
-    if(item.href?.startsWith("/pro")) {
-      return null;
-    }
+  if (isPro && !item.href?.startsWith("/pro")) {
+    // TODO: Jose I think we need to add here a edge case that allows to show a folder without a index.md file
+    return null;
+  } else if (!isPro && item.href?.startsWith("/pro")) {
+    return null;
   }
 
   switch (item.type) {
