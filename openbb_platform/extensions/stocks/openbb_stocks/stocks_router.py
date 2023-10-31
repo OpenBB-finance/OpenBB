@@ -117,7 +117,7 @@ def ftd(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Gets reported Fail-to-deliver (FTD) data."""
+    """Get reported Fail-to-deliver (FTD) data."""
     return OBBject(results=Query(**locals()).execute())
 
 
