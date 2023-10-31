@@ -160,3 +160,22 @@ def dwpcr(
     In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EuropeanCentralBankInterestRates")
+def ecb_interest_rates(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    European Central Bank Interest Rates.
+    The Governing Council of the ECB sets the key interest rates for the euro area:
+
+    - The interest rate on the main refinancing operations (MRO), which provide
+    the bulk of liquidity to the banking system.
+    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
+    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+    """
+    return OBBject(results=Query(**locals()).execute())
