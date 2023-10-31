@@ -1,4 +1,4 @@
-"""Available Indices data model."""
+"""ETF performance data model."""
 from datetime import date as dateType
 
 from pydantic import Field
