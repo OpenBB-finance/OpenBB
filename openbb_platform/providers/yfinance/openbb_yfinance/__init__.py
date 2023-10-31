@@ -39,8 +39,8 @@ yfinance_provider = Provider(
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "AvailableIndices": YFinanceAvailableIndicesFetcher,
-        "DiscActive": YFActiveFetcher,
-        "DiscGainers": YFGainersFetcher,
-        "DiscLosers": YFLosersFetcher,
+        "EquityActive": YFActiveFetcher,
+        "EquityGainers": YFGainersFetcher,
+        "EquityLosers": YFLosersFetcher,
     },
 )

@@ -12,34 +12,34 @@ from pydantic import BaseModel
 router = Router(prefix="/disc")
 
 
-@router.command(model="DiscGainers")
+@router.command(model="EquityGainers")
 def gainers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the top ETF gainers."""
+    """Get the top Equity gainers."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="DiscLosers")
+@router.command(model="EquityLosers")
 def losers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the top ETF losers."""
+    """Get the top Equity losers."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="DiscActive")
+@router.command(model="EquityActive")
 def active(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the most active ETFs."""
+    """Get the most active Equities."""
     return OBBject(results=Query(**locals()).execute())
