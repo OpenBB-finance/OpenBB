@@ -1,17 +1,18 @@
 """FRED provider module."""
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.cpi import FREDCPIFetcher
-from openbb_fred.models.estr_rates import FREDESTRFetcher
-from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
-from openbb_fred.models.fed_rates import FREDFEDFetcher
-from openbb_fred.models.iorb_rates import FREDIORBFetcher
-from openbb_fred.models.sofr_rates import FREDSOFRFetcher
-from openbb_fred.models.sonia_rates import FREDSONIAFetcher
-from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
 )
+from openbb_fred.models.estr_rates import FREDESTRFetcher
+from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
+from openbb_fred.models.fed_rates import FREDFEDFetcher
+from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
+from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+from openbb_fred.models.sonia_rates import FREDSONIAFetcher
+from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_provider.abstract.provider import Provider
 
 fred_provider = Provider(
@@ -33,5 +34,6 @@ fred_provider = Provider(
         "IORB": FREDIORBFetcher,
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
+        "ICEBofA": FREDICEBofAFetcher,
     },
 )

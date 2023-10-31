@@ -2,7 +2,7 @@
 from datetime import (
     date as dateType,
 )
-from typing import Optional, Literal
+from typing import Literal, Optional
 
 from pydantic import Field
 
@@ -24,12 +24,14 @@ class ICEBofAParams(QueryParams):
     )
     type_: Literal["yield", "yield_to_worst", "total_return", "spread"] = Field(
         default="yield",
-        description=".",
+        description="The type of series.",
     )
 
 
-class ICEBofAsData(Data):
+class ICEBofAData(Data):
     """ICE BofA US Corporate Bond Indices Data."""
 
-    # date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    # rate: Optional[float] = Field(description="European Central Bank Interest Rate.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    rate: Optional[float] = Field(
+        description="ICE BofA US Corporate Bond Indices Rate."
+    )
