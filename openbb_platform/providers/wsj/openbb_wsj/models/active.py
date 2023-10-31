@@ -4,21 +4,21 @@ from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.asset_performance import (
-    AssetPerformanceData,
-    AssetPerformanceQueryParams,
+from openbb_provider.standard_models.etf_performance import (
+    ETFPerformanceData,
+    ETFPerformanceQueryParams,
 )
 from pydantic import Field, field_validator
 
 
-class WSJActiveQueryParams(AssetPerformanceQueryParams):
+class WSJActiveQueryParams(ETFPerformanceQueryParams):
     """WSJ asset performance active QueryParams.
 
     Source: https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers
     """
 
 
-class WSJActiveData(AssetPerformanceData):
+class WSJActiveData(ETFPerformanceData):
     """WSJ asset performance active Data."""
 
     __alias_dict__ = {
@@ -87,7 +87,7 @@ class WSJActiveFetcher(Fetcher[WSJActiveQueryParams, List[WSJActiveData]]):
 
     @staticmethod
     def transform_data(
-        query: AssetPerformanceQueryParams,
+        query: ETFPerformanceQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[WSJActiveData]:

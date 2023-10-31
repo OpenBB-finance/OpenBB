@@ -16,8 +16,8 @@ wsj_provider = Provider(
     The WSJ is the largest newspaper in the United States, by circulation.
     """,
     fetcher_dict={
-        "DiscGainers": WSJGainersFetcher,
-        "DiscLosers": WSJLosersFetcher,
-        "DiscActive": WSJActiveFetcher,
+        "ETFGainers": WSJGainersFetcher,
+        "ETFLosers": WSJLosersFetcher,
+        "ETFActive": WSJActiveFetcher,
     },
 )

@@ -8,8 +8,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class AssetPerformanceQueryParams(QueryParams):
-    """Asset Performance QueryParams."""
+class ETFPerformanceQueryParams(QueryParams):
+    """ETF Performance QueryParams."""
 
     sort: str = Field(
         default="desc",
@@ -21,8 +21,8 @@ class AssetPerformanceQueryParams(QueryParams):
     )
 
 
-class AssetPerformanceData(Data):
-    """Asset performance data."""
+class ETFPerformanceData(Data):
+    """ETF performance data."""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),

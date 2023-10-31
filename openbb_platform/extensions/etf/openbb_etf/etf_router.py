@@ -11,7 +11,10 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_etf.disc.disc_router import router as disc_router
+
 router = Router(prefix="")
+router.include_router(disc_router)
 
 
 # pylint: disable=unused-argument

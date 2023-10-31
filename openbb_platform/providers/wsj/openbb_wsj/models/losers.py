@@ -4,21 +4,21 @@ from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.asset_performance import (
-    AssetPerformanceData,
-    AssetPerformanceQueryParams,
+from openbb_provider.standard_models.etf_performance import (
+    ETFPerformanceData,
+    ETFPerformanceQueryParams,
 )
 from pydantic import Field, field_validator
 
 
-class WSJLosersQueryParams(AssetPerformanceQueryParams):
+class WSJLosersQueryParams(ETFPerformanceQueryParams):
     """WSJ asset performance losers QueryParams.
 
     Source: https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers
     """
 
 
-class WSJLosersData(AssetPerformanceData):
+class WSJLosersData(ETFPerformanceData):
     """WSJ asset performance losers Data."""
 
     __alias_dict__ = {
@@ -29,8 +29,8 @@ class WSJLosersData(AssetPerformanceData):
         "date": "timestamp",
     }
 
-    bluegrass_channel: str = Field(
-        description="Bluegrass channel.",
+    bluegrass_channel: Optional[str] = Field(
+        description="Bluegrass channel.", default=None
     )
     country: str = Field(
         description="Country of the entity.",
@@ -90,7 +90,7 @@ class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
 
     @staticmethod
     def transform_data(
-        query: AssetPerformanceQueryParams,
+        query: ETFPerformanceQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[WSJLosersData]:

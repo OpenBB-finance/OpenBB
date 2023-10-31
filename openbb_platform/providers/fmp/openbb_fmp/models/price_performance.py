@@ -1,5 +1,4 @@
-"""FMP Price Performance Model"""
-
+"""FMP Price Performance Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -66,7 +65,9 @@ class FMPPricePerformanceFetcher(
 
     @staticmethod
     def transform_data(
+        query: FMPPricePerformanceQueryParams,
         data: Dict,
         **kwargs: Any,
     ) -> List[FMPPricePerformanceData]:
+        """Transform the raw data into the standard model."""
         return [FMPPricePerformanceData.model_validate(data[i]) for i in data]
