@@ -51,6 +51,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     )
 
     @field_validator("country", mode="before", check_fields=False)
+    @classmethod
     def validate_country(cls, v: Union[str, List[str], Set[str]]):
         """Validate the country input."""
         if isinstance(v, str):
