@@ -198,11 +198,11 @@ def gdpforecast(
 
 
 @router.command(model="EconomicCalendar")
-def econcal(
+def calendar(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Economic Calendar Data."""
+    """Economic Calendar."""
     return OBBject(results=Query(**locals()).execute())

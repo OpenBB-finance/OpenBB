@@ -2,6 +2,7 @@
 
 
 from openbb_provider.abstract.provider import Provider
+from openbb_yfinance.models.active import YFActiveFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
@@ -10,7 +11,9 @@ from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
+from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
+from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
@@ -36,5 +39,8 @@ yfinance_provider = Provider(
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "AvailableIndices": YFinanceAvailableIndicesFetcher,
+        "EquityActive": YFActiveFetcher,
+        "EquityGainers": YFGainersFetcher,
+        "EquityLosers": YFLosersFetcher,
     },
 )

@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 from pydantic import Field
 
@@ -25,11 +25,6 @@ class EconomicCalendarQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    # TODO: Probably want to figure out the list we can use.
-    country: Optional[Union[str, List[str]]] = Field(
-        default=None,
-        description="Country of the event",
-    )
 
 
 class EconomicCalendarData(Data):
@@ -40,12 +35,29 @@ class EconomicCalendarData(Data):
     )
     country: Optional[str] = Field(default=None, description="Country of event.")
     event: Optional[str] = Field(default=None, description="Event name.")
-    actual: Optional[str] = Field(default=None, description="Latest released value.")
-    previous: Optional[str] = Field(
+    reference: Optional[str] = Field(
+        default=None,
+        description="Abbreviated period for which released data refers to.",
+    )
+    source: Optional[str] = Field(default=None, description="Source of the data.")
+    sourceurl: Optional[str] = Field(default=None, description="Source URL.")
+    actual: Optional[Union[str, float]] = Field(
+        default=None, description="Latest released value."
+    )
+    previous: Optional[Union[str, float]] = Field(
         default=None,
         description="Value for the previous period after the revision (if revision is applicable).",
     )
-    consensus: Optional[str] = Field(
+    consensus: Optional[Union[str, float]] = Field(
         default=None,
         description="Average forecast among a representative group of economists.",
     )
+    forecast: Optional[Union[str, float]] = Field(
+        default=None, description="Trading Economics projections"
+    )
+    url: Optional[str] = Field(default=None, description="Trading Economics URL")
+    importance: Optional[Union[Literal[0, 1, 2, 3], str]] = Field(
+        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
+    )
+    currency: Optional[str] = Field(default=None, description="Currency of the data.")
+    unit: Optional[str] = Field(default=None, description="Unit of the data.")

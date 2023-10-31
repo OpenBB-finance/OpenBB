@@ -507,15 +507,18 @@ def test_economy_gdpforecast(params, headers):
                 "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "country": "portugal",
-                "group": "gdp",
-                "importance": "low",
+                "country": "mexico,sweden",
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_economy_econcal(params, headers):
+def test_economy_calendar(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

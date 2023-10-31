@@ -435,26 +435,21 @@ def test_economy_gdpforecast(params, obb):
     [
         (
             {
-                "provider": "nasdaq",
-                "start_date": "2023-10-01",
-                "end_date": "2023-10-20",
-                "country": "France",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "country": "mexico,sweden",
+                "provider": "tradingeconomics",
             }
         ),
         (
             {
-                "importance": "high",
-                "provider": "tradingeconomics",
-                "start_date": "2023-08-01",
-                "end_date": "2023-09-06",
-                "country": "Germany",
-                "group": "gdp",
+                "provider": "fmp",
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_economy_econcal(params, obb):
+def test_economy_calendar(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.econcal(**params)
