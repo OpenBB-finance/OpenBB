@@ -1,18 +1,16 @@
 """Ultima Stock News Fetcher."""
 
 
-import math
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
-from openbb_ultima.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.stock_news import (
     StockNewsData,
     StockNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, field_validator
+from openbb_ultima.utils.helpers import get_data
+from pydantic import Field
 
 
 class UltimaStockNewsQueryParams(StockNewsQueryParams):
@@ -61,7 +59,6 @@ class UltimaStockNewsFetcher(
 
         data = []
         url = f"{base_url}/{querystring}"
-        print(url)
         response = get_data(url, **kwargs)
         data.extend(response)
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-ultima"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "Ultima Insights extension for OpenBB"
 authors = ["Ultima Insights Team <hello@ultimainsights.ai>"]
 readme = "README.md"

@@ -1,6 +1,6 @@
 import pytest
-from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
 from openbb_core.app.service.user_service import UserService
+from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
 

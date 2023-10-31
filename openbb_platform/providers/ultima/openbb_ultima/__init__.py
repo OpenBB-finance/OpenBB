@@ -1,6 +1,6 @@
 """Ultima provider module."""
-from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
 from openbb_provider.abstract.provider import Provider
+from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
 
 ultima_provider = Provider(
     name="ultima",
