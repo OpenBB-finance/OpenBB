@@ -146,7 +146,7 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "nasdaq", "tradingeconomics"], None] = None,
+        provider: Union[Literal["fmp", "tradingeconomics"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Economic Calendar.
@@ -157,12 +157,12 @@ class ROUTER_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'nasdaq', 'tradingeconomics'], None]
+        provider : Union[Literal['fmp', 'tradingeconomics'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         country : Optional[Union[List[str], str]]
-            Country of the event (provider: nasdaq, tradingeconomics)
+            Country of the event (provider: tradingeconomics)
         importance : Literal['Low', 'Medium', 'High']
             Importance of the event. (provider: tradingeconomics)
         group : Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
@@ -173,7 +173,7 @@ class ROUTER_economy(Container):
         OBBject
             results : Union[List[EconomicCalendar]]
                 Serializable results.
-            provider : Union[Literal['fmp', 'nasdaq', 'tradingeconomics'], None]
+            provider : Union[Literal['fmp', 'tradingeconomics'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -220,10 +220,6 @@ class ROUTER_economy(Container):
             Last updated timestamp. (provider: fmp)
         created_at : Optional[Union[datetime]]
             Created at timestamp. (provider: fmp)
-        time : Optional[Union[str]]
-            GMT of release (in HH:MM format). (provider: nasdaq)
-        description : Optional[Union[str]]
-            Event description. (provider: nasdaq)
         category : Optional[Union[str]]
             Category of event. (provider: tradingeconomics)
 
