@@ -125,6 +125,11 @@ class FMPEtfHoldingsFetcher(
         Adjust input date to the nearest previous quarter-end date.
         """
         date_str = params.get("date", datetime.today().strftime("%Y-%m-%d"))
+        date_str = (
+            date_str.strftime("%Y-%m-%d")
+            if isinstance(date_str, dateType)
+            else date_str
+        )
         date_obj = datetime.strptime(date_str, "%Y-%m-%d")
         quarter_month = ((date_obj.month - 1) // 3) * 3 + 1
         quarter_start = date_obj.replace(month=quarter_month, day=1)
