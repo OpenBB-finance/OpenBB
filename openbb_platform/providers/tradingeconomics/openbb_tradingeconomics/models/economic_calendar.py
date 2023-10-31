@@ -94,8 +94,8 @@ class TEEarningsCalendarData(EconomicCalendarData):
         default=None, description="Trading Economics projections"
     )
     url: Optional[str] = Field(default=None, description="Trading Economics URL")
-    importance: Optional[Literal["Low", "Medium", "High"]] = Field(
-        default=None, description="Importance of the event."
+    importance: Optional[Literal[1, 2, 3]] = Field(
+        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
     )
     currency: Optional[str] = Field(default=None, description="Currency of the data.")
     unit: Optional[str] = Field(default=None, description="Unit of the data.")
