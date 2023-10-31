@@ -435,7 +435,7 @@ def test_economy_gdpforecast(params, obb):
     [
         (
             {
-                "provider": "quandl",
+                "provider": "nasdaq",
                 "start_date": "2023-10-01",
                 "end_date": "2023-10-20",
                 "country": "France",

@@ -496,7 +496,7 @@ def test_economy_gdpforecast(params, headers):
     [
         (
             {
-                "provider": "quandl",
+                "provider": "nasdaq",
                 "start_date": "2023-05-01",
                 "end_date": "2023-05-10",
                 "country": "Spain",
