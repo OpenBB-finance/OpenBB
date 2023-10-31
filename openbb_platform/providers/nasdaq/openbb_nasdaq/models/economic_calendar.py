@@ -10,7 +10,6 @@ from openbb_provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_provider.utils.errors import EmptyDataError
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, field_validator
 
@@ -101,9 +100,6 @@ class NasdaqEconomicCalendarFetcher(
                 data.extend(response)
             except Exception:  # noqa: S112
                 continue
-
-        if len(data) == 0:
-            raise EmptyDataError()
 
         return data
 
