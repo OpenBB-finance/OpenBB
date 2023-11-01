@@ -3,6 +3,7 @@ from datetime import date
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_yfinance.models.active import YFActiveFetcher
+from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
@@ -12,6 +13,7 @@ from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetch
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
+from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.major_indices_historical import (
@@ -19,6 +21,10 @@ from openbb_yfinance.models.major_indices_historical import (
 )
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
+from openbb_yfinance.models.undervalued_growth_equities import (
+    YFUndervaluedGrowthEquitiesFetcher,
+)
+from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCapsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -197,5 +203,41 @@ def test_yf_losers_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFLosersFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_undervalued_large_caps_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFUndervaluedLargeCapsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_undervalued_growth_equities_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFUndervaluedGrowthEquitiesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_aggressive_small_caps_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFAggressiveSmallCapsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_yf_growth_tech_equities_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = YFGrowthTechEquitiesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

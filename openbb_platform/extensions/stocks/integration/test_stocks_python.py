@@ -1004,3 +1004,59 @@ def test_stocks_calendar_ipo(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_large_caps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.undervalued_large_caps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_growth_equities(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.undervalued_growth_equities(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_aggressive_small_caps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.aggressive_small_caps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_growth_tech_equities(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.growth_tech_equities(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
