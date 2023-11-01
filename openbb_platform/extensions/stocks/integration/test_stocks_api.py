@@ -1,19 +1,16 @@
-import base64
+"""API integration tests for stocks extension."""
 from datetime import time
 
 import pytest
 import requests
-from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
+
+# pylint: disable=too-many-lines,redefined-outer-name
 
 
 @pytest.fixture(scope="session")
 def headers():
-    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
-    userpass_bytes = userpass.encode("ascii")
-    base64_bytes = base64.b64encode(userpass_bytes)
-
-    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+    return {}
 
 
 @pytest.mark.parametrize(
@@ -555,7 +552,19 @@ def test_stocks_fa_revseg(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"})],
+    [
+        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "type": "10-K",
+                "limit": 100,
+                "cik": None,
+                "use_cache": False,
+                "provider": "sec",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_fa_filings(params, headers):
@@ -902,7 +911,10 @@ def test_stocks_multiples(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "AAPl", "is_symbol": True})],
+    [
+        ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_search(params, headers):
@@ -935,7 +947,7 @@ def test_stocks_quote(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "AAPL", "provider": "cboe"})],
 )
 @pytest.mark.integration
 def test_stocks_info(params, headers):
@@ -943,6 +955,169 @@ def test_stocks_info(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/stocks/info?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_gainers(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/gainers?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_losers(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/losers?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_active(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/active?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "provider": "sec"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_ftd(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/ftd?{query_str}"
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL", "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/price_performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "UBER",
+                "start_date": "2018-01-01",
+                "end_date": "2023-06-06",
+                "limit": 300,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_large_caps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/undervalued_large_caps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_growth_equities(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/undervalued_growth_equities?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_aggressive_small_caps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/aggressive_small_caps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_growth_tech_equities(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/growth_tech_equities?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

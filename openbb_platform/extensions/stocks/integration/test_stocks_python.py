@@ -1,14 +1,16 @@
-"""Test stocks extension."""
+"""Python interface integration tests for the stocks extension."""
 from datetime import time
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+# pylint: disable=too-many-lines,redefined-outer-name
 
+
+# pylint: disable=import-outside-toplevel,inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
-
     if pytestconfig.getoption("markexpr") != "not integration":
         import openbb
 
@@ -527,6 +529,16 @@ def test_stocks_fa_revseg(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "type": "10-K",
+                "limit": 100,
+                "cik": None,
+                "use_cache": False,
+                "provider": "sec",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -856,7 +868,8 @@ def test_stocks_multiples(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "AAPL", "is_symbol": True}),
+        ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
     ],
 )
 @pytest.mark.integration
@@ -885,12 +898,165 @@ def test_stocks_quote(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration
 def test_stocks_info(params, obb):
     result = obb.stocks.info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_gainers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.gainers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_losers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.losers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_active(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.active(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_ftd(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.ftd(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "UBER",
+                "start_date": "2018-01-01",
+                "end_date": "2023-06-06",
+                "limit": 300,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.calendar_ipo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_large_caps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.undervalued_large_caps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_growth_equities(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.undervalued_growth_equities(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_aggressive_small_caps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.aggressive_small_caps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_growth_tech_equities(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.growth_tech_equities(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

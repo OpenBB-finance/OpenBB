@@ -10,14 +10,15 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EtfHoldingsQueryParams(QueryParams):
-    """ETF Holdings Query Params"""
+    """ETF Holdings Query Params."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
 
 class EtfHoldingsData(Data):
     """ETF Holdings Data."""
 
-    symbol: Optional[str] = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)"
+    )
     name: Optional[str] = Field(description="Name of the ETF holding.")
-    weight: Optional[float] = Field(description="Weight of the ETF holding.")
