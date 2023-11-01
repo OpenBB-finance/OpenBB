@@ -1,4 +1,4 @@
-"""FMP ETF Info fetcher."""
+"""FMP ETF Country Weighting fetcher."""
 
 from typing import Any, Dict, List, Optional
 
