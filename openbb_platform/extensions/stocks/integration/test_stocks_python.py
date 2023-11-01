@@ -23,8 +23,6 @@ def obb(pytestconfig):
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -121,8 +119,6 @@ def test_stocks_fa_cal(params, obb):
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -289,8 +285,6 @@ def test_stocks_fa_est(params, obb):
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -366,8 +360,8 @@ def test_stocks_fa_income_growth(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "transactionType": "P-Purchase",
-                "page": 1,
+                "transaction_type": ["P-Purchase"],
+                "limit": 10,
             }
         ),
     ],
@@ -580,7 +574,7 @@ def test_stocks_fa_split(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "year": 2023, "quarter": 1}),
+        ({"symbol": "AAPL", "year": 2023}),
     ],
 )
 @pytest.mark.integration

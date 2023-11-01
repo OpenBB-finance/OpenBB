@@ -19,8 +19,6 @@ def headers():
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -117,8 +115,6 @@ def test_stocks_fa_cal(params, headers):
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -290,8 +286,6 @@ def test_stocks_fa_est(params, headers):
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -373,8 +367,8 @@ def test_stocks_fa_income_growth(params, headers):
         (
             {
                 "symbol": "AAPL",
-                "transactionType": "P-Purchase",
-                "page": 1,
+                "transaction_type": "P-Purchase",
+                "limit": 10,
                 "provider": "fmp",
             }
         )
@@ -609,7 +603,7 @@ def test_stocks_fa_split(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "year": 2023, "quarter": 1})],
+    [({"symbol": "AAPL", "year": 2023})],
 )
 @pytest.mark.integration
 def test_stocks_fa_transcript(params, headers):
