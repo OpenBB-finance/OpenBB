@@ -36,8 +36,10 @@ class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 class FMPEtfHoldingsData(EtfHoldingsData):
     """FMP ETF Holdings Data."""
 
+    __alias_dict__ = {
+        "name": "title",
+    }
     lei: Optional[str] = Field(description="The LEI of the holding.", default=None)
-    title: Optional[str] = Field(description="The title of the holding.", default=None)
     cusip: Optional[str] = Field(description="The CUSIP of the holding.", default=None)
     isin: Optional[str] = Field(description="The ISIN of the holding.", default=None)
     balance: Optional[float] = Field(

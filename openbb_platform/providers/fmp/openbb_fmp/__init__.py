@@ -13,6 +13,7 @@ from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_holders import FMPEtfHoldersFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
@@ -91,6 +92,7 @@ fmp_provider = Provider(
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
+        "EtfHolders": FMPEtfHoldersFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
         "EtfInfo": FMPEtfInfoFetcher,

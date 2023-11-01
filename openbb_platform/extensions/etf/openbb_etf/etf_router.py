@@ -88,6 +88,17 @@ def price_performance(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EtfHolders")
+def holders(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the institutional holders of an individual ETF."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="EtfHoldings")
 def holdings(
     cc: CommandContext,
