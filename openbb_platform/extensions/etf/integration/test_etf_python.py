@@ -179,3 +179,45 @@ def test_etf_countries(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_gainers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.gainers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_losers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.losers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_active(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.active(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
