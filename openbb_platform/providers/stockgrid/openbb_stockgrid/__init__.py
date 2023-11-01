@@ -2,7 +2,6 @@
 from openbb_provider.abstract.provider import Provider
 from openbb_stockgrid.models.short_volume import StockgridShortVolumeFetcher
 
-
 stockgrid_provider = Provider(
     name="stockgrid",
     website="www.stockgrid.io",

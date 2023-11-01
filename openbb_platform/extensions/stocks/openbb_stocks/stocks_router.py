@@ -14,14 +14,13 @@ from openbb_core.app.router import Router
 from pydantic import BaseModel
 
 from openbb_stocks.ca.ca_router import router as ca_router
-from openbb_stocks.fa.fa_router import router as fa_router
-from openbb_stocks.options.options_router import router as options_router
 
 # TODO: Uncomment once they have some commands.
 # from openbb_stocks.gov.gov_router import router as gov_router
 # from openbb_stocks.ins.ins_router import router as ins_router
 from openbb_stocks.dps.dps_router import router as dps_router
-
+from openbb_stocks.fa.fa_router import router as fa_router
+from openbb_stocks.options.options_router import router as options_router
 
 router = Router(prefix="")
 router.include_router(fa_router)
