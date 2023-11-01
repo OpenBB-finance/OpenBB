@@ -51,6 +51,7 @@ from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
+from openbb_fmp.models.stock_search import FMPStockSearchFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
@@ -523,5 +524,14 @@ def test_fmp_price_performance_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
 
     fetcher = FMPPricePerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_stock_search_fetcher(credentials=test_credentials):
+    params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
+
+    fetcher = FMPStockSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

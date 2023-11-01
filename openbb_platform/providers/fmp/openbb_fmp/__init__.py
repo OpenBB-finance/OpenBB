@@ -48,6 +48,7 @@ from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
+from openbb_fmp.models.stock_search import FMPStockSearchFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
@@ -108,5 +109,6 @@ fmp_provider = Provider(
         "FinancialRatios": FMPFinancialRatiosFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "EconomicCalendar": FMPEconomicCalendarFetcher,
+        "StockSearch": FMPStockSearchFetcher,
     },
 )
