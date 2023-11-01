@@ -66,6 +66,17 @@ def sectors(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EtfCountries")
+def countries(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """ETF Country weighting."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="PricePerformance")
 def price_performance(
     cc: CommandContext,
