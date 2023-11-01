@@ -11,11 +11,11 @@ from openbb_provider.standard_models.etf_sectors import (
 
 
 class FMPEtfSectorsQueryParams(EtfSectorsQueryParams):
-    """FMP ETF Info Query Params."""
+    """FMP ETF Sector Weighting Params."""
 
 
 class FMPEtfSectorsData(EtfSectorsData):
-    """FMP ETF Info Data."""
+    """FMP ETF Sector Weighting Data."""
 
     __alias_dict__ = {"weight": "weightPercentage"}
 
