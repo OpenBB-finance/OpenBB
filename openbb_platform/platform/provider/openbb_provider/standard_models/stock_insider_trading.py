@@ -42,7 +42,7 @@ class StockInsiderTradingQueryParams(QueryParams):
     )
     limit: StrictInt = Field(
         default=100,
-        description=QUERY_DESCRIPTIONS.get("symbol", ""),
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
 
     @model_validator(mode="after")
