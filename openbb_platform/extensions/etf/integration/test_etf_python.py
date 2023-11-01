@@ -169,41 +169,13 @@ def test_etf_price_performance(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"sort": "desc", "limit": 10})],
+    [({"symbol": "IOO"})],
 )
 @pytest.mark.integration
-def test_etf_disc_gainers(params, obb):
+def test_etf_countries(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.stocks.disc.gainers(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"sort": "desc", "limit": 10})],
-)
-@pytest.mark.integration
-def test_etf_disc_losers(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.stocks.disc.losers(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"sort": "desc", "limit": 10})],
-)
-@pytest.mark.integration
-def test_etf_disc_active(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.stocks.disc.active(**params)
+    result = obb.etf.countries(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
