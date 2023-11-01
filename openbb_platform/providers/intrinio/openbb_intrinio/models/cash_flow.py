@@ -1,37 +1,25 @@
 """Intrinio Cash Flow Statement Fetcher."""
 
 
-from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
+from typing import Any, Dict, List, Optional
 
-from openbb_intrinio.utils.helpers import get_data_one, get_quarter_range
+from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, alias_generators
+from pydantic import alias_generators
 
 
 class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """Intrinio Cash Flow Statement QueryParams.
 
-    Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_reported_financials_v2
+    Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
-
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="quarter",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
-    )
-    type: Literal["reported", "standardized"] = Field(
-        default="reported", description="Type of the statement to be fetched."
-    )
-    year: Optional[int] = Field(
-        default=None,
-        description="Year of the statement to be fetched.",
-    )
 
 
 class IntrinioCashFlowStatementData(CashFlowStatementData):
@@ -79,12 +67,7 @@ class IntrinioCashFlowStatementFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioCashFlowStatementQueryParams:
         """Transform the query params."""
-        transform_params = params
-
-        if not params.get("year"):
-            transform_params["year"] = date.today().year
-
-        return IntrinioCashFlowStatementQueryParams(**transform_params)
+        return IntrinioCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -94,27 +77,44 @@ class IntrinioCashFlowStatementFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+        statement_code = "cash_flow_statement"
+        period_type = "FY" if query.period == "annual" else "QTR"
 
-        base_url = "https://api-v2.intrinio.com"
-        url_params = f"{query.symbol}-cash_flow_statement-{query.year}"
-        statement_param = f"{query.type}_financials"
-
+        fundamentals_data: Dict = {}
         data: List[Dict] = []
 
-        if query.period == "annual":
-            url = f"{base_url}/fundamentals/{url_params}-FY/{statement_param}?api_key={api_key}"
-            data.append(get_data_one(url, **kwargs))
+        base_url = "https://api-v2.intrinio.com"
+        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+        fundamentals_url = (
+            f"{base_url}/companies/{query.symbol}/fundamentals?"
+            f"{fundamentals_url_params}&api_key={api_key}"
+        )
 
-        elif query.period == "quarter":
-            quarter_range = get_quarter_range(query.year)
+        fundamentals_data = get_data_one(fundamentals_url, **kwargs).get(
+            "fundamentals", []
+        )
+        fiscal_periods = [
+            f"{item['fiscal_year']}-{item['fiscal_period']}"
+            for item in fundamentals_data
+        ]
+        fiscal_periods = fiscal_periods[: query.limit]
 
-            for quarter in quarter_range:
-                # TODO: Check back in sometime when Intrinio fixes their API/provides better documentation
-                if quarter == 4 and query.type == "reported":
-                    url = f"{base_url}/fundamentals/{url_params}-FY/{statement_param}?api_key={api_key}"
-                else:
-                    url = f"{base_url}/fundamentals/{url_params}-Q{quarter}/{statement_param}?api_key={api_key}"
-                data.append(get_data_one(url, **kwargs))
+        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
+            statement_data: Dict = {}
+            calculations_data: Dict = {}
+
+            intrinio_id = f"{query.symbol}-{statement_code}-{period}"
+            statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            statement_data = get_data_one(statement_url, **kwargs)
+
+            intrinio_id = f"{query.symbol}-calculations-{period}"
+            calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            calculations_data = get_data_one(calculations_url, **kwargs)
+
+            data.append({**statement_data, **calculations_data})
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
 
         return data
 
@@ -123,15 +123,13 @@ class IntrinioCashFlowStatementFetcher(
         query: IntrinioCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
-        transformed_data = []
-        data_key = f"{query.type}_financials"
-        tag_key = "xbrl_tag" if query.type == "reported" else "data_tag"
+        transformed_data: List[IntrinioCashFlowStatementData] = []
 
         for item in data:
-            sub_dict = {}
+            sub_dict: Dict[str, Any] = {}
 
-            for sub_item in item[data_key]:
-                field_name = alias_generators.to_snake(sub_item[tag_key]["name"])
+            for sub_item in item["standardized_financials"]:
+                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["fundamental"]["end_date"]
@@ -139,7 +137,7 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict["cik"] = item["fundamental"]["company"]["cik"]
             sub_dict["symbol"] = item["fundamental"]["company"]["ticker"]
 
-            # Intrinio does not return Q4 data in reported_financials endpoint
+            # Intrinio does not return Q4 data but FY data instead
             if (
                 query.period == "quarter"
                 and item["fundamental"]["fiscal_period"] == "FY"

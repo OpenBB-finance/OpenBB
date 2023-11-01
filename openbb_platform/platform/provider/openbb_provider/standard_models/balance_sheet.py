@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
+from typing import List, Literal, Optional, Set, Union
 
 from pydantic import Field, NonNegativeInt, StrictFloat, field_validator
 
@@ -18,12 +18,12 @@ class BalanceSheetQueryParams(QueryParams):
     """Balance Sheet query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[str] = Field(
-        default="quarter",
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    limit: NonNegativeInt = Field(
-        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
+    limit: Optional[NonNegativeInt] = Field(
+        default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -90,9 +90,6 @@ class BalanceSheetData(Data):
     tax_assets: Optional[StrictFloat] = Field(
         default=None, description="Accrued income taxes"
     )
-    other_assets: Optional[StrictFloat] = Field(
-        default=None, description="Other assets"
-    )
     non_current_assets: Optional[StrictFloat] = Field(
         default=None, description="Total non-current assets"
     )
@@ -138,9 +135,6 @@ class BalanceSheetData(Data):
     )
     total_liabilities_and_total_equity: Optional[StrictFloat] = Field(
         default=None, description="Total liabilities and total equity"
-    )
-    other_liabilities: Optional[StrictFloat] = Field(
-        default=None, description="Other liabilities"
     )
     other_non_current_liabilities: Optional[StrictFloat] = Field(
         default=None, description="Other non-current liabilities"

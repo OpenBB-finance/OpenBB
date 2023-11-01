@@ -22,7 +22,6 @@ class BasicResponse:
 
     def __init__(self, response: StringIO):
         """Initialize the BasicResponse class."""
-
         # Find a way to get the status code
         self.status_code = 200
         response.seek(0)
@@ -30,13 +29,12 @@ class BasicResponse:
 
     def json(self) -> dict:
         """Return the response as a dictionary."""
-
         return json.loads(self.text)
 
 
 def request(url: str) -> BasicResponse:
     """
-    Request function for PyScript. Pass in Method and make sure to await!
+    Request function for PyScript. Pass in Method and make sure to await.
 
     Parameters:
     -----------
@@ -57,7 +55,6 @@ def request(url: str) -> BasicResponse:
 
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from Intrinio endpoint."""
-
     try:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
@@ -108,7 +105,6 @@ def get_data_many(
 
 def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from Intrinio endpoint and convert to schema."""
-
     data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
@@ -127,11 +123,3 @@ def get_weekday(date: dateType) -> str:
     if date.weekday() in [5, 6]:
         return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
     return date.strftime("%Y-%m-%d")
-
-
-def get_quarter_range(year: int) -> List:
-    """Return the quarter range."""
-    cur_date = dateType.today()
-    if cur_date.year == year:
-        return list(range(1, (cur_date.month - 1) // 3 + 1))
-    return list(range(1, 5))

@@ -15,12 +15,12 @@ class CashFlowStatementQueryParams(QueryParams):
     """Cash Flow Statement Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[str] = Field(
-        default="quarter",
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    limit: NonNegativeInt = Field(
-        default=12, description=QUERY_DESCRIPTIONS.get("limit", "")
+    limit: Optional[NonNegativeInt] = Field(
+        default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -139,6 +139,3 @@ class CashFlowStatementData(Data):
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
-
-
-DATA_DESCRIPTIONS.get("date", "")
