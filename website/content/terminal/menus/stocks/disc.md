@@ -1,135 +1,103 @@
 ---
 title: Discovery
-description: This documentation page is a detailed guide on features within the Stocks
-  Discovery submenu, which provides tools for discovering trade setups, following
-  trends, and current events. Instructions to use, examples of usage, command line
-  interface comfortability, and attached images for further explanations are covered.
+description: This documentation page is an introduction to the Discovery sub-menu, within Stocks, of the OpenBB Terminal. Functions in this menu include stock lists, calendars, trending moves and an S&P 500 heatmap.
 keywords:
 - Stocks Discovery
-- trade setups
 - following trends
 - current events
-- command-line interface
-- stock market tool
-- Portfolio Optimization
-- Dividend Calendar
-- Cathie Wood's trades
-- Earnings schedule
+- gainers
+- losers
+- most active
+- calendar
+- dividend
+- earnings
 - Seeking Alpha news
+- S&P 500
+- heatmap
+- ark
+- penny stocks
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discovery - Stocks - Data Available | OpenBB Terminal Docs" />
-The set of features within the Stocks Discovery submenu provides tools for discovering trade setups, for following trends, and for staying up with current events. Enter the menu from the <a href="/terminal/usage/intros/stocks/" target="_blank" rel="noreferrer noopener">Stocks menu</a> by typing, `disc`, and pressing, `ENTER` (⏎). Absolute path jumping is possible from anywhere, to anywhere. For example, jumping from the Portfolio Optimization submenu to the Stocks Discovery submenu:
+<HeadTitle title="Discovery - Stocks - Menus | OpenBB Terminal Docs" />
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218979936-5d842b62-8c0d-4800-bf7f-0fed8d70c073.png"></img>
+The Discovery menu has functions for upcoming corporate calendar events and stock lists.  Commands in this menu are not ticker-specific and do not require a symbol to be loaded.
 
-### How to use
+## Usage
 
-The help dialogue, for any command, is displayed by attaching, `-h`, to the string; i.e., `divcal -h`. This menu will be one of the easiest to get comfortable with a command-line interface.  All outputs from commands in this menu are text and tables. There are no charts or images generated. Exports, where available, can be formatted as csv, json, or xlsx files.
+Enter the Discovery menu from the `/stocks` menu by typing `disc` into the Terminal, or through the absolute path:
 
-### Examples
-
-The dividend calendar can show any single date.
-
-````
-(🦋) /stocks/disc/ $ divcal -d 2022-06-02 -l 5
-
-                                            Dividend Calendar for 2022-06-02
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Name                           ┃ Symbol ┃ Ex-Dividend Date ┃ Payment Date ┃ Record Date ┃ Dividend ┃ Annual Dividend ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ BHP Group Limited              │ BHP    │ 06/02/2022       │ N/A          │ N/A         │ 7.75     │ 6.00            │
-├────────────────────────────────┼────────┼──────────────────┼──────────────┼─────────────┼──────────┼─────────────────┤
-│ BioNTech SE                    │ BNTX   │ 06/02/2022       │ 06/17/2022   │ 06/03/2022  │ 3.08     │ 1.53            │
-├────────────────────────────────┼────────┼──────────────────┼──────────────┼─────────────┼──────────┼─────────────────┤
-│ Sociedad Quimica y Minera S.A. │ SQM    │ 06/02/2022       │ 06/23/2022   │ 06/03/2022  │ 2.31     │ 9.25            │
-├────────────────────────────────┼────────┼──────────────────┼──────────────┼─────────────┼──────────┼─────────────────┤
-│ Star Bulk Carriers Corp.       │ SBLK   │ 06/02/2022       │ 06/16/2022   │ 06/03/2022  │ 1.65     │ 6.60            │
-├────────────────────────────────┼────────┼──────────────────┼──────────────┼─────────────┼──────────┼─────────────────┤
-│ Linde plc                      │ LIN    │ 06/02/2022       │ 06/17/2022   │ 06/03/2022  │ 1.17     │ 4.68            │
-└────────────────────────────────┴────────┴──────────────────┴──────────────┴─────────────┴──────────┴─────────────────┘
-````
-
-See Cathie Wood's trades and sort by different fields such as Fund, weighting, buy-only, or sell-only.
-
-```
-(🦋) /stocks/disc/ $ arkord -b
-
-
-                                       Orders by ARK Investment Management LLC
-┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
-┃ Date       ┃ Ticker ┃ Direction ┃ Volume   ┃ Open  ┃ Close ┃ High  ┃ Low   ┃ Total      ┃ Fund ┃ Weight ┃ Shares  ┃
-┡━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
-│ 2022-11-21 │ QSI    │ Buy       │ 922200   │ 3.00  │ 2.88  │ 3.00  │ 2.86  │ 1622160.06 │ ARKG │ 0.0705 │ 563250  │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-21 │ GBTC   │ Buy       │ 16232500 │ 7.95  │ 8.28  │ 8.43  │ 7.46  │ 1465104.55 │ ARKW │ 0.1293 │ 176945  │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-21 │ DNA    │ Buy       │ 34919600 │ 2.16  │ 2.09  │ 2.19  │ 2.04  │ 8328568.15 │ ARKK │ 0.108  │ 3984961 │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-21 │ DNA    │ Buy       │ 34919600 │ 2.16  │ 2.09  │ 2.19  │ 2.04  │ 6335715.61 │ ARKG │ 0.2683 │ 3031443 │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-21 │ VUZI   │ Buy       │ 547300   │ 4.56  │ 4.46  │ 4.62  │ 4.39  │ 752156.71  │ ARKQ │ 0.0838 │ 168645  │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-18 │ DNA    │ Buy       │ 21118300 │ 2.20  │ 2.19  │ 2.21  │ 2.15  │ 2247056.13 │ ARKG │ 0.0933 │ 1026053 │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-18 │ VUZI   │ Buy       │ 538300   │ 4.64  │ 4.62  │ 4.77  │ 4.56  │ 252362.87  │ ARKQ │ 0.0277 │ 54624   │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-18 │ SSYS   │ Buy       │ 397900   │ 14.48 │ 13.95 │ 14.55 │ 13.90 │ 300496.95  │ ARKX │ 0.1099 │ 21541   │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-18 │ DNA    │ Buy       │ 21118300 │ 2.20  │ 2.19  │ 2.21  │ 2.15  │ 2870825.09 │ ARKK │ 0.0358 │ 1310879 │
-├────────────┼────────┼───────────┼──────────┼───────┼───────┼───────┼───────┼────────────┼──────┼────────┼─────────┤
-│ 2022-11-18 │ COIN   │ Buy       │ 20237200 │ 48.80 │ 45.26 │ 49.00 │ 44.31 │ 1671994.86 │ ARKW │ 0.1463 │ 36942   │
-└────────────┴────────┴───────────┴──────────┴───────┴───────┴───────┴───────┴────────────┴──────┴────────┴─────────┘
+```console
+/stocks/disc
 ```
 
-Check the upcoming earnings schedule using, `upcoming`:
+![Screenshot 2023-11-01 at 9 34 25 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/94d61da1-a04e-4d03-87bc-1d95443dc851)
 
-```
-(🦋) /stocks/disc/ $ upcoming
 
-      Upcoming Earnings Releases
-┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃      ┃ Earnings on 2022-11-22       ┃
-┡━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ ADI  │ Analog Devices, Inc.         │
-├──────┼──────────────────────────────┤
-│ VIVO │ Meridian Bioscience, Inc.    │
-├──────┼──────────────────────────────┤
-│ JACK │ Jack in the Box Inc.         │
-├──────┼──────────────────────────────┤
-│ WMG  │ Warner Music Group Corp.     │
-├──────┼──────────────────────────────┤
-│ ROAD │ Construction Partners, Inc.  │
-├──────┼──────────────────────────────┤
-│ KMDA │ Kamada Ltd.                  │
-├──────┼──────────────────────────────┤
-│ EPOW │ Sunrise New Energy Co., Ltd. │
-├──────┼──────────────────────────────┤
-│ IMBI │ iMedia Brands, Inc.          │
-└──────┴──────────────────────────────┘
+### DIVCAL
+
+The dividend calendar will display single dates, and does not provide historical data.  The `date` will be with respect to the ex-dividend date.
+
+```console
+/stocks/disc/divcal
 ```
 
-Browse the news by category from <a href="https://seekingalpha.com" target="_blank" rel="noreferrer noopener">Seeking Alpha</a> with `cnews`:
+![Screenshot 2023-11-01 at 9 43 46 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d99e5973-6a49-441d-bb4d-5a60139f7334)
 
+### Upcoming
+
+
+Check the upcoming earnings schedule using, `upcoming`.  The `limit` parameter represents the number of days to look ahead.
+
+```console
+/stocks/disc/upcoming --start 2023-11-02 --limit 5
 ```
-(🦋) /stocks/disc/ $ cnews
-2022-11-22 11:19:52 - 3910576 - S&P, Dow, Nasdaq move higher after rough start to week; yields dip
-https://seekingalpha.com/news/3910576-sp-500-nasdaq-dow-jones-stock-market-yields
 
-2022-11-22 10:13:15 - 3910538 - Revenge of the malls: Retailers rally after earnings suggest holiday sales may be better than feared
-https://seekingalpha.com/news/3910538-revenge-of-the-malls-retailers-rally-after-earnings-suggest-holiday-sales-may-be-better-than-feared
+![Screenshot 2023-11-01 at 9 47 27 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/99fc4bec-7ffe-4b98-bf98-e791c81aab3a)
 
-2022-11-21 17:38:03 - 3910267 - Moving quickly, Iger launching Disney restructuring
-https://seekingalpha.com/news/3910267-moving-quickly-iger-launching-disney-restructuring
 
-2022-11-21 16:02:38 - 3910180 - Nasdaq, S&P 500 finish lower on COVID restrictions in China; Disney helps Dow limit losses
-https://seekingalpha.com/news/3910180-nasdaq-sp-500-slip-on-covid-restrictions-in-china-disney-gives-support-to-dow
+### Filings
 
-2022-11-21 15:30:40 - 3910095 - Nasdaq, S&P, Dow lower amid fears of China tightening COVID curbs
-https://seekingalpha.com/news/3910095-nasdaq-sp-dow-trade-lower-on-fears-of-zero-covid-stance-in-china
+The `filings` command is the RSS feed of latest filings to the SEC.  The results are printed directly to the screen, or they can be exported with the `--export` command.  To see all the entries from today, add `--today` to the command.  By default, the five most-recent documents will be displayed.
 
-2022-11-21 10:25:11 - 3909955 - Nasdaq, S&P, Dow slip as China COVID curbs hit sentiment
-https://seekingalpha.com/news/3909955-nasdaq-sp-500-dow-jones-stock-market
+```console
+/stocks/disc/filings
+```
+
+```console
+Timestamp: 2023-11-01 12:44:49  US/Eastern
+Ticker: NVO
+CIK: 353278
+Form Type: 6-K
+6-K - NOVO NORDISK A S (0000353278) (Filer)
+https://www.sec.gov/Archives/edgar/data/353278/000117184323006584/0001171843-23-006584-index.htm
+
+Timestamp: 2023-11-01 12:44:49  US/Eastern
+Ticker: NONOF
+CIK: 353278
+Form Type: 6-K
+6-K - NOVO NORDISK A S (0000353278) (Filer)
+https://www.sec.gov/Archives/edgar/data/353278/000117184323006584/0001171843-23-006584-index.htm
+
+Timestamp: 2023-11-01 12:38:55  US/Eastern
+Ticker: None
+CIK: 1715593
+Form Type: 13F-HR
+13F-HR - Csenge Advisory Group (0001715593) (Filer)
+https://www.sec.gov/Archives/edgar/data/1715593/000171559323000007/0001715593-23-000007-index.htm
+
+Timestamp: 2023-11-01 12:36:58  US/Eastern
+Ticker: HMY
+CIK: 1023514
+Form Type: 6-K
+6-K - HARMONY GOLD MINING CO LTD (0001023514) (Filer)
+https://www.sec.gov/Archives/edgar/data/1023514/000162828023035854/0001628280-23-035854-index.htm
+
+Timestamp: 2023-11-01 12:36:58  US/Eastern
+Ticker: HGMCF
+CIK: 1023514
+Form Type: 6-K
+6-K - HARMONY GOLD MINING CO LTD (0001023514) (Filer)
+https://www.sec.gov/Archives/edgar/data/1023514/000162828023035854/0001628280-23-035854-index.htm
 ```
