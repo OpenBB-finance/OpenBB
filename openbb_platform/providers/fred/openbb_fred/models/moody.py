@@ -4,7 +4,6 @@
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import get_ice_bofa_series_id
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.moody import (
     MoodyCorporateBondIndexData,
