@@ -9,7 +9,6 @@ from openbb_provider.standard_models.tmc import (
     TreasuryConstantMaturityData,
     TreasuryConstantMaturityParams,
 )
-
 from pydantic import field_validator
 
 TMC_PARAMETER_TO_FRED_ID = {

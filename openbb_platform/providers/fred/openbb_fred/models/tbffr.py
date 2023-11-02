@@ -9,7 +9,6 @@ from openbb_provider.standard_models.tbffr import (
     SelectedTreasuryBillData,
     SelectedTreasuryBillParams,
 )
-
 from pydantic import field_validator
 
 TBFFR_PARAMETER_TO_FRED_ID = {

@@ -9,7 +9,6 @@ from openbb_provider.standard_models.ffrmc import (
     SelectedTreasuryConstantMaturityData,
     SelectedTreasuryConstantMaturityParams,
 )
-
 from pydantic import field_validator
 
 FFRMC_PARAMETER_TO_FRED_ID = {
