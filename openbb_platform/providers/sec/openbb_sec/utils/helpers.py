@@ -8,16 +8,18 @@ from zipfile import ZipFile
 import pandas as pd
 import requests
 import requests_cache
+from openbb_core.app.utils import get_user_cache_directory
 from openbb_sec.utils.definitions import HEADERS, QUARTERS, SEC_HEADERS, TAXONOMIES
 
+cache_dir = get_user_cache_directory()
+
 sec_session_companies = requests_cache.CachedSession(
-    "OpenBB_SEC_Companies", expire_after=timedelta(days=7), use_cache_dir=True
+    f"{cache_dir}/http/sec_companies", expire_after=timedelta(days=7)
 )
 sec_session_frames = requests_cache.CachedSession(
-    "OpenBB_SEC_Frames", expire_after=timedelta(days=30), use_cache_dir=True
+    f"{cache_dir}/http/sec_frames", expire_after=timedelta(days=5)
 )
-sec_session_ftd = requests_cache.CachedSession("OpenBB_SEC_FTD", use_cache_dir=True)
-
+sec_session_ftd = requests_cache.CachedSession(f"{cache_dir}/http/sec_ftd")
 
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     """Gets all company names, tickers, and CIK numbers registered with the SEC.
