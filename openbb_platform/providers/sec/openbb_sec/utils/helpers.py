@@ -21,6 +21,7 @@ sec_session_frames = requests_cache.CachedSession(
 )
 sec_session_ftd = requests_cache.CachedSession(f"{cache_dir}/http/sec_ftd")
 
+
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     """Gets all company names, tickers, and CIK numbers registered with the SEC.
     Companies are sorted by market cap.
