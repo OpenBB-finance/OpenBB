@@ -17,6 +17,7 @@ from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
+from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_provider.abstract.provider import Provider
 
 fred_provider = Provider(
@@ -43,5 +44,6 @@ fred_provider = Provider(
         "CommercialPaper": FREDCommercialPaperFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
+        "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
     },
 )

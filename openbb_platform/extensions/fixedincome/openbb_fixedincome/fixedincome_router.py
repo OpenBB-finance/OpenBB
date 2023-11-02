@@ -259,9 +259,27 @@ def hqm(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """
+    High Quality Market Corporate Bond.
     The HQM yield curve represents the high quality corporate bond market, i.e.,
     corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.
     These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
     that is the market-weighted average (MWA) quality of high quality bonds.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="TreasuryConstantMaturity")
+def tmc(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Treasury Constant Maturity.
+    Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
     """
     return OBBject(results=Query(**locals()).execute())
