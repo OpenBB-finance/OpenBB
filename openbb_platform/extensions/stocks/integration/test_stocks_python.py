@@ -31,13 +31,10 @@ def obb(pytestconfig):
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
@@ -127,13 +124,10 @@ def test_stocks_fa_cal(params, obb):
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
@@ -293,13 +287,10 @@ def test_stocks_fa_est(params, obb):
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
