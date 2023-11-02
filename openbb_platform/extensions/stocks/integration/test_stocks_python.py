@@ -1045,3 +1045,17 @@ def test_stocks_disc_growth_tech_equities(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"limit": 10})],
+)
+@pytest.mark.integration
+def test_stocks_disc_top_retail(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.top_retail(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

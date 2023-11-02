@@ -19,6 +19,6 @@ quandl_provider = Provider(
         "SP500Multiples": QuandlSP500MultiplesFetcher,
         "COT": QuandlCotFetcher,
         "COTSearch": QuandlCotSearchFetcher,
-        "TopRetails": QuandlTopRetailFetcher,
+        "TopRetail": QuandlTopRetailFetcher,
     },
 )
