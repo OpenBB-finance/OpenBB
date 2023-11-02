@@ -388,6 +388,27 @@ def test_stocks_fa_ins_own(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "UBER",
+                "start_date": "2018-01-01",
+                "end_date": "2023-06-06",
+                "limit": 100,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_fa_ipo(params, obb):
+    result = obb.stocks.fa.ins_own(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"symbol": "AAPL", "period": "annual", "limit": 100}),
     ],
 )
@@ -962,30 +983,6 @@ def test_stocks_price_performance(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.price_performance(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "UBER",
-                "start_date": "2018-01-01",
-                "end_date": "2023-06-06",
-                "limit": 300,
-                "provider": "intrinio",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_stocks_calendar_ipo(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.stocks.calendar_ipo(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
