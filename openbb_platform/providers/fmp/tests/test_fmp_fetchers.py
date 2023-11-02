@@ -18,6 +18,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
+from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
@@ -533,5 +534,14 @@ def test_fmp_etf_countries_fetcher(credentials=test_credentials):
     params = {"symbol": "MISL"}
 
     fetcher = FMPEtfCountriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "SILJ"}
+
+    fetcher = FMPEtfHoldingsPerformanceFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
