@@ -4,6 +4,8 @@
 
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
+from pandas import DataFrame
+
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
 
@@ -112,7 +114,10 @@ class Fetcher(Generic[Q, R]):
         assert all(getattr(query, key) == value for key, value in params.items())
 
         # Data Assertions
-        assert data
+        if not isinstance(data, DataFrame):
+            assert data
+        else:
+            assert not data.empty
         is_list = isinstance(data, list)
         if is_list:
             assert all(

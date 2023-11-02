@@ -61,3 +61,163 @@ def test_etf_historical(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "MISL", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_info(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.info(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "MISL", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_sectors(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.sectors(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "IOO"}),
+        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_date(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.holdings_date(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "IOO",
+                "date": "2023-03-31",
+                "cik": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "SILJ",
+                "date": "2019-12-31",
+                "cik": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "MISL",
+                "date": "2023-03-31",
+                "cik": "0001329377",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.holdings(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_etf_price_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "IOO"})],
+)
+@pytest.mark.integration
+def test_etf_countries(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.countries(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_gainers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.gainers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_losers(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.losers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
+)
+@pytest.mark.integration
+def test_etf_disc_active(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.disc.active(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
