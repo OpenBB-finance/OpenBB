@@ -463,7 +463,7 @@ We will continue this workflow by:
 - Adding some correlation analysis.
 - Train models with `past_covariates`.
 
-For practice, let's start fresh and rebuild the same dataset.  The [OpenBB Routine Scripts](/terminal/usage/guides/scripts-and-routines) can make quick work out of this chore.  Copy the block below and create a new `.openbb` file, in `~/OpenBBUserData/routines/`, to follow along.
+For practice, let's start fresh and rebuild the same dataset.  The [OpenBB Routine Scripts](/terminal/usage/routines/introduction-to-routines) can make quick work out of this chore.  Copy the block below and create a new `.openbb` file, in `~/OpenBBUserData/routines/`, to follow along.
 
 ```console
 /stocks

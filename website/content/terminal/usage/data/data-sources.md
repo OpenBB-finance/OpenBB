@@ -77,7 +77,7 @@ optional arguments:
 For more information and examples, use 'about income' to access the related guide.
 ```
 
-Within the source arguments it shows the exact sources as previously mentioned. Therefore, with this information in hand it is possible to switch to a different source e.g. with `income --source Polygon`. Do keep in mind that you might need to have an API key to use this source, see [here](/terminal/basics/advanced/api-keys).
+Within the source arguments it shows the exact sources as previously mentioned. Therefore, with this information in hand it is possible to switch to a different source e.g. with `income --source Polygon`. Do keep in mind that you might need to have an API key to use this source, see [here](/terminal/usage/data/api-keys).
 
 ![Selecting a new Data Source](https://user-images.githubusercontent.com/85772166/233730763-54fd6400-f3ad-44a0-9c73-254d91ac2085.png)
 
@@ -91,7 +91,7 @@ The default data vendor can be selected with more ease through the OpenBB Hub. I
 
 ### Setting default source through Terminal
 
-The default data source for each command (where multiple sources are available) can be defined within the [`/sources`](/terminal/usage/guides/changing-sources) menu.
+The default data source for each command (where multiple sources are available) can be defined within the [`/sources`](/terminal/usage/data/data-sources) menu.
 
 For example, if you would like to change the default data provider for the `income` command from the `stocks/fa` menu you can first run the command `get --cmd stocks/fa/income`. This returns the following:
 
