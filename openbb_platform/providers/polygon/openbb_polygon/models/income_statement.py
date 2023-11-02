@@ -1,4 +1,4 @@
-"""Polygon Income Statement Fetcher"""
+"""Polygon Income Statement Fetcher."""
 
 
 from datetime import date
@@ -16,23 +16,13 @@ from pydantic import Field, field_validator
 
 
 class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
-    """Polygon Income Statement Query Parameters
+    """Polygon Income Statement QueryParams.
 
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    company_name: Optional[str] = Field(
-        default=None, description="Name of the company."
-    )
-    company_name_search: Optional[str] = Field(
-        default=None, description="Name of the company to search."
-    )
-    sic: Optional[str] = Field(
-        default=None,
-        description="The Standard Industrial Classification (SIC) of the company.",
-    )
     filing_date: Optional[date] = Field(
         default=None, description="Filing date of the financial statement."
     )
@@ -83,6 +73,8 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
 
 
 class PolygonIncomeStatementData(IncomeStatementData):
+    """Polygon Income Statement Data."""
+
     __alias_dict__ = {
         "date": "start_date",
         "accepted_date": "acceptance_datetime",
@@ -118,17 +110,13 @@ class PolygonIncomeStatementData(IncomeStatementData):
     )
     net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
         default=None,
-        description="Net income (loss) available to common stockholders basic",
+        description="Net Income/Loss Available To Common Stockholders Basic",
     )
     participating_securities_distributed_and_undistributed_earnings_loss_basic: Optional[
         float
     ] = Field(
         default=None,
         description="Participating Securities Distributed And Undistributed Earnings Loss Basic",
-    )
-    net_income_loss_available_to_common_stockholders_basic: Optional[float] = Field(
-        default=None,
-        description="Net Income/Loss Available To Common Stockholders Basic",
     )
     nonoperating_income_loss: Optional[float] = Field(
         default=None, description="Nonoperating Income Loss"
@@ -139,7 +127,8 @@ class PolygonIncomeStatementData(IncomeStatementData):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def symbol_from_tickers(cls, v):  # pylint: disable=E0213
+    def symbol_from_tickers(cls, v):
+        """Return a list of symbols as a list."""
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -151,8 +140,11 @@ class PolygonIncomeStatementFetcher(
         List[PolygonIncomeStatementData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonIncomeStatementQueryParams:
+        """Transform the query params."""
         return PolygonIncomeStatementQueryParams(**params)
 
     @staticmethod
@@ -161,17 +153,23 @@ class PolygonIncomeStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.model_dump(by_alias=True), [])
+        period = "quarterly" if query.period == "quarter" else query.period
+        query_string = get_querystring(
+            query.model_dump(by_alias=True), ["ticker", "period"]
+        )
+
+        if query.symbol.isdigit():
+            query_string = f"cik={query.symbol}&period={period}&{query_string}"
+        else:
+            query_string = f"ticker={query.symbol}&period={period}&{query_string}"
+
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
-        data = get_data(request_url, **kwargs)["results"]
 
-        if len(data) == 0:
-            raise RuntimeError("No Income Statement found")
-
-        return data
+        return get_data(request_url, **kwargs).get("results", [])
 
     @staticmethod
     def transform_data(
@@ -179,6 +177,7 @@ class PolygonIncomeStatementFetcher(
         data: dict,
         **kwargs: Any,
     ) -> List[PolygonIncomeStatementData]:
+        """Return the transformed data."""
         transformed_data = []
 
         for item in data:

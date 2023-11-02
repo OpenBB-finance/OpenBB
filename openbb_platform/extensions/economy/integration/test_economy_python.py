@@ -452,7 +452,7 @@ def test_economy_gdpforecast(params, obb):
 def test_economy_calendar(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.economy.econcal(**params)
+    result = obb.economy.calendar(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

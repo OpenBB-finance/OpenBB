@@ -1,4 +1,4 @@
-"""Polygon Cash Flow Statement Fetcher"""
+"""Polygon Cash Flow Statement Fetcher."""
 
 
 from datetime import date
@@ -22,16 +22,6 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    company_name: Optional[str] = Field(
-        default=None, description="Name of the company."
-    )
-    company_name_search: Optional[str] = Field(
-        default=None, description="Name of the company to search."
-    )
-    sic: Optional[str] = Field(
-        default=None,
-        description="The Standard Industrial Classification (SIC) of the company.",
-    )
     filing_date: Optional[date] = Field(
         default=None, description="Filing date of the financial statement."
     )
@@ -82,13 +72,14 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
 
 class PolygonCashFlowStatementData(CashFlowStatementData):
-    """Cash Flow Statement Data."""
+    """Polygon Cash Flow Statement Data."""
 
     __alias_dict__ = {"date": "start_date"}
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def symbol_from_tickers(cls, v):
+        """Return a list of symbols as a list."""
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -100,8 +91,11 @@ class PolygonCashFlowStatementFetcher(
         List[PolygonCashFlowStatementData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCashFlowStatementQueryParams:
+        """Transform the query params."""
         return PolygonCashFlowStatementQueryParams(**params)
 
     @staticmethod
@@ -110,17 +104,23 @@ class PolygonCashFlowStatementFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query_string = get_querystring(query.model_dump(by_alias=True), [])
+        period = "quarterly" if query.period == "quarter" else query.period
+        query_string = get_querystring(
+            query.model_dump(by_alias=True), ["ticker", "period"]
+        )
+
+        if query.symbol.isdigit():
+            query_string = f"cik={query.symbol}&period={period}&{query_string}"
+        else:
+            query_string = f"ticker={query.symbol}&period={period}&{query_string}"
+
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
-        data = get_data(request_url, **kwargs)["results"]
 
-        if len(data) == 0:
-            raise RuntimeError("No balance sheet found")
-
-        return data
+        return get_data(request_url, **kwargs).get("results", [])
 
     @staticmethod
     def transform_data(
@@ -128,6 +128,7 @@ class PolygonCashFlowStatementFetcher(
         data: dict,
         **kwargs: Any,
     ) -> List[PolygonCashFlowStatementData]:
+        """Return the transformed data."""
         transformed_data = []
 
         for item in data:

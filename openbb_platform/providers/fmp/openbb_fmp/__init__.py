@@ -12,6 +12,7 @@ from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
@@ -90,11 +91,12 @@ fmp_provider = Provider(
         "CompanyFilings": FMPCompanyFilingsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
-        "EtfSearch": FMPEtfSearchFetcher,
-        "EtfSectors": FMPEtfSectorsFetcher,
-        "EtfInfo": FMPEtfInfoFetcher,
+        "EtfCountries": FMPEtfCountriesFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
+        "EtfInfo": FMPEtfInfoFetcher,
+        "EtfSearch": FMPEtfSearchFetcher,
+        "EtfSectors": FMPEtfSectorsFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "ForexHistorical": FMPForexHistoricalFetcher,
         "ForexPairs": FMPForexPairsFetcher,

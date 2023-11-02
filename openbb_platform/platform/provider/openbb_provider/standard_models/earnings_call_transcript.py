@@ -16,14 +16,9 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     year: int = Field(description="Year of the earnings call transcript.")
-    quarter: int = Field(
-        default=1,
-        gt=0,
-        lt=5,
-        description="Quarter of the earnings call transcript.",
-    )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -40,7 +35,8 @@ class EarningsCallTranscriptData(Data):
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     content: str = Field(description="Content of the earnings call transcript.")
 
-    @field_validator("symbol", mode="before", check_fields=False)
+    @field_validator("symbol", mode="before")
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

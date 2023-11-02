@@ -15,6 +15,7 @@ from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
@@ -503,7 +504,7 @@ def test_fmp_etf_sectors_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
-    params = {"symbol": "IOO", "date": date(2023, 4, 22)}
+    params = {"symbol": "IOO", "date": date(2022, 12, 31)}
 
     fetcher = FMPEtfHoldingsFetcher()
     result = fetcher.test(params, credentials)
@@ -524,6 +525,15 @@ def test_fmp_price_performance_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
 
     fetcher = FMPPricePerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_countries_fetcher(credentials=test_credentials):
+    params = {"symbol": "MISL"}
+
+    fetcher = FMPEtfCountriesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
