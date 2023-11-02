@@ -166,18 +166,18 @@ def open_openbb_documentation(
     elif arg_type == "menu":  # user passed a menu name
         if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = f"/usage?path=/data-available/intros/common/{menu}"
+            path = f"/usage?path=/data-available/common/{menu}"
         elif command == "forecast":
             command = ""
-            path = "/usage?path=/data-available/intros/forecast"
+            path = "/usage?path=/data-available/forecast"
         else:
-            path = f"/usage?path=/data-available/intros/{path}"
+            path = f"/usage?path=/data-available/{path}"
     else:  # user didn't pass argument and is in a menu
         menu = path.split("/")[-2]
         path = (
-            f"/usage?path=/usage/data-available/common/{menu}"
+            f"/usage?path=/data-available/common/{menu}"
             if menu in ["ta", "ba", "qa"]
-            else f"/usage?path=/data-available/intros/{path}"
+            else f"/usage?path=/data-available/{path}"
         )
 
     if command:
@@ -209,7 +209,7 @@ def open_openbb_documentation(
             path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/usage?path=/usage/data-available/common/{command}"
+            path = f"/usage?path=/data-available/common/{command}"
             command = ""
 
         path += command
