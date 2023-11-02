@@ -1061,3 +1061,65 @@ def test_stocks_calendar_ipo(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'symbol': 'AAPL'}),
+({'limit': 24, 'provider': 'sec', 'symbol': 'AAPL'})],
+)
+@pytest.mark.integration
+def test_stocks_dps_ftd(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/ftd?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'symbol': 'AAPL'})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_volume(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/short_volume?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'symbol': 'AAPL'})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_interest(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/short_interest?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+@pytest.mark.parametrize(
+    "params",
+    [({'symbol': 'AAPL'}),
+({'tier': 'T1', 'is_ats': True, 'provider': 'finra', 'symbol': 'AAPL'})],
+)
+@pytest.mark.integration
+def test_stocks_dps_otc(params, headers):
+    params = {p: v for p, v in params.items() if v}
+    
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/otc?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
