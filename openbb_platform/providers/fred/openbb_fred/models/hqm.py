@@ -62,14 +62,14 @@ class FREDHighQualityMarketCorporateBondFetcher(
 
         data = []
 
-        today = datetime.now().strftime("%Y-%m-%d")
+        today = datetime.today().date()
         if query.date and query.date >= today:
             raise ValueError("Date must be in the past.")
 
         start_date = (
-            datetime.strptime(query.date, "%Y-%m-%d") - timedelta(days=50)
+            query.date - timedelta(days=50)
             if query.date
-            else datetime.now() - timedelta(days=50)
+            else today - timedelta(days=50)
         )
 
         for type_ in query.yield_curve:
