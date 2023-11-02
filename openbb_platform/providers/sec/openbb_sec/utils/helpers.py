@@ -1,5 +1,5 @@
 """SEC Helpers module"""
-
+import datetime
 from datetime import timedelta
 from io import BytesIO
 from typing import Dict, List, Optional
@@ -317,10 +317,6 @@ def get_ftd_urls() -> Dict:
     return results
 
 
-# Generate the dates:
-import datetime
-
-
 def get_adjusted_date(year, month, day):
     # Get the date
     date = datetime.date(year, month, day)
@@ -370,10 +366,9 @@ def get_short_interest_dates() -> List[str]:
 
             # Date for the last day of the month
             if month == 2:  # February
-                if (yr % 4 == 0 and yr % 100 != 0) or (yr % 400 == 0):  # Leap year
-                    last_day = 29
-                else:
-                    last_day = 28
+                last_day = (
+                    29 if (yr % 4 == 0 and yr % 100 != 0) or (yr % 400 == 0) else 28
+                )
             elif month in [4, 6, 9, 11]:  # Months with 30 days
                 last_day = 30
             else:  # Months with 31 days

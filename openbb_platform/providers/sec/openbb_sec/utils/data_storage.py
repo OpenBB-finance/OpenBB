@@ -24,7 +24,6 @@ def get_cached_dates():
     )
     if cursor.fetchone() is None:
         # The table does not exist
-        print("The first run may take a while as the data is being cached.")
         return []
 
     # If the table exists, fetch the data
@@ -43,7 +42,6 @@ def get_data_from_date_and_store(date):
     }
     req = requests.get(url, headers=headers, timeout=1)
     if req.status_code != 200:
-        print(f"{date[:4]}-{date[4:6]}-{date[6:]} not found")
         return
     data = read_csv(StringIO(req.text), delimiter="|")
     data = data.drop(

@@ -57,7 +57,7 @@ class SecShortInterestFetcher(
         cursor = cnx.cursor()
         if query.symbol:
             cursor.execute(
-                f"SELECT * FROM short_interest where symbolCode = '{query.symbol}'"
+                "SELECT * FROM short_interest where symbolCode = ?", (query.symbol,)
             )
         else:
             cursor.execute("SELECT * FROM short_interest")
@@ -83,5 +83,4 @@ class SecShortInterestFetcher(
     @staticmethod
     def transform_data(data: List[Dict], **kwargs: Any) -> List[SecShortInterestData]:
         """Transforms the data."""
-        print(data[0])
         return [SecShortInterestData.model_validate(d) for d in data]
