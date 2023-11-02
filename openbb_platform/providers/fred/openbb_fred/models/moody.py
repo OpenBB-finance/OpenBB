@@ -70,7 +70,7 @@ class FREDMoodyCorporateBondIndexData(MoodyCorporateBondIndexData):
 class FREDMoodyCorporateBondIndexFetcher(
     Fetcher[
         FREDMoodyCorporateBondIndexParams,
-        List[Dict[str, List[FREDMoodyCorporateBondIndexData]]],
+        List[FREDMoodyCorporateBondIndexData],
     ]
 ):
     """MoodyCorporateBondIndexParams Fetcher."""
@@ -105,5 +105,5 @@ class FREDMoodyCorporateBondIndexFetcher(
     @staticmethod
     def transform_data(
         query: FREDMoodyCorporateBondIndexParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDMoodyCorporateBondIndexData]]]:
+    ) -> List[FREDMoodyCorporateBondIndexData]:
         return [FREDMoodyCorporateBondIndexData.model_validate(d) for d in data]

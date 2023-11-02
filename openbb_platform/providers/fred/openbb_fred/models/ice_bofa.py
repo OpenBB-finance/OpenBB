@@ -60,7 +60,7 @@ class FREDICEBofAData(ICEBofAData):
 class FREDICEBofAFetcher(
     Fetcher[
         FREDICEBofAParams,
-        List[Dict[str, List[FREDICEBofAData]]],
+        List[FREDICEBofAData],
     ]
 ):
     """ICEBofAParams Fetcher."""
@@ -105,5 +105,5 @@ class FREDICEBofAFetcher(
     @staticmethod
     def transform_data(
         query: FREDICEBofAParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDICEBofAData]]]:
+    ) -> List[FREDICEBofAData]:
         return [FREDICEBofAData.model_validate(d) for d in data]

@@ -34,7 +34,7 @@ class FREDSpotRateData(SpotRateData):
 class FREDSpotRateFetcher(
     Fetcher[
         FREDSpotRateParams,
-        List[Dict[str, List[FREDSpotRateData]]],
+        List[FREDSpotRateData],
     ]
 ):
     """SpotRateParams Fetcher."""
@@ -77,5 +77,5 @@ class FREDSpotRateFetcher(
     @staticmethod
     def transform_data(
         query: FREDSpotRateParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDSpotRateData]]]:
+    ) -> List[FREDSpotRateData]:
         return [FREDSpotRateData.model_validate(d) for d in data]

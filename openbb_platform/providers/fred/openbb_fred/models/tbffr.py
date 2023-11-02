@@ -38,7 +38,7 @@ class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
 class FREDSelectedTreasuryBillFetcher(
     Fetcher[
         FREDSelectedTreasuryBillParams,
-        List[Dict[str, List[FREDSelectedTreasuryBillData]]],
+        List[FREDSelectedTreasuryBillData],
     ]
 ):
     """SelectedTreasuryBillParams Fetcher."""
@@ -70,5 +70,5 @@ class FREDSelectedTreasuryBillFetcher(
     @staticmethod
     def transform_data(
         query: FREDSelectedTreasuryBillParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDSelectedTreasuryBillData]]]:
+    ) -> List[FREDSelectedTreasuryBillData]:
         return [FREDSelectedTreasuryBillData.model_validate(d) for d in data]

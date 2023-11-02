@@ -45,7 +45,7 @@ class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateDat
 class FREDDiscountWindowPrimaryCreditRateFetcher(
     Fetcher[
         FREDDiscountWindowPrimaryCreditRateParams,
-        List[Dict[str, List[FREDDiscountWindowPrimaryCreditRateData]]],
+        List[FREDDiscountWindowPrimaryCreditRateData],
     ]
 ):
     """DiscountWindowPrimaryCreditRateParams Fetcher."""
@@ -79,5 +79,5 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
     @staticmethod
     def transform_data(
         query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDDiscountWindowPrimaryCreditRateData]]]:
+    ) -> List[FREDDiscountWindowPrimaryCreditRateData]:
         return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]

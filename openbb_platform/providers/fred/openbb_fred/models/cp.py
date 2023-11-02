@@ -34,7 +34,7 @@ class FREDCommercialPaperData(CommercialPaperData):
 class FREDCommercialPaperFetcher(
     Fetcher[
         FREDCommercialPaperParams,
-        List[Dict[str, List[FREDCommercialPaperData]]],
+        List[FREDCommercialPaperData],
     ]
 ):
     """CommercialPaperParams Fetcher."""
@@ -80,5 +80,5 @@ class FREDCommercialPaperFetcher(
     @staticmethod
     def transform_data(
         query: FREDCommercialPaperParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDCommercialPaperData]]]:
+    ) -> List[FREDCommercialPaperData]:
         return [FREDCommercialPaperData.model_validate(d) for d in data]

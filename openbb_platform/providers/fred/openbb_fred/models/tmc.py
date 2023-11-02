@@ -38,7 +38,7 @@ class FREDTreasuryConstantMaturityData(TreasuryConstantMaturityData):
 class FREDTreasuryConstantMaturityFetcher(
     Fetcher[
         FREDTreasuryConstantMaturityParams,
-        List[Dict[str, List[FREDTreasuryConstantMaturityData]]],
+        List[FREDTreasuryConstantMaturityData],
     ]
 ):
     """TreasuryConstantMaturityParams Fetcher."""
@@ -70,5 +70,5 @@ class FREDTreasuryConstantMaturityFetcher(
     @staticmethod
     def transform_data(
         query: FREDTreasuryConstantMaturityParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDTreasuryConstantMaturityData]]]:
+    ) -> List[FREDTreasuryConstantMaturityData]:
         return [FREDTreasuryConstantMaturityData.model_validate(d) for d in data]

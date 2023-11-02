@@ -38,7 +38,7 @@ class FREDHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData)
 class FREDHighQualityMarketCorporateBondFetcher(
     Fetcher[
         FREDHighQualityMarketCorporateBondParams,
-        List[Dict[str, List[FREDHighQualityMarketCorporateBondData]]],
+        List[FREDHighQualityMarketCorporateBondData],
     ]
 ):
     """HighQualityMarketCorporateBondParams Fetcher."""
@@ -96,5 +96,5 @@ class FREDHighQualityMarketCorporateBondFetcher(
     @staticmethod
     def transform_data(
         query: FREDHighQualityMarketCorporateBondParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDHighQualityMarketCorporateBondData]]]:
+    ) -> List[FREDHighQualityMarketCorporateBondData]:
         return [FREDHighQualityMarketCorporateBondData.model_validate(d) for d in data]

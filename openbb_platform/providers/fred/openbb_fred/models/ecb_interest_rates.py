@@ -37,7 +37,7 @@ class FREDEuropeanCentralBankInterestRatesData(EuropeanCentralBankInterestRatesD
 class FREDEuropeanCentralBankInterestRatesFetcher(
     Fetcher[
         FREDEuropeanCentralBankInterestRatesParams,
-        List[Dict[str, List[FREDEuropeanCentralBankInterestRatesData]]],
+        List[FREDEuropeanCentralBankInterestRatesData],
     ]
 ):
     """EuropeanCentralBankInterestRatesParams Fetcher."""
@@ -71,7 +71,7 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
     @staticmethod
     def transform_data(
         query: FREDEuropeanCentralBankInterestRatesParams, data: list, **kwargs: Any
-    ) -> List[Dict[str, List[FREDEuropeanCentralBankInterestRatesData]]]:
+    ) -> List[FREDEuropeanCentralBankInterestRatesData]:
         return [
             FREDEuropeanCentralBankInterestRatesData.model_validate(d) for d in data
         ]
