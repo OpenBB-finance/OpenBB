@@ -2,7 +2,6 @@
 
 
 from datetime import date as dateType
-from typing import Optional
 
 from pydantic import Field
 
@@ -14,7 +13,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class ShortInterestQueryParams(QueryParams):
     """Short Interest Query."""
 
-    symbol: Optional[str] = Field(
+    symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
         default=None,
     )

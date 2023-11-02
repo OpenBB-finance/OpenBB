@@ -102,3 +102,15 @@ def test_sec_rss_litigation_fetcher(credentials=test_credentials):
     fetcher = SecRssLitigationFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+from openbb_sec.models.equity_short_interest import SecShortInterestFetcher
+
+
+@pytest.mark.record_http
+def test_sec_short_interest_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = SecShortInterestFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
