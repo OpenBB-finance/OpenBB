@@ -1,12 +1,22 @@
 """The OBBject."""
 from re import sub
-from typing import TYPE_CHECKING, Any, Dict, Generic, List, Literal, Optional, TypeVar
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Dict,
+    Generic,
+    List,
+    Literal,
+    Optional,
+    Set,
+    TypeVar,
+)
 
 import pandas as pd
 from numpy import ndarray
 from pydantic import BaseModel, Field
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
@@ -47,6 +57,8 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
+    _credentials: ClassVar[Optional[BaseModel]] = None
+    _accessors: ClassVar[Set[str]] = set()
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -175,7 +187,7 @@ class OBBject(Tagged, Generic[T]):
             from polars import from_pandas  # pylint: disable=import-outside-toplevel
         except ImportError as exc:
             raise ImportError(
-                "Please install polars: `pip install polars`  to use this function."
+                "Please install polars: `pip install polars pyarrow`  to use this method."
             ) from exc
 
         return from_pandas(self.to_dataframe().reset_index())
@@ -184,36 +196,41 @@ class OBBject(Tagged, Generic[T]):
         """Convert results field to numpy array."""
         return self.to_dataframe().reset_index().to_numpy()
 
-    def to_dict(self) -> Dict[str, List]:
-        """Convert results field to list of values.
+    def to_dict(
+        self,
+        orient: Literal[
+            "dict", "list", "series", "split", "tight", "records", "index"
+        ] = "list",
+    ) -> Dict[str, List]:
+        """Convert results field to a dictionary using any of pandas to_dict options.
+
+        Parameters
+        ----------
+        orient : Literal["dict", "list", "series", "split", "tight", "records", "index"]
+            Value to pass to `.to_dict()` method
+
 
         Returns
         -------
         Dict[str, List]
             Dictionary of lists.
         """
-        if isinstance(self.results, dict) and all(
-            isinstance(v, dict) for v in self.results.values()
-        ):
-            results: Dict[str, List] = {}
-            for _, v in self.results.items():
-                for kk, vv in v.items():
-                    if kk not in results:
-                        results[kk] = []
-                    results[kk].append(vv)
-
-            return results
-
-        df = self.to_dataframe().reset_index()  # type: ignore
-        results = {}
-        for field in df.columns:
-            f = df[field].tolist()
-            results[field] = f[0] if len(f) == 1 else f
-
-        # remove index from results
-        if "index" in results:
+        df = self.to_dataframe()  # type: ignore
+        transpose = False
+        if orient == "list":
+            transpose = True
+            if not isinstance(self.results, dict):
+                transpose = False
+            else:  # Only enter the loop if self.results is a dictionary
+                for key, value in self.results.items():
+                    if not isinstance(value, dict):
+                        transpose = False
+                        break
+        if transpose:
+            df = df.T
+        results = df.to_dict(orient=orient)
+        if orient == "list" and "index" in results:
             del results["index"]
-
         return results
 
     def to_chart(self, **kwargs):
@@ -236,6 +253,9 @@ class OBBject(Tagged, Generic[T]):
         chart.fig
             The chart figure.
         """
+        #  pylint: disable=import-outside-toplevel
+        # Avoids circular import
+        from openbb_core.app.charting_service import ChartingService
 
         cs = ChartingService()
         kwargs["data"] = self.to_dataframe()
