@@ -283,3 +283,20 @@ def tmc(
     yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="SelectedTreasuryConstantMaturity")
+def ffrmc(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Selected Treasury Constant Maturity.
+    Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+    """
+    return OBBject(results=Query(**locals()).execute())
