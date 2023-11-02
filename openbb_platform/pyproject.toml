@@ -14,7 +14,9 @@ openbb-benzinga = "^0.1.0a4"
 openbb-fmp = "^0.1.0a4"
 openbb-fred = "^0.1.0a4"
 openbb-intrinio = "^0.1.0a4"
+openbb-oecd = "^0.1.0a4"
 openbb-polygon = "^0.1.0a4"
+openbb-sec = "^0.1.0a4"
 openbb-tradingeconomics = "^0.1.0a4"
 
 openbb-crypto = "^0.1.0a4"
@@ -22,6 +24,7 @@ openbb-economy = "^0.1.0a4"
 openbb-forex = "^0.1.0a4"
 openbb-fixedincome = "^0.1.0a4"
 openbb-news = "^0.1.0a4"
+openbb-regulators = "^0.1.0a4"
 openbb-stocks = "^0.1.0a4"
 
 # Community dependencies
@@ -30,7 +33,6 @@ openbb-biztoc = { version = "^0.1.0a4", optional = true }
 openbb-cboe = { version = "^0.1.0a4", optional = true }
 openbb-quandl = { version = "^0.1.0a4", optional = true }
 openbb-yfinance = { version = "^0.1.0a4", optional = true }
-openbb-oecd = { version = "^0.1.0a4", optional = true }
 
 openbb-charting = { version = "^0.1.0a4", optional = true }
 openbb-futures = { version = "^0.1.0a4", optional = true }

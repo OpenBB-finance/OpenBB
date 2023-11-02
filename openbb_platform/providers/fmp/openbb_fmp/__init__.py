@@ -11,7 +11,13 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
+from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
+from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
+from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
+from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
@@ -30,6 +36,7 @@ from openbb_fmp.models.major_indices_constituents import (
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
+from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
 from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetcher
@@ -84,7 +91,12 @@ fmp_provider = Provider(
         "CompanyFilings": FMPCompanyFilingsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
+        "EtfCountries": FMPEtfCountriesFetcher,
+        "EtfHoldings": FMPEtfHoldingsFetcher,
+        "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
+        "EtfInfo": FMPEtfInfoFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
+        "EtfSectors": FMPEtfSectorsFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "ForexHistorical": FMPForexHistoricalFetcher,
         "ForexPairs": FMPForexPairsFetcher,
@@ -97,6 +109,8 @@ fmp_provider = Provider(
         "DividendCalendar": FMPDividendCalendarFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
+        "PricePerformance": FMPPricePerformanceFetcher,
+        "EconomicCalendar": FMPEconomicCalendarFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
     },
 )

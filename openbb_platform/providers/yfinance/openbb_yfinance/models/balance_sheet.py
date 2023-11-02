@@ -3,15 +3,16 @@
 
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
-from pydantic import field_validator
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 
@@ -20,6 +21,11 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
 
     Source: https://finance.yahoo.com/
     """
+
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="quarter",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
 
 
 class YFinanceBalanceSheetData(BalanceSheetData):

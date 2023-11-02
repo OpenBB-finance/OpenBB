@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 class EtfInfoQueryParams(QueryParams):
     """ETF Info Query Params."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
     @field_validator("symbol")
     @classmethod
@@ -26,6 +26,6 @@ class EtfInfoQueryParams(QueryParams):
 class EtfInfoData(Data):
     """ETF Info Data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    inception_date: Optional[str] = Field(description="Inception date of the ETF.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)")
     name: Optional[str] = Field(description="Name of the ETF.")
+    inception_date: Optional[str] = Field(description="Inception date of the ETF.")

@@ -284,7 +284,7 @@ def test_to_dict(results, expected_dict):
 
 
 @patch("openbb_core.app.model.obbject.OBBject.to_dataframe")
-@patch("openbb_core.app.model.obbject.ChartingService")
+@patch("openbb_core.app.charting_service.ChartingService")
 def test_to_chart_with_new_chart(
     mock_charting_service,
     mock_to_dataframe,
