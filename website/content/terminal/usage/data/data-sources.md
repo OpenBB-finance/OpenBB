@@ -39,7 +39,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 Most commands will require obtaining API keys from various data providers. OpenBB provides methods for consuming these data feeds, but has no control over the quality or quantity of data provided to an end-user. **No API Keys are required to get started using the Terminal**.
 
-See the list of data providers [here](/terminal/usage/guides/api-keys), along with instructions for entering the credentials into the OpenBB Terminal. You can also request a new data source through this [form](https://openbb.co/request-a-feature).
+See the list of data providers [here](/terminal/usage/data/api-keys), along with instructions for entering the credentials into the OpenBB Terminal. You can also request a new data source through this [form](https://openbb.co/request-a-feature).
 
 :::note
 OpenBB doesn't store any financial data in its servers. We aggregate access to multiple data sources through API calls and standardize that interaction to provide users a seamless experience when dealing with different data vendors
