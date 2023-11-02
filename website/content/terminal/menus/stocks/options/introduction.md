@@ -2,7 +2,7 @@
 title: Introduction
 sidebar_position: 1
 description: This is an informative page providing a detailed overview of how to navigate
-  and use the Options Menu to analyze equity options. It discusses the functions,
+  and use the Options Menu in the OpenBB Terminal. It discusses the functions,
   and gives clear examples of how to fetch and analyze options data such as chains,
   Greeks, expiration dates, and put/call ratios using different financial data sources.
 keywords:
@@ -27,13 +27,28 @@ keywords:
 - volatility smile
 - second order Greeks
 - greeks command
+- puts
+- calls
+- surface
+- spx
+- ndx
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Options - Stocks - Menus | OpenBB Terminal Docs" />
 
 The Options menu provides the user with tools for analyzing equity options.  Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it [here](https://en.wikipedia.org/wiki/Option_(finance)).  These are complex, leveraged, financial instruments requiring specialized knowledge and a different frame-of-mind than the approach taken by an equities long-only investor.  Always conduct thorough due diligence.
 
-### The Options Menu
+## Usage
 
-Navigate to the menu by typing `options`, from the `Stocks` menu, and then pressing enter. Alternatively, absolute path navigation can jump straight there, from anywhere. `/stocks/options`.  The source for the options data can be defined using the `load` command, or a default preference can be defined using the `/sources` menu.  The chains data returned will vary by source.  The following sources are currently available to use:
+Navigate to the menu by typing `options`, from the `/stocks` menu, and then pressing enter. The menu can also be entered by the absolute path:
+
+```console
+/stocks/options
+```
+
+The source for the options data can be defined using the `load` command, and a default preference is be defined in the `/sources` menu - or on the [OpenBB Hub](https://my.openbb.co).  The chains data returned will vary by source.  The following sources are currently available to use:
 
 - YahooFinance
 - Nasdaq
@@ -63,15 +78,13 @@ The menu can be entered without a ticker symbol loaded.  If one is already loade
 |vol |Plot the volume. |
 |vsurf |3-D volatility surface chart. |
 
-### Examples
-
 The examples here will start by entering the Options menu without a ticker symbol loaded.
 
 ```console
 /stocks/options
 ```
 
-#### unu
+### UNU
 
 Unusual options are described as those having a very high volume/open interest ratio.  This function is built using the data provided by [fdscanner.com](https://fdscanner.com).  By default, the top 20 options with the highest vol/OI ratio are returned as a table.
 
@@ -89,7 +102,7 @@ This returned over 500 results which can then be filtered, for example, by June/
 
 ![Unusual Options](https://user-images.githubusercontent.com/85772166/234757578-da79b032-416b-4e0a-b759-a05f651f28a2.png)
 
-#### load
+### Load
 
 Let's take a look at one of these tickers, GM.  The default source will be `YahooFinance`.  Select a different source by attaching `--source` to the command.
 
@@ -106,7 +119,7 @@ Getting Option Chain ━━━━━━━━━━━━━━━━━━━�
 Loaded option chain from YahooFinance
 ```
 
-#### pcr
+### PCR
 
 The `pcr` command plots a rolling put/call ratio (ten years max) over a selectable window of time (default is 30 days).
 
@@ -124,7 +137,7 @@ Adding in an overlay from an exported CSV file adds more context to the story.
 
 ![GM 90-Day P/C Ratio Against Share Price](https://user-images.githubusercontent.com/85772166/234757705-0bc63a89-0cb8-4d32-a403-2a8aa7b0337a.png)
 
-#### exp
+### EXP
 
 After loading, select an expiration date for the chain using the `exp` command.  To display the list of available expirations, use the function with no arguments.  The date can be selected by entering a number - with `0` being the nearest expiry - or by entering the date, formatted as `YYYY-MM-DD`.
 
@@ -136,7 +149,7 @@ exp 2023-06-02
 Expiration set to 2023-06-02
 ```
 
-#### plot
+### Plot
 
 Use the `plot` function to draw the volatility smile for the selected expiration date.
 
@@ -146,7 +159,7 @@ plot -c smile
 
 ![Volatility Smile](https://user-images.githubusercontent.com/85772166/234757758-537ada39-cf47-49e3-a861-b97c4b7a9919.png)
 
-#### greeks
+### Greeks
 
 Calculate the second order Greeks - Rho, Phi, Charm, Vanna, Vomma - with the `greeks` command.
 
