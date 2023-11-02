@@ -15,6 +15,7 @@ from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
+from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_provider.abstract.provider import Provider
 
 fred_provider = Provider(
@@ -39,5 +40,6 @@ fred_provider = Provider(
         "ICEBofA": FREDICEBofAFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
+        "SpotRate": FREDSpotRateFetcher,
     },
 )

@@ -225,9 +225,27 @@ def cp(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """
+    Commercial Paper.
     Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.
     Maturities range up to 270 days but average about 30 days.
     Many companies use CP to raise cash needed for current transactions,
     and many find it to be a lower-cost alternative to bank loans.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="SpotRate")
+def spot(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Spot Rate.
+    The spot rate for any maturity is the yield on a bond that provides a single payment at that maturity.
+    This is a zero coupon bond.
+    Because each spot rate pertains to a single cashflow, it is the relevant interest rate
+    concept for discounting a pension liability at the same maturity.
     """
     return OBBject(results=Query(**locals()).execute())

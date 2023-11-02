@@ -128,7 +128,7 @@ def get_ice_bofa_series_id(
     return filtered_series
 
 
-def get_cp_series_id(maturity, category, grade):
+def get_cp_series_id(maturity, category, grade) -> List[dict]:
     """Get CP series id."""
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -152,10 +152,34 @@ def get_cp_series_id(maturity, category, grade):
 
     for s in series:
         if (
-            (s["Maturity"] == maturity)
-            & (s["Category"] == category)
-            & (s["Grade"] == grade)
+            s["Maturity"] == maturity
+            and s["Category"] == category
+            and s["Grade"] == grade
         ):
+            filtered_series.append(s)
+
+    return filtered_series
+
+
+def get_spot_series_id(maturity: List[float], category: List[str]) -> List[dict]:
+    """Get Spot series id."""
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    file = "corporate_spot_rates.csv"
+
+    series = []
+
+    with open(Path(current_dir, file), encoding="utf-8") as csv_file_handler:
+        csv_reader = csv.DictReader(csv_file_handler)
+        for rows in csv_reader:
+            row = {key.lstrip("\ufeff"): value for key, value in rows.items()}
+            series.append(row)
+
+    filtered_series = []
+
+    for s in series:
+        s_maturity = float(s["Maturity"].replace("y", ""))
+        if s_maturity in maturity and s["Category"] in category:
             filtered_series.append(s)
 
     return filtered_series
