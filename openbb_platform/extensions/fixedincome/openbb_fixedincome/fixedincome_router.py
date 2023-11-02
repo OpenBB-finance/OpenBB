@@ -249,3 +249,19 @@ def spot(
     concept for discounting a pension liability at the same maturity.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="HighQualityMarketCorporateBond")
+def hqm(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    The HQM yield curve represents the high quality corporate bond market, i.e.,
+    corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.
+    These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
+    that is the market-weighted average (MWA) quality of high quality bonds.
+    """
+    return OBBject(results=Query(**locals()).execute())

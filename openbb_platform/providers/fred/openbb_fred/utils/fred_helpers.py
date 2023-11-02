@@ -27,6 +27,26 @@ YIELD_CURVE_SERIES_REAL = {
     "20Year": "DFII20",
     "30Year": "DFII30",
 }
+YIELD_CURVE_SERIES_CORPORATE_SPOT = {
+    "6Month": "HQMCB6MT",
+    "1Year": "HQMCB1YR",
+    "2Year": "HQMCB2YR",
+    "3Year": "HQMCB3YR",
+    "5Year": "HQMCB5YR",
+    "7Year": "HQMCB7YR",
+    "10Year": "HQMCB10YR",
+    "20Year": "HQMCB20YR",
+    "30Year": "HQMCB30YR",
+    "50Year": "HQMCB50YR",
+    "75Year": "HQMCB75YR",
+    "100Year": "HQMCB100YR",
+}
+YIELD_CURVE_SERIES_CORPORATE_PAR = {
+    "2Year": "HQMCB2YRP",
+    "5Year": "HQMCB5YRP",
+    "10Year": "HQMCB10YRP",
+    "30Year": "HQMCB30YRP",
+}
 
 
 def all_cpi_options(harmonized: bool = False) -> List[dict]:
