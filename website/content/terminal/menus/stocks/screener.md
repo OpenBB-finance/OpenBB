@@ -22,7 +22,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Stock Screener - Stocks - Menus | OpenBB Terminal Docs" />
 
-The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
+The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  
+
+## Usage
+
+Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 
 - Overview
 - Valuation
@@ -33,7 +37,7 @@ The Stock Screener is a diverse tool for discovering comapanies.  It is a great 
 
 Running a screen is as easy as entering one of the choices above.
 
-## How to use
+### Presets
 
 The default preset upon entering the sub-menu is, `top_gainers`.  This preset, like some of the others, contain no parameters other than a signal - the name of the preset - and has no corresponding file which can be edited.  All signals are listed in the table below.  Use the commands `view` and `set` to select a new one.
 
@@ -73,11 +77,16 @@ The default preset upon entering the sub-menu is, `top_gainers`.  This preset, l
 | head_shoulders         |           chart formation that predicts a bullish-to-bearish trend reversal |
 | head_shoulders_inverse |           chart formation that predicts a bearish-to-bullish trend reversal |
 
-These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.   The next section provides guidance for using and creating presets.
+These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.  Changes to an existing file (same filename) are reflected the next time that screener preset is run, a restart is not required once the preset has been recognized.
 
-:::note Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
+The next section provides guidance for using and creating presets.
 
-All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
+:::note
+
+- Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
+
+- All of the included presets can be viewed online [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/screener)
+
 :::
 
 Preset parameters are grouped into major categories:
@@ -132,6 +141,8 @@ Index = DJIA
 [Technical]
 ```
 
+### Set
+
 To set the preset to be the example above, use the `set` command and press the spacebar.  Use the up/down arrow keys to scroll through the presets.
 
 ```console
@@ -142,9 +153,7 @@ With a preset selected, select the type of data to return by entering one of the
 
 ![Stocks Screener](https://user-images.githubusercontent.com/85772166/229921157-8297665a-1b88-4f4e-aeb1-91c1bb9aba7c.png)
 
-## Examples
-
-The examples below will demonstrate the expected outputs, and provide some context for getting started.
+The next examples will demonstrate the expected outputs, and provide some context for getting started.
 
 ### View
 
