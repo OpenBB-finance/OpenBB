@@ -95,7 +95,16 @@ class IntrinioBalanceSheetFetcher(
             calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
             calculations_data = get_data_one(calculations_url, **kwargs)
 
-            data.append({**statement_data, **calculations_data})
+            data.append(
+                {
+                    "date": statement_data["fundamental"]["end_date"],
+                    "period": statement_data["fundamental"]["fiscal_period"],
+                    "cik": statement_data["fundamental"]["company"]["cik"],
+                    "symbol": statement_data["fundamental"]["company"]["ticker"],
+                    "financials": statement_data["standardized_financials"]
+                    + calculations_data["standardized_financials"],
+                }
+            )
 
         with ThreadPoolExecutor() as executor:
             executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
@@ -112,20 +121,17 @@ class IntrinioBalanceSheetFetcher(
         for item in data:
             sub_dict: Dict[str, Any] = {}
 
-            for sub_item in item["standardized_financials"]:
+            for sub_item in item["financials"]:
                 field_name = alias_generators.to_snake(sub_item["data_tag"]["tag"])
                 sub_dict[field_name] = float(sub_item["value"])
 
-            sub_dict["date"] = item["fundamental"]["end_date"]
-            sub_dict["period"] = item["fundamental"]["fiscal_period"]
-            sub_dict["cik"] = item["fundamental"]["company"]["cik"]
-            sub_dict["symbol"] = item["fundamental"]["company"]["ticker"]
+            sub_dict["date"] = item["date"]
+            sub_dict["period"] = item["period"]
+            sub_dict["cik"] = item["cik"]
+            sub_dict["symbol"] = item["symbol"]
 
             # Intrinio does not return Q4 data but FY data instead
-            if (
-                query.period == "quarter"
-                and item["fundamental"]["fiscal_period"] == "FY"
-            ):
+            if query.period == "quarter" and item["period"] == "FY":
                 sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioBalanceSheetData(**sub_dict))
