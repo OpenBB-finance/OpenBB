@@ -1,7 +1,5 @@
 # Helper functions for FINRA API
 
-from concurrent.futures import ThreadPoolExecutor
-
 import requests
 
 
@@ -95,13 +93,11 @@ def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
 def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
     weeks = [week["weekStartDate"] for week in get_finra_weeks(tier, is_ats)]
 
-    def fetch_data(week):
+    data = []
+    for week in weeks:
         response = get_finra_data(symbol, week, tier, is_ats)
         r_json = response.json()
         if response.status_code == 200 and r_json:
-            return r_json[0]
+            data.append(response.json()[0])
 
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        data = list(executor.map(fetch_data, weeks))
-
-    return [item for item in data if item is not None]
+    return data
