@@ -1,7 +1,7 @@
 """FMP Balance Sheet Fetcher."""
 
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.data import StrictInt
@@ -10,6 +10,7 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, model_validator
 
 
@@ -19,6 +20,10 @@ class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Balance-Sheet
     """
 
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="quarter",
+        description=QUERY_DESCRIPTIONS.get("period", ""),
+    )
     cik: Optional[str] = Field(
         default=None,
         description="Central Index Key (CIK) of the company.",
