@@ -11,3 +11,5 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Settings | OpenBB Terminal Pro Docs" />
+
+to be added
