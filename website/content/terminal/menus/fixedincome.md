@@ -18,11 +18,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Fixed Income - Menus | OpenBB Terminal Docs" />
 
-The Fixed Income menu is the high-level menu for the Fixed Income asset class. It contains reference rates (ESTER, SOFR, SONIA and Ameribor), central bank rates (FRED, FOMC projections and ECB key interest rates), government bonds (treasury rates for any country, us-specific rates, yield curves), corporate bonds (ICE BofA Corporate Indices, Moody's AAA and BAA Corporate Indices, Commercial Paper, Spot Rates and HQM Corporate Yield Curve) and spreads (ICE BofA spreads, constant maturity spreads, and federal funds rate).
+The Fixed Income menu functions for reference rates (ESTER, SOFR, SONIA and Ameribor), central bank rates (FRED, FOMC projections and ECB key interest rates), government bonds (treasury rates for any country, us-specific rates, yield curves), corporate bonds (ICE BofA Corporate Indices, Moody's AAA and BAA Corporate Indices, Commercial Paper, Spot Rates and HQM Corporate Yield Curve) and spreads (ICE BofA spreads, constant maturity spreads, and federal funds rate).
 
 :::note
 
-The menu relies on FRED for data requests, please refer to the [API keys guide](https://docs.openbb.co/terminal/usage/data/api-keys.md) for information on how to obtain and set a key for FRED.
+The menu relies on FRED for data requests, please refer to the [API keys guide](/website/content/terminal/usage/data/api-keys.md) for information on how to obtain and set a key for FRED.
 
 :::
 
