@@ -1,4 +1,4 @@
-"""Polygon Balance Sheet Statement Fetcher"""
+"""Polygon Balance Sheet Statement Fetcher."""
 
 
 from datetime import date
@@ -10,7 +10,6 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
@@ -21,23 +20,8 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
 
-    __alias_dict__ = {"symbol": "ticker"}
+    __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    period: Optional[Literal["annual", "quarter", "ttm"]] = Field(
-        default="quarter",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
-        alias="timeframe",
-    )
-    company_name: Optional[str] = Field(
-        default=None, description="Name of the company."
-    )
-    company_name_search: Optional[str] = Field(
-        default=None, description="Name of the company to search."
-    )
-    sic: Optional[str] = Field(
-        default=None,
-        description="The Standard Industrial Classification (SIC) of the company.",
-    )
     filing_date: Optional[date] = Field(
         default=None, description="Filing date of the financial statement."
     )
@@ -113,6 +97,7 @@ class PolygonBalanceSheetData(BalanceSheetData):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def symbol_from_tickers(cls, v):
+        """Return a list of symbols as a list."""
         if isinstance(v, list):
             return ",".join(v)
         return v
@@ -124,8 +109,11 @@ class PolygonBalanceSheetFetcher(
         List[PolygonBalanceSheetData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonBalanceSheetQueryParams:
+        """Transform the query params."""
         return PolygonBalanceSheetQueryParams(**params)
 
     @staticmethod
@@ -134,18 +122,23 @@ class PolygonBalanceSheetFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"
-        query.period = "quarterly" if query.period == "quarter" else query.period
-        query_string = get_querystring(query.model_dump(by_alias=True), [])
+        period = "quarterly" if query.period == "quarter" else query.period
+        query_string = get_querystring(
+            query.model_dump(by_alias=True), ["ticker", "period"]
+        )
+
+        if query.symbol.isdigit():
+            query_string = f"cik={query.symbol}&period={period}&{query_string}"
+        else:
+            query_string = f"ticker={query.symbol}&period={period}&{query_string}"
+
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
-        data = get_data(request_url, **kwargs)["results"]
 
-        if len(data) == 0:
-            raise RuntimeError("No balance sheet found")
-
-        return data
+        return get_data(request_url, **kwargs).get("results", [])
 
     @staticmethod
     def transform_data(
@@ -153,6 +146,7 @@ class PolygonBalanceSheetFetcher(
         data: dict,
         **kwargs: Any,
     ) -> List[PolygonBalanceSheetData]:
+        """Return the transformed data."""
         transformed_data = []
 
         for item in data:
