@@ -1,8 +1,15 @@
 ---
-sidebar_position: 2
+title: Copilot
+sidebar_position: 7
+description: test
+keywords:
+- test
 ---
 
-# Copilot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Copilot | OpenBB Terminal Pro Docs" />
+
 
 OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 

@@ -1,9 +1,14 @@
 ---
 title: Free trial
-sidebar_position: 2
+sidebar_position: 1
+description: test
+keywords:
+- test
 ---
 
-# Getting Started with Free Trial
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Free Trial | OpenBB Terminal Pro Docs" />
 
 To unlock the powerful features of **OpenBB Terminal Pro**, follow these steps:
 

@@ -1,8 +1,14 @@
 ---
-sidebar_position: 2
+title: Grouping Mechanism
+sidebar_position: 1
+description: test
+keywords:
+- test
 ---
 
-# Grouping Mechanism
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Grouping | OpenBB Terminal Pro Docs" />
 
 The grouping mechanism is extremely powerful as it allows widgets to be grouped together through one of their parameters based on the category they belong to.
 

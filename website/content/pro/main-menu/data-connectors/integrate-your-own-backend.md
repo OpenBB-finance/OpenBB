@@ -1,8 +1,14 @@
 ---
-sidebar_position: 4
+title: Integrate your own backend
+sidebar_position: 2
+description: test
+keywords:
+- test
 ---
 
-# Integrate your own backend
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Integrate your own backend | OpenBB Terminal Pro Docs" />
 
 ## Using OpenBB Cookie-Cutter
 

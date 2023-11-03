@@ -1,8 +1,15 @@
 ---
+title: Data providers
 sidebar_position: 2
+description: test
+keywords:
+- test
 ---
 
-# Data Providers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Provider | OpenBB Terminal Pro Docs" />
+
 
 <img width="1455" alt="275681258-09d976c7-7c3f-417f-9c86-14bd5659bfab" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/071d79ae-1410-4918-ac40-294b54b6068a"/>
 

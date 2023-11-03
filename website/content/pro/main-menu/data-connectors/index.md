@@ -1,9 +1,14 @@
 ---
 title: Introduction
-sidebar_position: 1
+sidebar_position: 0
+description: test
+keywords:
+- test
 ---
 
-# Data Connectors
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Connectors | OpenBB Terminal Pro Docs" />
 
 <img width="1785" alt="273497891-d9436d87-422c-4d73-a81c-bdc746695a28" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f06f340b-0150-4475-baae-69a28a8d4493"/>
 

@@ -1,8 +1,14 @@
 ---
+title: Native integrations
 sidebar_position: 3
+description: test
+keywords:
+- test
 ---
 
-# Integrating Third-party Data Providers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Native Integrations | OpenBB Terminal Pro Docs" />
 
 OpenBB Terminal Pro allows seamless integration with two types of third-party data providers.
 

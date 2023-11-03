@@ -1,12 +1,18 @@
 ---
-sidebar_position: 5
+title: News
+sidebar_position: 2
+description: test
+keywords:
+- test
 ---
 
-# News
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="News | OpenBB Terminal Pro Docs" />
 
 <img width="1792" alt="273495463-5d5ed1cf-f108-469d-9c36-94aa982e6944" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d1785ad7-7a5d-4c70-949f-795ce7f875e8"/>
 
-Welcome to the News section of OpenBB Terminal Pro. This is your hub for staying updated with the latest financial news and market trends. 
+Welcome to the News section of OpenBB Terminal Pro. This is your hub for staying updated with the latest financial news and market trends.
 
 Our News section is divided into various topics such as Overview, Markets, Economics, Industries, Events, Tech, Politics, Ratings, and Opinion. Each topic further branches into subcategories, allowing you to navigate and explore news articles based on your interests.
 

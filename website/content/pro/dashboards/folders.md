@@ -1,8 +1,14 @@
 ---
+title: Folders
 sidebar_position: 4
+description: test
+keywords:
+- test
 ---
 
-# Folders
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Folders | OpenBB Terminal Pro Docs" />
 
 On the sidebar, users have a plus icon where they are able to create a new dashboard or folder.
 

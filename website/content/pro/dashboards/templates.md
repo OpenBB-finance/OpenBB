@@ -1,8 +1,14 @@
 ---
+title: Templates
 sidebar_position: 2
+description: test
+keywords:
+- test
 ---
 
-# Templates
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Templates | OpenBB Terminal Pro Docs" />
 
 <img width="1448" alt="275687647-683f47e3-0ad6-45bc-a026-01884cfabd3f" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/54e82c79-92d0-4e71-8f89-9e04c3e983d3"/>
 

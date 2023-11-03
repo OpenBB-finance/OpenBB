@@ -1,8 +1,15 @@
 ---
+title: Advanced Search
 sidebar_position: 6
+description: test
+keywords:
+- test
 ---
 
-# Advanced Search
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Advanced Search | OpenBB Terminal Pro Docs" />
+
 
 <img width="1455" alt="275681118-b5ed496a-5822-49c9-bc56-958dab886f59" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b10a013f-ad07-4ea6-ac55-17236b249bb2"/>
 
@@ -21,4 +28,3 @@ The search is divided into six main categories:
 * **News**: This category allows you to search through the latest news for topics that best match your search.
 
 * **All**: This category combines results from all of the above categories.
-
