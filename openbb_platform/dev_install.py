@@ -76,7 +76,9 @@ def install_local(_extras: bool = False):
 
     try:
         # we create a temporary pyproject.toml
-        PYPROJECT.write_text(TEMP_PYPROJECT)
+        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(TEMP_PYPROJECT)
+
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(  # noqa: PLW1510
