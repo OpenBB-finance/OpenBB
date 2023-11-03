@@ -1,6 +1,7 @@
-from urllib.error import HTTPError
-import requests
 import time
+from urllib.error import HTTPError
+
+import requests
 
 
 def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
@@ -22,7 +23,9 @@ def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
     def _get_data(max_retries: int = 5):
         try:
             data = requests.get(
-                url=url, params={"startPeriod": start_date, "endPeriod": end_date}
+                url=url,
+                params={"startPeriod": start_date, "endPeriod": end_date},
+                timeout=10,
             ).json()
 
             return data

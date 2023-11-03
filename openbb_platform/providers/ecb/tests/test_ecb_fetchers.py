@@ -1,4 +1,5 @@
 import datetime
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_ecb.models.eu_yield_curve import ECBEUYieldCurveFetcher
