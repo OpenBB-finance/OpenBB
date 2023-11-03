@@ -1,9 +1,17 @@
 ---
 title: Native integrations
 sidebar_position: 3
-description: test
+description: Get in-depth documentation on Native Integrations provided by OpenBB
+  Terminal Pro including API key connections to data providers and database/warehouse
+  connections for an enhanced data analysis experience.
 keywords:
-- test
+- Native Integrations
+- API key
+- Data Providers
+- Data Warehouse
+- Database Connections
+- SQL queries
+- Data Analysis
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

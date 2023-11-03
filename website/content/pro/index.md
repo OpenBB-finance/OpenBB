@@ -1,6 +1,24 @@
 ---
 title: OpenBB Terminal Pro
 sidebar_position: 0
+description: OpenBB Terminal Pro offers advanced investment research capabilities
+  with powerful features like high-quality financial data, customizability, collaborative
+  tools, generative AI, and more.
+keywords:
+- investment research platform
+- high-quality financial data
+- customizable
+- collaborative tools
+- generative AI
+- user experience
+- investment decisions
+- financial data analysis
+- investment research reports
+- user efficiency
+- investment analysis
+- financial dashboard
+- visual insights
+- data visualization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

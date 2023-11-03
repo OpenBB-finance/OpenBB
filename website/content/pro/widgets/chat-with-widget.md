@@ -1,9 +1,16 @@
 ---
 title: Chat with widgets
 sidebar_position: 0
-description: test
+description: Learn about OpenBB Terminal Pro's innovative feature, the Chat Widget.
+  This generative AI tool enhances efficiency and productivity in investment research
+  by offering direct data interaction.
 keywords:
-- test
+- Chat Widget
+- generative AI
+- investment research tools
+- data interaction
+- efficiency
+- productivity
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

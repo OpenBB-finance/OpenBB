@@ -1,9 +1,19 @@
 ---
 title: Tabular data
 sidebar_position: 0
-description: test
+description: Explore OpenBB Terminal Pro Docs and learn about tabular data manipulation.
+  Discover features like column resizing, reorganization, filtering, sorting, and
+  transposing. Enhance your navigation and analysis of investment research data.
 keywords:
-- test
+- tabular data
+- data manipulation
+- column resizing
+- column reorganization
+- column filtering
+- sorting
+- transposing
+- investment research
+- financial data
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

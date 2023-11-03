@@ -1,9 +1,16 @@
 ---
 title: News
 sidebar_position: 2
-description: test
+description: The News section in OpenBB Terminal Pro provides users with the latest
+  updates in financial markets. It offers diverse topics, along with features like
+  Interactive Chat and Ticker Analysis for comprehensive news experience.
 keywords:
-- test
+- Financial news
+- Market trends
+- News section
+- Interactive Chat
+- Ticker Analysis
+- Investments
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -1,9 +1,19 @@
 ---
 title: Advanced Search
 sidebar_position: 6
-description: test
+description: Learn about the functionality of the advanced search in OpenBB Terminal
+  Pro. Discover the six main categories including Securities, Templates, Widgets,
+  Actions, News, and the All option that enhances research and productivity.
 keywords:
-- test
+- Advanced Search
+- Securities
+- Widgets
+- Templates
+- Actions
+- News
+- Financial Data
+- Dashboards
+- Data Connectors
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

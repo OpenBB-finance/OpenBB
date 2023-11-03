@@ -1,9 +1,15 @@
 ---
 title: Chart from raw data
 sidebar_position: 1
-description: test
+description: Learn how to transform raw data into informative charts using OpenBB
+  Terminal Pro. This tool simplifies data visualization, aiding quants and analysts
+  in their investment research.
 keywords:
-- test
+- investment research
+- data visualization
+- charting tool
+- quants
+- analysts
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

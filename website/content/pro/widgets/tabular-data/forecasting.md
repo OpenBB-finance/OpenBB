@@ -1,9 +1,18 @@
 ---
 title: Forecasting
 sidebar_position: 2
-description: test
+description: Comprehensive documentation page about forecasting using OpenBB Terminal
+  Pro. Including out-of-the-box solutions such as Linear Regression and Nixtla's GPT.
 keywords:
-- test
+- forecasting
+- investment research
+- financial time series
+- financial model
+- Linear Regression
+- Nixtla's GPT
+- machine learning
+- time series
+- API key
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

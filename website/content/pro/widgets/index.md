@@ -1,9 +1,28 @@
 ---
 title: Widgets
 sidebar_position: 0
-description: test
-keywords:
-- test
+description: The page contains detailed information about the interactive elements
+  and functionalities of OpenBB Terminal Pro widgets. From grouping mechanisms to
+  settings, these widgets offer an interactive dashboard experience for users to track
+  and analyze their investments and data. The widgets support both raw data and chart
+  interpretations for data visualization.
+keywords: Docs
+- Widgets
+- Upper Tab
+- Interactive elements
+- Additional information
+- Symbol
+- Group
+- Staleness Indicator
+- Chat with Widget
+- Grouping Mechanism
+- Settings
+- Close
+- Content
+- Raw Data
+- Charts
+- Interactive dashboard
+- Investment positions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

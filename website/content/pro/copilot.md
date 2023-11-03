@@ -1,9 +1,17 @@
 ---
 title: Copilot
 sidebar_position: 7
-description: test
+description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal
+  Pro, execute basic commands, and customize your dashboard.
 keywords:
-- test
+- OpenBB Copilot
+- voice command
+- change theme mode
+- load templates
+- TSLA
+- Natural language processing
+- Large language model
+- OpenAI
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

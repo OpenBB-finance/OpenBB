@@ -1,9 +1,20 @@
 ---
 title: Getting Started
 sidebar_position: 0
-description: test
+description: Get started with OpenBB Terminal Pro, your comprehensive tool for investment
+  research. Understand the layout and powerful features that can enhance your research
+  capabilities.
 keywords:
-- test
+- investment research
+- sidebar
+- main menu
+- charting
+- news
+- data connectors
+- dashboards
+- working area
+- widgets
+- investment decisions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

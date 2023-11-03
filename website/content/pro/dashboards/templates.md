@@ -1,9 +1,16 @@
 ---
 title: Templates
 sidebar_position: 2
-description: test
+description: Learn how to use and manage dashboard templates on OpenBB Terminal Pro.
+  Save your widget layouts, set default templates, and use the advanced search to
+  optimize your experience.
 keywords:
-- test
+- dashboard templates
+- advanced search
+- template library
+- default template
+- widget layouts
+- security
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

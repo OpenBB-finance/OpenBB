@@ -1,9 +1,11 @@
 ---
 title: Settings
 sidebar_position: 2
-description: test
+description: Find detailed information on how to navigate and customize your settings
+  in the OpenBB Terminal Pro. Learn the full capabilities and features
+  available to enhance your user experience.
 keywords:
-- test
+- Settings
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

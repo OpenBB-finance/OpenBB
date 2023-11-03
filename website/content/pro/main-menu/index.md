@@ -1,9 +1,26 @@
 ---
-title: Introduction
+title: Main Menu
 sidebar_position: 0
-description: test
+description: The main menu is the gateway to the powerful features of the OpenBB Terminal
+  Pro. Find the latest updates from the OpenBB team, financial news articles, and
+  use tools for data visualization and analysis across equities, macroeconomics, and
+  cryptocurrencies. Integrate your own data with Data connectors for better financial
+  decisions.
 keywords:
-- test
+- Homepage
+- News
+- Charting
+- Data connectors
+- Financial data
+- Financial news articles
+- Financial decisions
+- Macroeconomics
+- Cryptocurrencies
+- Equities
+- Roadmap
+- Events
+- Technical analysis
+- Data visualization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -14,7 +31,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The main menu is your gateway to the powerful features of the OpenBB Terminal Pro. It comprises four key sections:
 
-* **Home**: This is your dashboard, where you'll find the latest updates and insights from the OpenBB team.
+* **Homepage**: This is your OpenBB homepage, where you'll find the latest updates and insights from the OpenBB team. This includes announcements, roadmap, events and others.
 
 * **News**: Stay informed with the latest financial news articles, curated and presented for easy consumption.
 
