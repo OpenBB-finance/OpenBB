@@ -1,8 +1,25 @@
 ---
-sidebar_position: 1
+title: Tabular data
+sidebar_position: 0
+description: Explore OpenBB Terminal Pro Docs and learn about tabular data manipulation.
+  Discover features like column resizing, reorganization, filtering, sorting, and
+  transposing. Enhance your navigation and analysis of investment research data.
+keywords:
+- tabular data
+- data manipulation
+- column resizing
+- column reorganization
+- column filtering
+- sorting
+- transposing
+- investment research
+- financial data
 ---
 
-# Data Manipulation
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Tabular Data | OpenBB Terminal Pro Docs" />
+
 
 In the realm of investment research, financial data often comes in tabular form. This is because it's predominantly quantitative, and analysts and quants frequently need to delve into the raw data to make informed decisions. To enhance your navigation experience through this data, we've incorporated basic data manipulation capabilities.
 

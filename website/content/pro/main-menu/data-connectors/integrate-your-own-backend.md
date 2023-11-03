@@ -1,8 +1,27 @@
 ---
-sidebar_position: 4
+title: Integrate your own backend
+sidebar_position: 2
+description: Learn how to integrate your own backend with OpenBB Terminal Pro using
+  the cookie-cutter or language-agnostic API approaches, with illustrative guides
+  and principles for handling widget.json files, APIs, interfaces, Python, FastAPI
+  and more.
+keywords: Docs
+- OpenBB cookie-cutter
+- widgets.json
+- OpenBB API
+- Endpoint integration
+- widget configuration
+- Language-Agnostic API
+- API implementation
+- Python
+- FastAPI
+- Terminal Pro widgets
+- Widget definitions
 ---
 
-# Integrate your own backend
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Integrate your own backend | OpenBB Terminal Pro Docs" />
 
 ## Using OpenBB Cookie-Cutter
 

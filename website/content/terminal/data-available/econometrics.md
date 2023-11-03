@@ -585,7 +585,7 @@ wp.year.1987     0.1348     0.0817     1.6504     0.0989     -0.0253      0.2950
 
 Doing research both as a student or professor for a university or as a professional often requires the findings to be easily replicated. Furthermore, as many steps could be required it can be very beneficial to have the ability to make small adjustments without needing to re-do every single step again. This is where `.openbb` files play an important role.
 
-By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located where the application is located inside the `routines` folder. Please find a more elaborate explanation in the [Scripts & Routines Guide](/terminal/usage/guides/scripts-and-routines).
+By going to the main menu as depicted below, the `exe` command can be used. With this command you can run `.openbb` scripts that automatically run a set of commands similarly to that of the Stata do-files and SPSS syntax files. These scripts are located where the application is located inside the `routines` folder. Please find a more elaborate explanation in the [Scripts & Routines Guide](/terminal/usage/routines/introduction-to-routines).
 
 This demo file has the following contents:
 

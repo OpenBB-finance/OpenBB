@@ -59,6 +59,9 @@ dependencies:
   tailwindcss-radix:
     specifier: ^2.7.0
     version: 2.8.0
+  typescript-toggle:
+    specifier: ^1.1.0
+    version: 1.1.0(react@17.0.2)
 
 devDependencies:
   '@docusaurus/module-type-aliases':
@@ -8695,6 +8698,15 @@ packages:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
     dependencies:
       is-typedarray: 1.0.0
+    dev: false
+
+  /typescript-toggle@1.1.0(react@17.0.2):
+    resolution: {integrity: sha512-fdqedJ1rokLOhP2HJYZwRwfkQ1tEQ2C2YVMWPGwsVyq/5aonB67F0CbIA1kIu3rou5ZlFP3pvyvp/QLV95WHEg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /typescript@4.9.5:

@@ -1,8 +1,24 @@
 ---
+title: Data providers
 sidebar_position: 2
+description: OpenBB Terminal Pro remains a leading platform in aggregating and standardizing
+  financial data. Be at the helm of choosing quality and affordable data vendors through
+  OpenBB.
+keywords:
+- Financial data aggregation
+- Standardizing financial data
+- Data vendors
+- Data quality
+- Data availability
+- Data cost
+- Data transparency
+- Data freshness
 ---
 
-# Data Providers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Data Provider | OpenBB Terminal Pro Docs" />
+
 
 <img width="1455" alt="275681258-09d976c7-7c3f-417f-9c86-14bd5659bfab" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/071d79ae-1410-4918-ac40-294b54b6068a"/>
 

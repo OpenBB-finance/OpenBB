@@ -83,13 +83,13 @@ See the guide [here](/sdk/data-available/portfolio/introduction) for more inform
 
 <details><summary>How do I change the chart styles?</summary>
 
-See the guide [here](/terminal/usage/guides/customizing-the-terminal#styles).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
+See the guide [here](/terminal/usage/overview/customizing-the-terminal).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
 
 </details>
 
 <details><summary>Can I change the colors of the text in the Terminal?</summary>
 
-Yes, use the `colors` command under the `/settings` menu: [/terminal/usage/guides/customizing-the-terminal](/terminal/usage/guides/customizing-the-terminal)
+Yes, use the `colors` command under the `/settings` menu: [/terminal/usage/overview/customizing-the-terminal](/terminal/usage/overview/customizing-the-terminal)
 
 </details>
 

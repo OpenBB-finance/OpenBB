@@ -1,8 +1,20 @@
 ---
+title: Report
 sidebar_position: 3
+description: Learn how to create a report out of a dashboard in OpenBB Terminal Pro.
+  Discover the power of static reports in PDF or PNG format with additional insights
+  and how to export it.
+keywords: report creation
+- Export dashboard as report
+- Export report as PDF
+- Export report as PNG
+- Insights on report
+- Report from dashboard
 ---
 
-# Report
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Report | OpenBB Terminal Pro Docs" />
 
 <img width="1443" alt="275687043-c79f8643-3c34-43fd-bc77-a53384471e7b" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9360faa9-1a46-43f9-8568-490ef5c1c5a1"/>
 

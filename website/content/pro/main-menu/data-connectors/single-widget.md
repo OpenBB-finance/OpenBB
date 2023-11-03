@@ -1,8 +1,25 @@
 ---
-sidebar_position: 2
+title: Single widget
+sidebar_position: 1
+description: Learn how to use the Single Widget of OpenBB Terminal Pro for seamless
+  integration with your API Endpoints, enabling custom data to be fetched and displayed
+  in an accessible format. Includes features like additional headers and addressing
+  nested JSON data.
+keywords:
+- Single Widget
+- Data Connectors
+- API Endpoints
+- Data Integration
+- User-friendly Table Format
+- Additional Headers
+- Data Key Parameter
+- Nested JSON
+- Custom Backend
 ---
 
-# Single Widget
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Single Widget | OpenBB Terminal Pro Docs" />
 
 The single widget is the most straightforward method to integrate your custom data into OpenBB Terminal Pro. Simply paste your API endpoint into the data connectors tab, and voila! Your data is fetched and displayed in a user-friendly table format.
 

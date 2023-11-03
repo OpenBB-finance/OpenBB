@@ -1,8 +1,22 @@
 ---
-sidebar_position: 3
+title: Dashboards
+sidebar_position: 0
+description: This documentation page explains the functionalities of OpenBB Terminal
+  Pro's dashboard feature. Learn how to add widgets, text, rename, duplicate, and
+  interact with dashboards in various ways for efficient data visualization.
+keywords: Documentation
+- Dashboard Usage
+- Data Visualization
+- Add Widgets
+- Manage Dashboards
+- Dashboard export
+- Dashboard settings
+- Create new dashboard
 ---
 
-# Dashboards
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dashboards | OpenBB Terminal Pro Docs" />
 
 <img width="1443" alt="275685305-db3b650a-5e33-4709-acc7-0f86f9522c06" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e5f957db-3cf8-4873-9629-1fed0f08f2c7"/>
 
@@ -41,4 +55,3 @@ This allows to:
 <img width="223" alt="275686811-6d7daa4d-6b09-4eb9-8972-626950fc7f6d" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2bf5b35f-3522-4512-aac7-bc9bec178b00"/>
 
 Which allows the creation of a new dashboard, or a new folder.
-
