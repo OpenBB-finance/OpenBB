@@ -99,7 +99,7 @@ The `holdings` command provides a current view of the loaded ETF.
 | MAS      | Masco Corporation                  | 3.99%      |    821783 |
 | TT       | Trane Technologies plc             | 3.98%      |    224389 |
 | PHM      | PulteGroup, Inc.                   | 3.92%      |    572445 |
-| ALLE     | Allegion plc                       | 3.92%      |    427461 |
+| ALLE     | Allegion plc                       | 3.92%      |    427461 |  # cspell: disable
 | LEN      | Lennar Corporation                 | 3.87%      |    389388 |
 | DHI      | D.R. Horton, Inc.                  | 3.83%      |    393696 |
 | FND      | Floor & Decor Holdings, Inc.       | 3.78%      |    493049 |

@@ -52,7 +52,7 @@ At the base of the menu, there are six functions. They are are displayed above, 
 
 The `load` command is similar to the `/stocks/load` command, with some key differences:
 
-- `--vs` parameter is for relative pricing in a specifc fiat or stable coin.
+- `--vs` parameter is for relative pricing in a specific fiat or stable coin.
 - When the `--source` is "CCXT", an `--exchange` parameter is required to select the specific data source.
   - Data availability and granularity varies.
 

@@ -67,7 +67,7 @@ Loaded files and data columns:
 
 ### Show
 
-Use the `show` command to inspect a a loaded file.  If more than one file has been loaded, specificy the target's name.
+Use the `show` command to inspect a a loaded file.  If more than one file has been loaded, specify the target's name.
 
 ```console
 show sp500_pe
