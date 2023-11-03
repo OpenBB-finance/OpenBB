@@ -6,7 +6,7 @@ description: The page contains detailed information about the interactive elemen
   settings, these widgets offer an interactive dashboard experience for users to track
   and analyze their investments and data. The widgets support both raw data and chart
   interpretations for data visualization.
-keywords: Docs
+keywords:
 - Widgets
 - Upper Tab
 - Interactive elements
