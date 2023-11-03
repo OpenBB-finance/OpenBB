@@ -34,7 +34,6 @@ class EconomicCalendarData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
     country: Optional[str] = Field(default=None, description="Country of event.")
-    category: Optional[str] = Field(default=None, description="Category of event.")
     event: Optional[str] = Field(default=None, description="Event name.")
     reference: Optional[str] = Field(
         default=None,

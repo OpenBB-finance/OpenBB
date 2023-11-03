@@ -1,25 +1,37 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Union
-
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_economy(Container):
     """/economy
     available_indices
+    calendar
     const
     cot
     cot_search
     cpi
-    econcal
     european_index
     european_index_constituents
     fred_index
@@ -116,6 +128,120 @@ class ROUTER_economy(Container):
 
         return self._run(
             "/economy/available_indices",
+            **inputs,
+        )
+
+    @validate
+    def calendar(
+        self,
+        start_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Union[Literal["fmp", "tradingeconomics"], None] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Economic Calendar.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Union[Literal['fmp', 'tradingeconomics'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        country : Optional[Union[List[str], str]]
+            Country of the event (provider: tradingeconomics)
+        importance : Literal['Low', 'Medium', 'High']
+            Importance of the event. (provider: tradingeconomics)
+        group : Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
+            Grouping of events (provider: tradingeconomics)
+
+        Returns
+        -------
+        OBBject
+            results : Union[List[EconomicCalendar]]
+                Serializable results.
+            provider : Union[Literal['fmp', 'tradingeconomics'], None]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        EconomicCalendar
+        ----------------
+        date : Optional[Union[datetime]]
+            The date of the data.
+        country : Optional[Union[str]]
+            Country of event.
+        event : Optional[Union[str]]
+            Event name.
+        reference : Optional[Union[str]]
+            Abbreviated period for which released data refers to.
+        source : Optional[Union[str]]
+            Source of the data.
+        sourceurl : Optional[Union[str]]
+            Source URL.
+        actual : Optional[Union[str, float]]
+            Latest released value.
+        previous : Optional[Union[str, float]]
+            Value for the previous period after the revision (if revision is applicable).
+        consensus : Optional[Union[str, float]]
+            Average forecast among a representative group of economists.
+        forecast : Optional[Union[str, float]]
+            Trading Economics projections
+        url : Optional[Union[str]]
+            Trading Economics URL
+        importance : Optional[Union[Literal[0, 1, 2, 3], str]]
+            Importance of the event. 1-Low, 2-Medium, 3-High
+        currency : Optional[Union[str]]
+            Currency of the data.
+        unit : Optional[Union[str]]
+            Unit of the data.
+        change : Optional[Union[float]]
+            Value change since previous. (provider: fmp)
+        change_percent : Optional[Union[float]]
+            Percentage change since previous. (provider: fmp)
+        updated_at : Optional[Union[datetime]]
+            Last updated timestamp. (provider: fmp)
+        created_at : Optional[Union[datetime]]
+            Created at timestamp. (provider: fmp)
+        category : Optional[Union[str]]
+            Category of event. (provider: tradingeconomics)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.calendar()
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/economy/calendar",
             **inputs,
         )
 
@@ -527,146 +653,6 @@ class ROUTER_economy(Container):
 
         return self._run(
             "/economy/cpi",
-            **inputs,
-        )
-
-    @validate
-    def econcal(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        importance: typing_extensions.Annotated[
-            Literal[1, 2, 3],
-            OpenBBCustomParameter(
-                description="Importance of the event. (1-Low, 2-Medium, 3-High)"
-            ),
-        ] = 3,
-        group: typing_extensions.Annotated[
-            Union[
-                Literal[
-                    "interest rate",
-                    "inflation",
-                    "bonds",
-                    "consumer",
-                    "gdp",
-                    "government",
-                    "housing",
-                    "labour",
-                    "markets",
-                    "money",
-                    "prices",
-                    "trade",
-                    "business",
-                ],
-                None,
-            ],
-            OpenBBCustomParameter(description="Grouping of events"),
-        ] = None,
-        country: typing_extensions.Annotated[
-            Union[List[str], str, None],
-            OpenBBCustomParameter(description="Country of the event"),
-        ] = None,
-        provider: Union[Literal["tradingeconomics"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """GDP Data.
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        importance : Literal[1, 2, 3]
-            Importance of the event. (1-Low, 2-Medium, 3-High)
-        group : Union[Literal['interest rate', 'inflation', 'bonds', 'consumer', ...
-            Grouping of events
-        country : Union[List[str], str, None]
-            Country of the event
-        provider : Union[Literal['tradingeconomics'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tradingeconomics' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[EconomicCalendar]]
-                Serializable results.
-            provider : Union[Literal['tradingeconomics'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        EconomicCalendar
-        ----------------
-        date : Optional[Union[datetime]]
-            The date of the data.
-        country : Optional[Union[str]]
-            Country of event.
-        category : Optional[Union[str]]
-            Category of event.
-        event : Optional[Union[str]]
-            Event name.
-        reference : Optional[Union[str]]
-            Abbreviated period for which released data refers to.
-        source : Optional[Union[str]]
-            Source of the data.
-        sourceurl : Optional[Union[str]]
-            Source URL.
-        actual : Optional[Union[str]]
-            Latest released value.
-        previous : Optional[Union[str]]
-            Value for the previous period after the revision (if revision is applicable).
-        consensus : Optional[Union[str]]
-            Average forecast among a representative group of economists.
-        forecast : Optional[Union[str]]
-            Trading Economics projections
-        url : Optional[Union[str]]
-            Trading Economics URL
-        importance : Optional[Union[Literal[0, 1, 2, 3]]]
-            Importance of the event. 1-Low, 2-Medium, 3-High
-        currency : Optional[Union[str]]
-            Currency of the data.
-        unit : Optional[Union[str]]
-            Unit of the data.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.economy.econcal(importance=3)
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "importance": importance,
-                "group": group,
-                "country": country,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/economy/econcal",
             **inputs,
         )
 
