@@ -4,7 +4,8 @@ sidebar_position: 3
 description: Learn how to create a report out of a dashboard in OpenBB Terminal Pro.
   Discover the power of static reports in PDF or PNG format with additional insights
   and how to export it.
-keywords: report creation
+keywords:
+- Report creation
 - Export dashboard as report
 - Export report as PDF
 - Export report as PNG
