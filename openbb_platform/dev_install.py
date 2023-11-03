@@ -42,6 +42,7 @@ openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
+openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
