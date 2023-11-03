@@ -1,0 +1,30 @@
+"""Euro Area Yield Curve Data Model."""
+
+
+from datetime import date as dateType
+from typing import Optional, Literal
+
+from pydantic import Field
+
+from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+
+
+class EUYieldCurveQueryParams(QueryParams):
+    """Euro Area Yield Curve Query."""
+
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
+    type_: Literal["spot_rate", "instantaneous_forward", "par_yield"] = Field(
+        default="spot_rate",
+        description="The type of series.",
+    )
+
+
+class EUYieldCurveData(Data):
+    """Euro Area Yield Curve  Data."""
+
+    maturity: str = Field(description="Yield curve rate maturity.")
+    rate: Optional[float] = Field(description="Yield curve rate.", default=None)
