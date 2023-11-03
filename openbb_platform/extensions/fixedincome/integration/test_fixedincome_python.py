@@ -178,3 +178,210 @@ def test_fixedincome_iorb(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "parameter": "daily_excl_weekend",
+                "provider": "fred",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_dwpcr(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.dwpcr(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "lending"})],
+)
+@pytest.mark.integration
+def test_fixedincome_ecb_interest_rates(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.ecb_interest_rates(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "yield"}),
+        (
+            {
+                "category": "all",
+                "area": "us",
+                "grade": "non_sovereign",
+                "options": True,
+                "provider": "fred",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "type_": "yield",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_ice_bofa(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.ice_bofa(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "aaa"})],
+)
+@pytest.mark.integration
+def test_fixedincome_moody(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.moody(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "maturity": "30d",
+                "category": "financial",
+                "grade": "aa",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_cp(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.cp(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "maturity": [10.0],
+                "category": ["spot_rate"],
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_spot(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.spot(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"date": "2023-01-01", "yield_curve": ["spot"]})],
+)
+@pytest.mark.integration
+def test_fixedincome_hqm(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.hqm(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
+)
+@pytest.mark.integration
+def test_fixedincome_tmc(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.tmc(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "10y"})],
+)
+@pytest.mark.integration
+def test_fixedincome_ffrmc(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.ffrmc(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
+)
+@pytest.mark.integration
+def test_fixedincome_tbffr(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.tbffr(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"date": "2023-01-01", "type_": "spot_rate"}),
+        (
+            {
+                "rating": "A",
+                "provider": "ecb",
+                "date": "2023-01-01",
+                "type_": "spot_rate",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_eu_ycrv(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.eu_ycrv(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
