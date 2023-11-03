@@ -49,7 +49,6 @@ class FMPEtfHoldingsPerformanceFetcher(
         )
         if dates is None:
             return []
-
         # Get holdings for that date
         holdings = FMPEtfHoldingsFetcher().extract_data(
             FMPEtfHoldingsFetcher.transform_query(
@@ -60,17 +59,24 @@ class FMPEtfHoldingsPerformanceFetcher(
         )
         if holdings is None:
             return []
-
-        # # Get price performance for the holdings
-        holdings_str = ",".join(
-            [holding["symbol"] for holding in holdings if holding["symbol"] is not None]
-        )
-        _performance = FMPPricePerformanceFetcher().extract_data(
-            FMPPricePerformanceFetcher.transform_query({"symbol": holdings_str}),
-            credentials,
-            **kwargs,
-        )
-        return _performance
+        holdings_list = [
+            holding["symbol"] for holding in holdings if holding["symbol"] is not None
+        ]
+        # Split into chunks of 1000
+        chunks = [
+            holdings_list[i : i + 1000] for i in range(0, len(holdings_list), 1000)
+        ]
+        # Get price performance for the holdings
+        holdings_performance: list = []
+        for holding_chunk in chunks:
+            holdings_str = ",".join(holding_chunk)
+            _performance = FMPPricePerformanceFetcher().extract_data(
+                FMPPricePerformanceFetcher.transform_query({"symbol": holdings_str}),
+                credentials,
+                **kwargs,
+            )
+            holdings_performance.extend(_performance[d] for d in _performance)
+        return holdings_performance
 
     @staticmethod
     def transform_data(
@@ -79,4 +85,4 @@ class FMPEtfHoldingsPerformanceFetcher(
         **kwargs: Any,
     ) -> List[FMPEtfHoldingsPerformanceData]:
         """Return the transformed data."""
-        return [FMPEtfHoldingsPerformanceData.model_validate(data[d]) for d in data]
+        return [FMPEtfHoldingsPerformanceData.model_validate(d) for d in data]
