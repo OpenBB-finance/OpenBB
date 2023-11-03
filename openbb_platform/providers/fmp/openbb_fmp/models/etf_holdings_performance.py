@@ -62,10 +62,8 @@ class FMPEtfHoldingsPerformanceFetcher(
         holdings_list = [
             holding["symbol"] for holding in holdings if holding["symbol"] is not None
         ]
-        # Split into chunks of 1000
-        chunks = [
-            holdings_list[i : i + 1000] for i in range(0, len(holdings_list), 1000)
-        ]
+        # Split into chunks of 500
+        chunks = [holdings_list[i : i + 500] for i in range(0, len(holdings_list), 500)]
         # Get price performance for the holdings
         holdings_performance: list = []
         for holding_chunk in chunks:
