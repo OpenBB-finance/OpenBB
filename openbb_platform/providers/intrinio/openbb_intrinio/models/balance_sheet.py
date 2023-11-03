@@ -1,8 +1,9 @@
 """Intrinio Balance Sheet Fetcher."""
 
 
-from datetime import date
-from typing import Any, Dict, List, Literal, Optional
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
+from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
@@ -10,32 +11,24 @@ from openbb_provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from pydantic import Field, alias_generators
+from pydantic import alias_generators
 
 
 class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     """Intrinio Balance Sheet QueryParams.
 
-    Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_reported_financials_v2
+    Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
-
-    type: Literal["reported", "standardized"] = Field(
-        default="reported", description="Type of the statement to be fetched."
-    )
-    year: Optional[int] = Field(
-        default=None,
-        description="Year of the statement to be fetched.",
-    )
 
 
 class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
 
     __alias_dict__ = {
-        "cash_and_cash_equivalents": "cash_and_equivalents",
-        "marketable_securities": "short_term_investments",
-        "net_receivables": "note_and_lease_receivable",
+        "cash_and_cash_equivalents_at_carrying_value": "cash_and_equivalents",
+        "marketable_securities_current": "short_term_investments",
+        "accounts_receivable_net_current": "note_and_lease_receivable",
         "inventory": "inventory_net",
         "total_non_current_assets": "total_noncurrent_assets",
         "tax_payables": "other_taxes_payables",
@@ -58,12 +51,7 @@ class IntrinioBalanceSheetFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioBalanceSheetQueryParams:
         """Transform the query params."""
-        transform_params = params
-
-        if not params.get("year"):
-            transform_params["year"] = date.today().year - 1
-
-        return IntrinioBalanceSheetQueryParams(**transform_params)
+        return IntrinioBalanceSheetQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -73,22 +61,53 @@ class IntrinioBalanceSheetFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+        statement_code = "balance_sheet_statement"
+        period_type = "FY" if query.period == "annual" else "QTR"
+
+        fundamentals_data: Dict = {}
+        data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
-        url_params = f"{query.symbol}-balance_sheet_statement-{query.year}"
-        statement_param = f"{query.type}_financials"
+        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+        fundamentals_url = (
+            f"{base_url}/companies/{query.symbol}/fundamentals?"
+            f"{fundamentals_url_params}&api_key={api_key}"
+        )
 
-        data = []
+        fundamentals_data = get_data_one(fundamentals_url, **kwargs).get(
+            "fundamentals", []
+        )
+        fiscal_periods = [
+            f"{item['fiscal_year']}-{item['fiscal_period']}"
+            for item in fundamentals_data
+        ]
+        fiscal_periods = fiscal_periods[: query.limit]
 
-        if query.period == "annual":
-            url = f"{base_url}/fundamentals/{url_params}-FY/{statement_param}?api_key={api_key}"
-            data.append(get_data_one(url, **kwargs))
+        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
+            statement_data: Dict = {}
+            calculations_data: Dict = {}
 
-        elif query.period == "quarter":
-            # TODO: Fix quarter range after Intrinio's response
-            for quarter in range(1, 4):
-                url = f"{base_url}/fundamentals/{url_params}-Q{quarter}/{statement_param}?api_key={api_key}"
-                data.append(get_data_one(url, **kwargs))
+            intrinio_id = f"{query.symbol}-{statement_code}-{period}"
+            statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            statement_data = get_data_one(statement_url, **kwargs)
+
+            intrinio_id = f"{query.symbol}-calculations-{period}"
+            calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            calculations_data = get_data_one(calculations_url, **kwargs)
+
+            data.append(
+                {
+                    "date": statement_data["fundamental"]["end_date"],
+                    "period": statement_data["fundamental"]["fiscal_period"],
+                    "cik": statement_data["fundamental"]["company"]["cik"],
+                    "symbol": statement_data["fundamental"]["company"]["ticker"],
+                    "financials": statement_data["standardized_financials"]
+                    + calculations_data["standardized_financials"],
+                }
+            )
+
+        with ThreadPoolExecutor() as executor:
+            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
 
         return data
 
@@ -97,25 +116,23 @@ class IntrinioBalanceSheetFetcher(
         query: IntrinioBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioBalanceSheetData]:
         """Return the transformed data."""
-        transformed_data = []
+        transformed_data: List[IntrinioBalanceSheetData] = []
 
         for item in data:
-            sub_dict = {}
+            sub_dict: Dict[str, Any] = {}
 
-            for sub_item in item.get(
-                "reported_financials", item.get("standardized_financials", [])
-            ):
-                key = alias_generators.to_snake(
-                    sub_item.get("xbrl_tag", sub_item.get("data_tag", {})).get(
-                        "tag", ""
-                    )
-                )
-                sub_dict[key] = int(sub_item["value"])
+            for sub_item in item["financials"]:
+                field_name = alias_generators.to_snake(sub_item["data_tag"]["tag"])
+                sub_dict[field_name] = float(sub_item["value"])
 
-            sub_dict["date"] = item["fundamental"]["end_date"]
-            sub_dict["period"] = item["fundamental"]["fiscal_period"]
-            sub_dict["cik"] = item["fundamental"]["company"]["cik"]
-            sub_dict["symbol"] = item["fundamental"]["company"]["ticker"]
+            sub_dict["date"] = item["date"]
+            sub_dict["period"] = item["period"]
+            sub_dict["cik"] = item["cik"]
+            sub_dict["symbol"] = item["symbol"]
+
+            # Intrinio does not return Q4 data but FY data instead
+            if query.period == "quarter" and item["period"] == "FY":
+                sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioBalanceSheetData(**sub_dict))
 

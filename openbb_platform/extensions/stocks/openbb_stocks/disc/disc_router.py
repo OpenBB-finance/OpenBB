@@ -1,5 +1,4 @@
-"""ETF Router."""
-
+"""Disc router for Equities."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -11,100 +10,81 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-from openbb_etf.disc.disc_router import router as disc_router
-
-router = Router(prefix="")
-router.include_router(disc_router)
-
-# pylint: disable=unused-argument
+router = Router(prefix="/disc")
 
 
-@router.command(model="EtfSearch")
-def search(
+@router.command(model="EquityGainers")
+def gainers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Search for ETFs.
-
-    An empty query returns the full list of ETFs from the provider.
-    """
+    """Get the top Equity gainers."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EtfHistorical")
-def historical(
+@router.command(model="EquityLosers")
+def losers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """ETF Historical Market Price."""
+    """Get the top Equity losers."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EtfInfo")
-def info(
+@router.command(model="EquityActive")
+def active(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """ETF Information Overview."""
+    """Get the most active Equities."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EtfSectors")
-def sectors(
+@router.command(model="EquityUndervaluedLargeCaps")
+def undervalued_large_caps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """ETF Sector weighting."""
+    """Get undervalued large cap Equities."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EtfCountries")
-def countries(
+@router.command(model="EquityUndervaluedGrowthEquities")
+def undervalued_growth_equities(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """ETF Country weighting."""
+    """Get undervalued growth Equities."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="PricePerformance")
-def price_performance(
+@router.command(model="EquityAggressiveSmallCaps")
+def aggressive_small_caps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Price performance as a return, over different periods."""
+    """Get aggressive small cap Equities."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EtfHoldings")
-def holdings(
+@router.command(model="GrowthTechEquities")
+def growth_tech_equities(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get the holdings for an individual ETF."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="EtfHoldingsDate")
-def holdings_date(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Get the holdings filing date for an individual ETF."""
+    """Get growth tech Equities."""
     return OBBject(results=Query(**locals()).execute())

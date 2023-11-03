@@ -1,3 +1,5 @@
+"""Intrinio References Helpers."""
+
 from typing import Literal, Optional
 
 from openbb_provider.abstract.data import Data
@@ -14,8 +16,6 @@ SOURCES = Literal[
     "intrinio_mx_plus",
     "delayed_sip",
 ]
-
-IPO_STATUS = Literal["upcoming", "priced", "withdrawn"]
 
 
 class IntrinioCompany(Data):
