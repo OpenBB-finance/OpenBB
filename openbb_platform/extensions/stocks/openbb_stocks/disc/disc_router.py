@@ -104,3 +104,14 @@ def top_retail(
     ADRs, and ETPs.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="UpcomingReleaseDays")
+def upcoming_release_days(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get upcoming release days."""
+    return OBBject(results=Query(**locals()).execute())
