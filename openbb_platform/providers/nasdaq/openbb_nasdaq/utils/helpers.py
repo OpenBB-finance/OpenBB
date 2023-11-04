@@ -19,7 +19,7 @@ T = TypeVar("T", bound=BaseModel)
 def remove_html_tags(text: str):
     """Remove HTML tags from a string."""
     clean = re.compile("<.*?>")
-    return re.sub(clean, "", text)
+    return re.sub(clean, " ", text)
 
 
 def get_random_agent() -> str:

@@ -58,11 +58,14 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     def clean_html(cls, v: str):
         """Format HTML entities to normal."""
         if v:
+            v = (
+                html.unescape(v)
+                .replace("\r\n\r\n", " ")
+                .replace("\r\n", " ")
+                .replace("''", "'")
+            )
             v = remove_html_tags(v)
-
-        return (
-            html.unescape(v).replace("\r\n\r\n", " ").replace("\r\n", "") if v else None
-        )
+        return v if v else None
 
 
 class NasdaqEconomicCalendarFetcher(
