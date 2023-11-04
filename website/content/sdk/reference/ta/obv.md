@@ -1,12 +1,24 @@
 ---
 title: obv
-description: OpenBB SDK Function
+description: This page provides information on how to use the On Balance Volume (OBV)
+  technical indicator source code. It covers how to plot the OBV chart and list the
+  parameters and returns. This information is useful for stock market analysis.
+keywords:
+- OBV
+- On Balance Volume
+- technical indicator source code
+- plot OBV chart
+- parameters
+- returns
+- stock market analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.obv - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# obv
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +48,6 @@ openbb.ta.obv(data: pd.DataFrame)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +79,6 @@ openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", exte
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

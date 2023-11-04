@@ -1,9 +1,20 @@
 ---
 title: coin
-description: OpenBB SDK Function
+description: This page details how to fetch specific coin data by ID using the CoinPaprika
+  API in the OpenBBTerminal. Use this information to explore the specific parameters
+  and returns.
+keywords:
+- coin
+- cryptocurrency
+- CoinPaprika
+- coin data
+- API
+- coin id
 ---
 
-# coin
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.coin - Reference | OpenBB SDK Docs" />
 
 Get coin by id [Source: CoinPaprika]
 
@@ -30,4 +41,3 @@ openbb.crypto.dd.coin(symbol: str = "eth-ethereum")
 | ---- | ----------- |
 | dict | Coin response |
 ---
-

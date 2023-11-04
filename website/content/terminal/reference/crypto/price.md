@@ -1,9 +1,23 @@
 ---
 title: price
-description: OpenBB Terminal Function
+description: This documentation page contains information on how to display the price
+  and confidence interval of various crypto coins in real-time using Pyth. It features
+  a table of ~100 available symbols for different coins. Use the provided command
+  options to load data.
+keywords:
+- Price display
+- Real-time data
+- Confidence interval
+- Pyth
+- Usage
+- Parameters
+- Symbols
+- Crypto coins
 ---
 
-# price
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto /price - Reference | OpenBB Terminal Docs" />
 
 Display price and interval of confidence in real-time. [Source: Pyth]
 

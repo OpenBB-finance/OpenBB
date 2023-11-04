@@ -1,9 +1,22 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: Understand how to use the 'quantile' function, a key statistical tool
+  used to divide distributions. Learn about parameters including 'n_window' for window
+  length and 'f_quantile' for specifying quantile values.
+keywords:
+- quantile function
+- distribution
+- statistics
+- median
+- n_window
+- f_quantile
+- parameters
+- data analysis
 ---
 
-# quantile
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/quantile - Reference | OpenBB Terminal Docs" />
 
 The quantiles are values which divide the distribution such that there is a given proportion of observations below the quantile. For example, the median is a quantile. The median is the central value of the distribution, such that half the points are less than or equal to it and half are greater than or equal to it. By default, q is set at 0.5, which effectively is median. Change q to get the desired quantile (0q1).
 

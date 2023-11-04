@@ -1,9 +1,34 @@
 ---
 title: valuation
-description: OpenBB Terminal Function
+description: Learn how to view and understand group valuation data for different sectors,
+  industries, or countries using various parameters. Find the exact metrics you need
+  regarding Market Cap, P/E, P/S, P/B and more.
+keywords:
+- valuation
+- sectors
+- industry
+- country
+- data group
+- sortby
+- reverse
+- MarketCap
+- P/E
+- FwdP/E
+- PEG
+- P/S
+- P/B
+- P/C
+- P/FCF
+- EPSpast5Y
+- EPSnext5Y
+- Salespast5Y
+- Change
+- Volume
 ---
 
-# valuation
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /valuation - Reference | OpenBB Terminal Docs" />
 
 View group (sectors, industry or country) valuation data. [Source: Finviz]
 

@@ -1,9 +1,23 @@
 ---
 title: divcal
-description: OpenBB Terminal Function
+description: Guide to use divcal for acquiring dividend calendar for a selected date
+  in the stock market. The parameters include date, sort, and reverse. The data includes
+  Name, Symbol, Ex-Dividend date, Payment date, Record date, Dividend, and Annual
+  Dividend.
+keywords:
+- divcal
+- dividend calendar
+- stock market
+- ex-dividend date
+- payment date
+- record date
+- annual dividend
+- announcement date
 ---
 
-# divcal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/divcal - Reference | OpenBB Terminal Docs" />
 
 Get dividend calendar for selected date
 

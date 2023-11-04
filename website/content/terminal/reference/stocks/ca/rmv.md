@@ -1,9 +1,21 @@
 ---
 title: rmv
-description: OpenBB Terminal Function
+description: The 'rmv' documentation page explains how to use the Python command line
+  tool for removing similar tickers. It provides a detailed description of parameters,
+  including optional choices and default values.
+keywords:
+- rmv
+- remove similar tickers
+- command line tool
+- API
+- parameters
+- optional choices
+- default value
 ---
 
-# rmv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/rmv - Reference | OpenBB Terminal Docs" />
 
 Remove similar tickers to compare with.
 

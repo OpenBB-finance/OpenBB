@@ -1,9 +1,20 @@
 ---
 title: desc
-description: OpenBB Terminal Function
+description: Informative project description utility for numerous blockchain projects
+  with parameters such as 'project of interest'. The page informs about the metadata
+  and application of the tool across different use cases.
+keywords:
+- docusaurus
+- project description
+- blockchain
+- crypto projects
+- metadata
+- usage
 ---
 
-# desc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/desc - Reference | OpenBB Terminal Docs" />
 
 Display project description [Source: Token Terminal]
 

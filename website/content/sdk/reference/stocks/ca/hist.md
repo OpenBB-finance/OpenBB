@@ -1,12 +1,31 @@
 ---
 title: hist
-description: OpenBB SDK Function
+description: Python code examples using OpenBB Terminal to retrieve, visualize and
+  manipulate historical stock prices from Yahoo Finance for a list of comparison stocks.
+  The code covers data acquisition, charting of historical prices, and export functionalities.
+keywords:
+- stock comparison
+- historical stock prices
+- data visualization
+- Python code
+- Yahoo Finance
+- stock market analysis
+- stock price chart
+- stock data export
+- data manipulation
+- stock data normalization
+- Comparable companies
+- Finnhub peers
+- Finnviz peers
+- Polygon peers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.hist - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hist
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +57,6 @@ openbb.stocks.ca.hist(similar: List[str], start_date: Optional[str] = None, cand
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing candle type variable for each ticker |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +90,6 @@ openbb.stocks.ca.hist_chart(similar: List[str], start_date: Optional[str] = None
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

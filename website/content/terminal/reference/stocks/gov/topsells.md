@@ -1,9 +1,23 @@
 ---
 title: topsells
-description: OpenBB Terminal Function
+description: The page provides information on the top sells in government trading.
+  Understand how to use different options like governing body, limit of top tickers,
+  past transaction months and others to filter the information.
+keywords:
+- government trading
+- top sells
+- congress
+- senate
+- house
+- past transactions months
+- limit of top tickers
+- print raw data
+- quiverquant
 ---
 
-# topsells
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/gov/topsells - Reference | OpenBB Terminal Docs" />
 
 Top sells for government trading. [Source: www.quiverquant.com]
 

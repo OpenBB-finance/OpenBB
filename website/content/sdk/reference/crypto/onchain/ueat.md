@@ -1,12 +1,22 @@
 ---
 title: ueat
-description: OpenBB SDK Function
+description: Learn how to monitor unique ethereum address transactions using OpenBB's
+  ueat. Explore how to use the ueat function and chart for effective insights.
+keywords:
+- ueat
+- ethereum address transactions
+- crypto onchain
+- bitquery model
+- bitquery view
+- monitor ethereum transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.ueat - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ueat
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +50,6 @@ openbb.crypto.onchain.ueat(interval: str = "day", limit: int = 90, sortby: str =
 | pd.DataFrame | Unique ethereum addresses which made a transaction |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +82,6 @@ openbb.crypto.onchain.ueat_chart(interval: str = "days", limit: int = 10, sortby
 | ---- | ----------- |
 | pd.DataFrame | Number of unique ethereum addresses which made a transaction in given time interval |
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,24 @@
 ---
 title: curve
-description: OpenBB SDK Function
+description: The documentation page provides detailed instructions on how to retrieve
+  and display curve futures using the OpenBB Python library, with source code provided.
+  The API functions interact with data from Yahoo Finance and include customization
+  options for data representation and export format.
+keywords:
+- curve futures
+- Yahoo Finance
+- futures data
+- data visualization
+- matplotlib
+- API documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures.curve - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# curve
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +48,6 @@ openbb.futures.curve(symbol: str = "")
 | ---- | ----------- |
 | pd.DataFrame | Dictionary with sector weightings allocation |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +79,6 @@ openbb.futures.curve_chart(symbol: str, raw: bool = False, export: str = "", ext
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

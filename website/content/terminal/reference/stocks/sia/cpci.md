@@ -1,9 +1,25 @@
 ---
 title: cpci
-description: OpenBB Terminal Function
+description: This page provides information on the usage and parameters of 'cpci',
+  a tool for analyzing Companies per Country based on Industry and Market Cap. It
+  helps users understand how to input parameters and what effect each one has on the
+  output.
+keywords:
+- cpci
+- companies per country
+- industry
+- market cap
+- parameters
+- usage
+- data analysis
+- raw data
+- maximum number of countries to display
+- minimum percentage to display country
 ---
 
-# cpci
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/sia/cpci - Reference | OpenBB Terminal Docs" />
 
 Companies per Country based on Industry and Market Cap
 

@@ -1,12 +1,24 @@
 ---
 title: summary
-description: OpenBB SDK Function
+description: This documentation page contains comprehensive information on OpenBB's
+  repository summary and chart view options. You can retrieve a summary with OpenBB
+  library and display it in a chart view. Includes source code links and detailed
+  parameter descriptions for usage.
+keywords:
+- Repository Summary
+- Chart View
+- Source Code
+- Github
+- Docusaurus
+- API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.oss.summary - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# summary
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.alt.oss.summary(repo: str)
 | pd.DataFrame | Dataframe with repo summary - Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +77,6 @@ openbb.alt.oss.summary_chart(repo: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

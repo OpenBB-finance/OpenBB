@@ -1,9 +1,20 @@
 ---
 title: btcct
-description: OpenBB Terminal Function
+description: The btcct page provides details on how to monitor Bitcoin confirmed transactions
+  using the Blockchain API with adjustable date parameters.
+keywords:
+- btcct
+- Bitcoin transactions
+- Blockchain API
+- Confirmed transactions
+- BTC
+- Cryptocurrency
+- Crypto transactions monitoring
 ---
 
-# btcct
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/btcct - Reference | OpenBB Terminal Docs" />
 
 Display BTC confirmed transactions [Source: https://api.blockchain.info/]
 

@@ -1,9 +1,20 @@
 ---
 title: volatility
-description: OpenBB SDK Function
+description: The volatility documentation page covers the important use of volatility
+  method for portfolio and benchmark selected using the Python module openbb. Key
+  concepts include usage of PortfolioEngine, DataFrame and function calls.
+keywords:
+- volatility
+- portfolio
+- benchmark
+- openbb.portfolio.metric.volatility
+- portfolio_engine
+- openbb.portfolio.load
 ---
 
-# volatility
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.metric.volatility - Reference | OpenBB SDK Docs" />
 
 Get volatility for portfolio and benchmark selected
 
@@ -40,4 +51,3 @@ output = openbb.portfolio.metric.volatility(p)
 ```
 
 ---
-

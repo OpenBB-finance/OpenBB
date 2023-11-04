@@ -1,9 +1,20 @@
 ---
 title: holdings
-description: OpenBB SDK Function
+description: The page provides functions to fetch ETF holdings with Python using a
+  specific symbol. It includes source code, parameter information, and return values
+  represented in a dataframe.
+keywords:
+- ETF holdings
+- Source Code
+- Parameters
+- Returns
+- Symbol
+- Dataframe of holdings
 ---
 
-# holdings
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.holdings - Reference | OpenBB SDK Docs" />
 
 Get ETF holdings
 
@@ -30,4 +41,3 @@ openbb.etf.holdings(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of holdings |
 ---
-

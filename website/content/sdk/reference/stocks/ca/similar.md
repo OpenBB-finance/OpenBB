@@ -1,9 +1,23 @@
 ---
 title: similar
-description: OpenBB SDK Function
+description: Documentation for the 'similar' functionality in the OpenBB-finance package.
+  Includes details about the function, parameters and returns, and examples.
+keywords:
+- OpenBB-finance
+- similar tickers
+- stock comparison
+- stock analysis
+- python package
+- Finviz
+- Polygon
+- Finnhub
+- TSNE
+- stock symbols
 ---
 
-# similar
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.similar - Reference | OpenBB SDK Docs" />
 
 Find similar tickers to a given symbol.
 
@@ -50,4 +64,3 @@ similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")
 ```
 
 ---
-

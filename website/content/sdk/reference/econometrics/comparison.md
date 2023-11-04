@@ -1,9 +1,20 @@
 ---
 title: comparison
-description: OpenBB SDK Function
+description: This page provides a comparison function for Panel Data regression results
+  in the openbb terminal. It allows exporting the comparison data and returns an overview
+  of the different regression results as a PanelModelComparison.
+keywords:
+- Panel Data regression
+- regression results comparison
+- econometrics
+- openbb terminal
+- export data
+- PanelModelComparison
 ---
 
-# comparison
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.comparison - Reference | OpenBB SDK Docs" />
 
 Compare regression results between Panel Data regressions.
 
@@ -31,4 +42,3 @@ openbb.econometrics.comparison(regressions: Dict, export: str = "")
 | ---- | ----------- |
 | dict | Returns a PanelModelComparison which shows an overview of the different regression results. |
 ---
-

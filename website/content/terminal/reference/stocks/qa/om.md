@@ -1,9 +1,17 @@
 ---
 title: om
-description: OpenBB Terminal Function
+description: This page provides detailed guidance on how to use the omega ratio function
+  (om) for stock analysis with Python, including usage instructions and parameters.
+keywords:
+- omega ratio
+- stock analysis
+- financial analytics
+- stock market
 ---
 
-# om
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/om - Reference | OpenBB Terminal Docs" />
 
 Provides omega ratio of the selected stock.
 

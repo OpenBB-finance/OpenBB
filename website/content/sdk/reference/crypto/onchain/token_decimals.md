@@ -1,9 +1,21 @@
 ---
 title: token_decimals
-description: OpenBB SDK Function
+description: The page provides a detailed guide on using helper methods to identify
+  token decimal number using OpenBB Crypto's Onchain and Ethplorer model. It provides
+  insightful information about token decimals and how to fetch this information using
+  a given address. Ideal for users interacting with Ethereum-based tokens.
+keywords:
+- token decimals
+- blockchain balance
+- OpenBB crypto
+- onchain
+- ethplorer model
+- crypto token decimals
 ---
 
-# token_decimals
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.token_decimals - Reference | OpenBB SDK Docs" />
 
 Helper methods that gets token decimals number. [Source: Ethplorer]
 
@@ -30,4 +42,3 @@ openbb.crypto.onchain.token_decimals(address: str)
 | ---- | ----------- |
 | Optional[int] | Number of decimals for given token. |
 ---
-

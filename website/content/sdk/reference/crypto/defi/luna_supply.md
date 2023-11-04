@@ -1,12 +1,26 @@
 ---
 title: luna_supply
-description: OpenBB SDK Function
+description: 'Luna Supply documentation: Features two functions that offer supply
+  history data of the Terra ecosystem, in both numerical (DataFrame) and visual (Chart)
+  formats. Each function has customisable parameters providing flexibility to users.'
+keywords:
+- Luna supply
+- Terra ecosystem
+- Supply history data
+- Chart
+- Supply type
+- Day count
+- Export type
+- Result limit
+- External axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.luna_supply - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# luna_supply
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", da
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of supply history data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +83,6 @@ openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_ty
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

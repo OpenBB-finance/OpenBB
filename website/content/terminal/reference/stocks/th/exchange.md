@@ -1,9 +1,18 @@
 ---
 title: exchange
-description: OpenBB Terminal Function
+description: Documentation page for exchanging market information, including usage,
+  parameters and selectable choices.
+keywords:
+- Exchange
+- Market Information
+- Parameters
+- Docusaurus page
+- Documentation
 ---
 
-# exchange
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/th/exchange - Reference | OpenBB Terminal Docs" />
 
 Select the exchange you want see open hours for
 

@@ -1,9 +1,20 @@
 ---
 title: rmv
-description: OpenBB Terminal Function
+description: The rmv command allows users to remove a price from the list in the stock
+  options pricing tool. It is a vital feature in the command line interface market
+  tool, which provides flexibility in managing price lists.
+keywords:
+- rmv command
+- remove price
+- stock options price
+- command line interface
+- price list
+- market tools
 ---
 
-# rmv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/pricing/rmv /options - Reference | OpenBB Terminal Docs" />
 
 Removes a price from the list
 

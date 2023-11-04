@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: opstats
-description: OpenBB Telegram Command
+description: The page provides a detailed description of the 'opstats' command which
+  allows the user to retrieve option information like volatility, IV rank, put/call
+  ratio for a specific stock ticker.
+keywords:
+- opstats
+- volatility
+- IV rank
+- put/call ratio
+- ticker symbol
+- Stock Ticker
 ---
 
-# opstats
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: opstats - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 

@@ -1,9 +1,21 @@
 ---
 title: delete
-description: OpenBB Terminal Function
+description: This documentation page provides a detailed overview of how to use the
+  'delete' command to remove specified columns from a dataset. It includes usage examples
+  and explanations of command parameters to help users leverage this tool more effectively
+  in their data manipulation tasks.
+keywords:
+- delete command
+- dataset manipulation
+- data column removal
+- docusaurus
+- command usage
+- data management
 ---
 
-# delete
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /delete - Reference | OpenBB Terminal Docs" />
 
 The column you want to delete from a dataset.
 
@@ -31,7 +43,7 @@ delete [-d DELETE]
 
 2022 May 31, 04:53 (🦋) /econometrics/ $ show wp
 
-                                      Dataset wp | Showing 10 of 4360 rows                                       
+                                      Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -60,7 +72,7 @@ delete [-d DELETE]
 
 2022 May 31, 04:53 (🦋) /econometrics/ $ show wp
 
-                         Dataset wp | Showing 10 of 4360 rows                          
+                         Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

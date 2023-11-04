@@ -1,12 +1,25 @@
 ---
 title: altindex
-description: OpenBB SDK Function
+description: Page featuring the altindex function of the OpenBB library, enabling
+  the tracking of altcoin performance over various periods of time.
+keywords:
+- altindex
+- altcoin tracking
+- cryptocurrency
+- altcoin index
+- Python crypto library
+- blockchain documentation
+- crypto charting
+- scripting
+- crypto data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.altindex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# altindex
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +52,6 @@ openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_
 | pd.DataFrame | Date, Value (Altcoin Index) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +83,6 @@ openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

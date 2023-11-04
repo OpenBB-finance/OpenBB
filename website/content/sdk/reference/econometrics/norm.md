@@ -1,12 +1,27 @@
 ---
 title: norm
-description: OpenBB SDK Function
+description: This page provides a detailed guide for testing normality in data series
+  using Python with a graphical representation of normal distribution. It also explains
+  how to export data and use external axes for plotting.
+keywords:
+- Econometrics
+- OpenBB-finance
+- Data normality test
+- Timeseries
+- Histogram
+- Data exporting
+- Data plotting
+- Data Science
+- Statistics
+- Normal distribution
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.norm - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# norm
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +51,6 @@ openbb.econometrics.norm(data: pd.Series)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing statistics of normality |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +84,6 @@ openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

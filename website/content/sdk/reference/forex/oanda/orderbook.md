@@ -1,12 +1,26 @@
 ---
 title: orderbook
-description: OpenBB SDK Function
+description: This documentation page hosts information on 'Orderbook' operations in
+  forex trading using the 'Oanda' platform, powered by 'OpenBB'. It includes Python
+  source code, various parameters, and return types. Also addressed is plotting an
+  'Orderbook' chart with 'matplotlib'.
+keywords:
+- orderbook
+- oanda
+- forex
+- currency pair
+- accountID
+- orderbook chart
+- matplotlib
+- pandas DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.orderbook - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# orderbook
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = 
 | Union[pd.DataFrame, bool] | Order book data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +81,6 @@ openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", externa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

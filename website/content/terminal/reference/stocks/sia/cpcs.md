@@ -1,9 +1,21 @@
 ---
 title: cpcs
-description: OpenBB Terminal Function
+description: CPCS is a powerful tool that allows users to view company distribution
+  based on various parameters like sector, market cap and more. It offers customizable
+  options to control the data display.
+keywords:
+- CPCS
+- Company distribution by Country, Sector and Market Cap
+- Country distribution data
+- Sector distribution data
+- Market cap data
+- Data visualization
+- Data customization
 ---
 
-# cpcs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/sia/cpcs - Reference | OpenBB Terminal Docs" />
 
 Companies per Country based on Sector and Market Cap
 

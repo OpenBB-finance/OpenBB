@@ -1,9 +1,21 @@
 ---
 title: balance
-description: OpenBB Terminal Function
+description: Generates and prints either a yearly or quarterly balance statement of
+  a company, and compares its financial data with similar companies. The balance command
+  also provides a way to specify a preferred timeframe.
+keywords:
+- balance statement
+- financial data
+- yearly balance
+- quarterly balance
+- company comparison
+- financial comparison
+- financial metrics
 ---
 
-# balance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/balance - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly balance statement the company, and compares it against similar companies.
 

@@ -1,9 +1,20 @@
 ---
 title: trending
-description: OpenBB Terminal Function
+description: The 'Trending' page provides the latest news articles sourced from Seeking
+  Alpha. Users can access articles by ID, limit the number of articles displayed,
+  and filter by start date.
+keywords:
+- Trending
+- News Articles
+- Seeking Alpha
+- Article ID
+- Article Limit
+- Start Date
 ---
 
-# trending
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/trending - Reference | OpenBB Terminal Docs" />
 
 Trending news articles. [Source: Seeking Alpha]
 

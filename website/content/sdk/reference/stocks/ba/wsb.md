@@ -1,9 +1,23 @@
 ---
 title: wsb
-description: OpenBB SDK Function
+description: This page provides documentation for the OpenBB 'wsb' function, which
+  retrieves reddit posts from wsb. The page includes details about parameters and
+  returned data in the form of a pandas Dataframe.
+keywords:
+- wsb
+- OpenBB-finance
+- reddit_model.py
+- openbb.stocks.ba.wsb
+- reddit submissions
+- Parameters
+- Limit
+- New
+- Returns
 ---
 
-# wsb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.wsb - Reference | OpenBB SDK Docs" />
 
 Get wsb posts [Source: reddit].
 
@@ -31,4 +45,3 @@ openbb.stocks.ba.wsb(limit: int = 10, new: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of reddit submissions |
 ---
-

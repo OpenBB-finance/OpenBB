@@ -1,12 +1,26 @@
 ---
 title: tx
-description: OpenBB SDK Function
+description: This is an intricate page pertaining to transaction information sourcing
+  from Ethplorer. It lays out comprehensive details about model and chart transactions,
+  offering Python source codes and linked GitHub resource. It elucidates transaction
+  hash parameters and the formats to export data frames, among others.
+keywords:
+- Ethplorer transactions
+- transaction information
+- model transactions
+- chart transactions
+- Python source code
+- transaction hash parameters
+- export data frame formats
+- GitHub resource
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.tx - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# tx
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.crypto.onchain.tx(tx_hash: str)
 | pd.DataFrame | DataFrame with information about ERC20 token transaction. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +79,6 @@ openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

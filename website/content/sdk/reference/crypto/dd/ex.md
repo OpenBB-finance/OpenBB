@@ -1,12 +1,26 @@
 ---
 title: ex
-description: OpenBB SDK Function
+description: This page provides code documentation and examples for retrieving and
+  visualizing data about cryptocurrency exchanges for a given coin, using the CoinPaprika
+  API. The OpenBBTerminal project developed by OpenBB-finance allows sorting the data
+  and exports it for further analysis.
+keywords:
+- cryptocurrency
+- CoinPaprika
+- cryptocurrency exchanges
+- data sort
+- data visualization
+- BTC
+- volume share
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.ex - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ex
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_shar
 | pd.DataFrame | All exchanges for given coin<br/>Columns: id, name, adjusted_volume_24h_share, fiats |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +84,6 @@ openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "a
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

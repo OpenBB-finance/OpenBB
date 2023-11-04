@@ -1,9 +1,25 @@
 ---
 title: exchanges
-description: OpenBB Terminal Function
+description: A documentation page that details the usage of currency exchange parameters
+  in crypto trading. Provides details on how to sort and limit data based on various
+  criteria, specifically for CoinPaprika and CoinGecko exchanges.
+keywords:
+- crypto exchanges
+- display limit
+- sort data
+- Trust_Score
+- Id
+- Name
+- Country
+- Year_Established
+- Trade_Volume_24h_BTC
+- CoinPaprika
+- CoinGecko
 ---
 
-# exchanges
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/exchanges - Reference | OpenBB Terminal Docs" />
 
 Shows Top Crypto Exchanges You can display only N number exchanges with --limit parameter. You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sortby Or you can sort data by 'name', 'currencies', 'markets', 'fiats', 'confidence', 'volume_24h', 'volume_7d', 'volume_30d', 'sessions_per_month' if you are using the alternative source CoinPaprika and also with --reverse flag to sort ascending. Flag --urls will display urls. Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC
 

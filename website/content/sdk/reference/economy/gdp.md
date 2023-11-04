@@ -1,12 +1,25 @@
 ---
 title: gdp
-description: OpenBB SDK Function
+description: This page provides in-depth documentation about the 'gdp' function in
+  the openbb economy package. It details how to retrieve real GDP data for the U.S.
+  on a yearly or quarterly basis, and how to produce a chart visualizing this data.
+keywords:
+- economy
+- gdp
+- data retrieval
+- visualization
+- API documentation
+- yearly data
+- quarterly data
+- AlphaVantage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.gdp - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gdp
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.economy.gdp(interval: str = "q", start_year: int = 2010)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of GDP |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +82,6 @@ openbb.economy.gdp_chart(interval: str = "q", start_year: int = 2010, raw: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,21 @@
 ---
 title: inf
-description: OpenBB SDK Function
+description: 'This page discusses two main functions of the OpenBBTerminal: one for
+  gathering US inflation data and the other for displaying this data in a chart. The
+  model function retrieves historical inflation data from AlphaVantage and returns
+  a DataFrame, while the chart function presents this data using a customizable interface.'
+keywords:
+- Inflation Data
+- AlphaVantage
+- Data Visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.inf - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# inf
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +45,6 @@ openbb.economy.inf(start_year: int = 2010)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of inflation rates |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +76,6 @@ openbb.economy.inf_chart(start_year: int = 2010, raw: bool = False, export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

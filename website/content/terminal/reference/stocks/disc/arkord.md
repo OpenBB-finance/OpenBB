@@ -1,9 +1,30 @@
 ---
 title: arkord
-description: OpenBB Terminal Function
+description: Arkord is a tool for displaying orders by ARK Investment Management LLC.
+  The software allows users to filter and sort stocks based on various parameters,
+  including volume, opening and closing values, highs and lows, and the weight of
+  shares.
+keywords:
+- arkord
+- ARK Investment Management
+- stocks
+- buys
+- sells
+- fund
+- orders
+- shares
+- volume
+- open
+- close
+- high
+- low
+- weight
+- sorting
 ---
 
-# arkord
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/arkord - Reference | OpenBB Terminal Docs" />
 
 Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
 

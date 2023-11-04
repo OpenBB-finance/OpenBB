@@ -1,12 +1,24 @@
 ---
 title: markets
-description: OpenBB SDK Function
+description: The markets page provides detailed information on how to use the OpenBB
+  crypto market API functions. The high-level cryptocurrency data from CoinPaprika
+  API allows the user to import and view detailed coin information, with the functionality
+  of sorting the data based on different parameters.
+keywords:
+- cryptocurrency
+- API
+- CoinPaprika
+- crypto market
+- coin information
+- data sorting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.markets - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# markets
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ openbb.crypto.ov.markets(symbols: str = "USD", sortby: str = "rank", ascend: boo
 | ---- | ----------- |
 | pd.DataFrame | rank, name, symbol, price, volume_24h, mcap_change_24h,<br/>pct_change_1h, pct_change_24h, ath_price, pct_from_ath, |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +83,6 @@ openbb.crypto.ov.markets_chart(symbol: str, sortby: str = "rank", ascend: bool =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

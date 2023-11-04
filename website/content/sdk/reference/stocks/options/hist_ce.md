@@ -1,12 +1,26 @@
 ---
 title: hist_ce
-description: OpenBB SDK Function
+description: 'This page describes two main functionalities of the OpenBBFinance documentation:
+  ''hist_ce'' function for getting historical prices for a specific stock option and
+  ''hist_ce_chart'' function for displaying the same historical stock data in charts.
+  Both functions come with detailed explanations of their parameters and expected
+  returns.'
+keywords:
+- OpenBBFinance documentation
+- stock options
+- historical prices
+- chart visualization
+- hist_ce function
+- hist_ce_chart function
+- stock data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.hist_ce - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hist_ce
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", cal
 | ---- | ----------- |
 | pd.Dataframe | Historic information for an option |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +87,6 @@ openbb.stocks.options.hist_ce_chart(symbol: str = "GME", expiry: str = "2021-02-
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

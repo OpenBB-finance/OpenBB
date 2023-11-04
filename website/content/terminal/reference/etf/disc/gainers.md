@@ -1,9 +1,24 @@
 ---
 title: gainers
-description: OpenBB Terminal Function
+description: This documentation page is about the 'gainers' command, which displays
+  the top ETF/Mutual fund gainers from wsj.com/market-data. It includes no parameters
+  and examples of its use.
+keywords:
+- gainers command
+- ETF gainers
+- Mutual fund gainers
+- wsj.com market data
+- command usage
+- ETF Movers
+- Top gainers
+- Price change
+- Volume
+- investment tool
 ---
 
-# gainers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/disc/gainers - Reference | OpenBB Terminal Docs" />
 
 Displays top ETF/Mutual fund gainers from wsj.com/market-data
 

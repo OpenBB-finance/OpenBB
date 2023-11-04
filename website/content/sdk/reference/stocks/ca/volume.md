@@ -1,12 +1,28 @@
 ---
 title: volume
-description: OpenBB SDK Function
+description: This documentation page details how to get and display stock volume using
+  openbb.stocks.ca volume function. Includes Python codes and parameter descriptions
+  for user guidance.
+keywords:
+- openbb.stocks.ca
+- stock volume
+- Yahoo Finance
+- docusaurus
+- parameter description
+- volume_chart
+- volume function
+- stock analysis
+- finnhub_peers
+- finviz_peers
+- polygon_peers
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.volume - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# volume
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +54,6 @@ openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 | pd.DataFrame | Dataframe with volume for stock |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +84,6 @@ openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = No
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

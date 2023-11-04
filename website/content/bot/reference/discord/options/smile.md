@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: smile
-description: OpenBB Discord Command
+description: This page instructs users on how to use the '/op smile' command to retrieve
+  the Options Volatility Smile for given stock tickers and expiry dates. It is especially
+  beneficial for those seeking to understand market sentiments and implied volatility.
+keywords:
+- Options Volatility Smile
+- Stock Ticker
+- Expiration Date
+- Strike Price
+- Market Sentiment
+- Implied Volatility
 ---
 
-# smile
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: smile - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Options Volatility Smile for the given ticker and expiry. The Options Volatility Smile is a graphical representation of the implied volatility for a given option that can be used to gauge the market sentiment for a particular security.
 

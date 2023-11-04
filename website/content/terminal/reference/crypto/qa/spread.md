@@ -1,9 +1,19 @@
 ---
 title: spread
-description: OpenBB Terminal Function
+description: This page illustrates the rolling spread measurement, its usage, and
+  the parameters involved in it. It comprehensively explains how to use 'spread' and
+  the function of 'n_window' in it.
+keywords:
+- spread measurement
+- usage of spread
+- spread parameters
+- n_window in spread
+- rolling spread
 ---
 
-# spread
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/spread - Reference | OpenBB Terminal Docs" />
 
 Shows rolling spread measurement
 

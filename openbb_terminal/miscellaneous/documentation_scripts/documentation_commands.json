@@ -7,8 +7,8 @@
     ],
     "news": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "show": [
         "CONTRIBUTING.md",
@@ -16,11 +16,11 @@
         "website/content/terminal/usage/basics/index.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/forecast.md"
     ],
     "list": [
@@ -44,8 +44,8 @@
     ],
     "not defined": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "defined, test inconclusive": [
         "CONTRIBUTING.md"
@@ -60,7 +60,7 @@
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/forecast.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "cls": [
         "CONTRIBUTING.md"
@@ -84,12 +84,12 @@
         "website/content/terminal/usage/guides/data.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/changing-sources.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/etf.md",
         "website/content/sdk/usage/intros/ta.md",
         "website/content/sdk/usage/intros/forecast.md"
@@ -150,7 +150,7 @@
     "quote": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/intros/forex.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "candle": [
         "CONTRIBUTING.md",
@@ -163,7 +163,7 @@
     "options": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/guides/scripts-and-routines.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/terminal/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/fixedincome.md"
     ],
@@ -178,7 +178,7 @@
     "fa": [
         "CONTRIBUTING.md",
         "website/content/terminal/usage/guides/changing-sources.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/sdk/usage/guides/changing-sources.md"
     ],
     "ta": [
@@ -328,8 +328,8 @@
     ],
     "oanda": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/forex.md"
     ],
     "calendar": [
@@ -347,7 +347,7 @@
         "website/content/terminal/usage/intros/economy.md",
         "website/content/sdk/usage/basics/index.md",
         "website/content/sdk/usage/guides/chart-styling.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/fixedincome.md",
         "website/content/sdk/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/futures.md",
@@ -366,7 +366,7 @@
         "website/content/terminal/usage/intros/economy.md",
         "website/content/terminal/usage/intros/forecast.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/econometrics.md",
         "website/content/sdk/usage/intros/economy.md",
         "website/content/sdk/usage/intros/forecast.md"
@@ -403,15 +403,15 @@
     ],
     "keys": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/sdk/usage/basics/index.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "mykeys": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "dpi": [
         "openbb_terminal/SDK_README.md"
@@ -433,8 +433,8 @@
     ],
     "fmp": [
         "openbb_terminal/SDK_README.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "categories": [
         "openbb_terminal/SDK_README.md",
@@ -478,7 +478,7 @@
     ],
     "global": [
         "website/content/sdk/faqs/developer_issues.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "rm": [
         "website/content/sdk/faqs/developer_issues.md"
@@ -575,17 +575,17 @@
         "website/content/terminal/usage/guides/changing-sources.md",
         "website/content/terminal/usage/intros/econometrics.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "fred": [
-        "website/content/terminal/usage/guides/api-keys.md",
+        "website/content/terminal/usage/data/api-keys.md",
         "website/content/terminal/usage/intros/economy.md",
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "degiro": [
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "fixedincome": [
         "website/content/terminal/usage/intros/fixedincome.md",
@@ -761,7 +761,7 @@
         "website/content/sdk/usage/intros/ta.md"
     ],
     "account": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "projection": [
         "website/content/sdk/usage/intros/fixedincome.md"

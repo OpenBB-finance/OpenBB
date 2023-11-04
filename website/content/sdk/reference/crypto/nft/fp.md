@@ -1,12 +1,23 @@
 ---
 title: fp
-description: OpenBB SDK Function
+description: The page provides detailed documentation on the functionality of nftpricefloor
+  model and view. The model helps to fetch NFT collections and the view function displays
+  the collection's floor price overtime.
+keywords:
+- NFT collection
+- nftpricefloor
+- openbb.crypto.nft.fp
+- openbb.crypto.nft.fp_chart
+- Data Visualization
+- Data Modelling
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.nft.fp - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# fp
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +47,6 @@ openbb.crypto.nft.fp(slug: str)
 | ---- | ----------- |
 | pd.DataFrame | nft collections |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +79,6 @@ openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", externa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>
