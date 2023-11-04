@@ -1,6 +1,7 @@
 """Nasdaq Helpers Module."""
 
 import json
+import re
 from datetime import timedelta
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
@@ -9,9 +10,33 @@ import requests
 from openbb_provider import helpers
 from openbb_provider.utils.errors import EmptyDataError
 from pydantic import BaseModel
+from random_user_agent.user_agent import UserAgent
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
+
+
+def remove_html_tags(text: str):
+    """Remove HTML tags from a string."""
+    clean = re.compile("<.*?>")
+    return re.sub(clean, "", text)
+
+
+def get_random_agent() -> str:
+    """Generate a random user agent for a request."""
+    user_agent_rotator = UserAgent(limit=100)
+    user_agent = user_agent_rotator.get_random_user_agent()
+    return user_agent
+
+
+HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Encoding": "gzip",
+    "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
+    "Host": "api.nasdaq.com",
+    "User-Agent": get_random_agent(),
+    "Connection": "keep-alive",
+}
 
 
 class BasicResponse:

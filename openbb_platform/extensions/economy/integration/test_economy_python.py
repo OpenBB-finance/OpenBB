@@ -437,8 +437,8 @@ def test_economy_gdpforecast(params, obb):
             {
                 "provider": "nasdaq",
                 "start_date": "2023-10-24",
-                "end_date": "2023-10-27",
-                "country": "spain,france",
+                "end_date": "2023-11-03",
+                "country": "united_states,japan",
             }
         ),
         (
@@ -447,7 +447,7 @@ def test_economy_gdpforecast(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "mexico,sweden",
-                "importance": "medium",
+                "importance": "Medium",
                 "group": "gdp",
             }
         ),

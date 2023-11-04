@@ -19,8 +19,8 @@ def vcr_config():
 @pytest.mark.record_http
 def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
     params = {
-        "start_date": datetime.date(2023, 10, 23),
-        "end_date": datetime.date(2023, 10, 26),
+        "start_date": datetime.date(2023, 11, 3),
+        "end_date": datetime.date(2023, 11, 3),
     }
 
     fetcher = NasdaqEconomicCalendarFetcher()
