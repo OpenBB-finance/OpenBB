@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The grouping mechanism is extremely powerful as it allows widgets to be grouped together through one of their parameters based on the category they belong to.
 
-For instance, for the equity category, widgets can be connected through their ticker / symbol. Examples are: AAPL to simbolize Apple, TSLA for Tesla and so on.
+For instance, for the equity category, widgets can be connected through their ticker / symbol. Examples are: AAPL to symbolize Apple, TSLA for Tesla and so on.
 
 <img width="1250" alt="276163819-b4c80035-8ead-4fc9-b65b-c5b2c4b8e062" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/435b8fba-e0b7-4aa0-b92f-10d6b12589a2" />
 
