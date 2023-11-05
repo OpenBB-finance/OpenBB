@@ -3,7 +3,6 @@ from openbb_core.app.service.user_service import UserService
 from openbb_quandl.models.cot import QuandlCotFetcher
 from openbb_quandl.models.cot_search import QuandlCotSearchFetcher
 from openbb_quandl.models.sp500_multiples import QuandlSP500MultiplesFetcher
-from openbb_quandl.models.top_retail import QuandlTopRetailFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -16,7 +15,6 @@ def vcr_config():
         "filter_headers": [
             ("x-api-token", "MOCK_API_TOKEN"),
         ],
-        "filter_query_parameters": [("api_key", "MOCK_API_KEY")],
     }
 
 
@@ -42,14 +40,5 @@ def test_quandl_cot_search_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = QuandlCotSearchFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_quandl_top_retail_fetcher(credentials=test_credentials):
-    params = {}
-
-    fetcher = QuandlTopRetailFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
