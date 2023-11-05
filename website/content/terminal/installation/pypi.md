@@ -20,11 +20,11 @@ keywords:
 - OpenBB nightly builds
 ---
 
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="PyPI - Installation | OpenBB Terminal Docs" />
-
-<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 

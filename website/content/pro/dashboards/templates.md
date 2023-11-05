@@ -13,6 +13,8 @@ keywords:
 - security
 ---
 
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Templates | OpenBB Terminal Pro Docs" />
