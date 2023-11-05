@@ -108,3 +108,14 @@ def holdings_date(
 ) -> OBBject[BaseModel]:
     """Get the holdings filing date for an individual ETF."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EtfHoldingsPerformance")
+def holdings_performance(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the ETF holdings performance."""
+    return OBBject(results=Query(**locals()).execute())

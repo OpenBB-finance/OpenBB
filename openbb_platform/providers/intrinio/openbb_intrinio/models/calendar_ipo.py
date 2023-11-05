@@ -1,30 +1,30 @@
 """Intrinio IPO Calendar Fetcher."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_intrinio.utils.references import (
-    IPO_STATUS,
-    IntrinioCompany,
-    IntrinioSecurity,
-)
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring, make_request
+from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field
 
 
 class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
-    """Intrinio IPO Calendar QueryParams."""
+    """Intrinio IPO Calendar QueryParams.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_company_ipos_v2
+    """
 
     __alias_dict__ = {
         "symbol": "ticker",
         "limit": "page_size",
     }
 
-    status: Optional[IPO_STATUS] = Field(
+    status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
         description="Status of the IPO. [upcoming, priced, or withdrawn]", default=None
     )
     min_value: Optional[int] = Field(
@@ -44,7 +44,7 @@ class IntrinioCalendarIpoData(CalendarIpoData):
 
     __alias_dict__ = {"symbol": "ticker", "ipo_date": "date"}
 
-    status: Optional[IPO_STATUS] = Field(
+    status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
         description="""
             The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
             Priced IPOs have taken place.
@@ -161,6 +161,7 @@ class IntrinioCalendarIpoFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioCalendarIpoQueryParams:
+        """Transform the query params."""
         return IntrinioCalendarIpoQueryParams(**params)
 
     @staticmethod
@@ -170,25 +171,17 @@ class IntrinioCalendarIpoFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
-        results = []
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+
         base_url = "https://api-v2.intrinio.com/companies/ipos"
-        query_str = get_querystring(query.model_dump(by_alias=True), exclude=[])
+        query_str = get_querystring(query.model_dump(by_alias=True), [])
         url = f"{base_url}?{query_str}&api_key={api_key}"
-        r = make_request(url)
-        if r.status_code != 200:
-            raise RuntimeError(f"Error fetching IPO calendar: {str(r.status_code)}")
 
-        if "initial_public_offerings" not in r.json():
-            return results
-
-        results = r.json()["initial_public_offerings"]
-
-        return results
+        return get_data_one(url, **kwargs)["initial_public_offerings"]
 
     @staticmethod
     def transform_data(
-        data: List[Dict], **kwargs: Any
+        query: IntrinioCalendarIpoQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCalendarIpoData]:
+        """Return the transformed data."""
         return [IntrinioCalendarIpoData.model_validate(d) for d in data]

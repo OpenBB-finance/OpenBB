@@ -221,3 +221,21 @@ def test_etf_disc_active(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "ioo"}),
+        ({"symbol": "misl", "provider": "fmp"}),
+        ({"symbol": "silj", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_performance(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.holdings_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

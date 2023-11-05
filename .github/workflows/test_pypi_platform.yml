@@ -1,14 +1,17 @@
-name: Deploy to PyPI - Nightly
+name: Deploy the OpenBB Platform and the OpenBBTerminal to Test PyPI
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - feature/v4-pypi
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deploy-nightly-pypi:
-    name: Build and publish nightly distributions 📦 to PyPI
+  deploy-test-pypi:
+    name: Build and publish 📦 to TestPyPI
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +48,7 @@ jobs:
         with:
           packages-dir: dist/
           password: ${{ secrets.TEST_PYPI_API_TOKEN_OBB_TERMINAL_NIGHTLY }}
+          repository-url: https://test.pypi.org/legacy/
 
       - name: OpenBB Platform - Update version in pyproject.toml and Edit docs
         run: |
@@ -60,4 +64,5 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: openbb_platform/dist/
-          password: ${{ secrets.NIGHTLY_PYPI_API_TOKEN }}
+          password: ${{ secrets.TEST_PYPI_API_TOKEN_OBB_PLATFORM_NIGHTLY }}
+          repository-url: https://test.pypi.org/legacy/
