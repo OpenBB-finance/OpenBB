@@ -94,11 +94,7 @@ options:
 For more information and examples, use 'about news' to access the related guide.
 ```
 
-<<<<<<<< HEAD:website/content/terminal/menus/stocks/introduction.md
-Attaching the source argument to a command selects a source other than the default, which can also be set permanently from the [`/sources` menu](/website/content/terminal/usage/data/data-sources.md). To select the `source` as `Ultima`, use the syntax below.
-========
 Attaching the source argument to a command selects a source other than the default, which can also be set permanently from the [`/sources` menu](/terminal/usage/data/data-sources). To select the `source` as `Ultima`, use the syntax below.
->>>>>>>> develop:website/content/terminal/data-available/stocks/introduction.md
 
 ```console
 news -t WMT --source Ultima
