@@ -2,7 +2,7 @@
 title: Introduction
 sidebar_position: 1
 description: This is an informative page providing a detailed overview of how to navigate
-  and use the Options Menu in the OpenBB Terminal. It discusses the functions,
+  and use the Options Menu to analyze equity options. It discusses the functions,
   and gives clear examples of how to fetch and analyze options data such as chains,
   Greeks, expiration dates, and put/call ratios using different financial data sources.
 keywords:

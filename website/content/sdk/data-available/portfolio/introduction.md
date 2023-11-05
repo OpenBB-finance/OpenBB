@@ -14,7 +14,7 @@ keywords:
 - portfolio transactions
 ---
 
-The [Portfolio menu](/terminal/usage/intros/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
+The [Portfolio menu](/terminal/data-available/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
 
 ## How to Use
 
@@ -59,7 +59,7 @@ Portfolio files are spreadsheets (xlsx or csv files) containing historical trade
 
 :::note If you wish to load in your own Excel holdings file, please follow the following steps:
 1. Download the Excel file that can be used as a template [here](https://www.dropbox.com/s/03wjjf1lfkqjmtn/holdings_example.xlsx?dl=0).
-2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](https://docs.openbb.co/terminal/usage/advanceddata) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `portfolio/holdings` folder within the [OpenBBUserData](/terminal/usage/advanceddata) folder and, optionally, adjust the name to your liking.
 3. Open the Excel file and remove, edit or add to the values as you desire (e.g. your own orders). This is the default template that is also loaded in with `load --example`.
 4. Open up the OpenBB Terminal, go to `portfolio` and type `load --file`. Your Excel file should then be one of the options.
 :::
@@ -310,4 +310,4 @@ print(returns.tail(5))
 | 2022-11-24 |           0.00  |           0.00 |
 | 2022-11-25 |          -0.01  |           0.00 |
 
-Read the [Portfolio Optimization Intro](https://docs.openbb.co/sdk/usage/intros/portfolio/po) to learn about the optimization features, and the parameters preset template.
+Read the [Portfolio Optimization Intro](/sdk/data-available/portfolio/po) to learn about the optimization features, and the parameters preset template.

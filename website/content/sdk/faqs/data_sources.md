@@ -27,7 +27,7 @@ Please note that OpenBB does not provide any data, it is an aggregator which pro
 
 <details><summary>Is there a list of all data providers?</summary>
 
-The complete list is found [here](https://docs.openbb.co/terminal/usage/guides/api-keys)
+The complete list is found [here](/terminal/usage/data/api-keys)
 
 </details>
 

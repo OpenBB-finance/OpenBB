@@ -29,7 +29,7 @@ keywords:
 
 ## Overview
 
-The OpenBB SDK provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](https://docs.openbb.co/terminal/installation/pypi) or from the [source code](https://docs.openbb.co/terminal/installation/source).
+The OpenBB SDK provides programmatic access to nearly all Terminal commands, allowing custom scripts and functions to power creations built on top of the core platform.  It is easy to use and as flexible as one's imagination.  The sections below will outline how to get started using it.  If it isn't already installed, follow the instructions to install via [PyPi (pip)](/terminal/installation/pypi) or from the [source code](/terminal/installation/source).
 
 ## Importing the OpenBB SDK
 
@@ -195,7 +195,7 @@ Docstrings are the SDK equivalent to the Terminal's `--help` argument.  They con
 
 ## API Keys
 
-The `keys` module provides methods for managing access credentials to data sources.  If the API keys have already been set in a locally installed OpenBB Terminal application, no further action is required.  A new installation can be authorized using the OpenBB Hub, or they can be entered manually in the SDK.  For instructions on obtaining and authorizing each individual source, see the guide [here](https://docs.openbb.co/sdk/usage/guides/api-keys).  A key can be stored permanently, or only for the active session.  Use the `persist` boolean argument to remember or forget it.
+The `keys` module provides methods for managing access credentials to data sources.  If the API keys have already been set in a locally installed OpenBB Terminal application, no further action is required.  A new installation can be authorized using the OpenBB Hub, or they can be entered manually in the SDK.  For instructions on obtaining and authorizing each individual source, see the guide [here](/sdk/usage//api-keys).  A key can be stored permanently, or only for the active session.  Use the `persist` boolean argument to remember or forget it.
 
 ```python
 openbb.keys.fred(key= "REPLACE_WITH_YOUR_KEY", persist=True)
@@ -315,7 +315,7 @@ data = openbb.stocks.load('VOO', start_date = "2022-05-15")
 data["SMA"] = openbb.ta.sma(data = data["Close"], length = 20)
 ```
 
-The code block below takes the top ten results from the `unusual_volume` [screener preset](https://docs.openbb.co/sdk/usage/intros/stocks/stocks-screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
+The code block below takes the top ten results from the `unusual_volume` [screener preset](/sdk/data-available/stocks/stocks-screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
 
 ```python
 import pandas as pd
@@ -360,7 +360,7 @@ Charts called from a command line session, will open a new window and appear the
 
 ![OpenBB Terminal Charts](https://user-images.githubusercontent.com/85772166/233247951-e011fe2c-23a6-4518-bd17-3f43a9c2011a.png)
 
-See the page [here](https://docs.openbb.co/terminal/usage/basics#charts) for a detailed explanation of the toolbar.
+See the page [here](/terminal/usage/basics#charts) for a detailed explanation of the toolbar.
 
 To create an empty figure object, import the `OpenBBFigure` class directly.
 

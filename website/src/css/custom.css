@@ -116,6 +116,7 @@
     0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  white-space: nowrap;
 }
 
 [data-theme="dark"] .pagination-nav__link {
@@ -352,6 +353,12 @@
     rgba(6, 7, 9, 1) 100%
   );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#062d48", endColorstr="#060709", GradientType=1);
+}
+
+/* convert to css tag */
+.header_docs_pro {
+  background: rgb(2,0,36);background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(36,108,155,1) 13%, rgba(66,154,205,1) 22%, rgba(43,85,107,1) 42%, rgba(12,36,53,1) 61%, rgba(6,6,6,1) 100%);
 }
 
 table {

@@ -56,7 +56,7 @@ When you select the `xlsx` option, you can also specify the sheet name with `--s
 (🦋) /stocks/ $ load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
 ```
 
-Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](https://docs.openbb.co/terminal/usage/guides/api-keys).
+Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](/terminal/usage/data/api-keys).
 
 ```console
 (🦋) /stocks/fa/ $ income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement

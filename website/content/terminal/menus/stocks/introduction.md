@@ -94,7 +94,7 @@ options:
 For more information and examples, use 'about news' to access the related guide.
 ```
 
-Attaching the source argument to a command selects a source other than the default, which can also be set permanently from the [`/sources` menu](/website/content/terminal/usage/data/data-sources.md). To select the `source` as `Ultima`, use the syntax below.
+Attaching the source argument to a command selects a source other than the default, which can also be set permanently from the [`/sources` menu](/terminal/usage/data/data-sources). To select the `source` as `Ultima`, use the syntax below.
 
 ```console
 news -t WMT --source Ultima
@@ -112,7 +112,7 @@ Furthermore, Walmart is subject to laws and regulations related to competition a
 Read more: https://www.cincinnati.com/story/opinion/letters/2023/04/10/letters-kroger-acquiring-albertsons-will-reduce-competition-not-prices/70080423007/
 ```
 
-The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level significantly enhances the user experience with additional functionality and available data. Refer to the [API keys guide](https://docs.openbb.co/terminal/usage/guides/api-keys) for links to obtain each.
+The first step in many workflows will be to load a stock symbol with historical data. The amount, granularity, and market coverage will vary by source. Users can elect to subscribe to any of the data sources accordingly. While no API keys are required to get started using the Terminal, acquiring these credentials at the free level significantly enhances the user experience with additional functionality and available data. Refer to the [API keys guide](/terminal/usage/data/api-keys) for links to obtain each.
 
 ## Examples
 

@@ -35,8 +35,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/usage/intros/forecasting",
-            to: "/terminal/usage/intros/forecast",
+            from: "/terminal/data-available/forecasting",
+            to: "/terminal/data-available/forecast",
           },
         ],
       },
@@ -113,7 +113,7 @@ const config = {
       },
       algolia: {
         appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",  // pragma: allowlist secret
         indexName: "openbbterminal",
         contextualSearch: false,
       },
