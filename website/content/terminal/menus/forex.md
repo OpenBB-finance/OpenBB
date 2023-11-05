@@ -1,11 +1,6 @@
 ---
 title: Forex
-description: This page provides comprehensive information on the Forex menu within
-  our terminal, including the ability to load any combination of currency pairs, view
-  real-time quotes and historical data, leverage forward rates, and apply technical
-  analysis. It also provides the capability to integrate with the Oanda platform and
-  offers detailed guides on more advanced techniques such as quantitative analysis
-  and seasonality.
+description: This guide introduces the Forex (FX) menu, in the OpenBB Terminal, and provides examples for use.  Features in this menu include historical prices and forward rates.  It also provides entry points to the QA, TA, and Forecast menus.
 keywords:
 - Forex
 - currency trading
@@ -28,125 +23,101 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Forex - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Forex - Menus | OpenBB Terminal Docs" />
 
-The Forex menu enables you to <a href="/terminal/reference/forex/load" target="_blank" rel="noreferrer noopener">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> and historical data (<a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a>) as well as forward rates (<a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>). Furthermore, the menu has the ability to also apply <a href="/terminal/data-available/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> and <a href="/terminal/data-available/forecast" target="_blank" rel="noreferrer noopener">Forecasting menu</a> while also having an integration with <a href="/terminal/reference#oanda" target="_blank" rel="noreferrer noopener">Oanda</a>.
+The Forex menu includes features for historical prices, forward rates, and real-time exchange rates.  It also provides entry points to the [`/ta/`](/website/content/terminal/menus/common/ta.md), [`/qa`](/website/content/terminal/menus/common/qa.md), and [`/forecast`](/website/content/terminal/menus/forecast.md) menus.
 
-### How to use
 
-The Forex menu is called upon by typing `forex` which opens the following menu:
+## Usage
 
-<img width="800" alt="image" src="https://user-images.githubusercontent.com/46355364/218992918-54ea252b-d8b8-46e2-8da7-0b6d471f8a64.png"></img>
+The Forex menu is entered by typing `forex`, from the Main menu, or with the absolute path:
 
-For example, you are able to show the quote of the currency pair by using the <a href="/terminal/reference/forex/quote" target="_blank" rel="noreferrer noopener">quote</a> command:
-
-```
-2022 Jun 29, 07:04 (🦋) /forex/ $ quote
-
-                     USD/EUR Quote
-┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃                    ┃ Realtime Currency Exchange Rate ┃
-┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ From_Currency Code │ USD                             │
-├────────────────────┼─────────────────────────────────┤
-│ To_Currency Code   │ EUR                             │
-├────────────────────┼─────────────────────────────────┤
-│ Last Refreshed     │ 2022-06-29 11:08:00             │
-├────────────────────┼─────────────────────────────────┤
-│ Exchange Rate      │ 0.94960000                      │
-├────────────────────┼─────────────────────────────────┤
-│ Bid Price          │ 0.94960000                      │
-├────────────────────┼─────────────────────────────────┤
-│ Ask Price          │ 0.94960000                      │
-└────────────────────┴─────────────────────────────────┘
+```console
+/forex
 ```
 
-Or show the historical data on the currency pair with <a href="/terminal/reference/forex/candle" target="_blank" rel="noreferrer noopener">candle</a> as follows:
+![Screenshot 2023-11-03 at 12 26 41 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/83356fc6-9966-4da3-9bed-64ae7e42ecd0)
 
-```
-(🦋) /forex/ $ candle
-```
+### Load
 
-Which returns the following:
+The first step will be to load a pair of currencies.  The pairs are entered as a six-letter symbol, with the former of the pair being "from".
 
-![Candle of USDEUR](https://user-images.githubusercontent.com/46355364/176427844-7b99dc7d-5196-469d-af3a-538c7d7a8a59.png)
-
-Lastly, insights in the forward valuations can also be given with <a href="/terminal/reference/forex/fwd" target="_blank" rel="noreferrer noopener">fwd</a>.
-
-```
-(🦋) /forex/ $ fwd
-
-               Forward rates for USD/EUR
-┏━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┓
-┃ Expirations   ┃ Ask    ┃ Bid    ┃ Mid    ┃ Points    ┃
-┡━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━┩
-│ Overnight     │ 0.9499 │ 0.9498 │ 0.9499 │ -0.5750   │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Tomorrow Next │ 0.9499 │ 0.9498 │ 0.9498 │ -0.7250   │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Spot Next     │ 0.9497 │ 0.9496 │ 0.9497 │ -2.3450   │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ One Week      │ 0.9495 │ 0.9495 │ 0.9495 │ -4.1550   │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Two Weeks     │ 0.9491 │ 0.9491 │ 0.9491 │ -8.2600   │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Three Weeks   │ 0.9487 │ 0.9486 │ 0.9487 │ -12.4150  │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ One Month     │ 0.9481 │ 0.9480 │ 0.9480 │ -18.8850  │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Two Months    │ 0.9459 │ 0.9458 │ 0.9458 │ -40.8200  │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Three Months  │ 0.9436 │ 0.9435 │ 0.9436 │ -63.4650  │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Four Months   │ 0.9415 │ 0.9414 │ 0.9415 │ -84.5500  │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Five Months   │ 0.9394 │ 0.9392 │ 0.9393 │ -106.2650 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Six Months    │ 0.9361 │ 0.9360 │ 0.9360 │ -138.8800 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Seven Months  │ 0.9342 │ 0.9340 │ 0.9341 │ -158.3750 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Eight Months  │ 0.9323 │ 0.9322 │ 0.9322 │ -176.9850 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Nine Months   │ 0.9302 │ 0.9300 │ 0.9301 │ -198.1200 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Ten Months    │ 0.9284 │ 0.9283 │ 0.9284 │ -215.5000 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Eleven Months │ 0.9268 │ 0.9267 │ 0.9268 │ -231.6250 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ One Year      │ 0.9252 │ 0.9250 │ 0.9251 │ -248.6650 │
-├───────────────┼────────┼────────┼────────┼───────────┤
-│ Two Years     │ 0.9111 │ 0.9106 │ 0.9109 │ -390.6350 │
-└───────────────┴────────┴────────┴────────┴───────────┘
+```console
+load JPYUSD
 ```
 
-Furthermore, the ability exists to take the currency pair to the <a href="/terminal/data-available/common/ta" target="_blank" rel="noreferrer noopener">Technical Analysis</a> menu by typing `ta`.
+Inversely:
 
-### Examples
-
-First, let's start with looking at the currency pair USD and GBP. These are the U.S. Dollars and the Pound sterling. This is done by using the `load` command as follows with the addition that the `-s` command is used to change the start date:
-
-```
-(🦋) /forex/ $ load USDGBP -s 2015-01-01
-USD-GBP loaded.
+```console
+load USDJPY
 ```
 
-Then, let's see how this currency pair has changed over the last years with `candle` also adding in the `--ma 60,120` argument:
+### Quote
 
-![Candle with Moving Averages](https://user-images.githubusercontent.com/46355364/176427947-26346800-173b-4195-8a58-1add2a66ae31.png)
+A `quote` from YahooFinance displays the last price and a timestamp when it was refreshed.
 
-Now it's time to take this to the <a href="/terminal/data-available/common/qa" target="_blank" rel="noreferrer noopener">Quantitative Analysis</a> menu by typing `qa`. This returns the following. Within this menu we can show some rolling statistics, for example show the rolling values for the mean and standard deviation of the currency pair:
-
-![Rolling Statistics for Forex](https://user-images.githubusercontent.com/46355364/176428039-4dcff70e-84e2-441d-9710-4d3f06af4175.png)
-
-Lastly, more advanced techniques can also be applied regarding seasonality with `decompose`:
-
-```
-(🦋) /forex/qa/ $ decompose
-
-Time-Series Level is 0.75
-Strength of Trend: 421.7107
-Strength of Seasonality: 0.0031
+```console
+/forex/load JPYUSD/quote
 ```
 
-![Decompose Seasonality for Forex](https://user-images.githubusercontent.com/46355364/176428079-bdba5c17-5b3c-4e71-a92e-66aae2b787a1.png)
+```console
+Quote for JPY/USD
+
+Last refreshed : 2023-11-03 19:30:00
+Last value     : 0.006694381590932608
+```
+
+From AlphaVantage, a table is returned that includes a bid and ask.
+
+```console
+quote --source AlphaVantage
+```
+
+|                    | Realtime Currency Exchange Rate   |
+|:-------------------|:----------------------------------|
+| From_Currency Code | JPY                               |
+| From_Currency Name | Japanese Yen                      |
+| To_Currency Code   | USD                               |
+| To_Currency Name   | United States Dollar              |
+| Exchange Rate      | 0.00669000                        |
+| Last Refreshed     | 2023-11-03 19:34:01               |
+| Time Zone          | UTC                               |
+| Bid Price          | 0.00668900                        |
+| Ask Price          | 0.00669000                        |
+
+
+### FWD
+
+The `fwd` command gets a table with the term structure of a currency pair.
+
+```console
+/forex/load USDJPY/fwd
+```
+
+| Expiration    |     Ask |     Bid |     Mid |     Points |
+|:--------------|--------:|--------:|--------:|-----------:|
+| Overnight     | 149.397 | 149.368 | 149.383 |     0      |
+| Tomorrow Next | 149.397 | 149.368 | 149.382 |    -2.33   |
+| Spot Next     | 149.397 | 149.368 | 149.382 |    -2.325  |
+| One Week      | 149.395 | 149.366 | 149.381 |   -16.315  |
+| Two Weeks     | 149.394 | 149.365 | 149.379 |   -32.59   |
+| Three Weeks   | 149.392 | 149.363 | 149.378 |   -48.89   |
+| One Month     | 149.39  | 149.361 | 149.375 |   -70.1505 |
+| Two Months    | 149.381 | 149.352 | 149.367 |  -155.31   |
+| Three Months  | 149.375 | 149.346 | 149.36  |  -222.871  |
+| Four Months   | 149.368 | 149.339 | 149.353 |  -290.68   |
+| Five Months   | 149.36  | 149.331 | 149.346 |  -365.94   |
+| Six Months    | 149.354 | 149.325 | 149.339 |  -431.97   |
+| Seven Months  | 149.347 | 149.318 | 149.332 |  -500.22   |
+| Eight Months  | 149.34  | 149.311 | 149.326 |  -567.58   |
+| Nine Months   | 149.334 | 149.305 | 149.319 |  -630.18   |
+| Ten Months    | 149.327 | 149.298 | 149.313 |  -697.4    |
+| Eleven Months | 149.322 | 149.293 | 149.307 |  -753.2    |
+| One Year      | 149.316 | 149.287 | 149.301 |  -812.9    |
+| Two Years     | 149.256 | 149.227 | 149.242 | -1408.19   |
+| Three Years   | 149.204 | 149.173 | 149.188 | -1943.13   |
+| Four Years    | 149.158 | 149.127 | 149.142 | -2401.05   |
+| Five Years    | 149.108 | 149.077 | 149.092 | -2904.72   |
+| Six Years     | 149.08  | 149.048 | 149.064 | -3185.9    |
+| Seven Years   | 149.047 | 149.014 | 149.03  | -3522.5    |
+| Ten Years     | 148.948 | 148.912 | 148.93  | -4527.5    |
