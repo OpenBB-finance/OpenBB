@@ -1073,3 +1073,17 @@ def test_stocks_disc_upcoming_release_days(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"pages": 1, "limit": 5, "today": True})],
+)
+@pytest.mark.integration
+def test_stocks_disc_filings(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.filings(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

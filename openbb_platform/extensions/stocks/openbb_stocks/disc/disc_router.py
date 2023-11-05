@@ -115,3 +115,14 @@ def upcoming_release_days(
 ) -> OBBject[BaseModel]:
     """Get upcoming release days."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="DiscFilings")
+def filings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the most-recent filings submitted to the SEC."""
+    return OBBject(results=Query(**locals()).execute())
