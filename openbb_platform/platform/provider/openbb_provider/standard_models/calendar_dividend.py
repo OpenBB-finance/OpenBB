@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
