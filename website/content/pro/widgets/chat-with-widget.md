@@ -1,6 +1,6 @@
 ---
 title: Chat with widgets
-sidebar_position: 0
+sidebar_position: 3
 description: Learn about OpenBB Terminal Pro's innovative feature, the Chat Widget.
   This generative AI tool enhances efficiency and productivity in investment research
   by offering direct data interaction.
