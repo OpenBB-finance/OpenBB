@@ -1133,7 +1133,7 @@ def test_stocks_disc_growth_tech_equities(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"limit": 10, "provider": "qunadl"})],
+    [({"limit": 10, "provider": "nasdaq"})],
 )
 @pytest.mark.integration
 def test_stocks_disc_top_retail(params, headers):
