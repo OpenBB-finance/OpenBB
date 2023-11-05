@@ -84,9 +84,4 @@ class FMPEtfCountriesFetcher(
         query: FMPEtfCountriesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEtfCountriesData]:
         """Return the transformed data."""
-        # for d in data:
-        #    if d["weightPercentage"] is not None and d["weightPercentage"].endswith(
-        #        "%"
-        #    ):
-        #        d["weightPercentage"] = float(d["weightPercentage"][:-1]) / 100
         return [FMPEtfCountriesData.model_validate(d) for d in data]
