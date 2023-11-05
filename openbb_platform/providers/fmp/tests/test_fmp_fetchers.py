@@ -19,6 +19,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
+from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
@@ -53,6 +54,7 @@ from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
+from openbb_fmp.models.stock_search import FMPStockSearchFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
@@ -458,6 +460,15 @@ def test_fmp_stock_quote_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_fmp_stock_search_fetcher(credentials=test_credentials):
+    params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
+
+    fetcher = FMPStockSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
@@ -534,6 +545,15 @@ def test_fmp_etf_countries_fetcher(credentials=test_credentials):
     params = {"symbol": "MISL"}
 
     fetcher = FMPEtfCountriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "SILJ"}
+
+    fetcher = FMPEtfHoldingsPerformanceFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

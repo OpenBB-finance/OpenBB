@@ -77,7 +77,7 @@ def comp(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Executive Compensation. Information about the executive compensation for a given company."""
+    """Executive Compensation. Information about the executive compensation for a given company."""  # noqa: D401
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -177,6 +177,17 @@ def ins_own(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Institutional Ownership. Institutional ownership data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CalendarIpo")
+def ipo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical IPO Calendar."""
     return OBBject(results=Query(**locals()).execute())
 
 
