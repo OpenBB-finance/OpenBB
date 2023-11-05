@@ -63,7 +63,7 @@ poetry install -E all
 The nightly build can be installed with:
 
 ```console
-pip install openbb-nightly[all]
+pip install openbb-terminal-nightly[all]
 ```
 
 **Note**: This version may not be stable and should not be used in a production setting.

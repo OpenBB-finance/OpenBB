@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-country-weightings/MISL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: "[\n  {\n    \"country\": \"United States\",\n    \"weightPercentage\":
+        \"98.35%\"\n  },\n  {\n    \"country\": \"Other\",\n    \"weightPercentage\":
+        \"1.65%\"\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '141'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 01 Nov 2023 13:27:52 GMT
+      ETag:
+      - W/"8d-2VmJo306+5EGW4NWPOj2rTFnMzA"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

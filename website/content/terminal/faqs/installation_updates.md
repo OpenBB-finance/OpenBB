@@ -59,6 +59,16 @@ poetry install -E all
 
 </details>
 
+### PyPi Nightly
+
+The nightly build can be installed with:
+
+```console
+pip install openbb-terminal-nightly[all]
+```
+
+**Note**: This version may not be stable and should not be used in a production setting.
+
 <details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
 Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then try again.

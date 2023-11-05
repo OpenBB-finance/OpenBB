@@ -14,10 +14,11 @@
   - [4.1 Static version](#41-static-version)
     - [4.1.1. OBBject](#411-obbject)
       - [Helpers](#helpers)
+      - [Extensions](#extensions)
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
+        - [Preferences](#preferences)
       - [System settings](#system-settings)
-      - [Preferences](#preferences)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
     - [4.1.4. Command execution](#414-command-execution)
@@ -62,7 +63,7 @@ poetry install
 Build a Python package:
 
 ```bash
-poetry new openbb-sdk-my_extension
+poetry new openbb-platform-my_extension
 ```
 
 ### Command
@@ -234,11 +235,52 @@ date
 }
 ```
 
+#### Extensions
+
+Steps to create an `OBBject` extension:
+
+1. Set the following as entry point in your extension .toml file and install it:
+
+    ```toml
+    ...
+    [tool.poetry.plugins."openbb_obbject_extension"]
+    example = "openbb_example:ext"
+    ```
+
+2. Extension code:
+
+    ```python
+    from openbb_core.app.model.extension import Extension
+    ext = Extension(name="example", required_credentials=["some_api_key"])
+    ```
+
+3. Optionally declare an `OBBject` accessor, it will use the extension name:
+
+    ```python
+    @ext.obbject_accessor
+    class Example:
+        def __init__(self, obbject):
+            self._obbject = obbject
+
+        def hello(self):
+            api_key = self._obbject._credentials.some_api_key
+            print(f"Hello, this is my credential: {api_key}!")
+    ```
+
+    Usage:
+
+    ```shell
+    >>> from openbb import obb
+    >>> obbject = obb.stock.load("AAPL")
+    >>> obbject.example.hello()
+    Hello, this is my credential: None!
+    ```
+
 ### 4.1.2. Utilities
 
 #### User settings
 
-These are your user settings, you can change them anytime and they will be applied. Don't forget to `sdk.account.save()` if you want these changes to persist.
+These are your user settings, you can change them anytime and they will be applied. Don't forget to `obb.account.save()` if you want these changes to persist.
 
 ```python
 from openbb import obb
@@ -249,6 +291,46 @@ obb.user.preferences
 obb.user.defaults
 ```
 
+#### Preferences
+
+Check your preferences by adjusting the `user_settings.json` file inside your **home** directory.
+If you want to proceed with the default settings, you don't have to touch this file.
+
+Here is an example of how your `user_settings.json` file can look like:
+
+```json
+{
+    "chart_style": "light",
+    "table_style": "light",
+    "plot_enable_pywry": true,
+    "plot_pywry_width": 800,
+    "plot_pywry_height": 800,
+    "request_timeout": 30,
+    "metadata": false,
+    "output_type": "dataframe"
+}
+```
+
+> Note that the user preferences shouldn't be confused with environment variables.
+
+These are the available preferences and respective descriptions:
+
+|Preference           |Default                         |Description                                                                                                                                                                                                                                                                                                                  |
+|---------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|data_directory       |/home/OpenBBUserData            |When launching the application for the first time  this directory will be created. It serves as the default location where the application stores usage artifacts  such as logs and exports.                                                                                                                                 |
+|export_directory     |/home/OpenBBUserData/exports    |The OpenBB Charting Extension provides the capability to export images in various formats. This is the directory where it attempts to save such exports.                                                                                                                                                             |
+|user_styles_directory|/home/OpenBBUserData/styles/user|The OpenBB Charting Extension supports custom stylization. This directory is the location where it looks for user-defined styles. If no user styles are found in this directory  the application will proceed with the default styles.                                                                               |
+|charting_extension   |openbb_charting                 |Name of the charting extension to be used with the application.                                                                                                                                                                                                                                                              |
+|chart_style          |dark                            |The default color style to use with the OpenBB Charting Extension plots. Options include "dark" and "light".                                                                                                                                                                                                                 |
+|plot_enable_pywry    |True                            |Whether the application should enable PyWry. If PyWry is disabled  the image will open in your default browser  otherwise  it will be displayed within your editor or in a separate PyWry window.                                                                                                                            |
+|plot_pywry_width     |1400                            |PyWry window width.                                                                                                                                                                                                                                                                                                          |
+|plot_pywry_height    |762                             |PyWry window height.                                                                                                                                                                                                                                                                                                         |
+|plot_open_export     |False                           |Controls whether the "Save As" window should pop up as soon as the image is displayed.                                                                                                                                                                                                                                       |
+|table_style          |dark                            |The default color style to use with the OpenBB Charting Extension tables. Options are "dark" and "light".                                                                                                                                                                                                                    |
+|request_timeout      |15                              |Specifies the timeout duration for HTTP requests.                                                                                                                                                                                                                                                                            |
+|metadata             |True                            |Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.|
+|output_type          |OBBject                         |Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe`, `numpy`  or `polars`  will render the application's API non-functional.                                                                        |
+
 #### System settings
 
 Check your system settings.
@@ -257,31 +339,6 @@ Check your system settings.
 from openbb import obb
 
 obb.system
-```
-
-#### Preferences
-
-Check your preferences by adjusting the `user_settings.json` file inside your home directory.
-
-The default preferences are:
-
-```json
-{
-    "data_directory": "~/.openbb_platform", // Where to store data
-    "export_directory": "~/.openbb_platform/exports", // Where to store exports
-    "user_styles_directory": "~/.openbb_platform/styles/user", // Where to store user styles
-    "charting_extension": "openbb_charting", // Charting extension to use
-    "chart_style": "dark", // Chart style to use (dark or light)
-    "plot_enable_pywry": true, // Whether to enable PyWry
-    "plot_pywry_width": 1400, // PyWry width
-    "plot_pywry_height": 762, // PyWry height
-    "plot_open_export": false, // Whether to open plot image exports after they are created
-    "table_style": "dark", // Table style to use (dark or light)
-    "request_timeout": 15, // Request timeout
-    "metadata": true, // Whether to include metadata in the output
-    "output_type": "OBBject" // Our default output type (OBBject, dataframe, polars, numpy, dict, chart)
-}
-
 ```
 
 #### Coverage
@@ -372,7 +429,7 @@ To apply an environment variable use one of the following:
     ```python
     import os
     os.environ["OPENBB_DEBUG_MODE"] = "True"
-    from openbb import sdk
+    from openbb import obb
     ```
 
 2. Persistent: create a `.env` file in `/.openbb_platform` folder inside your home directory with

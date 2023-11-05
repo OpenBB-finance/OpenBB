@@ -12,6 +12,7 @@ class Container:
 
     def __init__(self, command_runner: CommandRunner) -> None:
         self._command_runner = command_runner
+        OBBject._credentials = command_runner.user_settings.credentials
 
     def _run(self, *args, **kwargs) -> Union[OBBject, pd.DataFrame, dict]:
         """Run a command in the container."""

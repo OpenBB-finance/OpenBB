@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v4/batch_earning_call_transcript/AAPL?apikey=MOCK_API_KEY&quarter=1&year=2020
+    uri: https://financialmodelingprep.com/api/v4/batch_earning_call_transcript/AAPL?apikey=MOCK_API_KEY&year=2020
   response:
     body:
       string: !!binary |
@@ -1149,7 +1149,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:21 GMT
+      - Wed, 18 Oct 2023 12:03:42 GMT
       ETag:
       - W/"2dde7-INabUoZ6jnXxeMfOz7uTMsB8L5Q"
       Server:
