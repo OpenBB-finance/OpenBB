@@ -27,6 +27,3 @@ class EtfCountriesData(Data):
     """ETF Countries Data."""
 
     country: str = Field(description="The country of the exposure.")
-    weight: float = Field(
-        description="Exposure of the ETF to the country in normalized percentage points."
-    )

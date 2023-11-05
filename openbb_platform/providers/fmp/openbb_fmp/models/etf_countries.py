@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_countries import (
@@ -16,8 +17,6 @@ class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
 
 class FMPEtfCountriesData(EtfCountriesData):
     """FMP ETF Country Weighting Data."""
-
-    __alias_dict__ = {"weight": "weightPercentage"}
 
 
 class FMPEtfCountriesFetcher(
@@ -40,24 +39,54 @@ class FMPEtfCountriesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-        api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        url = create_url(
-            version=3,
-            endpoint=f"etf-country-weightings/{query.symbol.upper()}",
-            api_key=api_key,
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = (
+            query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
+        )
+        results = {}
+
+        for symbol in symbols:
+            data = {}
+            url = create_url(
+                version=3,
+                endpoint=f"etf-country-weightings/{symbol}",
+                api_key=api_key,
+            )
+            result = get_data_many(url, **kwargs)
+            df = pd.DataFrame(result).set_index("country")
+            if len(df) > 0:
+                for i in df.index:
+                    data.update(
+                        {i: float(df.loc[i]["weightPercentage"].replace("%", ""))}
+                    )
+                results.update({symbol: data})
+
+        output = (
+            pd.DataFrame(results)
+            .transpose()
+            .reset_index()
+            .fillna(value=0)
+            .replace(0, None)
+            .rename(columns={"index": "symbol"})
+        ).transpose()
+        output.columns = output.loc["symbol"].to_list()
+        output = output.drop("symbol", axis=0).sort_values(
+            by=output.columns[0], ascending=False
         )
 
-        return get_data_many(url, **kwargs)
+        return (
+            output.reset_index().rename(columns={"index": "country"}).to_dict("records")
+        )
 
     @staticmethod
     def transform_data(
         query: FMPEtfCountriesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEtfCountriesData]:
         """Return the transformed data."""
-        for d in data:
-            if d["weightPercentage"] is not None and d["weightPercentage"].endswith(
-                "%"
-            ):
-                d["weightPercentage"] = float(d["weightPercentage"][:-1]) / 100
+        # for d in data:
+        #    if d["weightPercentage"] is not None and d["weightPercentage"].endswith(
+        #        "%"
+        #    ):
+        #        d["weightPercentage"] = float(d["weightPercentage"][:-1]) / 100
         return [FMPEtfCountriesData.model_validate(d) for d in data]
