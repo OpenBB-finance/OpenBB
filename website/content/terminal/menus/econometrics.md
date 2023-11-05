@@ -245,7 +245,7 @@ The dataset is now properly configured to allow for proper panel regressions.  T
 - `-r fe` (Fixed Effects)
 - `-r fdols` (First Difference OLS).
 
-For example, a **Random Effects** regression is performed. 
+For example, a **Random Effects** regression is performed.
 
 ```
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
@@ -256,7 +256,7 @@ panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.
 
 ### Scripts & Routines
 
-Doing research, both as a student or professor for a university or as a professional, often requires the findings to be easily replicated. As many steps could be required, the ability to make small adjustments without needing to re-do every single step again. This is where [OpenBB Routines](/website/content/terminal/usage/routines/introduction-to-routines.md) play an important role.
+Doing research, both as a student or professor for a university or as a professional, often requires the findings to be easily replicated. As many steps could be required, the ability to make small adjustments without needing to re-do every single step again. This is where [OpenBB Routines](/terminal/usage/routines/introduction-to-routines.md) play an important role.
 
 Use the contents below as a demo file, copying and pasting into a file saved to the `~/OpenBBUserData/routines` folder.
 

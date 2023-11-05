@@ -22,7 +22,7 @@ The Fixed Income menu functions for reference rates (ESTER, SOFR, SONIA and Amer
 
 :::note
 
-The menu relies on FRED for data requests, please refer to the [API keys guide](/website/content/terminal/usage/data/api-keys.md) for information on how to obtain and set a key for FRED.
+The menu relies on FRED for data requests, please refer to the [API keys guide](/terminal/usage/data/api-keys.md) for information on how to obtain and set a key for FRED.
 
 :::
 

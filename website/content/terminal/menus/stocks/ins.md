@@ -39,7 +39,7 @@ The Insider Trading menu contains three groups of functions:
 
 ### Screening
 
-Screening in this sub-menu uses a similar process to the [Stocks Screener](/website/content/terminal/menus/stocks/screener.md).  This [template](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_terminal/miscellaneous/stocks/insider/template.ini) file is a starting point, and describes how to configurea preset for use.  Follow the formatting instructions in the comments of the template file, then place this file in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/insider`.  Files placed in this folder will be recognized by the auto complete choices on next launch.  Changes to the settings (without altering the filename) will be reflected when the preset  is run, restarting the Terminal is not required.
+Screening in this sub-menu uses a similar process to the [Stocks Screener](/terminal/menus/stocks/screener.md).  This [template](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_terminal/miscellaneous/stocks/insider/template.ini) file is a starting point, and describes how to configurea preset for use.  Follow the formatting instructions in the comments of the template file, then place this file in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/insider`.  Files placed in this folder will be recognized by the auto complete choices on next launch.  Changes to the settings (without altering the filename) will be reflected when the preset  is run, restarting the Terminal is not required.
 
 #### Set
 

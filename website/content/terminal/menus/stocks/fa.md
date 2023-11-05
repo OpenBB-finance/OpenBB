@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Fundamental Analysis - Stocks - Menus | OpenBB Terminal Docs" />
 
-The Fundamental Analysis menu is a set of tools for analyzing the overall health of a company and estimating its intrinsic value.  Functions within this menu provide company profiles, financial statements, historical distributions, financial ratios, and analyst estimates.  Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are tools in the [`stocks/ca`](/website/content/terminal/menus/stocks/comparison.md) menu for comparing fundamentals across groups of companies.
+The Fundamental Analysis menu is a set of tools for analyzing the overall health of a company and estimating its intrinsic value.  Functions within this menu provide company profiles, financial statements, historical distributions, financial ratios, and analyst estimates.  Revenue of companies with a long public history are easier to forecast, and the consensus of many analysts will indicate the level of confidence in future expectations. In addition to these features, there are tools in the [`stocks/ca`](/terminal/menus/stocks/comparison.md) menu for comparing fundamentals across groups of companies.
 
 ## Usage
 

@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Forex - Menus | OpenBB Terminal Docs" />
 
-The Forex menu includes features for historical prices, forward rates, and real-time exchange rates.  It also provides entry points to the [`/ta/`](/website/content/terminal/menus/common/ta.md), [`/qa`](/website/content/terminal/menus/common/qa.md), and [`/forecast`](/website/content/terminal/menus/forecast.md) menus.
+The Forex menu includes features for historical prices, forward rates, and real-time exchange rates.  It also provides entry points to the [`/ta/`](/terminal/menus/common/ta.md), [`/qa`](/terminal/menus/common/qa.md), and [`/forecast`](/terminal/menus/forecast.md) menus.
 
 
 ## Usage
