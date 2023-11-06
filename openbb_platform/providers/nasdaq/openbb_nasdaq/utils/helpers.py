@@ -38,6 +38,17 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
+IPO_HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip",
+    "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
+    "Host": "api.nasdaq.com",
+    "Origin": "https://www.nasdaq.com",
+    "Referer": "https://www.nasdaq.com/",
+    "User-Agent": get_random_agent(),
+    "Connection": "keep-alive",
+}
+
 
 class BasicResponse:
     """Basic Response class."""

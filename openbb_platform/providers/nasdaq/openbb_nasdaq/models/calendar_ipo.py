@@ -9,7 +9,7 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from openbb_nasdaq.utils.helpers import HEADERS, date_range
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.calendar_ipo import (
     CalendarIpoData,
@@ -158,7 +158,7 @@ class NasdaqCalendarIpoFetcher(
                 if query.is_spo is False
                 else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
             )
-            r = requests.get(url, headers=HEADERS, timeout=5)
+            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
             r_json = r.json()["data"] if "data" in r.json() else {}
             if query.status in r_json:
                 response = (
