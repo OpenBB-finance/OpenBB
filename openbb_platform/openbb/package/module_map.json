@@ -99,6 +99,7 @@
     "stocks_disc_gainers": "/stocks/disc/gainers",
     "stocks_disc_growth_tech_equities": "/stocks/disc/growth_tech_equities",
     "stocks_disc_losers": "/stocks/disc/losers",
+    "stocks_disc_top_retail": "/stocks/disc/top_retail",
     "stocks_disc_undervalued_growth_equities": "/stocks/disc/undervalued_growth_equities",
     "stocks_disc_undervalued_large_caps": "/stocks/disc/undervalued_large_caps",
     "stocks_fa": "/stocks/fa",

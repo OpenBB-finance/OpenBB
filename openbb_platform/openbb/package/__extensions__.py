@@ -60,6 +60,7 @@ Extensions:
     - fmp@0.1.0a4
     - fred@0.1.0a4
     - intrinio@0.1.0a4
+    - nasdaq@0.1.0a4
     - oecd@0.1.0a4
     - polygon@0.1.0a4
     - quandl@0.1.0a4
