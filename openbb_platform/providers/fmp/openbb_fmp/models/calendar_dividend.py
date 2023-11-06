@@ -7,11 +7,11 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.dividend_calendar import (
+from openbb_provider.standard_models.calendar_dividend import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
@@ -20,35 +20,39 @@ class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/dividend-calendar-api/
 
     The maximum time interval between the start and end date can be 3 months.
-    Default value for time interval is 1 month.
     """
 
 
 class FMPDividendCalendarData(DividendCalendarData):
     """FMP Dividend Calendar Data."""
 
-    @field_validator("date", mode="before", check_fields=False)
+    __alias_dict__ = {
+        "amount": "dividend",
+        "record_date": "recordDate",
+        "payment_date": "paymentDate",
+        "declaration_date": "declarationDate",
+    }
+
+    adjusted_amount: Optional[float] = Field(
+        default=None,
+        description="The adjusted-dividend amount.",
+        alias="adjDividend",
+    )
+    label: Optional[str] = Field(
+        default=None, description="Ex-dividend date formatted for display."
+    )
+
+    @field_validator(
+        "date",
+        "record_date",
+        "payment_date",
+        "declaration_date",
+        mode="before",
+        check_fields=False,
+    )
     @classmethod
     def date_validate(cls, v: str):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("recordDate", mode="before", check_fields=False)
-    @classmethod
-    def record_date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the record date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("paymentDate", mode="before", check_fields=False)
-    @classmethod
-    def payment_date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the payment date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("declarationDate", mode="before", check_fields=False)
-    @classmethod
-    def declaration_date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the declaration date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
@@ -62,15 +66,14 @@ class FMPDividendCalendarFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPDividendCalendarQueryParams:
-        """Transform the query params. Start and end dates are set to 1 1 year interval."""
+        """Transform the query params."""
         transformed_params = params
 
         now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - relativedelta(years=1)
-
+            transformed_params["start_date"] = now
         if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+            transformed_params["end_date"] = now + relativedelta(days=3)
 
         return FMPDividendCalendarQueryParams(**transformed_params)
 
