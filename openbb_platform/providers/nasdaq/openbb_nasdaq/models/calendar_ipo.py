@@ -9,7 +9,7 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
+from openbb_nasdaq.utils.helpers import HEADERS, date_range
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.calendar_ipo import (
     CalendarIpoData,
@@ -27,6 +27,10 @@ class NasdaqCalendarIpoQueryParams(CalendarIpoQueryParams):
     status: Optional[Literal["upcoming", "priced", "filed", "withdrawn"]] = Field(
         default="priced",
         description="The status of the IPO.",
+    )
+    is_spo: bool = Field(
+        default=False,
+        description="If True, returns data for secondary public offerings (SPOs).",
     )
 
 
@@ -149,8 +153,12 @@ class NasdaqCalendarIpoFetcher(
 
         def get_calendar_data(date: str) -> None:
             response: List[Dict[Any, Any]] = [{}]
-            url = f"https://api.nasdaq.com/api/ipo/calendar?date={date}"
-            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
+            url = (
+                f"https://api.nasdaq.com/api/ipo/calendar?date={date}"
+                if query.is_spo is False
+                else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
+            )
+            r = requests.get(url, headers=HEADERS, timeout=5)
             r_json = r.json()["data"] if "data" in r.json() else {}
             if query.status in r_json:
                 response = (
