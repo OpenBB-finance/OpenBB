@@ -23,68 +23,55 @@ import openbb_core.app.model.command_context
 import openbb_core.app.model.obbject
 import types
 
-
 class ROUTER_stocks_ca(Container):
     """/stocks/ca
-    peers
+peers
     """
-
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate
-    def peers(
-        self,
-        symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
-    ) -> OBBject[Data]:
+    def peers(self, symbol: typing_extensions.Annotated[Union[str, List[str]], OpenBBCustomParameter(description='Symbol to get data for.')], provider: Union[Literal['fmp'], None] = None, **kwargs) -> OBBject[Data]:
         """Stock Peers. Company peers.
 
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Union[Literal['fmp'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+Parameters
+----------
+symbol : str
+    Symbol to get data for.
+provider : Union[Literal['fmp'], None]
+    The provider to use for the query, by default None.
+    If None, the provider specified in defaults is selected or 'fmp' if there is
+    no default.
 
-        Returns
-        -------
-        OBBject
-            results : Union[StockPeers]
-                Serializable results.
-            provider : Union[Literal['fmp'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
+Returns
+-------
+OBBject
+    results : Union[StockPeers]
+        Serializable results.
+    provider : Union[Literal['fmp'], None]
+        Provider name.
+    warnings : Optional[List[Warning_]]
+        List of warnings.
+    chart : Optional[Chart]
+        Chart object.
+    extra: Dict[str, Any]
+        Extra info.
 
-        StockPeers
-        ----------
-        peers_list : List[str]
-            A list of stock peers based on sector, exchange and market cap.
+StockPeers
+----------
+peers_list : List[str]
+    A list of stock peers based on sector, exchange and market cap. 
 
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.stocks.ca.peers(symbol="AAPL")
-        """  # noqa: E501
+Example
+-------
+>>> from openbb import obb
+>>> obb.stocks.ca.peers(symbol="AAPL")
+
+"""  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -92,3 +79,4 @@ class ROUTER_stocks_ca(Container):
             "/stocks/ca/peers",
             **inputs,
         )
+

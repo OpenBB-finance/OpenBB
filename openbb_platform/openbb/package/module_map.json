@@ -102,6 +102,7 @@
     "stocks_disc_top_retail": "/stocks/disc/top_retail",
     "stocks_disc_undervalued_growth_equities": "/stocks/disc/undervalued_growth_equities",
     "stocks_disc_undervalued_large_caps": "/stocks/disc/undervalued_large_caps",
+    "stocks_disc_upcoming_release_days": "/stocks/disc/upcoming_release_days",
     "stocks_fa": "/stocks/fa",
     "stocks_fa_balance": "/stocks/fa/balance",
     "stocks_fa_balance_growth": "/stocks/fa/balance_growth",

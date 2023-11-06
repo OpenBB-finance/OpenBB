@@ -20,7 +20,6 @@ from openbb_core.app.static.filters import filter_inputs
 
 from openbb_provider.abstract.data import Data
 
-
 class Extensions(Container):
     # fmt: off
     """
@@ -65,81 +64,70 @@ Extensions:
     - polygon@0.1.0a4
     - quandl@0.1.0a4
     - sec@0.1.0a4
+    - seeking_alpha@0.1.0a4
     - tradingeconomics@0.1.0a4
     - wsj@0.1.0a4
     - yfinance@0.1.0a4    """
-    # fmt: on
+# fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @property
     def crypto(self):  # route = "/crypto"
         from . import crypto
-
         return crypto.ROUTER_crypto(command_runner=self._command_runner)
 
     @property
     def econometrics(self):  # route = "/econometrics"
         from . import econometrics
-
         return econometrics.ROUTER_econometrics(command_runner=self._command_runner)
 
     @property
     def economy(self):  # route = "/economy"
         from . import economy
-
         return economy.ROUTER_economy(command_runner=self._command_runner)
 
     @property
     def etf(self):  # route = "/etf"
         from . import etf
-
         return etf.ROUTER_etf(command_runner=self._command_runner)
 
     @property
     def fixedincome(self):  # route = "/fixedincome"
         from . import fixedincome
-
         return fixedincome.ROUTER_fixedincome(command_runner=self._command_runner)
 
     @property
     def forex(self):  # route = "/forex"
         from . import forex
-
         return forex.ROUTER_forex(command_runner=self._command_runner)
 
     @property
     def futures(self):  # route = "/futures"
         from . import futures
-
         return futures.ROUTER_futures(command_runner=self._command_runner)
 
     @property
     def news(self):  # route = "/news"
         from . import news
-
         return news.ROUTER_news(command_runner=self._command_runner)
 
     @property
     def qa(self):  # route = "/qa"
         from . import qa
-
         return qa.ROUTER_qa(command_runner=self._command_runner)
 
     @property
     def regulators(self):  # route = "/regulators"
         from . import regulators
-
         return regulators.ROUTER_regulators(command_runner=self._command_runner)
 
     @property
     def stocks(self):  # route = "/stocks"
         from . import stocks
-
         return stocks.ROUTER_stocks(command_runner=self._command_runner)
 
     @property
     def ta(self):  # route = "/ta"
         from . import ta
-
         return ta.ROUTER_ta(command_runner=self._command_runner)
