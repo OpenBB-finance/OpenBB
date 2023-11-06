@@ -496,10 +496,20 @@ def test_economy_gdpforecast(params, headers):
     [
         (
             {
+                "provider": "nasdaq",
+                "start_date": "2023-05-01",
+                "end_date": "2023-05-10",
+                "country": "spain,france",
+            }
+        ),
+        (
+            {
+                "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "mexico,sweden",
-                "provider": "tradingeconomics",
+                "importance": "low",
+                "group": "gdp",
             }
         ),
         (

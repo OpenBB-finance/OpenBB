@@ -40,6 +40,7 @@ openbb-stocks = { path = "./extensions/stocks", develop = true }
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
+openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
@@ -77,7 +78,9 @@ def install_local(_extras: bool = False):
 
     try:
         # we create a temporary pyproject.toml
-        PYPROJECT.write_text(TEMP_PYPROJECT)
+        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(TEMP_PYPROJECT)
+
         CMD = [sys.executable, "-m", "poetry"]
 
         subprocess.run(  # noqa: PLW1510
