@@ -220,8 +220,6 @@ class ROUTER_economy(Container):
             Last updated timestamp. (provider: fmp)
         created_at : Optional[Union[datetime]]
             Created at timestamp. (provider: fmp)
-        category : Optional[Union[str]]
-            Category of event. (provider: tradingeconomics)
 
         Example
         -------
@@ -294,11 +292,11 @@ class ROUTER_economy(Container):
             Sub-sector the constituent company in the index belongs to.
         headquarter : Optional[Union[str]]
             Location of the headquarter of the constituent company in the index.
-        date_first_added : Optional[Union[date, str]]
+        date_first_added : Optional[Union[str, date]]
             Date the constituent company was added to the index.
         cik : int
             Central Index Key of the constituent company in the index.
-        founded : Optional[Union[date, str]]
+        founded : Optional[Union[str, date]]
             Founding year of the constituent company in the index.
 
         Example

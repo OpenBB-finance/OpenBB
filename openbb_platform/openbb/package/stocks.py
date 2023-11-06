@@ -1,27 +1,43 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Union
-
-import typing_extensions
-from annotated_types import Ge
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_stocks(Container):
     """/stocks
     /ca
+    calendar_dividend
+    calendar_ipo
+    /disc
     /fa
+    ftd
     info
     load
     multiples
     news
     /options
+    price_performance
     quote
     search
     """
@@ -35,11 +51,354 @@ class ROUTER_stocks(Container):
 
         return stocks_ca.ROUTER_stocks_ca(command_runner=self._command_runner)
 
+    @validate
+    def calendar_dividend(
+        self,
+        start_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Upcoming and Historical Dividend Calendar.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Union[Literal['fmp'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : Union[List[CalendarDividend]]
+                Serializable results.
+            provider : Union[Literal['fmp'], None]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        CalendarDividend
+        ----------------
+        date : date
+            The date of the data. (Ex-Dividend)
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[Union[str]]
+            Name of the entity.
+        record_date : Optional[Union[date]]
+            The record date of ownership for eligibility.
+        payment_date : Optional[Union[date]]
+            The payment date of the dividend.
+        declaration_date : Optional[Union[date]]
+            Declaration date of the dividend.
+        amount : Optional[Union[float]]
+            Dividend amount, per-share.
+        adjusted_amount : Optional[Union[float]]
+            The adjusted-dividend amount. (provider: fmp)
+        label : Optional[Union[str]]
+            Ex-dividend date formatted for display. (provider: fmp)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.stocks.calendar_dividend()
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/calendar_dividend",
+            **inputs,
+        )
+
+    @validate
+    def calendar_ipo(
+        self,
+        symbol: typing_extensions.Annotated[
+            Union[str, None, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ] = None,
+        start_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: typing_extensions.Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        limit: typing_extensions.Annotated[
+            Union[int, None],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
+        provider: Union[Literal["intrinio"], None] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Upcoming and Historical IPO Calendar.
+
+        Parameters
+        ----------
+        symbol : Union[str, None]
+            Symbol to get data for.
+        start_date : Union[datetime.date, None]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None]
+            End date of the data, in YYYY-MM-DD format.
+        limit : Union[int, None]
+            The number of data entries to return.
+        provider : Union[Literal['intrinio'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+        status : Optional[Union[Literal['upcoming', 'priced', 'withdrawn']]]
+            Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)
+        min_value : Optional[Union[int]]
+            Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio)
+        max_value : Optional[Union[int]]
+            Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : Union[List[CalendarIpo]]
+                Serializable results.
+            provider : Union[Literal['intrinio'], None]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        CalendarIpo
+        -----------
+        symbol : Optional[Union[str]]
+            Symbol representing the entity requested in the data.
+        ipo_date : Optional[Union[date]]
+            The date of the IPO, when the stock first trades on a major exchange.
+        status : Optional[Union[Literal['upcoming', 'priced', 'withdrawn']]]
+
+                    The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
+                    Priced IPOs have taken place.
+                    Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
+                 (provider: intrinio)
+        exchange : Optional[Union[str]]
+
+                    The acronym of the stock exchange that the company is going to trade publicly on.
+                    Typically NYSE or NASDAQ.
+                 (provider: intrinio)
+        offer_amount : Optional[Union[float]]
+            The total dollar amount of shares offered in the IPO. Typically this is share price * share count (provider: intrinio)
+        share_price : Optional[Union[float]]
+            The price per share at which the IPO was offered. (provider: intrinio)
+        share_price_lowest : Optional[Union[float]]
+
+                    The expected lowest price per share at which the IPO will be offered.
+                    Before an IPO is priced, companies typically provide a range of prices per share at which
+                    they expect to offer the IPO (typically available for upcoming IPOs).
+                 (provider: intrinio)
+        share_price_highest : Optional[Union[float]]
+
+                    The expected highest price per share at which the IPO will be offered.
+                    Before an IPO is priced, companies typically provide a range of prices per share at which
+                    they expect to offer the IPO (typically available for upcoming IPOs).
+                 (provider: intrinio)
+        share_count : Optional[Union[int]]
+            The number of shares offered in the IPO. (provider: intrinio)
+        share_count_lowest : Optional[Union[int]]
+
+                    The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced,
+                    companies typically provide a range of shares that they expect to offer in the IPO
+                    (typically available for upcoming IPOs).
+                 (provider: intrinio)
+        share_count_highest : Optional[Union[int]]
+
+                    The expected highest number of shares that will be offered in the IPO. Before an IPO is priced,
+                    companies typically provide a range of shares that they expect to offer in the IPO
+                    (typically available for upcoming IPOs).
+                 (provider: intrinio)
+        announcement_url : Optional[Union[str]]
+            The URL to the company's announcement of the IPO (provider: intrinio)
+        sec_report_url : Optional[Union[str]]
+
+                    The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
+                    which is required to be filed before an IPO takes place.
+                 (provider: intrinio)
+        open_price : Optional[Union[float]]
+            The opening price at the beginning of the first trading day (only available for priced IPOs). (provider: intrinio)
+        close_price : Optional[Union[float]]
+            The closing price at the end of the first trading day (only available for priced IPOs). (provider: intrinio)
+        volume : Optional[Union[int]]
+            The volume at the end of the first trading day (only available for priced IPOs). (provider: intrinio)
+        day_change : Optional[Union[float]]
+
+                    The percentage change between the open price and the close price on the first trading day
+                    (only available for priced IPOs).
+                 (provider: intrinio)
+        week_change : Optional[Union[float]]
+
+                    The percentage change between the open price on the first trading day and the close price approximately
+                    a week after the first trading day (only available for priced IPOs).
+                 (provider: intrinio)
+        month_change : Optional[Union[float]]
+
+                    The percentage change between the open price on the first trading day and the close price approximately
+                    a month after the first trading day (only available for priced IPOs).
+                 (provider: intrinio)
+        id : Optional[Union[str]]
+            The Intrinio ID of the IPO. (provider: intrinio)
+        company : Optional[Union[openbb_intrinio.utils.references.IntrinioCompany]]
+            The company that is going public via the IPO. (provider: intrinio)
+        security : Optional[Union[openbb_intrinio.utils.references.IntrinioSecurity]]
+            The primary Security for the Company that is going public via the IPO (provider: intrinio)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.stocks.calendar_ipo(limit=100)
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "start_date": start_date,
+                "end_date": end_date,
+                "limit": limit,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/calendar_ipo",
+            **inputs,
+        )
+
+    @property
+    def disc(self):  # route = "/stocks/disc"
+        from . import stocks_disc
+
+        return stocks_disc.ROUTER_stocks_disc(command_runner=self._command_runner)
+
     @property
     def fa(self):  # route = "/stocks/fa"
         from . import stocks_fa
 
         return stocks_fa.ROUTER_stocks_fa(command_runner=self._command_runner)
+
+    @validate
+    def ftd(
+        self,
+        symbol: typing_extensions.Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Union[Literal["sec"], None] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Get reported Fail-to-deliver (FTD) data.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Union[Literal['sec'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'sec' if there is
+            no default.
+        limit : Optional[Union[int]]
+
+                Limit the number of reports to parse, from most recent.
+                Approximately 24 reports per year, going back to 2009.
+                 (provider: sec)
+        skip_reports : Optional[Union[int]]
+
+                Skip N number of reports from current. A value of 1 will skip the most recent report.
+                 (provider: sec)
+
+        Returns
+        -------
+        OBBject
+            results : Union[List[StockFTD]]
+                Serializable results.
+            provider : Union[Literal['sec'], None]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        StockFTD
+        --------
+        settlement_date : Optional[Union[date]]
+            The settlement date of the fail.
+        symbol : Optional[Union[str]]
+            Symbol representing the entity requested in the data.
+        cusip : Optional[Union[str]]
+            CUSIP of the Security.
+        quantity : Optional[Union[int]]
+            The number of fails on that settlement date.
+        price : Optional[Union[float]]
+            The price at the previous closing price from the settlement date.
+        description : Optional[Union[str]]
+            The description of the Security.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.stocks.ftd(symbol="AAPL")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/ftd",
+            **inputs,
+        )
 
     @validate
     def info(
@@ -698,6 +1057,95 @@ class ROUTER_stocks(Container):
         return stocks_options.ROUTER_stocks_options(command_runner=self._command_runner)
 
     @validate
+    def price_performance(
+        self,
+        symbol: typing_extensions.Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Union[Literal["fmp"], None] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Price performance as a return, over different periods.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Union[Literal['fmp'], None]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : Union[List[PricePerformance]]
+                Serializable results.
+            provider : Union[Literal['fmp'], None]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        PricePerformance
+        ----------------
+        one_day : Optional[Union[float]]
+            One-day return.
+        wtd : Optional[Union[float]]
+            Week to date return.
+        one_week : Optional[Union[float]]
+            One-week return.
+        mtd : Optional[Union[float]]
+            Month to date return.
+        one_month : Optional[Union[float]]
+            One-month return.
+        qtd : Optional[Union[float]]
+            Quarter to date return.
+        three_month : Optional[Union[float]]
+            Three-month return.
+        six_month : Optional[Union[float]]
+            Six-month return.
+        ytd : Optional[Union[float]]
+            Year to date return.
+        one_year : Optional[Union[float]]
+            One-year return.
+        three_year : Optional[Union[float]]
+            Three-year return.
+        five_year : Optional[Union[float]]
+            Five-year return.
+        ten_year : Optional[Union[float]]
+            Ten-year return.
+        max : Optional[Union[float]]
+            Return from the beginning of the time series.
+        symbol : Optional[Union[str]]
+            The ticker symbol. (provider: fmp)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.etf.price_performance(symbol="AAPL")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/stocks/price_performance",
+            **inputs,
+        )
+
+    @validate
     def quote(
         self,
         symbol: typing_extensions.Annotated[
@@ -858,7 +1306,7 @@ class ROUTER_stocks(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        provider: Union[Literal["cboe"], None] = None,
+        provider: Union[Literal["cboe", "fmp", "sec"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Stock Search. Search for a company or stock ticker.
@@ -869,17 +1317,55 @@ class ROUTER_stocks(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
-        provider : Union[Literal['cboe'], None]
+        provider : Union[Literal['cboe', 'fmp', 'sec'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        mktcap_min : Optional[Union[int]]
+            Filter by market cap greater than this value. (provider: fmp)
+        mktcap_max : Optional[Union[int]]
+            Filter by market cap less than this value. (provider: fmp)
+        price_min : Optional[Union[float]]
+            Filter by price greater than this value. (provider: fmp)
+        price_max : Optional[Union[float]]
+            Filter by price less than this value. (provider: fmp)
+        beta_min : Optional[Union[float]]
+            Filter by a beta greater than this value. (provider: fmp)
+        beta_max : Optional[Union[float]]
+            Filter by a beta less than this value. (provider: fmp)
+        volume_min : Optional[Union[int]]
+            Filter by volume greater than this value. (provider: fmp)
+        volume_max : Optional[Union[int]]
+            Filter by volume less than this value. (provider: fmp)
+        dividend_min : Optional[Union[float]]
+            Filter by dividend amount greater than this value. (provider: fmp)
+        dividend_max : Optional[Union[float]]
+            Filter by dividend amount less than this value. (provider: fmp)
+        is_etf : Optional[Union[bool]]
+            If true, returns only ETFs. (provider: fmp)
+        is_active : Optional[Union[bool]]
+            If false, returns only inactive tickers. (provider: fmp)
+        sector : Optional[Union[Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']]]
+            Filter by sector. (provider: fmp)
+        industry : Optional[Union[str]]
+            Filter by industry. (provider: fmp)
+        country : Optional[Union[str]]
+            Filter by country, as a two-letter country code. (provider: fmp)
+        exchange : Optional[Union[Literal['amex', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']]]
+            Filter by exchange. (provider: fmp)
+        limit : Optional[Union[int]]
+            Limit the number of results to return. (provider: fmp)
+        is_fund : bool
+            Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
+        use_cache : bool
+            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
         OBBject
             results : Union[List[StockSearch]]
                 Serializable results.
-            provider : Union[Literal['cboe'], None]
+            provider : Union[Literal['cboe', 'fmp', 'sec'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -898,6 +1384,32 @@ class ROUTER_stocks(Container):
             Name of the primary market maker. (provider: cboe)
         post_station : Optional[Union[str]]
             Post and station location on the CBOE trading floor. (provider: cboe)
+        market_cap : Optional[Union[int]]
+            The market cap of ticker. (provider: fmp)
+        sector : Optional[Union[str]]
+            The sector the ticker belongs to. (provider: fmp)
+        industry : Optional[Union[str]]
+            The industry ticker belongs to. (provider: fmp)
+        beta : Optional[Union[float]]
+            The beta of the ETF. (provider: fmp)
+        price : Optional[Union[float]]
+            The current price. (provider: fmp)
+        last_annual_dividend : Optional[Union[float]]
+            The last annual amount dividend paid. (provider: fmp)
+        volume : Optional[Union[int]]
+            The current trading volume. (provider: fmp)
+        exchange : Optional[Union[str]]
+            The exchange code the asset trades on. (provider: fmp)
+        exchange_name : Optional[Union[str]]
+            The full name of the primary exchange. (provider: fmp)
+        country : Optional[Union[str]]
+            The two-letter country abbreviation where the head office is located. (provider: fmp)
+        is_etf : Optional[Union[Literal[True, False]]]
+            Whether the ticker is an ETF. (provider: fmp)
+        actively_trading : Optional[Union[Literal[True, False]]]
+            Whether the ETF is actively trading. (provider: fmp)
+        cik : Optional[Union[str]]
+            Central Index Key (provider: sec)
 
         Example
         -------

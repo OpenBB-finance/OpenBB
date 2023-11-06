@@ -1,22 +1,33 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Union
-
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+import typing_extensions
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_stocks_fa(Container):
     """/stocks/fa
     balance
     balance_growth
-    cal
     cash
     cash_growth
     comp
@@ -55,13 +66,13 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: typing_extensions.Annotated[
-            Literal["annual", "quarter"],
+            Union[Literal["annual", "quarter"], None],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            int,
+            Union[typing_extensions.Annotated[int, Ge(ge=0)], None],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 12,
+        ] = 5,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -71,9 +82,9 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Union[Literal['annual', 'quarter'], None]
             Time period of the data to return.
-        limit : int
+        limit : Union[typing_extensions.Annotated[int, Ge(ge=0)], None]
             The number of data entries to return.
         provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
@@ -81,16 +92,6 @@ class ROUTER_stocks_fa(Container):
             no default.
         cik : Optional[Union[str]]
             Central Index Key (CIK) of the company. (provider: fmp)
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
-            Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
-            Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
-            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
         filing_date : Optional[Union[datetime.date]]
             Filing date of the financial statement. (provider: polygon)
         filing_date_lt : Optional[Union[datetime.date]]
@@ -148,83 +149,83 @@ class ROUTER_stocks_fa(Container):
             Accepted date.
         period : Optional[Union[str]]
             Reporting period of the statement.
-        cash_and_cash_equivalents : Optional[int]
+        cash_and_cash_equivalents : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Cash and cash equivalents
-        short_term_investments : Optional[int]
+        short_term_investments : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Short-term investments
-        long_term_investments : Optional[int]
+        long_term_investments : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Long-term investments
-        inventory : Optional[int]
+        inventory : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Inventory
-        net_receivables : Optional[int]
+        net_receivables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Receivables, net
-        marketable_securities : Optional[int]
+        marketable_securities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Marketable securities
-        property_plant_equipment_net : Optional[int]
+        property_plant_equipment_net : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Property, plant and equipment, net
-        goodwill : Optional[int]
+        goodwill : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Goodwill
-        assets : Optional[int]
+        assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total assets
-        current_assets : Optional[int]
+        current_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total current assets
-        other_current_assets : Optional[int]
+        other_current_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other current assets
-        intangible_assets : Optional[int]
+        intangible_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Intangible assets
-        tax_assets : Optional[int]
+        tax_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accrued income taxes
-        other_assets : Optional[int]
-            Other assets
-        non_current_assets : Optional[int]
+        non_current_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total non-current assets
-        other_non_current_assets : Optional[int]
+        other_non_current_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other non-current assets
-        account_payables : Optional[int]
+        account_payables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accounts payable
-        tax_payables : Optional[int]
+        tax_payables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accrued income taxes
-        deferred_revenue : Optional[int]
+        deferred_revenue : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accrued income taxes, other deferred revenue
-        total_assets : Optional[int]
+        other_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
+            Other assets
+        total_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total assets
-        long_term_debt : Optional[int]
+        long_term_debt : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Long-term debt, Operating lease obligations, Long-term finance lease obligations
-        short_term_debt : Optional[int]
+        short_term_debt : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year
-        liabilities : Optional[int]
+        liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total liabilities
-        other_current_liabilities : Optional[int]
+        other_current_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other current liabilities
-        current_liabilities : Optional[int]
+        current_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total current liabilities
-        total_liabilities_and_total_equity : Optional[int]
+        total_liabilities_and_total_equity : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total liabilities and total equity
-        other_liabilities : Optional[int]
-            Other liabilities
-        other_non_current_liabilities : Optional[int]
+        other_non_current_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other non-current liabilities
-        non_current_liabilities : Optional[int]
+        non_current_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total non-current liabilities
-        total_liabilities_and_stockholders_equity : Optional[int]
+        total_liabilities_and_stockholders_equity : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total liabilities and stockholders' equity
-        other_stockholder_equity : Optional[int]
+        other_stockholder_equity : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other stockholders equity
-        total_stockholders_equity : Optional[int]
+        total_stockholders_equity : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total stockholders' equity
-        total_liabilities : Optional[int]
+        other_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
+            Other liabilities
+        total_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total liabilities
-        common_stock : Optional[int]
+        common_stock : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Common stock
-        preferred_stock : Optional[int]
+        preferred_stock : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Preferred stock
-        accumulated_other_comprehensive_income_loss : Optional[int]
+        accumulated_other_comprehensive_income_loss : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accumulated other comprehensive income (loss)
-        retained_earnings : Optional[int]
+        retained_earnings : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Retained earnings
-        minority_interest : Optional[int]
+        minority_interest : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Minority interest
-        total_equity : Optional[int]
+        total_equity : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total equity
         calendar_year : Optional[int]
             Calendar Year (provider: fmp)
@@ -252,7 +253,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.balance(symbol="AAPL", period="annual", limit=12)
+        >>> obb.stocks.fa.balance(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -423,92 +424,6 @@ class ROUTER_stocks_fa(Container):
         )
 
     @validate
-    def cal(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ],
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ],
-        provider: Union[Literal["fmp"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Dividend Calendar. Show Dividend Calendar for a given start and end dates.
-
-        Parameters
-        ----------
-        start_date : date
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : date
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[DividendCalendar]]
-                Serializable results.
-            provider : Union[Literal['fmp'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        DividendCalendar
-        ----------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        date : date
-            The date of the data.
-        label : str
-            Date in human readable form in the calendar.
-        adj_dividend : Optional[Union[float]]
-            Adjusted dividend on a date in the calendar.
-        dividend : Optional[Union[float]]
-            Dividend amount in the calendar.
-        record_date : Optional[Union[date]]
-            Record date of the dividend in the calendar.
-        payment_date : Optional[Union[date]]
-            Payment date of the dividend in the calendar.
-        declaration_date : Optional[Union[date]]
-            Declaration date of the dividend in the calendar.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.stocks.fa.cal(start_date="2023-01-01", end_date="2023-06-06")
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/stocks/fa/cal",
-            **inputs,
-        )
-
-    @validate
     def cash(
         self,
         symbol: typing_extensions.Annotated[
@@ -516,13 +431,13 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: typing_extensions.Annotated[
-            Literal["annual", "quarter"],
+            Union[Literal["annual", "quarter"], None],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            int,
+            Union[typing_extensions.Annotated[int, Ge(ge=0)], None],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 12,
+        ] = 5,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -532,9 +447,9 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Union[Literal['annual', 'quarter'], None]
             Time period of the data to return.
-        limit : int
+        limit : Union[typing_extensions.Annotated[int, Ge(ge=0)], None]
             The number of data entries to return.
         provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
@@ -542,16 +457,6 @@ class ROUTER_stocks_fa(Container):
             no default.
         cik : Optional[Union[str]]
             Central Index Key (CIK) of the company. (provider: fmp)
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
-            Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
-            Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
-            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
         filing_date : Optional[Union[datetime.date]]
             Filing date of the financial statement. (provider: polygon)
         filing_date_lt : Optional[Union[datetime.date]]
@@ -603,61 +508,61 @@ class ROUTER_stocks_fa(Container):
             Reporting period of the statement.
         cik : Optional[Union[str]]
             Central Index Key (CIK) of the company.
-        net_income : Optional[int]
+        net_income : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net income.
-        depreciation_and_amortization : Optional[int]
+        depreciation_and_amortization : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Depreciation and amortization.
-        stock_based_compensation : Optional[int]
+        stock_based_compensation : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Stock based compensation.
-        deferred_income_tax : Optional[int]
+        deferred_income_tax : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Deferred income tax.
-        other_non_cash_items : Optional[int]
+        other_non_cash_items : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other non-cash items.
-        changes_in_operating_assets_and_liabilities : Optional[int]
+        changes_in_operating_assets_and_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Changes in operating assets and liabilities.
-        accounts_receivables : Optional[int]
+        accounts_receivables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accounts receivables.
-        inventory : Optional[int]
+        inventory : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Inventory.
-        vendor_non_trade_receivables : Optional[int]
+        vendor_non_trade_receivables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Vendor non-trade receivables.
-        other_current_and_non_current_assets : Optional[int]
+        other_current_and_non_current_assets : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other current and non-current assets.
-        accounts_payables : Optional[int]
+        accounts_payables : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Accounts payables.
-        deferred_revenue : Optional[int]
+        deferred_revenue : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Deferred revenue.
-        other_current_and_non_current_liabilities : Optional[int]
+        other_current_and_non_current_liabilities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other current and non-current liabilities.
-        net_cash_flow_from_operating_activities : Optional[int]
+        net_cash_flow_from_operating_activities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net cash flow from operating activities.
-        purchases_of_marketable_securities : Optional[int]
+        purchases_of_marketable_securities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Purchases of investments.
-        sales_from_maturities_of_investments : Optional[int]
+        sales_from_maturities_of_investments : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Sales and maturities of investments.
-        investments_in_property_plant_and_equipment : Optional[int]
+        investments_in_property_plant_and_equipment : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Investments in property, plant, and equipment.
-        payments_from_acquisitions : Optional[int]
+        payments_from_acquisitions : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Acquisitions, net of cash acquired, and other
-        other_investing_activities : Optional[int]
+        other_investing_activities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other investing activities
-        net_cash_flow_from_investing_activities : Optional[int]
+        net_cash_flow_from_investing_activities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net cash used for investing activities.
-        taxes_paid_on_net_share_settlement : Optional[int]
+        taxes_paid_on_net_share_settlement : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Taxes paid on net share settlement of equity awards.
-        dividends_paid : Optional[int]
+        dividends_paid : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Payments for dividends and dividend equivalents
-        common_stock_repurchased : Optional[int]
+        common_stock_repurchased : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Payments related to repurchase of common stock
-        debt_proceeds : Optional[int]
+        debt_proceeds : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Proceeds from issuance of term debt
-        debt_repayment : Optional[int]
+        debt_repayment : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Payments of long-term debt
-        other_financing_activities : Optional[int]
+        other_financing_activities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other financing activities, net
-        net_cash_flow_from_financing_activities : Optional[int]
+        net_cash_flow_from_financing_activities : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net cash flow from financing activities.
-        net_change_in_cash : Optional[int]
+        net_change_in_cash : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net increase (decrease) in cash, cash equivalents, and restricted cash
         reported_currency : Optional[Union[str]]
             Reported currency in the statement. (provider: fmp)
@@ -693,7 +598,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.cash(symbol="AAPL", period="annual", limit=12)
+        >>> obb.stocks.fa.cash(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1365,39 +1270,43 @@ class ROUTER_stocks_fa(Container):
     def filings(
         self,
         symbol: typing_extensions.Annotated[
-            Union[str, List[str]],
+            Union[str, None, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        ] = None,
         limit: typing_extensions.Annotated[
             Union[int, None],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
-        provider: Union[Literal["fmp"], None] = None,
+        ] = 300,
+        provider: Union[Literal["fmp", "sec"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Company Filings. Company filings data.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Union[str, None]
             Symbol to get data for.
         limit : Union[int, None]
             The number of data entries to return.
-        provider : Union[Literal['fmp'], None]
+        provider : Union[Literal['fmp', 'sec'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        type : Optional[Union[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10-D', '10-K', '10-M', '10-Q', '11-K', '12b-25', '13F', '13H', '144', '15', '15F', '17-H', '18', '18-K', '19b-4', '19b-4(e)', '19b-7', '2-E', '20-F', '24F-2', '25', '3', '4', '40-F', '5', '6-K', '7-M', '8-A', '8-K', '8-M', '9-M', 'ABS-15G', 'ABS-EE', 'ABS DD-15E', 'ADV', 'ADV-E', 'ADV-H', 'ADV-NR', 'ADV-W', 'ATS', 'ATS-N', 'ATS-R', 'BD', 'BD-N', 'BDW', 'C', 'CA-1', 'CB', 'CFPORTAL', 'CRS', 'CUSTODY', 'D', 'F-1', 'F-10', 'F-3', 'F-4', 'F-6', 'F-7', 'F-8', 'F-80', 'F-N', 'F-X', 'ID', 'MA', 'MA-I', 'MA-NR', 'MA-W', 'MSD', 'MSDW', 'N-14', 'N-17D-1', 'N-17f-1', 'N-17f-2', 'N-18f-1', 'N-1A', 'N-2', 'N-23c-3', 'N-27D-1', 'N-3', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6EI-1', 'N-6F', 'N-8A', 'N-8B-2', 'N-8B-4', 'N-8F', 'N-CEN']]]
-            Type of the SEC filing form. (provider: fmp)
+        type : Optional[Union[Literal['1', '1-A', '1-E', '1-K', '1-N', '1-SA', '1-U', '1-Z', '10', '10-D', '10-K', '10-M', '10-Q', '11-K', '12b-25', '13F', '13H', '144', '15', '15F', '17-H', '18', '18-K', '19b-4', '19b-4(e)', '19b-7', '2-E', '20-F', '24F-2', '25', '3', '4', '40-F', '5', '6-K', '7-M', '8-A', '8-K', '8-M', '9-M', 'ABS-15G', 'ABS-EE', 'ABS DD-15E', 'ADV', 'ADV-E', 'ADV-H', 'ADV-NR', 'ADV-W', 'ATS', 'ATS-N', 'ATS-R', 'BD', 'BD-N', 'BDW', 'C', 'CA-1', 'CB', 'CFPORTAL', 'CRS', 'CUSTODY', 'D', 'F-1', 'F-10', 'F-3', 'F-4', 'F-6', 'F-7', 'F-8', 'F-80', 'F-N', 'F-X', 'ID', 'MA', 'MA-I', 'MA-NR', 'MA-W', 'MSD', 'MSDW', 'N-14', 'N-17D-1', 'N-17f-1', 'N-17f-2', 'N-18f-1', 'N-1A', 'N-2', 'N-23c-3', 'N-27D-1', 'N-3', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6EI-1', 'N-6F', 'N-8A', 'N-8B-2', 'N-8B-4', 'N-8F', 'N-CEN'], Literal['1', '1-A', '1-A POS', '1-A-W', '1-E', '1-E AD', '1-K', '1-SA', '1-U', '1-Z', '1-Z-W', '10-12B', '10-12G', '10-D', '10-K', '10-KT', '10-Q', '10-QT', '11-K', '11-KT', '13F-HR', '13F-NT', '13FCONP', '144', '15-12B', '15-12G', '15-15D', '15F-12B', '15F-12G', '15F-15D', '18-12B', '18-K', '19B-4E', '2-A', '2-AF', '2-E', '20-F', '20FR12B', '20FR12G', '24F-2NT', '25', '25-NSE', '253G1', '253G2', '253G3', '253G4', '3', '305B2', '34-12H', '4', '40-17F1', '40-17F2', '40-17G', '40-17GCS', '40-202A', '40-203A', '40-206A', '40-24B2', '40-33', '40-6B', '40-8B25', '40-8F-2', '40-APP', '40-F', '40-OIP', '40FR12B', '40FR12G', '424A', '424B1', '424B2', '424B3', '424B4', '424B5', '424B7', '424B8', '424H', '425', '485APOS', '485BPOS', '485BXT', '486APOS', '486BPOS', '486BXT', '487', '497', '497AD', '497H2', '497J', '497K', '497VPI', '497VPU', '5', '6-K', '6B NTC', '6B ORDR', '8-A12B', '8-A12G', '8-K', '8-K12B', '8-K12G3', '8-K15D5', '8-M', '8F-2 NTC', '8F-2 ORDR', '9-M', 'ABS-15G', 'ABS-EE', 'ADN-MTL', 'ADV-E', 'ADV-H-C', 'ADV-H-T', 'ADV-NR', 'ANNLRPT', 'APP NTC', 'APP ORDR', 'APP WD', 'APP WDG', 'ARS', 'ATS-N', 'ATS-N-C', 'ATS-N/UA', 'AW', 'AW WD', 'C', 'C-AR', 'C-AR-W', 'C-TR', 'C-TR-W', 'C-U', 'C-U-W', 'C-W', 'CB', 'CERT', 'CERTARCA', 'CERTBATS', 'CERTCBO', 'CERTNAS', 'CERTNYS', 'CERTPAC', 'CFPORTAL', 'CFPORTAL-W', 'CORRESP', 'CT ORDER', 'D', 'DEF 14A', 'DEF 14C', 'DEFA14A', 'DEFA14C', 'DEFC14A', 'DEFC14C', 'DEFM14A', 'DEFM14C', 'DEFN14A', 'DEFR14A', 'DEFR14C', 'DEL AM', 'DFAN14A', 'DFRN14A', 'DOS', 'DOSLTR', 'DRS', 'DRSLTR', 'DSTRBRPT', 'EFFECT', 'F-1', 'F-10', 'F-10EF', 'F-10POS', 'F-1MEF', 'F-3', 'F-3ASR', 'F-3D', 'F-3DPOS', 'F-3MEF', 'F-4', 'F-4 POS', 'F-4MEF', 'F-6', 'F-6 POS', 'F-6EF', 'F-7', 'F-7 POS', 'F-8', 'F-8 POS', 'F-80', 'F-80POS', 'F-9', 'F-9 POS', 'F-N', 'F-X', 'FOCUSN', 'FWP', 'G-405', 'G-405N', 'G-FIN', 'G-FINW', 'IRANNOTICE', 'MA', 'MA-A', 'MA-I', 'MA-W', 'MSD', 'MSDCO', 'MSDW', 'N-1', 'N-14', 'N-14 8C', 'N-14MEF', 'N-18F1', 'N-1A', 'N-2', 'N-2 POSASR', 'N-23C-2', 'N-23C3A', 'N-23C3B', 'N-23C3C', 'N-2ASR', 'N-2MEF', 'N-30B-2', 'N-30D', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6F', 'N-8A', 'N-8B-2', 'N-8F', 'N-8F NTC', 'N-8F ORDR', 'N-CEN', 'N-CR', 'N-CSR', 'N-CSRS', 'N-MFP', 'N-MFP1', 'N-MFP2', 'N-PX', 'N-Q', 'N-VP', 'N-VPFS', 'NO ACT', 'NPORT-EX', 'NPORT-NP', 'NPORT-P', 'NRSRO-CE', 'NRSRO-UPD', 'NSAR-A', 'NSAR-AT', 'NSAR-B', 'NSAR-BT', 'NSAR-U', 'NT 10-D', 'NT 10-K', 'NT 10-Q', 'NT 11-K', 'NT 20-F', 'NT N-CEN', 'NT N-MFP', 'NT N-MFP1', 'NT N-MFP2', 'NT NPORT-EX', 'NT NPORT-P', 'NT-NCEN', 'NT-NCSR', 'NT-NSAR', 'NTFNCEN', 'NTFNCSR', 'NTFNSAR', 'NTN 10D', 'NTN 10K', 'NTN 10Q', 'NTN 20F', 'OIP NTC', 'OIP ORDR', 'POS 8C', 'POS AM', 'POS AMI', 'POS EX', 'POS462B', 'POS462C', 'POSASR', 'PRE 14A', 'PRE 14C', 'PREC14A', 'PREC14C', 'PREM14A', 'PREM14C', 'PREN14A', 'PRER14A', 'PRER14C', 'PRRN14A', 'PX14A6G', 'PX14A6N', 'QRTLYRPT', 'QUALIF', 'REG-NR', 'REVOKED', 'RW', 'RW WD', 'S-1', 'S-11', 'S-11MEF', 'S-1MEF', 'S-20', 'S-3', 'S-3ASR', 'S-3D', 'S-3DPOS', 'S-3MEF', 'S-4', 'S-4 POS', 'S-4EF', 'S-4MEF', 'S-6', 'S-8', 'S-8 POS', 'S-B', 'S-BMEF', 'SBSE', 'SBSE-A', 'SBSE-BD', 'SBSE-C', 'SBSE-W', 'SC 13D', 'SC 13E1', 'SC 13E3', 'SC 13G', 'SC 14D9', 'SC 14F1', 'SC 14N', 'SC TO-C', 'SC TO-I', 'SC TO-T', 'SC13E4F', 'SC14D1F', 'SC14D9C', 'SC14D9F', 'SD', 'SDR', 'SE', 'SEC ACTION', 'SEC STAFF ACTION', 'SEC STAFF LETTER', 'SF-1', 'SF-3', 'SL', 'SP 15D2', 'STOP ORDER', 'SUPPL', 'T-3', 'TA-1', 'TA-2', 'TA-W', 'TACO', 'TH', 'TTW', 'UNDER', 'UPLOAD', 'WDL-REQ', 'X-17A-5']]]
+            Type of the SEC filing form. (provider: fmp, sec)
         page : Optional[Union[int]]
             Page number of the results. (provider: fmp)
+        cik : Optional[Union[str, int]]
+            Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)
+        use_cache : bool
+            Whether or not to use cache.  If True, cache will store for one day. (provider: sec)
 
         Returns
         -------
         OBBject
             results : Union[List[CompanyFilings]]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Union[Literal['fmp', 'sec'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1419,14 +1328,42 @@ class ROUTER_stocks_fa(Container):
         cik : Optional[Union[str]]
             CIK of the SEC filing. (provider: fmp)
         accepted_date : Optional[Union[datetime]]
-            Accepted date of the SEC filing. (provider: fmp)
+            Accepted date of the SEC filing. (provider: fmp, sec)
         final_link : Optional[Union[str]]
             Final link of the SEC filing. (provider: fmp)
+        report_date : Optional[Union[date]]
+            The date of the filing. (provider: sec)
+        act : Optional[Union[str, int]]
+            The SEC Act number. (provider: sec)
+        items : Optional[Union[str, float]]
+            The SEC Item numbers. (provider: sec)
+        primary_doc_description : Optional[Union[str]]
+            The description of the primary document. (provider: sec)
+        primary_doc : Optional[Union[str]]
+            The filename of the primary document. (provider: sec)
+        accession_number : Optional[Union[str, int]]
+            The accession number. (provider: sec)
+        file_number : Optional[Union[str, int]]
+            The file number. (provider: sec)
+        film_number : Optional[Union[str, int]]
+            The film number. (provider: sec)
+        is_inline_xbrl : Optional[Union[str, int]]
+            Whether the filing is an inline XBRL filing. (provider: sec)
+        is_xbrl : Optional[Union[str, int]]
+            Whether the filing is an XBRL filing. (provider: sec)
+        size : Optional[Union[str, int]]
+            The size of the filing. (provider: sec)
+        complete_submission_url : Optional[Union[str]]
+            The URL to the complete filing submission. (provider: sec)
+        filing_detail_url : Optional[Union[str]]
+            The URL to the filing details. (provider: sec)
+        xml : Optional[Union[str]]
+            The URL to the primary XML document. (provider: sec)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.filings(symbol="AAPL", limit=100)
+        >>> obb.stocks.fa.filings(limit=300)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1453,13 +1390,13 @@ class ROUTER_stocks_fa(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: typing_extensions.Annotated[
-            Literal["annual", "quarter"],
+            Union[Literal["annual", "quarter"], None],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: typing_extensions.Annotated[
-            int,
+            Union[typing_extensions.Annotated[int, Ge(ge=0)], None],
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 12,
+        ] = 5,
         provider: Union[Literal["fmp", "intrinio", "polygon", "yfinance"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -1469,9 +1406,9 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Union[Literal['annual', 'quarter'], None]
             Time period of the data to return.
-        limit : int
+        limit : Union[typing_extensions.Annotated[int, Ge(ge=0)], None]
             The number of data entries to return.
         provider : Union[Literal['fmp', 'intrinio', 'polygon', 'yfinance'], None]
             The provider to use for the query, by default None.
@@ -1479,16 +1416,6 @@ class ROUTER_stocks_fa(Container):
             no default.
         cik : Optional[Union[str]]
             The CIK of the company if no symbol is provided. (provider: fmp)
-        type : Literal['reported', 'standardized']
-            Type of the statement to be fetched. (provider: intrinio)
-        year : Optional[Union[int]]
-            Year of the statement to be fetched. (provider: intrinio)
-        company_name : Optional[Union[str]]
-            Name of the company. (provider: polygon)
-        company_name_search : Optional[Union[str]]
-            Name of the company to search. (provider: polygon)
-        sic : Optional[Union[str]]
-            The Standard Industrial Classification (SIC) of the company. (provider: polygon)
         filing_date : Optional[Union[datetime.date]]
             Filing date of the financial statement. (provider: polygon)
         filing_date_lt : Optional[Union[datetime.date]]
@@ -1540,51 +1467,51 @@ class ROUTER_stocks_fa(Container):
             Period of the income statement.
         cik : Optional[Union[str]]
             Central Index Key.
-        revenue : Optional[int]
+        revenue : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Revenue.
-        cost_of_revenue : Optional[int]
+        cost_of_revenue : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Cost of revenue.
-        gross_profit : Optional[int]
+        gross_profit : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Gross profit.
-        cost_and_expenses : Optional[int]
+        cost_and_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Cost and expenses.
         gross_profit_ratio : Optional[Union[float]]
             Gross profit ratio.
-        research_and_development_expenses : Optional[int]
+        research_and_development_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Research and development expenses.
-        general_and_administrative_expenses : Optional[int]
+        general_and_administrative_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             General and administrative expenses.
         selling_and_marketing_expenses : Optional[Union[float]]
             Selling and marketing expenses.
-        selling_general_and_administrative_expenses : Optional[int]
+        selling_general_and_administrative_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Selling, general and administrative expenses.
-        other_expenses : Optional[int]
+        other_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Other expenses.
-        operating_expenses : Optional[int]
+        operating_expenses : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Operating expenses.
-        depreciation_and_amortization : Optional[int]
+        depreciation_and_amortization : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Depreciation and amortization.
-        ebitda : Optional[int]
+        ebitda : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Earnings before interest, taxes, depreciation and amortization.
         ebitda_ratio : Optional[Union[float]]
             Earnings before interest, taxes, depreciation and amortization ratio.
-        operating_income : Optional[int]
+        operating_income : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Operating income.
         operating_income_ratio : Optional[Union[float]]
             Operating income ratio.
-        interest_income : Optional[int]
+        interest_income : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Interest income.
-        interest_expense : Optional[int]
+        interest_expense : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Interest expense.
-        total_other_income_expenses_net : Optional[int]
+        total_other_income_expenses_net : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Total other income expenses net.
-        income_before_tax : Optional[int]
+        income_before_tax : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Income before tax.
         income_before_tax_ratio : Optional[Union[float]]
             Income before tax ratio.
-        income_tax_expense : Optional[int]
+        income_tax_expense : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Income tax expense.
-        net_income : Optional[int]
+        net_income : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Net income.
         net_income_ratio : Optional[Union[float]]
             Net income ratio.
@@ -1592,9 +1519,9 @@ class ROUTER_stocks_fa(Container):
             Earnings per share.
         eps_diluted : Optional[Union[float]]
             Earnings per share diluted.
-        weighted_average_shares_outstanding : Optional[int]
+        weighted_average_shares_outstanding : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Weighted average shares outstanding.
-        weighted_average_shares_outstanding_dil : Optional[int]
+        weighted_average_shares_outstanding_dil : Optional[Union[typing_extensions.Annotated[float, Strict(strict=True)]]]
             Weighted average shares outstanding diluted.
         link : Optional[Union[str]]
             Link to the income statement.
@@ -1630,7 +1557,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.income(symbol="AAPL", period="annual", limit=12)
+        >>> obb.stocks.fa.income(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1788,7 +1715,7 @@ class ROUTER_stocks_fa(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        transactionType: typing_extensions.Annotated[
+        transaction_type: typing_extensions.Annotated[
             Union[
                 List[
                     Literal[
@@ -1817,10 +1744,10 @@ class ROUTER_stocks_fa(Container):
             ],
             OpenBBCustomParameter(description="Type of the transaction."),
         ] = ["P-Purchase"],
-        page: typing_extensions.Annotated[
-            Union[int, None],
-            OpenBBCustomParameter(description="Page number of the data to fetch."),
-        ] = 0,
+        limit: typing_extensions.Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -1830,10 +1757,10 @@ class ROUTER_stocks_fa(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        transactionType : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', ...
+        transaction_type : Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', ...
             Type of the transaction.
-        page : Union[int, None]
-            Page number of the data to fetch.
+        limit : int
+            The number of data entries to return.
         provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1873,13 +1800,13 @@ class ROUTER_stocks_fa(Container):
             Reporting name of the stock insider trading.
         type_of_owner : str
             Type of owner of the stock insider trading.
-        acquisition_or_disposition : str
+        acquisition_or_disposition : Optional[Union[str]]
             Acquisition or disposition of the stock insider trading.
         form_type : str
             Form type of the stock insider trading.
         securities_transacted : float
             Securities transacted of the stock insider trading.
-        price : float
+        price : Optional[Union[float]]
             Price of the stock insider trading.
         security_name : str
             Security name of the stock insider trading.
@@ -1889,7 +1816,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.ins(symbol="AAPL", transactionType=['P-Purchase'])
+        >>> obb.stocks.fa.ins(symbol="AAPL", transaction_type=['P-Purchase'], limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1898,8 +1825,8 @@ class ROUTER_stocks_fa(Container):
             },
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "transactionType": transactionType,
-                "page": page,
+                "transaction_type": transaction_type,
+                "limit": limit,
             },
             extra_params=kwargs,
         )
@@ -3266,12 +3193,6 @@ class ROUTER_stocks_fa(Container):
             int,
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        quarter: typing_extensions.Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="Quarter of the earnings call transcript."
-            ),
-        ] = 1,
         provider: Union[Literal["fmp"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -3283,8 +3204,6 @@ class ROUTER_stocks_fa(Container):
             Symbol to get data for.
         year : int
             Year of the earnings call transcript.
-        quarter : int
-            Quarter of the earnings call transcript.
         provider : Union[Literal['fmp'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -3320,7 +3239,7 @@ class ROUTER_stocks_fa(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.stocks.fa.transcript(symbol="AAPL", year=1, quarter=1)
+        >>> obb.stocks.fa.transcript(symbol="AAPL", year=1)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -3330,7 +3249,6 @@ class ROUTER_stocks_fa(Container):
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 "year": year,
-                "quarter": quarter,
             },
             extra_params=kwargs,
         )

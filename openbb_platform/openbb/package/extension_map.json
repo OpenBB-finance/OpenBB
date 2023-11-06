@@ -3,12 +3,14 @@
         "crypto@0.1.0a4",
         "econometrics@0.1.0a4",
         "economy@0.1.0a4",
+        "etf@0.1.0a3",
         "fixedincome@0.1.0a4",
         "forex@0.1.0a4",
         "futures@0.1.0a4",
         "news@0.1.0a4",
         "openbb_charting@0.1.0a4",
         "qa@0.1.0a4",
+        "regulators@0.1.0a4",
         "stocks@0.1.0a4",
         "ta@0.1.0a4"
     ],
@@ -23,7 +25,9 @@
         "oecd@0.1.0a4",
         "polygon@0.1.0a4",
         "quandl@0.1.0a4",
+        "sec@0.1.0a4",
         "tradingeconomics@0.1.0a4",
+        "wsj@0.1.0a4",
         "yfinance@0.1.0a4"
     ]
 }
