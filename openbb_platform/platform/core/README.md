@@ -17,7 +17,7 @@
       - [Extensions](#extensions)
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
-        - [Preferences](#preferences)
+      - [Preferences](#preferences)
       - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
@@ -271,7 +271,7 @@ Steps to create an `OBBject` extension:
 
     ```shell
     >>> from openbb import obb
-    >>> obbject = obb.stock.load("AAPL")
+    >>> obbject = obb.stocks.load("AAPL")
     >>> obbject.example.hello()
     Hello, this is my credential: None!
     ```
