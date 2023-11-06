@@ -61,6 +61,7 @@ all = [
     "openbb-cboe",
     "openbb-nasdaq",
     "openbb-quandl",
+    "openbb-seeking-alpha",
     "openbb-yfinance",
     "openbb-charting",
     "openbb-futures",
