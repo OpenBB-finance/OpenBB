@@ -206,7 +206,15 @@ def test_fixedincome_dwpcr(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "lending"})],
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interest_rate_type": "lending",
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_fixedincome_ecb_interest_rates(params, obb):
@@ -221,7 +229,7 @@ def test_fixedincome_ecb_interest_rates(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "yield"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "index_type": "yield"}),
         (
             {
                 "category": "all",
@@ -231,7 +239,7 @@ def test_fixedincome_ecb_interest_rates(params, obb):
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "type_": "yield",
+                "index_type": "yield",
             }
         ),
     ],
@@ -248,7 +256,7 @@ def test_fixedincome_ice_bofa(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "type_": "aaa"})],
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "index_type": "aaa"})],
 )
 @pytest.mark.integration
 def test_fixedincome_moody(params, obb):
@@ -366,13 +374,13 @@ def test_fixedincome_tbffr(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"date": "2023-01-01", "type_": "spot_rate"}),
+        ({"date": "2023-01-01", "yield_curve_type": "spot_rate"}),
         (
             {
                 "rating": "A",
                 "provider": "ecb",
                 "date": "2023-01-01",
-                "type_": "spot_rate",
+                "yield_curve_type": "spot_rate",
             }
         ),
     ],
