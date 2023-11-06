@@ -21,6 +21,8 @@ keywords:
 - API Keys
 ---
 
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Setup your development environment - Platform Development - Contributing | OpenBB Platform Docs" />

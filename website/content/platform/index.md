@@ -14,7 +14,7 @@ keywords:
 - CONTRIBUTING GUIDELINES
 ---
 
-# Introduction
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 OpenBB Platform is created and maintained by the OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers.
 
