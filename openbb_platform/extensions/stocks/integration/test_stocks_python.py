@@ -1071,3 +1071,45 @@ def test_stocks_disc_growth_tech_equities(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"limit": 10})],
+)
+@pytest.mark.integration
+def test_stocks_disc_top_retail(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.top_retail(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"limit": 5, "start_date": "2023-01-01"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_upcoming_release_days(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.upcoming_release_days(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"pages": 1, "limit": 5, "today": True})],
+)
+@pytest.mark.integration
+def test_stocks_disc_filings(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.disc.filings(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

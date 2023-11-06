@@ -12,7 +12,9 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("x-api-token", "MOCK_API_TOKEN")],
+        "filter_headers": [
+            ("x-api-token", "MOCK_API_TOKEN"),
+        ],
     }
 
 

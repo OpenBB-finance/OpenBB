@@ -21,11 +21,11 @@ openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
-openbb-polygon = { path = "./providers/polygon", develop = true }
-openbb-wsj = { path = "./providers/wsj", develop = true }
-openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
+openbb-polygon = { path = "./providers/polygon", develop = true }
 openbb-sec = { path = "./providers/sec", develop = true }
+openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-wsj = { path = "./providers/wsj", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
@@ -42,6 +42,7 @@ openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
+openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }

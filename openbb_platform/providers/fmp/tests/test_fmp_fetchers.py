@@ -12,6 +12,7 @@ from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
+from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
@@ -553,5 +554,14 @@ def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
     params = {"symbol": "SILJ"}
 
     fetcher = FMPEtfHoldingsPerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_filings_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = FMPFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
