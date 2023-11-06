@@ -1,7 +1,30 @@
 ---
 title: Extensive set of ratios over time
-description: OpenBB Platform Data Model
+description: This documentation contains details about extracting financial ratios
+  data using FinancialRatiosData and FinancialRatiosQueryParams. Specific parameters
+  and data for standard and 'fmp' provider are provided. The import statement is also
+  included for ease of implementation.
+keywords:
+- Docusaurus SEO
+- Financial Ratios
+- FinancialRatiosData
+- FinancialRatiosQueryParams
+- financial data
+- Python import
+- Data parameters
+- annual financial data
+- quarter financial data
+- fmp provider
+- Standard financial data
+- Financial data provider
+- Financial ratios details
+- Debt ratio
+- Pretax profit margin
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Extensive set of ratios over time - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -120,4 +143,3 @@ FinancialRatiosQueryParams,
 </TabItem>
 
 </Tabs>
-

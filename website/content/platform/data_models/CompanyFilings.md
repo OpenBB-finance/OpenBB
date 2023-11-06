@@ -1,7 +1,28 @@
 ---
 title: Company Filings
-description: OpenBB Platform Data Model
+description: This page provides implementation details for the CompanyFilings class,
+  including models, import statement, parameters, and data. The parameters details
+  include fields such as symbol, limit, provider, type, and page. The data details
+  include fields such as date, type, link, symbol, cik, accepted_date, and final_link.
+keywords:
+- CompanyFilingsData
+- CompanyFilingsQueryParams
+- openbb_provider.standard_models.company_filings
+- symbol
+- limit
+- provider
+- type
+- page
+- date
+- link
+- cik
+- accepted_date
+- final_link
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Company Filings - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -78,4 +99,3 @@ CompanyFilingsQueryParams,
 </TabItem>
 
 </Tabs>
-

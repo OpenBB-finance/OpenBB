@@ -39,7 +39,9 @@ class FREDSONIAData(SONIAData):
     __alias_dict__ = {"rate": "value"}
 
     @field_validator("rate", mode="before", check_fields=False)
-    def value_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -55,6 +57,7 @@ class FREDSONIAFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSONIAQueryParams:
+        """Transform query."""
         return FREDSONIAQueryParams(**params)
 
     @staticmethod
@@ -63,6 +66,7 @@ class FREDSONIAFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = SONIA_PARAMETER_TO_FRED_ID[query.parameter]
         fred = Fred(key)
@@ -73,5 +77,6 @@ class FREDSONIAFetcher(
     def transform_data(
         query: FREDSONIAQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDSONIAData]]]:
+        """Transform data."""
         keys = ["date", "value"]
         return [FREDSONIAData(**{k: x[k] for k in keys}) for x in data]

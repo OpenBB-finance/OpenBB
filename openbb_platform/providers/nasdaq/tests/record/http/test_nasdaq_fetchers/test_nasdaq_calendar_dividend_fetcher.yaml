@@ -1,0 +1,91 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2023-11-06
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAN2aW2/iOBSA/4qVh32i1AmXGfoGlBa2JEWEafeiVeUmHrCaOMhxOkVV//uchKYb
+        CE60Hi1SkSoabGP4fO4neTV8Iolx8Wp4JKDcJyK9JvHtd+PCsCPeQE70jLoNZGGrZTSMFSU+FXG6
+        KN6Ej1EAy9ztRcPwonBN+MYhIYXh7F/D8Nkz82Hnh9HLwyWR6czo5ezyfRRlQw1jTTYh5TJfMdu+
+        zWcF9SLh55Pz7F0+97H/fDub7wxTjPvMg1H/oc95QoKHj7kLY5LPoe0cKnyOcB4l3KPFX9QvjG2/
+        +g1+V/QDjuLv1z3yfhAwAmvRnMZRIuBiRoTkcG4NNG3OmvAVH4fXn09nh0/JNM9x9/z93PfOB+bM
+        dj63ezrpx77kU3uHg5tfKk/Fan49TG/ic+t907dGCTckwZKE2WFeMQ7kDM5zGIn1Lqndn2qRWlqk
+        ZiUpbrbVpG0lqfBWIvKeGmjCvT0x3g6PKEaz06nB61pqvq6Kb7AJGKdoACIE6ZUpB3/qCdDUYcS9
+        GsRWV0NZh7BBLEnGGK+IoPEWExU5h5O7wRFJzW6dMCuUVSnMkVwRjsAXUQ6EkgoWibgk0tHiUo/U
+        0iFtVZOazbaOWV4N9vxOJIhkES9yXg1ujinRWvPUUN3rgPixjMBAJ/yZxjILRQrc6/7E0fNHX7R4
+        rRrenho4ZT4MPB4s/hVs2RvB9DFdbnXoBJFWxE6l6o4pCeRqTckTmoloTYVkuUcqos5GfU31xVpm
+        WmOlFbGlpyZlvmDeE/oNuVIky2VA461f4pn2HpSwO5l8EqvtqLkFk2RJwVLDkKbJYGqyO5SL4/qm
+        auniZkcndUglqXS+E2ehkx1Z51iP0KoTZEdBCNsqBQlOFwSZoqFxFNJyKJ04d+MjxlKrLpbiiliq
+        9Lk3lHO4khBJ9/lubD1/q6emdRFFx9tOCYcISgRyN7GkYdnhTN3F/IiK2qpztK0KU2ypKWN0R5fw
+        6qa85UpseufqBc7OcQVpKr2NTRiHKEKpLCXyRVDbcfXyeM0U4X8oOW0CKQFHNgPFFZSEH62EUifB
+        to/aScC4zslitfKaX1W8DnlmUYwAm0kW0gLurAjr2LYea0uLtQ5VJ2I6kZArSuJMhZ924AZ6ubtm
+        nV2ntlVxROmEnCRztCOQ3XJT0lVH0wFpaWq7xsnqZHW3QkAp9oMXCk+XimfmbfOCIuvtfH51RNpf
+        iJtKYbo0oJ5E97AUYmcUJGkWdMDf3i+0wqdu1Ynr+iaWTt/EXVEQqR+RFVqk3JC2Jzz9jpQZgmkR
+        2B2PdExVN1+obYlhnazIZYIlMfrDhrw28BlfllNbdzLXLMR6WpxWt060uFdVbyvt1k0eE/FIeFZt
+        E17VmXdnetm8ntm2amoWMy3K/7MuL+DdEwO1re2PLWzN5EErJ6yWrlWVKSnbY9WsWfkN/1wZeU+n
+        Bb5XsilJP3/9VtEtU1KfQOtM3clXUp9CW7+cQqKc9xtnMj6phLImMCkFfQpR6mDDQkn8+bsXFTXu
+        joKjOV0LGsO2kJShKQtZeov9ffXWE9B4zw4+f128e5NdqQanccdddetSiX0C9zEPNtKVwCfRVa8q
+        oNEwIHGM+sjbnkC8fwInUVUferREKfMTeM7kHjwz8JHsNesgyE1On47sxPDhX5quTMtr/8rjJqYy
+        SXUTMOcE4tQNYYXsHE2l30T9y/kO8Lfx75oi1kvYOhZu192/7+G2eZjbOe8fehxDJOsIOYmEIEyQ
+        2+yXMK+H41tNTD3LtbBZ18y12qYiRTtMOdsPUDu11cDRU1w9MXaq4axK35x7pn/eGkaadX0XGeCr
+        ETKeL+tZ1hnunFnWAuOL7A9+Rkhe3uctE7fPcPcMF+bfYDuIYTFZwgqeBAEcDwS3JHtEVgwjH4Yt
+        jBvGY3pt76706TMNUkvZGX97+wnccQtMlisAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1453'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 06 Nov 2023 04:39:19 GMT
+      Expires:
+      - Mon, 06 Nov 2023 04:39:19 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=0088EB48E09FFE36853D8A3A591EAAE6~000000000000000000000000000000~YAAQtZo7F97Mj5GLAQAAYo7tohXcsF6CUNrZ3Tavp2uOFxGJAMsMGgZWOEP0KiIoJ9X33J/kQLkF9GP+52NhJC/KQ/Py2/qsVGZkkL8KAqT34QmpN+M3KwibCmzPmNmeMMMFebPqPUKB70QR5aamIQDjIRlySYaPn6MTWoo5HQXiDHq/YLGNKjEcBURueswHEXnCu/sVThPaHJN27uogAp/rgLZqliZxtReTdCrZXAOiibdkNq8IV90ND77Ifaa3qKF2wxBTE+F5DZGinZUO29WzdUDEXNYh/raSQRNeYsTBVhDpyIjFRl1EQ1JRGyuua/7cC+JSy6Sd96lg5KZcU8DY7CmX59mCe0yBitKwx1MB8W1mQNfcdBZnKCCL30bHWiHoClAd63K857XjPg7lqScpTIW6gw==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 06 Nov 2023 06:39:19 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '46'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '27'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '201'
+      lang:
+      - en
+      rid:
+      - 11dc0fa5-edea-434e-8d03-c12b08d83103
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

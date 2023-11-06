@@ -42,7 +42,9 @@ class FREDFEDData(FEDData):
     __alias_dict__ = {"rate": "value"}
 
     @field_validator("rate", mode="before", check_fields=False)
-    def value_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -56,12 +58,14 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDFEDQueryParams:
+        """Transform query."""
         return FREDFEDQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDFEDQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> dict:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = FED_PARAMETER_TO_FRED_ID[query.parameter]
         fred = Fred(key)
@@ -72,5 +76,6 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
     def transform_data(
         query: FREDFEDQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDFEDData]]]:
+        """Transform data."""
         keys = ["date", "value"]
         return [FREDFEDData(**{k: x[k] for k in keys}) for x in data]

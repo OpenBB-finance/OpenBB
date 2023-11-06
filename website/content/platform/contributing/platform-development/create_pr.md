@@ -1,13 +1,27 @@
 ---
 title: Create a Pull Request
 sidebar_position: 5
-description: Learn how to create a Pull Request to the OpenBB Platform.
-keywords: [openbb platform, introduction, pull request, contributing, documentation, github]
+description: Learn how to create a Pull Request to the OpenBB Platform, including
+  steps like creating a feature branch, staging files, writing commit messages, and
+  more. Also learn about the installation of pre-commit hooks and the conventions
+  for branch naming.
+keywords:
+- OpenBB Platform
+- Pull Request
+- branch
+- fork repository
+- feature branch
+- git status
+- git add
+- commit message
+- pre-commit hooks
+- branch naming conventions
+- develop branch
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Create a Pull Request - Platform | OpenBB Docs" />
+<HeadTitle title="Create a Pull Request - Platform Development - Contributing | OpenBB Platform Docs" />
 
 To create a Pull Request to the OpenBB Platform, you'll need to fork the repository and create a new branch.
 

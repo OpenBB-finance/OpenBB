@@ -16,6 +16,7 @@ class QueryParams(BaseModel):
     model_config = ConfigDict(extra="allow", populate_by_name=True)
 
     def model_dump(self, *args, **kwargs):
+        """Dump the model."""
         original = super().model_dump(*args, **kwargs)
         if self.__alias_dict__:
             return {

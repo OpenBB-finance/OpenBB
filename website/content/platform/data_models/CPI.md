@@ -1,7 +1,32 @@
 ---
 title: CPI
-description: OpenBB Platform Data Model
+description: Deep dive into the CPI implementation, model names, parameters, import
+  statements, and data values. Explore how we handle countries, frequency, units,
+  dates, harmonized data, and providers.
+keywords:
+- CPI
+- CPIData
+- CPIQueryParams
+- parameters
+- implementation details
+- import statement
+- data
+- countries
+- frequency
+- units
+- harmonized
+- start date
+- end date
+- provider
+- Python
+- data class
+- model name
+- parameters class
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="CPI - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -57,4 +82,3 @@ CPIQueryParams,
 </TabItem>
 
 </Tabs>
-

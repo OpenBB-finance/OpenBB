@@ -1,7 +1,30 @@
 ---
 title: Earnings Call Transcript
-description: OpenBB Platform Data Model
+description: This page describes the implementation of the Earnings Call Transcript
+  model in the OpenBB Provider library. It provides details about the Python import
+  statements, class names, parameters, and data associated with this model. This includes
+  the relevant parameters for querying financial data like symbol, year, and quarter,
+  and data fields such as content of the earnings call transcript.
+keywords:
+- Earnings Call Transcript
+- EarningsCallTranscriptData
+- EarningsCallTranscriptQueryParams
+- OpenBB Provider
+- FMP provider
+- Python import statement
+- Python standard models
+- Data Query Params
+- Financial data
+- Financial Model
+- Yearly earnings call transcript
+- Quarterly earnings call transcript
+- Earnings data
+- Earnings data content
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Earnings Call Transcript - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -57,4 +80,3 @@ EarningsCallTranscriptQueryParams,
 </TabItem>
 
 </Tabs>
-

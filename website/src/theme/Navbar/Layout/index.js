@@ -29,7 +29,8 @@ export default function NavbarLayout({ children }) {
   const cleanedPath = pathname.replace(/\/v\d+/, "");
 
   useEffect(() => {
-    if (cleanedPath.startsWith("/terminal")) {
+    if (cleanedPath.startsWith("/terminal") ||
+      cleanedPath.startsWith("/pro")) {
       document.documentElement.style.setProperty(
         "--ifm-color-primary",
         "#669DCB",
@@ -57,6 +58,7 @@ export default function NavbarLayout({ children }) {
         "border-b border-grey-600 lg:px-12",
         {
           header_docs_terminal: cleanedPath.startsWith("/terminal"),
+          header_docs_pro: cleanedPath.startsWith("/pro"),
           header_docs_sdk:
             cleanedPath.startsWith("/sdk") ||
             cleanedPath.startsWith("/platform"),
@@ -65,7 +67,8 @@ export default function NavbarLayout({ children }) {
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/sdk") &&
             !cleanedPath.startsWith("/platform") &&
-            !cleanedPath.startsWith("/bot"),
+            !cleanedPath.startsWith("/bot") &&
+            !cleanedPath.startsWith("/pro"),
         },
         "navbar",
         "navbar--fixed-top",

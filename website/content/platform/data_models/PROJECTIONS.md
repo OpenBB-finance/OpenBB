@@ -1,7 +1,26 @@
 ---
 title: Fed Funds Rate Projections
-description: OpenBB Platform Data Model
+description: This page provides implementation details and descriptions of parameters
+  and data for the PROJECTIONS feature on our website. Discover how to use queries
+  using 'fred' as the provider, understand data projections, and get to grips with
+  different types of rates.
+keywords:
+- projections
+- implementation
+- query parameters
+- data class
+- fred provider
+- data projections
+- high projection rates
+- central tendency rates
+- median projection rates
+- midpoint projections
+- low projection rates
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Fed Funds Rate Projections - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -65,4 +84,3 @@ PROJECTIONSQueryParams,
 </TabItem>
 
 </Tabs>
-

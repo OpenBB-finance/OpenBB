@@ -1,12 +1,26 @@
 ---
 title: quote
-description: OpenBB Platform Function
+description: This page provides comprehensive documentation about the Stock Quote
+  function. It covers parameters including different providers and data sources, the
+  return structure, and detailed data obtained using the function.
+keywords:
+- Stock Quote
+- FMP
+- Intrinio
+- API
+- Stock data
+- Data provider
+- Darkpool
+- Earnings per share
+- Market cap
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.quote - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# quote
 
 Stock Quote. Load stock data for a specific ticker.
 
@@ -134,4 +148,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

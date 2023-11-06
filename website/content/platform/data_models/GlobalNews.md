@@ -1,7 +1,36 @@
 ---
 title: Global News
-description: OpenBB Platform Data Model
+description: This page provides implementation details for retrieving global news
+  data using OpenBB provider models. Different parameters and datas are documented
+  for different news providers such as Benzinga, FMP, and Intrinio. Understanding
+  and using the parameters included here will allow for more efficient and targeted
+  news retrieval.
+keywords:
+- OpenBB
+- Global News
+- GlobalNewsData
+- GlobalNewsQueryParams
+- Python
+- docusaurus
+- Benzinga
+- FMP
+- Intrinio
+- ISIN
+- Cusip
+- News parameters
+- News retrieval
+- News attributes
+- Class names
+- Import statement
+- News providers
+- News Data
+- API
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Global News - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -121,4 +150,3 @@ GlobalNewsQueryParams,
 </TabItem>
 
 </Tabs>
-
