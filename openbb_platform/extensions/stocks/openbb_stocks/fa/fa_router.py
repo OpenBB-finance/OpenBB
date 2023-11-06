@@ -37,17 +37,6 @@ def balance_growth(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="DividendCalendar")
-def cal(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Dividend Calendar. Show Dividend Calendar for a given start and end dates."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="CashFlowStatement")
 def cash(
     cc: CommandContext,
@@ -177,17 +166,6 @@ def ins_own(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Institutional Ownership. Institutional ownership data."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="CalendarIpo")
-def ipo(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Upcoming and Historical IPO Calendar."""
     return OBBject(results=Query(**locals()).execute())
 
 

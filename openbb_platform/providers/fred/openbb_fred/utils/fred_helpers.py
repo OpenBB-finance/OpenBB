@@ -1,7 +1,9 @@
+""" FRED helpers. """
+
 import csv
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Literal
 
 YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
@@ -26,6 +28,26 @@ YIELD_CURVE_SERIES_REAL = {
     "10Year": "DFII10",
     "20Year": "DFII20",
     "30Year": "DFII30",
+}
+YIELD_CURVE_SERIES_CORPORATE_SPOT = {
+    "6Month": "HQMCB6MT",
+    "1Year": "HQMCB1YR",
+    "2Year": "HQMCB2YR",
+    "3Year": "HQMCB3YR",
+    "5Year": "HQMCB5YR",
+    "7Year": "HQMCB7YR",
+    "10Year": "HQMCB10YR",
+    "20Year": "HQMCB20YR",
+    "30Year": "HQMCB30YR",
+    "50Year": "HQMCB50YR",
+    "75Year": "HQMCB75YR",
+    "100Year": "HQMCB100YR",
+}
+YIELD_CURVE_SERIES_CORPORATE_PAR = {
+    "2Year": "HQMCB2YRP",
+    "5Year": "HQMCB5YRP",
+    "10Year": "HQMCB10YRP",
+    "30Year": "HQMCB30YRP",
 }
 
 
@@ -73,3 +95,113 @@ def process_projections(data: Dict) -> List[Dict]:
         ldata.append(entry)
 
     return ldata
+
+
+def get_ice_bofa_series_id(
+    type_: Literal["yield", "yield_to_worst", "total_return", "spread"],
+    category: Literal["all", "duration", "eur", "usd"],
+    area: Literal["asia", "emea", "eu", "ex_g10", "latin_america", "us"],
+    grade: Literal[
+        "a",
+        "aa",
+        "aaa",
+        "b",
+        "bb",
+        "bbb",
+        "ccc",
+        "crossover",
+        "high_grade",
+        "high_yield",
+        "non_financial",
+        "non_sovereign",
+        "private_sector",
+        "public_sector",
+    ],
+) -> List[dict]:
+    """Get ICE BofA series id."""
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    file = "ice_bofa_indices.csv"
+
+    series = []
+
+    with open(Path(current_dir, file), encoding="utf-8") as csv_file_handler:
+        csv_reader = csv.DictReader(csv_file_handler)
+        for rows in csv_reader:
+            row = {key.lstrip("\ufeff"): value for key, value in rows.items()}
+            series.append(row)
+
+    filtered_series = []
+
+    units = "index" if type_ == "total_return" else "percent"
+
+    for s in series:
+        if (
+            s["Type"] == type_
+            and s["Units"] == units
+            and s["Frequency"] == "daily"
+            and s["Asset Class"] == "bonds"
+            and s["Category"] == category
+            and s["Area"] == area
+            and s["Grade"] == grade
+        ):
+            filtered_series.append(s)
+
+    return filtered_series
+
+
+def get_cp_series_id(maturity, category, grade) -> List[dict]:
+    """Get CP series id."""
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    file = "commercial_paper.csv"
+
+    series = []
+
+    with open(Path(current_dir, file), encoding="utf-8") as csv_file_handler:
+        csv_reader = csv.DictReader(csv_file_handler)
+        for rows in csv_reader:
+            row = {key.lstrip("\ufeff"): value for key, value in rows.items()}
+            series.append(row)
+
+    filtered_series = []
+
+    category = (
+        "non_financial"
+        if (grade == "a2_p2" and category != "non_financial")
+        else category
+    )
+
+    for s in series:
+        if (
+            s["Maturity"] == maturity
+            and s["Category"] == category
+            and s["Grade"] == grade
+        ):
+            filtered_series.append(s)
+
+    return filtered_series
+
+
+def get_spot_series_id(maturity: List[float], category: List[str]) -> List[dict]:
+    """Get Spot series id."""
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    file = "corporate_spot_rates.csv"
+
+    series = []
+
+    with open(Path(current_dir, file), encoding="utf-8") as csv_file_handler:
+        csv_reader = csv.DictReader(csv_file_handler)
+        for rows in csv_reader:
+            row = {key.lstrip("\ufeff"): value for key, value in rows.items()}
+            series.append(row)
+
+    filtered_series = []
+
+    for s in series:
+        s_maturity = float(s["Maturity"].replace("y", ""))
+        if s_maturity in maturity and s["Category"] in category:
+            filtered_series.append(s)
+
+    return filtered_series

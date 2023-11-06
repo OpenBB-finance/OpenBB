@@ -263,7 +263,7 @@ Steps to create an `OBBject` extension:
 
     ```shell
     >>> from openbb import obb
-    >>> obbject = obb.stock.load("AAPL")
+    >>> obbject = obb.stocks.load("AAPL")
     >>> obbject.example.hello()
     Hello, this is my credential: None!
     ```

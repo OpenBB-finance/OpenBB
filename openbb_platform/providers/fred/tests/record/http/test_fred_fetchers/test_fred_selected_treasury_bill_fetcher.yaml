@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_end=2023-06-06&observation_start=2023-01-01&series_id=TB3SMFFM
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU01DUwUtJByKbmpaDL5ScVpxaVJZZk
+        5uehajYw1DUwVNJRQlaApN/ATNfATElHqTQvs6RYyUopJzMPpLi0pKC0JL6ksiBVycpQRyktMycV
+        ylPKKs4HKylKSS2KT6pUskIxOiWxJFVJR6k4v6gkPh+kRMlKKbE4WUlHKTm/NK9EycpMRyk/La04
+        tUTJykBHKSczN7NEycrQAARQHFmsZBVNSYCAHQINQFgYlCXmlKYqWSkZ6BkZKtXqUM14I0gQI4w3
+        sKCm8cYYxptQ03gTDOMtqWm8KW2NN8MwHjALpdrYWgB/4dlTTAMAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '268'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 02 Nov 2023 13:45:35 GMT
+      Expires:
+      - Thu, 02 Nov 2023 13:46:35 GMT
+      Last-Modified:
+      - Wed, 01 Nov 2023 21:01:16 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '90'
+    status:
+      code: 200
+      message: OK
+version: 1

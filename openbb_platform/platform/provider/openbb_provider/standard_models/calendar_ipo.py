@@ -51,10 +51,11 @@ class CalendarIpoQueryParams(QueryParams):
 class CalendarIpoData(Data):
     """IPO Calendar Data."""
 
-    symbol: str = Field(
+    symbol: Optional[str] = Field(
+        default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    ipo_date: dateType = Field(
+    ipo_date: Optional[dateType] = Field(
         description="The date of the IPO, when the stock first trades on a major exchange.",
         default=None,
     )

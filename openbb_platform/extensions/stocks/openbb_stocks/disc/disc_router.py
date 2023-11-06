@@ -1,4 +1,5 @@
 """Disc router for Equities."""
+# pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -87,4 +88,41 @@ def growth_tech_equities(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get growth tech Equities."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="TopRetail")
+def top_retail(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Tracks over $30B USD/day of individual investors trades.
+
+    It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
+    ADRs, and ETPs.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="UpcomingReleaseDays")
+def upcoming_release_days(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get upcoming release days."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="DiscFilings")
+def filings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the most-recent filings submitted to the SEC."""
     return OBBject(results=Query(**locals()).execute())

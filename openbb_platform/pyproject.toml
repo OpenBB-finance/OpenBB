@@ -33,6 +33,7 @@ openbb-biztoc = { version = "^0.1.0a4", optional = true }
 openbb-cboe = { version = "^0.1.0a4", optional = true }
 openbb-nasdaq = { version = "^0.1.0a4", optional = true }
 openbb-quandl = { version = "^0.1.0a4", optional = true }
+openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
 openbb-yfinance = { version = "^0.1.0a4", optional = true }
 
 openbb-charting = { version = "^0.1.0a4", optional = true }
@@ -48,6 +49,7 @@ cboe = ["openbb-cboe"]
 nasdaq = ["openbb-nasdaq"]
 quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
+ecb = ["openbb-ecb"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
@@ -60,7 +62,9 @@ all = [
     "openbb-cboe",
     "openbb-nasdaq",
     "openbb-quandl",
+    "openbb-seeking-alpha",
     "openbb-yfinance",
+    "openbb-ecb",
     "openbb-charting",
     "openbb-futures",
     "openbb-qa",
