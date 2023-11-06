@@ -19,8 +19,6 @@ def headers():
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -29,13 +27,10 @@ def headers():
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
@@ -98,14 +93,17 @@ def test_stocks_fa_balance_growth(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
+    [
+        ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
+        ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "nasdaq"}),
+    ],
 )
 @pytest.mark.integration
-def test_stocks_fa_cal(params, headers):
+def test_stocks_calendar_dividend(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/fa/cal?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_dividend?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -117,8 +115,6 @@ def test_stocks_fa_cal(params, headers):
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -127,13 +123,10 @@ def test_stocks_fa_cal(params, headers):
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
@@ -290,8 +283,6 @@ def test_stocks_fa_est(params, headers):
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
-                "type": "reported",
-                "year": 2022,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
@@ -300,13 +291,10 @@ def test_stocks_fa_est(params, headers):
         ),
         (
             {
-                "company_name": "Apple Inc.",
-                "company_name_search": "Apple Inc.",
-                "sic": "3571",
+                "provider": "polygon",
                 "include_sources": True,
                 "order": "asc",
                 "sort": "filing_date",
-                "provider": "polygon",
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 12,
@@ -373,8 +361,8 @@ def test_stocks_fa_income_growth(params, headers):
         (
             {
                 "symbol": "AAPL",
-                "transactionType": "P-Purchase",
-                "page": 1,
+                "transaction_type": "P-Purchase",
+                "limit": 10,
                 "provider": "fmp",
             }
         )
@@ -410,6 +398,40 @@ def test_stocks_fa_ins_own(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/stocks/fa/ins_own?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-11-01",
+                "status": "priced",
+                "provider": "nasdaq",
+                "is_spo": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_calendar_ipo(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -609,7 +631,7 @@ def test_stocks_fa_split(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "year": 2023, "quarter": 1})],
+    [({"symbol": "AAPL", "year": 2023})],
 )
 @pytest.mark.integration
 def test_stocks_fa_transcript(params, headers):
@@ -914,6 +936,29 @@ def test_stocks_multiples(params, headers):
     [
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
+        (
+            {
+                "query": "residential",
+                "industry": "REIT",
+                "sector": "Real Estate",
+                "mktcap_min": None,
+                "mktcap_max": None,
+                "price_min": None,
+                "price_max": None,
+                "volume_min": None,
+                "volume_max": None,
+                "dividend_min": None,
+                "dividend_max": None,
+                "is_active": True,
+                "is_etf": False,
+                "beta_min": None,
+                "beta_max": None,
+                "country": "US",
+                "exchange": "nyse",
+                "limit": None,
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1040,24 +1085,104 @@ def test_stocks_price_performance(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        (
-            {
-                "symbol": "UBER",
-                "start_date": "2018-01-01",
-                "end_date": "2023-06-06",
-                "limit": 300,
-                "provider": "intrinio",
-            }
-        ),
-    ],
+    [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_calendar_ipo(params, headers):
+def test_stocks_disc_undervalued_large_caps(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/calendar_ipo?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/undervalued_large_caps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_undervalued_growth_equities(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/undervalued_growth_equities?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_aggressive_small_caps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/aggressive_small_caps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "provider": "yfinance"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_growth_tech_equities(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/growth_tech_equities?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"limit": 10, "provider": "nasdaq"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_top_retail(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/top_retail?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"limit": 5, "start_date": "2023-01-01"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_upcoming_release_days(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/upcoming_release_days?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"pages": 1, "limit": 5, "today": True, "provider": "fmp"})],
+)
+@pytest.mark.integration
+def test_stocks_disc_filings(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/filings?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -1,6 +1,5 @@
 """FRED FED Fetcher."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_fred.utils.fred_base import Fred
@@ -23,6 +22,7 @@ class FREDIORBData(IORBData):
 
     @field_validator("rate", mode="before", check_fields=False)
     def value_validate(cls, v):  # pylint: disable=E0213
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -38,12 +38,14 @@ class FREDIORBFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDIORBQueryParams:
+        """Transform query."""
         return FREDIORBQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDIORBQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> dict:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = "IORB"
         fred = Fred(key)
@@ -54,5 +56,6 @@ class FREDIORBFetcher(
     def transform_data(
         query: FREDIORBQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDIORBData]]]:
+        """Transform data."""
         keys = ["date", "value"]
         return [FREDIORBData(**{k: x[k] for k in keys}) for x in data]

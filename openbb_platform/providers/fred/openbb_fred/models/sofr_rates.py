@@ -31,7 +31,9 @@ class FREDSOFRData(SOFRData):
     __alias_dict__ = {"rate": "value"}
 
     @field_validator("rate", mode="before", check_fields=False)
-    def value_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -47,12 +49,14 @@ class FREDSOFRFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSOFRQueryParams:
+        """Transform query."""
         return FREDSOFRQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDSOFRQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> dict:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = SOFR_PARAMETER_TO_FRED_ID[query.period]
         fred = Fred(key)
@@ -63,5 +67,6 @@ class FREDSOFRFetcher(
     def transform_data(
         query: FREDSOFRQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FREDSOFRData]]]:
+        """Transform data"""
         keys = ["date", "value"]
         return [FREDSOFRData(**{k: x[k] for k in keys}) for x in data]
