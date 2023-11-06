@@ -74,7 +74,7 @@ class ECBEUYieldCurveFetcher(
             "par_yield": "PY",
         }
         yield_type = f"YC.B.U2.EUR.4F.G_N_{query.rating}.SV_C_YM." + yield_suffixes.get(
-            query.type_, ""
+            query.yield_curve_type, ""
         )
         # Add the maturities
         series_id = [f"{yield_type}{m}M" for m in [3, 6]]

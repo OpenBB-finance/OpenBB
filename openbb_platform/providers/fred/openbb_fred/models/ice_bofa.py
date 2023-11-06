@@ -79,7 +79,7 @@ class FREDICEBofAFetcher(
         fred = Fred(key)
 
         series = get_ice_bofa_series_id(
-            type_=query.type_,
+            type_=query.index_type,
             category=query.category,
             area=query.area,
             grade=query.grade,

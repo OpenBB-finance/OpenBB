@@ -22,7 +22,7 @@ class EuropeanCentralBankInterestRatesParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    type_: Literal["deposit", "lending", "refinancing"] = Field(
+    interest_rate_type: Literal["deposit", "lending", "refinancing"] = Field(
         default="lending",
         description="The type of interest rate.",
     )

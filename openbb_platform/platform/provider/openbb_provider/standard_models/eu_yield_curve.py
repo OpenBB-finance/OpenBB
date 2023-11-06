@@ -17,9 +17,11 @@ class EUYieldCurveQueryParams(QueryParams):
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
-    type_: Literal["spot_rate", "instantaneous_forward", "par_yield"] = Field(
+    yield_curve_type: Literal[
+        "spot_rate", "instantaneous_forward", "par_yield"
+    ] = Field(
         default="spot_rate",
-        description="The type of series.",
+        description="The yield curve type.",
     )
 
 

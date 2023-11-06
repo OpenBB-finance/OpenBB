@@ -22,7 +22,7 @@ class ICEBofAParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    type_: Literal["yield", "yield_to_worst", "total_return", "spread"] = Field(
+    index_type: Literal["yield", "yield_to_worst", "total_return", "spread"] = Field(
         default="yield",
         description="The type of series.",
     )

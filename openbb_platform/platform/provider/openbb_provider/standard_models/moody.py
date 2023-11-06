@@ -22,7 +22,7 @@ class MoodyCorporateBondIndexParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    type_: Literal["aaa", "baa"] = Field(
+    index_type: Literal["aaa", "baa"] = Field(
         default="aaa",
         description="The type of series.",
     )

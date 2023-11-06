@@ -60,7 +60,7 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
         fred = Fred(key)
 
         data = fred.get_series(
-            series_id=NAME_TO_ID_ECB[query.type_],
+            series_id=NAME_TO_ID_ECB[query.interest_rate_type],
             start_date=query.start_date,
             end_date=query.end_date,
             **kwargs,

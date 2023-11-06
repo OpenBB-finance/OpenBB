@@ -91,7 +91,7 @@ class FREDMoodyCorporateBondIndexFetcher(
         fred = Fred(key)
 
         opt_key = query.spread if query.spread else "index"
-        id_ = MOODY_TO_OPTIONS[query.type_][opt_key]["id"]
+        id_ = MOODY_TO_OPTIONS[query.index_type][opt_key]["id"]
 
         data = fred.get_series(
             series_id=id_,
