@@ -421,6 +421,7 @@ def test_stocks_fa_ins_own(params, headers):
                 "end_date": "2023-11-01",
                 "status": "priced",
                 "provider": "nasdaq",
+                "is_spo": False
             }
         ),
     ],
