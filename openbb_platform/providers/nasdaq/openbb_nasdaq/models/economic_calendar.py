@@ -69,7 +69,6 @@ class NasdaqEconomicCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqEconomicCalendarQueryParams:
         """Transform the query params."""
-        # return NasdaqEconomicCalendarQueryParams(**params)
         now = datetime.today().date()
         transformed_params = params
 
