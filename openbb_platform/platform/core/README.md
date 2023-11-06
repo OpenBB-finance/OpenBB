@@ -18,6 +18,7 @@
     - [4.1.2. Utilities](#412-utilities)
       - [User settings](#user-settings)
       - [Preferences](#preferences)
+        - [Notes on preferences](#notes-on-preferences)
       - [System settings](#system-settings)
       - [Coverage](#coverage)
     - [4.1.3. OpenBB Hub Account](#413-openbb-hub-account)
@@ -209,7 +210,7 @@ date
 }
 ```
 
-- `show`: displays `chart.content` to a chart
+- `show`: displays the figure
 
 ```python
 >>> output.show()
@@ -217,22 +218,13 @@ date
 # Python Interpreter: opens a PyWry window with the chart
 ```
 
-- `to_plotly_json`: proxy to `chart.content`
+- `to_chart`: create or update the chart and returns the figure
 
 ```python
->>> output.to_plotly_json()
-{
-    'data':[
-        {
-            'close': [260.02, 262.9, 291.26],
-            'decreasing': {'line': {'width': 1.1}},
-            'high': [268.0, 280.93, 299.29],
-            'increasing': {'line': {'width': 1.1}},
-            ...
-        }
-    ...
-    ]
-}
+>>> fig = output.to_chart()
+>>> fig = type(fig)
+
+openbb_charting.core.openbb_figure.OpenBBFigure
 ```
 
 #### Extensions
@@ -330,6 +322,12 @@ These are the available preferences and respective descriptions:
 | request_timeout       | 15                               | Any positive integer.  | Specifies the timeout duration for HTTP requests.                                                                                                                                                                                                                                                                             |                                                                                                                    |           |          |             |                                                                                                                                                                              |                                                                         |
 | metadata              | True                             | [True, False]        | Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern. |                                                                                                                    |           |          |             |                                                                                                                                                                              |                                                                         |
 | output_type           | OBBject                          | ["OBBject", "numpy", "dict", "chart"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe` | `numpy`  or `polars`  will render the application's API non-functional. |
+
+##### Notes on preferences
+
+- If you don't have a `OpenBBUserData` folder in your home directory, the application will create one for you the first time you run it. The user preferences related with paths all default to this folder, be it exports, styles or data - this can be changed at any time to fit your needs.
+- The `OpenBBUserData` will still be created even if you don't have your preferences pointing to it, this is because the application needs a place to store logs and other artifacts.
+- One way of exporting files or images on the OpenBB Platform is to leverage that functionality on the OpenBB Charting Extension. The `export_directory` preference is the location where the extension will attempt to save such exports.
 
 #### System settings
 
