@@ -66,6 +66,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 
 5. Setup your API keys locally by adding them to the `~/.openbb_platform/user_settings.json` file. Populate this file with the following template and replace the values with your keys:
 
+  <!-- pragma: allowlist secret -->
   ```json
   {
     "credentials": {
@@ -77,4 +78,4 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
   }
   ```
 
-  > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
+  > You can also setup and use your keys from the OpenBB Hub. Follow the instructions on [API Keys](https://my.openbb.co/app/sdk/api-keys)) page to know more about it.

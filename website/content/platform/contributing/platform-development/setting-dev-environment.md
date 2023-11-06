@@ -1,5 +1,5 @@
 ---
-title: Setting up dev environment
+title: Contributing to Platform Development
 sidebar_position: 1
 description: 'Learn how to contribute to the OpenBB Platform: add a new data point,
   command, visualization, extension, fix a bug, and setup your development environment'
