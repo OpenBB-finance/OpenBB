@@ -79,7 +79,13 @@ export default function DocSidebarItemCategory({
   ...props
 }) {
   const { items, label, collapsible, className, href } = item;
-  const newHref = label === "OpenBB Terminal" ? "/terminal" : label === "OpenBB Platform" ? "/platform" : label === "OpenBB Bot" ? "/bot" : label === "OpenBB Terminal Pro" ? "/pro" : href;
+  const labelToHrefMap = {
+    "OpenBB Terminal": "/terminal",
+    "OpenBB Platform": "/platform",
+    "OpenBB Bot": "/bot",
+    "OpenBB Terminal Pro": "/pro"
+  };
+  const newHref = labelToHrefMap[label] || href;
   const {
     docs: {
       sidebar: { autoCollapseCategories },
