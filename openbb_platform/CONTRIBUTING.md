@@ -32,6 +32,8 @@
     - [How to add custom data sources?](#how-to-add-custom-data-sources)
       - [OpenBB Platform commands](#openbb-platform-commands)
     - [Architectural considerations](#architectural-considerations)
+      - [Important classes](#important-classes)
+      - [Import statements](#import-statements)
       - [The TET pattern](#the-tet-pattern)
       - [Data processing commands](#data-processing-commands)
         - [Python Interface](#python-interface)
@@ -483,6 +485,29 @@ Let's break it down:
 You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
 
 ### Architectural considerations
+
+#### Important classes
+
+#### Import statements
+
+```python
+
+# The `Data` class
+from openbb_provider.abstract.data import Data
+
+# The `QueryParams` class
+from openbb_provider.abstract.query_params import QueryParams
+
+# The `Fetcher` class
+from openbb_provider.abstract.fetcher import Fetcher
+
+# The `OBBject` class
+from openbb_core.app.model.obbject import OBBject
+
+# The `Router` class
+from openbb_core.app.router import Router
+
+```
 
 #### The TET pattern
 
