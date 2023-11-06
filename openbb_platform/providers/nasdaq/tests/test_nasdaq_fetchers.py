@@ -34,7 +34,7 @@ def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2023, 11, 6),
-        "end_date": datetime.date(2023, 11, 10),
+        "end_date": datetime.date(2023, 11, 6),
     }
 
     fetcher = NasdaqDividendCalendarFetcher()
