@@ -1,12 +1,29 @@
 ---
 title: divs
-description: OpenBB Platform Function
+description: A detailed documentation page outlining how to fetch historical dividends
+  data for specific companies using the divs function. The page contains explanations
+  on functions parameters, the return values, and the data that can be obtained.
+keywords:
+- Historical Dividends
+- divs
+- provider
+- symbol
+- data
+- date
+- label
+- adjusted dividend
+- dividend
+- record date
+- payment date
+- declaration_date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.divs - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# divs
 
 Historical Dividends. Historical dividends data for a given company.
 
@@ -70,4 +87,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

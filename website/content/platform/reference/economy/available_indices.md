@@ -1,12 +1,26 @@
 ---
 title: available_indices
-description: OpenBB Platform Function
+description: Documentation page explains 'Available Indices' including standard and
+  FMP parameters, wherein details such as index name, currency, the stock exchange
+  they are listed on, and detailed metadata about command execution are discussed.
+keywords:
+- Available Indices
+- Provider Query
+- FMP
+- Index Name
+- Index Currency
+- Stock Exchange
+- Exchange Short Name
+- Metadata
+- Command Execution
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.available_indices - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# available_indices
 
 Available Indices. Available indices for a given provider.
 
@@ -74,4 +88,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

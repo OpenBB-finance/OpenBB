@@ -1,7 +1,29 @@
 ---
 title: Income Statement Growth
-description: OpenBB Platform Data Model
+description: This page provides information about the Income Statement Growth class
+  in the openbb_provider standard models. It outlines the specific parameters and
+  their types for queries, as well as the returned data fields upon executing the
+  queries.
+keywords:
+- OpenBB Provider
+- Standard Models
+- Income Statement Growth
+- Query Parameters
+- Returned Data Fields
+- Financial Data
+- Growth Rate of Revenue
+- Growth Rate of Expenses
+- Earnings Per Share
+- Diluted Earnings Per Share
+- Income Before Taxes
+- Net Income
+- Operating Expenses
+- Depreciation and Amortization Expenses
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Income Statement Growth - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -81,4 +103,3 @@ IncomeStatementGrowthQueryParams,
 </TabItem>
 
 </Tabs>
-

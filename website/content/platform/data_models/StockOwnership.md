@@ -1,7 +1,32 @@
 ---
 title: Stock Ownership
-description: OpenBB Platform Data Model
+description: This site provides detailed information on implementation and parameters
+  for Stock Ownership data models. It covers attributes such as symbol, date, provider,
+  investor name, security name, type of security, shares type, and more.
+keywords:
+- Stock Ownership
+- Stock Ownership Data
+- Stock Ownership Query Params
+- Security attributes
+- Investor Name
+- Security Name
+- Shares Number
+- Type of Security
+- Performance
+- Market Value
+- Change in Market Value
+- Ownership
+- Holding Period
+- Change in Performance
+- Provider
+- Parameters
+- Implementation Details
+- Data Models
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Ownership - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -91,4 +116,3 @@ StockOwnershipQueryParams,
 </TabItem>
 
 </Tabs>
-

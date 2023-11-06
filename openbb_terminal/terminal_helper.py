@@ -140,61 +140,61 @@ def open_openbb_documentation(
     """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
     that are considered 'common' by adjusting the path accordingly."""
     if path == "/" and command is None:
-        path = "/usage?path=/usage/basics"
+        path = "/usage?path=/usage/structure-and-navigation"
         command = ""
     elif "keys" in path:
-        path = "/usage?path=/usage/guides/api-keys"
+        path = "/usage?path=/usage/data/api-keys"
         command = ""
     elif "settings" in path:
-        path = "/usage?path=/usage/guides/customizing-the-terminal"
+        path = "/usage?path=/usage/overview/customizing-the-terminal"
         command = ""
     elif "featflags" in path:
-        path = "/usage?path=/usage/guides/customizing-the-terminal#using-the-feature-flags-menu"
+        path = "/usage?path=/usage/overview/customizing-the-terminal#feature-flags-menu"
         command = ""
     elif "sources" in path:
-        path = "/usage?path=/usage/guides/changing-sources"
+        path = "/usage?path=/usage/usage/data/data-sources"
         command = ""
     elif "account" in path:
-        path = "/usage?path=/usage/guides/basics"
+        path = "/usage?path=/usage/hub"
         command = ""
     elif arg_type == "command":  # user passed a command name
         if command in ["settings", "featflags"]:
-            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            path = "/usage?path=/usage/overview/customizing-the-terminal"
             command = ""
         else:
             path = f"/commands?path={path}"
     elif arg_type == "menu":  # user passed a menu name
         if command in ["ta", "ba", "qa"]:
             menu = path.split("/")[-2]
-            path = f"/usage?path=/usage/intros/common/{menu}"
+            path = f"/usage?path=/data-available/common/{menu}"
         elif command == "forecast":
             command = ""
-            path = "/usage?path=/usage/intros/forecast"
+            path = "/usage?path=/data-available/forecast"
         else:
-            path = f"/usage?path=/usage/intros/{path}"
+            path = f"/usage?path=/data-available/{path}"
     else:  # user didn't pass argument and is in a menu
         menu = path.split("/")[-2]
         path = (
-            f"/usage?path=/usage/intros/common/{menu}"
+            f"/usage?path=/data-available/common/{menu}"
             if menu in ["ta", "ba", "qa"]
-            else f"/usage?path=/usage/intros/{path}"
+            else f"/usage?path=/data-available/{path}"
         )
 
     if command:
         if command == "keys":
-            path = "/usage?path=/usage/guides/api-keys"
+            path = "/usage?path=/usage/data/api-keys"
             command = ""
         elif "settings" in path or "featflags" in path:
-            path = "/usage?path=/usage/guides/customizing-the-terminal"
+            path = "/usage?path=/usage/overview/customizing-the-terminal"
             command = ""
         elif "sources" in path:
-            path = "/usage?path=/usage/guides/changing-sources"
+            path = "/usage?path=/usage/data/data-sources"
             command = ""
         elif command in ["record", "stop", "exe"]:
-            path = "/usage?path=/usage/guides/scripts-and-routines"
+            path = "/usage?path=/usage/routines/introduction-to-routines"
             command = ""
         elif command == "sources":
-            path = "/usage?path=/usage/guides/changing-sources"
+            path = "/usage?path=/usage/data/data-sources"
             command = ""
         elif command in [
             "intro",
@@ -209,7 +209,7 @@ def open_openbb_documentation(
             path = "/usage"
             command = ""
         elif command in ["ta", "ba", "qa"]:
-            path = f"/usage?path=/usage/intros/common/{command}"
+            path = f"/usage?path=/data-available/common/{command}"
             command = ""
 
         path += command

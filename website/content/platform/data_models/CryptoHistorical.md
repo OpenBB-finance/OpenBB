@@ -1,7 +1,37 @@
 ---
 title: Crypto Historical Price
-description: OpenBB Platform Data Model
+description: Detailed documentation on Crypto Historical Data including model classes,
+  query parameters, and data. Information on import statements and tabulated data
+  for standard, fmp and polygon parameters are also provided.
+keywords:
+- CryptoHistorical
+- CryptoHistoricalQueryParams
+- CryptoHistoricalData
+- openbb_provider.standard_models.crypto_historical
+- symbol
+- start_date
+- end_date
+- provider
+- timeseries
+- interval
+- multiplier
+- timespan
+- sort
+- limit
+- adjusted
+- date
+- open
+- high
+- low
+- close
+- volume
+- vwap
+- transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Crypto Historical Price - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -119,4 +149,3 @@ CryptoHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

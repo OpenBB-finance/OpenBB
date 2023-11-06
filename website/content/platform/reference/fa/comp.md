@@ -1,12 +1,28 @@
 ---
 title: comp
-description: OpenBB Platform Function
+description: Page providing in-depth information on Executive Compensation for a given
+  company. It includes data about bonuses, salaries, stock awards, as well as other
+  compensations provided to the executive. The page uses the docusaurus tool and conducts
+  comprehensive keyword research to ensure optimal search engine optimization.
+keywords:
+- Executive Compensation
+- company information
+- SEO
+- SEO services
+- keyword research
+- search engine optimization
+- metadata
+- docusaurus
+- content marketing
+- digital marketing
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.comp - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# comp
 
 Executive Compensation. Information about the executive compensation for a given company.
 
@@ -76,4 +92,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

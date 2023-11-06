@@ -35,8 +35,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/usage/intros/forecasting",
-            to: "/terminal/usage/intros/forecast",
+            from: "/terminal/data-available/forecasting",
+            to: "/terminal/data-available/forecast",
           },
         ],
       },
@@ -81,22 +81,10 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          breadcrumbs: true,
-          lastVersion: "current",
-          versions: {
-            current: {
-              label: "v4",
-              path: "",
-              banner: "unreleased",
-            },
-            v3: {
-              label: "v3",
-              path: "v3",
-            },
-          },
-          editUrl: ({ versionDocsDirPath, docPath }) =>
-            `https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/${versionDocsDirPath}/${docPath}`,
           sidebarPath: require.resolve("./sidebars.js"),
+          editUrl: "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
           routeBasePath: "/",
           path: "content",
           remarkPlugins: [math],
@@ -117,18 +105,6 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      docs: {
-        versionPersistence: "localStorage",
-      },
-      navbar: {
-        items: [
-          {
-            type: "docsVersionDropdown",
-            position: "left",
-            dropdownActiveClassDisabled: true,
-          },
-        ],
-      },
       // TODO - Jose can you make this so we get lighter color on main view - like bot docs
       colorMode: {
         defaultMode: "dark",
@@ -137,12 +113,11 @@ const config = {
       },
       algolia: {
         appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",  // pragma: allowlist secret
         indexName: "openbbterminal",
         contextualSearch: false,
       },
     }),
-
   stylesheets: [
     {
       href: "/katex/katex.min.css",
