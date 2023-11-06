@@ -32,9 +32,10 @@
     - [How to add custom data sources?](#how-to-add-custom-data-sources)
       - [OpenBB Platform commands](#openbb-platform-commands)
     - [Architectural considerations](#architectural-considerations)
+      - [The TET pattern](#the-tet-pattern)
       - [Data processing commands](#data-processing-commands)
-      - [Python Interface](#python-interface)
-      - [API Interface](#api-interface)
+        - [Python Interface](#python-interface)
+        - [API Interface](#api-interface)
   - [Contributor Guidelines](#contributor-guidelines)
     - [Expectations for Contributors](#expectations-for-contributors)
     - [Quality Assurance](#quality-assurance)
@@ -384,7 +385,7 @@ class <ProviderName>StockHistoricalFetcher(
         return [<ProviderName>StockHistoricalData.model_validate(d) for d in data]
 ```
 
-> Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**.
+> Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**. See more on this [here](#the-tet-pattern).
 
 #### Make the provider visible
 
@@ -483,6 +484,15 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 
 ### Architectural considerations
 
+#### The TET pattern
+
+The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
+As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
+
+1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+2. Extract - `extract_data(query: ExampleQueryParams,credentials: Optional[Dict[str, str]],**kwargs: Any,) -> Dict`: makes the request to the API endpoint and returns the raw data. Given the transformed query parameters, the credentials and any other extra arguments, this method should return the raw data as a dictionary.
+3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_provider/abstract/data.py) children.
+
 #### Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
@@ -562,7 +572,7 @@ results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50
 
 > Note that that for this example we've used the `OBBject.to_dataframe()` method to have an example dataframe, but it could be any other dataframe that you have.
 
-#### Python Interface
+##### Python Interface
 
 When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
 Looking at an example on the `ta` menu:
@@ -587,7 +597,7 @@ We can easily deduct that the `ema` command accept data in the formats of `List[
 
 > Note that other types might be added in the future.
 
-#### API Interface
+##### API Interface
 
 When using the OpenBB Platform on a API Interface, the types are a bit more limited than on the Python one, as, for example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means, i.e., any given data processing command, which are characterized as POST endpoints on the API, wil accept data as a list of records on the **request body**, i.e.:
 
