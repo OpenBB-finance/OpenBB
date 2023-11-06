@@ -13,6 +13,7 @@ import {
   isSamePath,
   useDocSidebarItemsExpandedState,
 } from "@docusaurus/theme-common/internal";
+import { useLocation } from "@docusaurus/router";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
@@ -117,6 +118,13 @@ export default function DocSidebarItemCategory({
   const dontShowLink =
     isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
 
+  const location = useLocation();
+  const isProPage = location.pathname.startsWith("/pro");
+
+  // Hide the OpenBB Terminal Pro section if we're not on a /pro page
+  if (item.customProps?.hiddenByDefault && !isProPage) {
+    return null;
+  }
 
   return (
     <li
@@ -144,23 +152,23 @@ export default function DocSidebarItemCategory({
           onClick={
             collapsible
               ? (e) => {
-                  if (dontShowLink) {
-                    e.preventDefault();
-                  }
-                  onItemClick?.(item);
-                  if (href) {
-                    updateCollapsed(false);
-                  } else {
-                    e.preventDefault();
-                    updateCollapsed();
-                  }
+                if (dontShowLink) {
+                  e.preventDefault();
                 }
+                onItemClick?.(item);
+                if (href) {
+                  updateCollapsed(false);
+                } else {
+                  e.preventDefault();
+                  updateCollapsed();
+                }
+              }
               : () => {
-                  if (dontShowLink) {
-                    e.preventDefault();
-                  }
-                  onItemClick?.(item);
+                if (dontShowLink) {
+                  e.preventDefault();
                 }
+                onItemClick?.(item);
+              }
           }
           aria-current={isCurrentPage ? "page" : undefined}
           aria-expanded={collapsible ? !collapsed : undefined}
