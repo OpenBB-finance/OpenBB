@@ -29,6 +29,7 @@ class FREDHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData)
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -49,6 +50,7 @@ class FREDHighQualityMarketCorporateBondFetcher(
     def transform_query(
         params: Dict[str, Any]
     ) -> FREDHighQualityMarketCorporateBondParams:
+        """Transform query."""
         return FREDHighQualityMarketCorporateBondParams(**params)
 
     @staticmethod
@@ -57,6 +59,7 @@ class FREDHighQualityMarketCorporateBondFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -97,4 +100,5 @@ class FREDHighQualityMarketCorporateBondFetcher(
     def transform_data(
         query: FREDHighQualityMarketCorporateBondParams, data: list, **kwargs: Any
     ) -> List[FREDHighQualityMarketCorporateBondData]:
+        """Transform data."""
         return [FREDHighQualityMarketCorporateBondData.model_validate(d) for d in data]

@@ -44,6 +44,7 @@ class FREDPROJECTIONFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDPROJECTIONQueryParams:
+        """Transform query."""
         return FREDPROJECTIONQueryParams(**params)
 
     @staticmethod
@@ -52,6 +53,7 @@ class FREDPROJECTIONFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
         data_dict = {}
@@ -67,5 +69,6 @@ class FREDPROJECTIONFetcher(
     def transform_data(
         query: FREDPROJECTIONQueryParams, data: list, **kwargs: Any
     ) -> List[Dict[str, List[FREDPROJECTIONData]]]:
+        """Transform data"""
         keys = ["date"] + list(NAME_TO_ID_PROJECTION.keys())
         return [FREDPROJECTIONData(**{k: x[k] for k in keys}) for x in data]

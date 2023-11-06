@@ -1,6 +1,5 @@
 """Discount Window Primary Credit Rate Fetcher."""
 
-
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_fred.utils.fred_base import Fred
@@ -51,6 +50,7 @@ class FREDICEBofAData(ICEBofAData):
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -69,12 +69,14 @@ class FREDICEBofAFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDICEBofAParams:
+        """Transform query."""
         return FREDICEBofAParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDICEBofAParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -106,4 +108,5 @@ class FREDICEBofAFetcher(
     def transform_data(
         query: FREDICEBofAParams, data: list, **kwargs: Any
     ) -> List[FREDICEBofAData]:
+        """Transform data."""
         return [FREDICEBofAData.model_validate(d) for d in data]

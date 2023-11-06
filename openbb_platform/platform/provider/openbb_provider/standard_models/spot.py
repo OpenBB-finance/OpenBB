@@ -33,6 +33,7 @@ class SpotRateParams(QueryParams):
     @field_validator("maturity")
     @classmethod
     def maturity_validate(cls, v):
+        """Validate maturity."""
         for i in v:
             if not isinstance(i, float):
                 raise ValueError("`maturity` must be a float")

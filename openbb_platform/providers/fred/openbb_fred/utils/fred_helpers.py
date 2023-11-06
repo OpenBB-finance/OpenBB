@@ -1,3 +1,5 @@
+""" FRED helpers. """
+
 import csv
 import os
 from pathlib import Path

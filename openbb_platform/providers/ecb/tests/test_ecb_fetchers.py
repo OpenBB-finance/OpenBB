@@ -1,3 +1,5 @@
+""" Test ECB Fetchers. """
+
 import datetime
 
 import pytest
@@ -11,6 +13,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR config."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -21,6 +24,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_ecbeu_yield_curve_fetcher(credentials=test_credentials):
+    """Test ECBEUYieldCurveFetcher."""
     params = {"date": datetime.date(2023, 1, 1)}
 
     fetcher = ECBEUYieldCurveFetcher()

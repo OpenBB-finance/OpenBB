@@ -1,3 +1,5 @@
+""" ECB helpers"""
+
 import time
 from urllib.error import HTTPError
 

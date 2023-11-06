@@ -28,6 +28,7 @@ class FREDEuropeanCentralBankInterestRatesData(EuropeanCentralBankInterestRatesD
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -48,6 +49,7 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
     def transform_query(
         params: Dict[str, Any]
     ) -> FREDEuropeanCentralBankInterestRatesParams:
+        """Transform query."""
         return FREDEuropeanCentralBankInterestRatesParams(**params)
 
     @staticmethod
@@ -56,6 +58,7 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -72,6 +75,7 @@ class FREDEuropeanCentralBankInterestRatesFetcher(
     def transform_data(
         query: FREDEuropeanCentralBankInterestRatesParams, data: list, **kwargs: Any
     ) -> List[FREDEuropeanCentralBankInterestRatesData]:
+        """Transform data."""
         return [
             FREDEuropeanCentralBankInterestRatesData.model_validate(d) for d in data
         ]

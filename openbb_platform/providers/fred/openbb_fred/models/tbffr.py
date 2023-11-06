@@ -29,6 +29,7 @@ class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -47,6 +48,7 @@ class FREDSelectedTreasuryBillFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDSelectedTreasuryBillParams:
+        """Transform query."""
         return FREDSelectedTreasuryBillParams(**params)
 
     @staticmethod
@@ -55,6 +57,7 @@ class FREDSelectedTreasuryBillFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -71,4 +74,5 @@ class FREDSelectedTreasuryBillFetcher(
     def transform_data(
         query: FREDSelectedTreasuryBillParams, data: list, **kwargs: Any
     ) -> List[FREDSelectedTreasuryBillData]:
+        """Transform data."""
         return [FREDSelectedTreasuryBillData.model_validate(d) for d in data]

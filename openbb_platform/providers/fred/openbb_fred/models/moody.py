@@ -61,6 +61,7 @@ class FREDMoodyCorporateBondIndexData(MoodyCorporateBondIndexData):
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -79,6 +80,7 @@ class FREDMoodyCorporateBondIndexFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDMoodyCorporateBondIndexParams:
+        """Transform query."""
         return FREDMoodyCorporateBondIndexParams(**params)
 
     @staticmethod
@@ -87,6 +89,7 @@ class FREDMoodyCorporateBondIndexFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -106,4 +109,5 @@ class FREDMoodyCorporateBondIndexFetcher(
     def transform_data(
         query: FREDMoodyCorporateBondIndexParams, data: list, **kwargs: Any
     ) -> List[FREDMoodyCorporateBondIndexData]:
+        """Transform data."""
         return [FREDMoodyCorporateBondIndexData.model_validate(d) for d in data]

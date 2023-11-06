@@ -34,6 +34,7 @@ class FREDSelectedTreasuryConstantMaturityData(SelectedTreasuryConstantMaturityD
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -54,6 +55,7 @@ class FREDSelectedTreasuryConstantMaturityFetcher(
     def transform_query(
         params: Dict[str, Any]
     ) -> FREDSelectedTreasuryConstantMaturityParams:
+        """Transform query."""
         return FREDSelectedTreasuryConstantMaturityParams(**params)
 
     @staticmethod
@@ -62,6 +64,7 @@ class FREDSelectedTreasuryConstantMaturityFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -78,6 +81,7 @@ class FREDSelectedTreasuryConstantMaturityFetcher(
     def transform_data(
         query: FREDSelectedTreasuryConstantMaturityParams, data: list, **kwargs: Any
     ) -> List[FREDSelectedTreasuryConstantMaturityData]:
+        """Transform data."""
         return [
             FREDSelectedTreasuryConstantMaturityData.model_validate(d) for d in data
         ]

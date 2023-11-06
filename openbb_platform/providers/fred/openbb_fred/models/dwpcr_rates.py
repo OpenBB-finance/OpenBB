@@ -36,6 +36,7 @@ class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateDat
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
+        """Validate rate."""
         try:
             return float(v)
         except ValueError:
@@ -56,6 +57,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
     def transform_query(
         params: Dict[str, Any]
     ) -> FREDDiscountWindowPrimaryCreditRateParams:
+        """Transform query."""
         return FREDDiscountWindowPrimaryCreditRateParams(**params)
 
     @staticmethod
@@ -64,6 +66,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
+        """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
@@ -80,4 +83,5 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
     def transform_data(
         query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
     ) -> List[FREDDiscountWindowPrimaryCreditRateData]:
+        """Transform data"""
         return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]
