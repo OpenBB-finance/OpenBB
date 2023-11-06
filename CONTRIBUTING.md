@@ -222,7 +222,7 @@ Now that we have added the model function getting, we need to specify that this 
 
 If you are adding a new function with a new data source, make a new value in the file.  If the data source requires an
 API key, please refer to the guide below for adding them.  Instructions for obtaining the new api key
-should be included in the file `OpenBBTerminal/website/content/terminal/usage/guides/api-keys.md`.
+should be included in the file `OpenBBTerminal/website/content/terminal/usage/data/api-keys.md`.
 
 ### View
 

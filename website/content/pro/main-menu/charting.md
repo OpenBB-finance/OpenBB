@@ -1,8 +1,30 @@
 ---
+title: Charting
 sidebar_position: 3
+description: Learn about the charting feature of OpenBB Terminal Pro, powered by TradingView
+  charting library. The page provides instructions for adjusting time intervals and
+  timelines, using technical analysis indicators, and accessing editing tools. Learn
+  how to overlay charts in forex, crypto, equity, and macroeconomics. The page also
+  discusses overlay financials to understand the correlation between a company's financial
+  performance and its stock price.
+keywords:
+- Charting
+- TradingView charting library
+- financial analysis
+- technical analysis indicators
+- editing tools
+- overlay charts
+- forex
+- crypto
+- equity
+- macroeconomics
+- financial data
+- stock price
 ---
 
-# Charting
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Charting | OpenBB Terminal Pro Docs" />
 
 <img width="1791" alt="273497041-34665daf-a145-44c5-ab1e-285c34d29bda" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0044f3c9-c6ce-4880-8022-84be12fec05f" />
 

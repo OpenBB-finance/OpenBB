@@ -29,7 +29,7 @@ function shouldHideItem(item, productPath) {
 export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
-  const isPro = pathname.startsWith("/pro")
+  const isPro = pathname.startsWith("/pro");
 
   if (isIFrame) {
     const firstTwoPathSegments = pathname.split("/").slice(0, 3).join("/");
@@ -39,14 +39,10 @@ export default function DocSidebarItem({ item, ...props }) {
     }
   }
 
-  if(isPro) {
-    if(!item.href?.startsWith("/pro")) {
-      return null;
-    }
-  } else {
-    if(item.href?.startsWith("/pro")) {
-      return null;
-    }
+  if (isPro && !checkIfAnyChildIsPro(item)) {
+    return null;
+  } else if (!isPro && item.href?.startsWith("/pro")) {
+    return null;
   }
 
   switch (item.type) {
@@ -58,4 +54,20 @@ export default function DocSidebarItem({ item, ...props }) {
     default:
       return <DocSidebarItemLink item={item} {...props} />;
   }
+}
+
+function checkIfAnyChildIsPro(item) {
+  if (item.items) {
+    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+  }
+
+  if (item.type === "link") {
+    return item.href?.startsWith("/pro");
+  }
+
+  if (item.type === "category") {
+    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+  }
+
+  return false;
 }

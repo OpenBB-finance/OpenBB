@@ -1,8 +1,24 @@
 ---
-sidebar_position: 3
+title: Forecasting
+sidebar_position: 2
+description: Comprehensive documentation page about forecasting using OpenBB Terminal
+  Pro. Including out-of-the-box solutions such as Linear Regression and Nixtla's GPT.
+keywords:
+- forecasting
+- investment research
+- financial time series
+- financial model
+- Linear Regression
+- Nixtla's GPT
+- machine learning
+- time series
+- API key
 ---
 
-# Forecasting
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forecasting | OpenBB Terminal Pro Docs" />
+
 
 In the dynamic world of investment research, the ability to accurately model and forecast financial time series is a crucial skill. OpenBB Terminal Pro empowers you to do just that, right from our user-friendly interface. Simply select the time series you wish to model or forecast, choose your preferred model, and voila! A chart is generated, displaying your selected time series alongside the forecast or model you've chosen.
 

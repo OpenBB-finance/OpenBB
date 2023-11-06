@@ -1,8 +1,22 @@
 ---
-sidebar_position: 2
+title: Grouping Mechanism
+sidebar_position: 1
+description: Learn about the powerful grouping mechanism in OpenBB Terminal Pro. Understand
+  how widgets can be grouped based on equity categories and tickers, and also how
+  the watchlist widget's unique grouping property works.
+keywords:
+- Grouping
+- Widgets
+- Ticker
+- Symbol
+- Dashboard
+- Watchlist
+- Relationship
 ---
 
-# Grouping Mechanism
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Grouping | OpenBB Terminal Pro Docs" />
 
 The grouping mechanism is extremely powerful as it allows widgets to be grouped together through one of their parameters based on the category they belong to.
 

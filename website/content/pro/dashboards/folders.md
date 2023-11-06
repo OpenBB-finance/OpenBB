@@ -1,8 +1,21 @@
 ---
+title: Folders
 sidebar_position: 4
+description: This documentation page explains how to create and organize dashboards
+  and folders in OpenBB Terminal Pro. This is an essential step to arrange investment
+  research and manage the workspace efficiently.
+keywords:
+- Folder creation
+- Dashboard creation
+- Investment research
+- Dashboard organization
+- Dashboard settings
+- Move dashboard to folder
 ---
 
-# Folders
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Folders | OpenBB Terminal Pro Docs" />
 
 On the sidebar, users have a plus icon where they are able to create a new dashboard or folder.
 
