@@ -114,7 +114,9 @@ class NasdaqEconomicCalendarFetcher(
                     **{k: v for k, v in item.items() if k != "gmt"},
                     "date": f"{date} 00:00"
                     if item.get("gmt") == "All Day"
-                    else f"{date} {item.get('gmt', '')}".replace("Tentative", "00:00"),
+                    else f"{date} {item.get('gmt', '')}".replace(
+                        "Tentative", "00:00"
+                    ).replace("24H", "00:00"),
                 }
                 for item in response
             ]
