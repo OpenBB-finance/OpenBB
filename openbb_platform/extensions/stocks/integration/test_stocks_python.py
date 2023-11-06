@@ -393,6 +393,14 @@ def test_stocks_fa_ins_own(params, obb):
                 "provider": "intrinio",
             }
         ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-11-01",
+                "status": "priced",
+                "provider": "nasdaq",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
