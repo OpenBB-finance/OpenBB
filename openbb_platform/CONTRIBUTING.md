@@ -1,6 +1,8 @@
 
 # Contributing to the OpenBB Platform
 
+<!-- markdownlint-disable MD033 MD024 -->
+
 - [Contributing to the OpenBB Platform](#contributing-to-the-openbb-platform)
   - [Introduction](#introduction)
     - [Quick look into the OpenBB Platform](#quick-look-into-the-openbb-platform)
@@ -624,7 +626,7 @@ We can easily deduct that the `ema` command accept data in the formats of `List[
 
 ##### API Interface
 
-When using the OpenBB Platform on a API Interface, the types are a bit more limited than on the Python one, as, for example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means, i.e., any given data processing command, which are characterized as POST endpoints on the API, wil accept data as a list of records on the **request body**, i.e.:
+When using the OpenBB Platform on a API Interface, the types are a bit more limited than on the Python one, as, for example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means, i.e., any given data processing command, which are characterized as POST endpoints on the API, will accept data as a list of records on the **request body**, i.e.:
 
 ```json
 
