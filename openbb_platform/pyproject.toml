@@ -33,6 +33,7 @@ openbb-biztoc = { version = "^0.1.0a4", optional = true }
 openbb-cboe = { version = "^0.1.0a4", optional = true }
 openbb-nasdaq = { version = "^0.1.0a4", optional = true }
 openbb-quandl = { version = "^0.1.0a4", optional = true }
+openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
 openbb-yfinance = { version = "^0.1.0a4", optional = true }
 
 openbb-charting = { version = "^0.1.0a4", optional = true }
