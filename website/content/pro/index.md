@@ -1,5 +1,5 @@
 ---
-title: OpenBB Terminal Pro
+title: Overview
 sidebar_position: 0
 description: OpenBB Terminal Pro offers advanced investment research capabilities
   with powerful features like high-quality financial data, customizability, collaborative
