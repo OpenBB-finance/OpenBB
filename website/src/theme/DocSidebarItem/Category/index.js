@@ -1,5 +1,6 @@
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
+import { useLocation } from "@docusaurus/router";
 import {
   Collapsible,
   ThemeClassNames,
@@ -13,7 +14,6 @@ import {
   isSamePath,
   useDocSidebarItemsExpandedState,
 } from "@docusaurus/theme-common/internal";
-import { useLocation } from "@docusaurus/router";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
@@ -38,11 +38,11 @@ function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
  * see https://github.com/facebookincubator/infima/issues/36#issuecomment-772543188
  * see https://github.com/facebook/docusaurus/issues/3030
  */
-function useCategoryHrefWithSSRFallback(item) {
+function useCategoryHrefWithSSRFallback(item, href) {
   const isBrowser = useIsBrowser();
   return useMemo(() => {
-    if (item.href) {
-      return item.href;
+    if (href) {
+      return href
     }
     // In these cases, it's not necessary to render a fallback
     // We skip the "findFirstCategoryLink" computation
@@ -79,14 +79,15 @@ export default function DocSidebarItemCategory({
   ...props
 }) {
   const { items, label, collapsible, className, href } = item;
+  const newHref = label === "OpenBB Terminal" ? "/terminal" : label === "OpenBB Platform" ? "/platform" : label === "OpenBB Bot" ? "/bot" : label === "OpenBB Terminal Pro" ? "/pro" : href;
   const {
     docs: {
       sidebar: { autoCollapseCategories },
     },
   } = useThemeConfig();
-  const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item);
+  const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, newHref);
   const isActive = isActiveSidebarItem(item, activePath);
-  const isCurrentPage = isSamePath(href, activePath);
+  const isCurrentPage = isSamePath(newHref, activePath);
   const { collapsed, setCollapsed } = useCollapsible({
     // Active categories are always initialized as expanded. The default
     // (`item.collapsed`) is only used for non-active categories.
@@ -146,7 +147,7 @@ export default function DocSidebarItemCategory({
         <Link
           className={clsx("menu__link", {
             "menu__link--sublist": collapsible,
-            "menu__link--sublist-caret": !href && collapsible,
+            "menu__link--sublist-caret": !newHref && collapsible,
             "menu__link--active": isActive,
           })}
           onClick={
@@ -156,7 +157,7 @@ export default function DocSidebarItemCategory({
                   e.preventDefault();
                 }
                 onItemClick?.(item);
-                if (href) {
+                if (newHref) {
                   updateCollapsed(false);
                 } else {
                   e.preventDefault();
@@ -177,7 +178,7 @@ export default function DocSidebarItemCategory({
         >
           {label}
         </Link>
-        {href && collapsible && (
+        {newHref && collapsible && (
           <CollapseButton
             categoryLabel={label}
             onClick={(e) => {
