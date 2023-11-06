@@ -94,17 +94,13 @@ def test_stocks_fa_balance_growth(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
+        ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
+        ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "nasdaq"}),
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_cal(params, obb):
-    result = obb.stocks.fa.cal(**params)
+def test_stocks_calendar_dividend(params, obb):
+    result = obb.stocks.calendar_dividend(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -390,17 +386,27 @@ def test_stocks_fa_ins_own(params, obb):
     [
         (
             {
-                "symbol": "UBER",
-                "start_date": "2018-01-01",
+                "symbol": "",
+                "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-11-01",
+                "status": "priced",
+                "provider": "nasdaq",
+                "is_spo": False,
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_stocks_fa_ipo(params, obb):
-    result = obb.stocks.fa.ins_own(**params)
+def test_stocks_calendar_ipo(params, obb):
+    result = obb.stocks.calendar_ipo(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
