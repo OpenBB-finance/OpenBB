@@ -123,9 +123,9 @@ class NasdaqCalendarIpoFetcher(
         transformed_params = params
 
         if params.get("start_date") is None:
-            transformed_params["start_date"] = (
-                datetime.strptime(now, "%Y-%m-%d") - timedelta(days=300)
-            ).strftime("%Y-%m-%d")
+            transformed_params["start_date"] = datetime.strptime(
+                now, "%Y-%m-%d"
+            ) - timedelta(days=300)
         if params.get("end_date") is None:
             transformed_params["end_date"] = datetime.strptime(now, "%Y-%m-%d")
 
