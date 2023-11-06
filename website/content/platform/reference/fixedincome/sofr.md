@@ -1,12 +1,23 @@
 ---
 title: sofr
-description: OpenBB Platform Function
+description: This documentation page provides information about the Secured Overnight
+  Financing Rate (SOFR), along with details on how to fetch the data using different
+  parameters from the Fred provider.
+keywords:
+- Secured Overnight Financing Rate
+- SOFR
+- Treasury securities
+- Data retrieval
+- Fred provider
+- SOFR rate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fixedincome.sofr - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sofr
 
 Secured Overnight Financing Rate.
     The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
@@ -78,4 +89,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

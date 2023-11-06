@@ -1,12 +1,31 @@
 ---
 title: sonia
-description: OpenBB Platform Function
+description: This page provides details on SONIA (Sterling Overnight Index Average),
+  an interest rate benchmark based on the rates that banks pay to borrow sterling
+  overnight from other institutions. It includes Python code and parameters for obtaining
+  data related to SONIA.
+keywords:
+- SONIA
+- Sterling Overnight Index Average
+- interest rate benchmark
+- financial institutions
+- sterling overnight borrow
+- Python
+- parameters
+- start date
+- end date
+- provider
+- fred
+- data
+- SONIA rate
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fixedincome.sonia - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sonia
 
 Sterling Overnight Index Average.
     SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -79,4 +98,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

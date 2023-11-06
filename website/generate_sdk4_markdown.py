@@ -198,8 +198,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
 
             if param.name == "provider":
                 # pylint: disable=W0212
-                param_type = param._annotation
-                default = param._annotation.__args__[0].__args__[0]
+                param_type = param._annotation  # type: ignore
+                default = param._annotation.__args__[0].__args__[0]  # type: ignore
                 description = (
                     "The provider to use for the query, by default None. "
                     f"If None, the provider specified in defaults is selected or '{default}' if there is no default."
@@ -213,7 +213,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 optional = "True"
                 default = "False"
             else:
-                description = obb_query_fields[param.name].description
+                description = obb_query_fields[param.name].description  # type: ignore
 
                 param_type = param.annotation
 
@@ -278,7 +278,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 "doc": description,
             }
 
-        standard, provider_extras, provider_params = {}, {}, {}
+        standard, provider_extras, provider_params = {}, {}, {}  # type: ignore
 
         for provider_name, model_details in providers.items():
             data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
@@ -376,7 +376,7 @@ def generate_params_markdown_section(meta: Dict[str, Any]):
 def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
     description = meta["description"]
 
-    split_description = list(filter(None, description.split(".")))
+    split_description = list(filter(None, description.split(".")))  # type: ignore
     title = split_description[0]
     description = ".".join(split_description[1:]) if len(split_description) > 1 else ""
 
@@ -418,7 +418,7 @@ def generate_implementation_details_markdown_section(data_model: str) -> str:
     return markdown
 
 
-def generate_sdk_markdown() -> bool:
+def generate_sdk_markdown() -> None:
     """Generate markdown files for OpenBB FastAPI SDK Docusaurus website."""
     route_map = PathHandler.build_route_map()
     path_list = sorted(PathHandler.build_path_list(route_map=route_map))
@@ -489,7 +489,7 @@ import TabItem from '@theme/TabItem';
                 )
             )
             data_filepath.parent.mkdir(parents=True, exist_ok=True)
-            with open(data_filepath, "w", **kwargs) as f:
+            with open(data_filepath, "w", **kwargs) as f:  # type: ignore
                 f.write(data_markdown)
 
         reference_cards.setdefault(filepath.parent, []).append(
@@ -501,7 +501,7 @@ import TabItem from '@theme/TabItem';
         )
 
         filepath.parent.mkdir(parents=True, exist_ok=True)
-        with open(filepath, "w", **kwargs) as f:
+        with open(filepath, "w", **kwargs) as f:  # type: ignore
             f.write(markdown)
 
     reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
@@ -521,7 +521,7 @@ import TabItem from '@theme/TabItem';
         )
 
     with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
-        """Generate category json"""
+        # Generate category json
         f.write(json.dumps({"label": "Reference", "position": 5}, indent=2))
 
     def gen_category_json(fname: str, path: Path):

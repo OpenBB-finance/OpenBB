@@ -1,7 +1,28 @@
 ---
 title: Ameribor
-description: OpenBB Platform Data Model
+description: "This page provides essential details on the implementation, including\
+  \ class names, parameter terminology, import statements, and data types. \u0399\
+  t focuses especially on the AMERIBOR, AMERIBORQueryParams, and AMERIBORData. It\
+  \ also demonstrates the use of tabs for clean display of data parameters and types.\
+  \ Ideal for users needing to dig into the specifics of these classes or understand\
+  \ the AMERIBOR rate application."
+keywords:
+- AMERIBOR
+- AMERIBORQueryParams
+- AMERIBORData
+- openbb_provider
+- data class
+- parameters class
+- implementation details
+- tab integration
+- parameter types
+- data types
+- fred provider
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Ameribor - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -63,4 +84,3 @@ AMERIBORQueryParams,
 </TabItem>
 
 </Tabs>
-

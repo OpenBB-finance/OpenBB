@@ -1,12 +1,28 @@
 ---
 title: risk
-description: OpenBB Platform Function
+description: This page provides detailed information about the calculation of market
+  risk premium including its historical data. It includes parameters for provider
+  selection, returns comprising of results, provider name, warning lists, chart object,
+  and metadata. Also, it provides a data section explaining the country and continental
+  data and their respective risk premiums.
+keywords:
+- market risk premium
+- historical market risk premium
+- risk parameters
+- provider selection
+- warning list
+- chart object
+- continental data
+- country-specific risk premium
+- metadata information
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.risk - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# risk
 
 Market Risk Premium. Historical market risk premium.
 
@@ -66,4 +82,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

@@ -1,7 +1,39 @@
 ---
 title: Get the complete options chain for a ticker
-description: OpenBB Platform Data Model
+description: This documentation page details the implementation of OptionsChains,
+  including class names, import statements, parameters, and data. It explains various
+  aspects such as contract symbols, expiration dates, strike prices and more. This
+  resource is especially beneficial for users interested in options trading data and
+  how to query them using the openbb_provider python package.
+keywords:
+- OptionsChains
+- OptionsChainsQueryParams
+- OptionsChainsData
+- parameters
+- data
+- contract symbol
+- symbol
+- expiration date
+- strike price
+- call or put
+- class names
+- implementation details
+- python
+- openbb_provider
+- intrinio
+- date
+- provider
+- open interest
+- implied volatility
+- delta
+- gamma
+- theta
+- vega
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Get the complete options chain for a ticker - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -85,4 +117,3 @@ OptionsChainsQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -93,7 +93,7 @@ export default function Home(): JSX.Element {
             </Link>
           </div>
           <p className="z-20">
-            Looking for the marketing website?{" "}
+            Looking for our website?{" "}
             <a
               href="https://openbb.co"
               className="text-burgundy-300 !underline hover:text-burgundy-400 active:text-burgundy-500"

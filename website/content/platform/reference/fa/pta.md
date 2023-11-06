@@ -1,12 +1,30 @@
 ---
 title: pta
-description: OpenBB Platform Function
+description: This is documentation on how to obtain Price Target data using 'pta'.
+  This function allows querying by symbol and provider. It can return a variety of
+  fields including analyst information, news related to the target price, grades and
+  more. The data can be retrieved from a standard or 'fmp' provider option.
+keywords:
+- Price Target
+- pta
+- fmp
+- Price Target data
+- Python
+- Documentation
+- Parameters
+- Grading company
+- Analyst name
+- Analyst company
+- News URL
+- News Title
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.pta - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pta
 
 Price Target. Price target data.
 
@@ -103,4 +121,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

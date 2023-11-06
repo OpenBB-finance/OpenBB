@@ -1,12 +1,33 @@
 ---
 title: filings
-description: OpenBB Platform Function
+description: "This page provides information on how to query company filings data,\
+  \ including the parameters necessary for extraction. It details parameters and returned\
+  \ data for both standard and \u2018fmp\u2019 method types. Queries yield a variety\
+  \ of data including document type and URL, ticker symbol, CIK, accepted date, and\
+  \ final link of the SEC filing."
+keywords:
+- company filings
+- data parameters
+- data entries
+- query provider
+- SEC filing form
+- fmp
+- metadata
+- chart object
+- document type
+- document url
+- ticker symbol
+- CIK
+- accepted date
+- final link
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.filings - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# filings
 
 Company Filings. Company filings data.
 
@@ -91,4 +112,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

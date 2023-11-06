@@ -1,7 +1,28 @@
 ---
 title: Major Indices Constituents
-description: OpenBB Platform Data Model
+description: This documentation page provides details about the implementation of
+  MajorIndicesConstituents, including parameters and data classes. It describes how
+  to retrieve information about the companies listed on major indices.
+keywords:
+- implementation
+- major indices constituents
+- parameters
+- data
+- index
+- standard_models
+- sector
+- provider
+- constituent company
+- sub-sector
+- headquarter
+- date first added
+- central index key
+- founded
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Major Indices Constituents - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -58,4 +79,3 @@ MajorIndicesConstituentsQueryParams,
 </TabItem>
 
 </Tabs>
-

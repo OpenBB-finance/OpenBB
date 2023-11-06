@@ -1,7 +1,47 @@
 ---
 title: Key Metrics
-description: OpenBB Platform Data Model
+description: A documentation page for the OpenBB Provider KeyMetrics with class details,
+  parameters for both standard and fmp data, and the import statement. The classes
+  include KeyMetricsData and KeyMetricsQueryParams, and the metrics reported include
+  everything from basic revenue per share, net income per share, to more detailed
+  metrics like return on invested capital (ROIC), return on equity (ROE), and many
+  others.
+keywords:
+- OpenBB Provider
+- Key Metrics
+- KeyMetricsData
+- KeyMetricsQueryParams
+- Python
+- Docusaurus
+- Implementation Details
+- Parameters
+- Data
+- class names
+- import statement
+- Tabs
+- TabItem
+- standard
+- fmp
+- symbol
+- data
+- return
+- limit
+- provider
+- ttm
+- roic
+- return on invested capital
+- roe
+- return on equity
+- graham number
+- stock-based compensation to revenue
+- enterprise value to EBITDA
+- debt to equity ratio
+- net debt to EBITDA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Key Metrics - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -190,4 +230,3 @@ KeyMetricsQueryParams,
 </TabItem>
 
 </Tabs>
-
