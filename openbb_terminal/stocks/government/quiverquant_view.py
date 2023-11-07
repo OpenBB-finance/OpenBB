@@ -627,7 +627,7 @@ def display_hist_contracts(
         1: "03-31",
         2: "06-30",
         3: "09-30",
-        4: "12-12",
+        4: "12-31",
     }
     df_contracts["dates"] = (
         df_contracts["Year"].astype(str) + "-" + df_contracts["Qtr"].map(date_dict)
