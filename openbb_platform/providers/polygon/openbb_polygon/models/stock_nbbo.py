@@ -156,7 +156,7 @@ class PolygonStockNBBOFetcher(
         records = 0
 
         # Internal hard limit to prevent system overloads.
-        max = 10000000
+        max_ = 10000000
         if (
             query.timestamp
             or query.timestamp_gt
@@ -165,7 +165,7 @@ class PolygonStockNBBOFetcher(
             or query.timestamp_lte
             or query.limit >= 50000
         ):
-            max = query.limit if query.limit != 25 and query.limit < max else max
+            max_ = query.limit if query.limit != 25 and query.limit < max_ else max_
             query.limit = 50000
         results = []
         base_url = f"https://api.polygon.io/v3/quotes/{symbols[0]}"
@@ -185,7 +185,7 @@ class PolygonStockNBBOFetcher(
             and records == 50000
             and "next_url" in data
         ):
-            while records < max and "next_url" in data and data["next_url"]:
+            while records < max_ and "next_url" in data and data["next_url"]:
                 new_data = get_data_one(f"{data['next_url']}&apiKey={api_key}")
                 records += len(new_data["results"])
                 data = new_data
