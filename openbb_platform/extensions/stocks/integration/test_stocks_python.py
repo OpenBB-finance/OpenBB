@@ -635,7 +635,7 @@ def test_stocks_options_chains(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"source": "delayed", "provider": "intrinio"}),
+        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
         ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
     ],
 )
