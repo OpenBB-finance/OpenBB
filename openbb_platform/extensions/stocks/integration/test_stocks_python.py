@@ -1192,16 +1192,15 @@ def test_stocks_dps_otc(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({'symbol': 'AAPL'}),
-({'source': 'delayed', 'provider': 'intrinio', 'symbol': 'AAPL'})
+        ({"symbol": "AAPL"}),
+({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"})
     ],
 )
 @pytest.mark.integration
-def test_stocks_options_unusual(params, obb):
+def test_stocks_options_unusual2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.options.unusual(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    

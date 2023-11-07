@@ -1,5 +1,6 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.equity_short_interest import SecShortInterestFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
@@ -101,5 +102,14 @@ def test_sec_short_interest_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = SecShortInterestFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_cik_map_fetcher(credentials=test_credentials):
+    params = {"symbol": "OXY"}
+
+    fetcher = SecCikMapFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
