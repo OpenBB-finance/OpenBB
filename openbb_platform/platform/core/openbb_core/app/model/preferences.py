@@ -8,6 +8,7 @@ class Preferences(BaseModel):
     data_directory: str = str(Path.home() / "OpenBBUserData")
     export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
     user_styles_directory: str = str(Path.home() / "OpenBBUserData" / "styles" / "user")
+    cache_directory: str = str(Path.home() / "OpenBBUserData" / "cache")
     charting_extension: Literal["openbb_charting"] = "openbb_charting"
     chart_style: Literal["dark", "light"] = "dark"
     plot_enable_pywry: bool = True

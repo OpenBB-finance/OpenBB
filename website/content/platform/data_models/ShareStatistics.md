@@ -1,7 +1,22 @@
 ---
 title: Share Statistics
-description: OpenBB Platform Data Model
+description: This page provides detailed implementation methods for ShareStatistics.
+  It includes parameters and data involved, such as symbol, provider, date, and shares
+  data.
+keywords:
+- ShareStatistics
+- symbol
+- provider
+- date
+- free_float
+- float_shares
+- outstanding_shares
+- source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Share Statistics - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -56,4 +71,3 @@ ShareStatisticsQueryParams,
 </TabItem>
 
 </Tabs>
-

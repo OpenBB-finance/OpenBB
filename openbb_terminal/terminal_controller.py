@@ -607,7 +607,9 @@ class TerminalController(BaseController):
 
     def call_intro(self, _):
         """Process intro command."""
-        webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
+        webbrowser.open(
+            "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
+        )
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -830,7 +832,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             with contextlib.suppress(EOFError):
-                webbrowser.open("https://docs.openbb.co/terminal/usage/basics")
+                webbrowser.open(
+                    "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
+                )
 
         t_controller.print_help()
         check_for_updates()

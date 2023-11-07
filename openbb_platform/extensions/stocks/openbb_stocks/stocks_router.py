@@ -14,6 +14,10 @@ from openbb_core.app.router import Router
 from pydantic import BaseModel
 
 from openbb_stocks.ca.ca_router import router as ca_router
+from openbb_stocks.disc.disc_router import router as disc_router
+from openbb_stocks.fa.fa_router import router as fa_router
+from openbb_stocks.options.options_router import router as options_router
+
 
 # TODO: Uncomment once they have some commands.
 # from openbb_stocks.gov.gov_router import router as gov_router
@@ -26,6 +30,7 @@ router = Router(prefix="")
 router.include_router(fa_router)
 router.include_router(ca_router)
 router.include_router(options_router)
+router.include_router(disc_router)
 
 router.include_router(dps_router)
 # router.include_router(gov_router)
@@ -117,4 +122,15 @@ def calendar_ipo(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical IPO Calendar."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CalendarDividend")
+def calendar_dividend(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical Dividend Calendar."""
     return OBBject(results=Query(**locals()).execute())

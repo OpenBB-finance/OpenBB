@@ -1,7 +1,36 @@
 ---
 title: Major Indices Historical
-description: OpenBB Platform Data Model
+description: This is a documentation page for major indices historical data. It outlines
+  details on how to import and use the MajorIndicesHistoricalData and MajorIndicesHistoricalQueryParams
+  classes in Python, with detailed explanations on parameters and data.
+keywords:
+- major indices historical data
+- openbb provider
+- python
+- data class
+- parameters class
+- query parameters
+- symbol
+- start date
+- end date
+- provider
+- timeseries
+- interval
+- timespan
+- sort
+- limit
+- adjusted
+- multiplier
+- open price
+- close price
+- high price
+- low price
+- volume
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Major Indices Historical - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -116,4 +145,3 @@ MajorIndicesHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

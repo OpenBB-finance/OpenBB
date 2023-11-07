@@ -158,6 +158,7 @@ class RegistryMap:
 
     @staticmethod
     def validate_model(model: Any, type_: Literal["query_params", "data"]):
+        """Validate model."""
         parent_model = QueryParams if type_ == "query_params" else Data
         if not isclass(model) or not issubclass(model, parent_model):
             model_str = str(model).replace("<", "<'").replace(">", "'>")

@@ -496,10 +496,20 @@ def test_economy_gdpforecast(params, headers):
     [
         (
             {
+                "provider": "nasdaq",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
+                "country": "united_states,japan",
+            }
+        ),
+        (
+            {
                 "provider": "tradingeconomics",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "mexico,sweden",
+                "importance": "Low",
+                "group": "gdp",
             }
         ),
         (
@@ -514,7 +524,7 @@ def test_economy_calendar(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/econcal?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/economy/calendar?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -1,7 +1,27 @@
 ---
 title: Stock News
-description: OpenBB Platform Data Model
+description: This page provides a detailed overview of using the 'StockNewsData' and
+  'StockNewsQueryParams' classes in the OpenBB provider to fetch stock-related news.
+  It describes variable parameters, default values, and variations across different
+  news providers. It also outlines the data structure returned from each provider.
+keywords:
+- OpenBB provider
+- Stock News
+- Benzinga
+- FMP
+- Intrinio
+- Polygon
+- StockNewsData
+- StockNewsQueryParams
+- Metadata
+- SEO
+- news providers
+- stock market data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock News - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -152,4 +172,3 @@ StockNewsQueryParams,
 </TabItem>
 
 </Tabs>
-

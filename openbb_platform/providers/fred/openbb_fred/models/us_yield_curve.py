@@ -1,6 +1,5 @@
 """FRED US Yield Curve."""
 
-
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
@@ -35,6 +34,7 @@ class FREDYieldCurveFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDYieldCurveQueryParams:
+        """Transform query."""
         return FREDYieldCurveQueryParams(**params)
 
     @staticmethod
@@ -43,6 +43,7 @@ class FREDYieldCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> List[Dict]:
+        """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
         date = query.date
         if query.inflation_adjusted:
@@ -94,4 +95,5 @@ class FREDYieldCurveFetcher(
     def transform_data(
         query: FREDYieldCurveQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FREDYieldCurveData]:
+        """Transform data."""
         return [FREDYieldCurveData(**x) for x in data]

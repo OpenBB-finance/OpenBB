@@ -1,12 +1,50 @@
 ---
 title: multiples
-description: OpenBB Platform Function
+description: This page provides a detailed description of stock multiples and valuation
+  multiples for a stock ticker. It covers parameters for obtaining data, returns,
+  and data related to share values, share ratios, capitalization, earnings, debts,
+  and cash flows.
+keywords:
+- Stock Multiples
+- Valuation multiples
+- Stock ticker
+- Data Entries
+- Provider
+- FMP
+- Revenue Per Share
+- Net Income Per Share
+- Operating Cash Flow Per Share
+- Free Cash Flow Per Share
+- Cash Per Share
+- Book Value Per Share
+- Tangible Book Value Per Share
+- Shareholders Equity Per Share
+- Interest Debt Per Share
+- Market Cap
+- Enterprise Value
+- PE Ratio
+- Price to Sales Ratio
+- POCF Ratio
+- PFCF Ratio
+- PB Ratio
+- PTB Ratio
+- EV to Sales Ratio
+- Enterprise Value Over EBITDA Ratio
+- EV to Operating Cash Flow
+- EV to Free Cash Flow
+- Earnings Yield
+- Free Cash Flow Yield
+- Debt to Equity
+- Debt to Assets
+- Net Debt to EBITDA
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.multiples - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# multiples
 
 Stock Multiples. Valuation multiples for a stock ticker.
 
@@ -124,4 +162,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

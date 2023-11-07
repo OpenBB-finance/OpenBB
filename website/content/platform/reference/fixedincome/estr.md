@@ -1,12 +1,24 @@
 ---
 title: estr
-description: OpenBB Platform Function
+description: "Detailed documentation page about the Euro Short-Term Rate (\u20ACSTR)\
+  \ function, including its parameters, return values, and data structure."
+keywords:
+- Euro Short-Term Rate
+- "\u20ACSTR"
+- finance
+- economic data
+- SEO
+- metadata
+- functions
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fixedincome.estr - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# estr
 
 Euro Short-Term Rate.
     The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -80,4 +92,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

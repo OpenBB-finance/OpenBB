@@ -1,12 +1,29 @@
 ---
 title: income_growth
-description: OpenBB Platform Function
+description: Documentation covering the income_growth function which is responsible
+  for generating and understanding of a company's income statement growth over time.
+  It includes parameters to filter data entries by provider, period or data limit
+  and returns information such as growth rate of total revenue, cost of goods, gross
+  profit, operating expenses, net income, and more.
+keywords:
+- income_growth
+- income statement growth
+- company financial growth
+- financial data
+- financial metrics
+- income statement data
+- financial measurements
+- financial performance
+- financial analysis
+- income growth analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.income_growth - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# income_growth
 
 Income Statement Growth. Information about the growth of the company income statement.
 
@@ -94,4 +111,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

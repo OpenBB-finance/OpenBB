@@ -6,21 +6,19 @@
 | ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png) |
 | Check our website at [openbb.co](www.openbb.co) |
 
-
 ## OpenBB Platform Overview
 
 The OpenBB Platform provides a convenient way to access raw financial data from multiple data providers. The package comes with a ready to use REST API - this allows developers from any language to easily create applications on top of OpenBB Platform.
-
 
 ## Installation
 
 The command below provides access to the core functionalities behind the OpenBB Platform.
 
 ```bash
-pip install openbb==4.0.0a4
+pip install openbb --pre
 ```
 
-> Note that the version `4.0.0a4` is an example and you should replace it with the latest version available.
+> The `--pre` flag is required to install the latest alpha version.
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 

@@ -3,6 +3,7 @@
 
 from openbb_provider.abstract.provider import Provider
 from openbb_yfinance.models.active import YFActiveFetcher
+from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
@@ -12,6 +13,7 @@ from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetch
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
+from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.major_indices_historical import (
@@ -19,6 +21,10 @@ from openbb_yfinance.models.major_indices_historical import (
 )
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
+from openbb_yfinance.models.undervalued_growth_equities import (
+    YFUndervaluedGrowthEquitiesFetcher,
+)
+from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCapsFetcher
 
 yfinance_provider = Provider(
     name="yfinance",
@@ -42,5 +48,9 @@ yfinance_provider = Provider(
         "EquityActive": YFActiveFetcher,
         "EquityGainers": YFGainersFetcher,
         "EquityLosers": YFLosersFetcher,
+        "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
+        "EquityUndervaluedGrowthEquities": YFUndervaluedGrowthEquitiesFetcher,
+        "EquityAggressiveSmallCaps": YFAggressiveSmallCapsFetcher,
+        "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
     },
 )
