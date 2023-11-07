@@ -669,12 +669,13 @@ def display_hist_contracts(
     )
 
     if raw:
-        df = df_contracts.drop(columns=["dates"])
+        df = df_contracts.drop(columns=["dates"]).astype(str)
         return print_rich_table(
             df,
             headers=list(df.columns),
             title="Historical Quarterly Government Contracts",
             export=bool(export),
+            columns_keep_types=["Year"],
         )
 
     return fig.show(external=external_axes)
