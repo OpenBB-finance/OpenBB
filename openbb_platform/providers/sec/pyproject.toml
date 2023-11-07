@@ -12,6 +12,7 @@ openbb-core = "^0.1.0a5"
 openbb-regulators="^0.1.0a4"
 requests-cache = "^1.1.0"
 xmltodict = "^0.13.0"
+pytest-freezegun = "^0.4.2"
 
 [build-system]
 requires = ["poetry-core"]

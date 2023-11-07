@@ -265,12 +265,12 @@ interactions:
         \       <meta http-equiv=\"refresh\" content=\"0;url='https://www.sec.gov/litigation/litreleases/rss'\"
         />\n\n        <title>Redirecting to https://www.sec.gov/litigation/litreleases/rss</title>\n
         \   </head>\n    <body>\n        Redirecting to <a href=\"https://www.sec.gov/litigation/litreleases/rss\">https://www.sec.gov/litigation/litreleases/rss</a>.\n
-        \   <script type=\"text/javascript\">window.NREUM||(NREUM={});NREUM.info={\"beacon\":\"bam.nr-data.net\",\"licenseKey\":\"32edb8f179\",\"applicationID\":\"436723953\",\"transactionName\":\"ZQZSMBQEXxZZARJeXlxMcQcSDF4LFxIHUFRtAFEHDgA=\",\"queueTime\":2,\"applicationTime\":50,\"atts\":\"SUFRRlweTBg=\",\"errorBeacon\":\"bam.nr-data.net\",\"agent\":\"\"}</script></body>\n</html>"
+        \   <script type=\"text/javascript\">window.NREUM||(NREUM={});NREUM.info={\"beacon\":\"bam.nr-data.net\",\"licenseKey\":\"32edb8f179\",\"applicationID\":\"436723953\",\"transactionName\":\"ZQZSMBQEXxZZARJeXlxMcQcSDF4LFxIHUFRtAFEHDgA=\",\"queueTime\":2,\"applicationTime\":31,\"atts\":\"SUFRRlweTBg=\",\"errorBeacon\":\"bam.nr-data.net\",\"agent\":\"\"}</script></body>\n</html>"
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=56
+      - public, max-age=42
       Connection:
       - keep-alive
       Content-Language:
@@ -282,7 +282,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Thu, 02 Nov 2023 20:14:59 GMT
+      - Tue, 07 Nov 2023 20:35:36 GMT
       Location:
       - https://www.sec.gov/litigation/litreleases/rss
       Referrer-Policy:
@@ -294,9 +294,9 @@ interactions:
       X-AH-Environment:
       - prod
       X-Age:
-      - '287'
+      - '507'
       X-Cache-Hits:
-      - '34'
+      - '49'
       X-Content-Type-Options:
       - nosniff
       X-Drupal-Cache:
@@ -306,7 +306,7 @@ interactions:
       X-Redirect-ID:
       - '165886'
       X-Request-ID:
-      - v-d41037aa-79bb-11ee-bbc0-870279a989da
+      - v-ffc5ef68-7dab-11ee-99a4-0317beb09de0
       X-UA-Compatible:
       - IE=edge
       X-Xss-Protection:
@@ -329,155 +329,83 @@ interactions:
     uri: https://www.sec.gov/litigation/litreleases/rss
   response:
     body:
-      string: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<rss xmlns:dc=\"http://purl.org/dc/elements/1.1/\"
-        version=\"2.0\" xml:base=\"https://www.sec.gov/\">\n  <channel>\n    <title>Litigation
-        Releases</title>\n    <link>https://www.sec.gov/</link>\n    <description>The
-        latest Litigation Releases from the Securities and Exchange Commission</description>\n
-        \   <language>en</language>\n    \n    \n<item>\n  <title>John Hughes</title>\n
-        \ <link>https://www.sec.gov/node/932766\n</link>\n  <description>John Hughes</description>\n
-        \ <pubDate>Thu, 02 Nov 2023 15:52:00 -0400</pubDate>\n    <dc:creator>LR-25889</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/59a47b3d-d3a9-4039-825e-69dfb370f74d</guid>\n
-        \   </item>\n\n<item>\n  <title>SafeMoon LLC, SafeMoon US LLC, Kyle Nagy,
-        Braden John Karony, Thomas Glenn Smith</title>\n  <link>https://www.sec.gov/node/932641\n</link>\n
-        \ <description>SafeMoon LLC, SafeMoon US LLC, Kyle Nagy, Braden John Karony,
-        Thomas Glenn Smith</description>\n  <pubDate>Wed, 01 Nov 2023 17:03:23 -0400</pubDate>\n
-        \   <dc:creator>LR-25888</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/36864a95-05ff-4717-ba1e-e90eef7a3ce7</guid>\n
-        \   </item>\n\n<item>\n  <title>SolarWinds Corporation and Timothy G. Brown</title>\n
-        \ <link>https://www.sec.gov/node/932496\n</link>\n  <description>SolarWinds
-        Corporation and Timothy G. Brown</description>\n  <pubDate>Tue, 31 Oct 2023
-        16:45:28 -0400</pubDate>\n    <dc:creator>LR-25887</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/e830df79-57ee-48b4-aa6e-6a7549e4faa4</guid>\n
-        \   </item>\n\n<item>\n  <title>Bruce Schoengood, Medifirst Solutions, Inc.,
-        and Joshua Tyrell</title>\n  <link>https://www.sec.gov/node/932246\n</link>\n
-        \ <description>Bruce Schoengood, Medifirst Solutions, Inc., and Joshua Tyrell</description>\n
-        \ <pubDate>Fri, 27 Oct 2023 16:01:39 -0400</pubDate>\n    <dc:creator>LR-25886</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/5c19e44f-3d0d-44a7-a9bd-2a2c65a559b4</guid>\n
-        \   </item>\n\n<item>\n  <title>Julie Anne Darrah, et al.,</title>\n  <link>https://www.sec.gov/node/931961\n</link>\n
-        \ <description>Julie Anne Darrah, et al., </description>\n  <pubDate>Wed,
-        25 Oct 2023 13:00:00 -0400</pubDate>\n    <dc:creator>LR-25885</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/5ec4d014-a5eb-4cd5-a93d-a65830f7a2ae</guid>\n
-        \   </item>\n\n<item>\n  <title>Thor Technologies, Inc. and David Chin</title>\n
-        \ <link>https://www.sec.gov/node/931541\n</link>\n  <description>Thor Technologies,
-        Inc. and David Chin</description>\n  <pubDate>Thu, 19 Oct 2023 16:40:29 -0400</pubDate>\n
-        \   <dc:creator>LR-25884</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/df33987d-0490-4622-a691-7077d0ac9cd5</guid>\n
-        \   </item>\n\n<item>\n  <title>Harmel S. Rayat, RenovaCare, Inc., Jatinder
-        Bhogal, Jeetenderjit Singh Sidhu, and Sharon Fleming</title>\n  <link>https://www.sec.gov/node/931351\n</link>\n
-        \ <description>Harmel S. Rayat, RenovaCare, Inc., Jatinder Bhogal, Jeetenderjit
-        Singh Sidhu, and Sharon Fleming</description>\n  <pubDate>Wed, 18 Oct 2023
-        11:06:58 -0400</pubDate>\n    <dc:creator>LR-25883</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/70b9d1c8-7370-446e-a11f-30dfa5eba401</guid>\n
-        \   </item>\n\n<item>\n  <title>Brian Marc Rubin</title>\n  <link>https://www.sec.gov/node/931231\n</link>\n
-        \ <description>Brian Marc Rubin</description>\n  <pubDate>Tue, 17 Oct 2023
-        13:56:00 -0400</pubDate>\n    <dc:creator>LR-25882</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/02d600c7-4f48-467b-bd19-0ea4c878c434</guid>\n
-        \   </item>\n\n<item>\n  <title>Frederick L. Sharp et al.,</title>\n  <link>https://www.sec.gov/node/930831\n</link>\n
-        \ <description>Frederick L. Sharp et al., </description>\n  <pubDate>Fri,
-        13 Oct 2023 14:57:11 -0400</pubDate>\n    <dc:creator>LR-25881</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/b444f4de-9fa8-45db-993b-2c82bcaa65ab</guid>\n
-        \   </item>\n\n<item>\n  <title>Elon R. Musk</title>\n  <link>https://www.sec.gov/node/929881\n</link>\n
-        \ <description>Elon R. Musk</description>\n  <pubDate>Thu, 05 Oct 2023 15:19:42
-        -0400</pubDate>\n    <dc:creator>LR-25880</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/0dadad7e-f7cb-4c30-a0b3-516e7260f3ee</guid>\n
-        \   </item>\n\n<item>\n  <title>Matthew M. Motil, et al.</title>\n  <link>https://www.sec.gov/node/929766\n</link>\n
-        \ <description>Matthew M. Motil, et al.</description>\n  <pubDate>Wed, 04
-        Oct 2023 16:53:14 -0400</pubDate>\n    <dc:creator>LR-25879</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/227a07d5-f015-47b3-900a-aaa9628bdac5</guid>\n
-        \   </item>\n\n<item>\n  <title>Zera Financial LLC</title>\n  <link>https://www.sec.gov/node/929681\n</link>\n
-        \ <description>Zera Financial LLC</description>\n  <pubDate>Tue, 03 Oct 2023
-        13:36:30 -0400</pubDate>\n    <dc:creator>LR-25878</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/9d4b34ee-704c-4e4a-9d51-754a9580e4e2</guid>\n
-        \   </item>\n\n<item>\n  <title>Shannon Westhead, et al.; \nABFP Income Fund
-        Parallel, LLC, et al.</title>\n  <link>https://www.sec.gov/node/929606\n</link>\n
-        \ <description>Shannon Westhead, et al.; &lt;br /&gt;\nABFP Income Fund Parallel,
-        LLC, et al.&lt;br /&gt;</description>\n  <pubDate>Mon, 02 Oct 2023 11:26:24
-        -0400</pubDate>\n    <dc:creator>LR-25877</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/3de37445-7455-4b77-a2d4-b62e83a7d66c</guid>\n
-        \   </item>\n\n<item>\n  <title>Nano-x Imaging Ltd. and Ran Poliakine</title>\n
-        \ <link>https://www.sec.gov/node/929571\n</link>\n  <description>Nano-x Imaging
-        Ltd. and Ran Poliakine</description>\n  <pubDate>Fri, 29 Sep 2023 17:26:02
-        -0400</pubDate>\n    <dc:creator>LR-25876</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/af18526a-e3fe-47d4-ad50-bb88666ead48</guid>\n
-        \   </item>\n\n<item>\n  <title>Christofer Shurian; Utah Regional Investment
-        Fund LLC; CCS of Utah, Inc.</title>\n  <link>https://www.sec.gov/node/929561\n</link>\n
-        \ <description>Christofer Shurian; Utah Regional Investment Fund LLC; CCS
-        of Utah, Inc.</description>\n  <pubDate>Fri, 29 Sep 2023 16:44:39 -0400</pubDate>\n
-        \   <dc:creator>LR-25875</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/4107a3b3-82a3-41dc-a0fb-9193233aded3</guid>\n
-        \   </item>\n\n<item>\n  <title>Steven J. Jacobson; Advisor Resource Council</title>\n
-        \ <link>https://www.sec.gov/node/929556\n</link>\n  <description>Steven J.
-        Jacobson; Advisor Resource Council</description>\n  <pubDate>Fri, 29 Sep 2023
-        16:34:26 -0400</pubDate>\n    <dc:creator>LR-25874</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/e35725b5-1ccc-473e-8085-dcd657d8f9b6</guid>\n
-        \   </item>\n\n<item>\n  <title>Stephone N. Patton, Star Oil and Gas Company,
-        Inc., et al.</title>\n  <link>https://www.sec.gov/node/929496\n</link>\n  <description>Stephone
-        N. Patton, Star Oil and Gas Company, Inc., et al.</description>\n  <pubDate>Fri,
-        29 Sep 2023 15:03:29 -0400</pubDate>\n    <dc:creator>LR-25873</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/db627885-db6e-4fa2-8757-84909a6d839e</guid>\n
-        \   </item>\n\n<item>\n  <title>Adam R. Long; L2 Capital, LLC; Oasis Capital
-        LLC</title>\n  <link>https://www.sec.gov/node/929491\n</link>\n  <description>Adam
-        R. Long; L2 Capital, LLC; Oasis Capital LLC</description>\n  <pubDate>Fri,
-        29 Sep 2023 14:37:50 -0400</pubDate>\n    <dc:creator>LR-25872</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/5016bf1d-50b1-4c12-bcae-155bfe9f149c</guid>\n
-        \   </item>\n\n<item>\n  <title>John Feloni and Stock Squirrel, Inc.</title>\n
-        \ <link>https://www.sec.gov/node/929486\n</link>\n  <description>John Feloni
-        and Stock Squirrel, Inc.</description>\n  <pubDate>Fri, 29 Sep 2023 14:36:14
-        -0400</pubDate>\n    <dc:creator>LR-25871</dc:creator>\n    <guid isPermaLink=\"true\">https://www.sec.gov/cc661930-0889-40a4-9eb0-db1a95debb15</guid>\n
-        \   </item>\n\n<item>\n  <title>Luther C. Speight, III and Luther Speight
-        &amp; Company, LLC</title>\n  <link>https://www.sec.gov/node/929471\n</link>\n
-        \ <description>Luther C. Speight, III and Luther Speight &amp; Company, LLC</description>\n
-        \ <pubDate>Fri, 29 Sep 2023 14:24:14 -0400</pubDate>\n    <dc:creator>LR-25870</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/ef494071-bd90-4e01-b7a0-7845f34130a4</guid>\n
-        \   </item>\n\n<item>\n  <title>Third Friday Management, LLC and Michael E.
-        Lewitt</title>\n  <link>https://www.sec.gov/node/929456\n</link>\n  <description>Third
-        Friday Management, LLC and Michael E. Lewitt </description>\n  <pubDate>Fri,
-        29 Sep 2023 14:19:13 -0400</pubDate>\n    <dc:creator>LR-25869</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/8ae32267-af85-4ac4-ae94-8e4751e5d0d5</guid>\n
-        \   </item>\n\n<item>\n  <title>Prager Metis CPAs, LLC, and Prager Metis CPAs
-        LLP</title>\n  <link>https://www.sec.gov/node/929211\n</link>\n  <description>Prager
-        Metis CPAs, LLC, and Prager Metis CPAs LLP</description>\n  <pubDate>Fri,
-        29 Sep 2023 11:35:29 -0400</pubDate>\n    <dc:creator>LR-25868</dc:creator>\n
-        \   <guid isPermaLink=\"true\">https://www.sec.gov/86c3fdb9-daa8-4dcb-abf9-cb7389e4d2d3</guid>\n
-        \   </item>\n\n<item>\n  <title>Bin Hao and Qidian LLC</title>\n  <link>https://www.sec.gov/node/929166\n</link>\n
-        \ <description>Bin Hao and Qidian LLC</description>\n  <pubDate>Fri, 29 Sep
-        2023 11:02:12 -0400</pubDate>\n    <dc:creator>LR-25867</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/938a55fc-fb67-434d-b2fd-252d2c49fba8</guid>\n
-        \   </item>\n\n<item>\n  <title>Anne Pramaggiore</title>\n  <link>https://www.sec.gov/node/928756\n</link>\n
-        \ <description>Anne Pramaggiore</description>\n  <pubDate>Thu, 28 Sep 2023
-        17:36:37 -0400</pubDate>\n    <dc:creator>LR-25866</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/97af9f38-9df9-42d7-a074-d4edf2c350fa</guid>\n
-        \   </item>\n\n<item>\n  <title>Arline E. Woodbury and Joyce L. Holverson</title>\n
-        \ <link>https://www.sec.gov/node/928736\n</link>\n  <description>Arline E.
-        Woodbury and Joyce L. Holverson</description>\n  <pubDate>Thu, 28 Sep 2023
-        17:27:39 -0400</pubDate>\n    <dc:creator>LR-25865</dc:creator>\n    <guid
-        isPermaLink=\"true\">https://www.sec.gov/3a03d856-d4f8-47c3-8ef7-6843cda29ef9</guid>\n
-        \   </item>\n\n  </channel>\n</rss>\n"
+      string: !!binary |
+        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
     headers:
       Accept-Ranges:
       - bytes
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=15
+      - public, max-age=27
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Language:
       - en
       Content-Length:
-      - '10015'
+      - '2310'
       Content-Security-Policy:
       - frame-ancestors 'self'
       Content-Type:
       - application/rss+xml; charset=utf-8
       Date:
-      - Thu, 02 Nov 2023 20:14:59 GMT
+      - Tue, 07 Nov 2023 20:35:36 GMT
       ETag:
-      - '"1698955937"'
+      - '"1699389198"'
       Expires:
-      - Thu, 02 Nov 2023 20:15:14 GMT
+      - Tue, 07 Nov 2023 20:36:03 GMT
       Last-Modified:
-      - Thu, 02 Nov 2023 20:12:17 GMT
+      - Tue, 07 Nov 2023 20:33:18 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
       - nginx
       Strict-Transport-Security:
       - max-age=31536000 ; includeSubDomains ; preload
+      Vary:
+      - Accept-Encoding
       X-AH-Environment:
       - prod
       X-Age:
@@ -491,7 +419,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-ID:
-      - v-1ea79614-79bc-11ee-b828-3b4bb6377a3d
+      - v-e2a2d2e2-7dac-11ee-a78b-eb9559644942
       X-UA-Compatible:
       - IE=edge
       X-Xss-Protection:
