@@ -29,7 +29,10 @@ class ShortVolumeData(Data):
 
     short_volume: Optional[int] = Field(
         default=None,
-        description="Aggregate reported share volume of executed short sale and short sale exempt trades during regular trading hours",
+        description=(
+            "Aggregate reported share volume of executed short sale "
+            "and short sale exempt trades during regular trading hours"
+        ),
     )
 
     short_exempt_volume: Optional[int] = Field(

@@ -16,7 +16,11 @@ class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
 
     tier: Literal["T1", "T2", "OTCE"] = Field(
         default="T1",
-        desciption="T1 - Securities included in the S&P 500, Russell 1000 and selected exchange-traded products; T2 - All other NMS stocks; OTC - Over-the-Counter equity securities",
+        description=(
+            "T1 - Securities included in the S&P 500, Russell 1000 and selected "
+            "exchange-traded products; T2 - All other NMS stocks;"
+            "OTC - Over-the-Counter equity securities",
+        ),
     )
     is_ats: bool = Field(
         default=True, description="ATS data if true, NON-ATS otherwise"

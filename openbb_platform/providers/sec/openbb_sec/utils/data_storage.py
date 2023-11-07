@@ -37,8 +37,8 @@ def get_data_from_date_and_store(date):
     url = f"https://cdn.finra.org/equity/otcmarket/biweekly/shrt{date}.csv"
     # add a random string to user agent to avoid getting blocked
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537."
-        + str(random.randint(0, 9))
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        + str(random.randint(0, 9))  # noqa: S311
     }
     req = requests.get(url, headers=headers, timeout=1)
     if req.status_code != 200:
