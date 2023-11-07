@@ -437,7 +437,6 @@ def display_contracts(
 
     if df_contracts.empty:
         return
-    df_contracts.sort_values("Date", ascending=True)
     if raw:
         print_rich_table(
             df_contracts,
