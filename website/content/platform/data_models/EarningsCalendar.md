@@ -1,7 +1,24 @@
 ---
 title: Earnings Calendar
-description: OpenBB Platform Data Model
+description: This page provides detailed implementation of a financial Earnings Calendar
+  using the OpenBB Provider in Python. It covers model names, import statements, standard
+  parameters, and data types including EPS, revenue, and fiscal dates.
+keywords:
+- Earnings Calendar
+- OpenBB Provider
+- Data Models
+- Query Parameters
+- Estimated Earnings
+- Revenue
+- EPS
+- Fiscal Date
+- Python
+- Coding
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Earnings Calendar - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -60,4 +77,3 @@ EarningsCalendarQueryParams,
 </TabItem>
 
 </Tabs>
-

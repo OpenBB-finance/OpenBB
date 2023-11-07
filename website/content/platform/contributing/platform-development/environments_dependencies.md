@@ -1,13 +1,31 @@
 ---
 title: Setup your development environment
 sidebar_position: 2
-description: Learn how to setup your development environment for the OpenBB Platform.
-keywords: [openbb platform, introduction, environment, setup, contributing, documentation]
+description: Detailed instructions on setting up the development environment for contributing
+  to the OpenBB Platform. This includes sections on setting up Miniconda, Git, cloning
+  the repository, creating a virtual environment, managing the environment with Poetry,
+  installing packages, and setting up API keys.
+keywords:
+- OpenBB Platform contribution
+- environment setup
+- Miniconda
+- Git
+- repository clone
+- virtual environment
+- python versions
+- Poetry
+- packages installation
+- API keys setup
+- OpenBB Hub
+- Python interface
+- API Keys
 ---
+
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Environment Setup - Platform | OpenBB Docs" />
+<HeadTitle title="Setup your development environment - Platform Development - Contributing | OpenBB Platform Docs" />
 
 In order to contribute to the OpenBB Platform, you need to setup your environment to ensure a smooth development experience.
 
@@ -50,6 +68,7 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
 
 5. Setup your API keys locally by adding them to the `~/.openbb_platform/user_settings.json` file. Populate this file with the following template and replace the values with your keys:
 
+  <!-- pragma: allowlist secret -->
   ```json
   {
     "credentials": {
@@ -61,4 +80,4 @@ Please refer to [OpenBBTerminal docs](https://docs.openbb.co/terminal/installati
   }
   ```
 
-  > You can also setup and use your keys from the OpenBB Hub and the Python interface at runtime. Follow the steps in [API Keys](./README.md#api-keys) section to know more about it.
+  > You can also setup and use your keys from the OpenBB Hub. Follow the instructions on [API Keys](https://my.openbb.co/app/sdk/api-keys)) page to know more about it.

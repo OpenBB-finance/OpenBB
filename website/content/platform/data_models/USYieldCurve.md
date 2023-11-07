@@ -1,7 +1,32 @@
 ---
 title: US Yield Curve
-description: OpenBB Platform Data Model
+description: This page provides detailed implementation information for the USYieldCurve
+  model, including parameters, data class, and import statements. It primarily explores
+  the use of the 'fred' provider, the maturity and rate of the treasury, and getting
+  inflation-adjusted rates.
+keywords:
+- USYieldCurve
+- USYieldCurveData
+- USYieldCurveQueryParams
+- Parameters
+- Data
+- fred
+- inflation adjusted rates
+- maturity
+- treasury rate
+- maturity of the treasury rate
+- associated rate
+- Implementation details
+- model name
+- parameters class
+- data class
+- import statement
+- Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="US Yield Curve - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -53,4 +78,3 @@ USYieldCurveQueryParams,
 </TabItem>
 
 </Tabs>
-

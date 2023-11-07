@@ -1,12 +1,28 @@
 ---
 title: fred_index
-description: OpenBB Platform Function
+description: Documentation about Fred Historical function, a feature to retrieve historical
+  close values for selected Fred indices. The page contains detailed parameters description
+  and data structure including the provider, date range, limit, and symbol for data
+  retrieval.
+keywords:
+- Fred Historical
+- Fred indices
+- Data retrieval
+- Data API
+- start_date
+- end_date
+- limit
+- provider
+- intrinio
+- symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.fred_index - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# fred_index
 
 Fred Historical. Historical close values for selected Fred indices.
 
@@ -81,4 +97,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

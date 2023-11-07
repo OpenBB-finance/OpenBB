@@ -1,7 +1,30 @@
 ---
 title: Balance Sheet
-description: OpenBB Platform Data Model
+description: This page provides comprehensive details on parameters and data for balance
+  sheets. It includes import statements, class names, and specific figures required
+  for data fetching from financial data providers 'standard', 'fmp', 'intrinio', and
+  'polygon'.
+keywords:
+- balance sheet
+- financial data
+- OpenBB provider
+- standard models
+- Python
+- financial data fetching
+- data provider
+- financial statement
+- import statement
+- class names
+- parameters
+- data
+- fmp
+- intrinio
+- polygon
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Balance Sheet - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -210,4 +233,3 @@ BalanceSheetQueryParams,
 </TabItem>
 
 </Tabs>
-

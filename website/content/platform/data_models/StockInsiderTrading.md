@@ -1,7 +1,31 @@
 ---
 title: Stock Insider Trading
-description: OpenBB Platform Data Model
+description: This page provides in-depth details about Stock Insider Trading including
+  data classes, parameters and structure. The content is a part of the official documentation
+  for the OpenBB Provider Standard Models.
+keywords:
+- Docusaurus
+- SEO
+- Metadata
+- Stock Insider Trading
+- StockInsiderTradingData
+- StockInsiderTradingQueryParams
+- Symbol
+- Transaction Type
+- Filing Date
+- Reporting CIK
+- Securities Owned
+- Type of Owner
+- Acquisition or Disposition
+- Securities Transacted
+- Security Name
+- Price
+- Link
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Insider Trading - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -67,4 +91,3 @@ StockInsiderTradingQueryParams,
 </TabItem>
 
 </Tabs>
-

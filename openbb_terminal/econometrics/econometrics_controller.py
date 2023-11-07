@@ -458,7 +458,15 @@ class EconometricsController(BaseController):
             type=str,
         )
 
-        parser.add_argument(
+        export_group = parser.add_mutually_exclusive_group(required=False)
+        export_group.add_argument(
+            "-f",
+            "--file",
+            dest="file",
+            help="The name of the file you wish to export to",
+            type=str,
+        )
+        export_group.add_argument(
             "-t",
             "--type",
             help="The file type you wish to export to",
@@ -471,7 +479,7 @@ class EconometricsController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=NO_EXPORT
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
@@ -479,10 +487,13 @@ class EconometricsController(BaseController):
                 console.print("Please enter a valid dataset.")
             else:
                 export_data(
-                    ns_parser.type,
+                    ns_parser.file if ns_parser.file else ns_parser.type,
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
                 )
 
         console.print()
