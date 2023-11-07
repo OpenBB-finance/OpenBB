@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_one
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.recent_performance import (
     RecentPerformanceData,
@@ -54,7 +54,7 @@ class FMPPricePerformanceFetcher(
         query: FMPPricePerformanceQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
@@ -64,14 +64,13 @@ class FMPPricePerformanceFetcher(
             api_key=api_key,
             exclude=["symbol"],
         )
-        return get_data_one(url, **kwargs)
+        return get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
         query: FMPPricePerformanceQueryParams,
-        data: Dict,
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[FMPPricePerformanceData]:
         """Return the transformed data."""
-        data = data if 0 in data else {0: data}
-        return [FMPPricePerformanceData.model_validate(data[i]) for i in data]
+        return [FMPPricePerformanceData.model_validate(i) for i in data]
