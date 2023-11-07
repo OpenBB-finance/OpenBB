@@ -18,6 +18,7 @@ class StockNBBOQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -27,3 +28,26 @@ class StockNBBOQueryParams(QueryParams):
 
 class StockNBBOData(Data):
     """Stock NBBO data."""
+
+    ask_exchange: str = Field(
+        description="The exchange ID for the ask.",
+    )
+    ask: float = Field(
+        description="The last ask price.",
+    )
+    ask_size: int = Field(
+        description="""
+        The ask size. This represents the number of round lot orders at the given ask price.
+        The normal round lot size is 100 shares.
+        An ask size of 2 means there are 200 shares available to purchase at the given ask price.
+        """,
+    )
+    bid_size: int = Field(
+        description="The bid size in round lots.",
+    )
+    bid: float = Field(
+        description="The last bid price.",
+    )
+    bid_exchange: str = Field(
+        description="The exchange ID for the bid.",
+    )

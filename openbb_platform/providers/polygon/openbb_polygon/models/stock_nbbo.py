@@ -1,6 +1,6 @@
 """Polygon Stock NBBO Model."""
 
-from datetime import datetime
+from datetime import timezone, datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_polygon.utils.helpers import get_data_one, map_exchanges, map_tape
@@ -11,12 +11,14 @@ from openbb_provider.standard_models.stock_nbbo import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
 class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
-    """Polygon Stock NBBO query params."""
+    """Polygon Stock NBBO query params.
+
+    Source: https://polygon.io/docs/stocks/get_v3_quotes__stockticker
+    """
 
     limit: Optional[int] = Field(
         default=25,
@@ -29,28 +31,28 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
             + " Splitting large requests into chunks is recommended for full-day requests of high-volume symbols."
         ),
     )
-    timestamp: Optional[Union[datetime, str]] = Field(
+    timestamp: Optional[datetime] = Field(
         default=None,
         description="""
             Query by datetime. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_lt: Optional[Union[datetime, str]] = Field(
+    timestamp_lt: Optional[datetime] = Field(
         default=None,
         description="""
             Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_gt: Optional[Union[datetime, str]] = Field(
+    timestamp_gt: Optional[datetime] = Field(
         default=None,
         description="""
             Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_lte: Optional[Union[datetime, str]] = Field(
+    timestamp_lte: Optional[datetime] = Field(
         default=None,
         description="""
             Query by datetime, less than or equal to.
@@ -58,7 +60,7 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_gte: Optional[Union[datetime, str]] = Field(
+    timestamp_gte: Optional[datetime] = Field(
         default=None,
         description="""
             Query by datetime, greater than or equal to.
@@ -71,35 +73,9 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
 class PolygonStockNBBOData(StockNBBOData):
     """Polygon Stock NBBO data."""
 
-    ask_exchange: Optional[Union[int, str]] = Field(
-        default=None,
-        description="The exchange ID for the ask. https://polygon.io/docs/stocks/get_v3_reference_exchanges",
-        alias="ask_exchange",
-    )
-    ask: Optional[float] = Field(
-        default=None, description="The last ask price.", alias="ask_price"
-    )
-    ask_size: Optional[int] = Field(
-        default=None,
-        description="""
-        The ask size. This represents the number of round lot orders at the given ask price.
-        The normal round lot size is 100 shares.
-        An ask size of 2 means there are 200 shares available to purchase at the given ask price.
-        """,
-        alias="ask_size",
-    )
-    bid_size: Optional[int] = Field(
-        default=None, description="The bid size in round lots.", alias="bid_size"
-    )
-    bid: Optional[float] = Field(
-        default=None, description="The last bid price.", alias="bid_price"
-    )
-    bid_exchange: Optional[Union[int, str]] = Field(
-        default=None,
-        description="The exchange ID for the bid. https://polygon.io/docs/stocks/get_v3_reference_exchanges",
-        alias="bid_exchange",
-    )
-    tape: Optional[Union[int, str]] = Field(
+    __alias_dict__ = {"ask": "ask_price", "bid": "bid_price"}
+
+    tape: Optional[str] = Field(
         default=None, description="The exchange tape.", alias="tape_integer"
     )
     conditions: Optional[Union[str, List[int], List[str]]] = Field(
@@ -117,21 +93,21 @@ class PolygonStockNBBOData(StockNBBOData):
         """,
         alias="sequence_number",
     )
-    participant_timestamp: Optional[Union[int, datetime]] = Field(
+    participant_timestamp: Optional[datetime] = Field(
         default=None,
         description="""
             The nanosecond accuracy Participant/Exchange Unix Timestamp.
             This is the timestamp of when the quote was actually generated at the exchange.
         """,
     )
-    sip_timestamp: Optional[Union[int, datetime]] = Field(
+    sip_timestamp: Optional[datetime] = Field(
         default=None,
         description="""
             The nanosecond accuracy SIP Unix Timestamp.
             This is the timestamp of when the SIP received this quote from the exchange which produced it.
         """,
     )
-    trf_timestamp: Optional[Union[int, datetime]] = Field(
+    trf_timestamp: Optional[datetime] = Field(
         default=None,
         description="""
             The nanosecond accuracy TRF (Trade Reporting Facility) Unix Timestamp.
@@ -146,13 +122,15 @@ class PolygonStockNBBOData(StockNBBOData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        return (
-            to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert("US/Eastern")
-            if v
-            else None
-        )
+
+        if v:
+            dlt = timedelta(hours=-5)
+            tz = timezone(dlt)
+            return datetime.fromtimestamp(v / 1000000000).astimezone(tz)
+        return None
 
 
 class PolygonStockNBBOFetcher(
