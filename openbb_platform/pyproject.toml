@@ -71,6 +71,7 @@ all = [
     "openbb-qa",
     "openbb-ta",
     "openbb-econometrics",
+    "openbb-stockgrid"
 ]
 
 [tool.poetry.group.dev.dependencies]
