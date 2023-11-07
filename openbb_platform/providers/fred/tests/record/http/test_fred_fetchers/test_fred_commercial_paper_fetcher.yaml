@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_end=2023-06-06&observation_start=2023-01-01&series_id=RIFSPPFAAD30NB
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU01DUwUtJByKbmpaDL5ScVpxaVJZZk
+        5uehajYw1DUwVNJRQlaApN/ATNfATElHqTQvs6RYyUopJzMPpLi0pKC0JL6ksiBVycpQRyktMycV
+        ylPKKs4HKylKSS2KT6pUskIxOiWxJFVJR6k4v6gkPh+kRMlKKbE4WUlHKTm/NK9EycrQ0EhHKT8t
+        rTi1RMnKQEcpJzM3EyRsAAIozixWsoqmJEjAToEGISgUQEFYlphTmqpkpaSnVKtDTbONlXSUYGab
+        6BmbU9l4E1TjzahsvCmq8YZUNh6UvhCBY2JMZeMtkVxP5Xg1NEAy20TPhMoBbwjKmEghQ+VkY0jD
+        FG+ImuJNqO105DRD7Ug1R4pUapttQUOzaZjQjZATOpXDxAg5qVDbbOSSkdpmoxaLpibULbeMaJjE
+        jZCTuImeKXVdbkzDxGKMWiSaUbUuMoI0hRAlLtWNp1mJa6RrgJyNTPRMqVriGkFagUghQ80kY6Rr
+        gJwgqZpPjXQNkMtcEz1TSyo7nWbFrpEuWvuCqs0LI120OpraptOs6DXSNUQueqmcXAyRy10TPVOq
+        Fo5GuoY0TOm0q6WNdI3QCl6q1nZGukY0LBlp18Aw0jWiYSpHqaWpnMqNUAtFM6pmfmOMepTaxiOn
+        FhM96lbTxuhVqZkFNWsMY9SqlKrxakzDitQYtSKltrtpVosao9aiVHY3Sh1KbbNpVrYY07AGNdY1
+        RK5BqR0mNKs+jXVpV30ao1afVA4T2tWdxroodaeJngVV+1vGNKw+jXVpV30a66JVnxZG1K0hjGhY
+        GqL0zk30LKhcuaF00Kma0E3Q62ULqjbNTXQNaFbemuga0KzHYoLanjDRs6RqHjWhYZPChIZVs4ku
+        2ug5tVMLyui5iR7VjUcezqFyPjKkYUKnXf/WRNcQudNC7TBBLnJN9CyoOnxmQsO2hQlq28JEz4Kq
+        A1wmNKyjTXSNaFgs0m4A3YSGbQsT1LYFVVO5KWq/3FTPgKrtFlPIMgTYILGpniFVM5Epav1vqmdA
+        1VEFU9T631TPgKr5yBS1CWCqZ0DV1ospau/cRM+Squ06U10D5PLRVM+AquN/pjRsCJiiNgRM9Qyp
+        7XTkwSjqxyvKWLepniFVW3emqJ116ucp2jUHTFGbA6Z6BlQubQxRUzyVwx2l026qZ0jVVS+mqP12
+        Uz1DKhf0KMPeNHA9crOA+lkKpWVA/QKBdr13U12U3juVGwe067qboTY8qOpuM9RWB7XNRk6J1DYb
+        bZwUsNhaAK2Pz5/iKQAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '984'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 02 Nov 2023 13:45:30 GMT
+      Expires:
+      - Thu, 02 Nov 2023 13:46:30 GMT
+      Last-Modified:
+      - Tue, 31 Oct 2023 17:04:03 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '106'
+    status:
+      code: 200
+      message: OK
+version: 1

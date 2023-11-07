@@ -1,7 +1,32 @@
 ---
 title: Stock Historical price
-description: OpenBB Platform Data Model
+description: This is a detailed documentation page on how to fetch historical stock
+  data using openbb_provider library in Python. It provides implementation details,
+  parameters to be passed and data it returns for 'fmp', 'intrinio', 'polygon' stock
+  data providers. It also provides import statements and example class names.
+keywords:
+- openbb_provider
+- Python
+- historical stock data
+- data fetching
+- fmp
+- intrinio
+- polygon
+- implementation
+- parameters
+- stock data provider
+- class names
+- import statement
+- documentation
+- SEO
+- marketing
+- keywords
+- description
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Historical price - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -151,4 +176,3 @@ StockHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

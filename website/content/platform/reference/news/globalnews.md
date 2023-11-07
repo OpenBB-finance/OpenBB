@@ -1,12 +1,28 @@
 ---
 title: globalnews
-description: OpenBB Platform Function
+description: This page provides the necessary details to retrieve global news data
+  from different providers such as benzinga, fmp and intrinio using various parameters.
+  This is useful for python programmers and developers seeking to implement the function.
+keywords:
+- global news
+- news data
+- data provider
+- benzinga
+- fmp
+- intrinio
+- news query
+- news parameters
+- python programmer
+- developer documentation
+- articles retriever
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news.globalnews - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# globalnews
 
 Global News. Global news data.
 
@@ -134,4 +150,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

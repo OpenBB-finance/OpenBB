@@ -1,7 +1,22 @@
 ---
 title: Revenue Business Line
-description: OpenBB Platform Data Model
+description: The page includes implementation details of 'RevenueBusinessLine', 'RevenueBusinessLineQueryParams'
+  and 'RevenueBusinessLineData' classes from 'openbb_provider.standard_models.revenue_business_line'.
+  It also provides comprehensive details on related parameters and software data.
+keywords:
+- RevenueBusinessLine
+- RevenueBusinessLineQueryParams
+- RevenueBusinessLineData
+- openbb_provider.standard_models.revenue_business_line
+- Docusaurus page metadata
+- Software implementation details
+- Software parameters
+- Software data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Revenue Business Line - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -54,4 +69,3 @@ RevenueBusinessLineQueryParams,
 </TabItem>
 
 </Tabs>
-

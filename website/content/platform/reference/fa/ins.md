@@ -1,12 +1,31 @@
 ---
 title: ins
-description: OpenBB Platform Function
+description: This page provides comprehensive insights into stock insider trading.
+  It provides detailed parameters and data explanations for specific symbols, transaction
+  types, and more.
+keywords:
+- Stock Insider Trading
+- Symbol data
+- Transaction type
+- Filing date
+- Transaction date
+- Securities Owned
+- Company CIK
+- Type of owner
+- Acquisition or disposition
+- Form type
+- Securities transacted
+- Price
+- Security name
+- Market analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.ins - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ins
 
 Stock Insider Trading. Information about insider trading.
 
@@ -80,4 +99,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

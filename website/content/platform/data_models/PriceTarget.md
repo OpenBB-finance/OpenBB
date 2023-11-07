@@ -1,7 +1,22 @@
 ---
 title: Price Target
-description: OpenBB Platform Data Model
+description: This page provides implementation details and parameters for the PriceTarget
+  model in the OpenBB Provider. You can also find import statements and data parameters
+  for Standard and FMP solutions.
+keywords:
+- OpenBB Provider API
+- PriceTarget
+- Python
+- Standard
+- FMP
+- Implementation details
+- Data Parameters
+- Class Names
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Price Target - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -90,4 +105,3 @@ PriceTargetQueryParams,
 </TabItem>
 
 </Tabs>
-

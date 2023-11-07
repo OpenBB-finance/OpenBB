@@ -106,18 +106,36 @@ def test_etf_sectors(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"symbol": "IOO"}),
+        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_date(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/holdings_date?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "IOO",
-                "date": "2023-01-01",
+                "date": "2023-03-31",
                 "cik": None,
                 "provider": "fmp",
             }
         ),
         (
             {
-                "symbol": "SPY",
-                "date": "2023-04-20",
+                "symbol": "SILJ",
+                "date": "2019-12-31",
                 "cik": None,
                 "provider": "fmp",
             }
@@ -125,7 +143,7 @@ def test_etf_sectors(params, headers):
         (
             {
                 "symbol": "MISL",
-                "date": "2023-04-20",
+                "date": "2023-03-31",
                 "cik": "0001329377",
                 "provider": "fmp",
             }
@@ -138,24 +156,6 @@ def test_etf_holdings(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/etf/holdings?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"symbol": "IOO"}),
-        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
-    ],
-)
-@pytest.mark.integration
-def test_etf_holdings_date(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/etf/holdings_date?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -178,14 +178,29 @@ def test_etf_price_performance(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
+    [({"symbol": "IOO"})],
+)
+@pytest.mark.integration
+def test_etf_countries(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/countries?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_gainers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/gainers?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/etf/disc/gainers?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -193,14 +208,14 @@ def test_etf_disc_gainers(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_losers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/losers?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/etf/disc/losers?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -208,14 +223,33 @@ def test_etf_disc_losers(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"sort": "desc", "limit": 10, "provider": "wsj"})],
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_active(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/disc/active?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/etf/disc/active?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "ioo"}),
+        ({"symbol": "misl", "provider": "fmp"}),
+        ({"symbol": "silj", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_holdings_performance(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/holdings_performance?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

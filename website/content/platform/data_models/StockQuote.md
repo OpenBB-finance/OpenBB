@@ -1,7 +1,46 @@
 ---
 title: Stock Quote
-description: OpenBB Platform Data Model
+description: An informative Python module documentation on obtaining stock quote data
+  using the openbb_provider library. The page details the class names, parameters,
+  and data fetched, demonstrating variability depending on chosen data provider ('fmp'
+  or 'intrinio').
+keywords:
+- StockQuote
+- StockQuoteQueryParams
+- StockQuoteData
+- python
+- openbb_provider
+- stock data
+- documentation
+- implementation details
+- parameters
+- data
+- class names
+- import statement
+- stock quote
+- trading details
+- trading volume
+- stock price
+- stock symbols
+- provider
+- source
+- market cap
+- price avg50
+- price avg200
+- volume
+- avg volume
+- exchange
+- eps
+- pe ratio
+- earnings announcement
+- shares outstanding
+- intrinio
+- fmp
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Quote - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -121,4 +160,3 @@ StockQuoteQueryParams,
 </TabItem>
 
 </Tabs>
-

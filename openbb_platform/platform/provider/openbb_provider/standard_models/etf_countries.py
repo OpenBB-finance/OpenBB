@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 class EtfCountriesQueryParams(QueryParams):
     """ETF Countries Query Params."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
     @field_validator("symbol")
     @classmethod
@@ -26,5 +26,6 @@ class EtfCountriesQueryParams(QueryParams):
 class EtfCountriesData(Data):
     """ETF Countries Data."""
 
-    country: str = Field(description="The country of the exposure.")
-    weight: float = Field(description="The weight of the country in the ETF.")
+    country: str = Field(
+        description="The country of the exposure.  Corresponding values are normalized percentage points."
+    )

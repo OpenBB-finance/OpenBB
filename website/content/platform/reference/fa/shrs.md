@@ -1,12 +1,30 @@
 ---
 title: shrs
-description: OpenBB Platform Function
+description: This page provides detailed information about the 'shrs' functionality.
+  It allows users to share statistics of a specific company utilizing specified parameters.
+  It also details the process of fetching and interpreting data, understanding parameters
+  such as symbols, data, and share types.
+keywords:
+- shrs
+- share Statistics
+- symbol
+- Macroaxis
+- OBBject
+- Chart object
+- Metadata
+- Data
+- free_float
+- float_shares
+- outstanding_shares
+- source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.shrs - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# shrs
 
 Share Statistics. Share statistics for a given company.
 
@@ -69,4 +87,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

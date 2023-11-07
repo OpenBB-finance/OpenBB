@@ -1,7 +1,44 @@
 ---
 title: Forex Historical Price
-description: OpenBB Platform Data Model
+description: This documentation presents implementation details and usage of Forex
+  Historical Data and Query Parameters class in Python. It provides an overview of
+  parameters and data attributes used for Forex Historical queries. The guide includes
+  specifics as per different providers such as Standard, FMP, and Polygon.
+keywords:
+- Forex Historical Data
+- Python
+- Forex Historical Query Parameters
+- Data Class and Model
+- Implementation Details
+- Parameters
+- Data
+- Standard Models
+- FMP
+- Polygon
+- Openbb Provider
+- Symbol Pair
+- Start date
+- End date
+- Provider
+- Interval
+- Multiplier
+- Timespan
+- Sort order
+- Data Entries
+- Adjusted Data
+- Date
+- Open Price
+- High Price
+- Low Price
+- Close Price
+- Volume
+- VWAP
+- Transactions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Forex Historical Price - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -118,4 +155,3 @@ ForexHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

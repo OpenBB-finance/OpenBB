@@ -22,12 +22,14 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
+        """Transform query."""
         return FREDCPIQueryParams(**params)
 
     @staticmethod
     def extract_data(
         query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
     ) -> Dict:
+        """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
@@ -52,6 +54,7 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
     def transform_data(
         query: FREDCPIQueryParams, data: Dict, **kwargs: Any
     ) -> List[FREDCPIData]:
+        """Transform data."""
         transformed_data = {}
 
         # Iterate over the series_dict

@@ -29,9 +29,10 @@ def get_provider_test_files(provider: Provider):
     parent_module = import_module(fetcher_module_name.split(".")[0])
     parent_module_path = os.path.dirname(parent_module.__file__)
     root_provider_path = os.path.dirname(parent_module_path)
+    provider_name = provider.name.lower()
 
     return os.path.join(
-        root_provider_path, "tests", f"test_{provider.name}_fetchers.py"
+        root_provider_path, "tests", f"test_{provider_name}_fetchers.py"
     )
 
 

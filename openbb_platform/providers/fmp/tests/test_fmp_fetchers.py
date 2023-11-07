@@ -6,17 +6,20 @@ from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
+from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
-from openbb_fmp.models.dividend_calendar import FMPDividendCalendarFetcher
+from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
+from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
@@ -51,6 +54,7 @@ from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
+from openbb_fmp.models.stock_search import FMPStockSearchFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
@@ -438,8 +442,8 @@ def test_fmp_major_indices_constituents_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_dividend_calendar_fetcher(credentials=test_credentials):
-    params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 5, 10)}
+def test_fmp_calendar_dividend_fetcher(credentials=test_credentials):
+    params = {"start_date": date(2023, 11, 6), "end_date": date(2023, 11, 10)}
 
     fetcher = FMPDividendCalendarFetcher()
     result = fetcher.test(params, credentials)
@@ -451,6 +455,15 @@ def test_fmp_stock_quote_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPStockQuoteFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_stock_search_fetcher(credentials=test_credentials):
+    params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
+
+    fetcher = FMPStockSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -502,7 +515,7 @@ def test_fmp_etf_sectors_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_holdings_fetcher(credentials=test_credentials):
-    params = {"symbol": "IOO", "date": date(2023, 4, 22)}
+    params = {"symbol": "IOO", "date": date(2022, 12, 31)}
 
     fetcher = FMPEtfHoldingsFetcher()
     result = fetcher.test(params, credentials)
@@ -523,5 +536,32 @@ def test_fmp_price_performance_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,SPY,QQQ,MSFT,AMZN,GOOG"}
 
     fetcher = FMPPricePerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_countries_fetcher(credentials=test_credentials):
+    params = {"symbol": "VTI,QQQ,VOO,IWM"}
+
+    fetcher = FMPEtfCountriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "SILJ"}
+
+    fetcher = FMPEtfHoldingsPerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_filings_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = FMPFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -1,7 +1,24 @@
 ---
 title: Cash Flow Statement Growth
-description: OpenBB Platform Data Model
+description: This page details the implementation and parameters related to Cash Flow
+  Statement Growth, including queries, data points, and related metrics.
+keywords:
+- Cash Flow Statement Growth
+- financial data
+- financial metrics
+- financial growth
+- API documentation
+- financial data queries
+- growth rate calculations
+- financial market analysis
+- financial programming
+- openbb_provider
+- financial data provider
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Cash Flow Statement Growth - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -84,4 +101,3 @@ CashFlowStatementGrowthQueryParams,
 </TabItem>
 
 </Tabs>
-

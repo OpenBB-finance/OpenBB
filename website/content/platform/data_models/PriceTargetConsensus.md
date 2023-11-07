@@ -1,7 +1,30 @@
 ---
 title: Price Target Consensus
-description: OpenBB Platform Data Model
+description: Documentation for the implementation of PriceTargetConsensus including
+  class names, parameters, and data details with their types and descriptions.
+keywords:
+- Implementation details
+- Class names
+- Import Statement
+- Parameters
+- Data
+- Tabs
+- TabItem
+- PriceTargetConsensus
+- PriceTargetConsensusQueryParams
+- PriceTargetConsensusData
+- Symbol
+- Provider
+- fmp
+- Target_high
+- Target_low
+- Target_consensus
+- Target_median
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Price Target Consensus - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -55,4 +78,3 @@ PriceTargetConsensusQueryParams,
 </TabItem>
 
 </Tabs>
-

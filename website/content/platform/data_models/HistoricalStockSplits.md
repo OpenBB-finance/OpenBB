@@ -1,7 +1,26 @@
 ---
 title: Historical Stock Splits
-description: OpenBB Platform Data Model
+description: This page provides implementation details for the HistoricalStockSplits
+  model, including descriptions and details for data class and query parameters. It
+  also includes the import statement required to fetch and display stock splits data
+  from a defined provider.
+keywords:
+- Historical Stock Splits
+- OpenBB provider
+- Stock Data Implementation
+- Stock Splits Query Params
+- Historical Stock Splits Data Class
+- Stock Splits Parameters
+- Stock Splits Data
+- stock splits label
+- stock splits numerator
+- stock splits denominator
+- stock data date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Historical Stock Splits - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -54,4 +73,3 @@ HistoricalStockSplitsQueryParams,
 </TabItem>
 
 </Tabs>
-

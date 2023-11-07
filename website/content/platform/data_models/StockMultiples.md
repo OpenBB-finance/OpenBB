@@ -1,7 +1,28 @@
 ---
 title: Stock Multiples
-description: OpenBB Platform Data Model
+description: This page provides detailed information on the implementation of the
+  StockMultiples class including the names of the parameters and data classes, lists
+  of the parameters and the data with their types and descriptions. The page also
+  includes an import statement for granularity when building different applications.
+keywords:
+- StockMultiples
+- StockMultiplesQueryParams
+- StockMultiplesData
+- OpenBB Provider
+- Implementation Details
+- Python
+- SEO
+- SEO Marketing
+- Docusaurus
+- Parameters
+- Data
+- Financial Data
+- Trailing Twelve Months
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Multiples - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -111,4 +132,3 @@ StockMultiplesQueryParams,
 </TabItem>
 
 </Tabs>
-

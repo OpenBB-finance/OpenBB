@@ -1,7 +1,35 @@
 ---
 title: Income Statement
-description: OpenBB Platform Data Model
+description: This page provides comprehensive information about the implementation
+  of the IncomeStatement model, its parameters, data features, and details about its
+  use with different providers like FMP, Intrinio, and Polygon. It contains essential
+  items such as class names and import statements, standard, FMP, Intrinio, and Polygon
+  parameters, alongside the standard, FMP, and Polygon data parameters.
+keywords:
+- IncomeStatement model
+- Finance
+- SEO
+- Class names
+- Import Statements
+- FMP
+- Intrinio
+- Polygon
+- Python
+- Documentation
+- API
+- Implementation details
+- Parameters
+- Data
+- Standard
+- Parameters class
+- Data class
+- IncomeStatementData
+- IncomeStatementQueryParams
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Income Statement - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -228,4 +256,3 @@ IncomeStatementQueryParams,
 </TabItem>
 
 </Tabs>
-

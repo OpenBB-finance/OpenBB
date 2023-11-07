@@ -1,12 +1,36 @@
 ---
 title: cpi
-description: OpenBB Platform Function
+description: This page offers detailed API documentation for retrieving Consumer Price
+  Index (CPI) from various countries using the Python 'cpi' function. The function
+  parameters, return objects and corresponding data fields are thoroughly explained.
+keywords:
+- cpi
+- Consumer Price Index
+- python wordwrap
+- parameters
+- countries
+- units
+- frequency
+- harmonized
+- start_date
+- end_date
+- provider
+- returns
+- results
+- warnings
+- chart
+- metadata
+- data
+- date
+- value
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.cpi - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cpi
 
 CPI. Consumer Price Index.
 
@@ -70,4 +94,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

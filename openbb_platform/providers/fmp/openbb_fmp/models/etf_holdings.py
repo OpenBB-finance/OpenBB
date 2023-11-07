@@ -1,10 +1,6 @@
 """FMP ETF Holdings fetcher."""
 
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -25,8 +21,8 @@ class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 
     date: Optional[Union[str, dateType]] = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " The input date is adjusted to the nearest previous quarter-end date."
-        + " Holdings are returned as of the adjusted date if available, with no data from the subsequent quarter.",
+        + " This needs to be _exactly_ the date of the filing."
+        + " Use the holdings_date command/endpoint to find available filing dates for the ETF.",
         default=None,
     )
 
@@ -120,21 +116,7 @@ class FMPEtfHoldingsFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEtfHoldingsQueryParams:
-        """Transform the query.
-
-        Adjust input date to the nearest previous quarter-end date.
-        """
-        date_str = params.get("date", datetime.today().strftime("%Y-%m-%d"))
-        date_str = (
-            date_str.strftime("%Y-%m-%d")
-            if isinstance(date_str, dateType)
-            else date_str
-        )
-        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
-        quarter_month = ((date_obj.month - 1) // 3) * 3 + 1
-        quarter_start = date_obj.replace(month=quarter_month, day=1)
-        previous_quarter_end = quarter_start - timedelta(days=1)
-        params["date"] = previous_quarter_end.strftime("%Y-%m-%d")
+        """Transform the query."""
         return FMPEtfHoldingsQueryParams(**params)
 
     @staticmethod

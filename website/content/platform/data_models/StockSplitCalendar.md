@@ -1,7 +1,32 @@
 ---
 title: Stock Split Calendar
-description: OpenBB Platform Data Model
+description: Documentation regarding StockSplitCalendarData, StockSplitCalendarQueryParams
+  classes by openbb_provider. The page includes implementation details, parameters,
+  data, and usage explanations for stock splits in Python.
+keywords:
+- StockSplitCalendar
+- StockSplitCalendarQueryParams
+- StockSplitCalendarData
+- openbb_provider
+- python
+- class
+- parameters
+- data
+- stock splits
+- start_date
+- end_date
+- provider
+- fmp
+- date
+- label
+- symbol
+- numerator
+- denominator
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Stock Split Calendar - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -56,4 +81,3 @@ StockSplitCalendarQueryParams,
 </TabItem>
 
 </Tabs>
-

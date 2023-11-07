@@ -26,20 +26,23 @@ class CalendarIpoQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
     limit: Optional[int] = Field(
-        description=QUERY_DESCRIPTIONS.get("limit", ""), default=300
+        description=QUERY_DESCRIPTIONS.get("limit", ""), default=100
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
         return v.upper() if v else None
 
     @field_validator("start_date", mode="before", check_fields=False)
+    @classmethod
     def start_date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strftime(v, "%Y-%m-%d") if v else None
 
     @field_validator("end_date", mode="before", check_fields=False)
+    @classmethod
     def end_date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strftime(v, "%Y-%m-%d") if v else None
@@ -48,16 +51,17 @@ class CalendarIpoQueryParams(QueryParams):
 class CalendarIpoData(Data):
     """IPO Calendar Data."""
 
+    symbol: Optional[str] = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+    )
     ipo_date: Optional[dateType] = Field(
         description="The date of the IPO, when the stock first trades on a major exchange.",
         default=None,
     )
-    symbol: Optional[str] = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-        default=None,
-    )
 
     @field_validator("ipo_date", mode="before", check_fields=False)
+    @classmethod
     def ipo_date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
