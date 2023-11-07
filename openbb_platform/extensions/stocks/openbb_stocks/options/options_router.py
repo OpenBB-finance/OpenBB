@@ -23,3 +23,14 @@ def chains(
 ) -> OBBject[BaseModel]:
     """Get the complete options chain for a ticker."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="OptionsUnusual")
+def unusual(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the complete options chain for a ticker."""
+    return OBBject(results=Query(**locals()).execute())
