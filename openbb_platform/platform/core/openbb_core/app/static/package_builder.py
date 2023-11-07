@@ -28,7 +28,6 @@ import numpy as np
 import pandas as pd
 from importlib_metadata import entry_points
 from openbb_provider.abstract.data import Data
-from pydantic.fields import ModelField
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
