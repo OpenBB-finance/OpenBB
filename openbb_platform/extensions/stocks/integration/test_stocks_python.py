@@ -635,6 +635,21 @@ def test_stocks_options_chains(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"source": "delayed", "provider": "intrinio"}),
+        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_options_unusual(params, obb):
+    result = obb.stocks.options.usual(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "AAPL",
