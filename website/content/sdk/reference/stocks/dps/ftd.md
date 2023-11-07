@@ -1,12 +1,21 @@
 ---
 title: ftd
-description: OpenBB SDK Function
+description: Documentation related to 'ftd'- a feature that provides fails-to-deliver
+  data for a given ticker. Offers a model and chart view
+keywords:
+- ftd
+- fails-to-deliver
+- stock data
+- chart view
+- model view
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.ftd - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ftd
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +48,6 @@ openbb.stocks.dps.ftd(symbol: str, start_date: Optional[str] = None, end_date: O
 | ---- | ----------- |
 | pd.DataFrame | Fail to deliver data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -76,8 +83,6 @@ openbb.stocks.dps.ftd_chart(symbol: str, data: pd.DataFrame = None, start_date: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,22 @@
 ---
 title: expirations
-description: OpenBB SDK Function
+description: Find option chain expirations using the OpenBBTerminal. It allows to
+  fetch data from different sources like Nasdaq and Tradier. The result is a comprehensive
+  dataframe.
+keywords:
+- option chain
+- Nasdaq
+- option expiration
+- symbol
+- data source
+- Tradier
+- dataframe
+- SPX
 ---
 
-# expirations
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.expirations - Reference | OpenBB SDK Docs" />
 
 Get Option Chain Expirations
 
@@ -40,4 +53,3 @@ SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
 ```
 
 ---
-

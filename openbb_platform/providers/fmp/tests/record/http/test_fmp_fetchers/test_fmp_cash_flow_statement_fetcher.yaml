@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/cash-flow-statement/AAPL?apikey=MOCK_API_KEY&limit=5&period=quarter
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 01 Nov 2023 12:45:57 GMT
+      ETag:
+      - W/"20a9-B6xBFLd1FTqSZktpJIvVWUiCr+4"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

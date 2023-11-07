@@ -1,9 +1,20 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: The page provides information on loading custom files into a dataframe
+  in OpenBB. It offers the function definition, parameters, and returns
+keywords:
+- dataframe
+- load function
+- custom files
+- parameters
+- returns
+- Statsmodels examples
+- Export folder
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.load - Reference | OpenBB SDK Docs" />
 
 Load custom file into dataframe.
 
@@ -32,4 +43,3 @@ openbb.econometrics.load(file: str, data_files: Optional[Dict[Any, Any]] = None,
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with custom data |
 ---
-

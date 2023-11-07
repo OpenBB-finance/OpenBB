@@ -1,12 +1,27 @@
 ---
 title: pi
-description: OpenBB SDK Function
+description: Details about the PI function used in OpenBB crypto due diligence. It
+  covers aspects like fetching coin product info and presenting it as tables and charts.
+  Also, includes links to the source code.
+keywords:
+- Cryptocurrency
+- Due Diligence
+- pi Function
+- Project Info
+- Tables
+- Charts
+- Docusaurus
+- Metadata
+- Source Code
+- Github
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.pi - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pi
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.crypto.dd.pi(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame] | Metric, Value with project and technology details,<br/>Coin public repos,<br/>Coin audits,<br/>Coin known exploits/vulns |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +80,6 @@ openbb.crypto.dd.pi_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

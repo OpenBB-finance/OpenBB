@@ -1,9 +1,22 @@
 ---
 title: pos
-description: OpenBB SDK Function
+description: This documentation page is about getting dark pool short positions using
+  the 'pos' function in the openbb.stocks.dps python package. Details about parameters
+  such as 'sortby' and 'ascend', and the data returned, i.e., pd.DataFrame, are provided.
+keywords:
+- pos
+- dark pool short positions
+- Stockgrid
+- coding
+- openbb.stocks.dps.pos
+- parameters
+- returns
+- Data in ascending order
 ---
 
-# pos
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.pos - Reference | OpenBB SDK Docs" />
 
 Get dark pool short positions. [Source: Stockgrid]
 
@@ -31,4 +44,3 @@ openbb.stocks.dps.pos(sortby: str = "dpp_dollar", ascend: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dark pool short position data |
 ---
-

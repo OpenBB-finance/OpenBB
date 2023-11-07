@@ -1,12 +1,26 @@
 ---
 title: yret
-description: OpenBB SDK Function
+description: Website page provides in-depth guide on using yret, a module that delivers
+  yearly returns in quantitative finance. It includes complete procedures from loading
+  portfolio to displaying returns in graph.
+keywords:
+- Yearly Returns
+- Portfolio Management
+- Quantitative Finance
+- Data Visualization
+- Open source
+- Finance Library
+- Benchmarking
+- Portfolio Load
+- yret Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.yret - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# yret
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -48,8 +62,6 @@ output = openbb.portfolio.yret(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -81,8 +93,6 @@ openbb.portfolio.yret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

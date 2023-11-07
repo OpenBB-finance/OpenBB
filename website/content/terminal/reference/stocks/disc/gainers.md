@@ -1,9 +1,18 @@
 ---
 title: gainers
-description: OpenBB Terminal Function
+description: This page provides a method to print the top 25 stock gainers using Python.
+  You can customize the limit of stocks you want to display. This information is sourced
+  from Yahoo Finance.
+keywords:
+- stock market
+- top gainers
+- Yahoo Finance
+- stock limit display
 ---
 
-# gainers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/gainers - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top gainers. [Source: Yahoo Finance]
 

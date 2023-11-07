@@ -1,29 +1,25 @@
 ---
 title: Bugs, Support, and Feedback
 sidebar_position: 6
-description: Submit a bug report or support ticket.
+description: This page provides information on how to deal with bugs, get support,
+  and provide feedback for the OpenBB Terminal. It includes details on the release
+  process for patches, how to report a bug, and ways to request new features or provide
+  suggestions for improvements.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    sdk
-  ]
+- bug reporting
+- support
+- feedback
+- patches
+- GitHub
+- open source platform
+- investors
+- feature request
+- machine learning
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Bugs, Support, and Feedback - SDK | OpenBB Docs" />
+<HeadTitle title="Bugs, Support, and Feedback - Faqs | OpenBB SDK Docs" />
 
 ## Bugs, Support, and Feedback
 

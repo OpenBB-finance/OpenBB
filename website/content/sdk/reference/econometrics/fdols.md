@@ -1,9 +1,21 @@
 ---
 title: fdols
-description: OpenBB SDK Function
+description: This documentation page provides information on First Differencing (fdols)
+  - an alternative to using fixed effects when there is possible correlation. It contains
+  the source code link, explanation of parameters and return details.
+keywords:
+- First Differencing
+- fdols
+- Fixed effects
+- Dependent variable
+- Independent variable
+- Regression variables
+- OLS model
 ---
 
-# fdols
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.fdols - Reference | OpenBB SDK Docs" />
 
 First differencing is an alternative to using fixed effects when there might be correlation.
 
@@ -31,4 +43,3 @@ openbb.econometrics.fdols(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>First Difference OLS model |
 ---
-

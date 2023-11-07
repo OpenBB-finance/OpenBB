@@ -1,12 +1,23 @@
 ---
 title: unemp
-description: OpenBB SDK Function
+description: This page provides full documentation on using unemp functions in OpenBB
+  to get US unemployment historical data and visualize it using charts. Includes information
+  on function parameters and return types.
+keywords:
+- OpenBB documentation
+- unemp function
+- US unemployment data
+- historical unemployment data
+- AlphaVantage
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.unemp - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# unemp
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +47,6 @@ openbb.economy.unemp(start_year: int = 2010)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical yields |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +78,6 @@ openbb.economy.unemp_chart(start_year: int = 2010, raw: bool = False, export: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

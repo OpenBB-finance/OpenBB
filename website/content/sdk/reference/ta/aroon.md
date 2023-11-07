@@ -1,12 +1,32 @@
 ---
 title: aroon
-description: OpenBB SDK Function
+description: This documentation page provides an in-depth overview of the Aroon technical
+  indicator within the OpenBBTerminal. It covers the model and chart view of the Aroon
+  indicator, with detailed parameters and source code. It also provides the functionality
+  to plot the Aroon indicator and export data.
+keywords:
+- aroon
+- technical indicator
+- openbb.ta
+- openbb.ta.aroon
+- openbb.ta.aroon_chart
+- trend indicators
+- OHLC price data
+- plotting
+- matplotlib
+- axes
+- scalar
+- window
+- symbol
+- export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.aroon - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# aroon
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +58,6 @@ openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame with aroon indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +91,6 @@ openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

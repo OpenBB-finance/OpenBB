@@ -1,9 +1,18 @@
 ---
 title: gacc
-description: OpenBB Terminal Function
+description: This page provides information on how to display the terra blockchain
+  account growth history using the 'gacc' function. It includes usage instructions,
+  parameters description, and an explanatory diagram.
+keywords:
+- terra blockchain
+- account growth history
+- gacc function
+- parameters description
 ---
 
-# gacc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/gacc - Reference | OpenBB Terminal Docs" />
 
 Displays terra blockchain account growth history. [Source: https://fcd.terra.dev/swagger]
 

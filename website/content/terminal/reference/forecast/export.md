@@ -1,9 +1,22 @@
 ---
 title: export
-description: OpenBB Terminal Function
+description: Page providing a guide on how to use the 'export' feature of a data-focused
+  application, which allows exporting datasets to Excel or CSV formats.
+keywords:
+- export data guide
+- export dataset
+- export to Excel
+- export to CSV
+- data-focused application
+- data exporting
+- dataset handling
+- dataset operation
+- automation
 ---
 
-# export
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /export - Reference | OpenBB Terminal Docs" />
 
 Export dataset to Excel
 

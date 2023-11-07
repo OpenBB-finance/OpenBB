@@ -1,9 +1,26 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: This page provides detailed information about the Relative Strength Index
+  (RSI), including its calculations, interpretation and usage. It also explains the
+  various parameters involved and how to modify them.
+keywords:
+- RSI
+- Relative Strength Index
+- overbought
+- oversold
+- indicator
+- price movement
+- divergence
+- reversal
+- parameters
+- n_length
+- n_scalar
+- n_drift
 ---
 
-# rsi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/rsi - Reference | OpenBB Terminal Docs" />
 
 The Relative Strength Index (RSI) calculates a ratio of the recent upward price movements to the absolute price movement. The RSI ranges from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when the value is over 70/below 30. You can also look for divergence with price. If the price is making new highs/lows, and the RSI is not, it indicates a reversal.
 

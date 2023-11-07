@@ -1,9 +1,28 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: A detailed guide on how to load any cryptocurrency to perform various
+  analyses. This page includes the method to select an exchange and designate a particular
+  interval along with explaining several parameters including start and end dates.
+keywords:
+- load
+- crypto currency
+- analysis
+- Yahoo Finance
+- ccxt
+- cg
+- source
+- exchange
+- interval
+- parameters
+- coin
+- start
+- end
+- vs
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/load - Reference | OpenBB Terminal Docs" />
 
 Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as 'ccxt' or 'cg' with --source. If you select 'ccxt', you can then select any exchange with --exchange. You can also select a specific interval with --interval.
 

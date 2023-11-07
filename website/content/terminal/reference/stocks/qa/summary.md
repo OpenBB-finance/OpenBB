@@ -1,9 +1,27 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: Documentation for the 'summary' function on the marketing website. This
+  feature provides detailed summary statistics on stocks, including parameters like
+  open, high, low, close, adjclose, volume, returns, and more.
+keywords:
+- summary function
+- stocks
+- statistics
+- stock data
+- stock volume
+- stock returns
+- data analysis
+- market analysis
+- open price
+- close price
+- high price
+- low price
+- adjusted close price
 ---
 
-# summary
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/summary - Reference | OpenBB Terminal Docs" />
 
 Summary statistics
 

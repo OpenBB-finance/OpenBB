@@ -1,0 +1,136 @@
+---
+title: cash_growth
+description: This page provides information about the cash growth API method, which
+  provides detailed data for financial metrics, including a variety of growth rates.
+  This is important for data analysis and understanding of company growth.
+keywords:
+- cash flow statement
+- company growth
+- financial metrics
+- financial data
+- data analysis
+- Python
+- financial provider
+- warnings
+- charting
+- command execution
+- growth rate of net income
+- growth rate of depreciation and amortization
+- growth rate of deferred income tax
+- growth in working capital
+- growth rate accounts receivables
+- growth rate inventory
+- growth rate accounts payables
+- growth rate of investments in property, plant, and equipment
+- growth rate of net acquisitions
+- growth rate of net cash used for investing activities
+- growth rate of debt repayment
+- growth rate of common stock issued
+- growth rate of common stock repurchased
+- growth rate of dividends paid
+- growth rate of other financing activities
+- growth rate of the effect of foreign exchange changes on cash
+- growth rate of net change in cash
+- growth rate of cash at the end of the period
+- growth rate of cash at the beginning of the period
+- growth rate of operating cash flow
+- growth rate of capital expenditure
+- growth rate of free cash flow
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.cash_growth - Reference | OpenBB Platform Docs" />
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
+
+```python wordwrap
+cash_growth(symbol: Union[str, List[str]], limit: int = 10, provider: Literal[str] = fmp)
+```
+
+---
+
+## Parameters
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| limit | int | The number of data entries to return. | 10 | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+</Tabs>
+
+---
+
+## Returns
+
+```python wordwrap
+OBBject
+    results : List[CashFlowStatementGrowth]
+        Serializable results.
+
+    provider : Optional[Literal['fmp']]
+        Provider name.
+
+    warnings : Optional[List[Warning_]]
+        List of warnings.
+
+    chart : Optional[Chart]
+        Chart object.
+
+    metadata: Optional[Metadata]
+        Metadata info about the command execution.
+```
+
+---
+
+## Data
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| symbol | str | Symbol to get data for. |
+| date | date | The date of the data. |
+| period | str | Period the statement is returned for. |
+| growth_net_income | float | Growth rate of net income. |
+| growth_depreciation_and_amortization | float | Growth rate of depreciation and amortization. |
+| growth_deferred_income_tax | float | Growth rate of deferred income tax. |
+| growth_stock_based_compensation | float | Growth rate of stock-based compensation. |
+| growth_change_in_working_capital | float | Growth rate of change in working capital. |
+| growth_accounts_receivables | float | Growth rate of accounts receivables. |
+| growth_inventory | float | Growth rate of inventory. |
+| growth_accounts_payables | float | Growth rate of accounts payables. |
+| growth_other_working_capital | float | Growth rate of other working capital. |
+| growth_other_non_cash_items | float | Growth rate of other non-cash items. |
+| growth_net_cash_provided_by_operating_activities | float | Growth rate of net cash provided by operating activities. |
+| growth_investments_in_property_plant_and_equipment | float | Growth rate of investments in property, plant, and equipment. |
+| growth_acquisitions_net | float | Growth rate of net acquisitions. |
+| growth_purchases_of_investments | float | Growth rate of purchases of investments. |
+| growth_sales_maturities_of_investments | float | Growth rate of sales maturities of investments. |
+| growth_other_investing_activities | float | Growth rate of other investing activities. |
+| growth_net_cash_used_for_investing_activities | float | Growth rate of net cash used for investing activities. |
+| growth_debt_repayment | float | Growth rate of debt repayment. |
+| growth_common_stock_issued | float | Growth rate of common stock issued. |
+| growth_common_stock_repurchased | float | Growth rate of common stock repurchased. |
+| growth_dividends_paid | float | Growth rate of dividends paid. |
+| growth_other_financing_activities | float | Growth rate of other financing activities. |
+| growth_net_cash_used_provided_by_financing_activities | float | Growth rate of net cash used/provided by financing activities. |
+| growth_effect_of_forex_changes_on_cash | float | Growth rate of the effect of foreign exchange changes on cash. |
+| growth_net_change_in_cash | float | Growth rate of net change in cash. |
+| growth_cash_at_end_of_period | float | Growth rate of cash at the end of the period. |
+| growth_cash_at_beginning_of_period | float | Growth rate of cash at the beginning of the period. |
+| growth_operating_cash_flow | float | Growth rate of operating cash flow. |
+| growth_capital_expenditure | float | Growth rate of capital expenditure. |
+| growth_free_cash_flow | float | Growth rate of free cash flow. |
+</TabItem>
+
+</Tabs>

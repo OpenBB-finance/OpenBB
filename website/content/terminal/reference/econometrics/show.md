@@ -1,9 +1,21 @@
 ---
 title: show
-description: OpenBB Terminal Function
+description: This documentation page provides a detailed overview of the 'show' function
+  in Python, used for data representation and manipulation in DataFrames. It presents
+  the usage, parameters, and examples demonstrating how the function can be employed
+  for different econometrics datasets by sorting and displaying datasets in an organized
+  manner.
+keywords:
+- Database
+- Data sorting
+- Data visualization
+- Show function
+- Econometrics
 ---
 
-# show
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /show - Reference | OpenBB Terminal Docs" />
 
 Show a portion of the DataFrame
 

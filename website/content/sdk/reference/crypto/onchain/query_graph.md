@@ -1,9 +1,24 @@
 ---
 title: query_graph
-description: OpenBB SDK Function
+description: This page provides a detailed explanation of the query_graph helper methods
+  for querying a graphql api, including the Python source code and parameters required,
+  from openbb.crypto.onchain.query_graph. The response data is a dictionary.
+keywords:
+- query_graph
+- helper methods
+- graphql api
+- bitquery.io
+- openbb.crypto.onchain.query_graph
+- parameters
+- url
+- query
+- returns
+- dictionary response data
 ---
 
-# query_graph
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.query_graph - Reference | OpenBB SDK Docs" />
 
 Helper methods for querying graphql api. [Source: https://bitquery.io/]
 
@@ -31,4 +46,3 @@ openbb.crypto.onchain.query_graph(url: str, query: str)
 | ---- | ----------- |
 | dict | Dictionary with response data |
 ---
-

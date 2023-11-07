@@ -1,9 +1,21 @@
 ---
 title: run
-description: OpenBB Terminal Function
+description: Learn how to effectively run a notebook from a specific location using
+  various parameters. This page also provides details about certain parameters such
+  as report parameters and the file to be loaded.
+keywords:
+- run notebook
+- usage
+- parameters
+- file loading
+- report parameters
+- OpenBBUserData
+- custom reports
 ---
 
-# run
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="reports /run - Reference | OpenBB Terminal Docs" />
 
 Run a notebook from this folder: '/home/runner/OpenBBUserData/reports/custom reports'.
 

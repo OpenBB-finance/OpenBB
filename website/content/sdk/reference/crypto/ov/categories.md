@@ -1,12 +1,26 @@
 ---
 title: categories
-description: OpenBB SDK Function
+description: 'This page provides information about top crypto categories from the
+  CoinGecko source. Detailed explanations of the two main functions are provided:
+  the ''categories'' function, which returns top crypto categories based on various
+  filters, and the ''categories_chart'' function, which displays the top cryptocurrency
+  categories by market capitalization.'
+keywords:
+- crypto categories
+- CoinGecko
+- crypto market capitalization
+- data sorting
+- data visualization
+- openbb.crypto.ov.categories
+- openbb.crypto.ov.categories_chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.categories - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# categories
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +50,6 @@ openbb.crypto.ov.categories(sort_filter: str = "market_cap_desc")
 | ---- | ----------- |
 | pd.DataFrame | Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +81,6 @@ openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

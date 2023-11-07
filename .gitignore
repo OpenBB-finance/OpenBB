@@ -76,10 +76,11 @@ cache/
 # lightning logs
 lightning_logs/
 
-# user script to install all extensions and providers
-!openbb_sdk/install_all.sh
-openbb_sdk/sdk/core/tests/app/model/charts/test_chart_settings.py
+# testing artifacts
 */mocked_path
 
 # CA certificates
 *.pem
+
+# Platform auto generated files
+openbb_platform/openbb/package/*

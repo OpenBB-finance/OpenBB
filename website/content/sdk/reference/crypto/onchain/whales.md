@@ -1,12 +1,27 @@
 ---
 title: whales
-description: OpenBB SDK Function
+description: Learn how to utilise Whale Alert's API with OpenBB Terminal for tracking
+  high value transactions on major blockchains. This page contains detailed information
+  on how to implement and use this feature to retrieve both live and historical onchain
+  data from various cryptocurrencies.
+keywords:
+- Whale Alert API
+- blockchain transactions
+- onchain data
+- cryptocurrency
+- major blockchains
+- crypto whales
+- high value transactions
+- transaction tracking
+- data retrieval
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.whales - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# whales
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +55,6 @@ openbb.crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: 
 | pd.DataFrame | Crypto wales transactions |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +87,6 @@ openbb.crypto.onchain.whales_chart(min_value: int = 800000, limit: int = 100, so
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

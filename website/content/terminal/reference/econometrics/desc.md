@@ -1,9 +1,21 @@
 ---
 title: desc
-description: OpenBB Terminal Function
+description: Easily analyze data with the desc command in Python. Generate comprehensive
+  descriptive statistics for each column in your dataset; such as count, mean, standard
+  deviation, min, max, etc. Ideal for econometric analysis and other forms of statistical
+  insights.
+keywords:
+- data analysis
+- descriptive statistics
+- dataset
+- econometrics
+- statistics for dataset
+- anes96 dataset
 ---
 
-# desc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /desc - Reference | OpenBB Terminal Docs" />
 
 Show the descriptive statistics of the dataset
 
@@ -31,7 +43,7 @@ desc -n {}
 
 2022 Jun 01, 06:51 (🦋) /econometrics/ $ desc anes96
 
-                                       Statistics for dataset: 'anes96'                                        
+                                       Statistics for dataset: 'anes96'
 ┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┓
 ┃       ┃ popul   ┃ tvnews ┃ selflr ┃ clinlr ┃ dolelr ┃ pid    ┃ age    ┃ educ   ┃ income ┃ vote   ┃ logpopul ┃
 ┡━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━┩

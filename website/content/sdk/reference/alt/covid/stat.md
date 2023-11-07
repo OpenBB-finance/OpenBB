@@ -1,12 +1,24 @@
 ---
 title: stat
-description: OpenBB SDK Function
+description: This page provides a comprehensive guide on how to use two functions,
+  stat and chart, in the OpenBBTerminal for COVID-19 data analysis. They are used
+  for retrieving and visualising historical cases and deaths by country.
+keywords:
+- stat function
+- chart function
+- COVID-19 data analysis
+- historical cases and deaths
+- Country-wise data
+- Data visualisation
+- pandas DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.covid.stat - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# stat
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ openbb.alt.covid.stat(country: str, stat: str = "cases", limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of data for given country and statistic |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +83,6 @@ openbb.alt.covid.stat_chart(country: str, stat: str = "cases", raw: bool = False
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

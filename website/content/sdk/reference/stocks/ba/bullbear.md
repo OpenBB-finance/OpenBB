@@ -1,9 +1,17 @@
 ---
 title: bullbear
-description: OpenBB SDK Function
+description: This page provides information on how to use OpenBB's bullbear function
+  that fetches sentiment for a ticker from stocktwits. Detailed info about parameters
+  and returns are included.
+keywords:
+- bullbear function
+- stocktwits
+- sentiment analysis
 ---
 
-# bullbear
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.bullbear - Reference | OpenBB SDK Docs" />
 
 Gets bullbear sentiment for ticker [Source: stocktwits].
 
@@ -30,4 +38,3 @@ openbb.stocks.ba.bullbear(symbol: str)
 | ---- | ----------- |
 | Tuple[int, int, int, int] | Watchlist count,<br/>Number of cases found for ticker,<br/>Number of bullish statements,<br/>Number of bearish statements, |
 ---
-

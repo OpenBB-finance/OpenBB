@@ -1,12 +1,23 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: This documentation is for a news aggregator platform on the OpenBB Terminal
+  which fetches recent posts from CryptoPanic. It details available functions, parameters,
+  returns and the source code link.
+keywords:
+- CryptoPanic
+- news aggregator
+- parameters
+- returns
+- crypto news
+- filter options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.news - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# news
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -42,8 +53,6 @@ openbb.crypto.ov.news(limit: int = 60, post_kind: str = "news", filter_: Optiona
 | pd.DataFrame | DataFrame with recent news from different sources filtered by provided parameters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -78,8 +87,6 @@ openbb.crypto.ov.news_chart(post_kind: str = "news", region: str = "en", filter_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

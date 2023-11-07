@@ -1,9 +1,23 @@
 ---
 title: ema
-description: OpenBB Terminal Function
+description: The page provides details on 'Exponential Moving Average' (EMA) under
+  technical analysis. It explains how EMA outperforms the Simple Moving Average by
+  giving more weight to recent data for increased responsiveness. The page includes
+  a guide for using the 'ema' function and its parameters - 'n_length' and 'n_offset'.
+keywords:
+- Exponential Moving Average
+- technical analysis
+- Simple Moving Average
+- ema
+- Moving Average calculation
+- n_length
+- n_offset
+- data responsiveness
 ---
 
-# ema
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/ema - Reference | OpenBB Terminal Docs" />
 
 The Exponential Moving Average is a staple of technical analysis and is used in countless technical indicators. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period are not included in the average. However, the Exponential Moving Average is a cumulative calculation, including all data. Past values have a diminishing contribution to the average, while more recent values have a greater contribution. This method allows the moving average to be more responsive to changes in the data.
 

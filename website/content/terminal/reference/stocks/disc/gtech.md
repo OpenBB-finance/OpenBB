@@ -1,9 +1,19 @@
 ---
 title: gtech
-description: OpenBB Terminal Function
+description: Display top tech stocks with significant revenue and earnings growth.
+  Limit the number of displayed stocks as desired. Source data from Yahoo Finance.
+keywords:
+- stocks
+- tech stocks
+- revenue
+- earnings growth
+- stock display
+- Yahoo Finance
 ---
 
-# gtech
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/gtech - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top tech stocks with revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
 

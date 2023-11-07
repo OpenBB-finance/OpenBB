@@ -1,12 +1,26 @@
 ---
 title: historical
-description: OpenBB SDK Function
+description: 'This webpage provides comprehensive documentation about the ''historical''
+  feature of OpenBB''s application: OpenBBTerminal. Users can view and access python
+  codes, parameters, returning values for two main functionalities: viewing historical
+  price of stocks and creating a chart for those stocks.'
+keywords:
+- historical stock price
+- stock chart
+- python codes
+- parameters
+- dataframe
+- preset loaded
+- type candle
+- MinMax normalization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.screener.historical - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# historical
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +54,6 @@ openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of the screener |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -77,8 +89,6 @@ openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limi
 | ---- | ----------- |
 | list[str] | List of stocks |
 ---
-
-
 
 </TabItem>
 </Tabs>

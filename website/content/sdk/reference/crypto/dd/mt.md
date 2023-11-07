@@ -1,12 +1,30 @@
 ---
 title: mt
-description: OpenBB SDK Function
+description: The page includes details about different functions used in cryptocurrency
+  due diligence, specifically handling and plotting Messari timeseries data. This
+  includes parameters and return values for each function, including the crypto symbol,
+  timeseries_id, interval frequency, start and end date. Also discusses exporting
+  these dataframes and using matplotlib for visualizing data.
+keywords:
+- messari_timeseries
+- crypto_symbol
+- timeseries_id
+- start_date
+- end_date
+- interval_frequency
+- export_dataframe
+- cryptocurrency_due_diligence
+- openbb_terminal
+- OpenBB-finance
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.mt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mt
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +59,6 @@ openbb.crypto.dd.mt(symbol: str, timeseries_id: str, interval: str = "1d", start
 | Tuple[pd.DataFrame, str] | Messari timeseries over time,<br/>Timeseries title |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +92,6 @@ openbb.crypto.dd.mt_chart(symbol: str, timeseries_id: str, start_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

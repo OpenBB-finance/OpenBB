@@ -1,9 +1,26 @@
 ---
 title: redditsent
-description: OpenBB Terminal Function
+description: Discover how to use the redditsent function to perform sentiment analysis
+  on Reddit about a specific ticker or company. Learn to adjust search parameters
+  like sorting type, subreddits, post limit, time period, and more for a comprehensive
+  Reddit search.
+keywords:
+- redditsent
+- sentiment analysis
+- Reddit
+- search sorting
+- company search
+- subreddits
+- posts limit
+- time period
+- full search
+- graphic display
+- table of sentiment values
 ---
 
-# redditsent
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/redditsent - Reference | OpenBB Terminal Docs" />
 
 Determine general Reddit sentiment about a ticker. [Source: Reddit]
 

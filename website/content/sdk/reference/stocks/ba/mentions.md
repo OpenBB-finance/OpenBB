@@ -1,12 +1,22 @@
 ---
 title: mentions
-description: OpenBB SDK Function
+description: Documentation page for OpenBB Terminal's modules 'mentions' and 'mentions_chart.'
+  These modules analyze and visualize the interest over time for a particular stock's
+  symbol using Google's API.
+keywords:
+- Stock market analysis
+- Google API
+- Stock interest
+- Data visualization
+- Finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.mentions - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mentions
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +46,6 @@ openbb.stocks.ba.mentions(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of interest over time |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +77,6 @@ openbb.stocks.ba.mentions_chart(symbol: str, start_date: str = "", export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,76 +1,42 @@
 ---
-sidebar_position: 1
+title: Introduction
+sidebar_position: 0
+description: OpenBB Platform is a comprehensive solution built with the contribution
+  of numerous community members, facilitating the development of stable integrations
+  with third-party data providers for a robust investment research infrastructure.
 keywords:
-  [
-    getting started,
-    openbb,
-    api,
-    beginner guide,
-    how to use openbb,
-    openbb keys,
-    openbb terminal,
-    introduction,
-    intro,
-    how-to,
-    how to,
-    openbb,
-    sdk,
-    learn,
-    guide,
-    data,
-    financial data,
-    analysis,
-    open source,
-    visualization,
-    dashboard,
-    report,
-    custom,
-    jupyter,
-    jupyter notebook
-  ]
-description: The OpenBB Documentation provides guidance on how to use the OpenBB SDK, a free, custom built financial SDK that will help you make more informed decisions, faster.
+- OpenBB Platform
+- investment research infrastructure
+- third-party data providers
+- financial reports
+- applications
+- community contributions
+- data connectors
+- extensions
 ---
 
-import Card from "@site/src/components/General/Card";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-# OpenBB SDK
+<HeadTitle title="OpenBB SDK Docs" />
 
-OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal. You will have the necessary building blocks to create your own financial tools and applications, whether that be a visualization dashboard or a custom report on Jupyter Notebook.
+The OpenBB SDK is the core engine of the entire OpenBB platform. It provides programmatic access to the OpenBB Terminal commands directly in a Python script or Jupyter Notebook. Through a nearly 1-to-1 relationship, the OpenBB SDK syntax is instantly recognizable by the same Terminal commands.
 
-With OpenBB SDK, you can gain access to normalized financial data from dozens of data providers, without having to develop your own integrations from scratch. On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis on a variety of asset classes, including stocks, crypto, ETFs, funds, and the economy as well as portfolio optimization and attribution.
-
-OpenBB SDK is created and maintained by the OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers. Developing and maintaining a full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be this way. By taking advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit, now you can focus on designing and building your financial reports and applications.
+<img width="769" alt="sdk" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/3ae6ad4d-d90b-4555-8712-c94a048285d5" />
 
 ---
 
-<Card
-	type="sdk"
-	title="What is OpenBB SDK?"
-	description="OpenBB SDK is a Python library that provides you with a set of tools to access
-financial data and perform financial analysis."
- />
+- **A single endpoint for accessing financial data**
 
-<Card
-	type="sdk"
-	title="Who uses it?"
-	description="OpenBB SDK is used by financial analysts, data scientists, and developers to
-build financial applications and reports."
- />
+Accessing investment research data can be a struggle, requiring significant time and effort. The OpenBB SDK simplifies this process by providing a single endpoint to connect with close to 100 different data sources. With just one line of code, you can access 30+ years of fundamental data for any company, making data collection fast and easy.
+
+- **Integrate your own workflow**
+
+The OpenBB SDK can be inserted into any investment research workflow. This could be to convey the performance of the portfolio to your portfolio manager or as an extension of your models to provide you with up-to-date financial data that can be pivotal for modeling and visualization. In addition, any other package can be utilized to process and analyze the data without any limitation.
+
+- **Generate insights from datasets 10 times faster**
+
+With our SDK, you can effortlessly access raw financial data programmatically, reducing the time and effort required to gather relevant information. Moreover, our SDK features built-in charting capabilities for most datasets, allowing you to analyze and visualize data directly from a Jupyter Notebook. This powerful feature streamlines your workflow and allows you to quickly create custom plots, providing insights that are valuable for informed decision making.
 
 ---
 
-### Getting Started
-
-To know more about OpenBB SDK, you can start by reading the [Installation Guide](/sdk/installation).
-
-### Using OpenBB SDK
-
-To learn how to use OpenBB SDK, you can start by reading the [Basics Guide](/sdk/usage/basics).
-
-### SDK Reference
-
-SDK Reference is a complete list of all functions available in OpenBB SDK. It is automatically generated and updated every time a new version of OpenBB SDK is released. It can be found [here](/sdk/reference).
-
-### Showcase
-
-OpenBB SDK is used by many financial analysts, data scientists, and developers to build financial applications and reports. Here are some examples of what you can do with OpenBB SDK: [Showcase](/sdk/showcase).
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).

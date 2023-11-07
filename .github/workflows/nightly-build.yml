@@ -53,3 +53,12 @@ jobs:
         with:
           workflow: pypi-nightly.yml
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  trigger-api-integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Platform API Integration Test
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: platform-api-integration-test.yml
+          token: ${{ secrets.GITHUB_TOKEN }}

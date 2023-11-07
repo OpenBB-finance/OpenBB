@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "openbb"
+version = "4.0.0a4"
+description = "OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+openbb-core = "^0.1.0a5"
+
+openbb-benzinga = "^0.1.0a4"
+openbb-fmp = "^0.1.0a4"
+openbb-fred = "^0.1.0a4"
+openbb-intrinio = "^0.1.0a4"
+openbb-oecd = "^0.1.0a4"
+openbb-polygon = "^0.1.0a4"
+openbb-sec = "^0.1.0a4"
+openbb-tradingeconomics = "^0.1.0a4"
+
+openbb-crypto = "^0.1.0a4"
+openbb-economy = "^0.1.0a4"
+openbb-forex = "^0.1.0a4"
+openbb-fixedincome = "^0.1.0a4"
+openbb-news = "^0.1.0a4"
+openbb-regulators = "^0.1.0a4"
+openbb-stocks = "^0.1.0a4"
+
+# Community dependencies
+openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
+openbb-biztoc = { version = "^0.1.0a4", optional = true }
+openbb-cboe = { version = "^0.1.0a4", optional = true }
+openbb-nasdaq = { version = "^0.1.0a4", optional = true }
+openbb-quandl = { version = "^0.1.0a4", optional = true }
+openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
+openbb-yfinance = { version = "^0.1.0a4", optional = true }
+
+openbb-charting = { version = "^0.1.0a4", optional = true }
+openbb-futures = { version = "^0.1.0a4", optional = true }
+openbb-qa = { version = "^0.1.0a4", optional = true }
+openbb-ta = { version = "^0.1.0a4", optional = true }
+openbb-econometrics = { version = "^0.1.0a4", optional = true }
+
+[tool.poetry.extras]
+alpha_vantage = ["openbb-alpha-vantage"]
+biztoc = ["openbb-biztoc"]
+cboe = ["openbb-cboe"]
+nasdaq = ["openbb-nasdaq"]
+quandl = ["openbb-quandl"]
+yfinance = ["openbb-yfinance"]
+ecb = ["openbb-ecb"]
+charting = ["openbb-charting"]
+futures = ["openbb-futures"]
+qa = ["openbb-qa"]
+ta = ["openbb-ta"]
+econometrics = ["openbb-econometrics"]
+
+all = [
+    "openbb-alpha-vantage",
+    "openbb-biztoc",
+    "openbb-cboe",
+    "openbb-nasdaq",
+    "openbb-quandl",
+    "openbb-seeking-alpha",
+    "openbb-yfinance",
+    "openbb-ecb",
+    "openbb-charting",
+    "openbb-futures",
+    "openbb-qa",
+    "openbb-ta",
+    "openbb-econometrics",
+]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+pytest-subtests = "^0.11.0"
+pytest-recorder = "^0.2.3"
+toml = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

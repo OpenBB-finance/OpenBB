@@ -1,9 +1,23 @@
 ---
 title: adosc
-description: OpenBB Terminal Function
+description: This page explains the Accumulation/Distribution Oscillator (adosc),
+  a momentum indicator in trading examining both the strength of price moves and underlying
+  buying/selling pressure. It details usage, parameters, and potential market implications.
+keywords:
+- Accumulation/Distribution Oscillator
+- adosc
+- momentum indicator
+- price moves
+- buying pressure
+- selling pressure
+- market turning points
+- trading
+- stock market
 ---
 
-# adosc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/adosc - Reference | OpenBB Terminal Docs" />
 
 Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator is essentially a momentum indicator, but of the Accumulation-Distribution line rather than merely price. It looks at both the strength of price moves and the underlying buying and selling pressure during a given time period. The oscillator reading above zero indicates net buying pressure, while one below zero registers net selling pressure. Divergence between the indicator and pure price moves are the most common signals from the indicator, and often flag market turning points.
 

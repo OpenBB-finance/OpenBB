@@ -1,10 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: chart
-description: OpenBB Telegram Command
+description: This documentation page provides detailed information about the Chart
+  command in our tool. The command retrieves a candlestick chart based on the provided
+  ticker and time interval, displaying vital trading data such as opening/closing
+  prices and volume for the specified number of previous days.
+keywords:
+- Chart Command
+- Candlestick Chart
+- Stock Ticker
+- Time Interval
+- Opening and Closing Prices
+- Trading Volume
+- Past Days Display
 ---
 
-# chart
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="charts: chart - Telegram Reference | OpenBB Bot Docs" />
 
 This command will retrieve a candlestick chart for the ticker/interval provided, with data for the past number of days specified. The interval provided must be a valid time interval (e.g. 5 minute, 15 minute, etc.). The chart will be displayed to the user and will contain information such as the opening and closing prices, the high and low, the volume, and any other relevant information.
 

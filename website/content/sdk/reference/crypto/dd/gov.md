@@ -1,12 +1,25 @@
 ---
 title: gov
-description: OpenBB SDK Function
+description: This page provides functions for retrieving and viewing data on cryptocurrency
+  governance using OpenBB's Gov and Gov Chart functions. Check a crypto symbol's governance
+  and view it in a table or chart format. Also includes option to export data.
+keywords:
+- cryptocurrency
+- governance
+- data analysis
+- python functions
+- gov function
+- gov chart function
+- crypto symbol
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.gov - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gov
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.crypto.dd.gov(symbol: str)
 | Tuple[str, pd.DataFrame] | Governance summary,<br/>Metric Value with governance details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +78,6 @@ openbb.crypto.dd.gov_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

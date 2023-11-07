@@ -1,9 +1,21 @@
 ---
 title: roc
-description: OpenBB Terminal Function
+description: The documentation shows how to use the ROC function which is used to
+  add a Rate of Change to a selected dataset based on a specific column. It includes
+  usage examples and details on setting parameters like 'target_dataset', 'target_column',
+  and 'period'.
+keywords:
+- Documentation
+- ROC function
+- Dataset
+- Rate of Change
+- Parameters
+- Usage examples
 ---
 
-# roc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /roc - Reference | OpenBB Terminal Docs" />
 
 Add rate of change to dataset based on specific column.
 

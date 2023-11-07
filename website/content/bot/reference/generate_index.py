@@ -11,22 +11,22 @@ wopen_kwargs = {"encoding": "utf-8", "newline": "\n"}
 
 
 def create_cmd_cards(cmd_text: List[Dict[str, str]], url: str) -> str:
-    cmd_cards = ""
+    _cmd_cards = ""
     for cmd in cmd_text:
         cmd["description"] = shorten(f"{cmd['description']}", 116, placeholder="...")
-        cmd_cards += f"""<ReferenceCard
+        _cmd_cards += f"""<ReferenceCard
     title="{cmd["name"]}"
     description="{cmd["description"]}"
     url="/bot/reference/{url}/{cmd["name"]}"
 />\n"""
-    return cmd_cards
+    return _cmd_cards
 
 
-def create_nested_subfolder_card(folder: Path, url: str) -> str:
+def create_nested_subfolder_card(_folder: Path, url: str) -> str:
     nested_card = f"""<ReferenceCard
-        title="{folder.name}"
-        description="{' '.join([sub.stem for sub in folder.glob('**/*.md*') if sub.is_file() and sub.stem != 'index'])}"
-        url="/bot/reference/{url}/{folder.name}"
+        title="{_folder.name}"
+        description="{' '.join([sub.stem for sub in _folder.glob('**/*.md*') if sub.is_file() and sub.stem != 'index'])}"
+        url="/bot/reference/{url}/{_folder.name}"
     />\n"""
     return nested_card
 
@@ -40,10 +40,9 @@ for bot in ["discord", "telegram"]:
             if file.stem == "index":
                 continue
 
-            desc_regex = re.compile(
-                r"---\n\n# ([^\n]+)(.*)### Usage", (re.DOTALL | re.MULTILINE)
-            )
-            description = desc_regex.search(file.read_text()).group(2).strip()  # type: ignore
+            desc_regex = re.compile(r"([^>]+)(.*)### Usage", (re.MULTILINE))
+
+            description = desc_regex.search(file.read_text()).group(1).strip()  # type: ignore
 
             cmd_dict = dict(
                 name=file.stem,

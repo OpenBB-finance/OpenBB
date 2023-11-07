@@ -1,9 +1,24 @@
 ---
 title: mkt
-description: OpenBB Terminal Function
+description: The 'mkt' page allows for viewing of market data for a given coin based
+  on different parameters such as trust_score, volume, and price. The page accepts
+  different parameters to further sort, limit, and display the data effectively.
+keywords:
+- mkt
+- coin
+- market data
+- trust_score
+- volume
+- price data
+- cryptocurrency
+- data sort
+- url display
+- data limit
 ---
 
-# mkt
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/mkt - Reference | OpenBB Terminal Docs" />
 
 Get all markets found for given coin. You can display only N number of markets with --limt parameter. You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange, pair, trust_score, volume, price, pct_volume_share,
 

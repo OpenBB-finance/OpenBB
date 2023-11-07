@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: info
-description: OpenBB Discord Command
+description: An in-depth guide on how to efficiently retrieve option information such
+  as volatility, IV rank, put/call ratio for a specific ticker symbol using the 'op
+  info ticker' command.
+keywords:
+- option information
+- volatility
+- IV rank
+- put/call ratio
+- ticker symbol
+- stock ticker
 ---
 
-# info
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: info - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to quickly and easily retrieve various option information (volatility, IV rank, put/call ratio, etc.) for a specific ticker symbol.
 

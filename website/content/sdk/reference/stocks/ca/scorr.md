@@ -1,12 +1,30 @@
 ---
 title: scorr
-description: OpenBB SDK Function
+description: This page provides information on the 'scorr' function, a tool used to
+  get correlation sentiments across similar companies. It also displays information
+  on how to utilize the 'scorr_chart' function, designed to plot correlation sentiments
+  heatmap for a set of similar companies.
+keywords:
+- scorr function
+- scorr_chart function
+- correlation sentiments
+- similar companies
+- FinBrain
+- FinViz
+- Finnhub
+- Polygon
+- heatmap plot
+- sentiment analysis
+- stock comparison
+- matplotlib axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.scorr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# scorr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +54,6 @@ openbb.stocks.ca.scorr(similar: List[str])
 | ---- | ----------- |
 | Tuple[pd.DataFrame,pd.DataFrame] | Contains sentiment analysis from several tickers |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +85,6 @@ openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,0 +1,71 @@
+---
+title: Revenue Business Line
+description: The page includes implementation details of 'RevenueBusinessLine', 'RevenueBusinessLineQueryParams'
+  and 'RevenueBusinessLineData' classes from 'openbb_provider.standard_models.revenue_business_line'.
+  It also provides comprehensive details on related parameters and software data.
+keywords:
+- RevenueBusinessLine
+- RevenueBusinessLineQueryParams
+- RevenueBusinessLineData
+- openbb_provider.standard_models.revenue_business_line
+- Docusaurus page metadata
+- Software implementation details
+- Software parameters
+- Software data
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Revenue Business Line - Data_Models | OpenBB Platform Docs" />
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+---
+
+## Implementation details
+
+### Class names
+
+| Model name | Parameters class | Data class |
+| ---------- | ---------------- | ---------- |
+| `RevenueBusinessLine` | `RevenueBusinessLineQueryParams` | `RevenueBusinessLineData` |
+
+### Import Statement
+
+```python
+from openbb_provider.standard_models.revenue_business_line import (
+RevenueBusinessLineData,
+RevenueBusinessLineQueryParams,
+)
+```
+
+## Parameters
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| period | Literal['quarter', 'annual'] | Period of the data to return. | annual | True |
+| structure | Literal['hierarchical', 'flat'] | Structure of the returned data. | flat | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+</Tabs>
+
+## Data
+
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| business_line | Dict[str, int] | Day level data containing the revenue of the business line. |
+</TabItem>
+
+</Tabs>

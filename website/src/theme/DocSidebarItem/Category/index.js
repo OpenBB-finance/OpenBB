@@ -1,22 +1,23 @@
-import React, { useEffect, useMemo } from "react";
-import clsx from "clsx";
-import {
-  ThemeClassNames,
-  useThemeConfig,
-  usePrevious,
-  Collapsible,
-  useCollapsible,
-} from "@docusaurus/theme-common";
-import {
-  isActiveSidebarItem,
-  findFirstCategoryLink,
-  useDocSidebarItemsExpandedState,
-  isSamePath,
-} from "@docusaurus/theme-common/internal";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
+import { useLocation } from "@docusaurus/router";
+import {
+  Collapsible,
+  ThemeClassNames,
+  useCollapsible,
+  usePrevious,
+  useThemeConfig,
+} from "@docusaurus/theme-common";
+import {
+  findFirstCategoryLink,
+  isActiveSidebarItem,
+  isSamePath,
+  useDocSidebarItemsExpandedState,
+} from "@docusaurus/theme-common/internal";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
+import clsx from "clsx";
+import React, { useEffect, useMemo } from "react";
 import { useIFrameContext } from "../../Root";
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
@@ -37,11 +38,11 @@ function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
  * see https://github.com/facebookincubator/infima/issues/36#issuecomment-772543188
  * see https://github.com/facebook/docusaurus/issues/3030
  */
-function useCategoryHrefWithSSRFallback(item) {
+function useCategoryHrefWithSSRFallback(item, href) {
   const isBrowser = useIsBrowser();
   return useMemo(() => {
-    if (item.href) {
-      return item.href;
+    if (href) {
+      return href
     }
     // In these cases, it's not necessary to render a fallback
     // We skip the "findFirstCategoryLink" computation
@@ -78,14 +79,21 @@ export default function DocSidebarItemCategory({
   ...props
 }) {
   const { items, label, collapsible, className, href } = item;
+  const labelToHrefMap = {
+    "OpenBB Terminal": "/terminal",
+    "OpenBB Platform": "/platform",
+    "OpenBB Bot": "/bot",
+    "OpenBB Terminal Pro": "/pro"
+  };
+  const newHref = labelToHrefMap[label] || href;
   const {
     docs: {
       sidebar: { autoCollapseCategories },
     },
   } = useThemeConfig();
-  const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item);
+  const hrefWithSSRFallback = useCategoryHrefWithSSRFallback(item, newHref);
   const isActive = isActiveSidebarItem(item, activePath);
-  const isCurrentPage = isSamePath(href, activePath);
+  const isCurrentPage = isSamePath(newHref, activePath);
   const { collapsed, setCollapsed } = useCollapsible({
     // Active categories are always initialized as expanded. The default
     // (`item.collapsed`) is only used for non-active categories.
@@ -117,6 +125,14 @@ export default function DocSidebarItemCategory({
   const dontShowLink =
     isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
 
+  const location = useLocation();
+  const isProPage = location.pathname.startsWith("/pro");
+
+  // Hide the OpenBB Terminal Pro section if we're not on a /pro page
+  if (item.customProps?.hiddenByDefault && !isProPage) {
+    return null;
+  }
+
   return (
     <li
       className={clsx(
@@ -137,29 +153,29 @@ export default function DocSidebarItemCategory({
         <Link
           className={clsx("menu__link", {
             "menu__link--sublist": collapsible,
-            "menu__link--sublist-caret": !href && collapsible,
+            "menu__link--sublist-caret": !newHref && collapsible,
             "menu__link--active": isActive,
           })}
           onClick={
             collapsible
               ? (e) => {
-                  if (dontShowLink) {
-                    e.preventDefault();
-                  }
-                  onItemClick?.(item);
-                  if (href) {
-                    updateCollapsed(false);
-                  } else {
-                    e.preventDefault();
-                    updateCollapsed();
-                  }
+                if (dontShowLink) {
+                  e.preventDefault();
                 }
+                onItemClick?.(item);
+                if (newHref) {
+                  updateCollapsed(false);
+                } else {
+                  e.preventDefault();
+                  updateCollapsed();
+                }
+              }
               : () => {
-                  if (dontShowLink) {
-                    e.preventDefault();
-                  }
-                  onItemClick?.(item);
+                if (dontShowLink) {
+                  e.preventDefault();
                 }
+                onItemClick?.(item);
+              }
           }
           aria-current={isCurrentPage ? "page" : undefined}
           aria-expanded={collapsible ? !collapsed : undefined}
@@ -168,7 +184,7 @@ export default function DocSidebarItemCategory({
         >
           {label}
         </Link>
-        {href && collapsible && (
+        {newHref && collapsible && (
           <CollapseButton
             categoryLabel={label}
             onClick={(e) => {

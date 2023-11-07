@@ -1,9 +1,19 @@
 ---
 title: yret
-description: OpenBB Terminal Function
+description: This page provides a guide on how to use the command 'yret' for determining
+  the end of year returns. It offers details on the permissible period selections
+  and their usage.
+keywords:
+- yret
+- usage
+- parameters
+- end of year returns
+- period
 ---
 
-# yret
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/yret - Reference | OpenBB Terminal Docs" />
 
 End of the year returns
 

@@ -1,12 +1,65 @@
 ---
 title: vaults
-description: OpenBB SDK Function
+description: This page provides detailed information on DeFi Vaults including functions
+  to get data and tools to visualize this data. The provided functions allow querying
+  various blockchains and DeFi protocols, and sorting by key metrics such as APY.
+keywords:
+- DeFi Vaults Information
+- openbb.crypto.defi.vaults
+- openbb.crypto.defi.vaults_chart
+- Blockchain
+- DeFi protocol
+- Kind of vault
+- APY
+- ethereum
+- polygon
+- avalanche
+- bsc
+- terra
+- fantom
+- moonriver
+- celo
+- heco
+- okex
+- cronos
+- arbitrum
+- eth
+- harmony
+- fuse
+- defichain
+- solana
+- optimism
+- aave
+- acryptos
+- alpaca
+- anchor
+- autofarm
+- balancer
+- bancor
+- beefy
+- belt
+- compound
+- convex
+- cream
+- curve
+- defichain
+- geist
+- lido
+- liquity
+- mirror
+- pancakeswap
+- raydium
+- sushi
+- tarot
+- traderjoe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.vaults - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# vaults
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +91,6 @@ openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] =
 | ---- | ----------- |
 | pd.DataFrame | Top 100 DeFi Vaults for given chain/protocol sorted by APY. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +126,6 @@ openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

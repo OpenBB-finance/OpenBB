@@ -1,9 +1,31 @@
 ---
 title: derivatives
-description: OpenBB Terminal Function
+description: This page provides a comprehensive list and details on crypto derivatives.
+  Understand and sort crypto financial tools such as futures, options, and perpetual
+  contracts based on different parameters including Rank, Market, Symbol, Price, and
+  more.
+keywords:
+- crypto derivatives
+- cryptocurrency
+- Bitcoin
+- crypto futures
+- crypto options
+- perpetual contracts
+- sort by Rank
+- sort by Market
+- sort by Symbol
+- sort by Price
+- sort by Pct_Change_24h
+- sort by Contract_Type
+- sort by Basis
+- sort by Spread
+- sort by Funding_Rate
+- sort by Volume_24h
 ---
 
-# derivatives
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/derivatives - Reference | OpenBB Terminal Docs" />
 
 Shows list of crypto derivatives from CoinGecko Crypto derivatives are secondary contracts or financial tools that derive their value from a primary underlying asset. In this case, the primary asset would be a cryptocurrency such as Bitcoin. The most popular crypto derivatives are crypto futures, crypto options, and perpetual contracts. You can look on only N number of records with --limit, You can sort by Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h with by and also with --reverse flag to set it to sort descending. Displays: Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h
 

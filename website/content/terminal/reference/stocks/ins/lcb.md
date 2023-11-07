@@ -1,9 +1,26 @@
 ---
 title: lcb
-description: OpenBB Terminal Function
+description: This page documents the usage of the lcb function, which is a Python
+  command to print the latest cluster buys in the stock market. It includes details
+  about the parameters used and provides examples of how to use it effectively. The
+  information is sourced from OpenInsider.
+keywords:
+- lcb
+- cluster buys
+- openinsider
+- python code
+- code usage
+- parameters
+- data rows
+- limit
+- stock market
+- stock data
+- insider data
 ---
 
-# lcb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/lcb - Reference | OpenBB Terminal Docs" />
 
 Print latest cluster buys. [Source: OpenInsider]
 

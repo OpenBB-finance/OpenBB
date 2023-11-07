@@ -1,9 +1,23 @@
 ---
 title: hq
-description: OpenBB SDK Function
+description: This documentation page provides source code for retrieving the Google
+  Map URL of a company's headquarters based on its stock ticker symbol, using the
+  OpenBB's function openbb.stocks.fa.hq. It includes the parameter details and return
+  type description.
+keywords:
+- hq
+- google map url
+- headquarter
+- stock
+- ticker symbol
+- openbb.stocks.fa.hq
+- fundamental analysis
+- yahoo finance model
 ---
 
-# hq
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.hq - Reference | OpenBB SDK Docs" />
 
 Gets google map url for headquarter
 
@@ -30,4 +44,3 @@ openbb.stocks.fa.hq(symbol: str)
 | ---- | ----------- |
 | str | Headquarter google maps url |
 ---
-

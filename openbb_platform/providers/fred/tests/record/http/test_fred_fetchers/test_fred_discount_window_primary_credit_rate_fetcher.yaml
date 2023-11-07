@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_end=2023-06-06&observation_start=2023-01-01&series_id=DPCREDIT
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU01DUwUtJByKbmpaDL5ScVpxaVJZZk
+        5uehajYw1DUwVNJRQlaApN/ATNfATElHqTQvs6RYyUopJzMPpLi0pKC0JL6ksiBVycpQRyktMycV
+        ylPKKs4HKylKSS2KT6pUskIxOiWxJFVJR6k4v6gkPh+kRMlKKbE4WUlHKTm/NK9EycrQ0EhHKT8t
+        rTi1RMnKQEcpJzM3EyRsAAIozixWsoqmJEjAToEGISgUQEFYlphTmqpkpWSiZ2qgVKtDTeONlXSU
+        aGi8CW2NN6Wt8aAkRsPAsaSp6w0NaGs8KHvSLnAMaZvuDWmb7g1pm3IMzWkbtRa0NZ626d6Itune
+        iLYpx4i2JaYRbUtMI9qmeyPapntj2qYcY1qWmEaQ9hKtCmQjSFsOYby5KTUbIka6BqjZiurGoyZM
+        qhuPmjCpbjxqgUx141ELZGobj9YQobrxtE05hqgFMtVdj1ogU9142qZ7tIYItV2PVpVT3XjUApnq
+        xqM2YaluPG3TPVpDhOqup22JaUTLEtMYva6lbuAY07auNaZtXWsMGZmhVUvBWNeAlinHWNeAximH
+        lnWtsS5N61pjXbRuM7XTPU3rWmNdQ1rWtca6aJ1+qgcObdM9TetaY10jWta1xrpGtKxrjXVROv2m
+        egZUHYU11kWpa2lgPHLKoYHxyCUmDYxHLjGpbzxKp58GxiOne2obb4JaldPAeOTODw2MRy6QaWA8
+        cueHBsbTMluZoFbl1He9IW0TJsr4PQ1cj9z5oYHxtE33KN1mGrielgWyia4hLQtkE12Uhgj1Awel
+        IUID42mbclDG72ngetqWmCjj9zRwPS3TvSlqp5/arjdF7fTTwHhalpimugao6d6IqtMDproGqC0F
+        qhuPmnKobjxqiUlt41E6/aZ6VDcetaVAdeORu240cD1tUw5Kp58GrkdtY1I97Gmb7tFaCtR2PUqn
+        n/phj9bpp7rraVtiorUUqO561JYC1Y1HLjH1qDnVbKqL1uOnttNRpvmpnSrN0Fsh1HW9GXorhOrG
+        07I0hi4KhU09QMIesNhaAHhSvaahKgAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '822'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 02 Nov 2023 13:45:29 GMT
+      Expires:
+      - Thu, 02 Nov 2023 13:46:29 GMT
+      Last-Modified:
+      - Wed, 01 Nov 2023 20:20:13 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '110'
+    status:
+      code: 200
+      message: OK
+version: 1

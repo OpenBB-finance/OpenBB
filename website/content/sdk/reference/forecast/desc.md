@@ -1,12 +1,23 @@
 ---
 title: desc
-description: OpenBB SDK Function
+description: Detailed information on how to use the 'desc' function of the OpenBB
+  finance package in Python. The function returns statistics for a specified data
+  frame.
+keywords:
+- OpenBB finance package
+- data frame
+- statistics
+- forecasting
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.desc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# desc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +48,6 @@ openbb.forecast.desc(data: pd.DataFrame)
 | pd.DataFrame | The df with the new data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -63,8 +72,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

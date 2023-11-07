@@ -1,12 +1,24 @@
 ---
 title: active
-description: OpenBB SDK Function
+description: Documentation for the activation and visualization of active addresses
+  of a certain cryptocurrency symbol. Explains how to both retrieve and chart data
+  concerning active addresses within specific time frames.
+keywords:
+- cryptocurrency
+- active addresses
+- data visualization
+- docusaurus documentation
+- due diligence
+- time intervals
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.active - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# active
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +52,6 @@ openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2
 | pd.DataFrame | active addresses over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +84,6 @@ openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_d
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

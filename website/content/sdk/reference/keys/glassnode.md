@@ -1,9 +1,18 @@
 ---
 title: glassnode
-description: OpenBB SDK Function
+description: This documentation page provides a detailed guide on how to set the Glassnode
+  API key using the openbb.keys.glassnode method in the OpenBB Python library. It
+  includes a breakdown of parameters, return values, and a code example for easy comprehension.
+keywords:
+- Glassnode
+- API key
+- Environment variable
+- Jupyter notebook
 ---
 
-# glassnode
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.glassnode - Reference | OpenBB SDK Docs" />
 
 Set Glassnode key.
 
@@ -41,4 +50,3 @@ openbb.keys.glassnode(key="example_key")
 ```
 
 ---
-

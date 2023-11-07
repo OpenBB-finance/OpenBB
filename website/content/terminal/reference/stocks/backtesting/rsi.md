@@ -1,9 +1,23 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: Understanding the rsi strategy, which buys stock when it's less than
+  a threshold and shorts when it exceeds a threshold. Learn the usage, parameters,
+  and options involved in this strategy.
+keywords:
+- rsi
+- stock market strategy
+- short sell
+- rsi calculation
+- buy and hold comparison
+- spy hold comparison
+- rsi level
+- periods for calculation
+- threshold for buying and shorting stock
 ---
 
-# rsi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/backtesting/rsi - Reference | OpenBB Terminal Docs" />
 
 Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 

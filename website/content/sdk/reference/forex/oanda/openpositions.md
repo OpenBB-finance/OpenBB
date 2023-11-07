@@ -1,12 +1,23 @@
 ---
 title: openpositions
-description: OpenBB SDK Function
+description: This documentation page provides details about the OpenBB 'open positions'
+  function in forex trading with Oanda. Learn about the parameters including account
+  ID and review the source code in Python.
+keywords:
+- open positions
+- forex
+- Oanda
+- account ID
+- function parameters
+- python code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.openpositions - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# openpositions
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +47,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -65,8 +74,6 @@ openbb.forex.oanda.openpositions_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

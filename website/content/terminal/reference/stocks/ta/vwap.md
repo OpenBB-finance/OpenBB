@@ -1,9 +1,25 @@
 ---
 title: vwap
-description: OpenBB Terminal Function
+description: This page provides documentation on Volume Weighted Average Price (vwap)
+  which measures the average typical price by volume. It shows usage, parameters,
+  and examples specific to the analysis of stock data, with an example featuring the
+  GOOGL stock.
+keywords:
+- vwap
+- Volume Weighted Average Price
+- intraday charts
+- general direction
+- parameters
+- examples
+- stocks
+- analysis
+- offset
+- GOOGL stock
 ---
 
-# vwap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/vwap - Reference | OpenBB Terminal Docs" />
 
 The Volume Weighted Average Price that measures the average typical price by volume. It is typically used with intraday charts to identify general direction.
 

@@ -1,9 +1,24 @@
 ---
 title: atr
-description: OpenBB Terminal Function
+description: This page details how to add Average True Range to a stock ticker dataset
+  using the `atr` command. It's a fantastic resource for individuals interested in
+  forecasting and stock market analysis.
+keywords:
+- Average True Range
+- dataset
+- stock ticker
+- close column
+- high column
+- low column
+- target dataset
+- target column
+- forecasting
+- stock market analysis
 ---
 
-# atr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /atr - Reference | OpenBB Terminal Docs" />
 
 Add Average True Range to dataset of specific stock ticker.
 

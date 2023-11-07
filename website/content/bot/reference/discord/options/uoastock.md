@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: uoastock
-description: OpenBB Discord Command
+description: The uoastock command retrieves the 20-day average options volume by ticker,
+  including both calls and puts. This page provides instructions for its usage, including
+  how to filter stocks by price.
+keywords:
+- uoastock command
+- options volume by ticker
+- 20-day average options volume
+- commands for stocks
+- trading commands
+- stock price filtering
 ---
 
-# uoastock
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: uoastock - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the 20-day average options volume by ticker. The volume is based on the total volume of all options traded in the given period of time, including calls and puts.
 

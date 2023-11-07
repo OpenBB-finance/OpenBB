@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: hsi
-description: OpenBB Telegram Command
+description: The page describes the 'hsi' command used to retrieve the top high short
+  interest stocks over a 20% ratio, offering a tool for investors to identify possible
+  short squeeze potential.
+keywords:
+- hsi command
+- short interest stocks
+- investor
+- short squeeze potential
+- top stocks
 ---
 
-# hsi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="short_data: hsi - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves the top high short interest stocks over a 20% ratio. This information can let an investor identify possible short squeeze potential.
 

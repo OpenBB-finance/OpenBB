@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/stock_split/AAPL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52QsQ6CMBCGd5/iwtwm1xOhuLE4GAd341C0URIoCdDBEN7dthpdysJyw/ff3Ze7
+        aQOQDK+26ppkD0lZnk8J8+xZD2PX1zfl+cURgClUl93VqH03ISFHybcizISsUZX+rLIPO4ywFQwI
+        /7mxre6VW+160h+9a9O1tflyEfDMlqwi5ZhxLCLWozUasGAg0rgzX+nEHUfiJCPOg656q/oXkGSA
+        u7iX1nrR30qxD4dbyf0XF/67zikKmXunyJacImMg81VOV6+b+Q2SCOH5dgIAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:22:23 GMT
+      ETag:
+      - W/"276-GCY0MIIRyidP8YQ8Cd8mthKHHms"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

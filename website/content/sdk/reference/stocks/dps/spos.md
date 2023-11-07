@@ -1,12 +1,27 @@
 ---
 title: spos
-description: OpenBB SDK Function
+description: This documentation page provides a detailed guide on spos function under
+  the OpenBB package. Learn how to get net short position and plot net short position
+  with source codes and parameters clearly listed.
+keywords:
+- spos
+- net short position
+- plotting
+- Source Code
+- parameters
+- chart
+- Stockgrid
+- Stock data
+- Data Visualization
+- Data Export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.spos - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# spos
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +51,6 @@ openbb.stocks.dps.spos(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Net short position |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +83,6 @@ openbb.stocks.dps.spos_chart(symbol: str, limit: int = 84, raw: bool = False, ex
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

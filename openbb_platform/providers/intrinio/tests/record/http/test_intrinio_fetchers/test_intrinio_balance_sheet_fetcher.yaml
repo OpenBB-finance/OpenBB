@@ -1,0 +1,198 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/AAPL/fundamentals?api_key=MOCK_API_KEY&statement_code=balance_sheet_statement&type=FY
+  response:
+    body:
+      string: !!binary |
+        H4sIAJlJQmUAA6zXX0/bMBAA8K8y+bmN7uzYsf0GWulWKKSoqMA0RaEJW0ZI0zZ06xDffXboGAvN
+        C86j/yXxT/bd5ZHcPhRJfJ8WVZyvif7ySLKEaNsbbX7NymRDemRdxVVqp0TzRZKa0Zs4j4t5Gq2/
+        p2kVvQybqbfZeh7n0TaNV0RToPSlq0xX2cI++ujKzKu2pX3QKq0XJ88vWVVRYlpEFw953iNpkeza
+        xD6pD6pP/fodeVZ8ezXE+iD7wKaUavC1zzwAuDYTs3WUm0nriuhq9ZD2yENpFyX/LUXoA5+adcA1
+        Ko9zdU2eeq8YuBqES3BjwM4YsGbg+xio3QsNagbU6LswoAgaDCcjHB9+dGOAzhigZhD7GLBmkLvT
+        QOX7GaSnoMlwv7yazEZODKi6YkBVM8h9DFAzqClKDUJT7sLAJDYYthhPjkM3BtkZg6wZ1B4GI2T2
+        wsAyINVMvJ8h8CS8jQ1XxeDUjSHojCGwDAz2Mcg+Yr0XaWODDy4MXPAGAw7EOHQ8DaIzBtGaKYyQ
+        ZWA7Bha4MCBrxoZxOqObwI2Bd8bAW0OkEbKxQUxRaJ9qdLgUwhMBNBjEMDwZ/XRj8Dtj8GuGYB8D
+        32UKw8BQg3JhYG9Ogz/xVXnuxsA6Y2CtmcIIPdcNGGhEzR0yBfdUIBoM4WTJhoUbQ2dVJNL2TMF2
+        CZOCZtKpbuAex+alOJWLYqTcGDqrIhHbQ2RdRTK0pwECWwq+mwE9YLLBEOeDQSzcGDqrIhFai2nE
+        fyGScZfyCYQnsckgpb+huRMDdFZFgmrPFPA3NhgGU0WiCwOqZt2wPMcfsxs3hs6qSJDtmcJsBM1B
+        sQyUa+4QG3zPR8vwtUfmi/syLrZE70RMOzq9FMPfZ/bzs/ldanZIDg7CE9MuzD+6bZVlnn74XMxN
+        V55mpufT7CI8PodxeHYhj4aXh1Om7L2eZ3dm0HwmMFsFM/L09AcAAP//AwDbu46E7A8AAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 12:50:33 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-balance_sheet_statement-2022-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        z8//AAAA//8DACwzoCj2GAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 12:50:35 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/fundamentals/AAPL-calculations-2019-FY/standardized_financials?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+        AwBXamXAd14AAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Nov 2023 12:50:36 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

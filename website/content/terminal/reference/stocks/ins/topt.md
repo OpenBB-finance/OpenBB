@@ -1,9 +1,21 @@
 ---
 title: topt
-description: OpenBB Terminal Function
+description: This page provides instructions on how to use the 'topt' function which
+  prints the top officer purchases of the day. It includes parameters for usage and
+  an understanding of the output.
+keywords:
+- Topt
+- Officer Purchases
+- OpenInsider
+- Usage
+- Parameters
+- Limit
+- Datarows
 ---
 
-# topt
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/topt - Reference | OpenBB Terminal Docs" />
 
 Print top officer purchases of the day. [Source: OpenInsider]
 

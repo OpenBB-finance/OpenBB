@@ -1,9 +1,19 @@
 ---
 title: jcdr
-description: OpenBB Terminal Function
+description: The 'jcdr' page provides information about daily Cramer recommendations
+  and the parameters for using them, including adjustments for inverse recommendations.
+keywords:
+- jcdr
+- cramer recommendation
+- daily cramer recommendation
+- inverse recommendation
+- usage
+- parameters
 ---
 
-# jcdr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/jcdr - Reference | OpenBB Terminal Docs" />
 
 Show daily cramer recommendation
 

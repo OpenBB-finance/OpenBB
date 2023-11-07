@@ -1,9 +1,20 @@
 ---
 title: hist
-description: OpenBB SDK Function
+description: This page provides a detailed guide on the usage of the 'openbb.qa.hist'
+  function from OpenBB. This function is utilized for plotting histograms of data,
+  particularly from a Pandas DataFrame. It also includes parameters, returns, and
+  examples for a better understanding.
+keywords:
+- Histogram
+- Quantitative Analysis
+- Data Visualization
+- Pandas DataFrame
+- openbb.qa.hist function
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.hist - Reference | OpenBB SDK Docs" />
 
 Plots histogram of data
 
@@ -43,4 +54,3 @@ openbb.qa.hist(data=df, target="Adj Close")
 ```
 
 ---
-
