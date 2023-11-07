@@ -270,7 +270,7 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=42
+      - public, max-age=22
       Connection:
       - keep-alive
       Content-Language:
@@ -282,7 +282,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Tue, 07 Nov 2023 20:35:36 GMT
+      - Tue, 07 Nov 2023 21:03:01 GMT
       Location:
       - https://www.sec.gov/litigation/litreleases/rss
       Referrer-Policy:
@@ -294,9 +294,9 @@ interactions:
       X-AH-Environment:
       - prod
       X-Age:
-      - '507'
+      - '289'
       X-Cache-Hits:
-      - '49'
+      - '28'
       X-Content-Type-Options:
       - nosniff
       X-Drupal-Cache:
@@ -306,7 +306,7 @@ interactions:
       X-Redirect-ID:
       - '165886'
       X-Request-ID:
-      - v-ffc5ef68-7dab-11ee-99a4-0317beb09de0
+      - v-45ee8e92-7db0-11ee-918f-5fdea0724650
       X-UA-Compatible:
       - IE=edge
       X-Xss-Protection:
@@ -376,8 +376,6 @@ interactions:
       - bytes
       Access-Control-Allow-Origin:
       - '*'
-      Cache-Control:
-      - public, max-age=27
       Connection:
       - keep-alive
       Content-Encoding:
@@ -391,13 +389,13 @@ interactions:
       Content-Type:
       - application/rss+xml; charset=utf-8
       Date:
-      - Tue, 07 Nov 2023 20:35:36 GMT
+      - Tue, 07 Nov 2023 21:03:01 GMT
       ETag:
-      - '"1699389198"'
+      - '"1699390854"'
       Expires:
-      - Tue, 07 Nov 2023 20:36:03 GMT
+      - Tue, 07 Nov 2023 21:03:01 GMT
       Last-Modified:
-      - Tue, 07 Nov 2023 20:33:18 GMT
+      - Tue, 07 Nov 2023 21:00:54 GMT
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Server:
@@ -419,7 +417,7 @@ interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-ID:
-      - v-e2a2d2e2-7dac-11ee-a78b-eb9559644942
+      - v-bdf78ede-7db0-11ee-a1f7-139c0424a2e6
       X-UA-Compatible:
       - IE=edge
       X-Xss-Protection:

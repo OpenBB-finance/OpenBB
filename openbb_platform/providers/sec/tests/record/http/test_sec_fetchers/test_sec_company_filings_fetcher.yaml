@@ -4020,7 +4020,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Cache-Control:
-      - max-age=37
+      - max-age=21
       Connection:
       - keep-alive
       Content-Encoding:
@@ -4030,9 +4030,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 07 Nov 2023 20:35:10 GMT
+      - Tue, 07 Nov 2023 21:02:51 GMT
       Expires:
-      - Tue, 07 Nov 2023 20:35:47 GMT
+      - Tue, 07 Nov 2023 21:03:12 GMT
       Last-Modified:
       - Wed, 25 Oct 2023 20:12:27 GMT
       Server:
@@ -4583,9 +4583,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 07 Nov 2023 20:35:16 GMT
+      - Tue, 07 Nov 2023 21:02:57 GMT
       Expires:
-      - Tue, 07 Nov 2023 20:35:16 GMT
+      - Tue, 07 Nov 2023 21:02:57 GMT
       Pragma:
       - no-cache
       Strict-Transport-Security:
@@ -4593,11 +4593,11 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654a9f84-68d584a636f87b47458218b4
+      - Root=1-654aa601-027f1592263192900c18d262
       x-amz-apigw-id:
-      - OC3cvEGfIAMEDJg=
+      - OC7gNHE0IAMEOpw=
       x-amzn-RequestId:
-      - ffc3897c-aea2-4408-a790-36884598c6f6
+      - 6bd3e7a3-a4a8-452b-bbc1-cca0251e8a12
     status:
       code: 200
       message: OK
@@ -5115,9 +5115,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 07 Nov 2023 20:35:16 GMT
+      - Tue, 07 Nov 2023 21:02:57 GMT
       Expires:
-      - Tue, 07 Nov 2023 20:35:16 GMT
+      - Tue, 07 Nov 2023 21:02:57 GMT
       Pragma:
       - no-cache
       Strict-Transport-Security:
@@ -5125,11 +5125,11 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654a9f84-235afcc772f24aa169934742
+      - Root=1-654aa601-77b3c6ca1f6d2b2007f6e7f5
       x-amz-apigw-id:
-      - OC3cxHmzoAMEHSw=
+      - OC7gQF3PIAMEutw=
       x-amzn-RequestId:
-      - 6358568f-4f41-42d6-ab79-bbdf8679bfc8
+      - 517c8a29-ac67-4ba2-b60e-610ff3b79944
     status:
       code: 200
       message: OK
