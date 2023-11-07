@@ -56,10 +56,11 @@ class Console:
     """Console to be used by builder and linters."""
 
     def __init__(self, verbose: bool):
+        """Initialize the console."""
         self.verbose = verbose
 
     def log(self, message: str, **kwargs):
-        """Console log method"""
+        """Console log method."""
         if self.verbose or Env().DEBUG_MODE:
             print(message, **kwargs)  # noqa: T201
 
@@ -70,6 +71,7 @@ class PackageBuilder:
     def __init__(
         self, directory: Optional[Path] = None, lint: bool = True, verbose: bool = False
     ) -> None:
+        """Initialize the package builder."""
         self.directory = directory or Path(__file__).parent
         self.lint = lint
         self.verbose = verbose
@@ -101,7 +103,7 @@ class PackageBuilder:
             self.run_linters()
 
     def get_extension_map(self) -> Dict[str, List[str]]:
-        """Get map of extensions available at build time"""
+        """Get map of extensions available at build time."""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
             g: sorted(
@@ -115,7 +117,7 @@ class PackageBuilder:
         return ext_map
 
     def save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
-        """Save the map of extensions available at build time"""
+        """Save the map of extensions available at build time."""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
@@ -1023,6 +1025,7 @@ class Linters:
     """Run the linters for the Platform."""
 
     def __init__(self, directory: Path, verbose: bool = False) -> None:
+        """Initialize the linters."""
         self.directory = directory
         self.verbose = verbose
         self.console = Console(verbose)
