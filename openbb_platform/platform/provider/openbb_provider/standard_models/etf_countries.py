@@ -26,4 +26,6 @@ class EtfCountriesQueryParams(QueryParams):
 class EtfCountriesData(Data):
     """ETF Countries Data."""
 
-    country: str = Field(description="The country of the exposure.")
+    country: str = Field(
+        description="The country of the exposure.  Corresponding values are normalized percent points."
+    )

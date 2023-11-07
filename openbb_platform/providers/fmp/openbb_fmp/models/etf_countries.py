@@ -58,7 +58,10 @@ class FMPEtfCountriesFetcher(
             if len(df) > 0:
                 for i in df.index:
                     data.update(
-                        {i: float(df.loc[i]["weightPercentage"].replace("%", ""))}
+                        {
+                            i: float(df.loc[i]["weightPercentage"].replace("%", ""))
+                            * 0.01
+                        }
                     )
                 results.update({symbol: data})
 
