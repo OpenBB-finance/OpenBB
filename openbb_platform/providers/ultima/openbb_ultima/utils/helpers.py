@@ -1,4 +1,4 @@
-"""Benzinga Helpers."""
+"""Ultima Helpers."""
 
 
 from typing import Any, Dict
@@ -9,7 +9,7 @@ from openbb_provider import helpers
 def get_data(url: str, **kwargs: Any) -> Dict:
     """Do an API request to Ultima and return the data."""
     auth = kwargs.pop("auth", "")
-    if len(auth) == 0:
+    if auth is None or len(auth) == 0:
         raise RuntimeError("Ultima API key is required.")
     if "Bearer" not in auth:
         auth = f"Bearer {auth}"

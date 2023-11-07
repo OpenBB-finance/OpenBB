@@ -4,8 +4,6 @@ interactions:
     headers:
       Accept-Encoding:
       - gzip, deflate
-      Authorization:
-      - Bearer 7e6e31df-039f-4acf-aa39-c14bf6bb2ade
       Connection:
       - keep-alive
       accept:
