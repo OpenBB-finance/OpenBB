@@ -638,7 +638,6 @@ def display_hist_contracts(
 
     fig = OpenBBFigure(
         xaxis=dict(
-            title="Quarter",
             tickmode="array",
             tickvals=np.arange(0, len(amounts)),
             ticktext=df_contracts["dates"],
