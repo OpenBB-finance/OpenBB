@@ -700,6 +700,12 @@ class MethodDefinition:
         )
 
     @staticmethod
+    def is_data_processing_function(path: str) -> bool:
+        """Check if the function is a data processing function."""
+        methods = PathHandler.build_route_map()[path].methods
+        return "POST" in methods
+
+    @staticmethod
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         """Reorder the params."""
         formatted_keys = list(params.keys())
@@ -918,6 +924,10 @@ class MethodDefinition:
                 code += "},\n"
             else:
                 code += f"            {name}={name},\n"
+
+        if MethodDefinition.is_data_processing_function(path):
+            code += "            data_processing=True,\n"
+
         code += "        )\n\n"
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
