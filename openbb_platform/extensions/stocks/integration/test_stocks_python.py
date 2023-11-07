@@ -1008,10 +1008,7 @@ def test_stocks_calendar_ipo(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'symbol': 'AAPL'}),
-({'limit': 24, 'provider': 'sec', 'symbol': 'AAPL'})
-    ],
+    [({"symbol": "AAPL"}), ({"limit": 24, "provider": "sec", "symbol": "AAPL"})],
 )
 @pytest.mark.integration
 def test_stocks_dps_ftd(params, obb):
@@ -1021,14 +1018,11 @@ def test_stocks_dps_ftd(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
 
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'symbol': 'AAPL'})
-    ],
+    [({"symbol": "AAPL"})],
 )
 @pytest.mark.integration
 def test_stocks_dps_short_volume(params, obb):
@@ -1038,14 +1032,11 @@ def test_stocks_dps_short_volume(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
 
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'symbol': 'AAPL'})
-    ],
+    [({"symbol": "AAPL"})],
 )
 @pytest.mark.integration
 def test_stocks_dps_short_interest(params, obb):
@@ -1055,14 +1046,13 @@ def test_stocks_dps_short_interest(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
 
 
 @pytest.mark.parametrize(
     "params",
     [
-        ({'symbol': 'AAPL'}),
-({'tier': 'T1', 'is_ats': True, 'provider': 'finra', 'symbol': 'AAPL'})
+        ({"symbol": "AAPL"}),
+        ({"tier": "T1", "is_ats": True, "provider": "finra", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration
@@ -1073,4 +1063,3 @@ def test_stocks_dps_otc(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    

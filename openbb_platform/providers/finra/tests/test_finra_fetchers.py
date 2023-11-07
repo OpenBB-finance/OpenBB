@@ -1,4 +1,3 @@
-from datetime import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_finra.models.otc_aggregate import FinraOTCAggregateFetcher

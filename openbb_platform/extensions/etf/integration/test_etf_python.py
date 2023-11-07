@@ -155,9 +155,7 @@ def test_etf_disc_active(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'sort': 'desc', 'limit': 10})
-    ],
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_gainers(params, obb):
@@ -167,14 +165,11 @@ def test_etf_disc_gainers(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
 
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'sort': 'desc', 'limit': 10})
-    ],
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_losers(params, obb):
@@ -184,14 +179,11 @@ def test_etf_disc_losers(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
 
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'sort': 'desc', 'limit': 10})
-    ],
+    [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
 def test_etf_disc_active(params, obb):
@@ -201,4 +193,3 @@ def test_etf_disc_active(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
