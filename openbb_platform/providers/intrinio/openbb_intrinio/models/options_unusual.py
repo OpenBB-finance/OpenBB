@@ -40,10 +40,10 @@ class IntrinioOptionsUnusualData(OptionsUnusualData):
 
     trade_type: str = Field(description="The type of unusual trade.", alias="type")
     sentiment: str = Field(
-        description="""
-        Bullish, Bearish, or Neutral Sentiment is estimated based on whether
-        the trade was executed at the bid, ask, or mark price.
-        """
+        description=(
+            "Bullish, Bearish, or Neutral Sentiment is estimated based on whether"
+            + " the trade was executed at the bid, ask, or mark price."
+        )
     )
     total_value: Union[int, float] = Field(
         description="The aggregated value of all option contract premiums included in the trade."
@@ -93,9 +93,11 @@ class IntrinioOptionsUnusualFetcher(
         response = get_data_one(url, **kwargs)
 
         if "trades" in response:
-            data = response["trades"]
+            data = sorted(
+                response["trades"], key=lambda x: x["timestamp"], reverse=True
+            )
 
-        return sorted(data, key=lambda x: x["timestamp"], reverse=True)
+        return data
 
     @staticmethod
     def transform_data(
