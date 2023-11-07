@@ -485,7 +485,7 @@ def test_economy_calendar(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_economy_calendar(params, obb):
+def test_economy_calendar2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.calendar(**params)

@@ -246,7 +246,7 @@ def test_etf_holdings_performance(params, obb):
     [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
-def test_etf_disc_gainers(params, obb):
+def test_etf_disc_gainers2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.disc.gainers(**params)
@@ -260,7 +260,7 @@ def test_etf_disc_gainers(params, obb):
     [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
-def test_etf_disc_losers(params, obb):
+def test_etf_disc_losers2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.disc.losers(**params)
@@ -274,7 +274,7 @@ def test_etf_disc_losers(params, obb):
     [({"sort": "desc", "limit": 10})],
 )
 @pytest.mark.integration
-def test_etf_disc_active(params, obb):
+def test_etf_disc_active2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.disc.active(**params)
