@@ -4,6 +4,8 @@ interactions:
     headers:
       Accept-Encoding:
       - gzip, deflate
+      Authorization:
+      - Bearer MOCK_API_KEY
       Connection:
       - keep-alive
       accept:
@@ -13,128 +15,82 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"8k_filings\": [],\n    \"articles\": [\n      {\n        \"headline\":
-        \"AAPL - Apple Inc. Follow 2.64M Followers. Recommended For You. Samuel Smith
-        profile picture. Charlie Munger Says Investors Have To Buy These Stocks&nbsp;...\",\n
-        \       \"publishedDate\": \"2023-11-06 17:44:36\",\n        \"publisher\":
-        \"Seeking Alpha\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"AAPL's strong profitability, new hardware launches, and potential for growth
-        in the services segment position the company well for the future. The article
-        highlights AAPL's ability to generate profits, return capital to shareholders,
-        and dominate the market. The author believes that AAPL's best days are not
-        behind them and sees potential for the stock to reach a $3.48 trillion market
-        cap in 2024.\",\n        \"url\": \"https://seekingalpha.com/article/4647665-apple-stop-focusing-on-revenue-and-focus-on-profits\"\n
-        \     },\n      {\n        \"headline\": \"The U.S. International Trade Commission
-        on Oct. 26 ruled in favor of Masimo (Nasdaq: MASI) against Apple Inc., the
-        world&#39;s most valuable publicly&nbsp;...\",\n        \"publishedDate\":
-        \"2023-11-07 01:42:52\",\n        \"publisher\": \"Orange County Business
-        Journal\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"Masimo Corp. wins ruling against Apple in patent infringement case, potentially
-        halting importation of Apple's newest watches.\",\n        \"url\": \"https://www.ocbj.com/manufacturing/masimo-earns-itc-win-against-apple/\"\n
-        \     },\n      {\n        \"headline\": \"Despite a setback in a similar
-        lawsuit against Apple in 2021 and a subsequent failed appeal, Epic is now
-        petitioning the Supreme Court to consider its&nbsp;...\",\n        \"publishedDate\":
-        \"2023-11-06 14:16:59\",\n        \"publisher\": \"ReadWrite\",\n        \"riskCategory\":
-        \"Legal News\",\n        \"summary\": \"Epic Games is taking Google to court
-        over antitrust violations in the Play Store. This legal confrontation adds
-        to Google's ongoing antitrust lawsuit from the Department of Justice. The
-        outcome of the trial remains uncertain, but it could have implications for
-        Apple's app store model.\",\n        \"url\": \"https://readwrite.com/epic-games-vs-google-a-new-chapter-in-the-app-store-antitrust-saga/\"\n
+        \"LG launches 118-inch ... Reportedly, batteries based on the new design will
+        be offered with the company&#39;s products that will launch in 2025 or later.\",\n
+        \       \"publishedDate\": \"2023-11-07 13:01:41\",\n        \"publisher\":
+        \"SamMobile\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Apple is developing a new battery design expected to offer better performance
+        and launch in 2025 or later.\",\n        \"url\": \"https://www.sammobile.com/new/apple-developing-new-battery-design-2025-products/\"\n
+        \     },\n      {\n        \"headline\": \"(Bloomberg) -- Meta Platforms Inc.,
+        Apple Inc., Alphabet Inc. and other companies that offer digital wallets and
+        payment apps would fall under US&nbsp;...\",\n        \"publishedDate\": \"2023-11-08
+        01:16:45\",\n        \"publisher\": \"Yahoo Finance\",\n        \"riskCategory\":
+        \"Financial News\",\n        \"summary\": \"Apple, along with other companies
+        offering digital wallets and payment apps, could fall under US Consumer Financial
+        Protection Bureau supervision under a newly proposed rule. The rule aims to
+        treat nonbanks more like traditional financial institutions and would require
+        companies handling more than 5 million transactions per year to be regulated.
+        This could impact Apple Pay and Google Pay, as the CFPB would be able to monitor
+        their compliance with federal money-transfer laws.\",\n        \"url\": \"https://finance.yahoo.com/news/meta-apple-risk-increased-regulation-184702439.html\"\n
         \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
-        {},\n    \"industry_summary\": [\n      {\n        \"headline\": \"Apple Profits
-        Focus\",\n        \"publishedDate\": \"2023-11-06 17:44:36\",\n        \"publisher\":
-        \"Seeking Alpha\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"Apple reported a decline in YoY revenue of -2.8% (-$11.04 billion) but generated
-        $97 billion in net income. Services segment grew 9.05% YoY and is expected
-        to reach $100 billion in revenue by 2025.\",\n        \"url\": \"https://seekingalpha.com/article/4647665-apple-stop-focusing-on-revenue-and-focus-on-profits\"\n
-        \     },\n      {\n        \"headline\": \"Masimo ITC Win\",\n        \"publishedDate\":
-        \"2023-11-07 01:42:52\",\n        \"publisher\": \"Orange County Business
-        Journal\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"Masimo Corp. wins a ruling against Apple Inc. from the U.S. International
-        Trade Commission, potentially halting the importation of Apple's newest watches.\",\n
-        \       \"url\": \"https://www.ocbj.com/manufacturing/masimo-earns-itc-win-against-apple/\"\n
-        \     },\n      {\n        \"headline\": \"Epic Games Google Lawsuit\",\n
-        \       \"publishedDate\": \"2023-11-06 14:16:59\",\n        \"publisher\":
-        \"ReadWrite\",\n        \"riskCategory\": \"Legal News\",\n        \"summary\":
-        \"Epic Games is suing Google for antitrust violations in the Play Store, accusing
-        it of obstructing competing app stores and inflating fees. The trial is ongoing.\",\n
-        \       \"url\": \"https://readwrite.com/epic-games-vs-google-a-new-chapter-in-the-app-store-antitrust-saga/\"\n
-        \     }\n    ],\n    \"metadata\": {\n      \"has_industry_summary\": true,\n
-        \     \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
+        {},\n    \"industry_summary\": [],\n    \"metadata\": {\n      \"has_industry_summary\":
+        false,\n      \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
         false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
-        3,\n      \"n_pr_articles_with_summaries\": 0\n    },\n    \"pr_articles\":
+        2,\n      \"n_pr_articles_with_summaries\": 0\n    },\n    \"pr_articles\":
         [],\n    \"ticker\": \"AAPL\"\n  },\n  {\n    \"8k_filings\": [],\n    \"articles\":
-        [\n      {\n        \"headline\": \"The company has already built its own
-        large language models in what has become an artificial intelligence arms race
-        between Microsoft Corporation&nbsp;...\",\n        \"publishedDate\": \"2023-11-06
-        18:05:45\",\n        \"publisher\": \"Proactive Investors\",\n        \"riskCategory\":
-        \"Financial News\",\n        \"summary\": \"German startup Aleph Alpha raises
-        $500M in funding, challenging Open AI in the large language model market.
-        Microsoft-backed Open AI and Google's Bard are also competitors. Aleph Alpha
-        focuses on data sovereignty, a concept gaining popularity among European lawmakers.
-        Its training data includes public documents published by the European Parliament.\",\n
-        \       \"url\": \"https://www.proactiveinvestors.com/companies/news/1032232/openai-s-german-rival-raises-500m-from-sap-hewlett-packard-enterprise-and-others-1032232.html\"\n
-        \     },\n      {\n        \"headline\": \"Microsoft Corp. and Alphabet Inc.
-        reported their third-quarter earnings on Oct. 24, displaying contrasting performance
-        in each cloud-based&nbsp;...\",\n        \"publishedDate\": \"2023-11-06 14:03:35\",\n
-        \       \"publisher\": \"The Ticker\",\n        \"riskCategory\": \"Financial
-        News\",\n        \"summary\": \"Microsoft showcased a 13% increase in revenue,
-        a 27% increase in net income, and a 19% increase in revenue from its intelligent
-        cloud business in Q3. Microsoft Azure grew 29%, surpassing investor expectations.
-        The company's early investments in AI are starting to pay off, leading the
-        competition.\",\n        \"url\": \"https://theticker.org/12690/business/big-tech-q3-earnings-showcase-intense-competition-in-cloud-computing/\"\n
-        \     },\n      {\n        \"headline\": \"Although quarterly revenues and
-        earnings beat consensus estimates, management pointed out that they would
-        be ramping up capital expenditures to&nbsp;...\",\n        \"publishedDate\":
-        \"2023-11-06 09:26:07\",\n        \"publisher\": \"Yahoo Finance\",\n        \"riskCategory\":
-        \"Financial News\",\n        \"summary\": \"Alger Spectra Fund highlights
-        Microsoft as a beneficiary of corporate America's digitization. Microsoft's
-        CEO expects technology spending as a percent of GDP to double in 10 years.
-        The company reported strong Q4 results but anticipates challenges in cloud
-        growth. CEO Nadella predicts substantial revenue from AI in 2024.\",\n        \"url\":
-        \"https://finance.yahoo.com/news/does-microsoft-corporation-msft-high-090554924.html\"\n
+        [\n      {\n        \"headline\": \"In 2021, Microsoft acquired AI company
+        Nuance Communications, a leading software technology corporation specializing
+        in speech recognition and&nbsp;...\",\n        \"publishedDate\": \"2023-11-07
+        10:03:30\",\n        \"publisher\": \"Gamerant\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Microsoft partners with Inworld
+        AI to empower game developers with AI-driven features for Xbox.\",\n        \"url\":
+        \"https://gamerant.com/microsoft-inworld-ai-partnership-for-xbox/\"\n      },\n
+        \     {\n        \"headline\": \"\\u201cWe are looking forward to partnering
+        with Microsoft Azure and G7 CR Technologies \\u2013 A Noventiq Company to
+        bring our fraud protection capabilities.\",\n        \"publishedDate\": \"2023-11-07
+        20:06:49\",\n        \"publisher\": \"The Financial Express\",\n        \"riskCategory\":
+        \"Legal News\",\n        \"summary\": \"Namaste Credit partners with Microsoft
+        Azure to enhance fraud detection capabilities and offer real-time data analysis
+        to banking and financial institutions.\",\n        \"url\": \"https://www.financialexpress.com/business/digital-transformation-namaste-credit-enters-into-a-collaboration-with-microsoft-azure-over-fraud-detection-solutions-3299994/\"\n
         \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
-        {},\n    \"industry_summary\": [\n      {\n        \"headline\": \"German
-        startup Aleph Alpha raises $500M\",\n        \"publishedDate\": \"2023-11-06
-        18:05:45\",\n        \"publisher\": \"Proactive Investors\",\n        \"riskCategory\":
-        \"Financial News\",\n        \"summary\": \"Aleph Alpha, a German startup,
-        raised $500 million in series B funding from Bosch, SAP, and Hewlett Packard
-        Enterprise. The company focuses on large language models and the concept of
-        data sovereignty.\",\n        \"url\": \"https://www.proactiveinvestors.com/companies/news/1032232/openai-s-german-rival-raises-500m-from-sap-hewlett-packard-enterprise-and-others-1032232.html\"\n
-        \     },\n      {\n        \"headline\": \"Big tech Q3 earnings showcase intense
-        competition\",\n        \"publishedDate\": \"2023-11-06 14:03:35\",\n        \"publisher\":
-        \"The Ticker\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"Big tech companies Microsoft, Alphabet, and Amazon reported their Q3 earnings,
-        with Microsoft showcasing a 13% increase in revenue and a 29% growth in its
-        cloud-based business, Microsoft Azure. Google's cloud computing business grew
-        22%, while Amazon's cloud division, Amazon Web Services, grew 12%.\",\n        \"url\":
-        \"https://theticker.org/12690/business/big-tech-q3-earnings-showcase-intense-competition-in-cloud-computing/\"\n
-        \     },\n      {\n        \"headline\": \"Microsoft Corporation (MSFT) Have
-        High Growth Potential?\",\n        \"publishedDate\": \"2023-11-06 09:26:07\",\n
-        \       \"publisher\": \"Yahoo Finance\",\n        \"riskCategory\": \"Financial
-        News\",\n        \"summary\": \"Microsoft Corporation (NASDAQ:MSFT) is a beneficiary
-        of corporate America's transformative digitization. Microsoft's CEO expects
-        technology spending as a percent of Gross Domestic Product (GDP) to jump from
-        about 5% now to 10% in 10 years and that Microsoft will continue to capture
-        market share within the technology sector.\",\n        \"url\": \"https://finance.yahoo.com/news/does-microsoft-corporation-msft-high-090554924.html\"\n
-        \     },\n      {\n        \"headline\": \"Block Inc. Posts Stellar Q3 Earnings\",\n
-        \       \"publishedDate\": \"2023-11-06 04:53:52\",\n        \"publisher\":
-        \"igaming.org\",\n        \"riskCategory\": \"Financial News\",\n        \"summary\":
-        \"Block Inc., helmed by Jack Dorsey, reported impressive Q3 earnings with
-        net sales of $5.62 billion, a 24% increase YoY. Bitcoin sales surged to $2.42
-        billion, highlighting the impact of cryptocurrencies. Block aims to achieve
-        mid-teens gross profit growth and a mid-20% margin for adjusted operating
-        income by 2026. The Cash App Pay service saw a quadrupling of active monthly
-        users to over two million. Block authorized a $1 billion share buyback to
-        counteract dilution. The company's stability in the cryptocurrency market
-        was demonstrated by no impairment losses on its bitcoin assets in Q3 2023.\",\n
-        \       \"url\": \"https://igaming.org/crypto/block-inc-posts-stellar-q3-earnings-sets-ambitious-targets-for-2026/\"\n
-        \     },\n      {\n        \"headline\": \"Musk's xAI launches first AI model\",\n
-        \       \"publishedDate\": \"2023-11-06 01:24:18\",\n        \"publisher\":
-        \"IT News\",\n        \"riskCategory\": \"Cybersecurity News\",\n        \"summary\":
-        \"Elon Musk's artificial intelligence startup xAI has released its first AI
-        model to a select group. This comes nearly a year after OpenAI's ChatGPT caught
-        the imagination of businesses and users around the world, spurring a surge
-        in adoption of generative AI technology.\",\n        \"url\": \"https://www.itnews.com.au/news/musks-xai-launches-first-ai-model-to-select-group-602055\"\n
+        {},\n    \"industry_summary\": [\n      {\n        \"headline\": \"Microsoft
+        AI Partnership\",\n        \"publishedDate\": \"2023-11-07 10:03:30\",\n        \"publisher\":
+        \"Gamerant\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Microsoft partners with Inworld AI to empower game developers with AI-driven
+        features for Xbox, aiming to make game development easier and push the boundaries
+        of gaming.\",\n        \"url\": \"https://gamerant.com/microsoft-inworld-ai-partnership-for-xbox/\"\n
+        \     },\n      {\n        \"headline\": \"Namaste Credit Collaboration\",\n
+        \       \"publishedDate\": \"2023-11-07 20:06:49\",\n        \"publisher\":
+        \"The Financial Express\",\n        \"riskCategory\": \"Legal News\",\n        \"summary\":
+        \"Namaste Credit partners with Microsoft Azure to introduce fraud detection
+        capabilities for banking, financial institutions, and the fintech industry.\",\n
+        \       \"url\": \"https://www.financialexpress.com/business/digital-transformation-namaste-credit-enters-into-a-collaboration-with-microsoft-azure-over-fraud-detection-solutions-3299994/\"\n
+        \     },\n      {\n        \"headline\": \"Microsoft Ignite Security\",\n
+        \       \"publishedDate\": \"2023-11-07 21:19:41\",\n        \"publisher\":
+        \"Microsoft\",\n        \"riskCategory\": \"Cybersecurity News\",\n        \"summary\":
+        \"Microsoft Ignite will feature sessions on security strategies and practical
+        applications, with a focus on leveraging AI and Microsoft Security solutions
+        to strengthen threat defense. The event will also include networking opportunities
+        and product announcements.\",\n        \"url\": \"https://www.microsoft.com/en-us/security/blog/2023/11/07/digital-security-sessions-at-microsoft-ignite-to-prepare-you-for-the-era-of-ai/\"\n
+        \     },\n      {\n        \"headline\": \"Palo Alto Talon Acquisition\",\n
+        \       \"publishedDate\": \"2023-11-07 21:56:49\",\n        \"publisher\":
+        \"CFO Dive\",\n        \"riskCategory\": \"Cybersecurity News\",\n        \"summary\":
+        \"Palo Alto Networks is acquiring Israeli startup Talon Cyber Security for
+        $625 million, following its recent acquisition of cloud security startup Dig
+        Security. The acquisitions aim to enhance Palo Alto Networks' PrismaSASE service
+        and strengthen its presence in the Israeli cybersecurity ecosystem.\",\n        \"url\":
+        \"https://www.cfodive.com/news/palo-alto-networks-agrees-buy-talon-cyber-security-merger-acquisition-ramp-up/698951/\"\n
+        \     },\n      {\n        \"headline\": \"Microsoft Azure Kubernetes Service\",\n
+        \       \"publishedDate\": \"2023-11-07 14:14:56\",\n        \"publisher\":
+        \"SiliconANGLE\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"Microsoft Corp. announced updates to its Azure Kubernetes Service (AKS)
+        at the KubeCon + CloudNativeCon NA event. The updates focus on efficiency,
+        scalability, networking, security, and observability. AKS now offers kube-reserved
+        resource optimization, artifact streaming support, Istio-based service mesh
+        add-on, Kubernetes event-driven autoscaling, Azure Container Storage, image
+        integrity feature, dual-stack support, application routing add-on, Azure Backup,
+        Azure Monitor for Prometheus, and Azure Monitor OpenTelemetry-based distributions.\",\n
+        \       \"url\": \"https://siliconangle.com/2023/11/07/microsoft-adds-ton-new-features-azure-kubernetes-service-making-efficient-scalable-secure/\"\n
         \     }\n    ],\n    \"metadata\": {\n      \"has_industry_summary\": true,\n
         \     \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
         false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
@@ -146,11 +102,11 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '10405'
+      - '6802'
       Content-Type:
       - application/json
       Date:
-      - Wed, 08 Nov 2023 12:06:54 GMT
+      - Wed, 08 Nov 2023 13:59:33 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
     status:
