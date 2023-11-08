@@ -1,6 +1,6 @@
 """Ultima provider module."""
 from openbb_provider.abstract.provider import Provider
-from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
+from openbb_ultima.models.company_news import UltimaCompanyNewsFetcher
 
 ultima_provider = Provider(
     name="ultima",
@@ -8,6 +8,6 @@ ultima_provider = Provider(
     description="""Ultima harnesses the power of LLMs to deliver news before it hits the frontpage of Bloomberg.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockNews": UltimaStockNewsFetcher,
+        "CompanyNews": UltimaCompanyNewsFetcher,
     },
 )

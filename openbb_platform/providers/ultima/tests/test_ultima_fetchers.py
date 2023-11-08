@@ -1,6 +1,6 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_ultima.models.stock_news import UltimaStockNewsFetcher
+from openbb_ultima.models.company_news import UltimaCompanyNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -15,9 +15,9 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_ultima_stock_news_fetcher(credentials=test_credentials):
+def test_ultima_company_news_fetcher(credentials=test_credentials):
     params = {"symbols": "AAPL, MSFT"}
 
-    fetcher = UltimaStockNewsFetcher()
+    fetcher = UltimaCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -152,10 +152,10 @@ class BenzingaCompanyNewsFetcher(
 
         base_url = "https://api.benzinga.com/api/v2/news"
 
-        query.sort = f"{query.sort}:{query.order}"  # type: ignore
+        query.sort = f"{query.sort}:{query.order}" if query.sort and query.order else ""
         querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
 
-        pages = math.ceil(query.limit / 100)  # type: ignore
+        pages = math.ceil(query.limit / 100) if query.limit else 1
         data = []
 
         for page in range(pages):

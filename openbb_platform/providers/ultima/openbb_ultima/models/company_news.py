@@ -1,20 +1,20 @@
-"""Ultima Stock News Fetcher."""
+"""Ultima Company News Fetcher."""
 
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from openbb_ultima.utils.helpers import get_data
 from pydantic import Field
 
 
-class UltimaStockNewsQueryParams(StockNewsQueryParams):
-    """Ultima Stock News query.
+class UltimaCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """Ultima Company News query.
 
     Source: https://api.ultimainsights.ai/v1/api-docs#/default/get_v1_getOpenBBProInsights__tickers_
     """
@@ -24,8 +24,8 @@ class UltimaStockNewsQueryParams(StockNewsQueryParams):
     }
 
 
-class UltimaStockNewsData(StockNewsData):
-    """Ultima Stock News Data."""
+class UltimaCompanyNewsData(CompanyNewsData):
+    """Ultima Company News Data."""
 
     __alias_dict__ = {"date": "publishedDate", "text": "summary", "title": "headline"}
 
@@ -34,22 +34,26 @@ class UltimaStockNewsData(StockNewsData):
     riskCategory: str = Field(description="Risk category of the news.")
 
 
-class UltimaStockNewsFetcher(
+class UltimaCompanyNewsFetcher(
     Fetcher[
-        UltimaStockNewsQueryParams,
-        List[UltimaStockNewsData],
+        UltimaCompanyNewsQueryParams,
+        List[UltimaCompanyNewsData],
     ]
 ):
+    """Ultima Company News Fetcher."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> UltimaStockNewsQueryParams:
-        return UltimaStockNewsQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> UltimaCompanyNewsQueryParams:
+        """Transform query."""
+        return UltimaCompanyNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: UltimaStockNewsQueryParams,
+        query: UltimaCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
+        """Extract data from Ultima Insights API."""
         token = credentials.get("ultima_api_key") if credentials else ""
         kwargs["auth"] = token
 
@@ -66,10 +70,11 @@ class UltimaStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: UltimaStockNewsQueryParams,
+        query: UltimaCompanyNewsQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[UltimaStockNewsData]:
+    ) -> List[UltimaCompanyNewsData]:
+        """Transform data."""
         results = []
         for ele in data:
             for key in ["8k_filings", "articles", "industry_summary"]:
@@ -82,5 +87,5 @@ class UltimaStockNewsFetcher(
                     item["title"] = item["headline"]
                     item["url"] = item["url"]
                     item["publisher"] = item["publisher"]
-                    results.append(UltimaStockNewsData.model_validate(item))
+                    results.append(UltimaCompanyNewsData.model_validate(item))
         return results
