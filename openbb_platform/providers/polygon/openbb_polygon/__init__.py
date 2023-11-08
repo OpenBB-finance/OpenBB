@@ -11,7 +11,6 @@ from openbb_polygon.models.major_indices_historical import (
 )
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_nbbo import PolygonStockNBBOFetcher
-from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
