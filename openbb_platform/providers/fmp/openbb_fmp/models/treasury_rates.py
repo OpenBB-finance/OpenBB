@@ -1,4 +1,4 @@
-"""FMP Treasury Rates fetcher."""
+"""FMP Treasury Rates."""
 
 
 from datetime import datetime, timedelta
@@ -14,7 +14,7 @@ from pydantic import field_validator
 
 
 class FMPTreasuryRatesQueryParams(TreasuryRatesQueryParams):
-    """FMP Stock News Query.
+    """FMP Treasury Rates Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/treasury-rates-api/
 

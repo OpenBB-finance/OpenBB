@@ -7,8 +7,10 @@ from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
+from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
+from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
@@ -47,7 +49,6 @@ from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
 from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
-from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
@@ -63,58 +64,59 @@ fmp_provider = Provider(
     stock market information (news, currencies, and stock prices).""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "KeyExecutives": FMPKeyExecutivesFetcher,
-        "StockHistorical": FMPStockHistoricalFetcher,
-        "GlobalNews": FMPGlobalNewsFetcher,
-        "StockNews": FMPStockNewsFetcher,
-        "IncomeStatement": FMPIncomeStatementFetcher,
-        "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
+        "AnalystEstimates": FMPAnalystEstimatesFetcher,
+        "AvailableIndices": FMPAvailableIndicesFetcher,
         "BalanceSheet": FMPBalanceSheetFetcher,
         "BalanceSheetGrowth": FMPBalanceSheetGrowthFetcher,
+        "CalendarDividend": FMPDividendCalendarFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
-        "ShareStatistics": FMPShareStatisticsFetcher,
-        "MajorIndicesHistorical": FMPMajorIndicesHistoricalFetcher,
-        "RevenueGeographic": FMPRevenueGeographicFetcher,
-        "RevenueBusinessLine": FMPRevenueBusinessLineFetcher,
-        "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
+        "CompanyFilings": FMPCompanyFilingsFetcher,
+        "CompanyNews": FMPCompanyNewsFetcher,
         "CompanyOverview": FMPCompanyOverviewFetcher,
-        "StockInsiderTrading": FMPStockInsiderTradingFetcher,
-        "StockOwnership": FMPStockOwnershipFetcher,
-        "PriceTargetConsensus": FMPPriceTargetConsensusFetcher,
-        "PriceTarget": FMPPriceTargetFetcher,
-        "AnalystEstimates": FMPAnalystEstimatesFetcher,
+        "CryptoHistorical": FMPCryptoHistoricalFetcher,
+        "CryptoSearch": FMPCryptoSearchFetcher,
+        "DiscFilings": FMPFilingsFetcher,
         "EarningsCalendar": FMPEarningsCalendarFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
-        "HistoricalStockSplits": FMPHistoricalStockSplitsFetcher,
-        "StockSplitCalendar": FMPStockSplitCalendarFetcher,
-        "HistoricalDividends": FMPHistoricalDividendsFetcher,
-        "KeyMetrics": FMPKeyMetricsFetcher,
-        "CompanyFilings": FMPCompanyFilingsFetcher,
-        "TreasuryRates": FMPTreasuryRatesFetcher,
-        "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
+        "EconomicCalendar": FMPEconomicCalendarFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
-        "EtfHoldingsPerformance": FMPEtfHoldingsPerformanceFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
+        "EtfHoldingsPerformance": FMPEtfHoldingsPerformanceFetcher,
         "EtfInfo": FMPEtfInfoFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
         "EtfSectors": FMPEtfSectorsFetcher,
-        "CryptoHistorical": FMPCryptoHistoricalFetcher,
+        "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
+        "FinancialRatios": FMPFinancialRatiosFetcher,
         "ForexHistorical": FMPForexHistoricalFetcher,
         "ForexPairs": FMPForexPairsFetcher,
-        "StockPeers": FMPStockPeersFetcher,
-        "StockMultiples": FMPStockMultiplesFetcher,
+        "GlobalNews": FMPGlobalNewsFetcher,
+        "HistoricalDividends": FMPHistoricalDividendsFetcher,
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
-        "AvailableIndices": FMPAvailableIndicesFetcher,
-        "RiskPremium": FMPRiskPremiumFetcher,
+        "HistoricalStockSplits": FMPHistoricalStockSplitsFetcher,
+        "IncomeStatement": FMPIncomeStatementFetcher,
+        "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
+        "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
+        "KeyExecutives": FMPKeyExecutivesFetcher,
+        "KeyMetrics": FMPKeyMetricsFetcher,
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
-        "CalendarDividend": FMPDividendCalendarFetcher,
-        "StockQuote": FMPStockQuoteFetcher,
-        "FinancialRatios": FMPFinancialRatiosFetcher,
+        "MajorIndicesHistorical": FMPMajorIndicesHistoricalFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
-        "EconomicCalendar": FMPEconomicCalendarFetcher,
+        "PriceTarget": FMPPriceTargetFetcher,
+        "PriceTargetConsensus": FMPPriceTargetConsensusFetcher,
+        "RevenueBusinessLine": FMPRevenueBusinessLineFetcher,
+        "RevenueGeographic": FMPRevenueGeographicFetcher,
+        "RiskPremium": FMPRiskPremiumFetcher,
+        "ShareStatistics": FMPShareStatisticsFetcher,
+        "StockHistorical": FMPStockHistoricalFetcher,
+        "StockInsiderTrading": FMPStockInsiderTradingFetcher,
+        "StockMultiples": FMPStockMultiplesFetcher,
+        "StockOwnership": FMPStockOwnershipFetcher,
+        "StockPeers": FMPStockPeersFetcher,
+        "StockQuote": FMPStockQuoteFetcher,
         "StockSearch": FMPStockSearchFetcher,
-        "DiscFilings": FMPFilingsFetcher,
+        "StockSplitCalendar": FMPStockSplitCalendarFetcher,
+        "TreasuryRates": FMPTreasuryRatesFetcher,
     },
 )

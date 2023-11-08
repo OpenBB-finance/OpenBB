@@ -5,12 +5,15 @@ from openbb_core.app.model.obbject import OBBject
 
 
 @pytest.fixture(scope="session")
-def obb(pytestconfig):
+def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     """Fixture to setup obb."""
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
+
+
+# pylint: disable=redefined-outer-name
 
 
 @pytest.mark.parametrize(
@@ -84,6 +87,23 @@ def obb(pytestconfig):
 @pytest.mark.integration
 def test_crypto_load(params, obb):
     result = obb.crypto.load(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"query": "asd"}),
+        ({"query": "btc", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_crypto_search(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.crypto.search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

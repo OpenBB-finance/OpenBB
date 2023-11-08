@@ -1,9 +1,9 @@
-"""intrinio provider module."""
-
+"""Intrinio provider module."""
 
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
+from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
@@ -11,7 +11,6 @@ from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetch
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
-from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 from openbb_provider.abstract.provider import Provider
 
@@ -23,8 +22,9 @@ intrinio_provider = Provider(
     required_credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
-        "CashFlowStatement": IntrinioCashFlowStatementFetcher,
         "CalendarIpo": IntrinioCalendarIpoFetcher,
+        "CashFlowStatement": IntrinioCashFlowStatementFetcher,
+        "CompanyNews": IntrinioCompanyNewsFetcher,
         "ForexPairs": IntrinioForexPairsFetcher,
         "FredHistorical": IntrinioFredHistoricalFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,
@@ -32,7 +32,6 @@ intrinio_provider = Provider(
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "StockHistorical": IntrinioStockHistoricalFetcher,
-        "StockNews": IntrinioStockNewsFetcher,
         "StockQuote": IntrinioStockQuoteFetcher,
     },
 )

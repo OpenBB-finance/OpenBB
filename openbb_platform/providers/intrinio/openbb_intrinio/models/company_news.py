@@ -1,4 +1,4 @@
-"""Intrinio Stock News fetcher."""
+"""Intrinio Company News."""
 
 
 from datetime import datetime
@@ -6,16 +6,16 @@ from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
-class IntrinioStockNewsQueryParams(StockNewsQueryParams):
-    """Intrinio Stock News query.
+class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """Intrinio Company News query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
@@ -27,8 +27,8 @@ class IntrinioStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
-class IntrinioStockNewsData(StockNewsData):
-    """Intrinio Stock News data."""
+class IntrinioCompanyNewsData(CompanyNewsData):
+    """Intrinio Company News data."""
 
     __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
@@ -40,28 +40,26 @@ class IntrinioStockNewsData(StockNewsData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.000Z")
 
 
-class IntrinioStockNewsFetcher(
+class IntrinioCompanyNewsFetcher(
     Fetcher[
-        IntrinioStockNewsQueryParams,
-        List[IntrinioStockNewsData],
+        IntrinioCompanyNewsQueryParams,
+        List[IntrinioCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioStockNewsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioCompanyNewsQueryParams:
         """Transform the query params."""
-
-        return IntrinioStockNewsQueryParams(**params)
+        return IntrinioCompanyNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioStockNewsQueryParams,
+        query: IntrinioCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
@@ -72,8 +70,7 @@ class IntrinioStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioStockNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioStockNewsData]:
+        query: IntrinioCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
-
-        return [IntrinioStockNewsData.model_validate(d) for d in data]
+        return [IntrinioCompanyNewsData.model_validate(d) for d in data]
