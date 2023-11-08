@@ -32,9 +32,6 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "change_percent": "changesPercentage",
     }
 
-    name: str = Field(
-        description="The name associated with the stock symbol.", default=None
-    )
     price: Optional[float] = Field(
         description="The last price of the stock.", default=None
     )
@@ -54,17 +51,19 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     year_low: Optional[float] = Field(
         description="The 52-week low.", alias="yearLow", default=None
     )
-    market_cap: float = Field(
+    market_cap: Optional[float] = Field(
         description="Market cap of the stock.", alias="marketCap", default=None
     )
-    shares_outstanding: float = Field(
+    shares_outstanding: Optional[float] = Field(
         description="Number of shares outstanding.",
         alias="sharesOutstanding",
         default=None,
     )
     eps: Optional[float] = Field(description="Earnings per share.", default=None)
     pe: Optional[float] = Field(description="Price to earnings ratio.", default=None)
-    exchange: str = Field(description="The exchange of the stock.", default=None)
+    exchange: Optional[str] = Field(
+        description="The exchange of the stock.", default=None
+    )
     timestamp: Optional[Union[int, float]] = Field(
         description="The timestamp of the data.", default=None
     )
@@ -72,6 +71,9 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         description="The earnings announcement of the stock.",
         alias="earningsAnnouncement",
         default=None,
+    )
+    name: Optional[str] = Field(
+        description="The name associated with the stock symbol.", default=None
     )
 
 
