@@ -315,7 +315,7 @@ def test_economy_cot_search(params, headers):
     [
         (
             {
-                "code": "13874P",
+                "id": "13874P",
                 "data_type": "FO",  # cspell: disable-line
                 "legacy_format": True,
                 "report_type": "ALL",

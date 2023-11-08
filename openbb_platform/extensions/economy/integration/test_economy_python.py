@@ -282,7 +282,7 @@ def test_economy_cot_search(params, obb):
         ({}),
         (
             {
-                "code": "13874P",
+                "id": "13874P",
                 "data_type": "FO",
                 "legacy_format": True,
                 "report_type": "ALL",
