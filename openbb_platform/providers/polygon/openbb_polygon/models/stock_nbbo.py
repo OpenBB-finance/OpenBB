@@ -24,10 +24,6 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
     Source: https://polygon.io/docs/stocks/get_v3_quotes__stockticker
     """
 
-    __alias_dict__ = {
-        "date": "timestamp",
-    }
-
     limit: int = Field(
         default=50000,
         description=(
@@ -45,6 +41,7 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
             QUERY_DESCRIPTIONS.get("date", "")
             + " Use bracketed the timestamp parameters to specify exact time ranges."
         ),
+        alias="timestamp",
     )
     timestamp_lt: Optional[Union[datetime, str]] = Field(
         default=None,
