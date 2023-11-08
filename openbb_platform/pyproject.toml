@@ -32,7 +32,6 @@ openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
 openbb-biztoc = { version = "^0.1.0a4", optional = true }
 openbb-cboe = { version = "^0.1.0a4", optional = true }
 openbb-nasdaq = { version = "^0.1.0a4", optional = true }
-openbb-quandl = { version = "^0.1.0a4", optional = true }
 openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
 openbb-yfinance = { version = "^0.1.0a4", optional = true }
 
@@ -47,7 +46,6 @@ alpha_vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
 nasdaq = ["openbb-nasdaq"]
-quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
 ecb = ["openbb-ecb"]
 charting = ["openbb-charting"]

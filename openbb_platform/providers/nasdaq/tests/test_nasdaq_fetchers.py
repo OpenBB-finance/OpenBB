@@ -4,7 +4,10 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_nasdaq.models.calendar_dividend import NasdaqDividendCalendarFetcher
 from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
+from openbb_nasdaq.models.cot import NasdaqCotFetcher
+from openbb_nasdaq.models.cot_search import NasdaqCotSearchFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
+from openbb_nasdaq.models.sp500_multiples import NasdaqSP500MultiplesFetcher
 from openbb_nasdaq.models.top_retail import NasdaqTopRetailFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -62,5 +65,31 @@ def test_nasdaq_top_retail_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = NasdaqTopRetailFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_nasdaq_sp500_multiples_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = NasdaqSP500MultiplesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_nasdaq_cot_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = NasdaqCotFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_nasdaq_cot_search_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = NasdaqCotSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

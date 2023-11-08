@@ -1,5 +1,6 @@
 """SP500 Multiples  data model."""
 
+from datetime import date as dateType
 from typing import Literal, Optional
 
 from pydantic import Field
@@ -53,26 +54,16 @@ class SP500MultiplesQueryParams(QueryParams):
         description="The name of the series. Defaults to 'PE Ratio by Month'.",
         default="PE Ratio by Month",
     )
+
     start_date: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=""
     )
     end_date: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=""
     )
-    collapse: Optional[
-        Literal["daily", "weekly", "monthly", "quarterly", "annual"]
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default="monthly",
-    )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
-        description="The transformation of the time series.",
-        default=None,
-    )
 
 
 class SP500MultiplesData(Data):
     """SP500 Multiples Data."""
 
-    date: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    value: float = Field(description="The data value for the time series.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

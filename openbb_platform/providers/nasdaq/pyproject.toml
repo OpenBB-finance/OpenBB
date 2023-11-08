@@ -10,6 +10,7 @@ packages = [{ include = "openbb_nasdaq" }]
 python = "^3.8"
 openbb-core = "^0.1.0a5"
 random-user-agent="^1.0.1"
+nasdaq-data-link = "^1.0.4"
 
 [build-system]
 requires = ["poetry-core"]

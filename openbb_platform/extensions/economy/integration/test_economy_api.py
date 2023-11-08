@@ -297,7 +297,7 @@ def test_economy_index_snapshots(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "grain", "provider": "quandl"})],
+    [({"query": "grain", "provider": "nasdaq"})],
 )
 @pytest.mark.integration
 def test_economy_cot_search(params, headers):
@@ -323,7 +323,7 @@ def test_economy_cot_search(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "transform": "diff",
-                "provider": "quandl",
+                "provider": "nasdaq",
             }
         ),
     ],
@@ -349,7 +349,7 @@ def test_economy_cot(params, headers):
                 "end_date": "2023-06-06",
                 "collapse": "monthly",
                 "transform": "diff",
-                "provider": "quandl",
+                "provider": "nasdaq",
             }
         )
     ],
