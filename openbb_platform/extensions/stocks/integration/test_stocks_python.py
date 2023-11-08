@@ -869,6 +869,12 @@ def test_stocks_load(params, obb):
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "symbols": "AAPL,MSFT",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

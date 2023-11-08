@@ -16,11 +16,22 @@ router = Router(prefix="")
 
 
 @router.command(model="GlobalNews")
-def globalnews(
+def world(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Global News. Global news data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CompanyNews")
+def company(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Company News. Get news for one or more companies."""
     return OBBject(results=Query(**locals()).execute())

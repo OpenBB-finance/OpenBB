@@ -7,6 +7,7 @@ from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
+from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
@@ -49,7 +50,6 @@ from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
 from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
-from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
@@ -73,6 +73,7 @@ fmp_provider = Provider(
         "CashFlowStatement": FMPCashFlowStatementFetcher,
         "CashFlowStatementGrowth": FMPCashFlowStatementGrowthFetcher,
         "CompanyFilings": FMPCompanyFilingsFetcher,
+        "CompanyNews": FMPCompanyNewsFetcher,
         "CompanyOverview": FMPCompanyOverviewFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "CryptoSearch": FMPCryptoSearchFetcher,
@@ -112,7 +113,6 @@ fmp_provider = Provider(
         "StockHistorical": FMPStockHistoricalFetcher,
         "StockInsiderTrading": FMPStockInsiderTradingFetcher,
         "StockMultiples": FMPStockMultiplesFetcher,
-        "StockNews": FMPStockNewsFetcher,
         "StockOwnership": FMPStockOwnershipFetcher,
         "StockPeers": FMPStockPeersFetcher,
         "StockQuote": FMPStockQuoteFetcher,
