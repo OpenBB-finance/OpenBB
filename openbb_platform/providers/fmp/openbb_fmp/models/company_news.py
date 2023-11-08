@@ -1,18 +1,18 @@
-"""FMP Stock News fetcher."""
+"""FMP Company News."""
 
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from pydantic import Field
 
 
-class FMPStockNewsQueryParams(StockNewsQueryParams):
-    """FMP Stock News query.
+class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """FMP Company News query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
     """
@@ -24,8 +24,8 @@ class FMPStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
-class FMPStockNewsData(StockNewsData):
-    """FMP Stock News data."""
+class FMPCompanyNewsData(CompanyNewsData):
+    """FMP Company News data."""
 
     __alias_dict__ = {"date": "publishedDate"}
 
@@ -39,22 +39,22 @@ class FMPStockNewsData(StockNewsData):
     )
 
 
-class FMPStockNewsFetcher(
+class FMPCompanyNewsFetcher(
     Fetcher[
-        FMPStockNewsQueryParams,
-        List[FMPStockNewsData],
+        FMPCompanyNewsQueryParams,
+        List[FMPCompanyNewsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockNewsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCompanyNewsQueryParams:
         """Transform the query params."""
-        return FMPStockNewsQueryParams(**params)
+        return FMPCompanyNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockNewsQueryParams,
+        query: FMPCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -73,7 +73,7 @@ class FMPStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockNewsData]:
+        query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCompanyNewsData]:
         """Return the transformed data."""
-        return [FMPStockNewsData.model_validate(d) for d in data]
+        return [FMPCompanyNewsData.model_validate(d) for d in data]
