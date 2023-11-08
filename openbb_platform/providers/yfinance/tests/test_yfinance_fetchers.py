@@ -7,6 +7,7 @@ from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFe
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
+from openbb_yfinance.models.company_news import YFinanceCompanyNewsFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
@@ -20,7 +21,6 @@ from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
-from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -123,10 +123,10 @@ def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_y_finance_stock_news_fetcher(credentials=test_credentials):
+def test_y_finance_company_news_fetcher(credentials=test_credentials):
     params = {"symbols": "AAPL,MSFT"}
 
-    fetcher = YFinanceStockNewsFetcher()
+    fetcher = YFinanceCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

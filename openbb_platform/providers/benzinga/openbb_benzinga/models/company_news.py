@@ -1,4 +1,4 @@
-"""Benzinga Stock News Fetcher."""
+"""Benzinga Company News."""
 
 
 import math
@@ -7,16 +7,16 @@ from typing import Any, Dict, List, Literal, Optional
 
 from openbb_benzinga.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
-class BenzingaStockNewsQueryParams(StockNewsQueryParams):
-    """Benzinga Stock News query.
+class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """Benzinga Company News query.
 
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
@@ -83,8 +83,8 @@ class BenzingaStockNewsQueryParams(StockNewsQueryParams):
     )
 
 
-class BenzingaStockNewsData(StockNewsData):
-    """Benzinga Stock News Data."""
+class BenzingaCompanyNewsData(CompanyNewsData):
+    """Benzinga Company News Data."""
 
     __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
 
@@ -107,7 +107,7 @@ class BenzingaStockNewsData(StockNewsData):
         default=None,
     )
     updated: Optional[datetime] = Field(
-        default=None, escription="Updated date of the news."
+        default=None, description="Updated date of the news."
     )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
@@ -128,30 +128,34 @@ class BenzingaStockNewsData(StockNewsData):
         return str(v)
 
 
-class BenzingaStockNewsFetcher(
+class BenzingaCompanyNewsFetcher(
     Fetcher[
-        BenzingaStockNewsQueryParams,
-        List[BenzingaStockNewsData],
+        BenzingaCompanyNewsQueryParams,
+        List[BenzingaCompanyNewsData],
     ]
 ):
+    """Benzinga Company News Fetcher."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaStockNewsQueryParams:
-        return BenzingaStockNewsQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> BenzingaCompanyNewsQueryParams:
+        """Transform query params."""
+        return BenzingaCompanyNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: BenzingaStockNewsQueryParams,
+        query: BenzingaCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract data."""
         token = credentials.get("benzinga_api_key") if credentials else ""
 
         base_url = "https://api.benzinga.com/api/v2/news"
 
-        query.sort = f"{query.sort}:{query.order}"
+        query.sort = f"{query.sort}:{query.order}" if query.sort and query.order else ""
         querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
 
-        pages = math.ceil(query.limit / 100)
+        pages = math.ceil(query.limit / 100) if query.limit else 1
         data = []
 
         for page in range(pages):
@@ -165,8 +169,9 @@ class BenzingaStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: BenzingaStockNewsQueryParams,
+        query: BenzingaCompanyNewsQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[BenzingaStockNewsData]:
-        return [BenzingaStockNewsData.model_validate(item) for item in data]
+    ) -> List[BenzingaCompanyNewsData]:
+        """Transform data."""
+        return [BenzingaCompanyNewsData.model_validate(item) for item in data]

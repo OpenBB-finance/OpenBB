@@ -5,6 +5,7 @@ from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
+from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
@@ -12,7 +13,6 @@ from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetch
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
-from openbb_intrinio.models.stock_news import IntrinioStockNewsFetcher
 from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -54,10 +54,10 @@ def test_intrinio_forex_pairs_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_stock_news_fetcher(credentials=test_credentials):
+def test_intrinio_company_news_fetcher(credentials=test_credentials):
     params = {"symbols": "AAPL"}
 
-    fetcher = IntrinioStockNewsFetcher()
+    fetcher = IntrinioCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
