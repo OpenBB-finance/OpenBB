@@ -1193,7 +1193,7 @@ def test_stocks_dps_otc(params, obb):
     "params",
     [
         ({"symbol": "AAPL"}),
-({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"})
+        ({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration
