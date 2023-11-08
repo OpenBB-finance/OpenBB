@@ -1,4 +1,4 @@
-"""CFTC Commitment of Traders Reports fetcher."""
+"""Nasdaq CFTC Commitment of Traders Reports fetcher."""
 
 from datetime import (
     date as dateType,
@@ -6,17 +6,16 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
+import nasdaqdatalink
 import pandas as pd
-import quandl
-from openbb_provider.abstract.data import Data
+from openbb_nasdaq.utils.series_ids import CFTC
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.standard_models.cot import COTData, COTQueryParams
 from openbb_provider.utils.helpers import to_snake_case
-from openbb_quandl.utils.series_ids import CFTC
 from pydantic import Field, field_validator
 
 
-class QuandlCotQueryParams(QueryParams):
+class NasdaqCotQueryParams(COTQueryParams):
     """Get CFTC Commitment of Traders Report.
 
     Source: https://data.nasdaq.com/data/CFTC-commodity-futures-trading-commission-reports/documentation
@@ -24,14 +23,14 @@ class QuandlCotQueryParams(QueryParams):
     Not all combinations of parameters and underlying assets are valid, bad combinations will return an error.
     """
 
-    code: str = Field(
+    id: str = Field(
         description="""
-            CFTC series code.  Use search_cot() to find the code.
-            Codes not listed in the curated list, but are published by on the Nasdaq Data Link website, are valid.
+            CFTC series ID.  Use search_cot() to find the ID.
+            IDs not listed in the curated list, but are published on the Nasdaq Data Link website, are valid.
             Certain symbols, such as "ES=F", or exact names are also valid.
-            Default report is: S&P 500 Consolidated (CME))
+            Default report is Two-Year Treasury Note Futures.
             """,
-        default="13874P",
+        default="042601",
     )
     data_type: Optional[Literal["F", "FO", "CITS"]] = Field(
         description="""
@@ -42,7 +41,7 @@ class QuandlCotQueryParams(QueryParams):
             FO = Futures and Options
 
             CITS = Commodity Index Trader Supplemental. Only valid for commodities.
-        """,
+            """,
         default="FO",
     )
     legacy_format: Optional[bool] = Field(
@@ -53,14 +52,14 @@ class QuandlCotQueryParams(QueryParams):
         description="""
             The type of report to return. Default is "ALL".
 
-                ALL = All
+            ALL = All
 
-                CHG = Change in Positions
+            CHG = Change in Positions
 
-                OLD = Old Crop Years
+            OLD = Old Crop Years
 
-                OTR = Other Crop Years
-        """,
+            OTR = Other Crop Years
+            """,
         default="ALL",
     )
     measure: Optional[Literal["CR", "NT", "OI", "CHG"]] = Field(
@@ -74,7 +73,7 @@ class QuandlCotQueryParams(QueryParams):
             OI = Percent of Open Interest
 
             CHG = Change in Positions. Only valid when data_type is "CITS".
-        """,
+            """,
         default=None,
     )
     start_date: Optional[dateType] = Field(
@@ -90,14 +89,8 @@ class QuandlCotQueryParams(QueryParams):
     )
 
 
-class QuandlCotData(Data):
-    """Quandl CFTC Commitment of Traders Reports data.
-
-    Returns
-    -------
-    List[Dict]
-        Columns in the response object will change according to the parameters and underlying asset.
-    """
+class NasdaqCotData(COTData):
+    """Nasdaq CFTC Commitment of Traders Reports data."""
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -106,64 +99,64 @@ class QuandlCotData(Data):
         return datetime.strptime(v, "%Y-%m-%d").date()
 
 
-class QuandlCotFetcher(Fetcher[QuandlCotQueryParams, List[QuandlCotData]]):
-    """Quandl CFTC Commitment of Traders Reports Fetcher."""
+class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
+    """Nasdaq CFTC Commitment of Traders Reports Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> QuandlCotQueryParams:
-        return QuandlCotQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> NasdaqCotQueryParams:
+        return NasdaqCotQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: QuandlCotQueryParams,
+        query: NasdaqCotQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        api_key = credentials.get("quandl_api_key") if credentials else ""
+        api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         # The "code" can be an exact name, a symbol, or a CFTC series code.
         series_id: str = ""
         series_ids = pd.DataFrame(CFTC).transpose().reset_index(drop=True)
         series_ids.columns = series_ids.columns.str.lower()
 
-        if query.code in series_ids["code"].values:
-            series_id = query.code
+        if query.id in series_ids["code"].values:
+            series_id = query.id
 
-        if query.code not in series_ids["code"].values:
-            if query.code in series_ids["symbol"].values:
+        if query.id not in series_ids["code"].values:
+            if query.id in series_ids["symbol"].values:
                 series_id = series_ids.loc[
-                    series_ids["symbol"] == query.code, "code"
+                    series_ids["symbol"] == query.id, "code"
                 ].values[0]
-            if query.code in series_ids["name"].values:
+            if query.id in series_ids["name"].values:
                 series_id = series_ids.loc[
-                    series_ids["name"] == query.code, "code"
+                    series_ids["name"] == query.id, "code"
                 ].values[0]
             # Allows for strings not found in the curated list.
             if (
-                query.code not in series_ids["code"].values
-                and query.code not in series_ids["symbol"].values
-                and query.code not in series_ids["name"].values
+                query.id not in series_ids["code"].values
+                and query.id not in series_ids["symbol"].values
+                and query.id not in series_ids["name"].values
             ):
-                series_id = query.code
+                series_id = query.id
 
-        # The "quandl_code" gets parsed conditionally for the parameters.
-        quandl_code = f"CFTC/{series_id}"
+        # The "datalink_code" gets parsed conditionally for the parameters.
+        datalink_code = f"CFTC/{series_id}"
 
         if query.data_type:
-            quandl_code = f"{quandl_code}_{query.data_type}"
+            datalink_code = f"{datalink_code}_{query.data_type}"
 
         if query.legacy_format is False and query.data_type != "CITS":
-            quandl_code = f"{quandl_code}_L"
+            datalink_code = f"{datalink_code}_L"
 
         if query.report_type:
-            quandl_code = f"{quandl_code}_{query.report_type}"
+            datalink_code = f"{datalink_code}_{query.report_type}"
 
         if query.measure is not None:
-            quandl_code = f"{quandl_code}_{query.measure}"
+            datalink_code = f"{datalink_code}_{query.measure}"
 
         try:
-            data = quandl.get(
-                quandl_code,
+            data = nasdaqdatalink.get(
+                datalink_code,
                 start_date=query.start_date,
                 end_date=query.end_date,
                 transform=query.transform,
@@ -186,8 +179,8 @@ class QuandlCotFetcher(Fetcher[QuandlCotQueryParams, List[QuandlCotData]]):
 
     @staticmethod
     def transform_data(
-        query: QuandlCotQueryParams,
+        query: NasdaqCotQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[QuandlCotData]:
-        return [QuandlCotData.model_validate(d) for d in data]
+    ) -> List[NasdaqCotData]:
+        return [NasdaqCotData.model_validate(d) for d in data]

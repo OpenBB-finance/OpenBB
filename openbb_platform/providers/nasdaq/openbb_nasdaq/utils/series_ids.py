@@ -1,4 +1,4 @@
-"""Series ID Dictionaries for Quandl Provider."""
+"""Nasdaq Data Link Series ID Dictionaries."""
 
 SP500MULTIPLES = {
     "Shiller PE Ratio by Month": "MULTPL/SHILLER_PE_RATIO_MONTH",

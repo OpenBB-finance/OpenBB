@@ -42,7 +42,6 @@ openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, de
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
-openbb-quandl = { path = "./providers/quandl", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
