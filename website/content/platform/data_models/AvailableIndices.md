@@ -1,7 +1,29 @@
 ---
 title: Available Indices
-description: OpenBB Platform Data Model
+description: This page provides an in-depth look into the features and details of
+  working with AvailableIndices, including parameters and data details. It also provides
+  the class names that encapsulate these details and a guide on how to use them in
+  your project.
+keywords:
+- Implementation details
+- Class names
+- Import Statement
+- Parameters
+- Data
+- AvailableIndices
+- AvailableIndicesQueryParams
+- AvailableIndicesData
+- provider
+- fmp
+- name
+- currency
+- stock_exchange
+- exchange_short_name
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Available Indices - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -61,4 +83,3 @@ AvailableIndicesQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -1,7 +1,36 @@
 ---
 title: Dividend Calendar
-description: OpenBB Platform Data Model
+description: This documentation page provides comprehensive details on the implementation,
+  parameters and data for the DividendCalendar, DividendCalendarQueryParams, and DividendCalendarData
+  models from the openbb_provider's Python standard models. It includes a detailed
+  breakdown of parameter and data types such as start_date, end_date, provider, symbol,
+  dates, and dividends.
+keywords:
+- DividendCalendar
+- DividendCalendarQueryParams
+- DividendCalendarData
+- parameters
+- data class
+- Python
+- openbb_provider
+- dividend
+- provider
+- start_date
+- end_date
+- fmp
+- symbol
+- date
+- label
+- adj_dividend
+- dividend
+- record_date
+- payment_date
+- declaration_date
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dividend Calendar - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -59,4 +88,3 @@ DividendCalendarQueryParams,
 </TabItem>
 
 </Tabs>
-

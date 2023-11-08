@@ -5,6 +5,9 @@ from typing import Iterable, List, Optional, Union
 import pandas as pd
 from openbb_provider.abstract.data import Data
 
+from openbb_core.app.model.preferences import Preferences
+from openbb_core.app.model.system_settings import SystemSettings
+
 
 def basemodel_to_df(
     data: Union[List[Data], Data],
@@ -69,3 +72,19 @@ def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFr
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()
     return df_result
+
+
+def get_user_cache_directory() -> str:
+    file = SystemSettings().model_dump()["user_settings_path"]
+    with open(file) as settings_file:
+        contents = settings_file.read()
+    try:
+        settings = json.loads(contents)["preferences"]
+    except KeyError:
+        settings = None
+    cache_dir = (
+        settings["cache_directory"]
+        if settings and "cache_directory" in settings
+        else Preferences().cache_directory
+    )
+    return cache_dir

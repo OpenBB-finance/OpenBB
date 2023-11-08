@@ -38,7 +38,7 @@ class IntrinioStockQuoteData(StockQuoteData):
     last_time: datetime = Field(
         description="Date and Time when the last trade occurred.", alias="date"
     )
-    last_size: int = Field(description="Size of the last trade.")
+    last_size: Optional[int] = Field(description="Size of the last trade.")
     bid_price: float = Field(description="Price of the top bid order.")
     bid_size: int = Field(description="Size of the top bid order.")
     ask_price: float = Field(description="Price of the top ask order.")

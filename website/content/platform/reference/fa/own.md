@@ -1,12 +1,33 @@
 ---
 title: own
-description: OpenBB Platform Function
+description: Details about company stock ownership that includes information about
+  securities, industries, investments, market values, shares, performance, and more.
+  It also provides information on querying these data from specified providers.
+keywords:
+- Stock Ownership
+- Company Ownership
+- Metadata
+- Symbol
+- Market Value
+- Shares Number
+- Investor name
+- Security Name
+- Type of Security
+- Shares Type
+- Industry Title
+- Holding Period
+- Performance
+- Last Performance
+- Investment Discretion
+- Data Query Provider
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.own - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# own
 
 Stock Ownership. Information about the company ownership.
 
@@ -104,4 +125,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

@@ -1,7 +1,28 @@
 ---
 title: Fred Historical
-description: OpenBB Platform Data Model
+description: This page provides a detailed description of the FredHistorical data
+  model including its class names, import statement, parameters, and data structure.
+  This model is used for managing historical data with considerations for standard
+  or intrinio options. It covers various parameters like symbol, start_date, end_date,
+  limit, provider, next_page, and all_pages.
+keywords:
+- FredHistorical Data Model
+- Openbb_Provider Standard Models
+- Import Statement
+- Data Class
+- Query parameters
+- Historical Data Handling
+- Start Date
+- End Date
+- Data Limit
+- Intrinio Provider
+- Insights on Next Page
+- Options for all_pages
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Fred Historical - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -68,4 +89,3 @@ FredHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

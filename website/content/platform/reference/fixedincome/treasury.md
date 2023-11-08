@@ -1,12 +1,32 @@
 ---
 title: treasury
-description: OpenBB Platform Function
+description: This page provides comprehensive details on accessing Treasury rates
+  data, parameters involved in data retrieval, types of return values and data format.
+  It provides specific insights on month and year treasury rates.
+keywords:
+- Treasury rates data
+- parameters
+- returns
+- data
+- start date
+- end date
+- provider
+- OBBject results
+- provider name
+- warnings
+- chart
+- metadata
+- month treasury rate
+- year treasury rate
+- date of the data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fixedincome.treasury - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# treasury
 
 Treasury Rates. Treasury rates data.
 
@@ -77,4 +97,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

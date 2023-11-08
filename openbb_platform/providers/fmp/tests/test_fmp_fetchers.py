@@ -552,7 +552,7 @@ def test_fmp_price_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_countries_fetcher(credentials=test_credentials):
-    params = {"symbol": "MISL"}
+    params = {"symbol": "VTI,QQQ,VOO,IWM"}
 
     fetcher = FMPEtfCountriesFetcher()
     result = fetcher.test(params, credentials)

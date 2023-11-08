@@ -1,12 +1,28 @@
 ---
 title: news
-description: OpenBB Platform Function
+description: This page provides information on how to get stock news for a particular
+  ticker or a list of tickers. It features options to customize the query through
+  different providers including benzinga, fmp, intrinio, and polygon. It also outlines
+  the parameters for standard, benzinga and polygon providers as well as the returned
+  data for each provider.
+keywords:
+- stock news
+- stock tickers
+- news providers
+- benzinga
+- fmp
+- intrinio
+- polygon
+- Docusaurus
+- SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.news - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# news
 
 Stock News. Get news for one or more stock tickers.
 
@@ -165,4 +181,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

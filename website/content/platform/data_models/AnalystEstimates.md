@@ -1,7 +1,28 @@
 ---
 title: Analyst Estimates
-description: OpenBB Platform Data Model
+description: This page provides detailed information on the Analyst Estimates standard
+  models - AnalystEstimatesData and AnalystEstimatesQueryParams. Find import statements,
+  parameters, and data schemas for these classes.
+keywords:
+- Analyst Estimates
+- Standard Models
+- AnalystEstimatesData
+- AnalystEstimatesQueryParams
+- Python
+- Import Statement
+- Parameters
+- Data Schema
+- Estimated Revenue
+- Estimated EBITDA
+- Estimated EBIT
+- Estimated Net Income
+- Estimated SGA Expense
+- Estimated EPS
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Analyst Estimates - Data_Models | OpenBB Platform Docs" />
 
 
 import Tabs from '@theme/Tabs';
@@ -74,4 +95,3 @@ AnalystEstimatesQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -49,6 +49,7 @@ cboe = ["openbb-cboe"]
 nasdaq = ["openbb-nasdaq"]
 quandl = ["openbb-quandl"]
 yfinance = ["openbb-yfinance"]
+ecb = ["openbb-ecb"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
@@ -63,6 +64,7 @@ all = [
     "openbb-quandl",
     "openbb-seeking-alpha",
     "openbb-yfinance",
+    "openbb-ecb",
     "openbb-charting",
     "openbb-futures",
     "openbb-qa",

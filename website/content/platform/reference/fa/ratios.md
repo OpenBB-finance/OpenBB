@@ -1,12 +1,29 @@
 ---
 title: ratios
-description: OpenBB Platform Function
+description: Documentation about getting financial ratios for a specific company over
+  time. This includes a detailed explanation about parameters for standard and fmp
+  providers, results and data definitions.
+keywords:
+- ratios
+- financial ratios
+- financial data
+- financial analytics
+- company data
+- financial data provider
+- fmp
+- profit margin
+- debt ratio
+- data query
+- financial information
+- financial parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fa.ratios - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ratios
 
 Extensive set of ratios over time. Financial ratios for a given company.
 
@@ -133,4 +150,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

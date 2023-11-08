@@ -1,12 +1,44 @@
 ---
 title: pairs
-description: OpenBB Platform Function
+description: This page provides meticulous information about the Forex Pairs documentation,
+  including the choice of provider, parameters, return values, and data types. It
+  describes how to query based on various factors such as symbols, dates, and specific
+  search terms. It also includes definitions of terms and codes used in different
+  currency markets.
+keywords:
+- Forex Pairs
+- provider
+- query
+- symbol
+- date
+- search
+- active
+- order
+- sort
+- limit
+- currency
+- stock_exchange
+- exchange_short_name
+- ISO 4217 currency code
+- market
+- locale
+- currency_symbol
+- currency_name
+- base_currency_symbol
+- base_currency_name
+- last_updated_utc
+- delisted_utc
+- fmp
+- intrinio
+- polygon
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.pairs - Reference | OpenBB Platform Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pairs
 
 Forex Pairs. Forex available pairs.
 
@@ -113,4 +145,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-
