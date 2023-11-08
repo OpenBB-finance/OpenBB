@@ -2,14 +2,13 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from openbb_fmp.utils.helpers import MARKETS
+from openbb_fmp.utils.helpers import MARKETS, get_data
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
 from pydantic import Field
-from openbb_fmp.utils.helpers import get_data
 
 
 class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -96,7 +95,6 @@ class FMPMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = f"https://financialmodelingprep.com/api/v3/quotes/{query.market}?apikey={api_key}"
 
