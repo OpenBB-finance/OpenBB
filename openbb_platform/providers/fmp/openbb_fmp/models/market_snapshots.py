@@ -8,8 +8,8 @@ from openbb_provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
 from pydantic import Field
+from openbb_fmp.utils.helpers import get_data
 
 
 class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -33,7 +33,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         "change_percent": "changesPercentage",
     }
 
-    name: Optional[str] = Field(
+    name: str = Field(
         description="The name associated with the stock symbol.", default=None
     )
     price: Optional[float] = Field(
@@ -55,19 +55,17 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     year_low: Optional[float] = Field(
         description="The 52-week low.", alias="yearLow", default=None
     )
-    market_cap: Optional[float] = Field(
+    market_cap: float = Field(
         description="Market cap of the stock.", alias="marketCap", default=None
     )
-    shares_outstanding: Optional[float] = Field(
+    shares_outstanding: float = Field(
         description="Number of shares outstanding.",
         alias="sharesOutstanding",
         default=None,
     )
     eps: Optional[float] = Field(description="Earnings per share.", default=None)
     pe: Optional[float] = Field(description="Price to earnings ratio.", default=None)
-    exchange: Optional[str] = Field(
-        description="The exchange of the stock.", default=None
-    )
+    exchange: str = Field(description="The exchange of the stock.", default=None)
     timestamp: Optional[Union[int, float]] = Field(
         description="The timestamp of the data.", default=None
     )
@@ -101,16 +99,14 @@ class FMPMarketSnapshotsFetcher(
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = f"https://financialmodelingprep.com/api/v3/quotes/{query.market}?apikey={api_key}"
-        response = make_request(url)
 
-        if response.status_code != 200:
-            raise RuntimeError(
-                f"Error fetching data from FMP  -> {response.status_code}"
-            )
-        data = response.json()
+        data = get_data(url)
+
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[FMPMarketSnapshotsData]:
+    def transform_data(
+        query: FMPMarketSnapshotsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPMarketSnapshotsData]:
         """Return the transformed data."""
         return [FMPMarketSnapshotsData.model_validate(d) for d in data]
