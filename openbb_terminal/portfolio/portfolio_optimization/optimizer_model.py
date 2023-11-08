@@ -347,11 +347,11 @@ def get_market_cap(symbol) -> float:
 
         # use values_str in string operations
         if values_str.endswith("M"):
-            updated_value = float(values_str.split(" M")[0]) * 1000000
+            updated_value = float(values_str.split(" M", maxsplit=1)[0]) * 1000000
         elif values_str.endswith("B"):
-            updated_value = float(values_str.split(" B")[0]) * 1000000000
+            updated_value = float(values_str.split(" B", maxsplit=1)[0]) * 1000000000
         elif values_str.endswith("T"):
-            updated_value = float(values_str.split(" T")[0]) * 1000000000000
+            updated_value = float(values_str.split(" T", maxsplit=1)[0]) * 1000000000000
         else:
             updated_value = float(values_str)
     else:
