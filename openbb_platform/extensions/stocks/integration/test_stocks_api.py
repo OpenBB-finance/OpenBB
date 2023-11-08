@@ -1190,7 +1190,10 @@ def test_stocks_disc_filings(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"}), ({"limit": 24, "provider": "sec", "symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_dps_ftd(params, headers):
