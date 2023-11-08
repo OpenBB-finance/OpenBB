@@ -869,6 +869,12 @@ def test_stocks_load(params, obb):
                 "limit": 20,
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "symbols": "AAPL,MSFT",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1101,7 +1107,28 @@ def test_stocks_disc_upcoming_release_days(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"pages": 1, "limit": 5, "today": True})],
+    [
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "limit": 10,
+                "form_type": None,
+                "is_done": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-11-06",
+                "end_date": "2023-11-07",
+                "limit": 50,
+                "form_type": "10-Q",
+                "is_done": "true",
+                "provider": "fmp",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_disc_filings(params, obb):
@@ -1161,6 +1188,43 @@ def test_stocks_dps_short_interest(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "CLOV",
+                "date": "2023-10-26",
+                "provider": "polygon",
+                "limit": 1000,
+                "timestamp_lte": None,
+                "timestamp_gte": None,
+                "timestamp_gt": None,
+                "timestamp_lt": None,
+            }
+        ),
+        (
+            {
+                "symbol": "CLOV",
+                "provider": "polygon",
+                "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
+                "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
+                "limit": 5000,
+                "timestamp_gte": None,
+                "timestamp_lte": None,
+                "date": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_nbbo(params, obb):
+    result = obb.stocks.nbbo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"symbol": "AAPL"}),
         ({"tier": "T1", "is_ats": True, "provider": "finra", "symbol": "AAPL"}),
     ],
@@ -1187,6 +1251,21 @@ def test_stocks_options_unusual2(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.options.unusual(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"provider": "fmp", "market": "EURONEXT"}),
+        ({"provider": "polygon"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_market_snapshots(params, obb):
+    result = obb.stocks.market_snapshots(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

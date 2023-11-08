@@ -45,14 +45,14 @@ def load(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockNews")
+@router.command(model="CompanyNews")
 def news(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock News. Get news for one or more stock tickers."""
+    """Company News. Get news for one or more companies."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -100,6 +100,28 @@ def info(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="StockNBBO")
+def nbbo(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Stock Quote. Load stock data for a specific ticker."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="StockFTD")
+def ftd(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get reported Fail-to-deliver (FTD) data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="PricePerformance")
 def price_performance(
     cc: CommandContext,
@@ -130,4 +152,15 @@ def calendar_dividend(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical Dividend Calendar."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="MarketSnapshots")
+def market_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get a current, complete, market snapshot."""
     return OBBject(results=Query(**locals()).execute())

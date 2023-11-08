@@ -7,6 +7,7 @@ from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFe
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher
 from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
+from openbb_yfinance.models.company_news import YFinanceCompanyNewsFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
@@ -20,7 +21,6 @@ from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
 from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
-from openbb_yfinance.models.stock_news import YFinanceStockNewsFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -33,24 +33,24 @@ yfinance_provider = Provider(
     data, and tools for investors and individuals interested in tracking and analyzing
     financial markets and assets.""",
     fetcher_dict={
-        "CryptoHistorical": YFinanceCryptoHistoricalFetcher,
-        "ForexHistorical": YFinanceForexHistoricalFetcher,
-        "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
-        "StockHistorical": YFinanceStockHistoricalFetcher,
-        "EtfHistorical": YFinanceEtfHistoricalFetcher,
-        "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
-        "FuturesCurve": YFinanceFuturesCurveFetcher,
-        "StockNews": YFinanceStockNewsFetcher,
+        "AvailableIndices": YFinanceAvailableIndicesFetcher,
         "BalanceSheet": YFinanceBalanceSheetFetcher,
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
-        "IncomeStatement": YFinanceIncomeStatementFetcher,
-        "AvailableIndices": YFinanceAvailableIndicesFetcher,
+        "CompanyNews": YFinanceCompanyNewsFetcher,
+        "CryptoHistorical": YFinanceCryptoHistoricalFetcher,
         "EquityActive": YFActiveFetcher,
+        "EquityAggressiveSmallCaps": YFAggressiveSmallCapsFetcher,
         "EquityGainers": YFGainersFetcher,
         "EquityLosers": YFLosersFetcher,
-        "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
         "EquityUndervaluedGrowthEquities": YFUndervaluedGrowthEquitiesFetcher,
-        "EquityAggressiveSmallCaps": YFAggressiveSmallCapsFetcher,
+        "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
+        "EtfHistorical": YFinanceEtfHistoricalFetcher,
+        "ForexHistorical": YFinanceForexHistoricalFetcher,
+        "FuturesCurve": YFinanceFuturesCurveFetcher,
+        "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
+        "IncomeStatement": YFinanceIncomeStatementFetcher,
+        "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
+        "StockHistorical": YFinanceStockHistoricalFetcher,
     },
 )

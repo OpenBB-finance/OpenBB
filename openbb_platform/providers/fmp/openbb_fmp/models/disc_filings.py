@@ -1,31 +1,51 @@
 """FMP SEC Filings fetcher."""
 
 import datetime
-import warnings
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.filings import (
     FilingsData,
     FilingsQueryParams,
 )
-from pydantic import field_validator
+from openbb_provider.utils.helpers import get_querystring
+from pydantic import Field, field_validator
 
 
 class FMPFilingsQueryParams(FilingsQueryParams):
     """FMP SEC Filings Params."""
 
+    __alias_dict__ = {
+        "form_type": "type",
+        "is_done": "isDone",
+        "start_date": "from",
+        "end_date": "to",
+    }
+
+    is_done: Optional[Literal["true", "false"]] = Field(
+        default=None,
+        description="Flag for whether or not the filing is done.",
+    )
+
 
 class FMPFilingsData(FilingsData):
     """FMP SEC Filings Data."""
 
-    __alias_dict__ = {"symbol": "ticker"}
+    __alias_dict__ = {
+        "timestamp": "date",
+        "symbol": "ticker",
+        "url": "link",
+    }
 
-    @field_validator("date", mode="before")
-    def validate_date(cls, v: Any) -> Any:  # pylint: disable=no-self-argument
-        """Validate the date."""
-        return datetime.datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
+    is_done: Optional[Literal["True", "False"]] = Field(
+        default=None, description="Whether or not the filing is done."
+    )
+
+    @field_validator("timestamp", mode="before")
+    def validate_timestamp(cls, v: Any) -> Any:  # pylint: disable=no-self-argument
+        """Validate the timestamp."""
+        return datetime.datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
 
 class FMPFilingsFetcher(
@@ -39,7 +59,16 @@ class FMPFilingsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPFilingsQueryParams:
         """Transform the query."""
-        return FMPFilingsQueryParams(**params)
+        transformed_params = params
+        if "start_date" not in transformed_params:
+            transformed_params["start_date"] = datetime.datetime.now().strftime(
+                "%Y-%m-%d"
+            )
+        if "end_date" not in transformed_params:
+            transformed_params["end_date"] = datetime.datetime.now().strftime(
+                "%Y-%m-%d"
+            )
+        return FMPFilingsQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -49,16 +78,19 @@ class FMPFilingsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        response: List[Dict] = []
-        for page in range(1, query.pages + 1):
-            url = create_url(
-                version=3,
-                endpoint=f"rss_feed?&page={page}",
-                api_key=api_key,
-            )
-            data: List[Dict] = get_data_many(url, sub_dict="rss_feed", **kwargs)
+        response: List[Dict] = [{}]
+        exclude = []
+        if query.form_type is None:
+            exclude.append("formType")
+        if not query.is_done:
+            exclude.append("isDone")
+        base_url = "https://financialmodelingprep.com/api/v4/rss_feed?"
+        query_string = get_querystring(query.model_dump(), exclude)
+        url = f"{base_url}{query_string}&apikey={api_key}"
+        data: List[Dict] = get_data_many(url, **kwargs)
 
-            response.extend(data)
+        if len(data) > 0:
+            response = data
 
         return response
 
@@ -67,18 +99,4 @@ class FMPFilingsFetcher(
         query: FMPFilingsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPFilingsData]:
         """Return the transformed data."""
-        if query.today is True:
-            now: str = datetime.datetime.now().strftime("%Y-%m-%d")
-            iso_today: int = datetime.datetime.today().isoweekday()
-            if iso_today < 6 and data:
-                data = [x for x in data if x["date"] == now]
-                query.limit = 1000
-            else:
-                warnings.warn(
-                    "No filings today, displaying the most recent submissions instead."
-                )
-
-        # remove duplicates
-        data = [dict(t) for t in {tuple(d.items()) for d in data}]
-
-        return [FMPFilingsData(**x) for x in data[: query.limit]]
+        return [FMPFilingsData.model_validate(d) for d in data]

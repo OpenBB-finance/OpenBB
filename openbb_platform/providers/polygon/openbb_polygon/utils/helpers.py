@@ -2,7 +2,7 @@
 
 import json
 from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
+from typing import Any, List, Optional, Tuple, TypeVar, Union
 
 import requests
 from openbb_provider import helpers
@@ -18,7 +18,6 @@ class BasicResponse:
 
     def __init__(self, response: StringIO):
         """Initialize the BasicResponse class."""
-
         # Find a way to get the status code
         self.status_code = 200
         response.seek(0)
@@ -26,13 +25,12 @@ class BasicResponse:
 
     def json(self) -> dict:
         """Return the response as a dictionary."""
-
         return json.loads(self.text)
 
 
 def request(url: str) -> BasicResponse:
     """
-    Request function for PyScript. Pass in Method and make sure to await!
+    Request function for PyScript. Pass in Method and make sure to await.
 
     Parameters:
     -----------
@@ -53,7 +51,6 @@ def request(url: str) -> BasicResponse:
 
 def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from Polygon endpoint."""
-
     try:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
@@ -69,7 +66,9 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
 
         raise RuntimeError(f"Error in Polygon request -> {value}")
 
-    if "results" not in data or len(data) == 0:
+    keys_in_data = "results" in data or "tickers" in data
+
+    if not keys_in_data or len(data) == 0:
         raise EmptyDataError()
 
     return data
@@ -102,7 +101,6 @@ def get_data_many(
 
 def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from Polygon endpoint and convert to schema."""
-
     data = get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
@@ -116,7 +114,7 @@ def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def get_date_condition(date: str) -> str:
+def get_date_condition(date: str) -> Tuple:
     """Get the date condition for the querystring."""
     date_conditions = {
         "<": "lt",
@@ -130,3 +128,14 @@ def get_date_condition(date: str) -> str:
             return date.split(key)[1], value
 
     return date, "eq"
+
+
+def map_tape(tape: int) -> str:
+    """Map the tape to a string."""
+    STOCK_TAPE_MAP = {
+        1: "Tape A: NYSE",
+        2: "Tape B: NYSE ARCA",
+        3: "Tape C: NASDAQ",
+    }
+
+    return STOCK_TAPE_MAP.get(tape, "") if tape else ""

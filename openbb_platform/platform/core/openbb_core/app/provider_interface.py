@@ -1,3 +1,4 @@
+"""Provider Interface."""
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
@@ -55,7 +56,9 @@ class ProviderChoices:
 
 
 class ProviderInterface(metaclass=SingletonMeta):
-    """Provider interface class. Provides access to 'openbb_provider' package information.
+    """Provider interface class.
+
+    Provides access to 'openbb_provider' package information.
 
     Properties
     ----------
@@ -169,7 +172,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         F: Union[Callable, object] = Query if query else FieldInfo
 
         def split_desc(desc: str) -> str:
-            """Split field description"""
+            """Split field description."""
             item = desc.split(" (provider: ")
             detail = item[0] if item else ""
             return detail
@@ -360,12 +363,12 @@ class ProviderInterface(metaclass=SingletonMeta):
         Example:
         -------
         @dataclass
-        class StockNews(StandardParams):
+        class CompanyNews(StandardParams):
             symbols: str = Query(...)
             page: int = Query(default=1)
 
         @dataclass
-        class StockNews(ExtraParams):
+        class CompanyNews(ExtraParams):
             pageSize: int = Query(default=15, title="benzinga")
             displayOutput: int = Query(default="headline", title="benzinga")
             ...
@@ -401,7 +404,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         Example:
         -------
         @dataclass
-        class StockNews(ProviderChoices):
+        class CompanyNews(ProviderChoices):
             provider: Literal["benzinga", "polygon"]
         """
         result: Dict = {}

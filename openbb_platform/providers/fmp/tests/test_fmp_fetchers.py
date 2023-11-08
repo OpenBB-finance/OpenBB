@@ -10,8 +10,10 @@ from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
+from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
+from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
@@ -40,6 +42,7 @@ from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
 from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
 from openbb_fmp.models.price_target_consensus import FMPPriceTargetConsensusFetcher
@@ -50,7 +53,6 @@ from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
 from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
-from openbb_fmp.models.stock_news import FMPStockNewsFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
@@ -136,10 +138,10 @@ def test_fmp_stock_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_stock_news_fetcher(credentials=test_credentials):
+def test_fmp_company_news_fetcher(credentials=test_credentials):
     params = {"symbols": "AAPL,MSFT"}
 
-    fetcher = FMPStockNewsFetcher()
+    fetcher = FMPCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -487,6 +489,15 @@ def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_fmp_market_snapshots_fetcher(credentials=test_credentials):
+    params = {"market": "LSE"}
+
+    fetcher = FMPMarketSnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_fmp_etf_search_fetcher(credentials=test_credentials):
     params = {"query": "India"}
 
@@ -560,8 +571,23 @@ def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_filings_fetcher(credentials=test_credentials):
-    params = {}
+    params = {
+        "form_type": "8-K",
+        "limit": 10,
+        "start_date": None,
+        "end_date": None,
+        "is_done": None,
+    }
 
     fetcher = FMPFilingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_crypto_search_fetcher(credentials=test_credentials):
+    params = {"query": "asd"}
+
+    fetcher = FMPCryptoSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
