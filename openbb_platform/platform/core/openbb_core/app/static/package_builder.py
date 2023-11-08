@@ -1,5 +1,5 @@
 """Package Builder Class."""
-
+# pylint: disable=too-many-lines
 import builtins
 import inspect
 import shutil
@@ -463,7 +463,7 @@ class DocstringGenerator:
         # Edge cases (might find more)
         if "crypto" in route[0] and "symbol" in example_params:
             example_params["symbol"] = "BTCUSD"
-        elif "forex" in route[0] and "symbol" in example_params:
+        elif "currency" in route[0] and "symbol" in example_params:
             example_params["symbol"] = "EURUSD"
         elif (
             "index" in route[0]

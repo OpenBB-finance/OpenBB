@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "openbb-forex"
+name = "openbb-currency"
 version = "0.1.0a4"
-description = "Forex extension for OpenBB"
+description = "Currency extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb_forex" }]
+packages = [{ include = "openbb_currency" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-forex = "openbb_forex.forex_router:router"
+currency = "openbb_currency.currency_router:router"

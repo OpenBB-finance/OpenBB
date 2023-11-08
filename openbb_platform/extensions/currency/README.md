@@ -1,4 +1,4 @@
-# OpenBB Forex Extension
+# OpenBB Currency Extension
 
 This extension provides currency exchange related data for the OpenBB Platform.
 
@@ -7,7 +7,7 @@ This extension provides currency exchange related data for the OpenBB Platform.
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install openbb-forex
+pip install openbb-currency
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/feature/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).

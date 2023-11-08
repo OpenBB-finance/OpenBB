@@ -1,26 +1,26 @@
-"""FMP Forex available pairs fetcher."""
+"""FMP Currency available pairs fetcher."""
 
 
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_pairs import (
-    ForexPairsData,
-    ForexPairsQueryParams,
+from openbb_provider.standard_models.currency_pairs import (
+    CurrencyPairsData,
+    CurrencyPairsQueryParams,
 )
 from pydantic import Field
 
 
-class FMPForexPairsQueryParams(ForexPairsQueryParams):
-    """FMP Forex available pairs Query.
+class FMPCurrencyPairsQueryParams(CurrencyPairsQueryParams):
+    """FMP Currency available pairs Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
+    Source: http://site.financialmodelingprep.com/developer/docs/stock-ticker-symbol-lookup-api/?direct=true
     """
 
 
-class FMPForexPairsData(ForexPairsData):
-    """FMP Forex available pairs Data."""
+class FMPCurrencyPairsData(CurrencyPairsData):
+    """FMP Currency available pairs Data."""
 
     symbol: str = Field(description="Symbol of the currency pair.")
     currency: str = Field(description="Base currency of the currency pair.")
@@ -33,22 +33,22 @@ class FMPForexPairsData(ForexPairsData):
     )
 
 
-class FMPForexPairsFetcher(
+class FMPCurrencyPairsFetcher(
     Fetcher[
-        FMPForexPairsQueryParams,
-        List[FMPForexPairsData],
+        FMPCurrencyPairsQueryParams,
+        List[FMPCurrencyPairsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPForexPairsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCurrencyPairsQueryParams:
         """Transform the query params."""
-        return FMPForexPairsQueryParams(**params)
+        return FMPCurrencyPairsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPForexPairsQueryParams,
+        query: FMPCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -62,7 +62,7 @@ class FMPForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPForexPairsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPForexPairsData]:
+        query: FMPCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCurrencyPairsData]:
         """Return the transformed data."""
-        return [FMPForexPairsData.model_validate(d) for d in data]
+        return [FMPCurrencyPairsData.model_validate(d) for d in data]

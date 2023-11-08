@@ -1,4 +1,4 @@
-"""FMP Forex end of day fetcher."""
+"""FMP Currency end of day fetcher."""
 
 
 from datetime import datetime
@@ -7,15 +7,15 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_historical import (
-    ForexHistoricalData,
-    ForexHistoricalQueryParams,
+from openbb_provider.standard_models.currency_historical import (
+    CurrencyHistoricalData,
+    CurrencyHistoricalQueryParams,
 )
 from pydantic import Field
 
 
-class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
-    """FMP Forex end of day Query.
+class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
+    """FMP Currency end of day Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
@@ -25,8 +25,8 @@ class FMPForexHistoricalQueryParams(ForexHistoricalQueryParams):
     ] = Field(default="1day", description="Data granularity.")
 
 
-class FMPForexHistoricalData(ForexHistoricalData):
-    """FMP Forex end of day Data."""
+class FMPCurrencyHistoricalData(CurrencyHistoricalData):
+    """FMP Currency end of day Data."""
 
     adj_close: Optional[float] = Field(
         default=None, description="Adjusted Close Price of the symbol."
@@ -50,16 +50,16 @@ class FMPForexHistoricalData(ForexHistoricalData):
     )
 
 
-class FMPForexHistoricalFetcher(
+class FMPCurrencyHistoricalFetcher(
     Fetcher[
-        FMPForexHistoricalQueryParams,
-        List[FMPForexHistoricalData],
+        FMPCurrencyHistoricalQueryParams,
+        List[FMPCurrencyHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPForexHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCurrencyHistoricalQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
         transformed_params = params
 
@@ -70,11 +70,11 @@ class FMPForexHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPForexHistoricalQueryParams(**transformed_params)
+        return FMPCurrencyHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPForexHistoricalQueryParams,
+        query: FMPCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -98,7 +98,7 @@ class FMPForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPForexHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPForexHistoricalData]:
+        query: FMPCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCurrencyHistoricalData]:
         """Return the transformed data."""
-        return [FMPForexHistoricalData.model_validate(d) for d in data]
+        return [FMPCurrencyHistoricalData.model_validate(d) for d in data]

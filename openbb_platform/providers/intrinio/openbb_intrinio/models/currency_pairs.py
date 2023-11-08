@@ -1,26 +1,26 @@
-"""Intrinio Forex available pairs fetcher."""
+"""Intrinio Currency available pairs fetcher."""
 
 
 from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_pairs import (
-    ForexPairsData,
-    ForexPairsQueryParams,
+from openbb_provider.standard_models.currency_pairs import (
+    CurrencyPairsData,
+    CurrencyPairsQueryParams,
 )
 from pydantic import Field
 
 
-class IntrinioForexPairsQueryParams(ForexPairsQueryParams):
-    """Intrinio Forex available pairs Query.
+class IntrinioCurrencyPairsQueryParams(CurrencyPairsQueryParams):
+    """Intrinio Currency available pairs Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_forex_pairs_v2
     """
 
 
-class IntrinioForexPairsData(ForexPairsData):
-    """Intrinio Forex available pairs Data."""
+class IntrinioCurrencyPairsData(CurrencyPairsData):
+    """Intrinio Currency available pairs Data."""
 
     __alias_dict__ = {"name": "code"}
 
@@ -33,28 +33,26 @@ class IntrinioForexPairsData(ForexPairsData):
     )
 
 
-class IntrinioForexPairsFetcher(
+class IntrinioCurrencyPairsFetcher(
     Fetcher[
-        IntrinioForexPairsQueryParams,
-        List[IntrinioForexPairsData],
+        IntrinioCurrencyPairsQueryParams,
+        List[IntrinioCurrencyPairsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioForexPairsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioCurrencyPairsQueryParams:
         """Transform the query params."""
-
-        return IntrinioForexPairsQueryParams(**params)
+        return IntrinioCurrencyPairsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioForexPairsQueryParams,
+        query: IntrinioCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
@@ -64,8 +62,7 @@ class IntrinioForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioForexPairsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioForexPairsData]:
+        query: IntrinioCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioCurrencyPairsData]:
         """Return the transformed data."""
-
-        return [IntrinioForexPairsData.model_validate(d) for d in data]
+        return [IntrinioCurrencyPairsData.model_validate(d) for d in data]

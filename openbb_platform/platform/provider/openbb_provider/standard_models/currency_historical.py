@@ -1,4 +1,4 @@
-"""Forex aggregate end of day price data model."""
+"""Currency aggregate end of day price data model."""
 
 
 from datetime import (
@@ -15,8 +15,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class ForexHistoricalQueryParams(QueryParams):
-    """Forex end of day Query."""
+class CurrencyHistoricalQueryParams(QueryParams):
+    """Currency end of day Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
@@ -32,15 +32,17 @@ class ForexHistoricalQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def validate_symbol(
+        cls, v: Union[str, List[str], Set[str]]
+    ):  # pylint: disable=E0213
         """Convert symbol to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
         return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
 
 
-class ForexHistoricalData(Data):
-    """Forex end of day price Data."""
+class CurrencyHistoricalData(Data):
+    """Currency end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

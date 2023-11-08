@@ -1,4 +1,4 @@
-"""Polygon forex end of day fetcher."""
+"""Polygon currency end of day fetcher."""
 
 
 from datetime import datetime
@@ -7,16 +7,16 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_polygon.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_historical import (
-    ForexHistoricalData,
-    ForexHistoricalQueryParams,
+from openbb_provider.standard_models.currency_historical import (
+    CurrencyHistoricalData,
+    CurrencyHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt
 
 
-class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
-    """Polygon forex end of day Query.
+class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
+    """Polygon currency end of day Query.
 
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
     """
@@ -36,8 +36,8 @@ class PolygonForexHistoricalQueryParams(ForexHistoricalQueryParams):
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
 
 
-class PolygonForexHistoricalData(ForexHistoricalData):
-    """Polygon forex end of day Data."""
+class PolygonCurrencyHistoricalData(CurrencyHistoricalData):
+    """Polygon currency end of day Data."""
 
     __alias_dict__ = {
         "date": "t",
@@ -56,14 +56,17 @@ class PolygonForexHistoricalData(ForexHistoricalData):
     )
 
 
-class PolygonForexHistoricalFetcher(
+class PolygonCurrencyHistoricalFetcher(
     Fetcher[
-        PolygonForexHistoricalQueryParams,
-        List[PolygonForexHistoricalData],
+        PolygonCurrencyHistoricalQueryParams,
+        List[PolygonCurrencyHistoricalData],
     ]
 ):
+    """Transform the query, extract and transform the data from the polygon endpoints."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonForexHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonCurrencyHistoricalQueryParams:
+        """Transform the query."""
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -72,14 +75,15 @@ class PolygonForexHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return PolygonForexHistoricalQueryParams(**transformed_params)
+        return PolygonCurrencyHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonForexHistoricalQueryParams,
+        query: PolygonCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Return the raw data from the polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -99,6 +103,7 @@ class PolygonForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonForexHistoricalQueryParams, data: dict, **kwargs: Any
-    ) -> List[PolygonForexHistoricalData]:
-        return [PolygonForexHistoricalData.model_validate(d) for d in data]
+        query: PolygonCurrencyHistoricalQueryParams, data: dict, **kwargs: Any
+    ) -> List[PolygonCurrencyHistoricalData]:
+        """Return the transformed data."""
+        return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]

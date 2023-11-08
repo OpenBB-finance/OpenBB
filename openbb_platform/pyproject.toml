@@ -22,7 +22,7 @@ openbb-tradingeconomics = "^0.1.0a4"
 
 openbb-crypto = "^0.1.0a4"
 openbb-economy = "^0.1.0a4"
-openbb-forex = "^0.1.0a4"
+openbb-currency = "^0.1.0a4"
 openbb-fixedincome = "^0.1.0a4"
 openbb-news = "^0.1.0a4"
 openbb-regulators = "^0.1.0a4"
@@ -60,7 +60,6 @@ all = [
     "openbb-biztoc",
     "openbb-cboe",
     "openbb-nasdaq",
-    "openbb-quandl",
     "openbb-seeking-alpha",
     "openbb-yfinance",
     "openbb-ecb",
