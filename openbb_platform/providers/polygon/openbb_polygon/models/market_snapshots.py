@@ -9,8 +9,8 @@ from openbb_provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
 from pydantic import Field, field_validator
+from openbb_polygon.utils.helpers import get_data
 
 
 class PolygonMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -23,23 +23,23 @@ class PolygonMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
 class PolygonMarketSnapshotsData(MarketSnapshotsData):
     """Polygon Market Snapshots Data."""
 
-    vwap: Optional[float] = Field(
+    vwap: float = Field(
         description="The volume weighted average price of the stock on the current trading day.",
         default=None,
     )
-    prev_open: Optional[float] = Field(
+    prev_open: float = Field(
         description="The previous trading session opening price.", default=None
     )
-    prev_high: Optional[float] = Field(
+    prev_high: float = Field(
         description="The previous trading session high price.", default=None
     )
-    prev_low: Optional[float] = Field(
+    prev_low: float = Field(
         description="The previous trading session low price.", default=None
     )
-    prev_volume: Optional[float] = Field(
+    prev_volume: float = Field(
         description="The previous trading session volume.", default=None
     )
-    prev_vwap: Optional[float] = Field(
+    prev_vwap: float = Field(
         description="The previous trading session VWAP.", default=None
     )
     last_updated: Optional[datetime] = Field(
@@ -75,7 +75,8 @@ class PolygonMarketSnapshotsData(MarketSnapshotsData):
         mode="before",
         check_fields=False,
     )
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
         return (
             pd.to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert(
@@ -105,153 +106,53 @@ class PolygonMarketSnapshotsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey={api_key}"
+        response = get_data(url, **kwargs)["tickers"]
 
-        response = {}
-        r = make_request(url)
-        if r.status_code == 200 and r.json()["status"] == "OK":
-            response = r.json()["tickers"]
+        data = []
 
-        results = pd.DataFrame()
+        # Process and flatten the response from a nested dictionary
+        for response_item in response:
+            last_quote = response_item.get("lastQuote", {})
+            last_trade = response_item.get("lastTrade", {})
+            day_data = response_item.get("day", {})
+            prev_day = response_item.get("prevDay", {})
 
-        symbol: List[str] = []
-        bid: List[float] = []
-        ask: List[float] = []
-        bid_size: List[float] = []
-        ask_size: List[float] = []
-        last_trade_price: List[float] = []
-        last_trade_size: List[int] = []
-        last_trade_conditions: List[List[int]] = []
-        last_trade_exchange: List[int] = []
-        open: List[float] = []
-        high: List[float] = []
-        low: List[float] = []
-        close: List[float] = []
-        change: List[float] = []
-        change_percent: List[float] = []
-        volume: List[int] = []
-        vwap: List[float] = []
-        prev_open: List[float] = []
-        prev_high: List[float] = []
-        prev_low: List[float] = []
-        prev_close: List[float] = []
-        prev_volume: List[int] = []
-        prev_vwap: List[float] = []
-        last_updated: List[int] = []
-        quote_timestamp: List[int] = []
-        last_trade_timestamp: List[int] = []
+            market_data: Dict[str, List[Any]] = {
+                "symbol": response_item["ticker"],
+                "bid": last_quote.get("p"),
+                "ask": last_quote.get("P"),
+                "bid_size": last_quote.get("s"),
+                "ask_size": last_quote.get("S"),
+                "last_trade_price": last_trade.get("p"),
+                "last_trade_size": last_trade.get("s"),
+                "last_trade_conditions": last_trade.get("c"),
+                "last_trade_exchange": last_trade.get("x"),
+                "open": day_data.get("o"),
+                "high": day_data.get("h"),
+                "low": day_data.get("l"),
+                "close": day_data.get("c"),
+                "change": response_item.get("todaysChange"),
+                "change_percent": response_item.get("todaysChangePerc"),
+                "volume": day_data.get("v"),
+                "vwap": day_data.get("vw"),
+                "prev_open": prev_day.get("o"),
+                "prev_high": prev_day.get("h"),
+                "prev_low": prev_day.get("l"),
+                "prev_close": prev_day.get("c"),
+                "prev_volume": prev_day.get("v"),
+                "prev_vwap": prev_day.get("vw"),
+                "last_updated": response_item.get("updated"),
+                "quote_timestamp": last_quote.get("t"),
+                "last_trade_timestamp": last_trade.get("t"),
+            }
 
-        # This process conditionally flattens the response from a nested dictionary.
-        if len(response) > 0:
-            for i in range(len(response)):
-                symbol.append(response[i]["ticker"])
-                if (
-                    "lastQuote" in response[i]
-                ):  # Only returned if the subscription includes quotes
-                    bid.append(response[i]["lastQuote"]["p"])
-                    ask.append(response[i]["lastQuote"]["P"])
-                    bid_size.append(response[i]["lastQuote"]["s"])
-                    ask_size.append(response[i]["lastQuote"]["S"])
-                    quote_timestamp.append(response[i]["lastQuote"]["t"])
-                if (
-                    "lastTrade" in response[i]
-                ):  # Only returned if the subscription includes trades
-                    last_trade_price.append(response[i]["lastTrade"]["p"])
-                    last_trade_size.append(response[i]["lastTrade"]["s"])
-                    if "c" in response[i]["lastTrade"]:
-                        last_trade_conditions.append(response[i]["lastTrade"]["c"])
-                    else:
-                        last_trade_conditions.append(None)
-                    last_trade_exchange.append(response[i]["lastTrade"]["x"])
-                    last_trade_timestamp.append(response[i]["lastTrade"]["t"])
-                open.append(response[i]["day"]["o"])
-                high.append(response[i]["day"]["h"])
-                low.append(response[i]["day"]["l"])
-                close.append(response[i]["day"]["c"])
-                volume.append(response[i]["day"]["v"])
-                vwap.append(response[i]["day"]["vw"])
-                change_percent.append(response[i]["todaysChangePerc"])
-                change.append(response[i]["todaysChange"])
-                prev_open.append(response[i]["prevDay"]["o"])
-                prev_high.append(response[i]["prevDay"]["h"])
-                prev_low.append(response[i]["prevDay"]["l"])
-                prev_close.append(response[i]["prevDay"]["c"])
-                prev_volume.append(response[i]["prevDay"]["v"])
-                prev_vwap.append(response[i]["prevDay"]["vw"])
-                last_updated.append(response[i]["updated"])
+            data.append(market_data)
 
-            columns_standard = [
-                "symbol",
-                "open",
-                "high",
-                "low",
-                "close",
-                "change",
-                "change_percent",
-                "volume",
-                "vwap",
-                "prev_open",
-                "prev_high",
-                "prev_low",
-                "prev_close",
-                "prev_volume",
-                "prev_vwap",
-                "last_updated",
-            ]
-            data_standard = [
-                symbol,
-                open,
-                high,
-                low,
-                close,
-                change,
-                change_percent,
-                volume,
-                vwap,
-                prev_open,
-                prev_high,
-                prev_low,
-                prev_close,
-                prev_volume,
-                prev_vwap,
-                last_updated,
-            ]
-            columns_quote = ["bid", "bid_size", "ask_size", "ask", "quote_timestamp"]
-            data_quote = [bid, bid_size, ask_size, ask, quote_timestamp]
-            columns_trade = [
-                "last_trade_price",
-                "last_trade_size",
-                "last_trade_conditions",
-                "last_trade_exchange",
-                "last_trade_timestamp",
-            ]
-            data_trade = [
-                last_trade_price,
-                last_trade_size,
-                last_trade_conditions,
-                last_trade_exchange,
-                last_trade_timestamp,
-            ]
-
-            data = data_standard
-            columns = columns_standard
-
-            if "lastQuote" in response[0]:
-                data = data + data_quote
-                columns = columns + columns_quote
-
-            if "lastTrade" in response[0]:
-                data = data + data_trade
-                columns = columns + columns_trade
-
-            results = pd.DataFrame(data=data).transpose()
-            results.columns = columns
-
-        return results.sort_values(by="change_percent", ascending=False).to_dict(
-            "records"
-        )
+        return data
 
     @staticmethod
     def transform_data(
+        query: PolygonMarketSnapshotsQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[PolygonMarketSnapshotsData]:
