@@ -11,6 +11,7 @@ from openbb_polygon.models.major_indices_historical import (
 )
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
+from openbb_polygon.models.stock_nbbo import PolygonStockNBBOFetcher
 from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
@@ -27,6 +28,7 @@ polygon_provider = Provider(
         "CryptoHistorical": PolygonCryptoHistoricalFetcher,
         "ForexHistorical": PolygonForexHistoricalFetcher,
         "ForexPairs": PolygonForexPairsFetcher,
+        "StockNBBO": PolygonStockNBBOFetcher,
         "IncomeStatement": PolygonIncomeStatementFetcher,
         "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
         "StockHistorical": PolygonStockHistoricalFetcher,

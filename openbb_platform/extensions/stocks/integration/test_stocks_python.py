@@ -1160,6 +1160,43 @@ def test_stocks_disc_filings(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "CLOV",
+                "date": "2023-10-26",
+                "provider": "polygon",
+                "limit": 1000,
+                "timestamp_lte": None,
+                "timestamp_gte": None,
+                "timestamp_gt": None,
+                "timestamp_lt": None,
+            }
+        ),
+        (
+            {
+                "symbol": "CLOV",
+                "provider": "polygon",
+                "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
+                "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
+                "limit": 5000,
+                "timestamp_gte": None,
+                "timestamp_lte": None,
+                "date": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_nbbo(params, obb):
+    result = obb.stocks.nbbo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"provider": "fmp", "market": "EURONEXT"}),
         ({"provider": "polygon"}),
     ],
