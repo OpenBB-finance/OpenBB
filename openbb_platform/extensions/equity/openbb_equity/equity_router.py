@@ -12,21 +12,17 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-from openbb_equity.ca.ca_router import router as ca_router
-from openbb_equity.disc.disc_router import router as disc_router
-
-# TODO: Uncomment once they have some commands.
-# from openbb_equity.gov.gov_router import router as gov_router
-# from openbb_equity.ins.ins_router import router as ins_router
+from openbb_equity.compare.compare_router import router as compare_router
+from openbb_equity.discovery.discovery_router import router as discovery_router
 from openbb_equity.dps.dps_router import router as dps_router
-from openbb_equity.fa.fa_router import router as fa_router
+from openbb_equity.fundamental.fundamental_router import router as fundamental_router
 from openbb_equity.options.options_router import router as options_router
 
 router = Router(prefix="")
-router.include_router(fa_router)
-router.include_router(ca_router)
+router.include_router(fundamental_router)
+router.include_router(compare_router)
 router.include_router(options_router)
-router.include_router(disc_router)
+router.include_router(discovery_router)
 
 router.include_router(dps_router)
 # router.include_router(gov_router)
