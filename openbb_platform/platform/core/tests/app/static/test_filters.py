@@ -1,11 +1,9 @@
 """Test the filters.py file."""
 
-from openbb_core.app.static.filters import filter_inputs
-import pandas as pd
-
 import numpy as np
+import pandas as pd
 import pytest
-
+from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
 
 
