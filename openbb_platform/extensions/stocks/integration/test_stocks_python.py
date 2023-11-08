@@ -635,21 +635,6 @@ def test_stocks_options_chains(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
-        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
-    ],
-)
-@pytest.mark.integration
-def test_stocks_options_unusual(params, obb):
-    result = obb.stocks.options.usual(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "symbol": "AAPL",
@@ -1242,12 +1227,12 @@ def test_stocks_dps_otc(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
+        ({"symbol": None, "provider": "intrinio"}),
         ({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration
-def test_stocks_options_unusual2(params, obb):
+def test_stocks_options_unusual(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.options.unusual(**params)
@@ -1266,6 +1251,20 @@ def test_stocks_options_unusual2(params, obb):
 @pytest.mark.integration
 def test_stocks_market_snapshots(params, obb):
     result = obb.stocks.market_snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"start_date": "2023-11-06", "end_date": "2023-11-10", "provider": "nasdaq"})],
+)
+@pytest.mark.integration
+def test_stocks_calendar_earnings(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.calendar_earnings(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

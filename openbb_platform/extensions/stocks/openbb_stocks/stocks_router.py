@@ -143,6 +143,17 @@ def calendar_dividend(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="CalendarEarnings")
+def calendar_earnings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Upcoming and Historical Earnings Calendar."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="MarketSnapshots")
 def market_snapshots(
     cc: CommandContext,
