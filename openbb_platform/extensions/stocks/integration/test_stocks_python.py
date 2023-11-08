@@ -1269,3 +1269,17 @@ def test_stocks_market_snapshots(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"}), ({"limit": 24, "provider": "sec", "symbol": "AAPL"},)],
+)
+@pytest.mark.integration
+def test_stocks_ftd(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.ftd(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
