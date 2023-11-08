@@ -19,6 +19,7 @@ from openbb_core.app.static.package_builder import (
 )
 from pydantic import Field
 from typing_extensions import Annotated
+from unittest.mock import patch
 
 
 @pytest.fixture(scope="module")
@@ -300,9 +301,13 @@ def test_build_command_method_implementation(method_definition):
         """Do some func doc."""
         return 42
 
-    output = method_definition.build_command_method_implementation(
-        path="openbb_core.app.static.container.Container", func=some_func
-    )
+    with patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+        **{"return_value": False},
+    ):
+        output = method_definition.build_command_method_implementation(
+            path="openbb_core.app.static.container.Container", func=some_func
+        )
 
     assert output
     assert isinstance(output, str)
@@ -315,11 +320,15 @@ def test_build_command_method(method_definition):
         """Do some func doc."""
         return 42
 
-    output = method_definition.build_command_method(
-        path="openbb_core.app.static.container.Container",
-        func=some_func,
-        model_name=None,
-    )
+    with patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
+        **{"return_value": False},
+    ):
+        output = method_definition.build_command_method(
+            path="openbb_core.app.static.container.Container",
+            func=some_func,
+            model_name=None,
+        )
 
     assert output
     assert isinstance(output, str)
