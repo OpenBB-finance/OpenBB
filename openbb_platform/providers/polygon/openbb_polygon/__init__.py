@@ -1,6 +1,7 @@
 """Polygon provider module."""
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
+from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
 from openbb_polygon.models.forex_historical import PolygonForexHistoricalFetcher
 from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
@@ -9,7 +10,6 @@ from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
 )
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
-from openbb_polygon.models.stock_news import PolygonStockNewsFetcher
 from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
@@ -20,14 +20,14 @@ polygon_provider = Provider(
      company financials, stock market holidays, corporate actions, and more.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockHistorical": PolygonStockHistoricalFetcher,
-        "StockNews": PolygonStockNewsFetcher,
         "BalanceSheet": PolygonBalanceSheetFetcher,
-        "IncomeStatement": PolygonIncomeStatementFetcher,
         "CashFlowStatement": PolygonCashFlowStatementFetcher,
+        "CompanyNews": PolygonCompanyNewsFetcher,
         "CryptoHistorical": PolygonCryptoHistoricalFetcher,
-        "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
         "ForexHistorical": PolygonForexHistoricalFetcher,
         "ForexPairs": PolygonForexPairsFetcher,
+        "IncomeStatement": PolygonIncomeStatementFetcher,
+        "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
+        "StockHistorical": PolygonStockHistoricalFetcher,
     },
 )

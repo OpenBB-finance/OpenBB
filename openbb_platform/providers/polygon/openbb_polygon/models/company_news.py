@@ -1,20 +1,20 @@
-"""Polygon Stock News Fetcher."""
+"""Polygon Company News."""
 
 
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import BaseModel, Field, field_validator
 
 
-class PolygonStockNewsQueryParams(StockNewsQueryParams):
-    """Polygon stock news query.
+class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """Polygon Company News query.
 
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
@@ -44,7 +44,7 @@ class PolygonPublisher(BaseModel):
     name: str = Field(description="Publisher Name.")
 
 
-class PolygonStockNewsData(StockNewsData):
+class PolygonCompanyNewsData(CompanyNewsData):
     """Source: https://polygon.io/docs/stocks/get_v2_reference_news."""
 
     __alias_dict__ = {
@@ -64,22 +64,26 @@ class PolygonStockNewsData(StockNewsData):
     tickers: List[str] = Field(description="Tickers covered in the article.")
 
 
-class PolygonStockNewsFetcher(
+class PolygonCompanyNewsFetcher(
     Fetcher[
-        PolygonStockNewsQueryParams,
-        List[PolygonStockNewsData],
+        PolygonCompanyNewsQueryParams,
+        List[PolygonCompanyNewsData],
     ]
 ):
+    """Polygon Company News Fetcher."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonStockNewsQueryParams:
-        return PolygonStockNewsQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> PolygonCompanyNewsQueryParams:
+        """Transform query params."""
+        return PolygonCompanyNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockNewsQueryParams,
+        query: PolygonCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract data."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
@@ -107,8 +111,9 @@ class PolygonStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonStockNewsQueryParams,
+        query: PolygonCompanyNewsQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[PolygonStockNewsData]:
-        return [PolygonStockNewsData.model_validate(d) for d in data]
+    ) -> List[PolygonCompanyNewsData]:
+        """Transform data."""
+        return [PolygonCompanyNewsData.model_validate(d) for d in data]

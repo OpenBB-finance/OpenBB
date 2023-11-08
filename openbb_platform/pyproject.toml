@@ -11,6 +11,7 @@ python = ">=3.8,<3.12"
 openbb-core = "^0.1.0a5"
 
 openbb-benzinga = "^0.1.0a4"
+openbb-ultima = "^0.1.0a4"
 openbb-fmp = "^0.1.0a4"
 openbb-fred = "^0.1.0a4"
 openbb-intrinio = "^0.1.0a4"

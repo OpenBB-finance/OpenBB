@@ -1,4 +1,4 @@
-"""yfinance Stock News fetcher."""
+"""yfinance Company News."""
 
 
 import json
@@ -6,23 +6,23 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_news import (
-    StockNewsData,
-    StockNewsQueryParams,
+from openbb_provider.standard_models.company_news import (
+    CompanyNewsData,
+    CompanyNewsQueryParams,
 )
 from pydantic import Field, field_validator
-from yfinance import Ticker
+from yfinance import Ticker  # type: ignore
 
 
-class YFinanceStockNewsQueryParams(StockNewsQueryParams):
-    """YFinance Stock News Query.
+class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
+    """YFinance Company News Query.
 
     Source: https://finance.yahoo.com/news/
     """
 
 
-class YFinanceStockNewsData(StockNewsData):
-    """YFinance Stock News Data."""
+class YFinanceCompanyNewsData(CompanyNewsData):
+    """YFinance Company News Data."""
 
     __alias_dict__ = {"date": "providerPublishTime", "url": "link"}
 
@@ -35,34 +35,44 @@ class YFinanceStockNewsData(StockNewsData):
     relatedTickers: str = Field(description="Tickers related to the news article.")
 
     @field_validator("providerPublishTime", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
+        """Date validator."""
         return datetime.fromtimestamp(v)
 
     @field_validator("relatedTickers", mode="before", check_fields=False)
-    def related_tickers_string(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def related_tickers_string(cls, v):
+        """Related tickers string validator."""
         return ", ".join(v)
 
     @field_validator("thumbnail", mode="before", check_fields=False)
-    def thumbnail_list(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def thumbnail_list(cls, v):
+        """Thumbnail list validator."""
         return v["resolutions"]
 
 
-class YFinanceStockNewsFetcher(
+class YFinanceCompanyNewsFetcher(
     Fetcher[
-        YFinanceStockNewsQueryParams,
-        List[YFinanceStockNewsData],
+        YFinanceCompanyNewsQueryParams,
+        List[YFinanceCompanyNewsData],
     ]
 ):
-    @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceStockNewsQueryParams:
-        return YFinanceStockNewsQueryParams(**params)
+    """YFinance Company News Fetcher."""
 
     @staticmethod
-    def extract_data(
-        query: YFinanceStockNewsQueryParams,
+    def transform_query(params: Dict[str, Any]) -> YFinanceCompanyNewsQueryParams:
+        """Transform query params."""
+        return YFinanceCompanyNewsQueryParams(**params)
+
+    @staticmethod
+    def extract_data(  # pylint: disable=unused-argument
+        query: YFinanceCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract data."""
         data = Ticker(query.symbols).get_news()
         data = json.loads(json.dumps(data))
 
@@ -70,8 +80,9 @@ class YFinanceStockNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceStockNewsQueryParams,
+        query: YFinanceCompanyNewsQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[YFinanceStockNewsData]:
-        return [YFinanceStockNewsData.model_validate(d) for d in data]
+    ) -> List[YFinanceCompanyNewsData]:
+        """Transform data."""
+        return [YFinanceCompanyNewsData.model_validate(d) for d in data]
