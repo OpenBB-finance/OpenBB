@@ -51,8 +51,6 @@ def test_filter_inputs(
 ):
     result = filter_inputs(data=input_data, data_processing=True)
 
-    print(result["data"])
-
     # Assert that the result is a dictionary
     assert isinstance(result, dict), "filter_inputs should return a dictionary"
 
