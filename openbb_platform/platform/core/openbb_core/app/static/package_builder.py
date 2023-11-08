@@ -17,14 +17,17 @@ from typing import (
     Optional,
     OrderedDict,
     Type,
+    TypeVar,
     Union,
     get_args,
     get_origin,
     get_type_hints,
 )
 
+import numpy as np
 import pandas as pd
 from importlib_metadata import entry_points
+from openbb_provider.abstract.data import Data
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
@@ -36,15 +39,28 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.env import Env
 
+DataProcessingSupportedTypes = TypeVar(
+    "DataProcessingSupportedTypes",
+    list,
+    dict,
+    pd.DataFrame,
+    List[pd.DataFrame],
+    pd.Series,
+    List[pd.Series],
+    np.ndarray,
+    Data,
+)
+
 
 class Console:
     """Console to be used by builder and linters."""
 
     def __init__(self, verbose: bool):
+        """Initialize the console."""
         self.verbose = verbose
 
     def log(self, message: str, **kwargs):
-        """Console log method"""
+        """Console log method."""
         if self.verbose or Env().DEBUG_MODE:
             print(message, **kwargs)  # noqa: T201
 
@@ -55,6 +71,7 @@ class PackageBuilder:
     def __init__(
         self, directory: Optional[Path] = None, lint: bool = True, verbose: bool = False
     ) -> None:
+        """Initialize the package builder."""
         self.directory = directory or Path(__file__).parent
         self.lint = lint
         self.verbose = verbose
@@ -86,7 +103,7 @@ class PackageBuilder:
             self.run_linters()
 
     def get_extension_map(self) -> Dict[str, List[str]]:
-        """Get map of extensions available at build time"""
+        """Get map of extensions available at build time."""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
             g: sorted(
@@ -100,7 +117,7 @@ class PackageBuilder:
         return ext_map
 
     def save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
-        """Save the map of extensions available at build time"""
+        """Save the map of extensions available at build time."""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self.write_to_package(code=code, name="extension_map", extension="json")
@@ -252,6 +269,7 @@ class ImportDefinition:
         # TODO: Find a better way to handle this. This is a temporary solution.
         code += "\nimport openbb_provider"
         code += "\nimport pandas"
+        code += "\nimport numpy"
         code += "\nimport datetime"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
@@ -682,6 +700,12 @@ class MethodDefinition:
         )
 
     @staticmethod
+    def is_data_processing_function(path: str) -> bool:
+        """Check if the function is a data processing function."""
+        methods = PathHandler.build_route_map()[path].methods
+        return "POST" in methods
+
+    @staticmethod
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         """Reorder the params."""
         formatted_keys = list(params.keys())
@@ -707,7 +731,7 @@ class MethodDefinition:
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
             "symbol": List[str],
-            "data": pd.DataFrame,
+            "data": DataProcessingSupportedTypes,
             "start_date": str,
             "end_date": str,
             "provider": None,
@@ -752,11 +776,16 @@ class MethodDefinition:
                     )
             else:
                 new_type = TYPE_EXPANSION.get(name, ...)
-                updated_type = (
-                    param.annotation
-                    if new_type is ...
-                    else Union[param.annotation, new_type]
-                )
+
+                if hasattr(new_type, "__constraints__"):
+                    types = new_type.__constraints__ + (param.annotation,)
+                    updated_type = Union[types]  # type: ignore
+                else:
+                    updated_type = (
+                        param.annotation
+                        if new_type is ...
+                        else Union[param.annotation, new_type]
+                    )
 
                 formatted[name] = Parameter(
                     name=name,
@@ -895,6 +924,10 @@ class MethodDefinition:
                 code += "},\n"
             else:
                 code += f"            {name}={name},\n"
+
+        if MethodDefinition.is_data_processing_function(path):
+            code += "            data_processing=True,\n"
+
         code += "        )\n\n"
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
@@ -1002,6 +1035,7 @@ class Linters:
     """Run the linters for the Platform."""
 
     def __init__(self, directory: Path, verbose: bool = False) -> None:
+        """Initialize the linters."""
         self.directory = directory
         self.verbose = verbose
         self.console = Console(verbose)

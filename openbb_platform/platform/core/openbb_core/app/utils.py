@@ -1,9 +1,11 @@
 import ast
 import json
-from typing import Iterable, List, Optional, Union
+from typing import Dict, Iterable, List, Optional, Union
 
+import numpy as np
 import pandas as pd
 from openbb_provider.abstract.data import Data
+from pydantic import ValidationError
 
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
@@ -55,6 +57,56 @@ def df_to_basemodel(
     return [
         Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
     ]
+
+
+def list_to_basemodel(data_list: List) -> List[Data]:
+    """Convert a list to a list of BaseModel."""
+    base_models = []
+    for item in data_list:
+        if isinstance(item, Data) or issubclass(type(item), Data):
+            base_models.append(item)
+        elif isinstance(item, dict):
+            base_models.append(Data(**item))
+        elif isinstance(item, (pd.DataFrame, pd.Series)):
+            base_models.extend(df_to_basemodel(item))
+        else:
+            raise ValueError(f"Unsupported list item type: {type(item)}")
+    return base_models
+
+
+def dict_to_basemodel(data_dict: Dict) -> Data:
+    """Convert a dictionary to BaseModel."""
+    try:
+        return Data(**data_dict)
+    except ValidationError as e:
+        raise ValueError(
+            f"Validation error when converting dict to BaseModel: {e}"
+        ) from e
+
+
+def ndarray_to_basemodel(array: np.ndarray) -> List[Data]:
+    """Convert a NumPy array to list of BaseModel."""
+    # Assuming a 2D array where rows are records
+    if array.ndim != 2:
+        raise ValueError("Only 2D arrays are supported.")
+    return [
+        Data(**{f"column_{i}": value for i, value in enumerate(row)}) for row in array
+    ]
+
+
+def convert_to_basemodel(data) -> Union[Data, List[Data]]:
+    """Dispatch function to convert different types to BaseModel."""
+    if isinstance(data, Data) or issubclass(type(data), Data):
+        return data
+    if isinstance(data, list):
+        return list_to_basemodel(data)
+    if isinstance(data, dict):
+        return dict_to_basemodel(data)
+    if isinstance(data, (pd.DataFrame, pd.Series)):
+        return df_to_basemodel(data)
+    if isinstance(data, np.ndarray):
+        return ndarray_to_basemodel(data)
+    raise ValueError(f"Unsupported data type: {type(data)}")
 
 
 def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
