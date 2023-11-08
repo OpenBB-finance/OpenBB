@@ -50,7 +50,7 @@ def print_recommendation(
         not isinstance(recom, pd.DataFrame) and not recom
     ):
         console.print(
-            "[red]The API did not return any recommendations. Please make sure you included the desired parameters.[/red]\n"
+            "[red]The API did not return recommendations. Please make sure to include the desired parameters.[/red]\n"
         )
         return
 
