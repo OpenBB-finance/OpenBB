@@ -12,7 +12,18 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-router = Router(prefix="/fa")
+router = Router(prefix="/fundamental")
+
+
+@router.command(model="StockMultiples")
+def multiples(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Stock Multiples. Valuation multiples for a stock ticker."""
+    return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="BalanceSheet")
@@ -59,31 +70,8 @@ def cash_growth(
     return OBBject(results=Query(**locals()).execute())
 
 
-# noqa: D401
-@router.command(model="ExecutiveCompensation")
-def comp(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Get Executive Compensation. Information about the executive compensation for a given company."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="StockSplitCalendar")
-def comsplit(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Stock Split Calendar. Show Stock Split Calendar."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="HistoricalDividends")
-def divs(
+def dividends(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -94,35 +82,24 @@ def divs(
 
 
 @router.command(model="EarningsCalendar")
-def earning(
+def earnings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Earnings Calendar. Earnings calendar for a given company."""
+    """Historical Earnings for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="HistoricalEmployees")
-def emp(
+def employees(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Historical Employees. Historical number of employees."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="AnalystEstimates")
-def est(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Analyst Estimates. Analyst stock recommendations."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -148,28 +125,6 @@ def income_growth(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockInsiderTrading")
-def ins(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Stock Insider Trading. Information about insider trading."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="InstitutionalOwnership")
-def ins_own(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Institutional Ownership. Institutional ownership data."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="KeyMetrics")
 def metrics(
     cc: CommandContext,
@@ -182,13 +137,24 @@ def metrics(
 
 
 @router.command(model="KeyExecutives")
-def mgmt(
+def management(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Key Executives. Key executives for a given company."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="ExecutiveCompensation")
+def management_compensation(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get Executive Compensation. Information about the executive compensation for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -200,39 +166,6 @@ def overview(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Company Overview. General information about a company."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="StockOwnership")
-def own(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Stock Ownership. Information about the company ownership."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="PriceTargetConsensus")
-def pt(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Price Target Consensus. Price target consensus data."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="PriceTarget")
-def pta(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Price Target. Price target data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -248,7 +181,7 @@ def ratios(
 
 
 @router.command(model="RevenueGeographic")
-def revgeo(
+def revenue_per_geography(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -259,7 +192,7 @@ def revgeo(
 
 
 @router.command(model="RevenueBusinessLine")
-def revseg(
+def revenue_per_segment(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -280,19 +213,8 @@ def filings(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="ShareStatistics")
-def shrs(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Share Statistics. Share statistics for a given company."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="HistoricalStockSplits")
-def split(
+def splits(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

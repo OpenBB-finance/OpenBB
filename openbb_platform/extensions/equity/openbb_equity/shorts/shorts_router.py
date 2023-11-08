@@ -1,4 +1,4 @@
-"""Dark Pool Shorts (DPS) Router."""
+"""Shorts Router."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -10,13 +10,13 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-router = Router(prefix="/dps")
+router = Router(prefix="/shorts")
 
 # pylint: disable=unused-argument
 
 
 @router.command(model="StockFTD")
-def ftd(
+def fail_to_deliver(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -45,19 +45,4 @@ def short_interest(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get reported Short Volume and Days to Cover data."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="OTCAggregate")
-def otc(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Weekly aggregate trade data for OTC.
-
-    ATS and non-ATS) trading data for each ATS/firm
-    with trade reporting obligations under FINRA rules.
-    """
     return OBBject(results=Query(**locals()).execute())

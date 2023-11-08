@@ -11,7 +11,7 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-router = Router(prefix="/disc")
+router = Router(prefix="/discovery")
 
 
 @router.command(model="EquityGainers")

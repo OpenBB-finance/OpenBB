@@ -1,6 +1,4 @@
-# pylint: disable=W0613:unused-argument
-"""Comparison Analysis Router."""
-
+"""Dark Pool Router."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -12,15 +10,21 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-router = Router(prefix="/compare")
+router = Router(prefix="/darkpool")
+
+# pylint: disable=unused-argument
 
 
-@router.command(model="StockPeers")
-def peers(
+@router.command(model="OTCAggregate")
+def otc(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Peers. Company peers."""
+    """Weekly aggregate trade data for Over The Counter deals.
+
+    ATS and non-ATS) trading data for each ATS/firm
+    with trade reporting obligations under FINRA rules.
+    """
     return OBBject(results=Query(**locals()).execute())
