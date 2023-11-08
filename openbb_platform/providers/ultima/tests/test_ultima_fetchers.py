@@ -7,6 +7,9 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+test_credentials["ultima_api_key"] = "MOCK_API_KEY"  # pragma: allowlist secret
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
