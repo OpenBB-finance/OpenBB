@@ -1,6 +1,6 @@
 """Stock NBBO data model."""
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -13,6 +13,12 @@ class StockNBBOQueryParams(QueryParams):
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def upper_symbol(cls, v: str):
+        """Convert symbol to uppercase."""
+        return v.upper()
 
 
 class StockNBBOData(Data):
