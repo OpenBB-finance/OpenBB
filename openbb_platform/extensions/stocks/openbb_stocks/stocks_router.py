@@ -143,3 +143,14 @@ def calendar_dividend(
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical Dividend Calendar."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="MarketSnapshots")
+def market_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get a current, complete, market snapshot."""
+    return OBBject(results=Query(**locals()).execute())
