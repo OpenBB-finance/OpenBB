@@ -1212,7 +1212,7 @@ def test_stocks_disc_filings(params, headers):
         (
             {
                 "symbol": "CLOV",
-                "timestamp": "2023-10-26",
+                "date": "2023-10-26",
                 "provider": "polygon",
                 "limit": 1000,
                 "timestamp_lte": None,
@@ -1230,7 +1230,7 @@ def test_stocks_disc_filings(params, headers):
                 "limit": 5000,
                 "timestamp_gte": None,
                 "timestamp_lte": None,
-                "timestamp": None,
+                "date": None,
             }
         ),
     ],
