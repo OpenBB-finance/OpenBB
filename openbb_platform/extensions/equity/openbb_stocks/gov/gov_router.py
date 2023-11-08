@@ -1,4 +1,4 @@
-"""Due Diligence Router."""
+"""Government Data Router."""
 
 
 from openbb_core.app.router import Router

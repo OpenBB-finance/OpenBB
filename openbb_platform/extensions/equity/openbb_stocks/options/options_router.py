@@ -13,6 +13,8 @@ from pydantic import BaseModel
 
 router = Router(prefix="/options")
 
+# pylint: disable=unused-argument
+
 
 @router.command(model="OptionsChains")
 def chains(

@@ -59,6 +59,7 @@ def cash_growth(
     return OBBject(results=Query(**locals()).execute())
 
 
+# noqa: D401
 @router.command(model="ExecutiveCompensation")
 def comp(
     cc: CommandContext,
@@ -66,7 +67,7 @@ def comp(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Executive Compensation. Information about the executive compensation for a given company."""  # noqa: D401
+    """Get Executive Compensation. Information about the executive compensation for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
