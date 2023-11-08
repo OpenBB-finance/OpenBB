@@ -3,8 +3,6 @@
 from datetime import (
     date as dateType,
     datetime,
-    timedelta,
-    timezone,
 )
 from typing import Any, Dict, List, Optional, Union
 
@@ -16,6 +14,7 @@ from openbb_provider.standard_models.stock_nbbo import (
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
+from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -131,11 +130,11 @@ class PolygonStockNBBOData(StockNBBOData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
 
-        if v:
-            dlt = timedelta(hours=-5)
-            tz = timezone(dlt)
-            return datetime.fromtimestamp(v / 1000000000).astimezone(tz)
-        return None
+        return (
+            to_datetime(v, unit="ns", origin="unix", utc=True).tz_convert("US/Eastern")
+            if v
+            else None
+        )
 
 
 class PolygonStockNBBOFetcher(
@@ -155,13 +154,15 @@ class PolygonStockNBBOFetcher(
         """Extract the data from the Polygon endpoint."""
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
+
+        # NOTE: Make it support multiple symbols using multithreading
         # This is to ensure that a list of symbols is not processed, only the first item will be passed.
         symbols = query.symbol.split(",") if "," in query.symbol else [query.symbol]
         query.symbol = symbols[0]
         records = 0
 
         # Internal hard limit to prevent system overloads.
-        _max_ = 10000000
+        max_ = 10000000
         if (
             query.date
             or query.timestamp_gt
@@ -170,8 +171,9 @@ class PolygonStockNBBOFetcher(
             or query.timestamp_lte
             or query.limit >= 50000
         ):
-            max_ = query.limit if query.limit != 25 and query.limit < _max_ else _max_
+            max_ = query.limit if query.limit != 25 and query.limit < max_ else max_
             query.limit = 50000 if max_ >= 50000 else query.limit
+
         results = []
         base_url = f"https://api.polygon.io/v3/quotes/{symbols[0]}"
         query_str = (
