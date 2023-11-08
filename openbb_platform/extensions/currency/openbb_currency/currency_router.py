@@ -1,3 +1,4 @@
+"""The Currency router."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -9,28 +10,19 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_currency.price.price_router import router as price_router
+
 router = Router(prefix="")
+router.include_router(price_router)
 
 
 # pylint: disable=unused-argument
-@router.command(model="ForexPairs")
-def pairs(
+@router.command(model="CurrencyPairs")
+def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Forex Pairs. Forex available pairs."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-# pylint: disable=unused-argument
-@router.command(model="ForexHistorical")
-def load(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Forex Historical Price. Forex historical data."""
+    """Currency Search. Search available currency pairs."""
     return OBBject(results=Query(**locals()).execute())

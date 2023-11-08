@@ -11,6 +11,8 @@ from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
+from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
+from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
 from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
@@ -24,8 +26,6 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
-from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
-from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -77,6 +77,8 @@ fmp_provider = Provider(
         "CompanyOverview": FMPCompanyOverviewFetcher,
         "CryptoHistorical": FMPCryptoHistoricalFetcher,
         "CryptoSearch": FMPCryptoSearchFetcher,
+        "CurrencyHistorical": FMPCurrencyHistoricalFetcher,
+        "CurrencyPairs": FMPCurrencyPairsFetcher,
         "DiscFilings": FMPFilingsFetcher,
         "EarningsCalendar": FMPEarningsCalendarFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
@@ -90,8 +92,6 @@ fmp_provider = Provider(
         "EtfSectors": FMPEtfSectorsFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
-        "ForexHistorical": FMPForexHistoricalFetcher,
-        "ForexPairs": FMPForexPairsFetcher,
         "GlobalNews": FMPGlobalNewsFetcher,
         "HistoricalDividends": FMPHistoricalDividendsFetcher,
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
@@ -103,6 +103,7 @@ fmp_provider = Provider(
         "KeyMetrics": FMPKeyMetricsFetcher,
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
         "MajorIndicesHistorical": FMPMajorIndicesHistoricalFetcher,
+        "MarketSnapshots": FMPMarketSnapshotsFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "PriceTarget": FMPPriceTargetFetcher,
         "PriceTargetConsensus": FMPPriceTargetConsensusFetcher,
@@ -119,6 +120,5 @@ fmp_provider = Provider(
         "StockSearch": FMPStockSearchFetcher,
         "StockSplitCalendar": FMPStockSplitCalendarFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
-        "MarketSnapshots": FMPMarketSnapshotsFetcher,
     },
 )

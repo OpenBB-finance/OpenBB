@@ -9,15 +9,15 @@ from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_pairs import (
-    ForexPairsData,
-    ForexPairsQueryParams,
+from openbb_provider.standard_models.currency_pairs import (
+    CurrencyPairsData,
+    CurrencyPairsQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt, field_validator
 
 
-class PolygonForexPairsQueryParams(ForexPairsQueryParams):
+class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
     """Polygon available pairs Query.
 
     Source: https://polygon.io/docs/forex/get_v3_reference_tickers
@@ -59,7 +59,7 @@ class PolygonForexPairsQueryParams(ForexPairsQueryParams):
     )
 
 
-class PolygonForexPairsData(ForexPairsData):
+class PolygonCurrencyPairsData(CurrencyPairsData):
     """Polygon available pairs Data."""
 
     market: str = Field(description="Name of the trading market. Always 'fx'.")
@@ -94,16 +94,16 @@ class PolygonForexPairsData(ForexPairsData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
 
 
-class PolygonForexPairsFetcher(
+class PolygonCurrencyPairsFetcher(
     Fetcher[
-        PolygonForexPairsQueryParams,
-        List[PolygonForexPairsData],
+        PolygonCurrencyPairsQueryParams,
+        List[PolygonCurrencyPairsData],
     ]
 ):
     """Polygon available pairs Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonForexPairsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonCurrencyPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
         now = datetime.now().date()
@@ -113,11 +113,11 @@ class PolygonForexPairsFetcher(
         if params.get("date") is None:
             transform_params["start_date"] = now
 
-        return PolygonForexPairsQueryParams(**transform_params)
+        return PolygonCurrencyPairsQueryParams(**transform_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonForexPairsQueryParams,
+        query: PolygonCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
@@ -162,9 +162,9 @@ class PolygonForexPairsFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonForexPairsQueryParams,
+        query: PolygonCurrencyPairsQueryParams,
         data: List[dict],
         **kwargs: Any,
-    ) -> List[PolygonForexPairsData]:
-        """Transform the data into a list of PolygonForexPairsData."""
-        return [PolygonForexPairsData.model_validate(d) for d in data]
+    ) -> List[PolygonCurrencyPairsData]:
+        """Transform the data into a list of PolygonCurrencyPairsData."""
+        return [PolygonCurrencyPairsData.model_validate(d) for d in data]

@@ -6,8 +6,8 @@ from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
-from openbb_polygon.models.forex_historical import PolygonForexHistoricalFetcher
-from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
+from openbb_polygon.models.currency_historical import PolygonCurrencyHistoricalFetcher
+from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
@@ -108,23 +108,23 @@ def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_polygon_forex_historical_fetcher(credentials=test_credentials):
+def test_polygon_currency_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "EURUSD",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = PolygonForexHistoricalFetcher()
+    fetcher = PolygonCurrencyHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
 
 @pytest.mark.record_http
-def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
+def test_polygon_currency_pairs_fetcher(credentials=test_credentials):
     params = {"date": date(2023, 1, 1)}
 
-    fetcher = PolygonForexPairsFetcher()
+    fetcher = PolygonCurrencyPairsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

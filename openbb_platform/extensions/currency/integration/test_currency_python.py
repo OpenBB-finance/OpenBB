@@ -1,7 +1,10 @@
-"""Test forex extension."""
+"""Test currency extension."""
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
+
+# pylint: disable=redefined-outer-name
+# pylint: disable=inconsistent-return-statements
 
 
 @pytest.fixture(scope="session")
@@ -9,7 +12,7 @@ def obb(pytestconfig):
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
 
@@ -42,8 +45,8 @@ def obb(pytestconfig):
     ],
 )
 @pytest.mark.integration
-def test_forex_pairs(params, obb):
-    result = obb.forex.pairs(**params)
+def test_currency_search(params, obb):
+    result = obb.currency.search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -119,8 +122,8 @@ def test_forex_pairs(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_forex_load(params, obb):
-    result = obb.forex.load(**params)
+def test_currency_price_historical(params, obb):
+    result = obb.currency.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

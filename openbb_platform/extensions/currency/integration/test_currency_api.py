@@ -1,9 +1,12 @@
+"""Test currency API endpoints."""
 import base64
 
 import pytest
 import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
+
+# pylint: disable=redefined-outer-name
 
 
 @pytest.fixture(scope="session")
@@ -43,11 +46,11 @@ def headers():
     ],
 )
 @pytest.mark.integration
-def test_forex_pairs(params, headers):
+def test_currency_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/forex/pairs?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/currency/search?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -123,11 +126,11 @@ def test_forex_pairs(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_forex_load(params, headers):
+def test_currency_price_historical(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/forex/load?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/currency/price/historical?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

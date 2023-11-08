@@ -1,4 +1,4 @@
-"""yfinance Forex End of Day fetcher."""
+"""yfinance Currency End of Day fetcher."""
 # ruff: noqa: SIM105
 
 
@@ -7,9 +7,9 @@ from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.forex_historical import (
-    ForexHistoricalData,
-    ForexHistoricalQueryParams,
+from openbb_provider.standard_models.currency_historical import (
+    CurrencyHistoricalData,
+    CurrencyHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
@@ -19,8 +19,8 @@ from pandas import to_datetime
 from pydantic import Field
 
 
-class YFinanceForexHistoricalQueryParams(ForexHistoricalQueryParams):
-    """YFinance Forex End of Day Query.
+class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
+    """YFinance Currency End of Day Query.
 
     Source: https://finance.yahoo.com/currencies/
     """
@@ -31,20 +31,22 @@ class YFinanceForexHistoricalQueryParams(ForexHistoricalQueryParams):
     )
 
 
-class YFinanceForexHistoricalData(ForexHistoricalData):
-    """YFinance Forex End of Day Data."""
+class YFinanceCurrencyHistoricalData(CurrencyHistoricalData):
+    """YFinance Currency End of Day Data."""
 
 
-class YFinanceForexHistoricalFetcher(
+class YFinanceCurrencyHistoricalFetcher(
     Fetcher[
-        YFinanceForexHistoricalQueryParams,
-        List[YFinanceForexHistoricalData],
+        YFinanceCurrencyHistoricalQueryParams,
+        List[YFinanceCurrencyHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceForexHistoricalQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> YFinanceCurrencyHistoricalQueryParams:
         """Transform the query."""
         transformed_params = params
         transformed_params["symbol"] = (
@@ -60,11 +62,11 @@ class YFinanceForexHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return YFinanceForexHistoricalQueryParams(**transformed_params)
+        return YFinanceCurrencyHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceForexHistoricalQueryParams,
+        query: YFinanceCurrencyHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -107,9 +109,9 @@ class YFinanceForexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceForexHistoricalQueryParams,
+        query: YFinanceCurrencyHistoricalQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[YFinanceForexHistoricalData]:
+    ) -> List[YFinanceCurrencyHistoricalData]:
         """Transform the data to the standard format."""
-        return [YFinanceForexHistoricalData.model_validate(d) for d in data]
+        return [YFinanceCurrencyHistoricalData.model_validate(d) for d in data]
