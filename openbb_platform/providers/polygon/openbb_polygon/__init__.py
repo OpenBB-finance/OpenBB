@@ -9,6 +9,7 @@ from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
 from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
 )
+from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
 from openbb_polygon.models.stock_nbbo import PolygonStockNBBOFetcher
 from openbb_provider.abstract.provider import Provider
@@ -31,5 +32,6 @@ polygon_provider = Provider(
         "IncomeStatement": PolygonIncomeStatementFetcher,
         "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
         "StockHistorical": PolygonStockHistoricalFetcher,
+        "MarketSnapshots": PolygonMarketSnapshotsFetcher,
     },
 )

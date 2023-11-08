@@ -134,6 +134,7 @@
     "stocks_ftd": "/stocks/ftd",
     "stocks_info": "/stocks/info",
     "stocks_load": "/stocks/load",
+    "stocks_market_snapshots": "/stocks/market_snapshots",
     "stocks_multiples": "/stocks/multiples",
     "stocks_news": "/stocks/news",
     "stocks_options": "/stocks/options",

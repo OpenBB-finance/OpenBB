@@ -66,7 +66,9 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
 
         raise RuntimeError(f"Error in Polygon request -> {value}")
 
-    if "results" not in data or len(data) == 0:
+    keys_in_data = "results" in data or "tickers" in data
+
+    if not keys_in_data or len(data) == 0:
         raise EmptyDataError()
 
     return data
