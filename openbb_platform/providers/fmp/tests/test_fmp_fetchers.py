@@ -542,7 +542,7 @@ def test_fmp_price_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_countries_fetcher(credentials=test_credentials):
-    params = {"symbol": "MISL"}
+    params = {"symbol": "VTI,QQQ,VOO,IWM"}
 
     fetcher = FMPEtfCountriesFetcher()
     result = fetcher.test(params, credentials)
@@ -560,7 +560,13 @@ def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_filings_fetcher(credentials=test_credentials):
-    params = {}
+    params = {
+        "form_type": "8-K",
+        "limit": 10,
+        "start_date": None,
+        "end_date": None,
+        "is_done": None,
+    }
 
     fetcher = FMPFilingsFetcher()
     result = fetcher.test(params, credentials)

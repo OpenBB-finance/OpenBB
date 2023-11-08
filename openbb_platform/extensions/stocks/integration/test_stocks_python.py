@@ -635,6 +635,21 @@ def test_stocks_options_chains(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
+        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_options_unusual(params, obb):
+    result = obb.stocks.options.usual(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "AAPL",
@@ -1109,7 +1124,28 @@ def test_stocks_disc_upcoming_release_days(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"pages": 1, "limit": 5, "today": True})],
+    [
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "limit": 10,
+                "form_type": None,
+                "is_done": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-11-06",
+                "end_date": "2023-11-07",
+                "limit": 50,
+                "form_type": "10-Q",
+                "is_done": "true",
+                "provider": "fmp",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_disc_filings(params, obb):

@@ -681,6 +681,24 @@ def test_stocks_options_chains(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
+        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_options_unusual(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/options/unusual?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "AAPL",
@@ -1181,7 +1199,28 @@ def test_stocks_disc_upcoming_release_days(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"pages": 1, "limit": 5, "today": True, "provider": "fmp"})],
+    [
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "limit": 10,
+                "form_type": None,
+                "is_done": None,
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-11-06",
+                "end_date": "2023-11-07",
+                "limit": 50,
+                "form_type": "10-Q",
+                "is_done": "true",
+                "provider": "fmp",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_stocks_disc_filings(params, headers):
