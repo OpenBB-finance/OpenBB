@@ -9,6 +9,7 @@ packages = [{ include = "openbb_stockgrid" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 openbb-core = "^0.1.0a5"
+pytest-freezegun = "^0.4.2"
 
 [build-system]
 requires = ["poetry-core"]
