@@ -3,6 +3,7 @@
 
 from dataclasses import dataclass
 from inspect import _empty
+from unittest.mock import patch
 
 import pandas
 import pytest
@@ -19,7 +20,6 @@ from openbb_core.app.static.package_builder import (
 )
 from pydantic import Field
 from typing_extensions import Annotated
-from unittest.mock import patch
 
 
 @pytest.fixture(scope="module")
