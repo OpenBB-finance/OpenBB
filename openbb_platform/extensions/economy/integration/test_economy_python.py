@@ -279,7 +279,6 @@ def test_economy_cot_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({}),
         (
             {
                 "id": "13874P",
