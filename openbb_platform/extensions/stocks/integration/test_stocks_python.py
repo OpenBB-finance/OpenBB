@@ -1009,23 +1009,6 @@ def test_stocks_disc_active(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({"symbol": "AAPL"}),
-        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
-    ],
-)
-@pytest.mark.integration
-def test_stocks_ftd(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.stocks.ftd(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
     [({"symbol": "AAPL"})],
 )
 @pytest.mark.integration
@@ -1160,6 +1143,51 @@ def test_stocks_disc_filings(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"symbol": "AAPL"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_dps_ftd(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.dps.ftd(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_volume(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.dps.short_volume(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_interest(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.dps.short_interest(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "CLOV",
@@ -1189,6 +1217,40 @@ def test_stocks_disc_filings(params, obb):
 @pytest.mark.integration
 def test_stocks_nbbo(params, obb):
     result = obb.stocks.nbbo(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+        ({"tier": "T1", "is_ats": True, "provider": "finra", "symbol": "AAPL"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_dps_otc(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.dps.otc(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+        ({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_options_unusual2(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.stocks.options.unusual(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

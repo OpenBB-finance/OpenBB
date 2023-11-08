@@ -1,4 +1,4 @@
-# OpenBB Yahoo!Finance Provider
+# OpenBB Wall St Journal Provider
 
 This extension integrates the [WSJ](https://wsj.com/) data provider into the OpenBB Platform.
 

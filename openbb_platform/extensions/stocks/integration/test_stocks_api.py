@@ -1076,24 +1076,6 @@ def test_stocks_disc_active(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({"symbol": "AAPL", "provider": "sec"}),
-        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
-    ],
-)
-@pytest.mark.integration
-def test_stocks_ftd(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/ftd?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
     [({"symbol": "AAPL", "provider": "fmp"})],
 )
 @pytest.mark.integration
@@ -1236,6 +1218,54 @@ def test_stocks_disc_filings(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
+        ({"symbol": "AAPL"}),
+        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_dps_ftd(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/ftd?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_volume(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/short_volume?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_stocks_dps_short_interest(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/short_interest?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         (
             {
                 "symbol": "CLOV",
@@ -1268,6 +1298,24 @@ def test_stocks_nbbo(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/stocks/nbbo?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL"}),
+        ({"tier": "T1", "is_ats": True, "provider": "finra", "symbol": "AAPL"}),
+    ],
+)
+@pytest.mark.integration
+def test_stocks_dps_otc(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/stocks/dps/otc?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

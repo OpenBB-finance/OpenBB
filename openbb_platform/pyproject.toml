@@ -35,6 +35,7 @@ openbb-cboe = { version = "^0.1.0a4", optional = true }
 openbb-nasdaq = { version = "^0.1.0a4", optional = true }
 openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
 openbb-yfinance = { version = "^0.1.0a4", optional = true }
+openbb-stockgrid = { version = "^0.1.0a4", optional = true }
 
 openbb-charting = { version = "^0.1.0a4", optional = true }
 openbb-futures = { version = "^0.1.0a4", optional = true }
@@ -69,6 +70,7 @@ all = [
     "openbb-qa",
     "openbb-ta",
     "openbb-econometrics",
+    "openbb-stockgrid"
 ]
 
 [tool.poetry.group.dev.dependencies]
