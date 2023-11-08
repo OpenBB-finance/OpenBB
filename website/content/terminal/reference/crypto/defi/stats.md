@@ -1,9 +1,27 @@
 ---
 title: stats
-description: OpenBB Terminal Function
+description: Documentation for 'stats' query, providing base statistics about Uniswap,
+  a decentralized exchange (DEX). The page includes usage instructions and examples
+  of results including metrics like totalVolumeUSD, totalLiquidityUSD, pairCount,
+  txCount, and totalLiquidityETH.
+keywords:
+- Uniswap DEX
+- DEX statistics
+- crypto defi stats
+- volumeUSD
+- liquidityUSD
+- pairCount
+- txCount
+- liquidityETH
+- base statistics
+- theGraph.com
+- usage query
+- Uniswap metrics
 ---
 
-# stats
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/stats - Reference | OpenBB Terminal Docs" />
 
 Display base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
 

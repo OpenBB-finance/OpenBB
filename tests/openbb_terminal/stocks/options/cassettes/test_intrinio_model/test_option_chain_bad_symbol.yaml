@@ -55,4 +55,116 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/options/chain/BAD_SYMBOL/2025-01-17?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: '{"chain":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '12'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:11 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/options/chain/BAD_SYMBOL/2025-01-17/eod?api_key=MOCK_API_KEY&date=2022-12-27
+  response:
+    body:
+      string: '{"chain":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '12'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:11 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/options/chain/BAD_SYMBOL/2025-01-17?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: '{"chain":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '12'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:50 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/options/chain/BAD_SYMBOL/2025-01-17/eod?api_key=MOCK_API_KEY&date=2022-12-27
+  response:
+    body:
+      string: '{"chain":[]}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '12'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:50 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
 version: 1

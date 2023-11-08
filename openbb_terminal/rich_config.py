@@ -11,9 +11,7 @@ from rich.text import Text
 
 from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-)
+from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -263,12 +261,11 @@ class ConsoleAndPanel:
                 else:
                     self.__console.print(kwargs["text"])
             else:
-                print(self.filter_rich_tags(kwargs["text"]))
+                print(self.filter_rich_tags(kwargs["text"]))  # noqa: T201
+        elif not get_current_system().TEST_MODE:
+            self.__console.print(*args, **kwargs)
         else:
-            if not get_current_system().TEST_MODE:
-                self.__console.print(*args, **kwargs)
-            else:
-                print(*args, **kwargs)
+            print(*args, **kwargs)  # noqa: T201
 
     def input(self, *args, **kwargs):
         self.print(*args, **kwargs, end="")

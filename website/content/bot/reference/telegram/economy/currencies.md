@@ -1,10 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: currencies
-description: OpenBB Telegram Command
+description: This page gives a guide on the usage of the currencies command, providing
+  an overview of all available currencies including the currency name, price, and
+  changes.
+keywords:
+- currencies command usage
+- currency overview
+- currency information retrieval
+- detailed guide on currency command
 ---
 
-# currencies
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy: currencies - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve an overview of all available currencies. It will provide the user with information such as the currency name, price, and change.
 

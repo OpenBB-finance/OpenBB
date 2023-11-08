@@ -59,7 +59,7 @@ export default function OverlayChartDialog({
   }
 
   function onSubmit() {
-    if (csvData.length == 0) {
+    if (csvData.length === 0) {
       document.getElementById("csv_file")?.focus();
       document
         .getElementById("csv_file")

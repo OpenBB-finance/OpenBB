@@ -33,7 +33,8 @@
     "react-dom": "^17.0.2",
     "rehype-katex": "^5.0.0",
     "remark-math": "^3.0.1",
-    "tailwindcss-radix": "^2.7.0"
+    "tailwindcss-radix": "^2.7.0",
+    "typescript-toggle": "^1.1.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.3.1",

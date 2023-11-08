@@ -1,10 +1,30 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sectors
-description: OpenBB Discord Command
+description: This page provides guidelines for using the 'sectors' command to retrieve
+  a summary of all flows by MarketCap percentage per sector over the specified number
+  of past days. The command allows you to filter by selected sectors such as Basic
+  Materials, Energy and Communication Services among others.
+keywords:
+- sectors
+- flows
+- MarketCap
+- filtering
+- Basic Materials
+- Energy
+- Communication Services
+- Consumer Cyclical
+- Consumer Defensive
+- Financial
+- Healthcare
+- Industrials
+- Real Estate
+- Technology
+- Utilities
 ---
 
-# sectors
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flow: sectors - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves a summary of all flows by MarketCap percentage per sector over the past x days.
 

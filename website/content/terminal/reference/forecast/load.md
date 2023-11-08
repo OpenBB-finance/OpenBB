@@ -1,9 +1,23 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page details how to use the 'load' command to bring custom datasets
+  into your forecasting tool. It gives usage instructions, parameter descriptions,
+  and examples.
+keywords:
+- load command
+- custom dataset
+- data import
+- data forecasting tool
+- command usage
+- command parameters
+- command examples
+- data forecasting examples
+- custom import
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /load - Reference | OpenBB Terminal Docs" />
 
 Load custom dataset (from previous export, custom imports).
 

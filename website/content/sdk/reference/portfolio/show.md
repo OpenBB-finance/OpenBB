@@ -1,9 +1,20 @@
 ---
 title: show
-description: OpenBB SDK Function
+description: The OpenBB Terminal's documentation page for the 'show' function, which
+  provides details on retrieving portfolio transactions using the 'PortfolioEngine'
+  class instance. It includes parameters, return types and example usage.
+keywords:
+- Portfolio transactions
+- PortfolioEngine class instance
+- Portfolio engine
+- pandas DataFrame
+- openbb.portfolio.show
+- portfolio load
 ---
 
-# show
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.show - Reference | OpenBB SDK Docs" />
 
 Get portfolio transactions
 
@@ -40,4 +51,3 @@ output = openbb.portfolio.show(p)
 ```
 
 ---
-

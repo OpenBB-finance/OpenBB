@@ -95,6 +95,7 @@ class OpenBBSDK:
             `covid`: Covid Module
             `oss`: Oss Module
             `realestate`: Realestate Module
+            `companieshouse`: CompaniesHouse Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n
@@ -121,7 +122,7 @@ class OpenBBSDK:
             `chart`: Load data for Technical Analysis\n
             `find`: Find similar coin by coin name,symbol or id.\n
             `load`: Load crypto currency to get data for\n
-            `price`: Returns price and confidence interval from pyth live feed. [Source: Pyth]\n
+            `price`: Displays live price from pyth live feed [Source: https://pyth.network/]\n
         """
 
         return ctrl.CryptoController()
@@ -210,14 +211,11 @@ class OpenBBSDK:
             `revenue_chart`: Governments collect revenues mainly for two purposes: to finance the goods\n
             `rgdp`: Gross domestic product (GDP) is the standard measure of the value added\n
             `rgdp_chart`: Gross domestic product (GDP) is the standard measure of the value added\n
-            `rtps`: Get real-time performance sector data\n
-            `rtps_chart`: Display Real-Time Performance sector. [Source: AlphaVantage]\n
             `search_index`: Search indices by keyword. [Source: FinanceDatabase]\n
             `spending`: General government spending provides an indication of the size\n
             `spending_chart`: General government spending provides an indication of the size\n
-            `treasury`: Get U.S. Treasury rates [Source: EconDB]\n
+            `treasury`: Get treasury rates from Federal Reserve\n
             `treasury_chart`: Display U.S. Treasury rates [Source: EconDB]\n
-            `treasury_maturities`: Get treasury maturity options [Source: EconDB]\n
             `trust`: Trust in government refers to the share of people who report having confidence in\n
             `trust_chart`: Trust in government refers to the share of people who report having confidence in\n
             `usbonds`: Scrape data for us bonds\n
@@ -436,12 +434,10 @@ class OpenBBSDK:
             `rh`: Set Robinhood key\n
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
-            `shroom`: Set Shroom key\n
             `smartstake`: Set Smartstake key.\n
             `stocksera`: Set Stocksera key.\n
             `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
-            `twitter`: Set Twitter key\n
             `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """

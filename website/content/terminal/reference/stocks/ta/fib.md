@@ -1,9 +1,22 @@
 ---
 title: fib
-description: OpenBB Terminal Function
+description: The page delivers documentation for the Python program 'fib', used to
+  calculate fibonacci retracement levels. It includes usage instructions, parameters
+  definition, and visual outputs.
+keywords:
+- fibonacci retracement levels
+- fib program
+- period parameter
+- start parameter
+- end parameter
+- date selection
+- data analytics
+- technical analysis tool
 ---
 
-# fib
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/fib - Reference | OpenBB Terminal Docs" />
 
 Calculates the fibonacci retracement levels
 

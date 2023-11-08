@@ -57,7 +57,7 @@ class ScreenerController(BaseController):
     if PRESETS_PATH.exists():
         preset_choices.update(
             {
-                filepath.name.strip(".ini"): filepath
+                filepath.name.replace(".ini", ""): filepath
                 for filepath in PRESETS_PATH.iterdir()
                 if filepath.suffix == ".ini"
             }
@@ -66,7 +66,7 @@ class ScreenerController(BaseController):
     if PRESETS_PATH_DEFAULT.exists():
         preset_choices.update(
             {
-                filepath.name.strip(".ini"): filepath
+                filepath.name.replace(".ini", ""): filepath
                 for filepath in PRESETS_PATH_DEFAULT.iterdir()
                 if filepath.suffix == ".ini"
             }
@@ -96,8 +96,8 @@ class ScreenerController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
-        f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
+        f0 = r"(p\/e|fwdp\/e|p\/s|p\/b|p\/c|p\/fcf)"
+        f1 = r"(P\/E|FwdP\/E|P\/S|P\/B|P\/C|P\/FCF)"
 
         sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 
@@ -243,8 +243,8 @@ class ScreenerController(BaseController):
 
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
 
@@ -321,8 +321,8 @@ class ScreenerController(BaseController):
 
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
             sort_map = screener_helper.finviz_map("valuation")
@@ -398,8 +398,8 @@ class ScreenerController(BaseController):
 
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
             sort_map = screener_helper.finviz_map("financial")
@@ -475,8 +475,8 @@ class ScreenerController(BaseController):
 
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
             sort_map = screener_helper.finviz_map("ownership")
@@ -540,7 +540,7 @@ class ScreenerController(BaseController):
             choices=screener_helper.finviz_choices("performance"),
             type=str.lower,
             dest="sort",
-            default="perfytd",
+            default="ytd",
             metavar="SORTBY",
             help="Sort elements of the table.",
         )
@@ -553,8 +553,8 @@ class ScreenerController(BaseController):
         sort_map = screener_helper.finviz_map("performance")
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
             self.screen_tickers = finviz_view.screener(
@@ -628,8 +628,8 @@ class ScreenerController(BaseController):
 
         if ns_parser:
             preset = (
-                self.preset.strip(".ini")
-                if self.preset.strip(".ini") in finviz_model.d_signals
+                self.preset.replace(".ini", "")
+                if self.preset.replace(".ini", "") in finviz_model.d_signals
                 else self.preset
             )
             sort_map = screener_helper.finviz_map("technical")

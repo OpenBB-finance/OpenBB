@@ -32,7 +32,7 @@ export default async function ResizeHandler({
   const tick_size =
     height > 420 && width < 920 ? 8 : height > 420 && width < 500 ? 9 : 7;
 
-  if (width < 750) {
+  if (width < 850) {
     // We hide the modebar and set the number of ticks to 6
 
     TRACES.forEach((trace) => {
@@ -57,8 +57,11 @@ export default async function ResizeHandler({
     });
     setMaximizePlot(true);
 
-    await hideModebar();
-  } else if (window.MODEBAR.style.cssText.includes("display: none")) {
+    await hideModebar(true);
+  } else if (
+    width > 850 &&
+    window.MODEBAR.style.cssText.includes("display: none")
+  ) {
     // We show the modebar
     await hideModebar(false);
     setMaximizePlot(false);

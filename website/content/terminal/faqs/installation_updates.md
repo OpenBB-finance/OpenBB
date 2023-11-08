@@ -1,36 +1,25 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: TBD
+description: This page provides comprehensive insights about installing and updating
+  the OpenBB Terminal. It discusses system requirements, installation process, common
+  errors and their solutions. Information about updating the OpenBB Terminal through
+  different methods is also covered.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    pypi,
-    c++,
-    miniconda,
-    library,
-    arm,
-    library,
-    error,
-    raspberry pi,
-  ]
+- OpenBB Terminal installation
+- Updating OpenBB Terminal
+- System requirements for OpenBB Terminal
+- Installation errors with OpenBB Terminal
+- Python pip installation
+- Microsoft Visual C++
+- Homebrew installation
+- libomp
+- Conda installation issue
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - Terminal | OpenBB Docs" />
+<HeadTitle title="Installation and Updates - Faqs | OpenBB Terminal Docs" />
 
 ## Installation and Updates
 
@@ -73,6 +62,10 @@ poetry install -E all
 <details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
 Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then try again.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
 
 </details>
 

@@ -402,7 +402,6 @@
       "ueat": ["BitQuery"],
       "ttcp": ["BitQuery"],
       "baas": ["BitQuery"],
-      "query": ["Shroom"],
       "address": ["Ethplorer"],
       "top": ["Ethplorer"],
       "balance": ["Ethplorer"],
@@ -505,7 +504,8 @@
     "holdings": ["StockAnalysis"],
     "weights": ["FinancialModelingPrep"],
     "news": ["NewsApi"],
-    "compare": ["StockAnalysis"]
+    "compare": ["StockAnalysis"],
+    "holding_perf": ["FinancialModelingPrep"]
   },
   "economy": {
     "overview": ["WallStreetJournal"],
@@ -515,7 +515,6 @@
     "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "usdli": ["FRED"],
-    "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
     "performance": ["Finviz"],
     "gdp": ["OECD"],
@@ -528,7 +527,7 @@
     "revenue": ["OECD"],
     "spending": ["OECD"],
     "trust": ["OECD"],
-    "treasury": ["EconDB"],
+    "treasury": ["FED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
   },

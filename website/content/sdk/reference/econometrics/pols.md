@@ -1,9 +1,24 @@
 ---
 title: pols
-description: OpenBB SDK Function
+description: The page provides detailed information on using PooledOLS in OpenBB,
+  a plain OLS that can comprehend various panel data structures. It includes parameters
+  and return types for the 'openbb.econometrics.pols' function.
+keywords:
+- pols
+- PooledOLS
+- OLS
+- panel data structures
+- openbb.econometrics.pols
+- regression_variables
+- data
+- PooledOLS model
+- Dependent variable
+- Independent variable
 ---
 
-# pols
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.pols - Reference | OpenBB SDK Docs" />
 
 PooledOLS is just plain OLS that understands that various panel data structures.
 
@@ -31,4 +46,3 @@ openbb.econometrics.pols(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>PooledOLS model |
 ---
-

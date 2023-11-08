@@ -1,9 +1,20 @@
 ---
 title: list
-description: OpenBB Terminal Function
+description: The 'list' page details available calls and puts commands that have no
+  parameters. It presents a step-by-step guide on using the 'list' command along with
+  examples.
+keywords:
+- list command
+- calls and puts
+- stock options
+- command parameters
+- command usage
+- command examples
 ---
 
-# list
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/hedge/list /options - Reference | OpenBB Terminal Docs" />
 
 Lists available calls and puts.
 
@@ -27,7 +38,7 @@ This command has no parameters
 
 ```python
 2022 May 10, 09:21 (🦋) /stocks/options/hedge/ $ list
-    Available Calls and Puts    
+    Available Calls and Puts
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┓
 ┃ Identifier ┃ Calls  ┃ Puts   ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━┩

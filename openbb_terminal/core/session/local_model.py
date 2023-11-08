@@ -128,6 +128,7 @@ def set_credentials_from_hub(configs: dict):
     """
     if configs:
         credentials = configs.get("features_keys", {}) or {}
+        credentials = {k: v for k, v in credentials.items() if v}
         for k, v in credentials.items():
             set_credential(k, v)
 
@@ -145,9 +146,7 @@ def set_preferences_from_hub(configs: dict, fields: Optional[List[str]] = None):
     if configs:
         preferences = configs.get("features_settings", {}) or {}
         for k, v in preferences.items():
-            if not fields:
-                set_preference(k, v)
-            elif k in fields:
+            if not fields or k in fields:
                 set_preference(k, v)
 
 

@@ -46,6 +46,7 @@ def get_sources() -> pd.DataFrame:
         # If data request failed
         console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
         df = pd.DataFrame()
+        return df
 
     df = df.sort_values(by=["title"], ascending=True)
     df = df[["id", "title", "web"]]
@@ -125,7 +126,7 @@ def get_news(
         "X-RapidAPI-Key": get_current_user().credentials.API_BIZTOC_TOKEN,
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
     }
-
+    df = pd.DataFrame()
     while not have_data:
         if term:
             req = request(
@@ -158,7 +159,8 @@ def get_news(
             break
 
         df = pd.DataFrame(req.json(), columns=["title", "body", "url", "created"])
-
+    if df.empty:
+        return df
     df["created"] = pd.to_datetime(df["created"])
 
     df = df.sort_values(by=[sort], ascending=False)

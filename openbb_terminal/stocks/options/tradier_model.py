@@ -393,9 +393,9 @@ def get_underlying_price(symbol: str) -> pd.Series:
             "root_symbols": "rootSymbols",
         }
     )
-    underlying_price[
+    underlying_price[  # pylint: disable=unsupported-assignment-operation
         "lastTradeTimestamp"
-    ] = (  # pylint: disable=unsupported-assignment-operation
+    ] = (
         pd.to_datetime(underlying_price["lastTradeTimestamp"], unit="ms").tz_localize(
             "EST"
         )
@@ -412,7 +412,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return underlying_price
 
 
-def get_chains(symbol: str) -> object:
+def get_chains(symbol: str) -> Options:
     """OptionsChains data object for Tradier.
 
     Parameters
@@ -466,7 +466,7 @@ def get_chains(symbol: str) -> object:
     OptionsChains.symbol = symbol.upper()
 
     if OptionsChains.symbol not in list(OptionsChains.SYMBOLS["symbol"]):
-        print(f"{OptionsChains.symbol} is not support by Tradier.")
+        console.print(f"{OptionsChains.symbol} is not support by Tradier.")
         return OptionsChains
 
     OptionsChains.underlying_price = get_underlying_price(OptionsChains.symbol)
@@ -492,7 +492,7 @@ def get_chains(symbol: str) -> object:
     return OptionsChains
 
 
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for Tradier.
 
     Parameters
@@ -544,7 +544,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
 
     if options.last_price is None:
         options.last_price = 0
-        print("No last price for " + options.symbol)
+        console.print("No last price for " + options.symbol)
 
     if not pydantic:
         return options
@@ -565,4 +565,4 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         )
         return OptionsChainsPydantic
 
-    return None
+    return Options()

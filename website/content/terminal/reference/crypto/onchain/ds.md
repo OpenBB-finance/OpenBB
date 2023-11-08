@@ -1,9 +1,24 @@
 ---
 title: ds
-description: OpenBB Terminal Function
+description: DS provides daily transactions of certain symbols in Ethereum blockchain,
+  it supports platforms such as uniswap-v3, uniswap-v2, sushiswap, and curve. It primarily
+  helps in checking fees and the number of users over time.
+keywords:
+- ds
+- daily transactions
+- ethereum blockchain
+- platforms
+- uniswap-v3
+- uniswap-v2
+- sushiswap
+- curve
+- fees
+- number of users over time
 ---
 
-# ds
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/ds - Reference | OpenBB Terminal Docs" />
 
 Get daily transactions for certain symbols in ethereum blockchain [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
 

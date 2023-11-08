@@ -63,7 +63,7 @@ def test_format(mocker):
     mock.levelname = ""
     mock.created = 6
     mock.name = "Hello"
-    mock.getMessage = lambda: "aeffew" or "3232432423"
+    mock.getMessage = lambda: "aeffew"
     mock.stack_info = "info"
     value = formatter.format(mock)
     assert value

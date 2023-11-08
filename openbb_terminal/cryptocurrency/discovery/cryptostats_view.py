@@ -52,7 +52,7 @@ def display_fees(
         df = df.sort_values(sortby, ascending=ascend)
 
     if "One Day Fees" in df.columns:
-        one_day_fees = df.pop("One Day Fees")
+        one_day_fees = df.pop("One Day Fees").map(lambda x: f"{x:,.2f}")
         df.insert(len(df.columns), "One Day Fees", one_day_fees)
 
     print_rich_table(

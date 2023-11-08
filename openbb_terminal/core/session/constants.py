@@ -1,13 +1,16 @@
-BASE_URL = "https://payments.openbb.co/"
-# BASE_URL = "http://127.0.0.1:8000/"
+class HubEnvironment:
+    # BASE_URL = "http://127.0.0.1:8000/"
+    BASE_URL = "https://payments.openbb.co/"
+    HUB_URL = "https://my.openbb.co/"
 
-HUB_URL = "https://my.openbb.co/"
-REGISTER_URL = HUB_URL + "register"
-SUPPORT_URL = HUB_URL + "app/terminal/support"
-SOURCES_URL = HUB_URL + "app/terminal/data-sources"
-KEYS_URL = HUB_URL + "app/terminal/api-keys"
-COLORS_URL = HUB_URL + "app/terminal/theme"
-CHARTS_TABLES_URL = HUB_URL + "app/terminal/theme/charts-tables"
+    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
+        """Create a singleton instance of the backend."""
+        if not hasattr(cls, "instance"):
+            cls.instance = super().__new__(cls)  # pylint: disable=E1120
+        return cls.instance
+
+
+BackendEnvironment = HubEnvironment()
 
 DEFAULT_ROUTINES_URL = "https://openbb-cms.directus.app/items/Routines"
 
@@ -17,9 +20,36 @@ CONNECTION_TIMEOUT_MSG = "[red]Connection timeout.[/red]"
 
 SCRIPT_TAGS = [
     "stocks",
-    "due diligence",
-    "price targets",
     "crypto",
-    "earnings",
+    "etf",
     "economy",
+    "forex",
+    "fixed income",
+    "alternative",
+    "funds",
+    "bonds",
+    "macro",
+    "mutual funds",
+    "equities",
+    "options",
+    "dark pool",
+    "shorts",
+    "insider",
+    "behavioral analysis",
+    "fundamental analysis",
+    "technical analysis",
+    "quantitative analysis",
+    "forecasting",
+    "government",
+    "comparison",
+    "nft",
+    "on chain",
+    "off chain",
+    "screener",
+    "report",
+    "overview",
+    "rates",
+    "econometrics",
+    "portfolio",
+    "real estate",
 ]

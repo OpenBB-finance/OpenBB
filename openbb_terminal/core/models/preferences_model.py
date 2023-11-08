@@ -4,9 +4,7 @@ from typing import Literal, Optional
 from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
 from pydantic.dataclasses import dataclass
 
-from openbb_terminal.core.config.paths import (
-    HOME_DIRECTORY,
-)
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 from openbb_terminal.core.models import BaseModel
 
 # pylint: disable=too-many-instance-attributes, disable=no-member, useless-parent-delegation
@@ -87,6 +85,7 @@ class PreferencesModel(BaseModel):
     USER_FORECAST_MODELS_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "forecast_models"
     USER_FORECAST_WHISPER_DIRECTORY = USER_DATA_DIRECTORY / "exports" / "whisper"
     USER_STYLES_DIRECTORY = USER_DATA_DIRECTORY / "styles"
+    USER_COMPANIES_HOUSE_DIRECTORY = USER_DATA_DIRECTORY / "companies_house"
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

@@ -1,9 +1,25 @@
 ---
 title: macro
-description: OpenBB Terminal Function
+description: Learn how to retrieve and manipulate a variety of macro data from numerous
+  countries using various parameters and transformations. The page provides examples
+  and details of the functionalities.
+keywords:
+- macro data
+- Gross Domestic Product
+- Treasury Yields
+- Employment figures
+- Government components
+- Consumer and Producer Indices
+- EconDB
+- macro parameters
+- data transformation
+- macro programming
+- currency conversion
 ---
 
-# macro
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /macro - Reference | OpenBB Terminal Docs" />
 
 Get a broad selection of macro data from one or multiple countries. This includes Gross Domestic Product (RGDP & GDP) and the underlying components, Treasury Yields (Y10YD & M3YD), Employment figures (URATE, EMP, AC0I0 and EMRATIO), Government components (e.g. GBAL & GREV), Consumer and Producer Indices (CPI & PPI) and a variety of other indicators. [Source: EconDB]
 

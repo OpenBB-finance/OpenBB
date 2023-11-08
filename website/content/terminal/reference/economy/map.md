@@ -1,9 +1,26 @@
 ---
 title: map
-description: OpenBB Terminal Function
+description: The documentation outlines the usage and parameters of a performance
+  index stocks map placed according to sectors and industries. The Web-Based map tool,
+  sourced by Finviz, adjusts based on selected performance periods and map filter
+  types, such as SP500, world, full or ETF.
+keywords:
+- Performance index
+- stocks map
+- sectors and industries
+- market cap
+- Finviz
+- map filter type
+- Performance period
+- sp500
+- world
+- full
+- etf
 ---
 
-# map
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /map - Reference | OpenBB Terminal Docs" />
 
 Performance index stocks map categorized by sectors and industries. Size represents market cap. Opens web-browser. [Source: Finviz]
 

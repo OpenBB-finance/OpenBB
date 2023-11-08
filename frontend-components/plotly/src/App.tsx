@@ -19,7 +19,7 @@ declare global {
 }
 
 function App() {
-  const [data, setData] = useState(
+  const [json_data, setData] = useState(
     process.env.NODE_ENV === "production" ? null : candlestickMockup,
   );
   const [options, setOptions] = useState({});
@@ -28,9 +28,9 @@ function App() {
     if (process.env.NODE_ENV === "production") {
       const interval = setInterval(() => {
         if (window.json_data) {
-          const data = window.json_data;
-          console.log(data);
-          setData(data);
+          const plotly_json = window.json_data;
+          console.log(plotly_json);
+          setData(plotly_json);
           clearInterval(interval);
         }
       }, 100);
@@ -79,10 +79,8 @@ function App() {
     // to make sure that the legend is not cut off
     data.data.forEach(function (trace) {
       if (trace.name !== undefined) {
-        const name_length = trace.name.length;
-        trace.name = `${trace.name}      `;
         trace.hoverlabel = {
-          namelength: name_length,
+          namelength: -1,
         };
       }
     });
@@ -103,7 +101,7 @@ function App() {
     };
   };
 
-  const transformedData = transformData(data);
+  const transformedData = transformData(json_data);
 
   if (transformedData) {
     if (transformedData.posthog.collect_logs && !options) {

@@ -1,12 +1,26 @@
 ---
 title: demark
-description: OpenBB SDK Function
+description: This page provides comprehensive documentation on the demark sequential
+  indicator feature offered. It includes detailed source codes, parameters, returns,
+  and examples for users to understand how to get integer values for demark sequential
+  indicators, and also how to plot these indicators.
+keywords:
+- demark sequential indicator
+- technical analysis
+- plot indicators
+- OpenBB terminal
+- OpenBB finance
+- GitHub link
+- OpenBB stocks
+- matplotlib.axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.demark - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# demark
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -46,8 +60,6 @@ openbb.ta.demark(df["Close"])
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -90,8 +102,6 @@ openbb.ta.demark_chart(df)
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

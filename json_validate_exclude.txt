@@ -1,0 +1,3 @@
+tests/
+openbb_terminal/miscellaneous/gpt_index/index_0.4.json
+.devcontainer/devcontainer.json

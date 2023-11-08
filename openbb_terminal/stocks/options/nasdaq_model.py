@@ -335,7 +335,7 @@ def get_available_greeks(OptionsChains, expiration: str = "") -> pd.DataFrame:
         expiration = OptionsChains.expirations[0]
 
     if expiration not in OptionsChains.expirations:
-        print(
+        console.print(
             f"{expiration}",
             " is not a valid expiration.  Choose from, ",
             OptionsChains.expirations,
@@ -349,7 +349,7 @@ def get_available_greeks(OptionsChains, expiration: str = "") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for Nasdaq.
 
     Parameters
@@ -406,7 +406,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         OptionsChains.symbol not in OptionsChains.SYMBOLS.index
         and OptionsChains.symbol != "NDX"
     ):
-        print(OptionsChains.symbol, "was not found in the Nasdaq directory")
+        console.print(OptionsChains.symbol, "was not found in the Nasdaq directory")
         return OptionsChains
 
     OptionsChains.symbol = symbol
@@ -461,7 +461,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         if expiration == "":
             expiration = OptionsChains.expirations[0]
         if expiration not in OptionsChains.expirations:
-            print(
+            console.print(
                 f"{expiration}",
                 " is not a valid expiration.  Choose from, ",
                 OptionsChains.expirations,
@@ -474,7 +474,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
     if not OptionsChains.chains.empty:
         if OptionsChains.last_price is None:
             OptionsChains.last_price = 0
-            print("No last price for " + OptionsChains.symbol)
+            console.print("No last price for " + OptionsChains.symbol)
 
         if not pydantic:
             setattr(OptionsChains, "get_available_greeks", get_greeks)
@@ -496,4 +496,4 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
         setattr(OptionsChainsPydantic, "get_available_greeks", get_greeks)
         return OptionsChainsPydantic
 
-    return None
+    return Options()

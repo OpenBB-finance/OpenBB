@@ -1,10 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: house
-description: OpenBB Discord Command
+description: The page provides a detailed guide on the use of the 'house' command.
+  The command allows the user to check recent house trades for any specific ticker.
+keywords:
+- House
+- /gov house
+- Ticker
+- Stock Ticker
+- Command
 ---
 
-# house
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="government: house - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve recent house trades for a specific ticker.
 

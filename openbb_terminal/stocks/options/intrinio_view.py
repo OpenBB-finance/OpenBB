@@ -71,6 +71,8 @@ def display_historical(
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
             export=bool(export),
+            show_index=True,
+            index_name="Date",
         )
 
     df_hist.columns = [x.title() for x in df_hist.columns]
@@ -95,7 +97,6 @@ def display_historical(
         secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
-    fig.hide_holidays()
 
     if export:
         export_data(
@@ -163,7 +164,7 @@ def view_historical_greeks(
             f"{strike} {['Call','Put'][put]} and {expiry} Expiration"
         )
     if df.empty:
-        print(f"No data found for {chain_id}")
+        console.print(f"No data found for {chain_id}")
         return None
 
     df = df.rename(columns={"impliedVolatility": "iv", "close": "price"})
@@ -225,7 +226,6 @@ def view_historical_greeks(
             side="right",
         ),
     )
-    fig.hide_holidays()
 
     export_data(
         export,

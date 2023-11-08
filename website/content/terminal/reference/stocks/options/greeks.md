@@ -1,9 +1,17 @@
 ---
 title: greeks
-description: OpenBB Terminal Function
+description: This documentation page describes the greeks command, which retrieves greeks for a given option.
+keywords:
+- greeks
+- delta
+- gamma
+- theta
+- vega
 ---
 
-# greeks
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/greeks - Reference | OpenBB Terminal Docs" />
 
 The greeks for a given option.
 

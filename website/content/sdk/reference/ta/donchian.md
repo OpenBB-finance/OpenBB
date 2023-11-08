@@ -1,12 +1,25 @@
 ---
 title: donchian
-description: OpenBB SDK Function
+description: This page provides comprehensive documentation on how to calculate and
+  plot Donchian Channels using OpenBB's technical analysis tools. Learn about the
+  parameters and return types to leverage this method in your financial modelling
+  work.
+keywords:
+- Donchian Channels
+- Technical Analysis
+- Financial Modelling
+- FinTech
+- Volatility Models
+- Dataframes
+- Data Visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.donchian - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# donchian
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of upper and lower channels |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +84,6 @@ openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

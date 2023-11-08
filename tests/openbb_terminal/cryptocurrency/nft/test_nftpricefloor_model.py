@@ -12,7 +12,7 @@ from openbb_terminal.cryptocurrency.nft import nftpricefloor_model
 )
 def test_get_floor_price(slug, recorder):
     df_floor_price = nftpricefloor_model.get_floor_price(slug)
-    recorder.capture(df_floor_price)
+    recorder.capture(df_floor_price.head(1))
 
 
 @pytest.mark.vcr

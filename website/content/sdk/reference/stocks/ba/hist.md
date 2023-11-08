@@ -1,12 +1,23 @@
 ---
 title: hist
-description: OpenBB SDK Function
+description: This page provides coding tutorials on how to get hour-level sentiment
+  data for a chosen stock symbol and display the historical sentiment data of a ticker
+  using OpenBB tools. It also includes source codes, parameters, and return information.
+keywords:
+- hour-level sentiment data
+- stock symbol
+- historical sentiment data
+- coding tutorial
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.hist - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hist
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +50,6 @@ openbb.stocks.ba.hist(symbol: str, start_date: Optional[str] = None, end_date: O
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical sentiment |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -76,8 +85,6 @@ openbb.stocks.ba.hist_chart(symbol: str, start_date: Optional[str] = None, end_d
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,27 @@
 ---
 title: rnn
-description: OpenBB SDK Function
+description: Learn about our Recurrent Neural Networks (RNN) forecasting models in
+  OpenBB Terminal's documentation. This includes instructions on how to perform RNN
+  forecasting, parameters used, returns and how to display an RNN forecast chart.
+keywords:
+- RNN
+- forecasting
+- training model
+- Parameters
+- Returns
+- chart
+- machine learning
+- predict
+- AI
+- Neural networks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.rnn - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rnn
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -49,8 +64,6 @@ openbb.forecast.rnn(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[RNNModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best RNN Model |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -100,8 +113,6 @@ openbb.forecast.rnn_chart(data: Union[pd.DataFrame, pd.Series], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

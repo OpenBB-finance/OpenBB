@@ -42,8 +42,6 @@ class StocksController(model.StocksRoot):
             `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
             `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
-            `infer`: Load tweets from twitter API and analyzes using VADER.\n
-            `infer_chart`: Prints Inference sentiment from past n tweets.\n
             `mentions`: Get interest over time from google api [Source: google].\n
             `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
@@ -55,11 +53,8 @@ class StocksController(model.StocksRoot):
             `regions`: Get interest by region from google api [Source: google].\n
             `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
             `rise`: Get top rising related queries with this stock's query [Source: google].\n
-            `sentiment`: Get sentiments from symbol.\n
-            `sentiment_chart`: Plots sentiments from symbol\n
             `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
             `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-            `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
             `stalker`: Gets messages from given user [Source: stocktwits].\n
             `text_sent`: Find the sentiment of a post and related comments.\n
             `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
@@ -319,8 +314,6 @@ class StocksController(model.StocksRoot):
         Attributes:
             `recom`: Get tradingview recommendation based on technical indicators\n
             `recom_chart`: Print tradingview recommendation based on technical indicators\n
-            `rsp`: Relative strength percentile [Source: https://github.com/skyte/relative-strength]\n
-            `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
             `summary`: Get technical summary report provided by FinBrain's API\n
             `summary_chart`: Print technical summary report provided by FinBrain's API\n
         """

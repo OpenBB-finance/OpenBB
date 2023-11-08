@@ -1,12 +1,26 @@
 ---
 title: autoets
-description: OpenBB SDK Function
+description: This documentation page provides comprehensive information about OpenBB's
+  'autoets' model and view function for forecasting. The documentation contains source
+  code links, parameters definitions, and expected returns for financial data.
+keywords:
+- autoets
+- forecasting
+- Error Trend Seasonality model
+- financial data
+- time series
+- chart
+- parameters
+- returns
+- StatsForecast
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.autoets - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# autoets
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +55,6 @@ openbb.forecast.autoets(data: Union[pd.Series, pd.DataFrame], target_column: str
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit ETS model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -84,8 +96,6 @@ openbb.forecast.autoets_chart(data: Union[pd.DataFrame, pd.Series], target_colum
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

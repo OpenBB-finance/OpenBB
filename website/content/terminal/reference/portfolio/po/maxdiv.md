@@ -1,9 +1,25 @@
 ---
 title: maxdiv
-description: OpenBB Terminal Function
+description: The maxdiv page is a comprehensive guide for maximizing portfolio diversification
+  with parameters like covariance matrix estimation method, smoothing factor for ewma
+  estimators, allocations, return methods, tolerances for nan values, and more. It
+  also includes examples of use.
+keywords:
+- maxdiv
+- portfolio diversification
+- covariance matrix
+- smoothing factor
+- short allocation
+- nan fill method
+- historic period
+- log returns
+- return frequency
+- long allocation
 ---
 
-# maxdiv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/maxdiv - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's diversification ratio
 

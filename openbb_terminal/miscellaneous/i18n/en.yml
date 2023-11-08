@@ -420,7 +420,6 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
-  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
@@ -442,6 +441,7 @@ en:
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/ta/multi: plot multiple indicators on the same chart
+  stocks/ta/ichimoku: Ichimoku Kinko Hyo indicator
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
@@ -702,6 +702,7 @@ en:
   etf/scr: screener ETFs                 overview/performance, using preset filters
   etf/overview: get overview
   etf/holdings: top company holdings
+  etf/holding_perf: Performance of holdings in ETF.
   etf/weights: sector weights allocation
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company
@@ -770,7 +771,6 @@ en:
   economy/edebt: show external debt statistics for various countries
   economy/usdli: Compare the USD Liquidity Index against a choice of indices
   economy/plot: plot data from the above commands together
-  economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
@@ -922,9 +922,10 @@ en:
   funds/exclusion: exclusion policy
   funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
-  alternative/covid: COVID menu                  cases, deaths, rates
-  alternative/oss: Open Source menu            star history, repos information
-  alternative/realestate: Real Estate menu            sold prices, HPIs
+  alternative/covid: COVID menu,                 cases, deaths, rates
+  alternative/oss: Open Source menu,           star history, repos information
+  alternative/realestate: Real Estate menu,           sold prices, HPIs
+  alternative/companieshouse: Companies House menu,       UK company information
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -944,6 +945,14 @@ en:
   alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
   alternative/realestate/_region: Region
+  alternative/companieshouse/_company: Current Company
+  alternative/companieshouse/search: search for companies by name
+  alternative/companieshouse/load: retrieve basic company details by company registration number
+  alternative/companieshouse/officers: retrieve company officies
+  alternative/companieshouse/signifcontrol: retrieve those with significant control over the company
+  alternative/companieshouse/filings: retrieve list of documents filed with Companies House (Default 100)
+  alternative/companieshouse/filingdocument: download filed document
+  alternative/companieshouse/charges: registered charges against the company
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
@@ -1089,11 +1098,13 @@ en:
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
   dashboards/futures: historical futures performance
+  dashboards/options: cboe options analysis
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
   reports/_OpenBB_reports_: OpenBB reports
   reports/_Custom_reports_: Custom reports
   reports/run: Run a Jupyter notebook from OpenBBUserData/reports/custom reports
+  reports/exe: Execute a Jupyter notebook through a hyperlink using papermill
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
@@ -1111,6 +1122,7 @@ en:
   forecast/rename: Rename columns from dataset
   forecast/export: Export a processed dataset
   forecast/_feateng_: Feature Engineering
+  forecast/timegpt: TimeGPT-1 (Beta) by Nixtla
   forecast/ema: Add Exponentially Weighted Moving Average
   forecast/sto: Add Stochastic Oscillator %K and %D
   forecast/rsi: Add Relative Strength Index

@@ -17,11 +17,13 @@ import plotly.graph_objects as go
 from packaging import version
 from reportlab.graphics import renderPDF
 
-# pylint: disable=C0415
+from openbb_terminal.core.session.constants import BackendEnvironment
+
+# pylint: disable=C0411,C0412,C0415
 try:
     from pywry import PyWry
 except ImportError as e:
-    print(f"\033[91m{e}\033[0m")
+    print(f"\033[91m{e}\033[0m")  # noqa: T201
     # pylint: disable=C0412
     from openbb_terminal.core.plots.no_import import DummyBackend
 
@@ -31,6 +33,7 @@ except ImportError as e:
 
 from svglib.svglib import svg2rlg
 
+from openbb_terminal import config_terminal
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
@@ -51,7 +54,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
+PLOTLYJS_PATH: Path = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
 BACKEND = None
 
 
@@ -201,8 +204,10 @@ class Backend(PyWry):
 
         json_data = json.loads(fig.to_json())
 
-        json_data.update(self.get_json_update(command_location))
-
+        if config_terminal.COMMAND_ON_CHART:
+            json_data.update(self.get_json_update(command_location))
+        else:
+            json_data.update(self.get_json_update(" "))
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
@@ -237,10 +242,12 @@ class Backend(PyWry):
 
             if get_current_user().preferences.PLOT_OPEN_EXPORT:
                 if sys.platform == "win32":
-                    os.startfile(export_image)  # nosec: B606
+                    os.startfile(export_image)  # noqa: S606  # nosec: B606
                 else:
                     opener = "open" if sys.platform == "darwin" else "xdg-open"
-                    subprocess.check_call([opener, export_image])  # nosec: B603
+                    subprocess.check_call(
+                        [opener, export_image]  # nosec: B603 # noqa: S603
+                    )  # nosec: B603 # noqa: S603
 
     def send_table(
         self,
@@ -417,7 +424,7 @@ class Backend(PyWry):
                 data: dict = self.recv.get(block=False) or {}
                 if data.get("result", False):
                     return json.loads(data["result"])
-            except Exception:  # pylint: disable=W0703
+            except Exception:  # pylint: disable=W0703 # noqa: S110
                 pass
 
             await asyncio.sleep(1)
@@ -438,8 +445,10 @@ class Backend(PyWry):
         self.check_backend()
         endpoint = {True: "login", False: "logout"}[login]
 
+        json_url = f"{BackendEnvironment.HUB_URL}{endpoint}?pywry=true"
+
         outgoing = dict(
-            json_data=dict(url=f"https://my.openbb.co/{endpoint}?pywry=true"),
+            json_data=dict(url=json_url),
             **self.get_kwargs(endpoint.title()),
             width=900,
             height=800,
@@ -473,14 +482,13 @@ async def download_plotly_js():
         # this is so we don't have to block the main thread
         async with aiohttp.ClientSession(
             connector=aiohttp.TCPConnector(verify_ssl=False)
-        ) as session:
-            async with session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
-                with open(str(PLOTLYJS_PATH), "wb") as f:
-                    while True:
-                        chunk = await resp.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
+        ) as session, session.get(f"https://cdn.plot.ly/{js_filename}") as resp:
+            with open(str(PLOTLYJS_PATH), "wb") as f:
+                while True:
+                    chunk = await resp.content.read(1024)
+                    if not chunk:
+                        break
+                    f.write(chunk)
 
         # We delete the old version of plotly.js
         for file in (PLOTS_CORE_PATH / "assets").glob("plotly*.js"):
@@ -488,7 +496,7 @@ async def download_plotly_js():
                 file.unlink(missing_ok=True)
 
     except Exception as err:  # pylint: disable=W0703
-        print(f"Error downloading plotly.js: {err}")
+        console.print(f"Error downloading plotly.js: {err}")
 
 
 def plots_backend() -> Backend:

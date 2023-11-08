@@ -1,12 +1,26 @@
 ---
 title: cbpairs
-description: OpenBB SDK Function
+description: This page provides in-depth information on how to use different functions
+  to get a list of available trading pairs or visualize it in a chart form with source
+  code supplied from OpenBB-finance/OpenBBTerminal project on GitHub.
+keywords:
+- OpenBB-finance
+- GitHub
+- cryptocurrency
+- trading pairs
+- coinbase
+- model
+- view
+- charts
+- visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.cbpairs - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cbpairs
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascen
 | pd.DataFrame | Available trading pairs on Coinbase |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -71,8 +83,6 @@ openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

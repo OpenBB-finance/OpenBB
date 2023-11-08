@@ -1,12 +1,25 @@
 ---
 title: atr
-description: OpenBB SDK Function
+description: This page provides detailed documentation on the Average True Range (ATR)
+  feature in the OpenBB terminal. It includes descriptions and code examples for both
+  the volatility model and view, with an emphasis on working with OHLC price dataframes.
+  The page also hosts links to the source code on GitHub.
+keywords:
+- ATR
+- Average True Range
+- Technical Analysis
+- Volatility Model
+- Volatility View
+- OHLC Prices
+- Documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.atr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# atr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +53,6 @@ openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset:
 | pd.DataFrame | Dataframe of atr |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +84,6 @@ openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

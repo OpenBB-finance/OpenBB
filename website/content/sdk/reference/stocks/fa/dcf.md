@@ -1,9 +1,26 @@
 ---
 title: dcf
-description: OpenBB SDK Function
+description: This page covers how to use the 'dcf' function from FMP for stocks analysis
+  with the OpenBB tool. It indicates the parameters required and returns a dataframe
+  of dcf data.
+keywords:
+- dcf
+- stocks
+- FMP
+- fundamental analysis
+- fmp model
+- parameters
+- returns
+- stock ticker symbol
+- limit
+- quarterly
+- dataframe
+- dcf data
 ---
 
-# dcf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.dcf - Reference | OpenBB SDK Docs" />
 
 Get stocks dcf from FMP
 
@@ -32,4 +49,3 @@ openbb.stocks.fa.dcf(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of dcf data |
 ---
-

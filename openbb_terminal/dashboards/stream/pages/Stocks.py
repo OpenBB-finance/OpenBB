@@ -136,7 +136,6 @@ def create_line(
 
 
 def show_fig(fig: OpenBBFigure, margin: bool = True, volume: bool = False):
-    fig.hide_holidays()
     fig.show(external=True, margin=margin)
     with_container = main_chart if not volume else volume_chart
     with with_container.container():
@@ -189,7 +188,7 @@ def stock_data(
             if not df.empty:
                 df.index = pd.to_datetime(df.index).tz_localize(None)
                 return df
-        except Exception:
+        except Exception:  # noqa: S110
             pass
     return pd.DataFrame()
 
@@ -204,7 +203,7 @@ def volume_data(infos: dict, start: datetime, end: datetime, interval: str) -> d
             df = df[["Volume"]]
             df = df.rename(columns={"Volume": ticker})
             result[ticker] = df
-        except Exception:
+        except Exception:  # noqa: S110
             pass
     return result
 

@@ -19,11 +19,12 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.economy import (
-    alphavantage_view,
     commodity_view,
     econdb_model,
     econdb_view,
     economy_helpers,
+    fedreserve_model,
+    fedreserve_view,
     finviz_model,
     finviz_view,
     fred_model,
@@ -77,7 +78,6 @@ class EconomyController(BaseController):
         "valuation",
         "performance",
         "map",
-        "rtps",
         "bigmac",
         "events",
         "edebt",
@@ -115,36 +115,36 @@ class EconomyController(BaseController):
     ]
     overview_options = ["indices", "usbonds", "glbonds", "currencies"]
     tyld_maturity = ["3m", "5y", "10y", "30y"]
-    valuation_sort_cols = [
-        "Name",
-        "MarketCap",
-        "P/E",
-        "FwdP/E",
-        "PEG",
-        "P/S",
-        "P/B",
-        "P/C",
-        "P/FCF",
-        "EPSpast5Y",
-        "EPSnext5Y",
-        "Salespast5Y",
-        "Change",
-        "Volume",
-    ]
-    performance_sort_list = [
-        "Name",
-        "Week",
-        "Month",
-        "3Month",
-        "6Month",
-        "1Year",
-        "YTD",
-        "Recom",
-        "AvgVolume",
-        "RelVolume",
-        "Change",
-        "Volume",
-    ]
+    valuation_sort_cols_dict = {
+        "Name": "Name",
+        "MarketCap": "Market Cap",
+        "P/E": "P/E",
+        "FwdP/E": "Fwd P/E",
+        "PEG": "PEG",
+        "P/S": "P/S",
+        "P/B": "P/B",
+        "P/C": "P/C",
+        "P/FCF": "P/FCF",
+        "EPSpast5Y": "EPS past 5Y",
+        "EPSnext5Y": "EPS next 5Y",
+        "Salespast5Y": "Sales past 5Y",
+        "Change": "Change",
+        "Volume": "Volume",
+    }
+    performance_sort_dict = {
+        "Name": "Name",
+        "1W": "1W",
+        "1M": "1M",
+        "3M": "3M",
+        "6M": "6M",
+        "1Y": "1Y",
+        "YTD": "YTD",
+        "Recom": "Recom",
+        "AvgVolume": "Avg Volume",
+        "RelVolume": "Rel Volume",
+        "Change": "Change",
+        "Volume": "Volume",
+    }
     index_interval = [
         "1m",
         "2m",
@@ -237,10 +237,6 @@ class EconomyController(BaseController):
             }
             choices["trust"]["-c"] = "--countries"
 
-            choices["treasury"]["--type"] = {
-                c: {} for c in econdb_model.TREASURIES["instruments"]
-            }
-            choices["treasury"]["-t"] = "--type"
             choices["macro"]["--parameters"] = {c: {} for c in econdb_model.PARAMETERS}
             choices["macro"]["-p"] = "--parameters"
             choices["macro"]["--countries"] = {
@@ -259,7 +255,10 @@ class EconomyController(BaseController):
                 c: {} for c in nasdaq_model.get_country_names()
             }
             choices["events"]["-c"] = "--countries"
-
+            choices["treasury"]["--maturity"] = {
+                c: None for c in fedreserve_model.all_mat
+            }
+            choices["treasury"]["-m"] = "--maturity"
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -270,7 +269,7 @@ class EconomyController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd|P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
 
         custom_filters = [sort_filter]
 
@@ -315,7 +314,7 @@ class EconomyController(BaseController):
         mt.add_cmd("bigmac")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
-        mt.add_cmd("rtps")
+        mt.add_raw("\n")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
         mt.add_cmd("usdli")
@@ -597,9 +596,9 @@ class EconomyController(BaseController):
             "--units",
             type=str,
             dest="units",
-            help="Use either USD_CAP (US dollars per capita) or MLN_USD (millions of US dollars)",
-            choices=["USD_CAP", "MLN_USD"],
-            default="USD_CAP",
+            help="Use either USD or USD_CAP (USD Per Capita)",
+            choices=["USD", "USD_CAP"],
+            default="USD",
         )
 
         parser.add_argument(
@@ -1618,9 +1617,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="treasury",
-            description="Obtain any set of U.S. treasuries and plot them together. These can be a range of maturities "
-            "for nominal, inflation-adjusted (on long term average of inflation adjusted) and secondary "
-            "markets over a lengthy period. Note: 3-month and 10-year treasury yields for other countries "
+            description="Obtain US treasury rates.  Note: 3-month and 10-year treasury yields for other countries "
             "are available via the command 'macro' and parameter 'M3YD' and 'Y10YD'. [Source: EconDB / FED]",
         )
         parser.add_argument(
@@ -1637,22 +1634,6 @@ class EconomyController(BaseController):
             help="Show the maturities available for every instrument.",
             action="store_true",
             default=False,
-        )
-        parser.add_argument(
-            "--freq",
-            type=str,
-            dest="frequency",
-            choices=econdb_model.TREASURIES["frequencies"],
-            help="The frequency, this can be annually, monthly, weekly or daily",
-            default="monthly",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            type=str,
-            dest="type",
-            help="Choose from: nominal, inflation, average, secondary",
-            default="nominal",
         )
         parser.add_argument(
             "-s",
@@ -1679,65 +1660,23 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             maturities = list_from_str(ns_parser.maturity)
-            types = list_from_str(ns_parser.type)
-            for item in types:
-                if item not in econdb_model.TREASURIES["instruments"]:
-                    print(f"{item} is not a valid instrument type.\n")
-                    return self.queue
             if ns_parser.show_maturities:
-                econdb_view.show_treasury_maturities()
-                return self.queue
+                console.print(",".join(fedreserve_model.all_mat))
+                return None
 
-            if ns_parser.maturity and ns_parser.type:
-                df = econdb_model.get_treasuries(
-                    instruments=types,
-                    maturities=maturities,
-                    frequency=ns_parser.frequency,
-                    start_date=ns_parser.start_date,
-                    end_date=ns_parser.end_date,
-                )
+            fedreserve_view.show_treasuries(
+                maturities=maturities,
+                start_date=ns_parser.start_date,
+                end_date=ns_parser.end_date,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
+                sheet_name=" ".join(ns_parser.sheet_name)
+                if ns_parser.sheet_name
+                else None,
+            )
 
-                if not df.empty:
-                    cols = []
-                    for column in df.columns:
-                        if isinstance(column, tuple):
-                            cols.append("_".join(column))
-                        else:
-                            cols.append(column)
-                    df.columns = cols
-
-                    for column in df.columns:
-                        if column in self.DATASETS["treasury"].columns:
-                            self.DATASETS["treasury"].drop(column, axis=1, inplace=True)
-
-                    self.DATASETS["treasury"] = pd.concat(
-                        [
-                            self.DATASETS["treasury"],
-                            df,
-                        ],
-                        axis=1,
-                    )
-
-                    self.stored_datasets = (
-                        economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
-                    econdb_view.show_treasuries(
-                        instruments=types,
-                        maturities=maturities,
-                        frequency=ns_parser.frequency,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
-
-                    self.update_runtime_choices()
-                    if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
-                        self.print_help()
+            if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
+                self.print_help()
 
     @log_start_end(log=logger)
     def call_cpi(self, other_args: List[str]):
@@ -2082,200 +2021,34 @@ class EconomyController(BaseController):
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                     "'treasury' command."
                 )
-            else:
-                dataset_yaxis1 = pd.DataFrame()
-                dataset_yaxis2 = pd.DataFrame()
-
-                if y1s:
-                    for variable in y1s:
-                        for key, data in self.DATASETS.items():
-                            if variable in data.columns:
-                                if key == "macro":
-                                    split = variable.split("_")
-                                    transform = ""
-                                    if (
-                                        len(split) == 3
-                                        and split[1] in econdb_model.TRANSFORM
-                                    ):
-                                        (
-                                            country,
-                                            transform,
-                                            parameter_abbreviation,
-                                        ) = split
-                                    elif (
-                                        len(split) == 4
-                                        and split[2] in econdb_model.TRANSFORM
-                                    ):
-                                        country = f"{split[0]} {split[1]}"
-                                        transform = split[2]
-                                        parameter_abbreviation = split[3]
-                                    elif len(split) == 2:
-                                        country, parameter_abbreviation = split
-                                    else:
-                                        country = f"{split[0]} {split[1]}"
-                                        parameter_abbreviation = split[2]
-
-                                    parameter = econdb_model.PARAMETERS[
-                                        parameter_abbreviation
-                                    ]["name"]
-
-                                    units = self.UNITS[country.replace(" ", "_")][
-                                        parameter_abbreviation
-                                    ]
-                                    transformtype = (
-                                        f" ({econdb_model.TRANSFORM[transform]}) "
-                                        if transform
-                                        else " "
-                                    )
-                                    dataset_yaxis1[
-                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
-                                    ] = data[variable]
-                                elif key == "fred":
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis1[title] = data_to_plot
-                                elif (
-                                    key == "index"
-                                    and variable in yfinance_model.INDICES
-                                ):
-                                    dataset_yaxis1[
-                                        yfinance_model.INDICES[variable]["name"]
-                                    ] = data[variable]
-                                elif key == "treasury":
-                                    parameter, maturity = variable.split("_")
-                                    dataset_yaxis1[f"{parameter} [{maturity}]"] = data[
-                                        variable
-                                    ]
-                                else:
-                                    dataset_yaxis1[variable] = data[variable]
-                                break
-                    if dataset_yaxis1.empty:
-                        console.print(
-                            f"[red]Not able to find any data for the --y1 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
-                        )
-
-                if y2s:
-                    for variable in y2s:
-                        for key, data in self.DATASETS.items():
-                            if variable in data.columns:
-                                if key == "macro":
-                                    split = variable.split("_")
-                                    transform = ""
-                                    if (
-                                        len(split) == 3
-                                        and split[1] in econdb_model.TRANSFORM
-                                    ):
-                                        (
-                                            country,
-                                            transform,
-                                            parameter_abbreviation,
-                                        ) = split
-                                    elif (
-                                        len(split) == 4
-                                        and split[2] in econdb_model.TRANSFORM
-                                    ):
-                                        country = f"{split[0]} {split[1]}"
-                                        transform = split[2]
-                                        parameter_abbreviation = split[3]
-                                    elif len(split) == 2:
-                                        country, parameter_abbreviation = split
-                                    else:
-                                        country = f"{split[0]} {split[1]}"
-                                        parameter_abbreviation = split[2]
-
-                                    parameter = econdb_model.PARAMETERS[
-                                        parameter_abbreviation
-                                    ]["name"]
-                                    units = self.UNITS[country.replace(" ", "_")][
-                                        parameter_abbreviation
-                                    ]
-                                    transformtype = (
-                                        f" ({econdb_model.TRANSFORM[transform]}) "
-                                        if transform
-                                        else " "
-                                    )
-                                    dataset_yaxis2[
-                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
-                                    ] = data[variable]
-                                elif key == "fred":
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis2[title] = data_to_plot
-                                elif (
-                                    key == "index"
-                                    and variable in yfinance_model.INDICES
-                                ):
-                                    dataset_yaxis2[
-                                        yfinance_model.INDICES[variable]["name"]
-                                    ] = data[variable]
-                                elif key == "treasury":
-                                    parameter, maturity = variable.split("_")
-                                    dataset_yaxis2[f"{parameter} [{maturity}]"] = data[
-                                        variable
-                                    ]
-                                else:
-                                    dataset_yaxis2[variable] = data[variable]
-                                break
-                    if dataset_yaxis2.empty:
-                        console.print(
-                            f"[red]Not able to find any data for the --y2 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
-                        )
-
-                if y1s or y2s:
-                    plot_view.show_plot(
-                        dataset_yaxis_1=dataset_yaxis1,
-                        dataset_yaxis_2=dataset_yaxis2,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
-
-    @log_start_end(log=logger)
-    def call_rtps(self, other_args: List[str]):
-        """Process rtps command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="rtps",
-            description="""
-                Real-time and historical sector performances calculated from
-                S&P500 incumbents. Pops plot in terminal. [Source: Alpha Vantage]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            alphavantage_view.realtime_performance_sector(
-                raw=ns_parser.raw,
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                return
+            dataset_yaxis1 = economy_helpers.get_yaxis_data(
+                self.DATASETS, self.UNITS, self.FRED_TITLES, y1s
             )
+            if dataset_yaxis1.empty:
+                console.print(
+                    f"[red]Not able to find any data for the --y1 argument. The currently available "
+                    f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
+                )
+
+            dataset_yaxis2 = economy_helpers.get_yaxis_data(
+                self.DATASETS, self.UNITS, self.FRED_TITLES, y2s
+            )
+            if dataset_yaxis2.empty:
+                console.print(
+                    f"[red]Not able to find any data for the --y2 argument. The currently available "
+                    f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
+                )
+
+            if y1s or y2s:
+                plot_view.show_plot(
+                    dataset_yaxis_1=dataset_yaxis1,
+                    dataset_yaxis_2=dataset_yaxis2,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
@@ -2302,7 +2075,7 @@ class EconomyController(BaseController):
             "--sortby",
             dest="sortby",
             type=str,
-            choices=self.valuation_sort_cols,
+            choices=list(self.valuation_sort_cols_dict.keys()),
             default="Name",
             help="Column to sort by",
         )
@@ -2332,7 +2105,7 @@ class EconomyController(BaseController):
             )
             finviz_view.display_valuation(
                 group=ns_group,
-                sortby=ns_parser.sortby,
+                sortby=self.valuation_sort_cols_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -2364,7 +2137,7 @@ class EconomyController(BaseController):
             "-s",
             "--sortby",
             dest="sortby",
-            choices=self.performance_sort_list,
+            choices=list(self.performance_sort_dict.keys()),
             default="Name",
             help="Column to sort by",
         )
@@ -2393,7 +2166,7 @@ class EconomyController(BaseController):
             )
             finviz_view.display_performance(
                 group=ns_group,
-                sortby=ns_parser.sortby,
+                sortby=self.performance_sort_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
                 sheet_name=" ".join(ns_parser.sheet_name)
@@ -2489,7 +2262,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--help" not in other_args,
             help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:

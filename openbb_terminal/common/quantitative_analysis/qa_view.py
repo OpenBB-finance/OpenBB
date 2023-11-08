@@ -121,7 +121,8 @@ def display_hist(
 
     fig.update_layout(
         xaxis_title="Value",
-        yaxis_title="Proportion",
+        margin=dict(r=40),
+        yaxis=dict(title="Proportion", title_standoff=40),
         bargap=0.01,
         bargroupgap=0,
     )
@@ -860,7 +861,6 @@ def display_raw(
         df1 = df1.sort_values(by=data.columns[sort_col], ascending=ascend)
     else:
         df1 = df1.sort_index(ascending=ascend)
-    df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
         df1,

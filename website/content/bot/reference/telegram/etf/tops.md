@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: tops
-description: OpenBB Telegram Command
+description: The page offers comprehensive details about the command 'ETF tops' which
+  enables users to fetch the top ETFs for the day, sorted by gainers, losers, or active.
+  The sort option is optional with default sort set to gainers.
+keywords:
+- ETF tops
+- ETF gainers
+- ETF losers
+- active ETFs
+- ETF sorting
 ---
 
-# etf tops
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf: tops - Telegram Reference | OpenBB Bot Docs" />
 
 This command returns the top ETFs for the day - sorted by gainers, losers, or active.
 

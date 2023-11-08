@@ -1,9 +1,26 @@
 ---
 title: zlma
-description: OpenBB Terminal Function
+description: The ZLEMA (Zero Lag Exponential Moving Average) is a technical indicator
+  developed by John Ehlers and Ric Way. This documentation page explains how to use
+  it, focusing on implementation with Python and specifying its parameters including
+  window lengths (N_LENGTH) and offset (N_OFFSET).
+keywords:
+- ZLEMA
+- exponential moving average
+- de-lagged data
+- EMA
+- zero lag exponential moving average
+- John Ehlers
+- Ric Way
+- zlma
+- N_LENGTH
+- N_OFFSET
+- parameters
 ---
 
-# zlma
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/zlma - Reference | OpenBB Terminal Docs" />
 
 The zero lag exponential moving average (ZLEMA) indicator was created by John Ehlers and Ric Way. The idea is do a regular exponential moving average (EMA) calculation but on a de-lagged data instead of doing it on the regular data. Data is de-lagged by removing the data from "lag" days ago thus removing (or attempting to) the cumulative effect of the moving average.
 

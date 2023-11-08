@@ -182,6 +182,7 @@ def load_stock_yf(
 
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
+        console.print("[red]No results found in yahoo finance reply.[/red]")
         return pd.DataFrame()
     df_stock_candidate_cols = [
         "Open",
@@ -290,7 +291,7 @@ def load_stock_polygon(
         return pd.DataFrame()
 
     r_json = r.json()
-    if "results" not in r_json.keys():
+    if "results" not in r_json:
         console.print("[red]No results found in polygon reply.[/red]")
         return pd.DataFrame()
 

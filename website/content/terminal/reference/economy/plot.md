@@ -1,9 +1,24 @@
 ---
 title: plot
-description: OpenBB Terminal Function
+description: Learn how to plot data on two y-axes using the plot command in our tools.
+  The command allows you to plot different time series in one graph with data from
+  the macro, fred, index, and treasury commands. Our guide also provides examples
+  of usage and parameters to customize your plots.
+keywords:
+- plot data
+- two y-axes
+- macro
+- fred
+- index
+- treasury commands
+- time series
+- graph
+- variables
 ---
 
-# plot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /plot - Reference | OpenBB Terminal Docs" />
 
 This command can plot any data on two y-axes obtained from the macro, fred, index and treasury commands. To be able to use this data, just load the available series from the previous commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage in this command. Therefore, it allows you to plot different time series in one graph. The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' or 'plot --y1 Germany_GDP Netherlands_GDP'
 

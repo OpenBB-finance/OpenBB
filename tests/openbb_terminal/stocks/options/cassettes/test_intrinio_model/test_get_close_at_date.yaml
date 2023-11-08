@@ -28,4 +28,62 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/historical_data/adj_close_price?api_key=MOCK_API_KEY&end_date=2022-12-27&frequency=daily&start_date=2022-12-27
+  response:
+    body:
+      string: '{"historical_data":[{"date":"2022-12-27","value":129.65243442773397}],"security":{"id":"sec_agjrgj","company_id":"com_NX6GzO","stock_exchange_id":"sxg_ozMr9y","name":"Apple
+        Inc","code":"EQS","currency":"USD","ticker":"AAPL","composite_ticker":"AAPL:US","figi":"BBG000B9Y5X2","composite_figi":"BBG000B9XRY4","share_class_figi":"BBG001S5N8V8","primary_listing":true},"next_page":null}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '382'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:11 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Swagger-Codegen/6.22.2/python
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/historical_data/adj_close_price?api_key=MOCK_API_KEY&end_date=2022-12-27&frequency=daily&start_date=2022-12-27
+  response:
+    body:
+      string: '{"historical_data":[{"date":"2022-12-27","value":129.65243442773397}],"security":{"id":"sec_agjrgj","company_id":"com_NX6GzO","stock_exchange_id":"sxg_ozMr9y","name":"Apple
+        Inc","code":"EQS","currency":"USD","ticker":"AAPL","composite_ticker":"AAPL:US","figi":"BBG000B9Y5X2","composite_figi":"BBG000B9XRY4","share_class_figi":"BBG001S5N8V8","primary_listing":true},"next_page":null}'
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '382'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jun 2023 00:51:49 GMT
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
 version: 1

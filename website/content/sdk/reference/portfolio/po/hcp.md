@@ -1,9 +1,25 @@
 ---
 title: hcp
-description: OpenBB SDK Function
+description: The page provides details on hierarchical clustering based portfolios
+  (HCP) in the OpenBBTerminal, a python tool for advanced investment strategies. It
+  describes parameters for portfolio optimization including risk measures, covariance
+  estimations, and clustering techniques. The return outcomes include portfolio weights
+  and stock returns.
+keywords:
+- portfolio optimization
+- hierarchical clustering
+- stock returns
+- Hierarchical Risk Parity
+- Nested Clustered Optimization
+- covariance matrix
+- risk measures
+- stocks
+- portfolio management
 ---
 
-# hcp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.hcp - Reference | OpenBB SDK Docs" />
 
 Builds hierarchical clustering based portfolios
 
@@ -57,4 +73,3 @@ openbb.portfolio.po.hcp(symbols: List[str], kwargs: Any)
 | ---- | ----------- |
 | Tuple[Optional[dict], pd.DataFrame] | Dictionary of portfolio weights,<br/>DataFrame of stock returns. |
 ---
-

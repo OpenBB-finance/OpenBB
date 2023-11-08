@@ -1,9 +1,19 @@
 ---
 title: vsurf
-description: OpenBB Terminal Function
+description: Learn the usage of vsurf, a Python tool for plotting a 3D volatility
+  surface. Understand the parameters and see a sample representation.
+keywords:
+- vsurf
+- 3D volatility surface
+- IV
+- OI
+- LP
+- data visualization
 ---
 
-# vsurf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/vsurf - Reference | OpenBB Terminal Docs" />
 
 Plot 3D volatility surface.
 

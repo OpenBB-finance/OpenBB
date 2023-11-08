@@ -1,22 +1,22 @@
-import React, { useEffect, useMemo } from "react";
-import clsx from "clsx";
-import {
-  ThemeClassNames,
-  useThemeConfig,
-  usePrevious,
-  Collapsible,
-  useCollapsible,
-} from "@docusaurus/theme-common";
-import {
-  isActiveSidebarItem,
-  findFirstCategoryLink,
-  useDocSidebarItemsExpandedState,
-  isSamePath,
-} from "@docusaurus/theme-common/internal";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
+import {
+  Collapsible,
+  ThemeClassNames,
+  useCollapsible,
+  usePrevious,
+  useThemeConfig,
+} from "@docusaurus/theme-common";
+import {
+  findFirstCategoryLink,
+  isActiveSidebarItem,
+  isSamePath,
+  useDocSidebarItemsExpandedState,
+} from "@docusaurus/theme-common/internal";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
+import clsx from "clsx";
+import React, { useEffect, useMemo } from "react";
 import { useIFrameContext } from "../../Root";
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
@@ -116,6 +116,7 @@ export default function DocSidebarItemCategory({
   const { isIFrame } = useIFrameContext();
   const dontShowLink =
     isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
+
 
   return (
     <li

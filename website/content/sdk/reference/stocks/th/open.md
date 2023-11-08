@@ -1,12 +1,23 @@
 ---
 title: open
-description: OpenBB SDK Function
+description: Documentation page offering extensive details on how 'open' feature functions
+  in OpenBB finance and their source code. This feature showcases open exchanges and
+  how to display them.
+keywords:
+- Finance Software
+- Open
+- Exchanges
+- Trading hours
+- Documentation
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.th.open - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# open
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -34,8 +45,6 @@ This function does not take any parameters.
 | pd.DataFrame | Currently open exchanges |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -60,8 +69,6 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

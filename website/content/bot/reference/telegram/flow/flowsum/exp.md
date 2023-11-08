@@ -1,10 +1,23 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: exp
-description: OpenBB Telegram Command
+description: Detailed guide on the 'flowsum exp' command used for retrieving the total
+  premium of a given stock ticker for the current trading day, including example usage
+  and parameters explanation.
+keywords:
+- flowsum exp command
+- option premium
+- stock ticker
+- trading day
+- above ask
+- expiry
+- expiration date
+- 'subcmd: exp'
+- example usage
 ---
 
-# flowsum exp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flowsum - flow: exp - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the total premium of the given stock ticker for the current trading day by expiration. We categorize the calls and puts by where the trade occurred on the bid/ask. For example, Above Ask, means the trade happened over the current Ask price.
 

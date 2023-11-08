@@ -239,16 +239,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_spacc",
-            ["--limit=5", "--popular"],
-            "reddit_view.display_spac_community",
-            [],
-            dict(
-                limit=5,
-                popular=True,
-            ),
-        ),
-        (
             "call_wsb",
             ["--limit=5", "--new"],
             "reddit_view.display_wsb_community",
@@ -305,27 +295,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 user="MOCK_USER",
                 limit=5,
-            ),
-        ),
-        (
-            "call_infer",
-            ["--limit=20", "--export=csv"],
-            "twitter_view.display_inference",
-            [],
-            dict(symbol="MOCK_TICKER", limit=20, export="csv", sheet_name=None),
-        ),
-        (
-            "call_sentiment",
-            ["--limit=20", "--days=2", "--compare", "--export=csv"],
-            "twitter_view.display_sentiment",
-            [],
-            dict(
-                symbol="MOCK_TICKER",
-                n_tweets=20,
-                n_days_past=2,
-                compare=True,
-                export="csv",
-                sheet_name=None,
             ),
         ),
         (
@@ -426,15 +395,12 @@ def test_call_func(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_spacc",
         "call_wsb",
         "call_popular",
         "call_bullbear",
         "call_messages",
         "call_trending",
         "call_stalker",
-        "call_infer",
-        "call_sentiment",
         "call_mentions",
         "call_regions",
         "call_queries",
@@ -467,8 +433,6 @@ def test_call_func_no_parser(func, mocker):
     "func",
     [
         "call_headlines",
-        "call_sentiment",
-        "call_infer",
         "call_rise",
         "call_queries",
         "call_regions",

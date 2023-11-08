@@ -1,9 +1,17 @@
 ---
 title: country
-description: OpenBB Terminal Function
+description: This page provides information on how to select a country to look at
+  its data. It displays detailed analysis and parameters for each country.
+keywords:
+- Country Data
+- Parameters
+- Country Selection
+- Data Selection
 ---
 
-# country
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt/covid/country - Reference | OpenBB Terminal Docs" />
 
 Select a country to look at data for.
 

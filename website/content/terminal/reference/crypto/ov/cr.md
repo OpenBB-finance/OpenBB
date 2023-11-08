@@ -1,9 +1,23 @@
 ---
 title: cr
-description: OpenBB Terminal Function
+description: A content focused on the 'cr' command line tool usage and its parameters,
+  which provides crypto interest rates from numerous platforms, for various cryptocurrencies.
+  Core parameters include selection of interest rate type, specific cryptocurrencies,
+  and platforms.
+keywords:
+- cryptocurrency
+- crypto interest rates
+- cryptocurrency platforms
+- borrow interest rate
+- supply interest rate
+- crypto supply and borrow rates
+- cr command line
+- cryptocurrency parameters
 ---
 
-# cr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/cr - Reference | OpenBB Terminal Docs" />
 
 Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms. You can select rate type with --type {borrow,supply} You can display only N number of platforms with --limit parameter.
 

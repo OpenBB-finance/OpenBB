@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: stats
-description: OpenBB Discord Command
+description: This page offers the essential guide on how to utilize the 'stats' command
+  on Docusaurus. Learn how to retrieve the current number of servers the bot is in
+  effectively.
+keywords:
+- bot commands
+- server stats
+- docusaurus page
+- /info stats
+- usage parameters
 ---
 
-# stats
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info: stats - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the current number of servers the bot is in.
 

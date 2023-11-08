@@ -1,12 +1,24 @@
 ---
 title: kc
-description: OpenBB SDK Function
+description: This documentation page provides details on the Keltner Channels functionality
+  implemented in the OpenBB Terminal. It includes a guide for using the Keltner Channels
+  analytical model and the chart plotting function.
+keywords:
+- Keltner Channels
+- technical analysis
+- volatility model
+- chart plotting
+- financial data analysis
+- Data visualization
+- ema filter
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.kc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# kc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +52,6 @@ openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: st
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of rolling kc |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -77,8 +87,6 @@ openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

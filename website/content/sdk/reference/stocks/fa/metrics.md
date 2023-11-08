@@ -1,9 +1,24 @@
 ---
 title: metrics
-description: OpenBB SDK Function
+description: This page details the process of getting key metrics in stock market
+  by using the metrics function with parameters symbol, limit, and quarterly. It includes
+  the Python code for this function.
+keywords:
+- OpenBBTerminal Metrics
+- Metrics Function
+- Stock Market Metrics
+- Python Stock Market Code
+- Fundamental Analysis
+- FMP model
+- Stock ticker symbol
+- Quarterly data
+- Market Analysis
+- Dataframe of Key Metrics
 ---
 
-# metrics
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.metrics - Reference | OpenBB SDK Docs" />
 
 Get key metrics
 
@@ -32,4 +47,3 @@ openbb.stocks.fa.metrics(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key metrics |
 ---
-

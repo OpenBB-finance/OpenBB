@@ -1,8 +1,9 @@
 # IMPORTATION STANDARD
+import copy
 from pathlib import Path
 
 # IMPORTATION THIRDPARTY
-from typing import Optional
+from typing import TYPE_CHECKING, Optional, TypeVar
 
 import i18n
 
@@ -18,6 +19,67 @@ from openbb_terminal.core.session.current_system import (
 from openbb_terminal.core.session.current_user import get_current_user
 
 from .helper_classes import TerminalStyle as _TerminalStyle
+
+if TYPE_CHECKING:
+    from openbb_terminal import OpenBBFigure
+
+
+OpenBBFigureT = TypeVar("OpenBBFigureT", bound="OpenBBFigure")
+HOLD: bool = False
+COMMAND_ON_CHART: bool = True
+current_figure: Optional[OpenBBFigureT] = None  # type: ignore
+new_axis: bool = True
+legends = []
+last_legend = ""
+
+
+# pylint: disable=global-statement
+def set_last_legend(leg: str):
+    global last_legend
+    last_legend = copy.deepcopy(leg)
+
+
+def get_last_legend() -> str:
+    return copy.deepcopy(last_legend)
+
+
+def append_legend(append_leg: str):
+    global legends
+    legends.append(append_leg)
+    legends = copy.deepcopy(legends)
+
+
+def reset_legend():
+    global legends
+    legends = []
+
+
+def get_legends() -> list:
+    return legends
+
+
+def set_same_axis() -> None:
+    global new_axis
+    new_axis = False
+
+
+def set_new_axis() -> None:
+    global new_axis
+    new_axis = True
+
+
+def make_new_axis() -> bool:
+    return new_axis
+
+
+def get_current_figure() -> Optional["OpenBBFigure"]:
+    return current_figure
+
+
+def set_current_figure(fig: Optional[OpenBBFigureT] = None):
+    # pylint: disable=global-statement
+    global current_figure
+    current_figure = fig
 
 
 def start_plot_backend():

@@ -1,12 +1,38 @@
 ---
 title: oi
-description: OpenBB SDK Function
+description: This page deals with open interest (OI) in cryptocurrency using OpenBB
+  terminal. The models and charts displaying open interest by exchange, frequency
+  and crypto symbol (BTC for instance) are available. You can also review the source
+  code and instructions on how to use related Python functions.
+keywords:
+- OI
+- Open Interest
+- crypto
+- symbol
+- crypto symbol
+- cryptocurrency
+- exchange
+- price
+- frequency
+- model
+- chart
+- parameter
+- View
+- Source Code
+- dataframe
+- BTC
+- return
+- export
+- openbb.crypto.dd.oi
+- openbb.crypto.dd.oi_chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.oi - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# oi
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +64,6 @@ openbb.crypto.dd.oi(symbol: str, interval: int = 0)
 | pd.DataFrame | open interest by exchange and price |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +93,6 @@ openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

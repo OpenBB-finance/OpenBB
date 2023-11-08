@@ -1,9 +1,24 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: This page provides a guide on how to use the 'summary' command for getting
+  summary statistics in Python. The command requires no parameters and provides a
+  detailed statistical insights on data points such as open, high, low, close, volume
+  and more.
+keywords:
+- Summary Statistics
+- Command
+- No parameters
+- Stocks
+- Open
+- High
+- Low
+- Close
+- Volume
 ---
 
-# summary
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/summary - Reference | OpenBB Terminal Docs" />
 
 Summary statistics
 

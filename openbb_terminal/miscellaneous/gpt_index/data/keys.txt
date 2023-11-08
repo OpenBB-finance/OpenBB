@@ -1,0 +1,10 @@
+usage: keys
+
+View or set OpenBB API keys.
+
+Examples:
+- Set API keys: /keys/
+- How do I set OpenBB API keys?: /keys/
+- See my api keys: /keys/
+- What are my api keys?: /keys/
+- What keys do I have?: /keys/

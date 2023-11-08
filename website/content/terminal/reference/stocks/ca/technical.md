@@ -1,9 +1,32 @@
 ---
 title: technical
-description: OpenBB Terminal Function
+description: This page provides usage information, examples and parameters details
+  for the 'technical' function that prints screener data of similar companies.
+keywords:
+- technical function
+- stock screener
+- company data
+- financial data
+- similar companies
+- Stock ticker
+- Beta
+- ATR
+- SMA20
+- SMA50
+- SMA200
+- 52W High
+- 52W Low
+- RSI
+- Price
+- Change
+- from Open
+- Gap
+- Volume
 ---
 
-# technical
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/technical - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 

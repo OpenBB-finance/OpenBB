@@ -509,21 +509,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
-            "call_rsp",
-            [
-                "-t",
-                "--export=csv",
-            ],
-            "rsp_view.display_rsp",
-            [],
-            dict(
-                s_ticker="MOCK_TICKER",
-                tickers_show=True,
-                export="csv",
-                sheet_name=None,
-            ),
-        ),
-        (
             "call_stoch",
             [
                 "--fastkperiod=1",

@@ -12,8 +12,6 @@ vwap
 cci
 macd
 rsi
-rsp
-rsp -t
 stoch
 fisher
 cg
@@ -38,7 +36,6 @@ vwap
 cci -l 12
 macd --fast 10 --slow 20 --signal 5
 rsi -l 10 -s 90 -d 2
-rsp
 stoch -k 10 -d 2 --slowkperiod 2
 fisher -l 10
 cg -l 10

@@ -1,9 +1,20 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: This page presents the 'load' function, used to perform analysis on a
+  symbol. The function details with parameters and returns are described in a comprehensive
+  manner.
+keywords:
+- load function
+- symbol analysis
+- YahooFinance data extraction
+- weekly and monthly data
+- verbose information
+- data analysis
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.load - Reference | OpenBB SDK Docs" />
 
 Load a symbol to perform analysis using the string above as a template.
 

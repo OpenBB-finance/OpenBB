@@ -1,9 +1,21 @@
 ---
 title: smartstake
-description: OpenBB SDK Function
+description: The page provides detailed documentation on 'smartstake' function of
+  the OpenBB Python SDK. This function is used to set the SmartStake API key for the
+  current session or globally in terminal environment. Includes examples of usage
+  and link to source code.
+keywords:
+- SmartStake API key
+- API key setting
+- Python function
+- docusaurus documentation
+- programming
+- environment variables
 ---
 
-# smartstake
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.smartstake - Reference | OpenBB SDK Docs" />
 
 Set Smartstake key.
 
@@ -47,4 +59,3 @@ key="example_key",
         )
 ```
 ---
-

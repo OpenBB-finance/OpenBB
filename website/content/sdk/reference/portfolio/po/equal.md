@@ -1,9 +1,23 @@
 ---
 title: equal
-description: OpenBB SDK Function
+description: The page provides detailed information about the equally weighted portfolio
+  (a type of portfolio optimization) in OpenBB Finance with parameters, returns and
+  python example codes.
+keywords:
+- OpenBB Finance documentation
+- Equally weighted portfolio
+- Portfolio optimization
+- OpenBB Portfolio po.equal function
+- Portfolio symbols
+- Interval, start date, end date in portfolio
+- Returns in investment
+- Python Finance library
+- Portfolio performance
 ---
 
-# equal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.equal - Reference | OpenBB SDK Docs" />
 
 Equally weighted portfolio, where weight = 1/# of symbols
 
@@ -64,4 +78,3 @@ weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ---
-

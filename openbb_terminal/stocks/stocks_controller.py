@@ -9,6 +9,7 @@ from typing import List, Optional
 
 import financedatabase as fd
 
+from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
     newsapi_view,
@@ -245,7 +246,7 @@ class StocksController(StockBaseController):
             parser,
             other_args,
             EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=10,
+            limit=0,
         ):
             # Mapping
             sector = stocks_helper.map_parse_choices(self.sector)[ns_parser.sector]
@@ -262,7 +263,7 @@ class StocksController(StockBaseController):
                 list(stocks_helper.market_coverage_suffix.keys())
             )[ns_parser.exchange_country]
 
-            stocks_helper.search(
+            df = stocks_helper.search(
                 query=" ".join(ns_parser.query),
                 country=ns_parser.country,
                 sector=sector,
@@ -271,8 +272,22 @@ class StocksController(StockBaseController):
                 exchange=exchange,
                 exchange_country=exchange_country,
                 all_exchanges=ns_parser.all_exchanges,
-                limit=ns_parser.limit,
             )
+            if ns_parser.export:
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "search",
+                    df,
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None,
+                )
+            if not ns_parser.export:
+                stocks_helper.print_rich_table(
+                    df,
+                    show_index=False,
+                    headers=df.columns,
+                    title="Stock Search Results",
+                )
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
@@ -462,6 +477,10 @@ class StocksController(StockBaseController):
             EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=20,
         )
+        if config_terminal.HOLD:
+            console.print("[red]Hold functionality not supported with candle.[/]")
+            return
+
         if ns_parser:
             figure_export = None
             if ns_parser.ticker:
@@ -484,12 +503,12 @@ class StocksController(StockBaseController):
 
                         for num in mov_list:
                             try:
-                                num = int(num)
+                                clean_num = int(num)
 
-                                if num <= 1:
+                                if clean_num <= 1:
                                     raise ValueError
 
-                                mov_avgs.append(num)
+                                mov_avgs.append(clean_num)
                             except ValueError:
                                 console.print(
                                     f"[red]{num} is not a valid moving average, must be an integer greater than 1."
@@ -805,7 +824,6 @@ class StocksController(StockBaseController):
 
         self.queue = self.load_class(
             forecast_controller.ForecastController,
-            self.ticker,
-            self.stock,
-            self.queue,
+            ticker=self.ticker,
+            queue=self.queue,
         )

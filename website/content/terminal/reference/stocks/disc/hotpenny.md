@@ -1,9 +1,20 @@
 ---
 title: hotpenny
-description: OpenBB Terminal Function
+description: The hotpenny webpage provides a list of top penny stocks sourced from
+  various websites. It displays price, volume, trade changes, and allows users to
+  limit the number of stocks displayed.
+keywords:
+- hotpenny
+- penny stocks
+- stock market
+- trade changes
+- stock volume
+- stock price
 ---
 
-# hotpenny
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/hotpenny - Reference | OpenBB Terminal Docs" />
 
 Provides top penny stocks from various websites. [Source: Yfinance]
 

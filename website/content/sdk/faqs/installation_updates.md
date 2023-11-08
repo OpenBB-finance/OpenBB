@@ -1,36 +1,39 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: Installation and Updates to the OpenBB SDK.
+description: This page provides detailed instructions for the installation and updating
+  processes for software, addressing frequently encountered installation issues. These
+  instructions include resolving Microsoft Visual C++ 14.0 dependencies, benefits
+  of using Miniconda for package management, methods to update installations, and
+  solutions for other common installation errors.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    pypi,
-    miniconda,
-    library,
-    C++,
-    library,
-    error
-  ]
+- Installation
+- Updates
+- Microsoft Visual C++ 14.0
+- Miniconda
+- pip install
+- PyPi Nightly
+- C++ Build Tools
+- Homebrew
+- bt wheel build failure
+- ARM/Linux Raspberry Pi machines
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - SDK | OpenBB Docs" />
+<HeadTitle title="Installation and Updates - Faqs | OpenBB SDK Docs" />
 
 ## Installation and Updates
+
+<details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
+
+Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then try again.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+
+</details>
 
 <details><summary>Do I have to use Miniconda?</summary>
 

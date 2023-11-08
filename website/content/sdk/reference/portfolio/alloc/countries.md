@@ -1,9 +1,19 @@
 ---
 title: countries
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about the use of
+  the 'openbb.portfolio.alloc.countries' function from OpenBB Finance, which compares
+  portfolio country allocation with a benchmark.
+keywords:
+- OpenBB Finance
+- portfolio country allocation
+- portfolio management
+- financial modelling
+- function documentation
 ---
 
-# countries
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.alloc.countries - Reference | OpenBB SDK Docs" />
 
 Display portfolio country allocation compared to the benchmark
 
@@ -43,4 +53,3 @@ output = openbb.portfolio.alloc.countries(p)
 ```
 
 ---
-

@@ -1,9 +1,30 @@
 ---
 title: maxutil
-description: OpenBB Terminal Function
+description: Maxutil is a powerful Python tool used for portfolio optimization. The
+  page provides extensive information about the usage, parameters, and examples of
+  maximizing a risk-averse utility function. Navigate through the specifics, from
+  expected return methods to defining your risk measures and risk aversion parameters.
+keywords:
+- maxutil
+- risk averse utility function
+- portfolio optimization
+- financial tool
+- financial software
+- usage
+- parameters
+- examples
+- expected return
+- covariance
+- risk measure
+- risk aversion
+- target return
+- target risk
+- risk-free rate
 ---
 
-# maxutil
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/maxutil - Reference | OpenBB Terminal Docs" />
 
 Maximizes a risk averse utility function
 

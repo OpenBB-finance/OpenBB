@@ -1,12 +1,30 @@
 ---
 title: hold
-description: OpenBB SDK Function
+description: Comprehensive guides to holding Bitcoin and Ethereum by public companies.
+  Details on visualizing the hold data and exporting it to your preferred data format
+  (csv, json, xlsx). Source references to CoinGecko. Includes links to source codes.
+keywords:
+- cryptocurrency
+- bitcoin
+- ethereum
+- public companies
+- data visualization
+- CoinGecko
+- bar graph
+- dataframe
+- openbb.crypto.ov.hold
+- openbb.crypto.ov.hold_chart
+- csv
+- json
+- xlsx
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.hold - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hold
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +54,6 @@ openbb.crypto.ov.hold(endpoint: str = "bitcoin")
 | ---- | ----------- |
 | List[Union[str, pd.DataFrame]] | - str:              Overall statistics<br/>- pd.DataFrame: Companies holding crypto |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +85,6 @@ openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

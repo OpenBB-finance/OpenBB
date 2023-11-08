@@ -1,34 +1,28 @@
 ---
 title: Import Errors
 sidebar_position: 2
-description: Troubleshoot common issues with import errors in the OpenBB SDK.
+description: This page provides solutions for common import errors when installing
+  the OpenBB SDK, including guidance on managing virtual environments, handling ModuleNotFoundError,
+  dealing with SSL certificate authorization, and configuring proxy connections.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    import error,
-    error,
-    ssl certificate,
-    proxy connection,
-    modulenotfounderror,
-    no module named,
-  ]
+- Import Errors
+- SciPy
+- ModuleNotFoundError
+- virtual environment
+- poetry install
+- conda activate
+- Jupyter
+- GitHub
+- SSL certificates
+- firewall
+- pip-system-certs
+- proxy connection
+- .env file
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Import Errors - SDK | OpenBB Docs" />
+<HeadTitle title="Import Errors - Faqs | OpenBB SDK Docs" />
 
 ## Import Errors
 

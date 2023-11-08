@@ -1,9 +1,22 @@
 ---
 title: perfmap
-description: OpenBB SDK Function
+description: This is the documentation page of perfmap, a tool that opens Finviz performance
+  map in the browser. It supports various performance periods and map filters.
+keywords:
+- Finviz
+- performance map
+- economy model
+- SP500
+- ETF
+- world map
+- perfmap
+- period
+- map filter
 ---
 
-# perfmap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.perfmap - Reference | OpenBB SDK Docs" />
 
 Opens Finviz map website in a browser. [Source: Finviz]
 
@@ -30,4 +43,3 @@ openbb.economy.perfmap(period: str = "1d", map_filter: str = "sp500")
 This function does not return anything
 
 ---
-

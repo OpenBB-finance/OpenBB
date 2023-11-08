@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: senate
-description: OpenBB Discord Command
+description: This page provides comprehensive information on the 'senate' command
+  used to retrieve the most recent senate trades for all tickers. It includes details
+  on usage, parameters, and examples.
+keywords:
+- senate command
+- trade retrieval
+- ticker information
+- price information
+- command usage
 ---
 
-# senate
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="discovery: senate - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves the most recent senate trades for all tickers including the date and time of the trade and the price information.
 

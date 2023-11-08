@@ -14,7 +14,7 @@ repos:
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.256"
+    rev: "v0.0.285"
     hooks:
       - id: ruff
   - repo: https://github.com/codespell-project/codespell
@@ -27,6 +27,8 @@ repos:
             "--ignore-words-list=VAI,MIS,shs,gard,te,commun,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot",
             "--quiet-level=2",
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
+            "-x=openbb_terminal/economy/fedreserve_model.py",
+            "-x=.github/workflows/linting.yml"
           ]
   - repo: local
     hooks:

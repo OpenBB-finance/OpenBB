@@ -1,12 +1,25 @@
 ---
 title: rolling
-description: OpenBB SDK Function
+description: A documentation page explaining the functionality of the OpenBB rolling
+  model and rolling chart. These tools deal with computing and plotting rolling means
+  and standard deviations in financial data, mapped by stock symbols or tickers. The
+  methods are implemented in Python and operate on dataframes.
+keywords:
+- rolling
+- quantitative analysis
+- dataframe
+- standard deviation
+- mean
+- Stock ticker
+- window
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.rolling - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rolling
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.qa.rolling(data: pd.DataFrame, window: int = 14)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling mean,<br/>Dataframe of rolling standard deviation |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +83,6 @@ openbb.qa.rolling_chart(data: pd.DataFrame, target: str, symbol: str = "", windo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -20,5 +20,5 @@ def set_show_prompt(value: bool):
     value : bool
         The show_prompt flag.
     """
-    global __show_prompt  # pylint: disable=global-statement
+    global __show_prompt  # pylint: disable=global-statement # noqa: PLW0603
     __show_prompt = value

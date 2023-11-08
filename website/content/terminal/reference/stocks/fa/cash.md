@@ -1,9 +1,29 @@
 ---
 title: cash
-description: OpenBB Terminal Function
+description: This documentation describes the 'cash' script which prints a complete
+  cash flow statement over time. It covers features including options for quarterly
+  or annual views, detailed financial factors such as accounts payable and net income,
+  and usage of the command-line interface. The data source is mentioned as Alpha Vantage.
+keywords:
+- cash flow statement
+- quarterly cash flow
+- annual cash flow
+- accounts payable
+- accounts receivable
+- net income
+- operating cash flow
+- investing activities
+- financing activities
+- Alpha Vantage source
+- Stock financial analysis
+- Command-line interface usage
+- Docusaurus page metadata
+- Parameter choices for cash script
 ---
 
-# cash
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/cash - Reference | OpenBB Terminal Docs" />
 
 Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
 

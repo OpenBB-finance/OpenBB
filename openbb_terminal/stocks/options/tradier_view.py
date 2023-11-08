@@ -72,6 +72,8 @@ def display_historical(
             headers=[x.title() for x in df_hist.columns],
             title="Historical Option Prices",
             export=bool(export),
+            show_index=True,
+            index_name="Date",
         )
 
     op_type = ["call", "put"][put]
@@ -100,7 +102,6 @@ def display_historical(
         secondary_y=False,
     )
     fig.add_inchart_volume(df_hist)
-    fig.hide_holidays()
 
     if export:
         export_data(

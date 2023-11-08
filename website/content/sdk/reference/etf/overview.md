@@ -1,9 +1,17 @@
 ---
 title: overview
-description: OpenBB SDK Function
+description: This page provides an overview of how to get ETF data using OpenBB's
+  Python library. It includes detailed explanations on parameters and returns, and
+  even a link to the source code.
+keywords:
+- ETF
+- overview data
+- stock overview data
 ---
 
-# overview
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.overview - Reference | OpenBB SDK Docs" />
 
 Get overview data for selected etf
 
@@ -30,4 +38,3 @@ openbb.etf.overview(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of stock overview data |
 ---
-

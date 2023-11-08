@@ -1,20 +1,22 @@
 import { Icons as PlotlyIcons } from "plotly.js-dist-min";
-import { ICONS } from "./Config";
-import { useHotkeys } from "react-hotkeys-hook";
 import { downloadCSV, downloadImage } from "../utils/utils";
+import { useHotkeys } from "react-hotkeys-hook";
+import { ICONS } from "./Config";
 
-export function hideModebar(hide = true) {
+
+export function hideModebar(hide?: boolean) {
   return new Promise((resolve) => {
     if (!window.MODEBAR) {
       window.MODEBAR = window.document.getElementsByClassName(
-        "modebar-container"
+        "modebar-container",
       )[0] as HTMLElement;
       window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
     }
-    let includes_text = "display: none";
+
     if (window.MODEBAR) {
-      if (window.MODEBAR.style.cssText.includes("display: none") || !hide) {
-        includes_text = "display: flex";
+      if (hide) {
+        window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:none;`;
+      } else if (window.MODEBAR.style.cssText.includes("none")) {
         window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:flex;`;
       } else {
         window.MODEBAR.style.cssText = `${window.MODEBAR.style.cssText}; display:none;`;
@@ -39,65 +41,6 @@ export function PlotConfig({
   changeColor: (change: boolean) => void;
   downloadFinished: (change: boolean) => void;
 }) {
-  useHotkeys(
-    "ctrl+shift+t",
-    () => {
-      setModal({ name: "titleDialog" });
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+t",
-    () => {
-      setModal({ name: "textDialog" });
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+o",
-    () => {
-      setModal({ name: "overlayChart" });
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    ["ctrl+shift+h", "ctrl+h"],
-    () => {
-      hideModebar();
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+e",
-    () => {
-      changeColor(true);
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+shift+s",
-    async () => {
-      setModal({ name: "downloadCsv" });
-      await downloadCSV(document.getElementById("plotlyChart") as any, downloadFinished);
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+s",
-    async () => {
-      hideModebar();
-      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
-    },
-    { preventDefault: true }
-  );
-  useHotkeys(
-    "ctrl+w",
-    () => {
-      window.close();
-    },
-    { preventDefault: true }
-  );
-
   const CONFIG = {
     plotGlPixelRatio: 1,
     scrollZoom: true,
@@ -118,8 +61,13 @@ export function PlotConfig({
           name: "Download Chart as Image (Ctrl+S)",
           icon: ICONS.downloadImage,
           click: async function () {
-            hideModebar();
-            await downloadImage("MainChart", hideModebar, Loading, downloadFinished);
+            hideModebar(true);
+            await downloadImage(
+              "MainChart",
+              hideModebar,
+              Loading,
+              downloadFinished,
+            );
           },
         },
         // {
@@ -192,4 +140,79 @@ export function PlotConfig({
     ],
   };
   return CONFIG;
+}
+
+
+export function ChartHotkeys({
+  setModal,
+  Loading,
+  changeColor,
+  downloadFinished,
+}: {
+  setModal: (modal: { name: string; data?: any }) => void;
+  Loading: (change: boolean) => void;
+  changeColor: (change: boolean) => void;
+  downloadFinished: (change: boolean) => void;
+}) {
+  useHotkeys(
+    "ctrl+shift+t",
+    () => {
+      setModal({ name: "titleDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+t",
+    () => {
+      setModal({ name: "textDialog" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+o",
+    () => {
+      setModal({ name: "overlayChart" });
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    ["ctrl+shift+h", "ctrl+h"],
+    () => {
+      hideModebar();
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+e",
+    () => {
+      changeColor(true);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+shift+s",
+    async () => {
+      setModal({ name: "downloadCsv" });
+      await downloadCSV(
+        document.getElementById("plotlyChart") as any,
+        downloadFinished,
+      );
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+s",
+    async () => {
+      hideModebar();
+      downloadImage("MainChart", hideModebar, Loading, downloadFinished);
+    },
+    { preventDefault: true },
+  );
+  useHotkeys(
+    "ctrl+w",
+    () => {
+      window.close();
+    },
+    { preventDefault: true },
+  );
 }

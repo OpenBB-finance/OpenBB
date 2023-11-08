@@ -42,8 +42,6 @@ class StocksBehavioralAnalysis(Category):
         `getdd`: Get due diligence posts from list of subreddits [Source: reddit].\n
         `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
         `headlines_chart`: Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]\n
-        `infer`: Load tweets from twitter API and analyzes using VADER.\n
-        `infer_chart`: Prints Inference sentiment from past n tweets.\n
         `mentions`: Get interest over time from google api [Source: google].\n
         `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
         `messages`: Get last messages for a given ticker [Source: stocktwits].\n
@@ -55,11 +53,8 @@ class StocksBehavioralAnalysis(Category):
         `regions`: Get interest by region from google api [Source: google].\n
         `regions_chart`: Plots bars of regions based on stock's interest. [Source: Google].\n
         `rise`: Get top rising related queries with this stock's query [Source: google].\n
-        `sentiment`: Get sentiments from symbol.\n
-        `sentiment_chart`: Plots sentiments from symbol\n
         `snews`: Get headlines sentiment using VADER model over time. [Source: Finnhub]\n
         `snews_chart`: Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]\n
-        `spacc`: Get top tickers from r/SPACs [Source: reddit].\n
         `stalker`: Gets messages from given user [Source: stocktwits].\n
         `text_sent`: Find the sentiment of a post and related comments.\n
         `trending`: Get trending tickers from stocktwits [Source: stocktwits].\n
@@ -75,8 +70,6 @@ class StocksBehavioralAnalysis(Category):
         self.getdd = lib.stocks_ba_reddit_model.get_due_dilligence
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
         self.headlines_chart = lib.stocks_ba_finbrain_view.display_sentiment_analysis
-        self.infer = lib.stocks_ba_twitter_model.load_analyze_tweets
-        self.infer_chart = lib.stocks_ba_twitter_view.display_inference
         self.mentions = lib.stocks_ba_google_model.get_mentions
         self.mentions_chart = lib.stocks_ba_google_view.display_mentions
         self.messages = lib.stocks_ba_stocktwits_model.get_messages
@@ -88,13 +81,10 @@ class StocksBehavioralAnalysis(Category):
         self.regions = lib.stocks_ba_google_model.get_regions
         self.regions_chart = lib.stocks_ba_google_view.display_regions
         self.rise = lib.stocks_ba_google_model.get_rise
-        self.sentiment = lib.stocks_ba_twitter_model.get_sentiment
-        self.sentiment_chart = lib.stocks_ba_twitter_view.display_sentiment
         self.snews = lib.stocks_ba_finnhub_model.get_headlines_sentiment
         self.snews_chart = (
             lib.stocks_ba_finnhub_view.display_stock_price_headlines_sentiment
         )
-        self.spacc = lib.stocks_ba_reddit_model.get_spac_community
         self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
         self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
         self.trending = lib.stocks_ba_stocktwits_model.get_trending
@@ -551,8 +541,6 @@ class StocksTechnicalAnalysis(Category):
     Attributes:
         `recom`: Get tradingview recommendation based on technical indicators\n
         `recom_chart`: Print tradingview recommendation based on technical indicators\n
-        `rsp`: Relative strength percentile [Source: https://github.com/skyte/relative-strength]\n
-        `rsp_chart`: Display Relative Strength Percentile [Source: https://github.com/skyte/relative-strength]\n
         `summary`: Get technical summary report provided by FinBrain's API\n
         `summary_chart`: Print technical summary report provided by FinBrain's API\n
     """
@@ -563,8 +551,6 @@ class StocksTechnicalAnalysis(Category):
         super().__init__()
         self.recom = lib.stocks_ta_tradingview_model.get_tradingview_recommendation
         self.recom_chart = lib.stocks_ta_tradingview_view.print_recommendation
-        self.rsp = lib.stocks_ta_rsp_model.get_rsp
-        self.rsp_chart = lib.stocks_ta_rsp_view.display_rsp
         self.summary = lib.stocks_ta_finbrain_model.get_technical_summary_report
         self.summary_chart = lib.stocks_ta_finbrain_view.technical_summary_report
 

@@ -1,10 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: c3m
-description: OpenBB Telegram Command
+description: The c3m command allows users to generate a 3-minute intraday chart for
+  the provided ticker, offering a visual representation of stock performance for short-term
+  investors. The page also covers usage details, parameters, and example commands.
+keywords:
+- c3m command
+- candlestick chart
+- intraday chart
+- stock performance
+- short-term investors
+- stock ticker
+- trading hours
+- AMD
 ---
 
-# c3m
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="charts: c3m - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve a 3-minute intraday chart for the given ticker. This chart will display the candlestick chart for the day. It will provide a visual representation of the stock's performance over the current day, making it helpful for short-term investors.
 

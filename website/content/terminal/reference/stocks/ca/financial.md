@@ -1,9 +1,18 @@
 ---
 title: financial
-description: OpenBB Terminal Function
+description: This page provides an explanation of the 'financial' command in Python,
+  including its usage, parameters, and examples. The 'financial' command prints screener
+  data of similar companies, aiding in financial analysis and investment decisions.
+keywords:
+- financial command
+- stock screener
+- investment decisions
+- Finviz
 ---
 
-# financial
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/financial - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 

@@ -1,12 +1,29 @@
 ---
 title: btc_supply
-description: OpenBB SDK Function
+description: This documentation page provides codes and guidelines on how to obtain
+  information about the circulating supply of Bitcoin (BTC) through OpenBBTerminal's
+  onchain modules. It details the function to use, parameters needed, and the expected
+  returns.
+keywords:
+- Bitcoin circulating supply
+- BTC supply
+- Blockchain information
+- Cryptocurrency
+- Onchain
+- Data
+- API
+- Source code
+- Function
+- Parameters
+- Returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.btc_supply - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# btc_supply
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +50,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | BTC circulating supply |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -66,8 +81,6 @@ openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

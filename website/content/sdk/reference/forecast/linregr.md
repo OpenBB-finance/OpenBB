@@ -1,12 +1,22 @@
 ---
 title: linregr
-description: OpenBB SDK Function
+description: Perform or display linear regression forecasting with OpenBB. The page
+  provides the function parameters and their explanations, as well as the return values.
+keywords:
+- linear regression
+- forecasting
+- data analysis
+- parameters
+- returns
+- prediction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.linregr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# linregr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -44,8 +54,6 @@ openbb.forecast.linregr(data: Union[pd.Series, pd.DataFrame], target_column: str
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, LinearRegressionModel] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best Linear Regression Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -89,8 +97,6 @@ openbb.forecast.linregr_chart(data: Union[pd.Series, pd.DataFrame], target_colum
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

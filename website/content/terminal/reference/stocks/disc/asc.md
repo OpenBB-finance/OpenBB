@@ -1,9 +1,23 @@
 ---
 title: asc
-description: OpenBB Terminal Function
+description: This documentation page provides information on 'asc', a command line
+  tool that fetches and displays small cap stocks with high earnings growth rates.
+  With customizable limit options, users can view top performing small cap stocks
+  with ease. Ideal for stock market enthusiasts and financial professionals looking
+  to filter out high-growth small cap stocks.
+keywords:
+- small cap stocks
+- earnings growth
+- stock market analysis
+- financial data analysis
+- stock market tools
+- financial programming
+- stock information display
 ---
 
-# asc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/asc - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 small cap stocks with earnings growth rates better than 25%. [Source: Yahoo Finance]
 

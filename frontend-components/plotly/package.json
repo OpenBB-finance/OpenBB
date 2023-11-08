@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.3",
     "dom-to-image": "^2.6.0",
+    "lodash": "^4.17.21",
     "plotly.js-dist-min": "^2.21.0",
     "posthog-js": "^1.55.0",
     "react": "^18.0.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/dom-to-image": "^2.6.4",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.3",
     "@types/plotly.js-dist-min": "^2.3.1",
     "@types/react": "^18.0.27",

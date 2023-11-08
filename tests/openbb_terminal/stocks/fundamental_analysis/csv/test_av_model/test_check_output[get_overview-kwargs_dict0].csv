@@ -12,8 +12,8 @@ Industry,MOTOR VEHICLES & PASSENGER CAR BODIES
 Address,"3500 DEER CREEK RD, PALO ALTO, CA, US"
 FiscalYearEnd,December
 LatestQuarter,2023-03-31
-MarketCapitalization,536.121 B
-EBITDA,16.666 B
+MarketCapitalization,536120885000
+EBITDA,16666000000
 PERatio,49.75
 PEGRatio,1.281
 BookValue,15.16
@@ -25,8 +25,8 @@ ProfitMargin,0.137
 OperatingMarginTTM,0.148
 ReturnOnAssetsTTM,0.104
 ReturnOnEquityTTM,0.28
-RevenueTTM,86.035 B
-GrossProfitTTM,20.853 B
+RevenueTTM,86034997000
+GrossProfitTTM,20853000000
 DilutedEPSTTM,3.4
 QuarterlyEarningsGrowthYOY,-0.232
 QuarterlyRevenueGrowthYOY,0.244
@@ -42,6 +42,6 @@ Beta,2.003
 52WeekLow,101.81
 50DayMovingAverage,181.18
 200DayMovingAverage,207.43
-SharesOutstanding,3.170 B
+SharesOutstanding,3169500000
 DividendDate,None
 ExDividendDate,None

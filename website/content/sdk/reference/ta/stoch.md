@@ -1,12 +1,26 @@
 ---
 title: stoch
-description: OpenBB SDK Function
+description: This page provides information on the Stochastic oscillator method used
+  in the OpenBB Terminal. Here, you can find details about the parameters and function
+  implementation for both the model and chart view. It presents a tutorial on how
+  to plot the Stochastic oscillator signal with various parameters.
+keywords:
+- Stochastic oscillator
+- Technical Analysis
+- Python code
+- Online documentation
+- Model view
+- Chart view
+- OHLC prices
+- Stock ticker symbol
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.stoch - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# stoch
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +53,6 @@ openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3,
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +87,6 @@ openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: in
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

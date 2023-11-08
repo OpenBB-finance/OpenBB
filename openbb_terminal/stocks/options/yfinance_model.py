@@ -348,7 +348,7 @@ def get_underlying_price(symbol: str) -> pd.Series:
     return df.rename(f"{symbol}")
 
 
-def load_options(symbol: str, pydantic: bool = False) -> object:
+def load_options(symbol: str, pydantic: bool = False) -> Options:
     """OptionsChains data object for YahooFinance.
 
     Parameters
@@ -419,7 +419,7 @@ def load_options(symbol: str, pydantic: bool = False) -> object:
 
     if not chains.empty and OptionsChains.last_price is None:
         OptionsChains.last_price = 0
-        print("No last price for " + OptionsChains.symbol)
+        console.print("No last price for " + OptionsChains.symbol)
 
     if not pydantic:
         return OptionsChains

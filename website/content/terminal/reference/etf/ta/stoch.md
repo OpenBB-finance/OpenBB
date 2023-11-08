@@ -1,9 +1,25 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: Learn how to use the Stochastic Oscillator, a tool for measuring where
+  the close is in relation to the recent trading range. Input values range from zero
+  to 100, and interpret the output for buy and sell signals
+keywords:
+- Stochastic Oscillator
+- overbought condition
+- oversold condition
+- buy signal
+- sell signal
+- Fast %D and Slow %D
+- Raw %K
+- moving average
+- trading range
+- stoch usage
+- stoch parameters
 ---
 
-# stoch
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/stoch - Reference | OpenBB Terminal Docs" />
 
 The Stochastic Oscillator measures where the close is in relation to the recent trading range. The values range from zero to 100. %D values over 75 indicate an overbought condition; values under 25 indicate an oversold condition. When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses below, it is a sell signal. The Raw %K is generally considered too erratic to use for crossover signals.
 

@@ -1,9 +1,23 @@
 ---
 title: shorted
-description: OpenBB Terminal Function
+description: This page provides information on the 'shorted' functionality which allows
+  users to retrieve up to 25 top ticker most shorted stocks from Yahoo Finance. The
+  page explains how the feature can be used, and lists the parameters available for
+  customization.
+keywords:
+- shorted
+- top ticker
+- most shorted stocks
+- yahoo finance
+- stock market
+- stock analysis
+- limit
+- parameters
 ---
 
-# shorted
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dps/shorted - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top ticker most shorted. [Source: Yahoo Finance]
 

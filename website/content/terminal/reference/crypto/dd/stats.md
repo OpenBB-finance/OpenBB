@@ -1,9 +1,29 @@
 ---
 title: stats
-description: OpenBB Terminal Function
+description: The 'stats' page provides 24 hour statistical data on cryptocurrencies
+  with options to view data in various quote currencies. It displays metrics such
+  as open value, high, low, volume, and last known value.
+keywords:
+- coin stats
+- crypto stats
+- quote currency
+- 24 hr Product Stats
+- USD
+- USDC
+- USDT
+- EUR
+- GBP
+- volume
+- open
+- high
+- low
+- last
+- volume_30day
 ---
 
-# stats
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/stats - Reference | OpenBB Terminal Docs" />
 
 Display coin stats
 

@@ -1,9 +1,21 @@
 ---
 title: active
-description: OpenBB Terminal Function
+description: This page provides information on how to display active blockchain addresses
+  over time including usage, parameters and visualization. The data source is Glassnode.
+keywords:
+- Blockchain
+- Addresses
+- Active
+- Glassnode
+- Data visualization
+- Frequency Interval
+- Initial Date
+- Final Date
 ---
 
-# active
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/active - Reference | OpenBB Terminal Docs" />
 
 Display active blockchain addresses over time [Source: https://glassnode.org]
 

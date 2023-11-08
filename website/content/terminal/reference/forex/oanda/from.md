@@ -1,9 +1,21 @@
 ---
 title: from
-description: OpenBB Terminal Function
+description: This page provides instructions on how to select the 'from' currency
+  symbol in a forex pair, including usage information and a comprehensive list of
+  available currencies.
+keywords:
+- forex
+- currency symbol
+- forex pair
+- from symbol
+- trading
+- currency exchange
+- forex trading
 ---
 
-# from
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/oanda/from - Reference | OpenBB Terminal Docs" />
 
 Select the "from" currency symbol in a forex pair
 

@@ -21,11 +21,8 @@ def check_save_file(file: str) -> str:
                 "Cannot overwrite defaults.ini file, please save with a different name"
             )
         )
-    else:
-        if not file.endswith(".ini"):
-            log_and_raise(
-                argparse.ArgumentTypeError("File to be saved needs to be .ini")
-            )
+    elif not file.endswith(".ini"):
+        log_and_raise(argparse.ArgumentTypeError("File to be saved needs to be .ini"))
 
     return file
 

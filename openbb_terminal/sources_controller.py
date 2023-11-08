@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import List, Optional
 
-from openbb_terminal.core.session.constants import SOURCES_URL
+from openbb_terminal.core.session.constants import BackendEnvironment
 
 # IMPORTATION THIRDPARTY
 # IMPORTATION INTERNAL
@@ -54,7 +54,7 @@ class SourcesController(BaseController):
             if Path(sources_file).exists() and os.stat(sources_file).st_size > 0:
                 self.source = sources_file
         else:
-            self.source = SOURCES_URL
+            self.source = BackendEnvironment.HUB_URL + "app/terminal/data-sources"
 
     def parse_input(self, an_input: str) -> List:
         """Parse controller input
@@ -64,8 +64,8 @@ class SourcesController(BaseController):
         """
         cmd_filter = r"((set\s+--cmd\s+|set\s+-c\s+|set\s+|get\s+--cmd\s+|get\s+-c\s+|get\s+).*?("
         for cmd in get_current_user().sources.choices:
-            cmd = cmd.replace("/", r"\/")
-            cmd_filter += f"{cmd}|"
+            clean_cmd = cmd.replace("/", r"\/")
+            cmd_filter += f"{clean_cmd}|"
         cmd_filter += ")*)"
 
         commands = parse_and_split_input(an_input=an_input, custom_filters=[cmd_filter])
@@ -176,6 +176,7 @@ class SourcesController(BaseController):
                         key="features_sources",
                         value=choices,
                         auth_header=get_current_user().profile.get_auth_header(),
+                        base_url=BackendEnvironment.BASE_URL,
                     )
                     console.print("")
                 console.print(
