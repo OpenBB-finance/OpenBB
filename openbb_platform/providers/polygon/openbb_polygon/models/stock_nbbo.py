@@ -1,6 +1,11 @@
 """Polygon Stock NBBO Model."""
 
-from datetime import timezone, datetime, timedelta
+from datetime import (
+    date as dateType,
+    datetime,
+    timedelta,
+    timezone,
+)
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_polygon.utils.helpers import get_data_one, map_exchanges, map_tape
@@ -31,28 +36,28 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
             + " Splitting large requests into chunks is recommended for full-day requests of high-volume symbols."
         ),
     )
-    timestamp: Optional[datetime] = Field(
+    date: Optional[dateType] = Field(
         default=None,
-        description="""
-            Query by datetime. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
-            YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
-        """,
+        description=(
+            QUERY_DESCRIPTIONS.get("date", "")
+            + " Use bracketed the timestamp parameters to specify exact time ranges."
+        ),
     )
-    timestamp_lt: Optional[datetime] = Field(
+    timestamp_lt: Optional[Union[datetime, str]] = Field(
         default=None,
         description="""
             Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_gt: Optional[datetime] = Field(
+    timestamp_gt: Optional[Union[datetime, str]] = Field(
         default=None,
         description="""
             Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_lte: Optional[datetime] = Field(
+    timestamp_lte: Optional[Union[datetime, str]] = Field(
         default=None,
         description="""
             Query by datetime, less than or equal to.
@@ -60,7 +65,7 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
             YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
         """,
     )
-    timestamp_gte: Optional[datetime] = Field(
+    timestamp_gte: Optional[Union[datetime, str]] = Field(
         default=None,
         description="""
             Query by datetime, greater than or equal to.
@@ -156,22 +161,24 @@ class PolygonStockNBBOFetcher(
         records = 0
 
         # Internal hard limit to prevent system overloads.
-        max_ = 10000000
+        _max_ = 10000000
         if (
-            query.timestamp
+            query.date
             or query.timestamp_gt
             or query.timestamp_gte
             or query.timestamp_lt
             or query.timestamp_lte
             or query.limit >= 50000
         ):
-            max_ = query.limit if query.limit != 25 and query.limit < max_ else max_
-            query.limit = 50000
+            max_ = query.limit if query.limit != 25 and query.limit < _max_ else _max_
+            query.limit = 50000 if max_ >= 50000 else query.limit
         results = []
         base_url = f"https://api.polygon.io/v3/quotes/{symbols[0]}"
-        query_str = get_querystring(
-            query.model_dump(by_alias=True), ["symbol"]
-        ).replace("_", ".")
+        query_str = (
+            get_querystring(query.model_dump(by_alias=True), ["symbol"])
+            .replace("_", ".")
+            .replace("date", "timestamp")
+        )
         url = f"{base_url}?{query_str}&apiKey={api_key}"
         data = get_data_one(url, **kwargs)
         results = data["results"]
@@ -179,7 +186,7 @@ class PolygonStockNBBOFetcher(
         results = map_tape(results)
         records += len(results)
         if (
-            query.timestamp
+            query.date
             or query.timestamp_gt
             or query.timestamp_gte
             and records == 50000
