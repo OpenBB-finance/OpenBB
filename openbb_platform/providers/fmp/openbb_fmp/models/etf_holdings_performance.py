@@ -67,13 +67,15 @@ class FMPEtfHoldingsPerformanceFetcher(
         # Get price performance for the holdings
         holdings_performance: list = []
         for holding_chunk in chunks:
-            holdings_str = ",".join(holding_chunk)
+            holdings_str = (
+                ",".join(holding_chunk) if len(holding_chunk) > 1 else holding_chunk[0]
+            )
             _performance = FMPPricePerformanceFetcher().extract_data(
                 FMPPricePerformanceFetcher.transform_query({"symbol": holdings_str}),
                 credentials,
                 **kwargs,
             )
-            holdings_performance.extend(_performance[d] for d in _performance)
+            holdings_performance.extend(_performance)
         return holdings_performance
 
     @staticmethod
