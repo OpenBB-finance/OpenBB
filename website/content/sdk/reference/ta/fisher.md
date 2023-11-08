@@ -1,12 +1,23 @@
 ---
 title: fisher
-description: OpenBB SDK Function
+description: Documentation page about Fisher Transform, a technical analysis indicator
+  used in finance. Detailed explanation on how to implement and use the Fisher Transform
+  indicator using the OpenBB library, with guides on parameters and returns for function
+  calls.
+keywords:
+- Fisher Transform
+- technical analysis
+- OpenBB library
+- OHLC prices
+- indicator window
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.fisher - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# fisher
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +48,6 @@ openbb.ta.fisher(data: pd.DataFrame, window: int = 14)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +80,6 @@ openbb.ta.fisher_chart(data: pd.DataFrame, window: int = 14, symbol: str = "", e
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

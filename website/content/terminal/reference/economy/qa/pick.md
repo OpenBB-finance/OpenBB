@@ -1,9 +1,25 @@
 ---
 title: pick
-description: OpenBB Terminal Function
+description: This page explains the usage of the load command for loading a FRED series
+  to the current selection. This is useful for analyzing stock market data with various
+  parameters such as Open, High, Low, Close, Adj Close, Volume, etc.
+keywords:
+- FRED series
+- load command
+- Stocks analysis
+- TSLA
+- Python commands
+- Stock market
+- Market data
+- Open, High, Low, Close
+- Adj Close, Volume
+- date_id, OC_High, OC_Low
+- Returns, LogRet
 ---
 
-# pick
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Load a FRED series to current selection
 

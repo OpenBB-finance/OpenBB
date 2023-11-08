@@ -1,12 +1,28 @@
 ---
 title: beta
-description: OpenBB SDK Function
+description: Learn how to calculate beta for a ticker and a reference ticker, and
+  display it with a scatterplot and linear regression, using OpenBB - an open source
+  finance tool. The page includes source code and parameters to correctly perform
+  and visualize these actions.
+keywords:
+- Docusaurus page optimization
+- Beta calculation
+- Ticker symbol
+- Reference ticker symbol
+- Stock market analysis
+- Quantitative analysis
+- Data visualization
+- Scatterplot
+- Linear regression
+- Open source finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.qa.beta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# beta
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +57,6 @@ openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: pd.DataFrame = None, r
 | Tuple[pd.Series, pd.Series, float, float] | Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +88,6 @@ openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: pd.DataFrame = N
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

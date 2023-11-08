@@ -1,9 +1,22 @@
 ---
 title: maketcap
-description: OpenBB SDK Function
+description: Detailed documentation on the 'maketcap' function in the OpenBB finance
+  database model. The page provides information on the function, including its source
+  code, parameters (if any), and the values it returns.
+keywords:
+- market cap
+- Yahoo Finance
+- Finance Database
+- stocks
+- finance data analysis
+- function
+- parameters
+- returns
 ---
 
-# maketcap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.maketcap - Reference | OpenBB SDK Docs" />
 
 Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
@@ -27,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | list | List of possible market caps |
 ---
-

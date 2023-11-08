@@ -1,9 +1,31 @@
 ---
 title: dwat
-description: OpenBB Terminal Function
+description: The 'dwat' documentation page provides comprehensive information about
+  Durbin-Watson autocorrelation test, its usage with Ordinary Least Squares (OLS)
+  regression, and potential issues and solutions with multi-collinearity and numerical
+  problems. The page features examples with a Python command, its parameters, and
+  regression results to provide a practical understanding of the concepts.
+keywords:
+- dwat
+- autocorrelation tests
+- Durbin-Watson
+- OLS
+- independent variables
+- dependent variables
+- regression results
+- plot
+- residuals
+- multicollinearity
+- numerical problems
+- analytics
+- statistics
+- econometrics
+- statistical analysis
 ---
 
-# dwat
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /dwat - Reference | OpenBB Terminal Docs" />
 
 Show autocorrelation tests from Durbin-Watson. Needs OLS to be run in advance with independent and dependent variables
 

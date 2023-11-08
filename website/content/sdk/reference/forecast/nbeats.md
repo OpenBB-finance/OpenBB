@@ -1,12 +1,24 @@
 ---
 title: nbeats
-description: OpenBB SDK Function
+description: Learn how to perform NBEATS Forecasting with OpenBB Finance. Explore
+  the parameters, their descriptions, and learn how to properly tune them for optimal
+  forecasting results.
+keywords:
+- NBEATS Forecasting
+- OpenBB Finance
+- forecast parameters
+- training models
+- machine learning
+- data science
+- time series prediction
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.nbeats - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# nbeats
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -53,8 +65,6 @@ openbb.forecast.nbeats(data: Union[pd.Series, pd.DataFrame], target_column: str 
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[NBEATSModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best NBEATS Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -108,8 +118,6 @@ openbb.forecast.nbeats_chart(data: Union[pd.DataFrame, pd.Series], target_column
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

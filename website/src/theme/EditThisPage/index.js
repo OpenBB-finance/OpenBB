@@ -7,6 +7,7 @@ export default function EditThisPageWrapper(props) {
   if (
     pathname.startsWith("/terminal/reference") ||
     pathname.startsWith("/sdk/reference") ||
+    pathname.startsWith("/platform/reference") ||
     pathname.startsWith("/bot/reference")
   )
     return null;

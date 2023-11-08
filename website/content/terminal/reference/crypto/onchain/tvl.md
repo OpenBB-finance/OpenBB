@@ -1,9 +1,23 @@
 ---
 title: tvl
-description: OpenBB Terminal Function
+description: This page discusses the Total Value Locked (TVL) metric, a key concept
+  in cryptocurrency. Learn how to utilize this metric through different parameters
+  and understand its significance in evaluating Ethereum ERC20 contract balances.
+keywords:
+- Total Value Locked
+- TVL
+- Cryptocurrency
+- Ethereum ERC20
+- Contract balance
+- User address
+- Address name
+- Contract symbol
+- Interval
 ---
 
-# tvl
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/tvl - Reference | OpenBB Terminal Docs" />
 
 Total value locked (TVL) metric - Ethereum ERC20 [Source:https://docs.flipsidecrypto.com/] useraddress OR addressname must be provided
 

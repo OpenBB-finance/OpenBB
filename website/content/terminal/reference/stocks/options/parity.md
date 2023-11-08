@@ -1,9 +1,18 @@
 ---
 title: parity
-description: OpenBB Terminal Function
+description: The parity page provides details about whether options are over or under
+  valued. It includes usage examples, parameters definition and their choices.
+keywords:
+- parity
+- over or under valued options
+- parameters
+- options valuation
+- example usage
 ---
 
-# parity
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/parity - Reference | OpenBB Terminal Docs" />
 
 Shows whether options are over or under valued
 

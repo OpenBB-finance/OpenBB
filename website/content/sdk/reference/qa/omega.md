@@ -1,12 +1,28 @@
 ---
 title: omega
-description: OpenBB SDK Function
+description: Learn about the omega series and ratio in the OpenBB quantitative analysis
+  toolkit. The documentation provides information on how to generate the omega series
+  and plot the omega ratio from stock dataframes.
+keywords:
+- omega series
+- quantitative analysis
+- numpy
+- pandas
+- dataframe
+- stock data
+- threshold range
+- annualized target return
+- omega ratio
+- plotting
+- chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.omega - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# omega
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +55,6 @@ openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: f
 | pd.DataFrame | omega series |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +84,6 @@ openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

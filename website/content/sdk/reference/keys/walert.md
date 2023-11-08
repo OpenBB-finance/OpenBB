@@ -1,9 +1,23 @@
 ---
 title: walert
-description: OpenBB SDK Function
+description: This documentation page describes how to set the Walert key in OpenBB
+  finance's Terminal. It details the parameters, return types and provides examples
+  for setting the API key.
+keywords:
+- API key set
+- Walert key
+- Python code
+- Source code
+- terminal environment variables
+- Jupyter notebook session
+- financial software
+- web development
+- SEO optimization
 ---
 
-# walert
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.walert - Reference | OpenBB SDK Docs" />
 
 Set Walert key
 
@@ -41,4 +55,3 @@ openbb.keys.walert(key="example_key")
 ```
 
 ---
-

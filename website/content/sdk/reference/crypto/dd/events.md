@@ -1,12 +1,27 @@
 ---
 title: events
-description: OpenBB SDK Function
+description: The page provides detailed documentation on how to get all events related
+  to a given cryptocurrency like conferences, start date of futures trading. It also
+  provides insights into how to sort, limit and export these events using the OpenBBTerminal
+  methods.
+keywords:
+- cryptocurrency events
+- cryptocurrency futures trading
+- cryptocurrency conferences
+- sorting cryptocurrency data
+- exporting cryptocurrency data
+- cryptocurrency
+- data frame
+- python cryptocurrency project
+- CoinPaprika API
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.events - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# events
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.crypto.dd.events(symbol: str = "BTC", sortby: str = "date", ascend: bool 
 | ---- | ----------- |
 | pd.DataFrame | Events found for given coin<br/>Columns: id, date , date_to, name, description, is_conference, link, proof_image_link |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +86,6 @@ openbb.crypto.dd.events_chart(symbol: str = "BTC", limit: int = 10, sortby: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

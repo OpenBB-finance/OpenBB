@@ -1,9 +1,20 @@
 ---
 title: _make_request
-description: OpenBB SDK Function
+description: This is a documentation page for the '_make_request' helper method used
+  for scraping in Python. The method takes a URL as parameter and returns a BeautifulSoup
+  object or None.
+keywords:
+- make_request
+- scraping
+- code
+- BeautifulSoup
+- URL
+- helper method
 ---
 
-# _make_request
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.oss._make_request - Reference | OpenBB SDK Docs" />
 
 Helper method to scrap.
 
@@ -30,4 +41,3 @@ openbb.alt.oss._make_request(url: str)
 | ---- | ----------- |
 | Union[BeautifulSoup, None] | BeautifulSoup object or None |
 ---
-

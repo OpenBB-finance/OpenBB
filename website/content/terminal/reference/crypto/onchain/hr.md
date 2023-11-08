@@ -1,9 +1,22 @@
 ---
 title: hr
-description: OpenBB Terminal Function
+description: Documentation on the 'hr' function to view the mean hashrate of BTC or
+  ETH over a specific frequency interval. Contains information on command usage and
+  the parameters involved.
+keywords:
+- blockchain
+- hashrate
+- BTC
+- ETH
+- coin
+- cryptocurrency
+- frequency interval
+- Glassnode
 ---
 
-# hr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/hr - Reference | OpenBB Terminal Docs" />
 
 Display mean hashrate for a certain blockchain (ETH or BTC) [Source: https://glassnode.org]
 

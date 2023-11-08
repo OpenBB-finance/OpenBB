@@ -1,9 +1,19 @@
 ---
 title: histcont
-description: OpenBB Terminal Function
+description: The histcont page is part of Quiver Quant's website and deals with quarterly-contracts
+  historical data. Here you'll find information about parameters, usages, and data
+  visualizations.
+keywords:
+- histcont
+- Quiver Quant
+- historical contracts
+- raw data
+- data visualization
 ---
 
-# histcont
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/gov/histcont - Reference | OpenBB Terminal Docs" />
 
 Quarterly-contracts historical [Source: www.quiverquant.com]
 

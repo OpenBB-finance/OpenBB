@@ -1,9 +1,19 @@
 ---
 title: gainers
-description: OpenBB SDK Function
+description: This page provides information on how to use OpenBB Terminal Python source
+  code to get the top stock gainers from Yahoo Finance. It returns the data in a Pandas
+  DataFrame.
+keywords:
+- Top gainers
+- Stocks
+- Yahoo Finance
+- Source Code
+- Stock Market
 ---
 
-# gainers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.disc.gainers - Reference | OpenBB SDK Docs" />
 
 Get top gainers. [Source: Yahoo Finance]
 
@@ -27,4 +37,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Stock Gainers |
 ---
-

@@ -1,9 +1,59 @@
 ---
 title: ewf
-description: OpenBB Terminal Function
+description: Detailed documentation on the usage of 'ewf', a command that displays
+  exchange withdrawal fees for various cryptocurrencies. The list includes a wide
+  range of exchanges from Binance to OKEx, providing an important resource for those
+  dealing with crypto trading.
+keywords:
+- ewf
+- exchange withdrawal fees
+- cryptocurrency
+- crypto trading
+- crypto exchanges
+- withdrawal fees
+- FixedFloat
+- CREX24
+- GetBTC
+- Deribit
+- CoinFalcon
+- Bitfinex
+- Bleutrade
+- Kraken
+- Coindeal
+- OKCoin
+- CoinTiger
+- Kucoin
+- AscendEX
+- Coincheck
+- Coinone
+- CoinEx
+- Bitrue
+- Crypto.com Exchange
+- DSX
+- Poloniex
+- Binance
+- Bitkub
+- BitMart
+- TOKOK
+- Flyp.me
+- HitBTC
+- Liquid
+- Gate.io
+- Bittrex
+- BitForex
+- BTSE
+- Tidex
+- Huobi Global
+- BW
+- SouthXchange
+- WhiteBit
+- OKEx
+- Coinsbit
 ---
 
-# ewf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/ewf - Reference | OpenBB Terminal Docs" />
 
 Display exchange withdrawal fees [Source: https://withdrawalfees.com/]
 

@@ -1,9 +1,28 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: Learn how to use the load function within OpenBBTerminal's stocks module
+  to retrieve and analyze data. Provide a symbol (ticker), define start and end dates,
+  interval, choose whether to include pre/post-hours data and the data source. Options
+  to retrieve weekly and monthly data are available. The gathered data is returned
+  as a pandas DataFrame.
+keywords:
+- symbol analysis
+- start_date
+- interval
+- end_date
+- prepost
+- source
+- YahooFinance
+- weekly data
+- monthly data
+- verbose
+- data extraction
+- dataframe
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.load - Reference | OpenBB SDK Docs" />
 
 Load a symbol to perform analysis using the string above as a template.
 

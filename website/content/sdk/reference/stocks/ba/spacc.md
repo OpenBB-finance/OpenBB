@@ -1,9 +1,22 @@
 ---
 title: spacc
-description: OpenBB SDK Function
+description: Detailed documentation of the function openbb.stocks.ba.spacc, providing
+  insights into top trending SPACs on Reddit. The page includes the source code, parameters,
+  and returns for implementing the function.
+keywords:
+- SPACs
+- Reddit
+- Source Code
+- openbb.stocks.ba.spacc
+- Parameters
+- Returns
+- dictionary
+- Number of mentions
 ---
 
-# spacc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.spacc - Reference | OpenBB SDK Docs" />
 
 Get top tickers from r/SPACs [Source: reddit].
 
@@ -31,4 +44,3 @@ openbb.stocks.ba.spacc(limit: int = 10, popular: bool = False)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, dict] | Dataframe of reddit submission,<br/>Dictionary of tickers and number of mentions. |
 ---
-

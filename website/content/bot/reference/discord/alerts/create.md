@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: create
-description: OpenBB Discord Command
+description: This page provides instructions on how to use the 'create' command to
+  set up price alerts for specific trading symbols. It includes usage examples and
+  a detailed description of parameters involved such as the ticker, condition, and
+  price.
+keywords:
+- price alerts
+- trading symbols
+- condition
+- price
+- creation command
 ---
 
-# create
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alerts: create - Discord Reference | OpenBB Bot Docs" />
 
 This command creates an alert for a given symbol (ex. BTCUSD) that will notify the user when the price is equal to or above the user defined price.
 

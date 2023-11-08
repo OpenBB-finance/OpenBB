@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: topstrikevol
-description: OpenBB Discord Command
+description: This documentation page explains how to use the topstrikevol command
+  to retrieve the top option strike by volume for a specific stock ticker. It includes
+  clear specifications of parameters and provides usage examples.
+keywords:
+- topstrikevol command
+- stock ticker
+- option strike by volume
+- expiration date
+- Python code usage
 ---
 
-# topstrikevol
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: topstrikevol - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the top option strike by volume for a given security with the ability to add an expiration date for a more detailed breakdown.
 

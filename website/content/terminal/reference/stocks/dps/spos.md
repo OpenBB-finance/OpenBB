@@ -1,9 +1,19 @@
 ---
 title: spos
-description: OpenBB Terminal Function
+description: An informative page that demonstrates the usage of the 'spos' command,
+  exhibiting Net Short Vol. vs Position. It includes instructions on how to use the
+  command, its parameters, and an illustrative image.
+keywords:
+- spos command
+- Net Short Vol vs Position
+- command usage
+- parameters
+- trading commands
 ---
 
-# spos
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dps/spos - Reference | OpenBB Terminal Docs" />
 
 Shows Net Short Vol. vs Position. [Source: Stockgrid]
 

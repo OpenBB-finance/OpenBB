@@ -1,9 +1,16 @@
 ---
 title: exchanges
-description: OpenBB SDK Function
+description: This page provides the guide on how to use the helper method, which gets
+  all the exchanges supported by CCXT.
+keywords:
+- helper method
+- CCXT
+- exchanges
 ---
 
-# exchanges
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.exchanges - Reference | OpenBB SDK Docs" />
 
 Helper method to get all the exchanges supported by ccxt
 
@@ -27,4 +34,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | list of all the exchanges supported by ccxt |
 ---
-

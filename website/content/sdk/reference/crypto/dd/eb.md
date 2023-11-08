@@ -1,12 +1,27 @@
 ---
 title: eb
-description: OpenBB SDK Function
+description: This page provides documentation on how to use the OpenBBTerminal's 'eb'
+  function in cryptocurrency due diligence. Users can return and plot the total amount
+  of coins held on exchange addresses in Python - an essential tool for data analysis
+  in the crypto market.
+keywords:
+- OpenBB finance
+- OpenBB crypto
+- Cryptocurrency due diligence
+- Glassnode model
+- Glassnode view
+- Data analysis
+- Bitcoin
+- Exchange addresses
+- EB chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.eb - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# eb
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -48,8 +63,6 @@ df = openbb.crypto.dd.eb(symbol="BTC")
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -93,8 +106,6 @@ openbb.crypto.dd.eb_chart(symbol="BTC")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

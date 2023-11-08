@@ -1,9 +1,35 @@
 ---
 title: create
-description: OpenBB Terminal Function
+description: This is a technical page with detailed instructions on how to create
+  and use parameters including action, product, symbol, price, size, up_to, duration,
+  type, and their respective choices in programming. This covers various market operations
+  including buy, sell, GTD, GTC, limit, market, stop-limit, and stop-loss.
+keywords:
+- create
+- usage
+- parameters
+- action
+- product
+- symbol
+- price
+- size
+- up_to
+- duration
+- type
+- order
+- buy
+- sell
+- gtd
+- gtc
+- limit
+- market
+- stop-limit
+- stop-loss
 ---
 
-# create
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/degiro/create /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

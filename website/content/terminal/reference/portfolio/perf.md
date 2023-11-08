@@ -1,9 +1,21 @@
 ---
 title: perf
-description: OpenBB Terminal Function
+description: The 'perf' function displays the performance metrics of both individual
+  trades and the total portfolio against a given benchmark. This data is crucial for
+  investors and traders to understand how their portfolio is performing compared to
+  a standard benchmark.
+keywords:
+- perf
+- benchmark
+- trade performance
+- portfolio performance
+- performance metrics
+- investment tracking
 ---
 
-# perf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/perf - Reference | OpenBB Terminal Docs" />
 
 Shows performance of each trade and total performance of the portfolio versus the benchmark.
 

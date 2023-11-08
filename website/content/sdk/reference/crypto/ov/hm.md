@@ -1,12 +1,24 @@
 ---
 title: hm
-description: OpenBB SDK Function
+description: The page provides detailed documentation for OpenBB crypto functions
+  that interact with CoinGecko to retrieve and visualise cryptocurrency data. It includes
+  code examples, a list of parameters and their descriptions for each function, and
+  source code links.
+keywords:
+- cryptocurrency
+- CoinGecko
+- heatmap
+- docusaurus
+- dataframe
+- metadata
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.hm - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hm
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +52,6 @@ openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol"
 | pd.DataFrame | N coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +82,6 @@ openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

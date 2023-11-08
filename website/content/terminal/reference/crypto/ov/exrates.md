@@ -1,9 +1,23 @@
 ---
 title: exrates
-description: OpenBB Terminal Function
+description: The 'exrates' page allows users to view crypto, fiats, and commodity
+  exchange rates from CoinGecko in Python. The page also explains how to limit, sort,
+  or reverse data. Methods show examples and list of parameters as well.
+keywords:
+- exrates
+- crypto exchange rates
+- CoinGecko
+- sort
+- limit
+- reverse
+- parameters
+- fiats
+- commodity
 ---
 
-# exrates
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/exrates - Reference | OpenBB Terminal Docs" />
 
 Shows list of crypto, fiats, commodity exchange rates from CoinGecko You can look on only N number of records with --limit, You can sort by Index, Name, Unit, Value, Type, and also use --reverse flag to sort descending.
 

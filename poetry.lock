@@ -2298,13 +2298,13 @@ user_agent = "*"
 
 [[package]]
 name = "finvizfinance"
-version = "0.14.6rc2"
+version = "0.14.7rc1"
 description = "Finviz Finance. Information downloader."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "finvizfinance-0.14.6rc2-py3-none-any.whl", hash = "sha256:70742b5054e84fbe5a1ffcc7cad97ca9225292e07ce0349dcb78462d5e5e51a0"},
-    {file = "finvizfinance-0.14.6rc2.tar.gz", hash = "sha256:736f3064faac1f8ba6d06fdd7c77f79a3e831c2048fc6442759861fce4c4a6e8"},
+    {file = "finvizfinance-0.14.7rc1-py3-none-any.whl", hash = "sha256:37ea590156a4f51556c6b18a88903f748543703760b5478f30b3ded2d9c556ed"},
+    {file = "finvizfinance-0.14.7rc1.tar.gz", hash = "sha256:abb9fc14057ab68db8a433e3a71a62755d69e6462c51463ecff1dd51c9b84b69"},
 ]
 
 [package.dependencies]
@@ -5270,13 +5270,13 @@ six = "*"
 
 [[package]]
 name = "openai"
-version = "0.27.8"
+version = "0.28.1"
 description = "Python client library for the OpenAI API"
 optional = false
 python-versions = ">=3.7.1"
 files = [
-    {file = "openai-0.27.8-py3-none-any.whl", hash = "sha256:e0a7c2f7da26bdbe5354b03c6d4b82a2f34bd4458c7a17ae1a7092c3e397e03c"},
-    {file = "openai-0.27.8.tar.gz", hash = "sha256:2483095c7db1eee274cebac79e315a986c4e55207bb4fa7b82d185b3a2ed9536"},
+    {file = "openai-0.28.1-py3-none-any.whl", hash = "sha256:d18690f9e3d31eedb66b57b88c2165d760b24ea0a01f150dd3f068155088ce68"},
+    {file = "openai-0.28.1.tar.gz", hash = "sha256:4be1dad329a65b4ce1a660fe6d5431b438f429b5855c883435f0f7fcb6d2dcc8"},
 ]
 
 [package.dependencies]
@@ -7834,7 +7834,8 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win32.whl", hash = "sha256:763d65baa3b952479c4e972669f679fe490eee058d5aa85da483ebae2009d231"},
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win_amd64.whl", hash = "sha256:d000f258cf42fec2b1bbf2863c61d7b8918d31ffee905da62dede869254d3b8a"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
-    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:1a6391a7cabb7641c32517539ca42cf84b87b667bad38b78d4d42dd23e957c81"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:9c7617df90c1365638916b98cdd9be833d31d337dbcd722485597b43c4a215bf"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win32.whl", hash = "sha256:f6d3d39611ac2e4f62c3128a9eed45f19a6608670c5a2f4f07f24e8de3441d38"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win_amd64.whl", hash = "sha256:da538167284de58a52109a9b89b8f6a53ff8437dd6dc26d33b57bf6699153122"},
@@ -10502,4 +10503,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "39eeb5c1f43224d772062e1dbc5ee224d2461724e79c131e379d90d0fa14c01e"
+content-hash = "f5d8f7746d1ff97626fd7b3798f57a2865aa73d927c1af5a9adad8685e1524c0"

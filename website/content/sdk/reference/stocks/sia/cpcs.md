@@ -1,12 +1,25 @@
 ---
 title: cpcs
-description: OpenBB SDK Function
+description: This documentation page provides information on how to use cpcs, a feature
+  of OpenBB's finance software, to get and display the number of companies per country
+  in a specific sector. Multiple parameters are available to allow customised queries.
+  Source code links are also provided.
+keywords:
+- CPCS feature
+- number of companies per country
+- specific sector
+- market cap
+- finance software
+- customize queries
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.cpcs - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cpcs
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.stocks.sia.cpcs(sector: str = "Technology", mktcap: str = "Large", exclud
 | ---- | ----------- |
 | dict | Dictionary of countries and number of companies in a specific sector |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +86,6 @@ openbb.stocks.sia.cpcs_chart(sector: str = "Technology", mktcap: str = "Large", 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

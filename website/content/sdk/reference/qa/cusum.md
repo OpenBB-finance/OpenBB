@@ -1,9 +1,20 @@
 ---
 title: cusum
-description: OpenBB SDK Function
+description: Documentation page for the Cumulative Sum Algorithm (CUSUM) used in the
+  OpenBB Terminal for quantitative analysis. Contains a snippet of the source code,
+  parameters descriptions, and an example of usage.
+keywords:
+- OpenBB Terminal documentation
+- Cumulative Sum Algorithm
+- CUSUM
+- quantitative analysis
+- parameters description
+- OpenBB SDK
 ---
 
-# cusum
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.cusum - Reference | OpenBB SDK Docs" />
 
 Plots Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
@@ -43,4 +54,3 @@ openbb.qa.cusum(data=df, target="Adj Close")
 ```
 
 ---
-

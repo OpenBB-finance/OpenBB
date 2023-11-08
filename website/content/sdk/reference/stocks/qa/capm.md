@@ -1,9 +1,19 @@
 ---
 title: capm
-description: OpenBB SDK Function
+description: This page offers an in-depth look at the CAPM model, providing information
+  about its parameters, returns, and the concept of systematic risk.
+keywords:
+- CAPM model
+- Stocks
+- Quantitative analysis
+- Symbol
+- Beta for a stock
+- Systematic risk for a stock
 ---
 
-# capm
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.qa.capm - Reference | OpenBB SDK Docs" />
 
 Provides information that relates to the CAPM model
 
@@ -30,4 +40,3 @@ openbb.stocks.qa.capm(symbol: str)
 | ---- | ----------- |
 | Tuple[float, float] | The beta for a stock, The systematic risk for a stock |
 ---
-

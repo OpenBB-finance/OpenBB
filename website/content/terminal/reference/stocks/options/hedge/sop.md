@@ -1,9 +1,20 @@
 ---
 title: sop
-description: OpenBB Terminal Function
+description: The sop command in this documentation demonstrates how to view selected
+  options in a stock hedge. It provides usage, parameter details, and practical examples.
+keywords:
+- sop
+- parameters
+- options
+- stocks
+- hedge
+- add
+- implied volatility
 ---
 
-# sop
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/hedge/sop /options - Reference | OpenBB Terminal Docs" />
 
 Displays selected option
 
@@ -27,7 +38,7 @@ This command has no parameters
 
 ```python
 2022 May 10, 09:34 (🦋) /stocks/options/hedge/ $ add 20
-          Current Option Positions           
+          Current Option Positions
 ┏━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Type ┃ Hold ┃ Strike ┃ Implied Volatility ┃
 ┡━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

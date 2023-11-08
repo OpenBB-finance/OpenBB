@@ -1,12 +1,26 @@
 ---
 title: headlines
-description: OpenBB SDK Function
+description: The website page provides detailed documentation on how to use sentiment
+  analysis with FinBrain's API on a company's stock. It offers instructions on extracting
+  sentiment from headlines and visualizing sentiment trends through charts.
+keywords:
+- sentiment analysis
+- FinBrain's API
+- stock analysis
+- data visualization
+- OpenBBTerminal documentation
+- behavioural analysis
+- stock sentiment
+- Stock market data
+- Open-source software
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.headlines - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# headlines
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +50,6 @@ openbb.stocks.ba.headlines(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Empty if there was an issue with data retrieval |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +81,6 @@ openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

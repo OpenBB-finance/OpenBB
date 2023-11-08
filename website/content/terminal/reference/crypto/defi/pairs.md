@@ -1,9 +1,25 @@
 ---
 title: pairs
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on how to use recently added pairs
+  on Uniswap DEX using a command line tool. It includes instructions on usage, parameters,
+  and examples, providing a comprehensive understanding of sorting and filtering commands
+  related to trading volume and transaction counts.
+keywords:
+- Uniswap DEX
+- pairs
+- trading volume
+- transactions
+- sort
+- reverse
+- command line tool
+- parameters
+- examples
+- crypto currencies
 ---
 
-# pairs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/pairs - Reference | OpenBB Terminal Docs" />
 
 Displays Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]
 

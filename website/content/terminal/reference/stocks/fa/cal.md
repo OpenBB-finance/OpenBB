@@ -1,9 +1,17 @@
 ---
 title: cal
-description: OpenBB Terminal Function
+description: This page provides a guide to using the 'cal' command for accessing company
+  earning calendars and revenue estimates using python.
+keywords:
+- Company Earnings
+- Earnings Calendar
+- Revenue Estimates
+- Yahoo Finance
 ---
 
-# cal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/cal - Reference | OpenBB Terminal Docs" />
 
 Calendar earnings of the company. Including revenue and earnings estimates. [Source: Yahoo Finance]
 

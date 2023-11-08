@@ -1,33 +1,24 @@
 ---
 title: Bugs, Support, and Feedback
 sidebar_position: 5
-description: Submit a bug report or support ticket for the OpenBB Terminal
+description: Familiarize yourself with common issues and bug reports within our OpenBB
+  Terminal, explore our patch release process and learn how to report issues or get
+  support for OpenBB Terminal. You'll also learn how to provide feedback and request
+  specific features within the platform.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    bug,
-    support,
-    feedback,
-    report,
-    patch
-  ]
+- GitHub
+- bugs
+- patches
+- issue reporting
+- support
+- Discord
+- feature requests
+- machine learning
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Bugs, Support, and Feedback - Terminal | OpenBB Docs" />
+<HeadTitle title="Bugs, Support, and Feedback - Faqs | OpenBB Terminal Docs" />
 
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.
 

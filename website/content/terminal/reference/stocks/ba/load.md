@@ -1,9 +1,24 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This documentation page provides useful information on how to load stock
+  tickers for market analysis, including specifications for intraday stocks, market
+  hours, and options for custom, weekly, and monthly data loading.
+keywords:
+- Stock market analysis
+- Intraday stock
+- Market hours
+- Load stock ticker
+- Stock data
+- Pre/post market
+- Stock ticker
+- Custom data load
+- Monthly data load
+- Weekly data load
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/load - Reference | OpenBB Terminal Docs" />
 
 Load stock ticker to perform analysis on. When the data source is syf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
 

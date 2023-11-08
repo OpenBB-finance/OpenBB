@@ -1,12 +1,27 @@
 ---
 title: coint
-description: OpenBB SDK Function
+description: This page is dedicated to the `coint` functionality of OpenBB Terminal.
+  Users can calculate cointegration tests between variable number of input series,
+  and get the results back as a Dataframe or a dictionary. This page provides the
+  source code and detailed description of parameters specific to the function.
+keywords:
+- cointegration tests
+- coint
+- data analysis
+- pd.Series
+- dataframe
+- Dict
+- openbb.econometrics.coint
+- openbb.econometrics.coint_chart
+- parameters description
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.coint - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# coint
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.econometrics.coint(datasets: pd.Series, return_z: bool = False)
 | ---- | ----------- |
 | Union[pd.DataFrame,Dict] | Dataframe with results of cointegration tests or a Dict of the z results |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +84,6 @@ openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,26 @@
 ---
 title: historical
-description: OpenBB Terminal Function
+description: The page outlines the use of the historical function, allowing users
+  to compare stock prices of companies historically. It provides details on usage
+  and parameters such as limits, date formats, types of candles, and more. The data
+  comes from sources like Yahoo Finance.
+keywords:
+- historical
+- price comparison
+- similar companies
+- Yahoo Finance
+- parameters
+- limit
+- no_scale
+- start
+- type_candle
+- date format
+- shorted stocks
 ---
 
-# historical
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screener/historical - Reference | OpenBB Terminal Docs" />
 
 Historical price comparison between similar companies [Source: Yahoo Finance]
 

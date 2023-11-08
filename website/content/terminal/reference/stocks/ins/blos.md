@@ -1,9 +1,34 @@
 ---
 title: blos
-description: OpenBB Terminal Function
+description: This Blos command page provides information on how to display the latest
+  officer sales 100k. It gives a detailed explanation of parameters, default values
+  and choices. It also provides clear examples, describing the output format and each
+  field's meaning.
+keywords:
+- blos command
+- officer sales
+- OpenInsider
+- datarows display
+- command usage
+- parameters
+- derivative transaction
+- multiple transactions
+- filing date
+- trade date
+- company name
+- insider name
+- title
+- trade type
+- price
+- quantity
+- owned
+- diff own
+- value
 ---
 
-# blos
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/blos - Reference | OpenBB Terminal Docs" />
 
 Print latest officer sales 100k. [Source: OpenInsider]
 

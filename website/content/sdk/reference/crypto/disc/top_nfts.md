@@ -1,12 +1,23 @@
 ---
 title: top_nfts
-description: OpenBB SDK Function
+description: Learn how to get and sort top NFT collections data by using OpenBB crypto
+  discovery tools. Source code, and parameters for customization are provided.
+keywords:
+- nfts
+- Top NFTs
+- crypto
+- cryptocurrency
+- DappRadar
+- crypto discovery
+- NFT collections
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.top_nfts - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# top_nfts
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +48,6 @@ openbb.crypto.disc.top_nfts(sortby: str = "", limit: int = 10)
 | pd.DataFrame | NFTs Columns: Name, Protocols, Floor Price [$], Avg Price [$], Market Cap [$], Volume [$] |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +77,6 @@ openbb.crypto.disc.top_nfts_chart(limit: int = 10, sortby: str = "", export: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

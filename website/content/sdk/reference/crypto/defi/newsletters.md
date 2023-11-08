@@ -1,12 +1,25 @@
 ---
 title: newsletters
-description: OpenBB SDK Function
+description: This page provides an understanding of how to scrape all substack newsletters
+  related to DeFi from a list of urls, and how to print a table of these newsletters.
+  Users can also learn how to limit the number of records displayed and export the
+  data to different file formats.
+keywords:
+- Substack newsletters scrape
+- DeFi related newsletters
+- openbb.crypto.defi.newsletters()
+- Display newsletters table
+- Limit records
+- Export data
+- openbb.crypto.defi.newsletters_chart()
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.newsletters - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# newsletters
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +46,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | DataFrame with recent news from most popular DeFi related newsletters. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -64,8 +75,6 @@ openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

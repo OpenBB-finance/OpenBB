@@ -1,9 +1,23 @@
 ---
 title: adx
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on using the ADX, a Welles Wilder
+  style moving average of the Directional Movement Index. It includes usage examples
+  and parameter specifications.
+keywords:
+- ADX
+- Welles Wilder
+- Directional Movement Index
+- DX
+- trend strength
+- parameters
+- n_length
+- n_scalar
+- n_drift
 ---
 
-# adx
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/adx - Reference | OpenBB Terminal Docs" />
 
 The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX). The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider a high number to be a strong trend, and a low number, a weak trend.
 

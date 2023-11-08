@@ -1,12 +1,25 @@
 ---
 title: dpotc
-description: OpenBB SDK Function
+description: Documentation for dpotc and dpotc_chart, functions in the OpenBB Finance
+  library for retrieving and visualizing Dark Pools (ATS) and OTC (Non-ATS) data from
+  FINRA. Includes parameters and source code.
+keywords:
+- dpotc
+- FINRA data
+- Dark Pools (ATS) Data
+- OTC (Non-ATS) Data
+- dpotc_chart
+- barchart
+- matplotlib
+- Export dataframe data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.dpotc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# dpotc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.stocks.dps.dpotc(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dark Pools (ATS) Data, OTC (Non-ATS) Data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +79,6 @@ openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Opti
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

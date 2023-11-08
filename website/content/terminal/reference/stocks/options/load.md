@@ -1,9 +1,23 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This documentation page includes detailed instructions on how to load
+  a stock ticker into the option menu using a specific command. It outlines each step
+  and provides multiple examples for better understanding.
+keywords:
+- load command
+- stock ticker
+- options
+- stock trading
+- stock options
+- command line interface
+- trading tool
+- trading instructions
+- TSLA
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/load - Reference | OpenBB Terminal Docs" />
 
 Load a ticker into option menu
 

@@ -40,10 +40,9 @@ for bot in ["discord", "telegram"]:
             if file.stem == "index":
                 continue
 
-            desc_regex = re.compile(
-                r"---\n\n# ([^\n]+)(.*)### Usage", (re.DOTALL | re.MULTILINE)
-            )
-            description = desc_regex.search(file.read_text()).group(2).strip()  # type: ignore
+            desc_regex = re.compile(r"([^>]+)(.*)### Usage", (re.MULTILINE))
+
+            description = desc_regex.search(file.read_text()).group(1).strip()  # type: ignore
 
             cmd_dict = dict(
                 name=file.stem,

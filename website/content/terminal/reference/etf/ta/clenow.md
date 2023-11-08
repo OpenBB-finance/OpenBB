@@ -1,9 +1,18 @@
 ---
 title: clenow
-description: OpenBB Terminal Function
+description: Discover how to calculate the Clenow Volatility Adjusted Momentum using
+  the lookback period for regression in Python. Learn about the parameters and usage
+  of the command for optimized results.
+keywords:
+- Clenow
+- Volatility Adjusted Momentum
+- Lookback period
+- Regression
 ---
 
-# clenow
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/clenow - Reference | OpenBB Terminal Docs" />
 
 Calculates the Clenow Volatility Adjusted Momentum.
 

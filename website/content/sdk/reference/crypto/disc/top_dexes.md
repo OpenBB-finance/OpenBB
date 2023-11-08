@@ -1,12 +1,24 @@
 ---
 title: top_dexes
-description: OpenBB SDK Function
+description: The 'top_dexes' page contains information and source code for obtaining
+  and viewing decentralized exchange data, including daily volume and users. The first
+  tab shows a model for getting top dexes by specified parameters, while the second
+  tab displays a function that prints this data in tabular format.
+keywords:
+- dexes
+- decetralized exchange
+- daily volume
+- data model
+- data view
+- dappradar
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.top_dexes - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# top_dexes
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.crypto.disc.top_dexes(sortby: str = "", limit: int = 10)
 | pd.DataFrame | Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$] |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +78,6 @@ openbb.crypto.disc.top_dexes_chart(limit: int = 10, export: str = "", sortby: st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

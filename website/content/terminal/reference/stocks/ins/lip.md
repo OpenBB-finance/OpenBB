@@ -1,9 +1,21 @@
 ---
 title: lip
-description: OpenBB Terminal Function
+description: Documentation for 'lip' command offers detailed instruction on its use
+  to track latest insider purchases in the stock market. It includes a demonstration
+  of its usage, parameter details, and real-life examples for user guidance.
+keywords:
+- latest insider purchases
+- OpenInsider
+- stock market
+- trading
+- stock transactions
+- stock trading script
+- data display
 ---
 
-# lip
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/lip - Reference | OpenBB Terminal Docs" />
 
 Print latest insider purchases. [Source: OpenInsider]
 

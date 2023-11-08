@@ -1,9 +1,18 @@
 ---
 title: ln
-description: OpenBB SDK Function
+description: An OpenBBTerminal documentation page describing how to use the openbb.etf.ln
+  Python function, which filters and retrieves ETFs from the Finance Database based
+  on names.
+keywords:
+- ETF
+- Finance Database
+- name filter
+- Information Retrieval
 ---
 
-# ln
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.ln - Reference | OpenBB SDK Docs" />
 
 Return a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
@@ -30,4 +39,3 @@ openbb.etf.ln(name: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with ETFs that match a certain name |
 ---
-

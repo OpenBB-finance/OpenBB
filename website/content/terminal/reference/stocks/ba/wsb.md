@@ -1,9 +1,19 @@
 ---
 title: wsb
-description: OpenBB Terminal Function
+description: This page serves as a guide on how to use the 'wsb' function, a tool
+  which prints what the WSB gang are up to in Reddit's subreddit wallstreetbets. It
+  includes parameters and examples.
+keywords:
+- wsb function guide
+- WallStreetBets subreddit
+- Limit post print
+- Parameter description
+- Python examples
 ---
 
-# wsb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/wsb - Reference | OpenBB Terminal Docs" />
 
 Print what WSB gang are up to in subreddit wallstreetbets. [Source: Reddit]
 

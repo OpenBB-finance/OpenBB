@@ -1,9 +1,22 @@
 ---
 title: minrisk
-description: OpenBB Terminal Function
+description: The minrisk page offers detailed instructions and examples on minimizing
+  a financial portfolio's risk using various estimators, risk measures and allocation
+  strategies. It provides comprehensive guidelines for portfolio management and analytics.
+keywords:
+- portfolio risk minimization
+- portfolio management
+- risk measure
+- financial portfolio optimization
+- covariance estimation
+- asset allocation
+- portfolio analytics
+- expected return estimation
 ---
 
-# minrisk
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/minrisk - Reference | OpenBB Terminal Docs" />
 
 Minimizes portfolio's risk
 

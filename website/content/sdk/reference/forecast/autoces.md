@@ -1,12 +1,23 @@
 ---
 title: autoces
-description: OpenBB SDK Function
+description: An in-depth look into OpenBB's autoces module that performs Automatic
+  Complex Exponential Smoothing on time series, particularly useful for stock market
+  prediction. It provides functionality for data forecasting and visualization.
+keywords:
+- forecasting
+- autoces
+- exponential smoothing
+- stock market prediction
+- timeseries analysis
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.autoces - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# autoces
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +52,6 @@ openbb.forecast.autoces(data: Union[pd.Series, pd.DataFrame], target_column: str
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit CES model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -84,8 +93,6 @@ openbb.forecast.autoces_chart(data: Union[pd.DataFrame, pd.Series], target_colum
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

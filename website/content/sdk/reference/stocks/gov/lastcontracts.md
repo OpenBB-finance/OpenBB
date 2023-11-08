@@ -1,12 +1,25 @@
 ---
 title: lastcontracts
-description: OpenBB SDK Function
+description: This documentation page provides information on using OpenBBTerminal's
+  Python code to obtain government contract data from QuiverQuant. It guides how to
+  use the lastcontracts model and view functions for data analysis and export.
+keywords:
+- Government contracts
+- QuiverQuant
+- Data analysis
+- Finance
+- Source code
+- Data export
+- GitHub
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.lastcontracts - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# lastcontracts
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +49,6 @@ openbb.stocks.gov.lastcontracts(past_transaction_days: int = 2)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of government contracts |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +81,6 @@ openbb.stocks.gov.lastcontracts_chart(past_transaction_days: int = 2, limit: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>
