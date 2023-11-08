@@ -1,3 +1,4 @@
+"""Crypto Router."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -21,4 +22,15 @@ def load(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Crypto Historical Price. Cryptocurrency historical price data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CryptoSearch")
+def search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Crypto Search. Cryptocurrency search data."""
     return OBBject(results=Query(**locals()).execute())
