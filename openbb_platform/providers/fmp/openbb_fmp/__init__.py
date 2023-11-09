@@ -15,6 +15,7 @@ from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
@@ -53,7 +54,6 @@ from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
-from openbb_fmp.models.stock_search import FMPStockSearchFetcher
 from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
@@ -116,7 +116,7 @@ fmp_provider = Provider(
         "StockOwnership": FMPStockOwnershipFetcher,
         "StockPeers": FMPStockPeersFetcher,
         "StockQuote": FMPStockQuoteFetcher,
-        "StockSearch": FMPStockSearchFetcher,
+        "EquitySearch": FMPEquitySearchFetcher,
         "StockSplitCalendar": FMPStockSplitCalendarFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,

@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.european_index_constituents import (
     CboeEuropeanIndexConstituentsFetcher,
 )
@@ -17,7 +18,6 @@ from openbb_cboe.models.major_indices_historical import (
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
 from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
 from openbb_cboe.models.stock_info import CboeStockInfoFetcher
-from openbb_cboe.models.stock_search import CboeStockSearchFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -37,10 +37,10 @@ def vcr_config():
 
 @pytest.mark.record_http
 @pytest.mark.skip(reason="Needs to be fixed.")
-def test_cboe_stock_search_fetcher(credentials=test_credentials):
+def test_cboe_equity_search_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = CboeStockSearchFetcher()
+    fetcher = CboeEquitySearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

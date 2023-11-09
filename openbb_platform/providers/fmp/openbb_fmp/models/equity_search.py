@@ -1,4 +1,4 @@
-"""FMP Stock Search fetcher."""
+"""FMP Equity Search fetcher."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -6,15 +6,15 @@ import pandas as pd
 from openbb_fmp.utils.definitions import EXCHANGES, SECTORS
 from openbb_fmp.utils.helpers import create_url, get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_search import (
-    StockSearchData,
-    StockSearchQueryParams,
+from openbb_provider.standard_models.equity_search import (
+    EquitySearchData,
+    EquitySearchQueryParams,
 )
 from pydantic import Field
 
 
-class FMPStockSearchQueryParams(StockSearchQueryParams):
-    """FMP Stock Search Query Params."""
+class FMPEquitySearchQueryParams(EquitySearchQueryParams):
+    """FMP Equity Search Query Params."""
 
     __alias_dict__ = {
         "mktcap_min": "marketCapMoreThan",
@@ -91,8 +91,8 @@ class FMPStockSearchQueryParams(StockSearchQueryParams):
     )
 
 
-class FMPStockSearchData(StockSearchData):
-    """FMP Stock Search Data."""
+class FMPEquitySearchData(EquitySearchData):
+    """FMP Equity Search Data."""
 
     __alias_dict__ = {
         "name": "companyName",
@@ -141,22 +141,22 @@ class FMPStockSearchData(StockSearchData):
     )
 
 
-class FMPStockSearchFetcher(
+class FMPEquitySearchFetcher(
     Fetcher[
-        FMPStockSearchQueryParams,
-        List[FMPStockSearchData],
+        FMPEquitySearchQueryParams,
+        List[FMPEquitySearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockSearchQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquitySearchQueryParams:
         """Transform the query."""
-        return FMPStockSearchQueryParams(**params)
+        return FMPEquitySearchQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockSearchQueryParams,
+        query: FMPEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -173,8 +173,8 @@ class FMPStockSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockSearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockSearchData]:
+        query: FMPEquitySearchQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquitySearchData]:
         """Return the transformed data."""
         results = pd.DataFrame(data)
         if len(results) == 0:
@@ -198,7 +198,7 @@ class FMPStockSearchFetcher(
             if results[col].dtype in ("int", "float"):
                 results[col] = results[col].fillna(0).replace(0, None)
         return [
-            FMPStockSearchData.model_validate(d)
+            FMPEquitySearchData.model_validate(d)
             for d in results.sort_values(by="marketCap", ascending=False).to_dict(
                 "records"
             )

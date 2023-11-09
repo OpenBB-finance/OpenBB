@@ -4,9 +4,9 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_search import (
-    StockSearchData,
-    StockSearchQueryParams,
+from openbb_provider.standard_models.equity_search import (
+    EquitySearchData,
+    EquitySearchQueryParams,
 )
 from openbb_sec.utils.helpers import (
     get_all_companies,
@@ -16,7 +16,7 @@ from pandas import DataFrame
 from pydantic import Field
 
 
-class SecStockSearchQueryParams(StockSearchQueryParams):
+class SecEquitySearchQueryParams(EquitySearchQueryParams):
     """SEC Company or Institution Search query.  This function assists with mapping the CIK number to a company.
 
     Source: https://sec.gov/
@@ -32,34 +32,33 @@ class SecStockSearchQueryParams(StockSearchQueryParams):
     )
 
 
-class SecStockSearchData(StockSearchData):
+class SecEquitySearchData(EquitySearchData):
     """SEC Company Search Data."""
 
     name: Optional[str] = Field(default=None)
     cik: str = Field(description="Central Index Key")
 
 
-class SecStockSearchFetcher(
+class SecEquitySearchFetcher(
     Fetcher[
-        SecStockSearchQueryParams,
-        List[SecStockSearchData],
+        SecEquitySearchQueryParams,
+        List[SecEquitySearchData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecStockSearchQueryParams:
+    def transform_query(params: Dict[str, Any]) -> SecEquitySearchQueryParams:
         """Transform the query."""
-        return SecStockSearchQueryParams(**params)
+        return SecEquitySearchQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: SecStockSearchQueryParams,
+        query: SecEquitySearchQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
-
         results = DataFrame()
 
         if query.is_fund is True:
@@ -83,6 +82,8 @@ class SecStockSearchFetcher(
         return results.astype(str).to_dict("records")
 
     @staticmethod
-    def transform_data(data: Dict, **kwargs: Any) -> List[SecStockSearchData]:
+    def transform_data(
+        query: SecEquitySearchQueryParams, data: Dict, **kwargs: Any
+    ) -> List[SecEquitySearchData]:
         """Transform the data to the standard format."""
-        return [SecStockSearchData.model_validate(d) for d in data]
+        return [SecEquitySearchData.model_validate(d) for d in data]

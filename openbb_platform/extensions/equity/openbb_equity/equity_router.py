@@ -48,14 +48,14 @@ def news(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockSearch")
+@router.command(model="EquitySearch")
 def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Search. Search for a company or stock ticker."""
+    """Equity Search. Search for a company or stock ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 

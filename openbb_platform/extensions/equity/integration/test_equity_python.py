@@ -929,8 +929,8 @@ def test_stocks_multiples(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_stocks_search(params, obb):
-    result = obb.stocks.search(**params)
+def test_equity_search(params, obb):
+    result = obb.equity.search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
