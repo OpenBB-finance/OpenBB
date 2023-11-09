@@ -111,3 +111,39 @@ def estr(
     executed at arm’s length and thus reflect market rates in an unbiased way.
     """
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="EuropeanCentralBankInterestRates")
+def ecb(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """European Central Bank Interest Rates.
+
+    The Governing Council of the ECB sets the key interest rates for the euro area:
+
+    - The interest rate on the main refinancing operations (MRO), which provide
+    the bulk of liquidity to the banking system.
+    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
+    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+    """
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="DiscountWindowPrimaryCreditRate")
+def dpcredit(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Discount Window Primary Credit Rate.
+
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
+    The rates central banks charge are set to stabilize the economy.
+    In the United States, the Federal Reserve System's Board of Governors set the bank rate,
+    also known as the discount rate.
+    """
+    return OBBject(results=Query(**locals()).execute())
