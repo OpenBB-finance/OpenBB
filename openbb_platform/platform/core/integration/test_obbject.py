@@ -44,7 +44,7 @@ def test_to_dataframe(obb):
 def test_to_polars(obb):
     """Test obbject to polars."""
 
-    crypto_pl = obb.crypto.load("BTC-USD", provider="fmp").to_polars()
+    crypto_pl = obb.crypto.price.historical("BTC-USD", provider="fmp").to_polars()
     assert isinstance(crypto_pl, pl.DataFrame)
 
 

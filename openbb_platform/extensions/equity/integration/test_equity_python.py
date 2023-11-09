@@ -123,7 +123,7 @@ def test_equity_calendar_split(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration

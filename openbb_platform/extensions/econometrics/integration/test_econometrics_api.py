@@ -8,7 +8,7 @@ import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
-data = {}
+data: dict = {}
 
 
 def get_headers():

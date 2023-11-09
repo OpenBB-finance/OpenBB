@@ -8,7 +8,9 @@ import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
-data = {}
+# pylint:disable=redefined-outer-name
+
+data: dict = {}
 
 
 def get_headers():
@@ -23,14 +25,9 @@ def get_headers():
     return data["headers"]
 
 
-def get_data(menu: Literal["stocks", "crypto"]):
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
-    return funcs[menu]()
-
-
 def request_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
+    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}"
     result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
 
@@ -42,7 +39,7 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = request_data("stocks", symbol=symbol, provider=provider)
+    data["stocks_data"] = request_data("equity", symbol=symbol, provider=provider)
     return data["stocks_data"]
 
 
@@ -62,10 +59,15 @@ def get_crypto_data():
     return data["crypto_data"]
 
 
+def get_data(menu: Literal["equity", "crypto"]):
+    funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
+    return funcs[menu]()
+
+
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "close"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
@@ -84,7 +86,7 @@ def test_qa_normality(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "high"}, "stocks"),
+        ({"data": "", "target": "high"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
@@ -110,7 +112,7 @@ def test_qa_capm(params, data_type):
                 "threshold_start": "",
                 "threshold_end": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -138,7 +140,7 @@ def test_qa_om(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "5"}, "stocks"),
+        ({"data": "", "target": "close", "window": "5"}, "equity"),
         ({"data": "", "target": "high", "window": "10"}, "crypto"),
     ],
 )
@@ -164,7 +166,7 @@ def test_qa_kurtosis(params, data_type):
                 "fuller_reg": "c",
                 "kpss_reg": "ct",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -192,7 +194,7 @@ def test_qa_unitroot(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "rfr": "", "window": ""}, "stocks"),
+        ({"data": "", "target": "close", "rfr": "", "window": ""}, "equity"),
         ({"data": "", "target": "high", "rfr": "0.5", "window": "250"}, "crypto"),
     ],
 )
@@ -219,7 +221,7 @@ def test_qa_sh(params, data_type):
                 "window": "",
                 "adjusted": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -248,7 +250,7 @@ def test_qa_so(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "220"}, "stocks"),
+        ({"data": "", "target": "close", "window": "220"}, "equity"),
     ],
 )
 @pytest.mark.integration
@@ -273,7 +275,7 @@ def test_qa_skew(params, data_type):
                 "window": "10",
                 "quantile_pct": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -301,7 +303,7 @@ def test_qa_quantile(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "close"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
