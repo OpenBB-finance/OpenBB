@@ -16,14 +16,18 @@ with contextlib.suppress(ImportError):
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
 
+# pylint: disable=inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
+
+
+# pylint: disable=redefined-outer-name
 
 
 @pytest.mark.skipif("pandas" not in sys.modules, reason="pandas not installed")
@@ -31,7 +35,7 @@ def obb(pytestconfig):
 def test_to_dataframe(obb):
     """Test obbject to dataframe."""
 
-    stocks_df = obb.stocks.load("AAPL", provider="fmp").to_dataframe()
+    stocks_df = obb.equity.price.historical("AAPL", provider="fmp").to_dataframe()
     assert isinstance(stocks_df, pd.DataFrame)
 
 
@@ -70,7 +74,7 @@ def test_to_dict(obb):
 def test_to_chart(obb):
     """Test obbject to chart."""
 
-    stocks_chart = obb.stocks.load("AAPL", provider="fmp").to_chart()
+    stocks_chart = obb.equity.price.historical("AAPL", provider="fmp").to_chart()
     assert isinstance(stocks_chart, OpenBBFigure)
 
 
@@ -81,6 +85,6 @@ def test_to_chart(obb):
 def test_show(obb):
     """Test obbject to chart."""
 
-    stocks_data = obb.stocks.load("AAPL", provider="fmp", chart=True)
+    stocks_data = obb.equity.price.historical("AAPL", provider="fmp", chart=True)
     assert isinstance(stocks_data.chart.fig, OpenBBFigure)
     assert stocks_data.chart.fig.show() is None
