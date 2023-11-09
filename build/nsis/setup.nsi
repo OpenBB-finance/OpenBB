@@ -10,18 +10,18 @@
   !define NAME "OpenBB Terminal"
   !define COMPANY "OpenBB"
   !define APPFILE "OpenBBTerminal.exe"
-  !define VERSION "3.2.3"
+  !define VERSION "3.2.4"
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------
 ; Info for Installer.exe
-  VIProductVersion 3.2.3.0
+  VIProductVersion 3.2.4.0
   VIAddVersionKey ProductName "OpenBB Terminal"
   VIAddVersionKey Comments "An installer for OpenBB Terminal. For additional details, visit OpenBB.co"
   VIAddVersionKey CompanyName OpenBB.co
   VIAddVersionKey FileDescription "OpenBB Terminal Program"
-  VIAddVersionKey FileVersion 3.2.3.0
-  VIAddVersionKey ProductVersion 3.2.3.0
+  VIAddVersionKey FileVersion 3.2.4.0
+  VIAddVersionKey ProductVersion 3.2.4.0
   VIAddVersionKey InternalName "OpenBB Terminal"
 
 ;--------------------------------
