@@ -11,7 +11,6 @@ Publishing checklist:
 4. Run the publishing script: `python build/pypi/openbb_platform/publish.py`
 5. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
 6. Open a PR so that changes are reflected on the main branch
-7. If applicable, set the version on `constants.py` to use the `dev` tag again
 
 Finally, check if everything works:
 
