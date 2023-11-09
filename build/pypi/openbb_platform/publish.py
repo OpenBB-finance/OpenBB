@@ -1,3 +1,4 @@
+""" Publish the OpenBB Platform to PyPi"""
 import subprocess
 import sys
 from pathlib import Path
@@ -30,10 +31,14 @@ def publish():
 
 
 if __name__ == "__main__":
-    raise Exception(
-        "If you're ar running this script for the first time,"
-        "ensure you have changed `VERSION` on System Settings "
-        "before you publish the `openbb-core` package to Pypi."
-    )
 
-    publish()
+    msg = """
+    You are about to publish a new version of OpenBB Platform to PyPI.
+    Please ensure you've read the "PUBLISH.md" file.
+    Also, please double check with `poetry config --list` if you're publishing to PyPI or TestPyPI.
+    """
+
+    res = input(f"{msg}\n\nDo you want to continue? [y/N] ")
+
+    if res.lower() == "y":
+        publish()
