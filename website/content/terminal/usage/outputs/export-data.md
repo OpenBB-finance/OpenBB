@@ -27,10 +27,10 @@ The OpenBB Terminal offers a variety of ways to export financial data. This can 
 To export as a spreadsheet, `xlsx`,  add `--export xlsx` to the  command.
 
 ```console
-/stocks/ $ load AAPL -s 2010-01-01 --export xlsx
+/stocks/load AAPL -s 2010-01-01 --export xlsx
 ```
 
-Which outputs:
+Which creates:
 
 ![Export Example](https://user-images.githubusercontent.com/46355364/214817681-fd5324c3-003c-45eb-adf4-96d5b41a3c02.png)
 
@@ -39,10 +39,8 @@ Which outputs:
 Instead of the default filename, it can be specified. Exporting as a `csv` this time:
 
 ```console
-/stocks/ $ load AAPL -s 2010-01-01 --export apple.csv
+/stocks/load AAPL -s 2010-01-01 --export apple.csv
 ```
-
-Which ouputs:
 
 ![Filename Example](https://user-images.githubusercontent.com/46355364/214818131-597b3bd0-9c66-43f1-bf0e-2c0a703e2645.png)
 
@@ -54,12 +52,13 @@ With the `xlsx` option, `--sheet-name`  allows multiple datasets to be saved to 
 /stocks/load AAPL -s 2010-01-01 --export apple.xlsx --sheet-name Market Data
 ```
 
-Then enter the `fa` (Fundamental Analysis) menu and copy and paste the code below. This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](/terminal/usage/data/api-keys).
+Then enter the `fa` (Fundamental Analysis) menu.  Copy and paste the code below to follow along.  This requires an API key from FinancialModelingPrep which you can obtain for free. Please have a look [here](/terminal/usage/data/api-keys).
 
 ```console
-/stocks/fa/income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement
-/stocks/fa/balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Balance Sheet
-/stocks/fa/cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
+fa
+income --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Income Statement
+balance --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Balance Sheet
+cash --source FinancialModelingPrep -l 10 --export apple.xlsx --sheet-name Cash Flow Statement
 ```
 
 This generates a file for `AAPL`, with market data from 2010-01-01 until now, as well as the  income, balance and cash flow statements from the last ten years.
