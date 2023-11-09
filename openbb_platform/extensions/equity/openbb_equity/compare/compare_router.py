@@ -15,12 +15,12 @@ from pydantic import BaseModel
 router = Router(prefix="/compare")
 
 
-@router.command(model="StockPeers")
+@router.command(model="EquityPeers")
 def peers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Peers. Company peers."""
+    """Equity Peers. Company peers."""
     return OBBject(results=Query(**locals()).execute())

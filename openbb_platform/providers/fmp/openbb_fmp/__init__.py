@@ -16,6 +16,7 @@ from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.disc_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
@@ -53,7 +54,6 @@ from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
 from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
-from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
@@ -114,7 +114,7 @@ fmp_provider = Provider(
         "StockInsiderTrading": FMPStockInsiderTradingFetcher,
         "StockMultiples": FMPStockMultiplesFetcher,
         "StockOwnership": FMPStockOwnershipFetcher,
-        "StockPeers": FMPStockPeersFetcher,
+        "EquityPeers": FMPEquityPeersFetcher,
         "StockQuote": FMPStockQuoteFetcher,
         "EquitySearch": FMPEquitySearchFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,

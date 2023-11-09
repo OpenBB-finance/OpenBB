@@ -1,45 +1,45 @@
-"""FMP Stock Peers fetcher."""
+"""FMP Equity Peers fetcher."""
 
 
 from typing import Any, Dict, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_peers import (
-    StockPeersData,
-    StockPeersQueryParams,
+from openbb_provider.standard_models.equity_peers import (
+    EquityPeersData,
+    EquityPeersQueryParams,
 )
 
 # FMP SPECIFIC FUNCTIONALITY CURRENTLY
 
 
-class FMPStockPeersQueryParams(StockPeersQueryParams):
-    """FMP Stock Peers query.
+class FMPEquityPeersQueryParams(EquityPeersQueryParams):
+    """FMP Equity Peers query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
     """
 
 
-class FMPStockPeersData(StockPeersData):
-    """FMP Stock Peers data."""
+class FMPEquityPeersData(EquityPeersData):
+    """FMP Equity Peers data."""
 
 
-class FMPStockPeersFetcher(
+class FMPEquityPeersFetcher(
     Fetcher[
-        FMPStockPeersQueryParams,
-        FMPStockPeersData,
+        FMPEquityPeersQueryParams,
+        FMPEquityPeersData,
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockPeersQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquityPeersQueryParams:
         """Transform the query params."""
-        return FMPStockPeersQueryParams(**params)
+        return FMPEquityPeersQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockPeersQueryParams,
+        query: FMPEquityPeersQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -51,8 +51,8 @@ class FMPStockPeersFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockPeersQueryParams, data: dict, **kwargs: Any
-    ) -> FMPStockPeersData:
+        query: FMPEquityPeersQueryParams, data: dict, **kwargs: Any
+    ) -> FMPEquityPeersData:
         """Return the transformed data."""
         data.pop("symbol")
-        return FMPStockPeersData.model_validate(data)
+        return FMPEquityPeersData.model_validate(data)
