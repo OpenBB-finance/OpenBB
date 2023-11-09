@@ -16,7 +16,7 @@ router = Router(prefix="/shorts")
 
 
 @router.command(model="StockFTD")
-def fail_to_deliver(
+def fails_to_deliver(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

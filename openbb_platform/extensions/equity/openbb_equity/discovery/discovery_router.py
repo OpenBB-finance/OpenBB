@@ -59,7 +59,7 @@ def undervalued_large_caps(
 
 
 @router.command(model="EquityUndervaluedGrowthEquities")
-def undervalued_growth_equities(
+def undervalued_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

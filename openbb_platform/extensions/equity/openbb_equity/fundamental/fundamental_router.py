@@ -93,7 +93,7 @@ def earnings(
 
 
 @router.command(model="HistoricalEmployees")
-def employees(
+def employee_count(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -214,7 +214,7 @@ def filings(
 
 
 @router.command(model="HistoricalStockSplits")
-def splits(
+def historical_splits(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

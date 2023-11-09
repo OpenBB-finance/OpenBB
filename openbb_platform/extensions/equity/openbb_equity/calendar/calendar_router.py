@@ -55,5 +55,5 @@ def earnings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Earnings Calendar. Earnings calendar for a given company."""
+    """Upcoming and Historical earnings calendar."""
     return OBBject(results=Query(**locals()).execute())
