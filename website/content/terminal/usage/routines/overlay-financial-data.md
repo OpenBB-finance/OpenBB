@@ -1,6 +1,6 @@
 ---
-title: Overlay financial data
-sidebar_position: 2
+title: Overlay Financial Data
+sidebar_position: 3
 description: Guide to improve financial data comparison and visualization using the
   'hold on' command in OpenBBTerminal. Covers overlaying data on the same axes, customizing
   chart legends and titles, analyzing FAANG companies and GDP/CPI data, and more.
@@ -37,72 +37,70 @@ The `hold` functionality is available to allow users to overlay multiple dataset
 
 Drawing inspiration from MatLab, the `hold` function is used to toggle the holding state of the current figure. Unlike MatLab, this function needs to be called before calling any function that charts. The hold state can be turned on, from any terminal menu, by running:
 
-```bash
+```console
 hold on
 ```
 
 By default, new plots will be placed on a new axis, meaning comparing the magnitude values can be tricky. If you wish to plot subsequent figures on the same axis, you can use the sameaxis argument:
 
-```bash
+```console
 hold on --sameaxis
 ```
 
 Once the hold state is turned on, any terminal command with a plot will not be shown until the hold is turned off. To turn off the hold state, and see the combined figure, run:
 
-```bash
+```console
 hold off
 ```
 
 An example workflow is as follows. What this will do is plot the CPI and the GDP of the United States on the same axis.
 
+```console
+/economy/hold on
+gdp -c united_states
+cpi -c united_states
+hold off
 ```
-(🦋) /economy/ $ hold on
-(🦋) /economy/ $ gdp -c united_states
-(🦋) /economy/ $ cpi -c united_states
-(🦋) /economy/ $ hold off
-```
-Which results in the following figure:
+
+Which outputs:
 
 ![hold on ex1](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/a3b1f09e-1a64-4af0-a5a2-070590d848e1)
 
-To show the impact of the `--sameaxis` argument, we can run the previous commands, but starting with `hold on --sameaxis`. Because GDP is on the order on 70,000 USD/capita and the CPI is on the order of 10 (percent), we will see the cpi being a flat line, and the trend will not be apparent:
+To demonstrate, the `--sameaxis` argument, we can run the previous commands, but starting with `hold on --sameaxis`. Because GDP is being measured by USD-per-capita (OECD), and CPI is a function of percent, we will only see CPI as a flat line.
 
 ![hold on ex2](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/43219ca7-126b-4782-bd95-5fa8967e0c6c)
 
-
 ## Customizing Charts
 
-A chart is only as good as its labelling. On the previous example, we can see that the legends reflected the command paths that were used, but not the arguments. If we added gdp of a second country, we would not be able to tell which line is which country. In order to avoid this confusion, when the hold state is on, every function comes with a `--legend` argument.
+A chart is only as good as its labelling. In the previous example, we can see that the legends reflected the command paths used, but not the arguments. If we added a second country, we would not be able to tell which line is which country. In order to avoid this confusion, when the hold state is on, every function comes with a `--legend` argument.
 
-This will pass the users desired label into the chart legend. When the chart is displayed, the legends will display. If a command is run without the `--legend` argument, it will default to using the command location as previously shown. In rare cases, a legend may not appear due to it not being defined in the functions `view` file. In this case, please raise a [GitHub issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) so the team can address it.
+Text following the, `--legend`, argument is passed into the legend when the chart is created.  If a command is run without the, `--legend`, argument, it will default to using the command location. In rare cases, a legend may not appear due to it not being defined in the functions `view` file.  In this case, please raise a [GitHub issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) so the team can address it.
 
-An additional customization is the ability to add a custom title to the chart. This can be specified by adding the `--title` argument to the hold off functionality. To show off these capabilities, we can use an example of plotting income statement items for different companies. In this example, we can look at FAANG companies and plot their revenues on the same axis. This example will show the previous 40 quarters.
+An additional customization is the chart title.  This can be specified by adding the `--title` argument to the hold off functionality.  To exemplify these capabilities, we can plot an income statement item from many companies.  We will examine FAANG companies and plot their revenues on the same axis, over the last forty quarters.
 
+```console
+/stocks/fa/hold on --sameaxis
+income -t AAPL -q -l 40 --plot revenue --legend AAPL Revenue
+income -t META -q -l 40 --plot revenue --legend META
+income -t AMZN -q -l 40 --plot revenue
+income -t GOOG -q -l 40 --plot revenue --legend GOOG
+income -t NFLX -q -l 40 --plot revenue --legend netflix
+hold off --title FAANG Revenues 10 Year
 ```
-(🦋) /stocks/fa/ $ hold on --sameaxis
-(🦋) /stocks/fa/ $  income -t AAPL -q -l 40 --plot revenue --legend AAPL Revenue
-(🦋) /stocks/fa/ $  income -t META -q -l 40 --plot revenue --legend META
-(🦋) /stocks/fa/ $  income -t AMZN -q -l 40 --plot revenue
-(🦋) /stocks/fa/ $  income -t GOOG -q -l 40 --plot revenue --legend GOOG
-(🦋) /stocks/fa/ $  income -t NFLX -q -l 40 --plot revenue --legend netflix
-(🦋) /stocks/fa/ $ hold off --title FAANG Revenues 10 Year
-```
-
-Which results in the following figure:
 
 ![hold on custom](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/793d8309-6e49-42ca-b9bd-ff0dad9da959)
 
-### Example as pipeline of commands
+### Example as a Pipeline of Commands
 
-The following pipeline of commands can be run to achieve the same as above.
+The following pipeline of commands is the equivalent.
 
 ```console
-(🦋) $ stocks/fa/hold on --sameaxis/income -t AAPL -q -l 40 --plot revenue --legend AAPL Revenue/income -t META -q -l 40 --plot revenue --legend META/income -t AMZN -q -l 40 --plot revenue/income -t GOOG -q -l 40 --plot revenue --legend GOOG/income -t NFLX -q -l 40 --plot revenue --legend netflix/hold off --title FAANG Revenues 10 Year
+/stocks/fa/hold on --sameaxis/income -t AAPL -q -l 40 --plot revenue --legend AAPL Revenue/income -t META -q -l 40 --plot revenue --legend META/income -t AMZN -q -l 40 --plot revenue/income -t GOOG -q -l 40 --plot revenue --legend GOOG/income -t NFLX -q -l 40 --plot revenue --legend netflix/hold off --title FAANG Revenues 10 Year
 ```
 
-### Example as routine
+### Example as a Routine
 
-Or, a user can create a routine that can be run by utilizing `exe` command.
+Or, a user can create a routine that can be run with the, `/exe`, command.
 
 ```bash
     $STOCKS=AAPL,AMZN,MSFT,TSLA,GOOG
