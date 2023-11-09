@@ -1440,32 +1440,6 @@ files = [
 openbb-core = ">=0.1.0a5,<0.2.0"
 
 [[package]]
-name = "openbb-currency"
-version = "0.1.0a4"
-description = "Currency extension for OpenBB"
-optional = false
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "extensions/currency"
-
-[[package]]
-name = "openbb-ecb"
-version = "0.1.0a4"
-description = "ECB extension for OpenBB"
-optional = true
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "providers/ecb"
-
-[[package]]
 name = "openbb-econometrics"
 version = "0.1.0a5"
 description = "Econometrics Toolkit for OpenBB"
@@ -1498,30 +1472,18 @@ files = [
 openbb-core = ">=0.1.0a5,<0.2.0"
 
 [[package]]
-name = "openbb-etf"
-version = "0.1.0a4"
-description = "ETF extension for OpenBB"
-optional = false
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "extensions/etf"
-
-[[package]]
 name = "openbb-finra"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "FINRA extension for OpenBB"
 optional = true
-python-versions = "*"
-files = []
-develop = true
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_finra-0.1.0a5-py3-none-any.whl", hash = "sha256:6d36c2c3f36de1406b67840522e9531c8fa05e6bff93b43f71898c8c52a89860"},
+    {file = "openbb_finra-0.1.0a5.tar.gz", hash = "sha256:48e4ad879011978afb5f2e6350d73806495aafbcffbc458cdfb5d7de8155cb78"},
+]
 
-[package.source]
-type = "directory"
-url = "providers/finra"
+[package.dependencies]
+openbb-core = ">=0.1.0a5,<0.2.0"
 
 [[package]]
 name = "openbb-fixedincome"
@@ -1751,19 +1713,6 @@ openbb-core = ">=0.1.0a5,<0.2.0"
 pytest-freezegun = ">=0.4.2,<0.5.0"
 
 [[package]]
-name = "openbb-stockgrid"
-version = "0.1.0a4"
-description = "stockgrid extension for OpenBB"
-optional = true
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "providers/stockgrid"
-
-[[package]]
 name = "openbb-stocks"
 version = "0.1.0a5"
 description = "Stocks extension for OpenBB"
@@ -1823,31 +1772,18 @@ files = [
 openbb-core = ">=0.1.0a2,<0.2.0"
 
 [[package]]
-name = "openbb-ultima"
-version = "0.1.0a6"
-description = "Ultima Insights extension for OpenBB"
-optional = false
+name = "openbb-wsj"
+version = "0.1.0a5"
+description = "wsj extension for OpenBB"
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_ultima-0.1.0a6-py3-none-any.whl", hash = "sha256:cf468f8868804d30681691e2b556331c35e30ffec323732cd12b7903c1177f5f"},
-    {file = "openbb_ultima-0.1.0a6.tar.gz", hash = "sha256:0eb84e4b6e7b385859e18a94d5409f9f9e50540ea95b497f106f18279b8eae14"},
+    {file = "openbb_wsj-0.1.0a5-py3-none-any.whl", hash = "sha256:f54bbd8ca9da8ad0939c9c63dc23ec79bb6ca1ec4fa83c771c9ccfaf18eb56af"},
+    {file = "openbb_wsj-0.1.0a5.tar.gz", hash = "sha256:a0fd83f74ea958baf48d56d132663ff88d2835d270f3309d49e11708584633f0"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a2,<0.2.0"
-
-[[package]]
-name = "openbb-wsj"
-version = "0.1.0a4"
-description = "wsj extension for OpenBB"
-optional = true
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "providers/wsj"
+openbb-core = ">=0.1.0a5,<0.2.0"
 
 [[package]]
 name = "openbb-yfinance"
@@ -3623,7 +3559,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-futures", "openbb-nasdaq", "openbb-qa", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-ta", "openbb-ultima", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-futures", "openbb-nasdaq", "openbb-qa", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-ta", "openbb-ultima", "openbb-wsj", "openbb-yfinance"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
@@ -3638,9 +3574,10 @@ seeking-alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
 ta = ["openbb-ta"]
 ultima = ["openbb-ultima"]
+wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "cf40413a9de67e1e3a002b616fe9dfa3a15fb2129e2401959af2608ed9cb0a7d"
+content-hash = "6f1e25a2d0f40b2efa2efc420ecf11a5e59bcba9d6eecdad2dc2adef91b04ee2"
