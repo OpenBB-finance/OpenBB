@@ -1,4 +1,4 @@
-"""Polygon Stock NBBO Model."""
+"""Polygon Equity NBBO Model."""
 
 from datetime import (
     date as dateType,
@@ -8,9 +8,9 @@ from typing import Any, Dict, List, Optional, Union
 
 from openbb_polygon.utils.helpers import get_data_one, map_tape
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_nbbo import (
-    StockNBBOData,
-    StockNBBOQueryParams,
+from openbb_provider.standard_models.equity_nbbo import (
+    EquityNBBOData,
+    EquityNBBOQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
@@ -18,8 +18,8 @@ from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
-class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
-    """Polygon Stock NBBO query params.
+class PolygonEquityNBBOQueryParams(EquityNBBOQueryParams):
+    """Polygon Equity NBBO query params.
 
     Source: https://polygon.io/docs/stocks/get_v3_quotes__stockticker
     """
@@ -81,8 +81,8 @@ class PolygonStockNBBOQueryParams(StockNBBOQueryParams):
         return 10000000 if v > 10000000 else v
 
 
-class PolygonStockNBBOData(StockNBBOData):
-    """Polygon Stock NBBO data."""
+class PolygonEquityNBBOData(EquityNBBOData):
+    """Polygon Equity NBBO data."""
 
     __alias_dict__ = {"ask": "ask_price", "bid": "bid_price"}
 
@@ -143,19 +143,19 @@ class PolygonStockNBBOData(StockNBBOData):
         )
 
 
-class PolygonStockNBBOFetcher(
-    Fetcher[PolygonStockNBBOQueryParams, List[PolygonStockNBBOData]]
+class PolygonEquityNBBOFetcher(
+    Fetcher[PolygonEquityNBBOQueryParams, List[PolygonEquityNBBOData]]
 ):
     """Transform the query, extract and transform the data from the Polygon endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonStockNBBOQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonEquityNBBOQueryParams:
         """Transform the query parameters."""
-        return PolygonStockNBBOQueryParams(**params)
+        return PolygonEquityNBBOQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockNBBOQueryParams,
+        query: PolygonEquityNBBOQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -210,9 +210,9 @@ class PolygonStockNBBOFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonStockNBBOQueryParams,
+        query: PolygonEquityNBBOQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[PolygonStockNBBOData]:
+    ) -> List[PolygonEquityNBBOData]:
         """Transform the data."""
-        return [PolygonStockNBBOData.model_validate(d) for d in data]
+        return [PolygonEquityNBBOData.model_validate(d) for d in data]

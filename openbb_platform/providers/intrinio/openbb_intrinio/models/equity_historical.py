@@ -6,16 +6,16 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, PrivateAttr, model_validator
 
 
-class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
+class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Intrinio Stock end of day Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
@@ -49,11 +49,11 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
         "daily", "weekly", "monthly", "quarterly", "yearly"
     ] = PrivateAttr(default=None)
 
+    # pylint: disable=protected-access
     @model_validator(mode="after")
     @classmethod
-    def set_time_params(cls, values: "IntrinioStockHistoricalQueryParams"):
+    def set_time_params(cls, values: "IntrinioEquityHistoricalQueryParams"):
         """Set the default start & end date and time params for Intrinio API."""
-
         frequency_dict = {
             "1d": "daily",
             "1W": "weekly",
@@ -70,7 +70,7 @@ class IntrinioStockHistoricalQueryParams(StockHistoricalQueryParams):
         return values
 
 
-class IntrinioStockHistoricalData(StockHistoricalData):
+class IntrinioEquityHistoricalData(EquityHistoricalData):
     """Intrinio Stock end of day Data."""
 
     __alias_dict__ = {"date": "time"}
@@ -147,16 +147,16 @@ class IntrinioStockHistoricalData(StockHistoricalData):
     )
 
 
-class IntrinioStockHistoricalFetcher(
+class IntrinioEquityHistoricalFetcher(
     Fetcher[
-        IntrinioStockHistoricalQueryParams,
-        List[IntrinioStockHistoricalData],
+        IntrinioEquityHistoricalQueryParams,
+        List[IntrinioEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioEquityHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -173,11 +173,12 @@ class IntrinioStockHistoricalFetcher(
         if params.get("end_time") is None:
             transformed_params["end_time"] = time(23, 59, 59)
 
-        return IntrinioStockHistoricalQueryParams(**transformed_params)
+        return IntrinioEquityHistoricalQueryParams(**transformed_params)
 
+    # pylint: disable=protected-access
     @staticmethod
     def extract_data(
-        query: IntrinioStockHistoricalQueryParams,
+        query: IntrinioEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -216,7 +217,7 @@ class IntrinioStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioStockHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioStockHistoricalData]:
+        query: IntrinioEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
-        return [IntrinioStockHistoricalData.model_validate(d) for d in data]
+        return [IntrinioEquityHistoricalData.model_validate(d) for d in data]

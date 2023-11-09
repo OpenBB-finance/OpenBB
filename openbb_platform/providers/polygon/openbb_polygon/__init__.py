@@ -3,6 +3,8 @@ from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
+from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
+from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.forex_historical import PolygonForexHistoricalFetcher
 from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
@@ -10,8 +12,6 @@ from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
 )
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
-from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
-from openbb_polygon.models.stock_nbbo import PolygonStockNBBOFetcher
 from openbb_provider.abstract.provider import Provider
 
 polygon_provider = Provider(
@@ -28,10 +28,10 @@ polygon_provider = Provider(
         "CryptoHistorical": PolygonCryptoHistoricalFetcher,
         "ForexHistorical": PolygonForexHistoricalFetcher,
         "ForexPairs": PolygonForexPairsFetcher,
-        "StockNBBO": PolygonStockNBBOFetcher,
+        "EquityNBBO": PolygonEquityNBBOFetcher,
         "IncomeStatement": PolygonIncomeStatementFetcher,
         "MajorIndicesHistorical": PolygonMajorIndicesHistoricalFetcher,
-        "StockHistorical": PolygonStockHistoricalFetcher,
+        "EquityHistorical": PolygonEquityHistoricalFetcher,
         "MarketSnapshots": PolygonMarketSnapshotsFetcher,
     },
 )

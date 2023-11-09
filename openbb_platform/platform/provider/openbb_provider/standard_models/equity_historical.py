@@ -1,4 +1,4 @@
-"""Stock aggregate end of day price data model."""
+"""Equity Historical Price data model."""
 
 
 from datetime import (
@@ -15,7 +15,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockHistoricalQueryParams(QueryParams):
+class EquityHistoricalQueryParams(QueryParams):
     """Stock end of day Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
@@ -33,6 +33,7 @@ class StockHistoricalQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -40,7 +41,7 @@ class StockHistoricalQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class StockHistoricalData(Data):
+class EquityHistoricalData(Data):
     """Stock end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

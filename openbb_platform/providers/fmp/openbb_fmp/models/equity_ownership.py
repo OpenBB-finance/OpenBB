@@ -1,4 +1,4 @@
-"""FMP Stock Ownership fetcher."""
+"""FMP Equity Ownership fetcher."""
 
 
 from datetime import (
@@ -9,21 +9,22 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_ownership import (
-    StockOwnershipData,
-    StockOwnershipQueryParams,
+from openbb_provider.standard_models.equity_ownership import (
+    EquityOwnershipData,
+    EquityOwnershipQueryParams,
 )
 from pydantic import field_validator
 
 
-class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
-    """FMP Stock Ownership query.
+class FMPEquityOwnershipQueryParams(EquityOwnershipQueryParams):
+    """FMP Equity Ownership query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """
 
     @field_validator("date", mode="before", check_fields=True)
-    def time_validate(cls, v: str):  # pylint: disable=E021
+    @classmethod
+    def time_validate(cls, v: str):
         """Validate the date."""
         if v is None:
             v = dateType.today()
@@ -33,26 +34,26 @@ class FMPStockOwnershipQueryParams(StockOwnershipQueryParams):
         return most_recent_quarter(v)
 
 
-class FMPStockOwnershipData(StockOwnershipData):
-    """FMP Stock Ownership Data."""
+class FMPEquityOwnershipData(EquityOwnershipData):
+    """FMP Equity Ownership Data."""
 
 
-class FMPStockOwnershipFetcher(
+class FMPEquityOwnershipFetcher(
     Fetcher[
-        FMPStockOwnershipQueryParams,
-        List[FMPStockOwnershipData],
+        FMPEquityOwnershipQueryParams,
+        List[FMPEquityOwnershipData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockOwnershipQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquityOwnershipQueryParams:
         """Transform the query params."""
-        return FMPStockOwnershipQueryParams(**params)
+        return FMPEquityOwnershipQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockOwnershipQueryParams,
+        query: FMPEquityOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -69,9 +70,9 @@ class FMPStockOwnershipFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockOwnershipQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockOwnershipData]:
+        query: FMPEquityOwnershipQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquityOwnershipData]:
         """Return the transformed data."""
-        own = [FMPStockOwnershipData.model_validate(d) for d in data]
+        own = [FMPEquityOwnershipData.model_validate(d) for d in data]
         own.sort(key=lambda x: x.filing_date, reverse=True)
         return own

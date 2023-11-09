@@ -1,4 +1,4 @@
-"""CBOE Stock Historical fetcher."""
+"""CBOE Equity Historical fetcher."""
 
 
 from datetime import datetime, timedelta
@@ -12,16 +12,16 @@ from openbb_cboe.utils.helpers import (
     get_ticker_info,
 )
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
 
 
-class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
+class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """CBOE Stock end of day query.
 
     Source: https://www.cboe.com/
@@ -33,7 +33,7 @@ class CboeStockHistoricalQueryParams(StockHistoricalQueryParams):
     )
 
 
-class CboeStockHistoricalData(StockHistoricalData):
+class CboeEquityHistoricalData(EquityHistoricalData):
     """CBOE Stocks End of Day Data."""
 
     calls_volume: Optional[float] = Field(
@@ -50,28 +50,27 @@ class CboeStockHistoricalData(StockHistoricalData):
     )
 
 
-class CboeStockHistoricalFetcher(
+class CboeEquityHistoricalFetcher(
     Fetcher[
-        CboeStockHistoricalQueryParams,
-        List[CboeStockHistoricalData],
+        CboeEquityHistoricalQueryParams,
+        List[CboeEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> CboeEquityHistoricalQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
-        return CboeStockHistoricalQueryParams(**params)
+        return CboeEquityHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: CboeStockHistoricalQueryParams,
+        query: CboeEquityHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
-        # Synbol directories are cached for seven days and are used for error handling and URL generation.
+        """Return the raw data from the CBOE endpoint."""
+        # Symbol directories are cached for seven days and are used for error handling and URL generation.
         SYMBOLS = get_cboe_directory()
         INDEXES = get_cboe_index_directory().index.to_list()
         multi = pd.DataFrame()
@@ -175,7 +174,7 @@ class CboeStockHistoricalFetcher(
             if query.interval == "1m":
                 data_list = r.json()["data"]
                 date: list[datetime] = []
-                open: list[float] = []
+                open_: list[float] = []
                 high: list[float] = []
                 low: list[float] = []
                 close: list[float] = []
@@ -184,23 +183,22 @@ class CboeStockHistoricalFetcher(
                 puts_volume: list[float] = []
                 total_options_volume: list[float] = []
 
-                for i in range(0, len(data_list)):
-                    date.append(data_list[i]["datetime"])
-                    open.append(data_list[i]["price"]["open"])
-                    high.append(data_list[i]["price"]["high"])
-                    low.append(data_list[i]["price"]["low"])
-                    close.append(data_list[i]["price"]["close"])
-                    volume.append(data_list[i]["volume"]["stock_volume"])
-                    calls_volume.append(data_list[i]["volume"]["calls_volume"])
-                    puts_volume.append(data_list[i]["volume"]["puts_volume"])
-                    total_options_volume.append(
-                        data_list[i]["volume"]["total_options_volume"]
-                    )
+                for data in data_list:
+                    date.append(data["datetime"])
+                    open_.append(data["price"]["open"])
+                    high.append(data["price"]["high"])
+                    low.append(data["price"]["low"])
+                    close.append(data["price"]["close"])
+                    volume.append(data["volume"]["stock_volume"])
+                    calls_volume.append(data["volume"]["calls_volume"])
+                    puts_volume.append(data["volume"]["puts_volume"])
+                    total_options_volume.append(data["volume"]["total_options_volume"])
+
                 data = pd.DataFrame()
                 date = [d.replace("T", " ") for d in date]
                 date = [datetime.strptime(d, "%Y-%m-%d %H:%M:%S") for d in date]
                 data["date"] = date
-                data["open"] = open
+                data["open"] = open_
                 data["high"] = high
                 data["low"] = low
                 data["close"] = close
@@ -234,7 +232,7 @@ class CboeStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeStockHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeStockHistoricalData]:
+        query: CboeEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeEquityHistoricalData]:
         """Transform the data to the standard format."""
-        return [CboeStockHistoricalData.model_validate(d) for d in data]
+        return [CboeEquityHistoricalData.model_validate(d) for d in data]

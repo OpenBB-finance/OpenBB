@@ -16,36 +16,36 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 
 
-@router.command(model="StockQuote")
+@router.command(model="EquityQuote")
 def quote(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Quote. Load stock data for a specific ticker."""
+    """Equity Quote. Load stock data for a specific ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockNBBO")
+@router.command(model="EquityNBBO")
 def nbbo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Quote. Load National Best Bid and Offer for a specific equity."""
+    """Equity Quote. Load National Best Bid and Offer for a specific equity."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockHistorical")
+@router.command(model="EquityHistorical")
 def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Historical price. Load stock data for a specific ticker."""
+    """Equity Historical price. Load stock data for a specific ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 

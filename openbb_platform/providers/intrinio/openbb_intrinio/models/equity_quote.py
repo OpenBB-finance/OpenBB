@@ -1,4 +1,4 @@
-"""Intrinio Stock Quote fetcher."""
+"""Intrinio Equity Quote fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -6,15 +6,15 @@ from typing import Any, Dict, List, Optional
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import SOURCES
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_quote import (
-    StockQuoteData,
-    StockQuoteQueryParams,
+from openbb_provider.standard_models.equity_quote import (
+    EquityQuoteData,
+    EquityQuoteQueryParams,
 )
 from pydantic import Field, field_validator
 
 
-class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
-    """Intrinio Stock Quote Query.
+class IntrinioEquityQuoteQueryParams(EquityQuoteQueryParams):
+    """Intrinio Equity Quote Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_realtime_price_v2
     """
@@ -25,8 +25,8 @@ class IntrinioStockQuoteQueryParams(StockQuoteQueryParams):
     source: SOURCES = Field(default="iex", description="Source of the data.")
 
 
-class IntrinioStockQuoteData(StockQuoteData):
-    """Intrinio Stock Quote Data."""
+class IntrinioEquityQuoteData(EquityQuoteData):
+    """Intrinio Equity Quote Data."""
 
     __alias_dict__ = {
         "day_low": "low_price",
@@ -100,22 +100,22 @@ class IntrinioStockQuoteData(StockQuoteData):
         )
 
 
-class IntrinioStockQuoteFetcher(
+class IntrinioEquityQuoteFetcher(
     Fetcher[
-        IntrinioStockQuoteQueryParams,
-        IntrinioStockQuoteData,
+        IntrinioEquityQuoteQueryParams,
+        IntrinioEquityQuoteData,
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioStockQuoteQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioEquityQuoteQueryParams:
         """Transform the query params."""
-        return IntrinioStockQuoteQueryParams(**params)
+        return IntrinioEquityQuoteQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioStockQuoteQueryParams,
+        query: IntrinioEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -129,7 +129,7 @@ class IntrinioStockQuoteFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioStockQuoteQueryParams, data: dict, **kwargs: Any
-    ) -> IntrinioStockQuoteData:
+        query: IntrinioEquityQuoteQueryParams, data: dict, **kwargs: Any
+    ) -> IntrinioEquityQuoteData:
         """Return the transformed data."""
-        return IntrinioStockQuoteData.model_validate(data)
+        return IntrinioEquityQuoteData.model_validate(data)

@@ -7,9 +7,9 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_alpha_vantage.utils.helpers import extract_key_name, get_data, get_interval
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_provider.utils.helpers import get_querystring
@@ -23,7 +23,7 @@ from pydantic import (
 )
 
 
-class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
+class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Alpha Vantage Stock End of Day Query.
 
     Source: https://www.alphavantage.co/documentation/#time-series-data
@@ -70,7 +70,8 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
     _datatype: Literal["json", "csv"] = PrivateAttr(default="json")
 
     @field_validator("month", mode="before")
-    def month_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def month_validate(cls, v):
         """Validate month, check if the month is in YYYY-MM format."""
         if v is not None:
             try:
@@ -79,11 +80,11 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
                 raise e
         return v
 
+    # pylint: disable=protected-access
     @model_validator(mode="after")
     @classmethod
-    def get_function_value(cls, values: "AVStockHistoricalQueryParams"):
+    def get_function_value(cls, values: "AVEquityHistoricalQueryParams"):
         """Get the function from the provided interval for the Alpha Vantage API."""
-
         functions = {
             "m": "TIME_SERIES_INTRADAY",
             "d": "TIME_SERIES_DAILY",
@@ -106,7 +107,7 @@ class AVStockHistoricalQueryParams(StockHistoricalQueryParams):
         return values
 
 
-class AVStockHistoricalData(StockHistoricalData):
+class AVEquityHistoricalData(EquityHistoricalData):
     """Alpha Vantage Stock End of Day Data."""
 
     __alias_dict__ = {"date": "timestamp", "adj_close": "adjusted_close"}
@@ -124,16 +125,16 @@ class AVStockHistoricalData(StockHistoricalData):
     )
 
 
-class AVStockHistoricalFetcher(
+class AVEquityHistoricalFetcher(
     Fetcher[
-        AVStockHistoricalQueryParams,
-        List[AVStockHistoricalData],
+        AVEquityHistoricalQueryParams,
+        List[AVEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Alpha Vantage endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> AVStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> AVEquityHistoricalQueryParams:
         """Transform the query."""
         transformed_params = params
 
@@ -144,11 +145,11 @@ class AVStockHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return AVStockHistoricalQueryParams(**transformed_params)
+        return AVEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: AVStockHistoricalQueryParams,
+        query: AVEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -159,7 +160,7 @@ class AVStockHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["start_date", "end_date", "interval"]
         )
-        query_str += f"&function={query._function}&interval={interval}"
+        query_str += f"&function={query._function}&interval={interval}"  # pylint: disable=protected-access
         url = f"https://www.alphavantage.co/query?{query_str}&apikey={api_key}"
 
         data = get_data(url, **kwargs)
@@ -169,12 +170,12 @@ class AVStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: AVStockHistoricalQueryParams, data: Dict, **kwargs: Any
-    ) -> List[AVStockHistoricalData]:
+        query: AVEquityHistoricalQueryParams, data: Dict, **kwargs: Any
+    ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
         data = [
             {"date": date, **{extract_key_name(k): v for k, v in values.items()}}
             for date, values in data.items()
         ]
 
-        return [AVStockHistoricalData.model_validate(d) for d in data]
+        return [AVEquityHistoricalData.model_validate(d) for d in data]

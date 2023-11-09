@@ -7,21 +7,21 @@ from typing import Any, Dict, List, Optional
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from openbb_provider.abstract.data import StrictInt
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_quote import (
-    StockQuoteData,
-    StockQuoteQueryParams,
+from openbb_provider.standard_models.equity_quote import (
+    EquityQuoteData,
+    EquityQuoteQueryParams,
 )
 from pydantic import Field, field_validator
 
 
-class FMPStockQuoteQueryParams(StockQuoteQueryParams):
+class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
     """FMP Stock end of day Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
     """
 
 
-class FMPStockQuoteData(StockQuoteData):
+class FMPEquityQuoteData(EquityQuoteData):
     """FMP Stock end of day Data."""
 
     __alias_dict__ = {
@@ -94,22 +94,22 @@ class FMPStockQuoteData(StockQuoteData):
         return datetime.strptime(v, "%Y-%m-%d")
 
 
-class FMPStockQuoteFetcher(
+class FMPEquityQuoteFetcher(
     Fetcher[
-        FMPStockQuoteQueryParams,
-        List[FMPStockQuoteData],
+        FMPEquityQuoteQueryParams,
+        List[FMPEquityQuoteData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockQuoteQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquityQuoteQueryParams:
         """Transform the query params."""
-        return FMPStockQuoteQueryParams(**params)
+        return FMPEquityQuoteQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockQuoteQueryParams,
+        query: FMPEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -124,7 +124,7 @@ class FMPStockQuoteFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockQuoteQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockQuoteData]:
+        query: FMPEquityQuoteQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquityQuoteData]:
         """Return the transformed data."""
-        return [FMPStockQuoteData.model_validate(d) for d in data]
+        return [FMPEquityQuoteData.model_validate(d) for d in data]

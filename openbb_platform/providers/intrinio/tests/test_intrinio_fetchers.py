@@ -6,14 +6,14 @@ from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
+from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
+from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
-from openbb_intrinio.models.stock_historical import IntrinioStockHistoricalFetcher
-from openbb_intrinio.models.stock_quote import IntrinioStockQuoteFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -31,7 +31,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
+def test_intrinio_equity_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -39,7 +39,7 @@ def test_intrinio_stock_historical_fetcher(credentials=test_credentials):
         "interval": "1d",
     }
 
-    fetcher = IntrinioStockHistoricalFetcher()
+    fetcher = IntrinioEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -72,10 +72,10 @@ def test_intrinio_global_news_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_stock_quote_fetcher(credentials=test_credentials):
+def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = IntrinioStockQuoteFetcher()
+    fetcher = IntrinioEquityQuoteFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

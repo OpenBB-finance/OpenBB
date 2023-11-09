@@ -9,9 +9,9 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_polygon.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import (
@@ -22,7 +22,7 @@ from pydantic import (
 )
 
 
-class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
+class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Polygon stocks end of day Query.
 
     Source: https://polygon.io/docs/stocks/getting-started
@@ -44,11 +44,11 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
     _multiplier: PositiveInt = PrivateAttr(default=None)
     _timespan: str = PrivateAttr(default=None)
 
+    # pylint: disable=protected-access
     @model_validator(mode="after")
     @classmethod
-    def get_api_interval_params(cls, values: "PolygonStockHistoricalQueryParams"):
+    def get_api_interval_params(cls, values: "PolygonEquityHistoricalQueryParams"):
         """Get the multiplier and timespan parameters for the Polygon API."""
-
         intervals = {
             "s": "second",
             "m": "minute",
@@ -66,7 +66,7 @@ class PolygonStockHistoricalQueryParams(StockHistoricalQueryParams):
         return values
 
 
-class PolygonStockHistoricalData(StockHistoricalData):
+class PolygonEquityHistoricalData(EquityHistoricalData):
     """Polygon stocks end of day Data."""
 
     __alias_dict__ = {
@@ -86,14 +86,17 @@ class PolygonStockHistoricalData(StockHistoricalData):
     )
 
 
-class PolygonStockHistoricalFetcher(
+class PolygonEquityHistoricalFetcher(
     Fetcher[
-        PolygonStockHistoricalQueryParams,
-        List[PolygonStockHistoricalData],
+        PolygonEquityHistoricalQueryParams,
+        List[PolygonEquityHistoricalData],
     ]
 ):
+    """Equity Historical Price Fetcher."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> PolygonStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonEquityHistoricalQueryParams:
+        """Transform the query. Setting the start and end dates for a 1 year period."""
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -102,23 +105,25 @@ class PolygonStockHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return PolygonStockHistoricalQueryParams(**transformed_params)
+        return PolygonEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonStockHistoricalQueryParams,
+        query: PolygonEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Return the raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         data: List = []
 
         def multiple_symbols(
-            symbol: str, data: List[PolygonStockHistoricalData]
+            symbol: str, data: List[PolygonEquityHistoricalData]
         ) -> None:
             results: List = []
 
+            # pylint: disable=protected-access
             url = (
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
@@ -153,8 +158,9 @@ class PolygonStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonStockHistoricalQueryParams,
+        query: PolygonEquityHistoricalQueryParams,
         data: List[dict],
         **kwargs: Any,
-    ) -> List[PolygonStockHistoricalData]:
-        return [PolygonStockHistoricalData.model_validate(d) for d in data]
+    ) -> List[PolygonEquityHistoricalData]:
+        """Transform the data from the Polygon endpoint."""
+        return [PolygonEquityHistoricalData.model_validate(d) for d in data]

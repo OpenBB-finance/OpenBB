@@ -1,4 +1,4 @@
-"""Stock owner data model."""
+"""Equity Ownership data model."""
 
 
 from datetime import date as dateType
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockOwnershipQueryParams(QueryParams):
-    """Stock ownership Query."""
+class EquityOwnershipQueryParams(QueryParams):
+    """Equity Ownership Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
@@ -24,12 +24,13 @@ class StockOwnershipQueryParams(QueryParams):
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def time_validate(cls, v: str):  # pylint: disable=E021
+    def time_validate(cls, v: str):
         """Validate the date."""
         if v is None:
             v = dateType.today()
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -37,8 +38,8 @@ class StockOwnershipQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class StockOwnershipData(Data):
-    """Stock Ownership Data."""
+class EquityOwnershipData(Data):
+    """Equity Ownership Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     cik: int = Field(description="Cik of the stock ownership.")

@@ -16,14 +16,14 @@ router = Router(prefix="/ownership")
 # pylint: disable=unused-argument
 
 
-@router.command(model="StockOwnership")
+@router.command(model="EquityOwnership")
 def major_holders(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Ownership. Information about the company ownership."""
+    """Equity Ownership. Information about the company ownership."""
     return OBBject(results=Query(**locals()).execute())
 
 

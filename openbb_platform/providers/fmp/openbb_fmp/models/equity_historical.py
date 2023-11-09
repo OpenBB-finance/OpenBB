@@ -6,15 +6,15 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many, get_interval
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt
 
 
-class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
+class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """FMP Stock end of day Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
@@ -32,7 +32,7 @@ class FMPStockHistoricalQueryParams(StockHistoricalQueryParams):
     )
 
 
-class FMPStockHistoricalData(StockHistoricalData):
+class FMPEquityHistoricalData(EquityHistoricalData):
     """FMP Stock end of day Data."""
 
     label: Optional[str] = Field(
@@ -57,16 +57,16 @@ class FMPStockHistoricalData(StockHistoricalData):
     )
 
 
-class FMPStockHistoricalFetcher(
+class FMPEquityHistoricalFetcher(
     Fetcher[
-        FMPStockHistoricalQueryParams,
-        List[FMPStockHistoricalData],
+        FMPEquityHistoricalQueryParams,
+        List[FMPEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquityHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -77,11 +77,11 @@ class FMPStockHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPStockHistoricalQueryParams(**transformed_params)
+        return FMPEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockHistoricalQueryParams,
+        query: FMPEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -103,7 +103,7 @@ class FMPStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockHistoricalData]:
+        query: FMPEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
-        return [FMPStockHistoricalData.model_validate(d) for d in data]
+        return [FMPEquityHistoricalData.model_validate(d) for d in data]

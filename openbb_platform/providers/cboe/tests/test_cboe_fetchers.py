@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 from openbb_cboe.models.equity_info import CboeEquityInfoFetcher
 from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.european_index_constituents import (
@@ -17,7 +18,6 @@ from openbb_cboe.models.major_indices_historical import (
     CboeMajorIndicesHistoricalFetcher,
 )
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
-from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -54,7 +54,7 @@ def test_cboe_options_chains_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_cboe_stock_historical_fetcher(credentials=test_credentials):
+def test_cboe_equity_historical_fetcher(credentials=test_credentials):
     params = params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -62,7 +62,7 @@ def test_cboe_stock_historical_fetcher(credentials=test_credentials):
         "interval": "1d",
     }
 
-    fetcher = CboeStockHistoricalFetcher()
+    fetcher = CboeEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

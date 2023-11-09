@@ -6,6 +6,8 @@ from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher
 from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
+from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
+from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.forex_historical import PolygonForexHistoricalFetcher
 from openbb_polygon.models.forex_pairs import PolygonForexPairsFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
@@ -13,8 +15,6 @@ from openbb_polygon.models.major_indices_historical import (
     PolygonMajorIndicesHistoricalFetcher,
 )
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
-from openbb_polygon.models.stock_historical import PolygonStockHistoricalFetcher
-from openbb_polygon.models.stock_nbbo import PolygonStockNBBOFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -32,7 +32,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_polygon_stock_historical_fetcher(credentials=test_credentials):
+def test_polygon_equity_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -40,7 +40,7 @@ def test_polygon_stock_historical_fetcher(credentials=test_credentials):
         "interval": "1d",
     }
 
-    fetcher = PolygonStockHistoricalFetcher()
+    fetcher = PolygonEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -130,10 +130,10 @@ def test_polygon_forex_pairs_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_polygon_stock_nbbo_fetcher(credentials=test_credentials):
+def test_polygon_equity_nbbo_fetcher(credentials=test_credentials):
     params = {"symbol": "SPY", "limit": 1000}
 
-    fetcher = PolygonStockNBBOFetcher()
+    fetcher = PolygonEquityNBBOFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

@@ -16,7 +16,10 @@ from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.discovery_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
+from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
+from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
+from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
@@ -53,10 +56,7 @@ from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetche
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
-from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
-from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
-from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
 
@@ -112,12 +112,12 @@ fmp_provider = Provider(
         "RevenueGeographic": FMPRevenueGeographicFetcher,
         "RiskPremium": FMPRiskPremiumFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
-        "StockHistorical": FMPStockHistoricalFetcher,
+        "EquityHistorical": FMPEquityHistoricalFetcher,
         "StockInsiderTrading": FMPStockInsiderTradingFetcher,
         "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
-        "StockOwnership": FMPStockOwnershipFetcher,
+        "EquityOwnership": FMPEquityOwnershipFetcher,
         "EquityPeers": FMPEquityPeersFetcher,
-        "StockQuote": FMPStockQuoteFetcher,
+        "EquityQuote": FMPEquityQuoteFetcher,
         "EquitySearch": FMPEquitySearchFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,

@@ -1,4 +1,4 @@
-"""yfinance Stock End of Day fetcher."""
+"""yfinance Equity Historical Price."""
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta
@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_historical import (
-    StockHistoricalData,
-    StockHistoricalQueryParams,
+from openbb_provider.standard_models.equity_historical import (
+    EquityHistoricalData,
+    EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
@@ -18,7 +18,7 @@ from pandas import Timestamp, to_datetime
 from pydantic import Field, PrivateAttr, field_validator
 
 
-class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
+class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """YFinance Stock End of Day Query.
 
     Source: https://finance.yahoo.com/
@@ -69,7 +69,7 @@ class YFinanceStockHistoricalQueryParams(StockHistoricalQueryParams):
     _group_by: Literal["ticker", "column"] = PrivateAttr(default="ticker")
 
 
-class YFinanceStockHistoricalData(StockHistoricalData):
+class YFinanceEquityHistoricalData(EquityHistoricalData):
     """YFinance Stock End of Day Data."""
 
     @field_validator("date", mode="before", check_fields=False)
@@ -80,16 +80,16 @@ class YFinanceStockHistoricalData(StockHistoricalData):
         return v
 
 
-class YFinanceStockHistoricalFetcher(
+class YFinanceEquityHistoricalFetcher(
     Fetcher[
-        YFinanceStockHistoricalQueryParams,
-        List[YFinanceStockHistoricalData],
+        YFinanceEquityHistoricalQueryParams,
+        List[YFinanceEquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> YFinanceStockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
         """Transform the query."""
         transformed_params = params
         now = datetime.now().date()
@@ -100,11 +100,12 @@ class YFinanceStockHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return YFinanceStockHistoricalQueryParams(**params)
+        return YFinanceEquityHistoricalQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceStockHistoricalQueryParams,
+        query: YFinanceEquityHistoricalQueryParams,  # pylint: disable=unused-argument
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the yfinance endpoint."""
@@ -115,6 +116,7 @@ class YFinanceStockHistoricalFetcher(
         elif query.interval == "3M":
             query.interval = "3mo"
 
+        # pylint: disable=protected-access
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,
@@ -164,10 +166,9 @@ class YFinanceStockHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceStockHistoricalQueryParams,
+        query: YFinanceEquityHistoricalQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[YFinanceStockHistoricalData]:
+    ) -> List[YFinanceEquityHistoricalData]:
         """Transform the data to the standard format."""
-
-        return [YFinanceStockHistoricalData.model_validate(d) for d in data]
+        return [YFinanceEquityHistoricalData.model_validate(d) for d in data]

@@ -2,6 +2,7 @@
 
 
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
+from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 from openbb_cboe.models.equity_info import CboeEquityInfoFetcher
 from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.european_index_constituents import (
@@ -17,7 +18,6 @@ from openbb_cboe.models.major_indices_historical import (
     CboeMajorIndicesHistoricalFetcher,
 )
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
-from openbb_cboe.models.stock_historical import CboeStockHistoricalFetcher
 from openbb_provider.abstract.provider import Provider
 
 cboe_provider = Provider(
@@ -30,7 +30,7 @@ cboe_provider = Provider(
     fetcher_dict={
         "EquitySearch": CboeEquitySearchFetcher,
         "OptionsChains": CboeOptionsChainsFetcher,
-        "StockHistorical": CboeStockHistoricalFetcher,
+        "EquityHistorical": CboeEquityHistoricalFetcher,
         "EquityInfo": CboeEquityInfoFetcher,
         "FuturesCurve": CboeFuturesCurveFetcher,
         "AvailableIndices": CboeAvailableIndicesFetcher,

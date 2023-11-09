@@ -1,5 +1,5 @@
 """Alpha Vantage Provider module."""
-from openbb_alpha_vantage.models.stock_historical import AVStockHistoricalFetcher
+from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
 from openbb_provider.abstract.provider import Provider
 
 alpha_vantage_provider = Provider(
@@ -14,6 +14,6 @@ alpha_vantage_provider = Provider(
     cloud-based APIs, Excel, and Google Sheets. """,
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockHistorical": AVStockHistoricalFetcher,
+        "EquityHistorical": AVEquityHistoricalFetcher,
     },
 )

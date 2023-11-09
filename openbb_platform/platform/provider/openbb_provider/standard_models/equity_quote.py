@@ -1,4 +1,4 @@
-"""Stock Quote data model."""
+"""Equity Quote data model."""
 
 from datetime import datetime
 from typing import List, Optional, Set, Union
@@ -10,8 +10,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockQuoteQueryParams(QueryParams):
-    """Stock Quote query model."""
+class EquityQuoteQueryParams(QueryParams):
+    """Equity Quote query model."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
@@ -19,6 +19,7 @@ class StockQuoteQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -26,8 +27,8 @@ class StockQuoteQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class StockQuoteData(Data):
-    """Stock Quote data."""
+class EquityQuoteData(Data):
+    """Equity Quote data."""
 
     day_low: Optional[float] = Field(
         default=None,
