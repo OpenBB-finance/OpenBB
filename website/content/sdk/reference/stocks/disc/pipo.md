@@ -1,9 +1,21 @@
 ---
 title: pipo
-description: OpenBB SDK Function
+description: This page provides information about the 'pipo' open source code which
+  is used to find Past IPO dates. It includes details about the parameters used and
+  the output provided by the code.
+keywords:
+- pipo
+- past IPO dates
+- open source code
+- Finnhub
+- dataframe
+- num_days_behind
+- start_date
 ---
 
-# pipo
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.disc.pipo - Reference | OpenBB SDK Docs" />
 
 Past IPOs dates. [Source: Finnhub]
 
@@ -31,4 +43,3 @@ openbb.stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = No
 | ---- | ----------- |
 | pd.DataFrame | Get dataframe with past IPOs |
 ---
-

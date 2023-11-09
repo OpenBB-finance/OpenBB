@@ -222,7 +222,7 @@ Now that we have added the model function getting, we need to specify that this 
 
 If you are adding a new function with a new data source, make a new value in the file.  If the data source requires an
 API key, please refer to the guide below for adding them.  Instructions for obtaining the new api key
-should be included in the file `OpenBBTerminal/website/content/terminal/usage/guides/api-keys.md`.
+should be included in the file `OpenBBTerminal/website/content/terminal/usage/data/api-keys.md`.
 
 ### View
 
@@ -524,7 +524,7 @@ Any new features that do not contain unit tests will not be accepted.
 
 ### Open a Pull Request
 
-For starters, you should ensure that you branch is up to date with the `develop` branch. To do that, one can run the following commands:
+For starters, you should ensure that your branch is up to date with the `develop` branch. To do that, one can run the following commands:
 
 ```bash
 git fetch upstream
@@ -582,7 +582,7 @@ CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbs
 | **Item**     | **Description**                                                                                                                                                                                | **Example**                                      |
 | :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
 | **CONTEXT**  | Specific instrument _world_ to analyse.                                                                                                                                                        | `stocks`, `crypto`, `economy`                    |
-| **CATEGORY** | Group of similar COMMANDS to do on the instrument <br /> There are the specialized categories, specific to each CONTEXT and there are common categories which are not specific to one CONTEXT. | `due_diligence`, `technical_analysis`, `insider` |
+| **CATEGORY** | Group of similar COMMANDS to do on the instrument <br /> There are specialized categories, specific to each CONTEXT and there are common categories which are not specific to one CONTEXT. | `due_diligence`, `technical_analysis`, `insider` |
 | **COMMAND**  | Operation on one or no instrument that retrieves data in form of string, table or plot.                                                                                                        | `rating`, `supplier`, `sentiment`                |
 
 The following layout is expected: `/<context>/<category>/<command_files>`
@@ -625,7 +625,7 @@ With:
 
 1. Each function should have default values for non critical kwargs
 
-    - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the SDK, but also just generally.
+    - Why? It increases code readability and acts as an input example for the function's arguments. This increases the ease of use of the functions through the SDK, but also just generally.
 
     > Watch out, add default values whenever possible, but take care for not adding mutable default arguments! [More info](https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments)
 
@@ -701,7 +701,7 @@ With:
 
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
 
-    - Why? You can use the function without reading its source code. This improves the developing experience and SDK usage. The SDK factory also can’t handle functions with out docstrings.
+    - Why? You can use the function without reading its source code. This improves the developing experience and SDK usage. The SDK factory also can’t handle functions without docstrings.
 
     <br>
 
@@ -1399,12 +1399,12 @@ In the `_view.py` files it is common having at the end of each function `export_
 Let's go into each of these arguments:
 
 - `export` corresponds to the type of file we are exporting.
-  - If the user doesn't has anything selected, then this function doesn't do anything.
+  - If the user doesn't have anything selected, then this function doesn't do anything.
   - The user can export multiple files and even name the files.
   - The allowed type of files `json,csv,xlsx` for raw data and `jpg,pdf,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
 - `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
   - This is important when `export folder` selected is the default because the data gets stored based on where it is called.
-  - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
+  - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` instead
 - `"pt"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
 - `df_analyst_data` corresponds to the dataframe with data.
 - `sheet_name` corresponds to the name of the sheet in the excel file.
@@ -1523,7 +1523,7 @@ class ForexController(BaseController):
 
 In case the user is interested in a **DYNAMIC** list of options which changes based on user's state, then a class method must be defined.
 
-The example below shows the an excerpt from `update_runtime_choices` method in the [`options` controller](/openbb_terminal/stocks/options/options_controller.py).
+The example below shows an excerpt from `update_runtime_choices` method in the [`options` controller](/openbb_terminal/stocks/options/options_controller.py).
 
 ```python
 def update_runtime_choices(self):
@@ -1554,8 +1554,8 @@ This is storing every logged message inside the following location :
 
 Where $HOME is the user home directory, for instance:
 
-- `C:\Users\foo` if your are in Windows and your name is foo
-- `/home/bar/` if you are is macOS or Linux and your name is bar
+- `C:\Users\foo` if you are in Windows and your name is foo
+- `/home/bar/` if you are in macOS or Linux and your name is bar
 
 The user can override this location using the settings key `OPENBB_USER_DATA_DIRECTORY`.
 
@@ -1610,7 +1610,7 @@ becomes
   stocks/NEWS: mais recentes notícias da empresa
 ```
 
-Note: To speed up translation, the team developed a [script](/i18n/help_translation.ipynb) that uses Google translator API to help translating the entire `en.yml` document to the language of choice. Then the output still needs to be reviewed, but this can be an useful bootstrap.
+Note: To speed up translation, the team developed a [script](/i18n/help_translation.ipynb) that uses Google translator API to help translating the entire `en.yml` document to the language of choice. Then the output still needs to be reviewed, but this can be a useful bootstrap.
 
 This is the convention in use for creating a new key/value pair:
 

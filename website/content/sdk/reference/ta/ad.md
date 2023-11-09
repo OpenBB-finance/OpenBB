@@ -1,12 +1,23 @@
 ---
 title: ad
-description: OpenBB SDK Function
+description: This page provides information about how to implement and plot the AD
+  (Accumulation/Distribution Line) technical indicator using OpenBB's Python module.
+  It includes the source code, required parameters, and the outputs from these functions.
+keywords:
+- Docusaurus
+- Metadata
+- Technical Indicator
+- AD indicator
+- Pandas DataFrame
+- Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.ad - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ad
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +48,6 @@ openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +80,6 @@ openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

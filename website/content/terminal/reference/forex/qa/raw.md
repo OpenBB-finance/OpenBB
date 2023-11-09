@@ -1,9 +1,21 @@
 ---
 title: raw
-description: OpenBB Terminal Function
+description: Documentation page for raw function, which is used to output raw data
+  to the console. Explains its usage, parameters, along with examples.
+keywords:
+- Documentation
+- raw function
+- Console Output
+- Data Sorting
+- Programming Parameter Explanation
+- Python Sorting
+- Command examples
+- Data Representation
 ---
 
-# raw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/raw - Reference | OpenBB Terminal Docs" />
 
 Print raw data to console
 

@@ -1,12 +1,26 @@
 ---
 title: aterra
-description: OpenBB SDK Function
+description: This document provides information about how to fetch historical data
+  for a specific Terra asset, plot the 30-day history of that asset and explains the
+  usage of each function. Also includes source code links.
+keywords:
+- Terra assets
+- historical data
+- address
+- GET request
+- Draw chart
+- aterra
+- meta data
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.aterra - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# aterra
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.crypto.defi.aterra(asset: str = "ust", address: str = "terra1tmnqgvg567yp
 | pd.DataFrame | historical data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +82,6 @@ openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

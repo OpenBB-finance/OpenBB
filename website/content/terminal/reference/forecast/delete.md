@@ -1,9 +1,19 @@
 ---
 title: delete
-description: OpenBB Terminal Function
+description: Learn how to delete a column from your dataset with straightforward commands,
+  enhancing your data management and analysis in Python.
+keywords:
+- delete column
+- data management
+- dataset
+- data analysis
+- command usage
+- parameters
 ---
 
-# delete
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /delete - Reference | OpenBB Terminal Docs" />
 
 The column you want to delete from a dataset.
 

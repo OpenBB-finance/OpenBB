@@ -1,12 +1,29 @@
 ---
 title: income
-description: OpenBB SDK Function
+description: This page provides detailed information on how to get income data from
+  different peer companies using OpenBB's financial functions. This includes the source
+  code and the parameters needed for these operations.
+keywords:
+- income data
+- financial functions
+- parameters
+- Marketwatch
+- income statements
+- quarterly statements
+- dataframe
+- income chart
+- data export
+- financial comparison
+- ticker comparison
+- financial data analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.income - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# income
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +57,6 @@ openbb.stocks.ca.income(similar: List[str], timeframe: str = "2021", quarter: bo
 | pd.DataFrame | Dataframe of income statements |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +87,6 @@ openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2021", quart
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

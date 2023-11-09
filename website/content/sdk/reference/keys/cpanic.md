@@ -1,9 +1,19 @@
 ---
 title: cpanic
-description: OpenBB SDK Function
+description: This page contains detailed information regarding the cpanic function
+  of OpenBB Terminal. It explains how to set the Cpanic key including parameters,
+  results, and examples.
+keywords:
+- Python SDK
+- API key management
+- cpanic function
+- environment variables
+- Jupyter notebook
 ---
 
-# cpanic
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.cpanic - Reference | OpenBB SDK Docs" />
 
 Set Cpanic key.
 
@@ -41,4 +51,3 @@ openbb.keys.cpanic(key="example_key")
 ```
 
 ---
-

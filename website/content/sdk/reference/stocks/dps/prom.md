@@ -1,12 +1,26 @@
 ---
 title: prom
-description: OpenBB SDK Function
+description: 'This page provides a detailed explanation of two important functions
+  in FINRA ATS data analysis offered by our tool: ''prom'' and ''Chart''. ''prom''
+  fetches and processes the most promising stocks based on linear regression while
+  ''Chart'' aids in visualizing the dark pool data for improving trading decisions.'
+keywords:
+- FINRA ATS data
+- Trading tool
+- Linear regression
+- Dark pool data
+- Dark pool trades activity
+- Stocks analysis
+- Data visualization
+- Promising stocks
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.prom - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# prom
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
 | ---- | ----------- |
 | Tuple[pd.DataFrame, Dict] | Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +83,6 @@ openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

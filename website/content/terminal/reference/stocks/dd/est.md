@@ -1,9 +1,21 @@
 ---
 title: est
-description: OpenBB Terminal Function
+description: Detailed guide on how to get yearly estimates and quarter earnings/revenues
+  for stocks using the 'est' command. It includes parameters' usage, examples and
+  source of data.
+keywords:
+- annual earnings
+- quarter earnings
+- annual revenue
+- estimates
+- stock market
+- business
+- financial data
 ---
 
-# est
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dd/est - Reference | OpenBB Terminal Docs" />
 
 Yearly estimates and quarter earnings/revenues. [Source: Business Insider]
 
@@ -29,7 +41,7 @@ est [-e {annualrevenue,annualearnings,quarterearnings}]
 ```python
 2022 Sep 16, 23:24 (🦋) /stocks/dd/ $ est -e annualearnings
 
-                               Annual Earnings Estimates                               
+                               Annual Earnings Estimates
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
 ┃                                ┃ 2022     ┃ 2023    ┃ 2024    ┃ 2025     ┃ 2026     ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩

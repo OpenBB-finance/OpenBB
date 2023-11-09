@@ -1,9 +1,20 @@
 ---
 title: regions
-description: OpenBB Terminal Function
+description: Learn how to plot bars representing regions based on a stock's interest
+  using Python. This tutorial includes Python usage explanations, parameters details,
+  and visualization examples.
+keywords:
+- regions
+- stock's interest
+- plot bars
+- Google source
+- Python usage
+- limit parameter
 ---
 
-# regions
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/regions - Reference | OpenBB Terminal Docs" />
 
 Plot bars of regions based on stock's interest. [Source: Google]
 

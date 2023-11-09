@@ -1,9 +1,22 @@
 ---
 title: dividend
-description: OpenBB SDK Function
+description: The 'dividend' feature of the OpenBB library allows optimized weight
+  allocation in portfolio based on dividend yield. The document offers detailed examples
+  and parameters of the implementation.
+keywords:
+- dividend
+- portfolio optimization
+- po model
+- portfolio engine
+- weights allocation
+- AAPL
+- MSFT
+- AMZN
 ---
 
-# dividend
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.dividend - Reference | OpenBB SDK Docs" />
 
 Optimize weighted according to dividend yield
 
@@ -64,4 +77,3 @@ weights, performance = openbb.portfolio.po.dividend(portfolio_engine=p)
 ```
 
 ---
-

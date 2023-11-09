@@ -1,9 +1,22 @@
 ---
 title: candle
-description: OpenBB Terminal Function
+description: This documentation is for the 'candle' function that shows historical
+  data for an ETF. It explains how to use the function with key parameters to sort
+  data, display raw information, setup moving average in days, etc.
+keywords:
+- candle function
+- ETF historical data
+- interactive plotly chart
+- sort data
+- display raw data
+- moving average
+- market trends
+- high and low trends
 ---
 
-# candle
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/candle - Reference | OpenBB Terminal Docs" />
 
 Shows historic data for an ETF
 

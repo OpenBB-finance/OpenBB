@@ -1,9 +1,25 @@
 ---
 title: spacc
-description: OpenBB Terminal Function
+description: Spacc- a tool that presents a list of other users' SPACs announcements
+  from the 'SPACs' subreddit. Options include setting the limit of posts retrieved
+  and the sorting model- popular posts or recent posts.
+keywords:
+- spacc
+- SPACs
+- subreddit
+- tool
+- posts
+- limit
+- b_popular
+- score
+- time
+- Reddit
+- stocks
 ---
 
-# spacc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/spacc - Reference | OpenBB Terminal Docs" />
 
 Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]
 

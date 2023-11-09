@@ -1,9 +1,20 @@
 ---
 title: mret
-description: OpenBB Terminal Function
+description: This page is about the mret tool that helps to calculate monthly returns.
+  It contains information about its usage, parameters, and various options.
+keywords:
+- mret
+- monthly returns
+- heatmap
+- parameters
+- usage
+- periods
+- choices
 ---
 
-# mret
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/mret - Reference | OpenBB Terminal Docs" />
 
 Monthly returns
 

@@ -1,9 +1,23 @@
 ---
 title: maxutil
-description: OpenBB SDK Function
+description: Documentation page of the maxutil module in the OpenBB Terminal's portfolio
+  optimization tool. It includes the module's function signature with its parameters,
+  default values, and optional indicators. Specializations like risk measures and
+  return calculations are also detailed. Examples of use are provided for better understanding.
+keywords:
+- Docusaurus SEO
+- Portfolio Optimization
+- maxutil function
+- Portfolio Management Tools
+- Python in Finance
+- Algorithmic Trading
+- Risk Measures
+- OpenBB maxutil
 ---
 
-# maxutil
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.maxutil - Reference | OpenBB SDK Docs" />
 
 Optimize maximum utility weights
 
@@ -75,4 +89,3 @@ weights, performance = openbb.portfolio.po.maxutil(portfolio_engine=p)
 ```
 
 ---
-

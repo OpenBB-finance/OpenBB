@@ -1,9 +1,22 @@
 ---
 title: watchlist
-description: OpenBB SDK Function
+description: This page provides the syntax and details of the 'watchlist' function
+  which fetches reddit users watchlists. It includes source code details, usage, parameters
+  and return values.
+keywords:
+- Watchlist
+- Reddit
+- Python function
+- Behavioral Analysis
+- Source Code
+- Returns
+- Parameters
+- Usage
 ---
 
-# watchlist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.watchlist - Reference | OpenBB SDK Docs" />
 
 Get reddit users watchlists [Source: reddit].
 
@@ -30,4 +43,3 @@ openbb.stocks.ba.watchlist(limit: int = 5)
 | ---- | ----------- |
 | Tuple[List[praw.models.reddit.submission.Submission], dict, int] | List of reddit submissions,<br/>Dictionary of tickers and their count,<br/>Count of how many posts were analyzed. |
 ---
-

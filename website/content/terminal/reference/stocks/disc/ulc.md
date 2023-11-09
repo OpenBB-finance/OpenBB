@@ -1,9 +1,23 @@
 ---
 title: ulc
-description: OpenBB Terminal Function
+description: The 'ulc' page provides a useful tool for displaying potentially undervalued
+  large cap stocks. The utility allows you to specify the limit of stocks to display,
+  making it a versatile tool for investment research. Source data is retrieved from
+  Yahoo Finance.
+keywords:
+- stocks
+- large cap stocks
+- undervalued stocks
+- investment research
+- stock display tool
+- Yahoo Finance
+- stock market
+- stock analysis
 ---
 
-# ulc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/ulc - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
 

@@ -1,12 +1,28 @@
 ---
 title: sinfo
-description: OpenBB SDK Function
+description: Learn how to get staking info for a given Terra account using OpenBB's
+  API. Explore functionality like viewing luna delegations and summary reports for
+  the chosen address, displaying staking info for the provided Terra account address,
+  and exporting dataframe data to csv, json, or xlsx file.
+keywords:
+- Terra blockchain
+- staking info
+- luna delegations
+- summary report
+- export to csv
+- export to json
+- export to xlsx
+- defi
+- cryptocurrency
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.sinfo - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sinfo
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +53,6 @@ openbb.crypto.defi.sinfo(address: str = "")
 | Tuple[pd.DataFrame, str] | luna delegations and summary report for given address |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +82,6 @@ openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

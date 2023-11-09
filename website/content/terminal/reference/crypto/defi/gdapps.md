@@ -1,9 +1,21 @@
 ---
 title: gdapps
-description: OpenBB Terminal Function
+description: This is a detailed guide on using the gdapps function. It helps to display
+  top dApps based on TVL grouped by chain, including usage and parameters information.
+keywords:
+- gdapps
+- dApps
+- TVL
+- chain
+- display
+- parameters
+- limit
+- usage
 ---
 
-# gdapps
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/gdapps - Reference | OpenBB Terminal Docs" />
 
 Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api]
 

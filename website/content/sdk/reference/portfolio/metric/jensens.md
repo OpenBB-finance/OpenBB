@@ -1,9 +1,23 @@
 ---
 title: jensens
-description: OpenBB SDK Function
+description: The jensen's alpha function allows evaluation of portfolio performance,
+  taking into account a risk-free rate and an interval for rolling values. Supported
+  by OpenBB portfolio, a source for open source finance tools.
+keywords:
+- jensen's alpha
+- openbb portfolio
+- portfolio evaluation
+- portfolio metrics
+- portfolio analysis
+- portfolio performance
+- risk free rate
+- rolling values
+- open source finance
 ---
 
-# jensens
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.metric.jensens - Reference | OpenBB SDK Docs" />
 
 Get jensen's alpha
 
@@ -42,4 +56,3 @@ output = openbb.portfolio.metric.jensens(p)
 ```
 
 ---
-

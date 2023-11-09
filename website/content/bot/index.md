@@ -1,57 +1,51 @@
 ---
-sidebar_position: 1
+title: Introduction
+sidebar_position: 0
+description: OpenBB Bot - a chatbot providing access to high-quality financial data
+  for both individual investors and online communities on Discord and Telegram. The
+  bot provides actionable market data, including stock data, options, screeners, crypto,
+  and more.
 keywords:
-  [
-    getting started,
-    openbb,
-    discord,
-    telegram,
-    slack,
-    beginner guide,
-    how to use openbb bot,
-    introduction,
-    intro,
-    how-to,
-    how to,
-    openbb bot,
-  ]
-description: OpenBB Bot is a chatting bot for investment research that provides access to high quality financial data for both individual investors and online communities.
+- OpenBB Bot
+- chatting bot
+- Discord
+- Telegram
+- financial data
+- individual investors
+- online communities
+- stock data
+- options
+- screeners
+- darkpool info
+- crypto
+- nft
+- short data
+- market data
+- informed investors
 ---
 
-import Card from "@site/src/components/General/Card";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-# OpenBB Bot
+<HeadTitle title="OpenBB Bot Docs" />
 
-OpenBB Bot is a chatting bot for Discord and Telegram which provides access to high quality financial data for both individual investors and online communities.
+Looking for investment research data and sharing it with your community has never been easier than with the OpenBB Bot. Our bot delivers high-quality data directly to your fingertips, promoting engagement and learning among your peers. Share your investment ideas and strategies with your friends and colleagues seamlessly by accessing the data you need through a simple text message. The OpenBB Bot is the perfect tool for collaborative investment research that helps you make informed decisions and achieve success.
 
-With OpenBB Bot, we offer free access to hundreds of commands ranging from stock data, options, screeners, darkpool info, crypto, nft, short data, and more!
-
-OpenBB Bot was created to give individual users access to high quality financial data. We know our users love to invest and they also want to be part of a community and share ideas with their friends quickly and easily. Our Bot allows quick access to actionable market data to make you and your community better informed investors.
-
----
-
-<Card
-	type="bot"
-	title="What is OpenBB Bot?"
-	description="OpenBB Bot is a chatting bot for investment research that provides access to high quality financial data for both individual investors and online communities."
- />
-
-<Card
-	type="bot"
-	title="How can I add OpenBB Bot to my community?"
-	description="Instructions to add OpenBB Bot to your community can be found under the installation section."
-/>
+<img width="819" alt="bot" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f65788ea-cab6-40a2-a1d9-282051a27083" />
 
 ---
 
-### Getting Started
+- **Investment discussions at 10x speed**
 
-To know more about OpenBB Bot, you can start by reading the [Installation Guide](/bot/installation).
+Say goodbye to the hassle of switching tabs or opening browsers just to share screenshots of market data with your friends. With the OpenBB Bot, you can access real-time market data instantly by using a simple bot command. Our bot allows you to visualize data easily within your preferred chatting platform, so you can keep up with the latest market trends without ever having to leave the chat window.
 
-### Using OpenBB Bot
+- **Chatting through multiple platforms**
 
-To learn how to use OpenBB Bot, you can start by reading the [Basics Guide](/bot/guides/discord).
+Discover the power of the OpenBB Bot on Discord and Telegram, and stay tuned for new platform releases. We are always working to expand our reach, and are committed to bringing the OpenBB Bot to a wider audience. Our goal is to provide convenient access to investment research data for all users, and we are excited to announce that more platforms will be added in the near future. Keep an eye out for updates on new platform availability, and join us as we continue to revolutionize the way you access investment data.
 
-### Bot Reference
+- **Available on desktop, mobile or tablet**
 
-The Reference section is a complete list of all functions available for OpenBB Bot. It can be found [here](/bot/reference/discord).
+By utilizing the chatting platform as the user interface, OpenBB Bot enables users access to investment research data on any device that is supported by the platform. This means that whether you are on your desktop, laptop, tablet, or smartphone, you can conveniently access the bot's research data without any additional software or hardware requirements. Enjoy seamless access to valuable investment insights across all your devices, anytime and anywhere.
+
+- **Customizable for your community**
+
+The OpenBB Bot provides users and server owners with the ability to personalize the bot according to their preferences. With a wide range of customization options, you can alter the color scheme, set up a watchlist, configure technical analysis indicators on your charts, and even schedule automatic market data posts. From market opening to closing, the OpenBB Bot has you covered with its flexible features and robust functionality.

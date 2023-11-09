@@ -1,9 +1,21 @@
 ---
 title: income
-description: OpenBB Terminal Function
+description: This page provides a guide on how to use the 'income' function which
+  prints either yearly or quarterly income statements for a company, and compares
+  it against similar companies. The guide includes usage, parameters, and examples
+  with real company data.
+keywords:
+- income statement
+- company financial data
+- yearly report
+- quarterly report
+- income indices
+- financial comparison
 ---
 
-# income
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/income - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly income statement the company, and compares it against similar companies.
 

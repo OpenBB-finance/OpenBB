@@ -1,9 +1,20 @@
 ---
 title: close
-description: OpenBB SDK Function
+description: This page details the use of the 'close' function in the OpenBB crypto
+  library which provides the closing price of a cryptocurrency within a specified
+  time range.
+keywords:
+- crypto
+- cryptocurrency
+- BTC
+- ETH
+- closing price
+- OpenBB crypto library
 ---
 
-# close
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.close - Reference | OpenBB SDK Docs" />
 
 Returns the price of a cryptocurrency
 
@@ -33,4 +44,3 @@ openbb.crypto.dd.close(symbol: str, start_date: str = "2010-01-01", end_date: Op
 | ---- | ----------- |
 | pd.DataFrame | price over time |
 ---
-

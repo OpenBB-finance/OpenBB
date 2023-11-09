@@ -1,9 +1,21 @@
 ---
 title: sidtc
-description: OpenBB Terminal Function
+description: The sidtc page provides a command line interface to print short interest
+  and days to cover for stocks. Provides options to limit the number of tickers displayed
+  and sorting by specific fields.
+keywords:
+- sidtc
+- short interest
+- days to cover
+- Stockgrid
+- stock market
+- financial data
+- stock analysis
 ---
 
-# sidtc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dps/sidtc - Reference | OpenBB Terminal Docs" />
 
 Print short interest and days to cover. [Source: Stockgrid]
 

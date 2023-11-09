@@ -1,9 +1,27 @@
 ---
 title: dividend
-description: OpenBB Terminal Function
+description: The 'dividend' page offers detailed explanations on how to utilize dividend-related
+  functionalities for portfolio optimization, showcasing parameters such as risk measure,
+  nan-fill-method, historic period, and others. Each parameter is explained in detail
+  and comes with default settings, optional values, and choices to customize as per
+  the user's choice.
+keywords:
+- docusaurus
+- dividend
+- portfolio optimization
+- risk measure
+- nan-fill-method
+- historic period
+- parameters
+- portfolio weights
+- expected return
+- volatility
+- Sharpe ratio
 ---
 
-# dividend
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/dividend - Reference | OpenBB Terminal Docs" />
 
 Returns a portfolio that is weighted based dividend yield.
 

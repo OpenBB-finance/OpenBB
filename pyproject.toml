@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "3.2.3"
+version = "3.2.4"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
@@ -124,6 +124,7 @@ jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
 nixtlats = "^0.1.11" # Pinning for stability
 nltk = "^3.8.1" # Is a dependence for llama index
+openai = "0.28.1"
 
 
 [tool.poetry.extras]

@@ -1,12 +1,30 @@
 ---
 title: validators
-description: OpenBB SDK Function
+description: The page details the usage and parameters of two functions that work
+  with 'validators' in the terra system. The 'validators' function provides terra
+  validators details while the 'validators_chart' function sorts data and provides
+  the option to export dataframe data.
+keywords:
+- validators
+- terra validators
+- terramoney_fcd_model
+- openbb.crypto.defi
+- votingPower
+- voting Power
+- terra validators details
+- validators chart
+- sorting data
+- key by which to sort data
+- terramoney_fcd_view
+- export dataframe data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.validators - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# validators
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +51,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | terra validators details |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -66,8 +82,6 @@ openbb.crypto.defi.validators_chart(limit: int = 10, sortby: str = "votingPower"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,19 @@
 ---
 title: coin_list
-description: OpenBB SDK Function
+description: Technical documentation on how to get a list of coins available on CoinGecko
+  using the OpenBBTerminal. It includes parameters and returns in form of a pd.DataFrame.
+keywords:
+- Coin List
+- CoinGecko
+- Source Code
+- Cryptocurrency
+- Discovery
+- pycoingecko_model
 ---
 
-# coin_list
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.coin_list - Reference | OpenBB SDK Docs" />
 
 Get list of coins available on CoinGecko [Source: CoinGecko]
 
@@ -27,4 +37,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Coins available on CoinGecko<br/>Columns: id, symbol, name |
 ---
-

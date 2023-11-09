@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: nexter
-description: OpenBB Discord Command
+description: This document provides guidance on how to use the nexter command to retrieve
+  the next earnings date for a provided stock ticker symbol. Examples include usage
+  with AMD stock.
+keywords:
+- nexter command
+- earnings date
+- stock ticker symbol
+- financial data
+- AMD stock
 ---
 
-# nexter
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="duedilligence: nexter - Discord Reference | OpenBB Bot Docs" />
 
 This command will retrieve the next earnings date for the given stock ticker symbol.
 

@@ -1,9 +1,21 @@
 ---
 title: mt
-description: OpenBB Terminal Function
+description: This page provides detailed information about how to display Messari
+  timeseries data, explaining the use of key parameters, available data frequency
+  intervals, and how to query the timeseries. It is a resource for understanding and
+  extracting meaningful insights from Messari data.
+keywords:
+- messari timeseries
+- timeseries parameters
+- data frequency intervals
+- messari data sources
+- timeseries query
+- messari usage
 ---
 
-# mt
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/mt - Reference | OpenBB Terminal Docs" />
 
 Display messari timeseries [Source: https://messari.io]
 

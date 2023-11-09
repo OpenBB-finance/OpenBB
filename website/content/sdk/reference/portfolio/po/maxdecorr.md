@@ -1,9 +1,26 @@
 ---
 title: maxdecorr
-description: OpenBB SDK Function
+description: The page details the function openbb.portfolio.po.maxdecorr(), an optimization
+  tool for decorrelation weights in a portfolio. Explains parameters, returns, and
+  provides examples.
+keywords:
+- maxdecorr
+- portfolio optimization
+- portfolio_engine
+- log_returns
+- covariance
+- Ledoit and Wolf Shrinkage method
+- Oracle Approximation Shrinkage method
+- Shrunk Covariance method
+- Graphical Lasso Covariance method
+- j-LoGo Covariance method
+- spectral method
+- programming
 ---
 
-# maxdecorr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.maxdecorr - Reference | OpenBB SDK Docs" />
 
 Optimize decorrelation weights
 
@@ -67,4 +84,3 @@ weights, performance = openbb.portfolio.po.maxdecorr(portfolio_engine=p)
 ```
 
 ---
-

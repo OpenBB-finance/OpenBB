@@ -206,6 +206,11 @@ def search(
             "industry_group",
             "industry",
             "exchange",
+            "isin",
+            "cusip",
+            "figi",
+            "composite_figi",
+            "shareclass_figi",
         ]
     ]
 
@@ -223,7 +228,21 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
+    df = df[
+        [
+            "name",
+            "country",
+            "sector",
+            "industry_group",
+            "industry",
+            "exchange",
+            "isin",
+            "cusip",
+            "figi",
+            "composite_figi",
+            "shareclass_figi",
+        ]
+    ]
     # To automate renaming columns
     df.columns = [col.replace("_", " ") for col in df.columns.tolist()]
     df = df.fillna(value=np.nan)

@@ -1,9 +1,23 @@
 ---
 title: country_codes
-description: OpenBB SDK Function
+description: This is the Country Codes page for the Bigmac index in the OpenBBTerminal.
+  It provides available country codes, specified as ISO-3 letter country codes, and
+  requires no parameters.
+keywords:
+- Country codes
+- Bigmac index
+- OpenBB finance
+- Economy
+- ISO-3 codes
+- Source Code
+- Parameters
+- Returns
+- Nasdaq model
 ---
 
-# country_codes
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.country_codes - Reference | OpenBB SDK Docs" />
 
 Get available country codes for Bigmac index
 
@@ -27,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List of ISO-3 letter country codes. |
 ---
-

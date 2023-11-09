@@ -1,9 +1,22 @@
 ---
 title: oanda
-description: OpenBB SDK Function
+description: This page explains how to set the Oanda key using the OpenBB Terminal.
+  It includes parameters and examples.
+keywords:
+- oanda
+- set key
+- parameters
+- examples
+- account
+- access token
+- account type
+- persist
+- show output
 ---
 
-# oanda
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.oanda - Reference | OpenBB SDK Docs" />
 
 Set Oanda key
 
@@ -49,4 +62,3 @@ account="example_account",
     )
 ```
 ---
-

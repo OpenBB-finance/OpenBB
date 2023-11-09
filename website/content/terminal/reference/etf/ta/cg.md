@@ -1,9 +1,20 @@
 ---
 title: cg
-description: OpenBB Terminal Function
+description: This page provides detailed information on the Center of Gravity indicator
+  (COG) used to anticipate future price movements and trade on price reversals, and
+  its best usage in range-bound markets.
+keywords:
+- Center of Gravity indicator
+- future price movements
+- trade on price reversals
+- oscillators
+- range-bound markets
+- asset price change
 ---
 
-# cg
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/cg - Reference | OpenBB Terminal Docs" />
 
 The Center of Gravity indicator, in short, is used to anticipate future price movements and to trade on price reversals as soon as they happen. However, just like other oscillators, the COG indicator returns the best results in range-bound markets and should be avoided when the price is trending. Traders who use it will be able to closely speculate the upcoming price change of the asset.
 

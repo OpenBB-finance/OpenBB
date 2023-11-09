@@ -1,9 +1,29 @@
 ---
 title: wf
-description: OpenBB Terminal Function
+description: The documentation page contains information regarding the withdrawal
+  fees for top coins in cryptocurrency. It provides a detailed insight into the average,
+  median and highest withdrawal fees for coins such as Bitcoin, Ethereum and Tether
+  among others. The tool also allows to limit the number of coins while displaying
+  the withdrawal fees.
+keywords:
+- withdrawal fees
+- top coins
+- cryptocurrency
+- Bitcoin
+- Ethereum
+- Tether
+- Binance Coin
+- USD Coin
+- XRP
+- Cardano
+- Solana
+- Terra
+- Avalanche
 ---
 
-# wf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/wf - Reference | OpenBB Terminal Docs" />
 
 Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
 

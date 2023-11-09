@@ -1,8 +1,8 @@
 {
     "news": [
         "CONTRIBUTING.md",
-        "website/content/terminal/usage/guides/api-keys.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/terminal/usage/data/api-keys.md",
+        "website/content/sdk/usage/api-keys.md"
     ],
     "stocks.dps.shorted": [
         "CONTRIBUTING.md"
@@ -23,18 +23,18 @@
     ],
     "keys.fmp": [
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.get_keys_info": [
         "openbb_terminal/SDK_README.md"
     ],
     "keys.mykeys": [
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.reddit": [
         "openbb_terminal/SDK_README.md",
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.set_keys": [
         "openbb_terminal/SDK_README.md"
@@ -88,85 +88,85 @@
         "website/content/sdk/usage/intros/ta.md"
     ],
     "keys.av": [
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "keys.binance": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.bitquery": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.cmc": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.coinbase": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.coinglass": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.cpanic": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.databento": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.degiro": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.eodhd": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.finnhub": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.fred": [
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "keys.github": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.glassnode": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.messari": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.news": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.oanda": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.polygon": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.quandl": [
-        "website/content/sdk/usage/guides/api-keys.md",
+        "website/content/sdk/usage/api-keys.md",
         "website/content/sdk/usage/intros/economy.md"
     ],
     "keys.santiment": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.shroom": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.stocksera": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.tokenterminal": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.tradier": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "keys.walert": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "stocks.quote": [
-        "website/content/sdk/usage/guides/api-keys.md"
+        "website/content/sdk/usage/api-keys.md"
     ],
     "fixedincome.ameribor": [
         "website/content/sdk/usage/intros/fixedincome.md"

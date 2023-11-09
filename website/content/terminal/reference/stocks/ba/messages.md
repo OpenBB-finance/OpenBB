@@ -1,9 +1,19 @@
 ---
 title: messages
-description: OpenBB Terminal Function
+description: This page provides an overview of how to use the 'messages' function
+  to print the last messages on the Stocktwits message board. It includes detailed
+  instructions on parameter usage too.
+keywords:
+- messages
+- Stocktwits
+- message board
+- parameters
+- limit
 ---
 
-# messages
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/messages - Reference | OpenBB Terminal Docs" />
 
 Print up to 30 of the last messages on the board. [Source: Stocktwits]
 

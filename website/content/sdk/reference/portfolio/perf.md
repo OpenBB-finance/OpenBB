@@ -1,9 +1,21 @@
 ---
 title: perf
-description: OpenBB SDK Function
+description: This page is a guide on how to get a portfolio's performance vs the benchmark
+  with the OpenBB Terminal's perf function. It includes function usage, parameters
+  explanation, return values, and examples.
+keywords:
+- portfolio performance
+- benchmark
+- portfolio engine
+- openbb portfolio perf
+- performance calculations
+- trades performance
+- portfolio load
 ---
 
-# perf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.perf - Reference | OpenBB SDK Docs" />
 
 Get portfolio performance vs the benchmark
 
@@ -41,4 +53,3 @@ output = openbb.portfolio.perf(p)
 ```
 
 ---
-

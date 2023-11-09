@@ -1,12 +1,30 @@
 ---
 title: toplobbying
-description: OpenBB SDK Function
+description: This page provides details on the 'toplobbying' functionality of the
+  OpenBBTerminal software, including the Quiverquant model and view. The page offers
+  a guide on how to present top lobbying tickers based on total money spent and guides
+  on retrieving corporate lobbying details using Python.
+keywords:
+- Corporate Lobbying
+- Top Lobbying
+- Lobbying Tickers
+- Government
+- Quiverquant model
+- Quiverquant view
+- Source Code
+- Data frame
+- Chart
+- Raw data
+- Export data
+- External axes
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.toplobbying - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# toplobbying
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +51,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of top corporate lobbying |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -66,8 +82,6 @@ openbb.stocks.gov.toplobbying_chart(limit: int = 10, raw: bool = False, export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,32 @@
 ---
 title: property
-description: OpenBB Terminal Function
+description: This documentation defines the usage, parameters, and examples for the
+  'property' function. This function helps in creating a portfolio that is weighted
+  based on a selected property. It includes risk measure options, nan fill methods,
+  risk-free rates, significance levels, and more to optimize the portfolio. The description
+  helps in understanding the function's implementation for portfolio management.
+keywords:
+- portfolio optimization
+- property weighting
+- risk measures
+- yfinance data
+- log returns
+- return frequency
+- risk-free rate
+- outliers
+- CVaR
+- EVaR
+- CDaR
+- EDaR
+- nan fill method
+- historic period
+- significance level
+- long allocation
 ---
 
-# property
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/property - Reference | OpenBB Terminal Docs" />
 
 Returns a portfolio that is weighted based on selected property.
 

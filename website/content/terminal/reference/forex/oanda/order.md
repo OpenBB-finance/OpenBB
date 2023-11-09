@@ -1,9 +1,21 @@
 ---
 title: order
-description: OpenBB Terminal Function
+description: How to create an order, set unit and price, and understanding of long
+  and short position in order request. Also, guides on setting the price for a limit
+  order.
+keywords:
+- order
+- units
+- price
+- long position
+- short position
+- limit order
+- order request
 ---
 
-# order
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/oanda/order - Reference | OpenBB Terminal Docs" />
 
 Create order
 

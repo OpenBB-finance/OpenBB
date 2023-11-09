@@ -1,9 +1,22 @@
 ---
 title: candles
-description: OpenBB SDK Function
+description: The page provides documentation for the 'candles' function in the OpenBB
+  crypto module. It describes how a candle chart can be plotted from a provided DataFrame,
+  and the various parameters that can be adjusted.
+keywords:
+- crypto.candles
+- candle chart
+- Binance source
+- Python script
+- data visualization
+- OpenBB crypto module
+- matplotlib
+- OHLCV
 ---
 
-# candles
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.candles - Reference | OpenBB SDK Docs" />
 
 Plot candle chart from dataframe. [Source: Binance]
 
@@ -34,4 +47,3 @@ openbb.crypto.candles(candles_df: pd.DataFrame, volume: bool = True, ylabel: str
 This function does not return anything
 
 ---
-

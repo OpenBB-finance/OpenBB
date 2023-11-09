@@ -1,9 +1,21 @@
 ---
 title: obv
-description: OpenBB Terminal Function
+description: On Balance Volume (OBV) is a technical analysis indicator that uses volume
+  flow to predict changes in stock price. The OBV measures buying and selling pressure
+  and is often used to confirm price trends or warn of potential price reversals.
+keywords:
+- On Balance Volume
+- OBV
+- technical analysis
+- stock price prediction
+- price trends
+- price reversals
+- stock market
 ---
 
-# obv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/ta/obv - Reference | OpenBB Terminal Docs" />
 
 The On Balance Volume (OBV) is a cumulative total of the up and down volume. When the close is higher than the previous close, the volume is added to the running total, and when the close is lower than the previous close, the volume is subtracted from the running total. To interpret the OBV, look for the OBV to move with the price or precede price moves. If the price moves before the OBV, then it is a non-confirmed move. A series of rising peaks, or falling troughs, in the OBV indicates a strong trend. If the OBV is flat, then the market is not trending.
 

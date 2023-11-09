@@ -1,9 +1,26 @@
 ---
 title: tcn
-description: OpenBB Terminal Function
+description: This page explains the usage, parameters, and examples of the TCN forecast
+  function used for time series forecasting. The function includes various adjustable
+  parameters for fine-tuning the model's performance and supports the option to save
+  the output data.
+keywords:
+- TCN
+- forecast
+- time series forecasting
+- data modeling
+- parameters
+- examples
+- docusaurus
+- metadata
+- marketing website page
+- code examples
+- machine learning model
 ---
 
-# tcn
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /tcn - Reference | OpenBB Terminal Docs" />
 
 Perform TCN forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tcn_model.html
 
