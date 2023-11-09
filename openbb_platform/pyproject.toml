@@ -26,6 +26,7 @@ openbb-fixedincome = "^0.1.0a5"
 openbb-news = "^0.1.0a5"
 openbb-regulators = "^0.1.0a5"
 openbb-stocks = "^0.1.0a5"
+openbb-etf = "^0.1.0a4"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a5", optional = true }
