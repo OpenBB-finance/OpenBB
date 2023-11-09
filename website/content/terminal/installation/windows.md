@@ -39,7 +39,7 @@ Step by step instructions:
 3. Follow the prompts to complete the installation process
 4. Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal
 
-<p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
+<p align="center"><a><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
 
 The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below:
 
