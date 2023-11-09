@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-PLATFORM_PATH = Path(__file__).parent.resolve() / "openbb_platform"
+PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
 
 SUB_PACKAGES = ["platform/provider", "platform/core", "extensions", "providers"]
 
@@ -31,7 +31,6 @@ def publish():
 
 
 if __name__ == "__main__":
-
     msg = """
     You are about to publish a new version of OpenBB Platform to PyPI.
     Please ensure you've read the "PUBLISH.md" file.
