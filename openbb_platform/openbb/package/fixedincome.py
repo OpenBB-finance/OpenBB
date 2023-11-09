@@ -1,151 +1,79 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
-from typing import List, Literal, Union
-
-import typing_extensions
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+import openbb_provider
+import pandas
+import numpy
+import datetime
+import pydantic
+from pydantic import BaseModel
+from inspect import Parameter
+import typing
+from typing import List, Dict, Union, Optional, Literal
+from annotated_types import Ge, Le, Gt, Lt
+from typing_extensions import Annotated
+from openbb_core.app.utils import df_to_basemodel
 from openbb_core.app.static.decorators import validate
+
 from openbb_core.app.static.filters import filter_inputs
+
 from openbb_provider.abstract.data import Data
+import openbb_core.app.model.command_context
+import openbb_core.app.model.obbject
+import types
 
 
 class ROUTER_fixedincome(Container):
     """/fixedincome
-    ameribor
     cp
     dwpcr
     ecb_interest_rates
-    estr
-    eu_ycrv
-    fed
+    eu_yield_curve
     ffrmc
     hqm
     ice_bofa
-    iorb
     moody
-    projections
+    /rate
     sofr
-    sonia
     spot
     tbffr
     tmc
     treasury
-    ycrv
+    yield_curve
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate
-    def ameribor(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Ameribor.
-            Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
-            short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
-            American Financial Exchange (AFX).
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
-            Period of AMERIBOR rate. (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[AMERIBOR]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        AMERIBOR
-        --------
-        date : date
-            The date of the data.
-        rate : Union[float]
-            AMERIBOR rate.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.ameribor()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/ameribor",
-            **inputs,
-        )
-
-    @validate
     def cp(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        maturity: typing_extensions.Annotated[
+        maturity: Annotated[
             Literal["overnight", "7d", "15d", "30d", "60d", "90d"],
             OpenBBCustomParameter(description="The maturity."),
         ] = "30d",
-        category: typing_extensions.Annotated[
+        category: Annotated[
             Literal["asset_backed", "financial", "nonfinancial"],
             OpenBBCustomParameter(description="The category."),
         ] = "financial",
-        grade: typing_extensions.Annotated[
+        grade: Annotated[
             Literal["aa", "a2_p2"], OpenBBCustomParameter(description="The grade.")
         ] = "aa",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -158,9 +86,9 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
             The maturity.
@@ -168,7 +96,7 @@ class ROUTER_fixedincome(Container):
             The category.
         grade : Literal['aa', 'a2_p2']
             The grade.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -176,9 +104,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[CommercialPaper]]
+            results : List[CommercialPaper]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -191,7 +119,7 @@ class ROUTER_fixedincome(Container):
         ---------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             Commercial Paper Rate.
 
         Example
@@ -222,19 +150,19 @@ class ROUTER_fixedincome(Container):
     @validate
     def dwpcr(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -247,11 +175,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -261,9 +189,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[DiscountWindowPrimaryCreditRate]]
+            results : List[DiscountWindowPrimaryCreditRate]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -276,7 +204,7 @@ class ROUTER_fixedincome(Container):
         -------------------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             Discount Window Primary Credit Rate.
 
         Example
@@ -304,23 +232,23 @@ class ROUTER_fixedincome(Container):
     @validate
     def ecb_interest_rates(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        interest_rate_type: typing_extensions.Annotated[
+        interest_rate_type: Annotated[
             Literal["deposit", "lending", "refinancing"],
             OpenBBCustomParameter(description="The type of interest rate."),
         ] = "lending",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -335,13 +263,13 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         interest_rate_type : Literal['deposit', 'lending', 'refinancing']
             The type of interest rate.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -349,9 +277,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EuropeanCentralBankInterestRates]]
+            results : List[EuropeanCentralBankInterestRates]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -364,7 +292,7 @@ class ROUTER_fixedincome(Container):
         --------------------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             European Central Bank Interest Rate.
 
         Example
@@ -391,98 +319,17 @@ class ROUTER_fixedincome(Container):
         )
 
     @validate
-    def estr(
+    def eu_yield_curve(
         self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Euro Short-Term Rate.
-            The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
-            the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
-            the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
-            executed at arm’s length and thus reflect market rates in an unbiased way.
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
-            Period of ESTR rate. (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[ESTR]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        ESTR
-        ----
-        date : date
-            The date of the data.
-        rate : Union[float]
-            ESTR rate.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.estr()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/estr",
-            **inputs,
-        )
-
-    @validate
-    def eu_ycrv(
-        self,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
-        yield_curve_type: typing_extensions.Annotated[
+        yield_curve_type: Annotated[
             Literal["spot_rate", "instantaneous_forward", "par_yield"],
             OpenBBCustomParameter(description="The yield curve type."),
         ] = "spot_rate",
-        provider: Union[Literal["ecb"], None] = None,
+        provider: Optional[Literal["ecb"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -509,11 +356,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             A specific date to get data for.
         yield_curve_type : Literal['spot_rate', 'instantaneous_forward', 'par_yield']
             The yield curve type.
-        provider : Union[Literal['ecb'], None]
+        provider : Optional[Literal['ecb']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'ecb' if there is
             no default.
@@ -523,9 +370,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EUYieldCurve]]
+            results : List[EUYieldCurve]
                 Serializable results.
-            provider : Union[Literal['ecb'], None]
+            provider : Optional[Literal['ecb']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -538,13 +385,13 @@ class ROUTER_fixedincome(Container):
         ------------
         maturity : str
             Yield curve rate maturity.
-        rate : Optional[Union[float]]
+        rate : Optional[float]
             Yield curve rate.
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.eu_ycrv(yield_curve_type="spot_rate")
+        >>> obb.fixedincome.eu_yield_curve(yield_curve_type="spot_rate")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -559,111 +406,30 @@ class ROUTER_fixedincome(Container):
         )
 
         return self._run(
-            "/fixedincome/eu_ycrv",
-            **inputs,
-        )
-
-    @validate
-    def fed(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Fed Funds Rate.
-            Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-            domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-            United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
-
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
-            Period of FED rate. (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[FEDFUNDS]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        FEDFUNDS
-        --------
-        date : date
-            The date of the data.
-        rate : Union[float]
-            FED rate.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.fed()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/fed",
+            "/fixedincome/eu_yield_curve",
             **inputs,
         )
 
     @validate
     def ffrmc(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        maturity: typing_extensions.Annotated[
-            Union[Literal["10y", "5y", "1y", "6m", "3m"], None],
+        maturity: Annotated[
+            Optional[Literal["10y", "5y", "1y", "6m", "3m"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "10y",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -676,13 +442,13 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Union[Literal['10y', '5y', '1y', '6m', '3m'], None]
+        maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
             The maturity
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -690,9 +456,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[SelectedTreasuryConstantMaturity]]
+            results : List[SelectedTreasuryConstantMaturity]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -705,7 +471,7 @@ class ROUTER_fixedincome(Container):
         --------------------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             Selected Treasury Constant Maturity Rate.
 
         Example
@@ -734,15 +500,15 @@ class ROUTER_fixedincome(Container):
     @validate
     def hqm(
         self,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(description="The date of the data."),
         ] = None,
-        yield_curve: typing_extensions.Annotated[
+        yield_curve: Annotated[
             List[Literal["spot", "par"]],
             OpenBBCustomParameter(description="The yield curve type."),
         ] = ["spot"],
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -755,11 +521,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             The date of the data.
         yield_curve : List[Literal['spot', 'par']]
             The yield curve type.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -767,9 +533,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[HighQualityMarketCorporateBond]]
+            results : List[HighQualityMarketCorporateBond]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -782,7 +548,7 @@ class ROUTER_fixedincome(Container):
         ------------------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             HighQualityMarketCorporateBond Rate.
         maturity : str
             Maturity.
@@ -814,23 +580,23 @@ class ROUTER_fixedincome(Container):
     @validate
     def ice_bofa(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        index_type: typing_extensions.Annotated[
+        index_type: Annotated[
             Literal["yield", "yield_to_worst", "total_return", "spread"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "yield",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -838,19 +604,19 @@ class ROUTER_fixedincome(Container):
             The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt
             publicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an
             average of Moody’s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year
-            remaining term to final maturity as of the rebalancing date, a fixed coupon schedule and a minimum amount
+            remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount
             outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
 
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -866,9 +632,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[ICEBofA]]
+            results : List[ICEBofA]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -881,7 +647,7 @@ class ROUTER_fixedincome(Container):
         -------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             ICE BofA US Corporate Bond Indices Rate.
 
         Example
@@ -908,104 +674,25 @@ class ROUTER_fixedincome(Container):
         )
 
     @validate
-    def iorb(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Interest on Reserve Balances.
-            Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
-            domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-            United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
-
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[IORB]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        IORB
-        ----
-        date : date
-            The date of the data.
-        rate : Union[float]
-            IORB rate.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.iorb()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/iorb",
-            **inputs,
-        )
-
-    @validate
     def moody(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        index_type: typing_extensions.Annotated[
+        index_type: Annotated[
             Literal["aaa", "baa"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "aaa",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -1018,25 +705,25 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         index_type : Literal['aaa', 'baa']
             The type of series.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        spread : Optional[Union[Literal['treasury', 'fed_funds']]]
+        spread : Optional[Literal['treasury', 'fed_funds']]
             The type of spread. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : Union[List[MoodyCorporateBondIndex]]
+            results : List[MoodyCorporateBondIndex]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1049,7 +736,7 @@ class ROUTER_fixedincome(Container):
         -----------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             Moody Corporate Bond Index Rate.
 
         Example
@@ -1075,110 +762,45 @@ class ROUTER_fixedincome(Container):
             **inputs,
         )
 
-    @validate
-    def projections(
-        self, provider: Union[Literal["fred"], None] = None, **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Fed Funds Rate Projections.
-            The projections for the federal funds rate are the value of the midpoint of the
-            projected appropriate target range for the federal funds rate or the projected
-            appropriate target level for the federal funds rate at the end of the specified
-            calendar year or over the longer run.
+    @property
+    def rate(self):  # route = "/fixedincome/rate"
+        from . import fixedincome_rate
 
-
-        Parameters
-        ----------
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        long_run : bool
-            Flag to show long run projections (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[PROJECTIONS]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        PROJECTIONS
-        -----------
-        date : date
-            The date of the data.
-        range_high : Union[float]
-            High projection of rates.
-        central_tendency_high : Union[float]
-            Central tendency of high projection of rates.
-        median : Union[float]
-            Median projection of rates.
-        range_midpoint : Union[float]
-            Midpoint projection of rates.
-        central_tendency_midpoint : Union[float]
-            Central tendency of midpoint projection of rates.
-        range_low : Union[float]
-            Low projection of rates.
-        central_tendency_low : Union[float]
-            Central tendency of low projection of rates.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.projections()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={},
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/projections",
-            **inputs,
+        return fixedincome_rate.ROUTER_fixedincome_rate(
+            command_runner=self._command_runner
         )
 
     @validate
     def sofr(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
             Secured Overnight Financing Rate.
             The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-            borrowing cash overnight collateralized by Treasury securities.
+            borrowing cash overnight collateralizing by Treasury securities.
 
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -1188,9 +810,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[SOFR]]
+            results : List[SOFR]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1203,7 +825,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             SOFR rate.
 
         Example
@@ -1229,108 +851,28 @@ class ROUTER_fixedincome(Container):
         )
 
     @validate
-    def sonia(
-        self,
-        start_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: typing_extensions.Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Union[Literal["fred"], None] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """
-            Sterling Overnight Index Average.
-            SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
-            transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
-            financial institutions and other institutional investors.
-
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
-            Period of SONIA rate. (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : Union[List[SONIA]]
-                Serializable results.
-            provider : Union[Literal['fred'], None]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        SONIA
-        -----
-        date : date
-            The date of the data.
-        rate : Union[float]
-            SONIA rate.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.sonia()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/fixedincome/sonia",
-            **inputs,
-        )
-
-    @validate
     def spot(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        maturity: typing_extensions.Annotated[
+        maturity: Annotated[
             List[float], OpenBBCustomParameter(description="The maturities in years.")
         ] = [10.0],
-        category: typing_extensions.Annotated[
+        category: Annotated[
             List[Literal["par_yield", "spot_rate"]],
             OpenBBCustomParameter(description="The category."),
         ] = ["spot_rate"],
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -1343,15 +885,15 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         maturity : List[float]
             The maturities in years.
         category : List[Literal['par_yield', 'spot_rate']]
             The category.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -1359,9 +901,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[SpotRate]]
+            results : List[SpotRate]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1374,7 +916,7 @@ class ROUTER_fixedincome(Container):
         --------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             Spot Rate.
 
         Example
@@ -1404,23 +946,23 @@ class ROUTER_fixedincome(Container):
     @validate
     def tbffr(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        maturity: typing_extensions.Annotated[
-            Union[Literal["3m", "6m"], None],
+        maturity: Annotated[
+            Optional[Literal["3m", "6m"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "3m",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -1434,13 +976,13 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Union[Literal['3m', '6m'], None]
+        maturity : Optional[Literal['3m', '6m']]
             The maturity
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -1448,9 +990,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[SelectedTreasuryBill]]
+            results : List[SelectedTreasuryBill]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1463,7 +1005,7 @@ class ROUTER_fixedincome(Container):
         --------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             SelectedTreasuryBill Rate.
 
         Example
@@ -1492,23 +1034,23 @@ class ROUTER_fixedincome(Container):
     @validate
     def tmc(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        maturity: typing_extensions.Annotated[
-            Union[Literal["3m", "2y"], None],
+        maturity: Annotated[
+            Optional[Literal["3m", "2y"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "3m",
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """
@@ -1521,13 +1063,13 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Union[Literal['3m', '2y'], None]
+        maturity : Optional[Literal['3m', '2y']]
             The maturity
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -1535,9 +1077,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[TreasuryConstantMaturity]]
+            results : List[TreasuryConstantMaturity]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1550,7 +1092,7 @@ class ROUTER_fixedincome(Container):
         ------------------------
         date : date
             The date of the data.
-        rate : Union[float]
+        rate : Optional[float]
             TreasuryConstantMaturity Rate.
 
         Example
@@ -1579,30 +1121,30 @@ class ROUTER_fixedincome(Container):
     @validate
     def treasury(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp"], None] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Treasury Rates. Treasury rates data.
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1610,9 +1152,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[TreasuryRates]]
+            results : List[TreasuryRates]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1673,30 +1215,30 @@ class ROUTER_fixedincome(Container):
         )
 
     @validate
-    def ycrv(
+    def yield_curve(
         self,
-        date: typing_extensions.Annotated[
-            Union[datetime.date, None],
+        date: Annotated[
+            Optional[datetime.date],
             OpenBBCustomParameter(
                 description="A specific date to get data for. Defaults to the most recent FRED entry."
             ),
         ] = None,
-        inflation_adjusted: typing_extensions.Annotated[
-            Union[bool, None],
+        inflation_adjusted: Annotated[
+            Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """US Yield Curve. Get United States yield curve.
 
         Parameters
         ----------
-        date : Union[datetime.date, None]
+        date : Optional[datetime.date]
             A specific date to get data for. Defaults to the most recent FRED entry.
-        inflation_adjusted : Union[bool, None]
+        inflation_adjusted : Optional[bool]
             Get inflation adjusted rates.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -1704,9 +1246,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : Union[List[USYieldCurve]]
+            results : List[USYieldCurve]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1725,7 +1267,7 @@ class ROUTER_fixedincome(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.ycrv()
+        >>> obb.fixedincome.yield_curve()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -1740,6 +1282,6 @@ class ROUTER_fixedincome(Container):
         )
 
         return self._run(
-            "/fixedincome/ycrv",
+            "/fixedincome/yield_curve",
             **inputs,
         )

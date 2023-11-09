@@ -1,6 +1,9 @@
-"""Test fixedincome extension."""
+"""Test fixed income extension."""
 import pytest
 from openbb_core.app.model.obbject import OBBject
+
+# pylint: disable=redefined-outer-name
+# pylint: disable=inconsistent-return-statements
 
 
 @pytest.fixture(scope="session")
@@ -8,7 +11,7 @@ def obb(pytestconfig):
     """Fixture to setup obb."""
 
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
 
@@ -34,8 +37,8 @@ def test_fixedincome_treasury(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_ycrv(params, obb):
-    result = obb.fixedincome.ycrv(**params)
+def test_fixedincome_yield_curve(params, obb):
+    result = obb.fixedincome.yield_curve(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -78,8 +81,8 @@ def test_fixedincome_sofr(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_estr(params, obb):
-    result = obb.fixedincome.estr(**params)
+def test_fixedincome_rate_estr(params, obb):
+    result = obb.fixedincome.rate.estr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -100,8 +103,8 @@ def test_fixedincome_estr(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_sonia(params, obb):
-    result = obb.fixedincome.sonia(**params)
+def test_fixedincome_rate_sonia(params, obb):
+    result = obb.fixedincome.rate.sonia(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -122,8 +125,8 @@ def test_fixedincome_sonia(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_ameribor(params, obb):
-    result = obb.fixedincome.ameribor(**params)
+def test_fixedincome_rate_ameribor(params, obb):
+    result = obb.fixedincome.rate.ameribor(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -144,8 +147,8 @@ def test_fixedincome_ameribor(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_fed(params, obb):
-    result = obb.fixedincome.fed(**params)
+def test_fixedincome_rate_effr(params, obb):
+    result = obb.fixedincome.rate.effr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -159,8 +162,8 @@ def test_fixedincome_fed(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_projections(params, obb):
-    result = obb.fixedincome.projections(**params)
+def test_fixedincome_rate_effr_forecast(params, obb):
+    result = obb.fixedincome.rate.effr_forecast(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -173,8 +176,8 @@ def test_fixedincome_projections(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_iorb(params, obb):
-    result = obb.fixedincome.iorb(**params)
+def test_fixedincome_rate_iorb(params, obb):
+    result = obb.fixedincome.rate.iorb(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -386,10 +389,10 @@ def test_fixedincome_tbffr(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_eu_ycrv(params, obb):
+def test_fixedincome_eu_yield_curve(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.fixedincome.eu_ycrv(**params)
+    result = obb.fixedincome.eu_yield_curve(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -5,6 +5,8 @@ import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
+# pylint: disable=redefined-outer-name
+
 
 @pytest.fixture(scope="session")
 def headers():
@@ -35,11 +37,11 @@ def test_fixedincome_treasury(params, headers):
     [({"date": "2023-01-01", "inflation_adjusted": True})],
 )
 @pytest.mark.integration
-def test_fixedincome_ycrv(params, headers):
+def test_fixedincome_yield_curve(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/ycrv?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/yield_curve?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -85,11 +87,11 @@ def test_fixedincome_sofr(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_estr(params, headers):
+def test_fixedincome_rate_estr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/estr?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/estr?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -110,11 +112,11 @@ def test_fixedincome_estr(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_sonia(params, headers):
+def test_fixedincome_rate_sonia(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/sonia?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/sonia?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -135,11 +137,11 @@ def test_fixedincome_sonia(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_ameribor(params, headers):
+def test_fixedincome_rate_ameribor(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/ameribor?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/ameribor?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -160,11 +162,11 @@ def test_fixedincome_ameribor(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_fed(params, headers):
+def test_fixedincome_rate_effr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/fed?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/effr?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -175,11 +177,11 @@ def test_fixedincome_fed(params, headers):
     [({}), ({"long_run": True, "provider": "fred"})],
 )
 @pytest.mark.integration
-def test_fixedincome_projections(params, headers):
+def test_fixedincome_rate_effr_forecast(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/projections?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/effr_forecast?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -190,11 +192,11 @@ def test_fixedincome_projections(params, headers):
     [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
 )
 @pytest.mark.integration
-def test_fixedincome_iorb(params, headers):
+def test_fixedincome_rate_iorb(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/iorb?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/iorb?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -416,11 +418,11 @@ def test_fixedincome_tbffr(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_eu_ycrv(params, headers):
+def test_fixedincome_eu_yield_curve(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/eu_ycrv?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/eu_yield_curve?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
