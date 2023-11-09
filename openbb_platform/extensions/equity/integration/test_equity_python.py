@@ -958,8 +958,8 @@ def test_stocks_quote(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_stocks_info(params, obb):
-    result = obb.stocks.info(**params)
+def test_equity_profile(params, obb):
+    result = obb.equity.profile(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -1019,11 +1019,11 @@ def test_stocks_quote(params, headers):
     [({"symbol": "AAPL", "provider": "cboe"})],
 )
 @pytest.mark.integration
-def test_stocks_info(params, headers):
+def test_equity_profile(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/info?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/profile?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -1,4 +1,4 @@
-"""CBOE Stock Info fetcher."""
+"""CBOE Equity Info fetcher."""
 
 import concurrent.futures
 from datetime import datetime
@@ -12,21 +12,21 @@ from openbb_cboe.utils.helpers import (
     get_ticker_iv,
 )
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_info import (
-    StockInfoData,
-    StockInfoQueryParams,
+from openbb_provider.standard_models.equity_info import (
+    EquityInfoData,
+    EquityInfoQueryParams,
 )
 from pydantic import Field
 
 
-class CboeStockInfoQueryParams(StockInfoQueryParams):
+class CboeEquityInfoQueryParams(EquityInfoQueryParams):
     """CBOE Company Search query.
 
     Source: https://www.cboe.com/
     """
 
 
-class CboeStockInfoData(StockInfoData):
+class CboeEquityInfoData(EquityInfoData):
     """CBOE Company Search Data."""
 
     type: Optional[str] = Field(default=None, description="Type of asset.")
@@ -84,22 +84,22 @@ class CboeStockInfoData(StockInfoData):
     )
 
 
-class CboeStockInfoFetcher(
+class CboeEquityInfoFetcher(
     Fetcher[
-        CboeStockInfoQueryParams,
-        List[CboeStockInfoData],
+        CboeEquityInfoQueryParams,
+        List[CboeEquityInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> CboeStockInfoQueryParams:
+    def transform_query(params: Dict[str, Any]) -> CboeEquityInfoQueryParams:
         """Transform the query."""
-        return CboeStockInfoQueryParams(**params)
+        return CboeEquityInfoQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: CboeStockInfoQueryParams,
+        query: CboeEquityInfoQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -134,8 +134,7 @@ class CboeStockInfoFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeStockInfoQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeStockInfoData]:
-        """Transform the data to the standard format"""
-
-        return [CboeStockInfoData.model_validate(d) for d in data]
+        query: CboeEquityInfoQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeEquityInfoData]:
+        """Transform the data to the standard format."""
+        return [CboeEquityInfoData.model_validate(d) for d in data]

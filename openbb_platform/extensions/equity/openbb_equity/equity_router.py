@@ -59,14 +59,14 @@ def search(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockInfo")
+@router.command(model="EquityInfo")
 def profile(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Info. Get general price and performance metrics of a stock."""
+    """Equity Info. Get general price and performance metrics of a stock."""
     return OBBject(results=Query(**locals()).execute())
 
 
