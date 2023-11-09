@@ -11,7 +11,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class EarningsCalendarQueryParams(QueryParams):
+class CalendarEarningsQueryParams(QueryParams):
     """Earnings calendar rating Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
@@ -20,6 +20,7 @@ class EarningsCalendarQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -27,7 +28,7 @@ class EarningsCalendarQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class EarningsCalendarData(Data):
+class CalendarEarningsData(Data):
     """Earnings calendar Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
@@ -53,6 +54,7 @@ class EarningsCalendarData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

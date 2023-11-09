@@ -37,18 +37,18 @@ def dividend(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockSplitCalendar")
+@router.command(model="CalendarSplits")
 def split(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Split Calendar. Show Stock Split Calendar."""
+    """Calendar Splits. Show Stock Split Calendar."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EarningsCalendar")
+@router.command(model="CalendarEarnings")
 def earnings(
     cc: CommandContext,
     provider_choices: ProviderChoices,

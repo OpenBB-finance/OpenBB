@@ -7,6 +7,8 @@ from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
 from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
+from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
+from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.models.cash_flow_growth import FMPCashFlowStatementGrowthFetcher
 from openbb_fmp.models.company_filings import FMPCompanyFilingsFetcher
@@ -15,7 +17,6 @@ from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.disc_filings import FMPFilingsFetcher
-from openbb_fmp.models.earnings_calendar import FMPEarningsCalendarFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
@@ -33,7 +34,7 @@ from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
-from openbb_fmp.models.historical_stock_splits import FMPHistoricalStockSplitsFetcher
+from openbb_fmp.models.historical_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
@@ -57,7 +58,6 @@ from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_peers import FMPStockPeersFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
-from openbb_fmp.models.stock_splits import FMPStockSplitCalendarFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -318,10 +318,10 @@ def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_earnings_calendar_fetcher(credentials=test_credentials):
+def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPEarningsCalendarFetcher()
+    fetcher = FMPCalendarEarningsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -336,7 +336,7 @@ def test_fmp_earnings_call_transcript_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_historical_stock_splits_fetcher(credentials=test_credentials):
+def test_fmp_historical_splits_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPHistoricalStockSplitsFetcher()
@@ -345,10 +345,10 @@ def test_fmp_historical_stock_splits_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_stock_split_calendar_fetcher(credentials=test_credentials):
+def test_fmp_calendar_splits_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 1, 10)}
 
-    fetcher = FMPStockSplitCalendarFetcher()
+    fetcher = FMPCalendarSplitsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

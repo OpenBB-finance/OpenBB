@@ -81,7 +81,7 @@ def dividends(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EarningsCalendar")
+@router.command(model="CalendarEarnings")
 def earnings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -110,7 +110,7 @@ def income(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Income Statement. Report on a company's finanacial performance."""
+    """Income Statement. Report on a company's financial performance."""
     return OBBject(results=Query(**locals()).execute())
 
 

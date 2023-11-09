@@ -7,33 +7,33 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_splits import (
-    StockSplitCalendarData,
-    StockSplitCalendarQueryParams,
+from openbb_provider.standard_models.calendar_splits import (
+    CalendarSplitsData,
+    CalendarSplitsQueryParams,
 )
 
 
-class FMPStockSplitCalendarQueryParams(StockSplitCalendarQueryParams):
-    """FMP Stock Split Calendar query.
+class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
+    """FMP Calendar Splits query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
 
-class FMPStockSplitCalendarData(StockSplitCalendarData):
-    """FMP Stock Split Calendar data."""
+class FMPCalendarSplitsData(CalendarSplitsData):
+    """FMP Calendar Splits data."""
 
 
-class FMPStockSplitCalendarFetcher(
+class FMPCalendarSplitsFetcher(
     Fetcher[
-        FMPStockSplitCalendarQueryParams,
-        List[FMPStockSplitCalendarData],
+        FMPCalendarSplitsQueryParams,
+        List[FMPCalendarSplitsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockSplitCalendarQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCalendarSplitsQueryParams:
         """Transform the query params. Start and end dates are set to a 1 year interval."""
         transformed_params = params
 
@@ -44,11 +44,11 @@ class FMPStockSplitCalendarFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPStockSplitCalendarQueryParams(**transformed_params)
+        return FMPCalendarSplitsQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockSplitCalendarQueryParams,
+        query: FMPCalendarSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -62,7 +62,7 @@ class FMPStockSplitCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockSplitCalendarQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockSplitCalendarData]:
+        query: FMPCalendarSplitsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCalendarSplitsData]:
         """Return the transformed data."""
-        return [FMPStockSplitCalendarData.model_validate(d) for d in data]
+        return [FMPCalendarSplitsData.model_validate(d) for d in data]

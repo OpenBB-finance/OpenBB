@@ -1,4 +1,4 @@
-"""Stock Split Calendar data model."""
+"""Calendar Splits data model."""
 
 
 from datetime import date as dateType
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockSplitCalendarQueryParams(QueryParams):
-    """Stock Split Calendar query model."""
+class CalendarSplitsQueryParams(QueryParams):
+    """Calendar Splits query model."""
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -22,8 +22,8 @@ class StockSplitCalendarQueryParams(QueryParams):
     )
 
 
-class StockSplitCalendarData(Data):
-    """Stock Split Calendar data."""
+class CalendarSplitsData(Data):
+    """Calendar Splits data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the stock splits.")

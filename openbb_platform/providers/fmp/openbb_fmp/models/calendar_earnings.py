@@ -6,21 +6,21 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.earnings_calendar import (
-    EarningsCalendarData,
-    EarningsCalendarQueryParams,
+from openbb_provider.standard_models.calendar_earnings import (
+    CalendarEarningsData,
+    CalendarEarningsQueryParams,
 )
 from pydantic import field_validator
 
 
-class FMPEarningsCalendarQueryParams(EarningsCalendarQueryParams):
+class FMPCalendarEarningsQueryParams(CalendarEarningsQueryParams):
     """FMP Earnings Calendar Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
     """
 
 
-class FMPEarningsCalendarData(EarningsCalendarData):
+class FMPCalendarEarningsData(CalendarEarningsData):
     """FMP Earnings Calendar Data."""
 
     @field_validator("date", mode="before", check_fields=False)
@@ -39,22 +39,22 @@ class FMPEarningsCalendarData(EarningsCalendarData):
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
-class FMPEarningsCalendarFetcher(
+class FMPCalendarEarningsFetcher(
     Fetcher[
-        FMPEarningsCalendarQueryParams,
-        List[FMPEarningsCalendarData],
+        FMPCalendarEarningsQueryParams,
+        List[FMPCalendarEarningsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEarningsCalendarQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCalendarEarningsQueryParams:
         """Transform the query params."""
-        return FMPEarningsCalendarQueryParams(**params)
+        return FMPCalendarEarningsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPEarningsCalendarQueryParams,
+        query: FMPCalendarEarningsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -69,7 +69,7 @@ class FMPEarningsCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPEarningsCalendarQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPEarningsCalendarData]:
+        query: FMPCalendarEarningsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCalendarEarningsData]:
         """Return the transformed data."""
-        return [FMPEarningsCalendarData.model_validate(d) for d in data]
+        return [FMPCalendarEarningsData.model_validate(d) for d in data]
