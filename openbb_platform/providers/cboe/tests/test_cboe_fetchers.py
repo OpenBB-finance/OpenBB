@@ -45,6 +45,7 @@ def test_cboe_equity_search_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+@pytest.mark.skip(reason="Can't record. Likely geo-restricted.")
 def test_cboe_options_chains_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
