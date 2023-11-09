@@ -29,7 +29,7 @@ def test_finra_otc_aggregate_fetcher(credentials=test_credentials):
 
 @pytest.mark.freeze_time("2021-10-21")
 @pytest.mark.record_http
-def test_sec_short_interest_fetcher(credentials=test_credentials):
+def test_finra_short_interest_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FinraShortInterestFetcher()

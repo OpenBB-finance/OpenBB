@@ -1,21 +1,25 @@
-"""Utility for SEC data storage."""
-# This was created as a way to handle short interest data from the SEC.
-# The files do not change, so there is no need to download them every time.
+"""Utility for FINRA data storage.
+
+This was created as a way to handle short interest data from the FINRA.
+The files do not change, so there is no need to download them every time.
+"""
 import random
 import sqlite3
 from io import StringIO
 from pathlib import Path
+from typing import List
 
 import requests
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_finra.utils.helpers import get_short_interest_dates
 from pandas import read_csv
 
-DB_PATH = Path(get_user_cache_directory()) / "caches/sec_short_volume.db"
+DB_PATH = Path(get_user_cache_directory()) / "caches/finra_short_volume.db"
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
 
 
-def get_cached_dates():
+def get_cached_dates() -> List:
+    """Return the dates that are cached in the DB file."""
     cnx = sqlite3.connect(DB_PATH)
     cursor = cnx.cursor()
 
