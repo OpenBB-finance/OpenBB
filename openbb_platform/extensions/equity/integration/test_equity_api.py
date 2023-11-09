@@ -1034,7 +1034,7 @@ def test_equity_profile(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_gainers(params, headers):
+def test_stocks_discovery_gainers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1049,7 +1049,7 @@ def test_stocks_disc_gainers(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_losers(params, headers):
+def test_stocks_discovery_losers(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1064,7 +1064,7 @@ def test_stocks_disc_losers(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_active(params, headers):
+def test_stocks_discovery_active(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1094,7 +1094,7 @@ def test_stocks_price_performance(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_undervalued_large_caps(params, headers):
+def test_stocks_discovery_undervalued_large_caps(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1109,7 +1109,7 @@ def test_stocks_disc_undervalued_large_caps(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_undervalued_growth_equities(params, headers):
+def test_stocks_discovery_undervalued_growth(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1124,7 +1124,7 @@ def test_stocks_disc_undervalued_growth_equities(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_aggressive_small_caps(params, headers):
+def test_stocks_discovery_aggressive_small_caps(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1139,7 +1139,7 @@ def test_stocks_disc_aggressive_small_caps(params, headers):
     [({"sort": "desc", "provider": "yfinance"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_growth_tech_equities(params, headers):
+def test_stocks_discovery_growth_tech(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1154,7 +1154,7 @@ def test_stocks_disc_growth_tech_equities(params, headers):
     [({"limit": 10, "provider": "nasdaq"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_top_retail(params, headers):
+def test_stocks_discovery_top_retail(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1169,7 +1169,7 @@ def test_stocks_disc_top_retail(params, headers):
     [({"limit": 5, "start_date": "2023-01-01"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_upcoming_release_days(params, headers):
+def test_stocks_discovery_upcoming_release_days(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1205,7 +1205,7 @@ def test_stocks_disc_upcoming_release_days(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_stocks_disc_filings(params, headers):
+def test_stocks_discovery_filings(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

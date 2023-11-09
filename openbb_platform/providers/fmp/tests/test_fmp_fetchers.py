@@ -16,7 +16,7 @@ from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
-from openbb_fmp.models.disc_filings import FMPFilingsFetcher
+from openbb_fmp.models.discovery_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher

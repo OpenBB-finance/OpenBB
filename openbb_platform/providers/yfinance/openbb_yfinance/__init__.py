@@ -42,7 +42,7 @@ yfinance_provider = Provider(
         "EquityAggressiveSmallCaps": YFAggressiveSmallCapsFetcher,
         "EquityGainers": YFGainersFetcher,
         "EquityLosers": YFLosersFetcher,
-        "EquityUndervaluedGrowthEquities": YFUndervaluedGrowthEquitiesFetcher,
+        "EquityUndervaluedGrowth": YFUndervaluedGrowthEquitiesFetcher,
         "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
         "EtfHistorical": YFinanceEtfHistoricalFetcher,
         "ForexHistorical": YFinanceForexHistoricalFetcher,

@@ -970,7 +970,7 @@ def test_equity_profile(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_gainers(params, obb):
+def test_stocks_discovery_gainers(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.gainers(**params)
@@ -984,7 +984,7 @@ def test_stocks_disc_gainers(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_losers(params, obb):
+def test_stocks_discovery_losers(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.losers(**params)
@@ -998,7 +998,7 @@ def test_stocks_disc_losers(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_active(params, obb):
+def test_stocks_discovery_active(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.active(**params)
@@ -1026,7 +1026,7 @@ def test_stocks_price_performance(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_undervalued_large_caps(params, obb):
+def test_stocks_discovery_undervalued_large_caps(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.undervalued_large_caps(**params)
@@ -1040,7 +1040,7 @@ def test_stocks_disc_undervalued_large_caps(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_undervalued_growth_equities(params, obb):
+def test_stocks_discovery_undervalued_growth(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.undervalued_growth_equities(**params)
@@ -1054,7 +1054,7 @@ def test_stocks_disc_undervalued_growth_equities(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_aggressive_small_caps(params, obb):
+def test_stocks_discovery_aggressive_small_caps(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.aggressive_small_caps(**params)
@@ -1068,7 +1068,7 @@ def test_stocks_disc_aggressive_small_caps(params, obb):
     [({"sort": "desc"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_growth_tech_equities(params, obb):
+def test_stocks_discovery_growth_tech(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.growth_tech_equities(**params)
@@ -1082,7 +1082,7 @@ def test_stocks_disc_growth_tech_equities(params, obb):
     [({"limit": 10})],
 )
 @pytest.mark.integration
-def test_stocks_disc_top_retail(params, obb):
+def test_stocks_discovery_top_retail(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.top_retail(**params)
@@ -1096,7 +1096,7 @@ def test_stocks_disc_top_retail(params, obb):
     [({"limit": 5, "start_date": "2023-01-01"})],
 )
 @pytest.mark.integration
-def test_stocks_disc_upcoming_release_days(params, obb):
+def test_stocks_discovery_upcoming_release_days(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.upcoming_release_days(**params)
@@ -1131,7 +1131,7 @@ def test_stocks_disc_upcoming_release_days(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_stocks_disc_filings(params, obb):
+def test_stocks_discovery_filings(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.stocks.disc.filings(**params)

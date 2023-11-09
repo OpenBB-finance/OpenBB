@@ -58,7 +58,7 @@ def undervalued_large_caps(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="EquityUndervaluedGrowthEquities")
+@router.command(model="EquityUndervaluedGrowth")
 def undervalued_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -81,7 +81,7 @@ def aggressive_small_caps(
 
 
 @router.command(model="GrowthTechEquities")
-def growth_tech_equities(
+def growth_tech(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -117,7 +117,7 @@ def upcoming_release_days(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="DiscFilings")
+@router.command(model="DiscoveryFilings")
 def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
