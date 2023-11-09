@@ -20,15 +20,15 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//fNQ7DsJADIThu6TGkmd286LmBpSIIkUqOhSJAnF3lKTev/6kcTG2H9/u
-        s66v+7a8t9uyrd21c7qEMjR0v0ubc2Z2m3MO98iamIWcFXgKT8xCFofnCDxGEbIrsjhciZwFeAgP
-        yJqZjZzUdx+emY0sDs+JmSqpXEnlSipXUrmSEh6ZE1kcntS3ebZ5tnm2ebaiJLILsjicHtfOzV1z
-        yHAlB7ev5GQOb1+JQ4LHdbKQ24/r4Pbj8v7Pi5D3K3n+AQAA//8DAIJK1/FNBgAA
+        H4sIAAAAAAAAA3zUOw7CQAyE4bukxpJndvOi5gaUiCJFKjoUiQJxd5Sk3r/+pHExth/f7rOur/u2
+        vLfbsq3dtXO6hDI0dL9Lm3NmdptzDvfImpiFnBV4Ck/MQhaH5wg8RhGyK7I4XImcBXgID8iamY2c
+        1HcfnpmNLA7PiZkqqVxJ5UoqV1K5khIemRNZHJ7Ut3m2ebZ5tnm2oiSyC7I4nB7Xzs1dc8hwJQe3
+        r+RkDm9fiUOCx3WykNuP6+D24/L+z4uQ9yt5/gEAAP//AwCCStfxTQYAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322f80adf882b7-IAD
+      - 82354575881d1c5b-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -36,9 +36,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:06 GMT
+      - Thu, 09 Nov 2023 10:11:24 GMT
       FINRA-api-request-id:
-      - 68406df6-73c6-4dba-85e0-4a0c5d17f6c6
+      - ba14e6d3-7416-4158-a502-9f0f6cccf264
       Record-Limit:
       - '52'
       Record-Max-Limit:
@@ -52,10 +52,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=coblgGyTH7wajoxnArXd15v454Ya9d_zWD2x2VUIPcQ-1699492326-0-AZO290UNcZCRMGxFGPrQ9yS0S4DZndVEIJgCmxAowawAGfbd/2LkMr4ytC9qdeJx3iAAc0ss29zbHHdWtzQkMdI=;
-        path=/; expires=Thu, 09-Nov-23 01:42:06 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=OC28Kzs7lljZ9RcDHP22H3m9Ctu.3AqBpK1tNo.BY2g-1699524684-0-AbpyiJOZfVFpdu4MW6b+FPPHumiK/BH2RyTpmZ1HterdZgR4g/dZOzXK+7terBziJmr/8DTcaq4KEqinMix5oZk=;
+        path=/; expires=Thu, 09-Nov-23 10:41:24 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=770cfeb5d1887129320c156005d61d0de89da5e9-1699492326; path=/; domain=.api.finra.org;
+      - __cfruid=dfd8e0ce39d233068d2b61d4990d1f45e3b92e72-1699524684; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '52'
@@ -64,13 +64,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31e6-42dd5c4b40529a3a3afad76c;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb04c-17f225dc4eaabf8c2acd16c4;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy8EGpNoAMES6A=
+      - OIB78GwvIAMEI3Q=
       x-amzn-RequestId:
-      - da52644a-86f3-4154-801b-e1bd43d4be28
+      - 36a2fd6c-fda5-4f12-be9e-3b22d9aab034
     status:
       code: 200
       message: OK
@@ -105,7 +105,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322f8248599c22-IAD
+      - 8235457f49d78ad9-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -113,9 +113,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:06 GMT
+      - Thu, 09 Nov 2023 10:11:26 GMT
       FINRA-api-request-id:
-      - 46e6279a-74f2-4b63-ace0-2ea209e41b40
+      - ac885494-952b-41c0-93d9-294ca0302e8f
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -129,10 +129,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=DLDjnjwgT_du5Vdd5am.vr0Ou5iWDZq_ST60cotPd3g-1699492326-0-ATyfmLkBAJ0AnboOE/vIWAu43PXLDK5jKUWYbdDa8ZRM5bH9m3/O7mYKf4xndb+Cuw8NFs5DkaNphhD3gnWvrVM=;
-        path=/; expires=Thu, 09-Nov-23 01:42:06 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=R3YlGGNVvBqZP3.H9avovkvGugZIWzC.Nrmuv1PdM7k-1699524686-0-AaLWKes8a+sDyDTf3RieYCmYlkqevQ3wB8JuGS93j0TGO6G1RZgTCuEKR3Z2guNtF2cRzfvF4l/U9rEuK1RyWeg=;
+        path=/; expires=Thu, 09-Nov-23 10:41:26 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=2ef69464630052cd5b0aba5fbe84d36313592a5e-1699492326; path=/; domain=.api.finra.org;
+      - __cfruid=0395b220ff44c871d36f0410ce59ef7cd129c5c9-1699524686; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -141,13 +141,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31e6-2390b392568130c94bb96b4a;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb04d-5b17909453c5eefc3ea47c56;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy8GGJ6oAMEEag=
+      - OIB8MGUUoAMESCg=
       x-amzn-RequestId:
-      - 7dc91710-00e7-4b7d-a7cb-5671bd6c395b
+      - a84dbea6-e164-420b-aa3e-08d5328c01ac
     status:
       code: 200
       message: OK
@@ -175,14 +175,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMo7CgIxEADQu0ydhfxcNN2ijWChrGIhFiMZMRgTSSZFEO9u66vf5QOc
-        GeOZ6Bn7/MBCh4aJA3dwamHsKJUW/+dY0NM6t8Tg1NKu7Cgg1Npo7q9bjltPicM9UAEH07TfgYCI
-        lU9vj0wbZAIHWmozKDkYCd/rDwAA//8DAL6Pb2iDAAAA
+        H4sIAAAAAAAAA0zKOwoCMRAA0LtMnYX8XDTdoo1goaxiIRYjGTEYE0kmRRDvbuur3+UDnBnjmegZ
+        +/zAQoeGiQN3cGph7CiVFv/nWNDTOrfE4NTSruwoINTaaO6vW45bT4nDPVABB9O034GAiJVPb49M
+        G2QCB1pqMyg5GAnf6w8AAP//AwC+j29ogwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322f84bee93b7e-IAD
+      - 8235458a2ae18aeb-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -190,9 +190,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:07 GMT
+      - Thu, 09 Nov 2023 10:11:27 GMT
       FINRA-api-request-id:
-      - 2b21986c-1f76-4807-a4cf-c0a6aa1bb7f7
+      - 3ade4d4c-053f-4f34-a3bf-8715b9025b26
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -206,10 +206,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=GcIt27a6MYTS.VYNF0Aarma7AiYd9IGjI4DknSW3GbI-1699492327-0-ActAALIqkDMQOz6igU701F/FILbmq5I15V3Vyd+Mdk7RV00ZvdW6LiBxtDnIqrWy99lXdV5uZ7Esj2N7pZTtQAw=;
-        path=/; expires=Thu, 09-Nov-23 01:42:07 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=ZwF_374Imn7nk1X.vW7z2FmUmcjs1YlOM45bLxuut6Q-1699524687-0-AYBeojsAmfig56mule9i658qssXYGehO4z0eRagqZ7bNXP7VBiaixgYyXhMbTjd5RZ5A083ADv5AXBXJDKO895Q=;
+        path=/; expires=Thu, 09-Nov-23 10:41:27 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=fb34a247e52dfc493f8c0f1d66c43792581fc646-1699492327; path=/; domain=.api.finra.org;
+      - __cfruid=fd5cffbabeca288af4eae85ad8d4018f4855d3e2-1699524687; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -218,13 +218,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31e7-127c3fbd7571631479638fdb;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb04f-0529c4b05441972630ad79c4;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy8LE9uIAMEmoA=
+      - OIB8dFBFoAMEoJw=
       x-amzn-RequestId:
-      - 2e33e113-8e53-45d4-92bf-f01cd05fac2c
+      - 495ce1f4-a1db-43bf-bcc1-80ca8e24cfbc
     status:
       code: 200
       message: OK
@@ -259,7 +259,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322f9fe9872d0f-IAD
+      - 823545950a7b1bc8-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -267,9 +267,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:11 GMT
+      - Thu, 09 Nov 2023 10:11:28 GMT
       FINRA-api-request-id:
-      - 9bb77afa-694a-4940-9a49-2250d1e88834
+      - 2e11dfca-967a-47a0-844f-a2069c88b26c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -283,10 +283,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=9c_A1r3QS4fXiQOBsk80aayjKkE5G4iSQ36rH62NqDA-1699492331-0-ARogqOFTfOn8/DVtNfdhHpGqj+joD+8jBluoJvbuPzS+XQjj/lfLJ4mnIQ3whTXgWJqL1X03uJVgdqmtd0HmBeY=;
-        path=/; expires=Thu, 09-Nov-23 01:42:11 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=JdWDCgnMvxcrtuyGuCfO.Zn_y9T9gPsnvtxQKqTkwp8-1699524688-0-ARQ3S8Sx4dbLWWY8OU2q3zFQ44cfo0tacSgXYG4jd6Z76lNbBS95V52EwNVt1AEbdTYwl2e/Akv9OfHLeDuwoCA=;
+        path=/; expires=Thu, 09-Nov-23 10:41:28 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=2108ff6155fb9c3866cedfcd0970df5432017256-1699492331; path=/; domain=.api.finra.org;
+      - __cfruid=c60f7158806c9407a58589dc23bc2bb4807f309b-1699524688; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -295,13 +295,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31eb-025754c17c8ed81e29bef9ea;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb050-118e6e6a38f1c1ae1c7dd169;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy82EU0IAMEAvw=
+      - OIB8mEzDIAMEnZw=
       x-amzn-RequestId:
-      - 37bc686b-f5ad-4ebc-a940-5236e151633c
+      - 10a3f6a4-f0e5-40a8-b878-d417b40dfa38
     status:
       code: 200
       message: OK
@@ -336,7 +336,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322faeacd482d4-IAD
+      - 8235459adca71b7d-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -344,9 +344,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:14 GMT
+      - Thu, 09 Nov 2023 10:11:29 GMT
       FINRA-api-request-id:
-      - 3a0244e8-84da-4444-a83c-a856fdaff424
+      - 97b1d6b5-348e-44b0-a5ee-35e9676ea25a
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -360,10 +360,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=1_QHs1hZpeOpYHJd4W6zTXusmVmxj9S8Z2DqFLQQaag-1699492334-0-AY3y7XYrzEiRN4Whzz8PRxqThMNcpcb20DQs9u8TWKTnaTclVKVgYeNjZ42PY3puGFU3mCT6qIzju6/RYIJR1FA=;
-        path=/; expires=Thu, 09-Nov-23 01:42:14 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=oMKiLUcdJ9CNlDaOj6AEFLJ5b2kE3iqOL4ZXuud4UVQ-1699524689-0-AbbaUvYGfiPI9EFgbMV/Y5JHMeI9o1YVc1lE/sOSDfORoOF1Igzb4BrDvGxnBeuQH/QfHg071Ucgq+g3+jNnN7c=;
+        path=/; expires=Thu, 09-Nov-23 10:41:29 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=cef5ff798353aeea8fe7736957011de4dcd4efd2-1699492334; path=/; domain=.api.finra.org;
+      - __cfruid=a025119f3c4a2e993d5505c7f9e53d0550def3b6-1699524689; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -372,13 +372,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31ed-0935f67a5a4f93a562582c88;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb051-5a1a29ec2d4db0de09b06298;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy9OF4XoAMEYUg=
+      - OIB8vFFoIAMEbzA=
       x-amzn-RequestId:
-      - cf211b51-48ca-4cdd-b9c9-c703972af38e
+      - ac03e8f8-b27f-40fb-8ce7-265b3eba17ae
     status:
       code: 200
       message: OK
@@ -413,7 +413,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fb10e9a0a89-IAD
+      - 823545a0993a8ae1-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -421,9 +421,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:14 GMT
+      - Thu, 09 Nov 2023 10:11:30 GMT
       FINRA-api-request-id:
-      - 0dbb793e-07b8-4a64-8448-66df8e63021a
+      - fe37fc15-3e69-467a-8848-b91c2bf2b8b9
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -437,10 +437,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=85bhNDE7nnrNxr4OYjfMudcFSHp0K8UWVlLcwvnb1OY-1699492334-0-AT4KcOn6msy3H6kPrdrPpyQX0VJihaLTEexG6gBGA9GGBuuZk3Du4ph2uCtFNbpePqzwCoetQ93osH1x9X/ZdUg=;
-        path=/; expires=Thu, 09-Nov-23 01:42:14 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=a9.zqJiTeGaurzFwga6so93bWp_RnEGbhhmSS.3WBgQ-1699524690-0-AVT1yAkZoWUV+SJsRxy5ISeWPJhi0A6ICnukDLZ7MCsNK/0plUQTBU9tX7SdXaAZcZ1uoUR4MMz3GqhOnHcURL4=;
+        path=/; expires=Thu, 09-Nov-23 10:41:30 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=cef5ff798353aeea8fe7736957011de4dcd4efd2-1699492334; path=/; domain=.api.finra.org;
+      - __cfruid=9c713e77c15b4dafa31eefdd9ff45aaa47920475-1699524690; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -449,13 +449,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31ee-59de021128050e4500fdcc00;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb052-6e876a3c06909a0557bd7bd2;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy9RFs0oAMEroQ=
+      - OIB85FeyIAMEpVQ=
       x-amzn-RequestId:
-      - ed3e5c88-f10b-4844-b128-02a054d603f6
+      - d3a31e4b-1ebb-4472-b453-d2aae944d8e2
     status:
       code: 200
       message: OK
@@ -490,7 +490,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fc029a50843-IAD
+      - 823545a6893a1b87-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -498,9 +498,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:16 GMT
+      - Thu, 09 Nov 2023 10:11:32 GMT
       FINRA-api-request-id:
-      - 675f7d03-e223-4934-b65d-2dd0819edbf8
+      - a39003ed-6cc7-4bd5-9c2c-243c416281a0
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -514,10 +514,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=yB3myTqsfZyEOaRx4VGeK_kSj7vr0xkkS0bGzUP2AgA-1699492336-0-AYBymAHUbawYuBDDYruosTp35a0aPx50lw04E0meysFtbDSe8vGpRJVUXzuG0+kDrE4G5dyp+iZB46cVKiamFlI=;
-        path=/; expires=Thu, 09-Nov-23 01:42:16 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=7Cxs5yifwQcglWymTJ4_r5N9mj2u8BjJiyTZMH9VxCQ-1699524692-0-Aajv+2qPYRy1fBJDSihJd+v42zKed4ZmaIhPRiT4+zYMtDYiS8UStF3DWfAb2tKHTPc6aWfxNaMUHabAi1nDG08=;
+        path=/; expires=Thu, 09-Nov-23 10:41:32 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ec591f32fd6e0a5eefbaf61fe3bb4266e6131c20-1699492336; path=/; domain=.api.finra.org;
+      - __cfruid=c1914a5fc657f65e169bd469ec7f7655b311f4cb-1699524692; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -526,13 +526,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f0-640753703cd1aa8a233d3a2c;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb054-2da50b483df3969d05b84689;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy9qGjfoAMEfRA=
+      - OIB9LF2CoAMEFPw=
       x-amzn-RequestId:
-      - fd7616f1-7e13-409a-b8b1-ef6ba83f04a5
+      - 97d7c412-c7b0-4d6a-ad12-882ec07bc26d
     status:
       code: 200
       message: OK
@@ -567,7 +567,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fc2cc2e5812-IAD
+      - 823545b1efe28aee-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -575,9 +575,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:17 GMT
+      - Thu, 09 Nov 2023 10:11:33 GMT
       FINRA-api-request-id:
-      - 2c05ec43-15a1-4099-8c32-1c0daa8fa34b
+      - b6f3a7fb-0cd5-4da3-ada9-0724297c8d97
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -591,10 +591,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=k9tYI7SS4E02t4XqDZfXJxYIUV6g7jg.xCswbKp9RzM-1699492337-0-ATuH7jAdEwey5seQfkUKSHIZk+oBfFzRBZOpuyCWCKINYj2VAd4j9x8Lytwb8GbzR95RnU1P4orYiEFIuKgyPuc=;
-        path=/; expires=Thu, 09-Nov-23 01:42:17 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=BA3xnIXtcPbO735Cw2oUZCKTxpii3so3Lp9JMB9HMwQ-1699524693-0-ATYd3g2FkGUrmtWGYzMUWp2AK1EKOxtIJTi5/bc2ukBMXhu0E7xH+tGxOu1yLSzcohlleGVrVE5mMEW7724g0D4=;
+        path=/; expires=Thu, 09-Nov-23 10:41:33 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=251e1bd1519abc04da1823ae6b7402f41454b853-1699492337; path=/; domain=.api.finra.org;
+      - __cfruid=dfd7c572963f75c85c42ef192e763f07f9228aca-1699524693; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -603,13 +603,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f1-114cfcff5c65d85e4562697f;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb054-5a92da9f6fc26020553ef2ab;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy9uGUyIAMEuCQ=
+      - OIB9UGmXIAMEM2w=
       x-amzn-RequestId:
-      - 712cc47d-771b-4e5c-bb39-a9282031e5ad
+      - 023bd278-8b14-43a5-b4ee-dbf4e39bc744
     status:
       code: 200
       message: OK
@@ -644,7 +644,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fc4e977827a-IAD
+      - 823545b7af028adb-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -652,9 +652,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:17 GMT
+      - Thu, 09 Nov 2023 10:11:34 GMT
       FINRA-api-request-id:
-      - 831df212-3bda-4ad8-9ca9-00625b86b43c
+      - f50aa38e-9bfe-413f-b96e-efdfa2aae999
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -668,10 +668,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=pe604RoeJe1SfPl8Me6dTsg1OGI_JeOTNSN3A0232e4-1699492337-0-AYktPKiGAmy/udirlSEPixRCSnxFrV6laHdqK56E0vea0vhyz27YG4TY2RbjRxccl6AM666EfhNUY5nGHbACTF4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:17 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=Ll0LbN.xx4YBe4VR2ot2vuGsqMN.q8ejGrKhCpHEU6I-1699524694-0-AbNsL9JrRSM3iVLGB4+WL7EMi3mnXrPaG4cVdiPlTz7fvzn1daqCygm8nF571D5gGmRBy36wQY+F3vpx4NXGE4g=;
+        path=/; expires=Thu, 09-Nov-23 10:41:34 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=251e1bd1519abc04da1823ae6b7402f41454b853-1699492337; path=/; domain=.api.finra.org;
+      - __cfruid=25ac2669101ff48b06b1be03d731924c89238d48-1699524694; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -680,13 +680,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f1-3950e84c12eb3c9a158a062c;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb055-4a5e5a102427e97752705eee;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy9yEoooAMELeA=
+      - OIB9dFDXoAMEexg=
       x-amzn-RequestId:
-      - 379863fd-86e9-47b4-a942-2d333d6ee90e
+      - 3808a1aa-e50a-4714-9ed6-448c61c7d824
     status:
       code: 200
       message: OK
@@ -714,14 +714,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hV5ii2YruggOShUHcTjJicGYSHIZgvjvrr75XT4g
-        SSicmZ+hzQ/KfKgUxUsDi6Mxw4Co/s8xk+N1qlHA6h7H5UKBL6Xy3F63FLaOo/i75wwWpmm/AwWB
-        ipzejoQ3JAwWdK9N1686RPhefwAAAP//AwBvZJzsgwAAAA==
+        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYVeYotmK7oIDkoVB3E4yYnBmEhyGYL4766++V0+IEkonJmf
+        oc0PynyoFMVLA4ujMcOAqP7PMZPjdapRwOoex+VCgS+l8txetxS2jqP4u+cMFqZpvwMFgYqc3o6E
+        NyQMFnSvTdevOkT4Xn8AAAD//wMAb2Sc7IMAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fc7e8de07fa-IAD
+      - 823545bd88f81c61-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -729,9 +729,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:18 GMT
+      - Thu, 09 Nov 2023 10:11:36 GMT
       FINRA-api-request-id:
-      - 9dc90994-317f-4bc2-8ff7-5f79b513a326
+      - 477c7933-0c24-40c2-9bea-9d4fd48f1979
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -745,10 +745,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=__BONrlAHkNsVFKf4.g4EilBk1.Eu4QGIWD2WStqrJ0-1699492338-0-AbmFTA2wcYrdAJ2/AANKT8nurusG4XFltqEuUvzyYuuIsVTYN2CjqiErvR8R+1aiBBDdpRJIOEbMkEdO21UCbb4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:18 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=FelPvnctGMAN05XUVjxNXWWLfZECAXFTimIH5qT6Vz8-1699524696-0-AU5XImRy4DnSnPm9PbJtPA9CrjdnaiEpb82jaDResIwRpbx1786StkM/2MZQBcY2SBEn0be/eVt51nqpXwMkFwk=;
+        path=/; expires=Thu, 09-Nov-23 10:41:36 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ceaa51537e2660f923336cea388150da055f9119-1699492338; path=/; domain=.api.finra.org;
+      - __cfruid=32e1169363e006dbbf731ad18f0c257a487b7d21-1699524696; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -757,13 +757,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f1-49a46af90fc3685b735f511e;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb057-1ef5abcd4be1cef13035fc53;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy92EvCoAMEaoA=
+      - OIB9wEBbIAMEc2w=
       x-amzn-RequestId:
-      - 07f41fca-b55d-4901-bc18-ba1746a4e19a
+      - 2ac407ff-1e7a-4918-9c83-c86a23441093
     status:
       code: 200
       message: OK
@@ -791,14 +791,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hUuKlWYruggOShUHcTjJiaExkeQyBPHfXX3zu35A
-        klC4MC+hzU/KfKwUxUsDq9c4oO61+j+nTI43qUYBa8xo9KDAl1J5bq97CjvHUfzDcwYL03TYg4JA
-        Rc5vR8JbEgYLBk3f4djhCr63HwAAAP//AwDWmp+0gwAAAA==
+        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYVLipVmK7oIDkoVB3E4yYmhMZHkMgTx311987t+QJJQuDAv
+        oc1PynysFMVLA6vXOKDutfo/p0yON6lGAWvMaPSgwJdSeW6vewo7x1H8w3MGC9N02IOCQEXOb0fC
+        WxIGCwZN3+HY4Qq+tx8AAAD//wMA1pqftIMAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fca1a985a52-IAD
+      - 823545c8c90d8adb-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -806,9 +806,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:18 GMT
+      - Thu, 09 Nov 2023 10:11:37 GMT
       FINRA-api-request-id:
-      - 740bd185-d206-4110-8b77-62e379646d18
+      - 75ab6a9e-0b6f-467d-80b7-468dcf6fc34f
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -822,10 +822,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=K.WUciQwKXsMzQR4MPwxPb8sDr2_aPkHLalVypyCwvc-1699492338-0-AW3w1cSAe14GQv5JscOjwV6PApG0r/TQ2S0bijE8Bo9WcXotFd9i9S92Zn+Os5S7TukSBb6cBgJBKwiPU8vNWHs=;
-        path=/; expires=Thu, 09-Nov-23 01:42:18 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=kUGqrY3gTMYqW09GdHMhMl4p5iCf8deaU7atdAgArX0-1699524697-0-AfwRbja/M96aUNN54fGLUkcqcRkGHS6mzxjR8+X7LOOA5Yqqcov9qIKgkxes+l5mUfsvAOHFwQGV7LIRhF4Bgg8=;
+        path=/; expires=Thu, 09-Nov-23 10:41:37 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ceaa51537e2660f923336cea388150da055f9119-1699492338; path=/; domain=.api.finra.org;
+      - __cfruid=03fd9c06cc57afd88f459d500eb4233a3790bae8-1699524697; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -834,13 +834,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f2-3e61dfc262ee45fa5e044134;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb058-2dafd7421fde541975ff267b;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy96EQOoAMEirw=
+      - OIB95FBUIAMEhMw=
       x-amzn-RequestId:
-      - be18baff-be06-4784-ac81-73425fb22b60
+      - 2d8e22fc-35ed-4455-be1e-101c0771a904
     status:
       code: 200
       message: OK
@@ -868,14 +868,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hXLSmGYruggOShUHcTjJiaExkeQyBPHfXX3zu35A
-        klC4MC+hzU/KfKwUxUsDixpHMwxa/Z9TJsebVKOAxVHrtVHgS6k8t9c9hZ3jKP7hOYOFaTrsQUGg
-        Iue3I+EtCYMF7HHV9aZDA9/bDwAA//8DACHo1d+DAAAA
+        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYVy0phmK7oIDkoVB3E4yYmhMZHkMgTx311987t+QJJQuDAv
+        oc1PynysFMVLA4saRzMMWv2fUybHm1SjgMVR67VR4EupPLfXPYWd4yj+4TmDhWk67EFBoCLntyPh
+        LQmDBexx1fWmQwPf2w8AAP//AwAh6NXfgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fcc68a905ca-IAD
+      - 823545ce88731c5b-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -883,9 +883,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:18 GMT
+      - Thu, 09 Nov 2023 10:11:38 GMT
       FINRA-api-request-id:
-      - cac4a79b-a3bd-4d31-8ab8-d04adc184526
+      - 820b381e-e3a4-4a24-8486-ccbadcac3e9b
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -899,10 +899,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=OAwH9cKTYjadIkaBizcjszkMxiZCmugTtHjGf5WqAJg-1699492338-0-AWjkdoOW8XanrKV0Y4qepIJlSs9B/AkzR5Te/TQv4VqkseQxIcdZIhPgb8AtZPHqwlStSNI4nJxTI62R2ya3L9c=;
-        path=/; expires=Thu, 09-Nov-23 01:42:18 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=oQcpylTTvW4pONkScetkHOTmOjvxMg9f3auNAsp_avs-1699524698-0-AUA3zfT3Zf9oyxYnTKXRDJvaoK6xkklxlg36WdGbEOyycbTNcKcdnxHqP3eD81yQ7hWn7ih/r0LyeV9rxOnLb4g=;
+        path=/; expires=Thu, 09-Nov-23 10:41:38 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ceaa51537e2660f923336cea388150da055f9119-1699492338; path=/; domain=.api.finra.org;
+      - __cfruid=4f5d7eeda26eff1ea5a78c1264f0a3ba3b8c486e-1699524698; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -911,13 +911,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f2-222f66464b245b5b5a81f6c1;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb059-74fbcdff1c1a089a6a5b2bae;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy99Hd3oAMEMcQ=
+      - OIB-CFeTIAMEF5w=
       x-amzn-RequestId:
-      - 08f10ee7-cc60-4fb1-8ce2-2e7e879572e2
+      - 0f8b289f-44d6-4887-8fe3-ba93e30ca74b
     status:
       code: 200
       message: OK
@@ -952,7 +952,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82322fe79e59399a-IAD
+      - 823545d46f5f8ad6-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -960,9 +960,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:23 GMT
+      - Thu, 09 Nov 2023 10:11:38 GMT
       FINRA-api-request-id:
-      - 7f21649c-4b13-4b82-a3a9-d5f432a3ce3f
+      - 001d9518-4e7a-4706-b9f9-76071a0390e1
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -976,10 +976,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=Nk9_zCuTDVq7pMcZi.9aAMJKlZCU9xjx9hGrYoQdp8g-1699492343-0-AcbLHoAHMHPn9Fg4+78iMy9bKx26g6dSHGjElfVMICH9/dQqWicK3As9vCqCHO6AQggeGpWujga7TWAozZWrLuI=;
-        path=/; expires=Thu, 09-Nov-23 01:42:23 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=Oi0Y.plpVpzcnJK43KVvb2SPZHdg28ejGYeZFruet.o-1699524698-0-AaVelWgGwmcleaY0C4JD4VmR1uuI/4sbaH9sI39zlcEpkMdhI1tOP2TRqt+0yQ8nszxjxbBTgFCuObIEJJsbWxQ=;
+        path=/; expires=Thu, 09-Nov-23 10:41:38 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=4a96d5c27fee4aabf45d3dab506e0f84282ecae5-1699492343; path=/; domain=.api.finra.org;
+      - __cfruid=4f5d7eeda26eff1ea5a78c1264f0a3ba3b8c486e-1699524698; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -988,13 +988,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31f7-71591dc21e4c9ea458440919;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05a-173af3237b2fec5a2edc31f9;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy-pFluIAMELhQ=
+      - OIB-LENVoAMEE_w=
       x-amzn-RequestId:
-      - aee82ef8-f351-429e-a93e-9d2bfbf3c1bd
+      - 274618aa-8911-4fd2-8271-716bda0a8223
     status:
       code: 200
       message: OK
@@ -1029,7 +1029,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230038b9d3b5c-IAD
+      - 823545da88e18af1-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1037,9 +1037,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:27 GMT
+      - Thu, 09 Nov 2023 10:11:39 GMT
       FINRA-api-request-id:
-      - afc4e1a6-9c99-4723-aed1-b287682141e7
+      - 2b5275a5-cf7a-478e-aac1-b593739adc37
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1053,10 +1053,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=I3Ndtdn3f6kRaTtFfljZvRJjQdFrKBOzuWF4qSGq95I-1699492347-0-AS+5Y+XgaSeiijCJsgBtvO86UkWyO98qu4zsNdkfaLTwmyX4dGkS3vuWx17Q7wxO1mVVrTwj9lQ0ieZwnuLtJ/I=;
-        path=/; expires=Thu, 09-Nov-23 01:42:27 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=ww3G11BTgdwJEsxF_7vy0cTNGLFVxfduNlPWPCDPMC8-1699524699-0-AVswQVmXEPqDlyV+q7XrZTnEd6xenC+Zj1uk3ItJ+KQP76bEQoM3AHMXqLhgyhskm9Qn8meWZFM9cRtJ2INMoPM=;
+        path=/; expires=Thu, 09-Nov-23 10:41:39 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=2e4ff3e711e8383b9fdcbec6c3b1d9fe0ef2175b-1699492347; path=/; domain=.api.finra.org;
+      - __cfruid=aaf86f7ad8dc07d92343cf5f4bfd4621b40759bf-1699524699; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1065,13 +1065,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fb-60e23f7639b8a3e92940f67f;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05b-1363d0ce5a398ccd60f7a0bf;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_VGsAIAMEKXw=
+      - OIB-VFngoAMEMEg=
       x-amzn-RequestId:
-      - 980f8103-15a7-44be-8c36-69e86592364b
+      - 0a01ccf5-3b26-4a35-b949-6402ab1b80cd
     status:
       code: 200
       message: OK
@@ -1106,7 +1106,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230060d429c19-IAD
+      - 823545e089b41bb0-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1114,9 +1114,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:28 GMT
+      - Thu, 09 Nov 2023 10:11:40 GMT
       FINRA-api-request-id:
-      - a2038a65-1148-408e-9425-e078848faad8
+      - 9a44c9bd-020a-4563-8795-0b9e19ca0c35
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1130,10 +1130,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=7io.8NG8usaPss1vhNYB_SNMFaIVKlNPvJ7dZj.8T.A-1699492348-0-Ad2xIdqzC+nlfRUKtiAaA20qeKTnc4an3eiZDl7klUAOjj9XCeG9fm4YjSNyRdHibFu509QwUXVXejT0ckS3ylI=;
-        path=/; expires=Thu, 09-Nov-23 01:42:28 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=CPb38xCZFx.ROGxQinEO3lE3ZWZqfnAdQBW9YrYuV4k-1699524700-0-AfvPc6W7sVn/iS62eoIcxMge6OgZl20M2QRJUMGGYgzsixvfqXEas5qWStMtPWP9ZpahMdIbnrSqx+3BtNw+I0Q=;
+        path=/; expires=Thu, 09-Nov-23 10:41:40 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=78d5b0996a7d7c85f1df2e4cc531f541bc8b43b2-1699492348; path=/; domain=.api.finra.org;
+      - __cfruid=3f1c16d8bcd367444cb0d77b83f48022cc17b508-1699524700; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1142,13 +1142,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fb-2f3f868e2052e1141f97d257;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05c-667b018f68b124891b690296;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_aFXJoAMEIZA=
+      - OIB-fEsJIAMEaCA=
       x-amzn-RequestId:
-      - e83eb7a1-1b2f-4793-8aaa-2d1c758260f3
+      - 58d61268-c1ff-4fd1-90c1-ddc2a04c8776
     status:
       code: 200
       message: OK
@@ -1183,7 +1183,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230085fb207c4-IAD
+      - 823545e66cd21baa-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1191,9 +1191,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:28 GMT
+      - Thu, 09 Nov 2023 10:11:41 GMT
       FINRA-api-request-id:
-      - 9941500a-1991-4cef-88fa-8a5e0a510027
+      - 64c38217-638a-422a-b212-5c2db8ecf866
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1207,10 +1207,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=kgmdOD7zFR9ZBPn16vyEto3DjJTAku0jxCNQvYIFCuY-1699492348-0-AWS05A+I7EERID6laEvFxAiInwabSOCBy7bKzwbARZtZzyrtHB4HLmJvQ40wz5idUXr3N2Y0gJsbMUiTr3B5hoQ=;
-        path=/; expires=Thu, 09-Nov-23 01:42:28 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=VtL_1WrJSrhdBtjLmA277EX5T.iSCAL0GiKY7teZ8qg-1699524701-0-AZ7cnvSF46aXQlDUnUb+74Qrzwx6yGOk0sR2MNHPLJFnf0CaPBwSgwXoPXRSqB/zFbZTwe3SGvS9vo/TxlzG824=;
+        path=/; expires=Thu, 09-Nov-23 10:41:41 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=78d5b0996a7d7c85f1df2e4cc531f541bc8b43b2-1699492348; path=/; domain=.api.finra.org;
+      - __cfruid=5c3ca74afb000e640a17e6ea753fc984a67e7ea9-1699524701; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1219,13 +1219,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fc-005426d37c3c0a97116346f5;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05d-22ea79246ba7919f04f15359;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_dFsdIAMEipg=
+      - OIB-oH0YIAMEJ9A=
       x-amzn-RequestId:
-      - 0a87c4f4-ccae-4603-9738-af262933caed
+      - 69f88f58-5400-4b85-84f2-ec935b946729
     status:
       code: 200
       message: OK
@@ -1260,7 +1260,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232300b1dc639a0-IAD
+      - 823545ec4d861bd4-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1268,9 +1268,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:28 GMT
+      - Thu, 09 Nov 2023 10:11:42 GMT
       FINRA-api-request-id:
-      - 55a17e67-9e43-47ba-a140-595f1927c34b
+      - 4f080f50-c4b9-4e62-9dc2-b2f4e419d15f
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1284,10 +1284,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=SRmkyldO2R4ZL_NVjr7lQK48MUx4AwvF1wS5P2SG6wk-1699492348-0-AbjC43glsF/L1kaBzQ52zA3hdUEJlD2RRW37g7PPPxNkodvG8Hy46QSO5Wc/yzrS7vRxsD17MvZ48TdGYtVCk/4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:28 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=UOr1R8vMw9b2aJMHHET_Z7eaJBoAsXcq2rScCwbvJmc-1699524702-0-AQX/FzvN8q9E5ouFu6LWoox2fAOm4vnOIfHA2U0ZgmkAJDLjxubaugXzD/79HKUINN66/RMpGyg44JXc8plj1yc=;
+        path=/; expires=Thu, 09-Nov-23 10:41:42 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=78d5b0996a7d7c85f1df2e4cc531f541bc8b43b2-1699492348; path=/; domain=.api.finra.org;
+      - __cfruid=0ed2b0058190ecc9fcf3cb48852e30107b49c1d9-1699524702; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1296,13 +1296,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fc-358113d15994c9c63c558e4d;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05e-77eca03825abd7f328d501bf;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_hH85IAMEihg=
+      - OIB-yHNHIAMETPA=
       x-amzn-RequestId:
-      - c3d66566-138d-47ed-a413-d9e004471eae
+      - 0b3d3d43-d13f-47f6-b144-7f90dafdd261
     status:
       code: 200
       message: OK
@@ -1330,14 +1330,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYU0lcZmK7oIHZQqDuJwkpMG00SSyxDEf3f1ze/2AY6M/kr0
-        8nVeMNGpYGDHFYySba/0oMX/OSe0tIslMBi1GbZ9J8DlXGiu6yP6g6XA7ukogYFxPE4gwGPmy9si
-        0x6ZwICSqmukbloN3/sPAAD//wMAjmT9UIMAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hTSVxmYruggdlCoO4nCSkwbTRJLLEMR/d/XN7/YB
+        joz+SvTydV4w0algYMcVjJJtr/Sgxf85J7S0iyUwGLUZtn0nwOVcaK7rI/qDpcDu6SiBgXE8TiDA
+        Y+bL2yLTHpnAgJKqa6RuWg3f+w8AAP//AwCOZP1QgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232300dafbc3af0-IAD
+      - 823545f28d5f8e87-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1345,9 +1345,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:29 GMT
+      - Thu, 09 Nov 2023 10:11:43 GMT
       FINRA-api-request-id:
-      - 931920a4-88c4-4ed2-87be-9c3a1a1f0fdf
+      - ba9555f0-9b06-4cc3-9c5a-20e8196a6c50
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1361,10 +1361,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=Is8zdK7IeIXV7WIf5CJWygTDaGZZB6d6epcDzN..xQM-1699492349-0-AfdnCqOHECgteX8iZuX82tTG3H6X2FzcNPqpyZXSS3Pl+IXwWhaU567etsQOr30v+0C2+pFp4TQXj64DrQDyJFM=;
-        path=/; expires=Thu, 09-Nov-23 01:42:29 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=6cJwXk45WC_D0b0vF0fspCtyOq6HUoMG5b.z9PHrRZI-1699524703-0-Ae5i8sE6FI8VEghM8av2rUhAkaEVDY+uKKdZNfMquAG9DUrvt/JmqXjyzKYzngGGcCWKjdCxJaY90J3s9OD5NI4=;
+        path=/; expires=Thu, 09-Nov-23 10:41:43 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=a907524387cad6bf4d0171b7c4033a8810583753-1699492349; path=/; domain=.api.finra.org;
+      - __cfruid=31428e28e108d3afd51e75d3545a1684a90e12f2-1699524703; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1373,13 +1373,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fd-4d44b60768521d1f59e7afee;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb05f-1988a36b32d52fbf7dcb952f;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_mFNxIAMEbIA=
+      - OIB-8Gw9IAMEGJQ=
       x-amzn-RequestId:
-      - fe10ed93-2e26-4c05-ac63-7a69f2a34e41
+      - 98bc5ded-46e3-4e95-ab94-2c1b0568d25b
     status:
       code: 200
       message: OK
@@ -1407,14 +1407,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYUkbSxmK7oIDkoVB3E4yYnBNJHkMgTx311987t+gBNjuBC9
-        QpufmOlYMbLnBlaZle5HY8T/OWV0tEk1Mli11koOAnwplea23FPYOYrsH54yWJimwx4EBCx8fjtk
-        2iITWNBS950cOyXhe/sBAAD//wMAoQcm74MAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hSRtLGYruggOShUHcTjJicE0keQyBPHfXX3zu36A
+        E2O4EL1Cm5+Y6VgxsucGVpmV7kdjxP85ZXS0STUyWLXWSg4CfCmV5rbcU9g5iuwfnjJYmKbDHgQE
+        LHx+O2TaIhNY0FL3nRw7JeF7+wEAAP//AwChBybvgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230103e6e28ae-IAD
+      - 823545f8ca358ad3-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1422,9 +1422,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:29 GMT
+      - Thu, 09 Nov 2023 10:11:44 GMT
       FINRA-api-request-id:
-      - f3d1ede4-2c27-46eb-aabb-4e6c8022696b
+      - 979495a1-15ba-4cf8-9863-e2d89d0eee2f
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1438,10 +1438,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=ln_hwW5NZSmCk9LEAWewXtKGJIKb4_ncldNA99DnfCw-1699492349-0-AYSQoLO0RvsNiquXdjWIx12sKCmCeTmEho1As84rWG0zZZuPFHhXDtQhXjC2fMSOCSPjfcE/k7bgVMhq7r3werw=;
-        path=/; expires=Thu, 09-Nov-23 01:42:29 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=DKkgqciUm79.H7e_yFt6a4bWsPbPK_g_o4IZ5IY5Uc0-1699524704-0-AQK9LbIQQXC9wRWFhja8XZUbqYl8y4b2P1nkSqw7Lb13BuWguxV5LMP+t+VsEOz0kg1R/lliiPButScvIyeoQv8=;
+        path=/; expires=Thu, 09-Nov-23 10:41:44 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=a907524387cad6bf4d0171b7c4033a8810583753-1699492349; path=/; domain=.api.finra.org;
+      - __cfruid=a45c76e050bc621f80cae5b3f4df7a250b5d77ba-1699524704; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1450,13 +1450,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31fd-25d45cdc03f81cc04523aed9;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb060-2a07383d44b2761b585ddf20;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGy_qHVcoAMEhUA=
+      - OIB_GHAEIAMEJHQ=
       x-amzn-RequestId:
-      - 650728e9-627b-4c8a-b45b-833d5d5f87c0
+      - deeb88f5-f5c6-454a-850c-1cda56c7661e
     status:
       code: 200
       message: OK
@@ -1484,14 +1484,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMoxC0IhEADg/3KzD+ykErdHLUFD8YqGaLjwInmmoecg0X9v7Zu/6wck
-        C8UL8xz79KTCx0ZJgnRwqK1eGIPq/5wKed7klgQcGmtXSwWh1sZTf91z3HlOEh6BCzgYx8MeFESq
-        cn57Et6SMDhAjWbQ60Eb+N5+AAAA//8DAOuh4puDAAAA
+        H4sIAAAAAAAAA0zKMQtCIRAA4P9ysw/spBK3Ry1BQ/GKhmi48CJ5pqHnINF/b+2bv+sHJAvFC/Mc
+        +/SkwsdGSYJ0cKitXhiD6v+cCnne5JYEHBprV0sFodbGU3/dc9x5ThIegQs4GMfDHhREqnJ+exLe
+        kjA4QI1m0OtBG/jefgAAAP//AwDroeKbgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232301f2e8c05ad-IAD
+      - 823545fe9fd18ae7-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1499,9 +1499,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:32 GMT
+      - Thu, 09 Nov 2023 10:11:45 GMT
       FINRA-api-request-id:
-      - 356ed273-fe53-4298-b313-9a835194e55a
+      - f129245e-9ebe-4d4b-ae79-0de794389533
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1515,10 +1515,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=DjWdcvic3fFbGEnwiAWguJI.MElEf6zkHL5o3GCF2J0-1699492352-0-Ac/41PgdCVfBfJswvn0yfSZ9z9wBuv7weFdABqf4g5IGltYMqjM63oSkVX7wawTraKQT1ynK9uyOa1h4XToImP8=;
-        path=/; expires=Thu, 09-Nov-23 01:42:32 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=92hDgPN_G6bQl0CF_UPM0FBtoimi87Vvwq5iVV8Y29w-1699524705-0-AUpkrX7c4DSNfosOq6EGGJPPo5P4l0LG5xe35Wx7IV0j4Jf90GXs+8TdESbG0fQ9ICpTiWg4Lt9KbNz39qRrMLk=;
+        path=/; expires=Thu, 09-Nov-23 10:41:45 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=737583f165e05239aa1e6edb0fc4ab4e996e2792-1699492352; path=/; domain=.api.finra.org;
+      - __cfruid=ab86a9bade0850434af6b4cdf885d58deafaeede-1699524705; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1527,13 +1527,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c31ff-18c2cacb3970246b45de5af9;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb061-00203e3c1a37dd9f644797ba;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzACHcNoAMEicA=
+      - OIB_PHuSoAMEBMw=
       x-amzn-RequestId:
-      - 49367e7e-702b-4a49-bcce-5b38d5cde6a7
+      - a7114973-6449-45b4-8256-f097475f006f
     status:
       code: 200
       message: OK
@@ -1561,14 +1561,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7m5hXiRWLMVXQQHpYqDOJzkxGBMJLkMQfx3cXN+7/wG
-        SULhxPwIbbpT5n2lKF4aWK0WAy6Hefd/Dpkcr1KNAlajmf3Yl1J5as9rChvHUfzNcwYL47jbQgeB
-        ihxfjoTXJAwWUKHulenRwOfyBQAA//8DAB2gD6iDAAAA
+        H4sIAAAAAAAAA0zKsQrCMBAA0H+5uYV4kVizFV0EB6WKgzic5MRgTCS5DEH8d3Fzfu/8BklC4cT8
+        CG26U+Z9pSheGlitFgMuh3n3fw6ZHK9SjQJWo5n92JdSeWrPawobx1H8zXMGC+O420IHgYocX46E
+        1yQMFlCh7pXp0cDn8gUAAP//AwAdoA+ogwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230222f2b3b00-IAD
+      - 82354604bbfa1b9e-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1576,9 +1576,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:32 GMT
+      - Thu, 09 Nov 2023 10:11:46 GMT
       FINRA-api-request-id:
-      - 89507ef4-84f2-42cf-948a-3394dd76ddaf
+      - 4c0b75ce-5b6e-45ae-9202-d661e402946d
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1592,10 +1592,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=Jy4C6t4zc4vU1X.enbef1mfbcddGoIwhqV4N4e5ZERw-1699492352-0-AWe7FoSOn9w7nXrcOjVW2z04WpzIl6lrl/LAkch6mnQUVifE2zSFKL1EHrgER/MOX6/GmBCONm5Qkpjwjk7y+E8=;
-        path=/; expires=Thu, 09-Nov-23 01:42:32 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=MWstN3ar.oe.zZVt52HvoTV0gnP25aMzL4b1T2sj13U-1699524706-0-AWt9rFUwIuLGODFADEGiKeTCph5j3eE3F/PyMKTrDMprCN8XdkUSvWLTCcBY5M3sRaefrW9+BXyDnooMphxWJy4=;
+        path=/; expires=Thu, 09-Nov-23 10:41:46 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=737583f165e05239aa1e6edb0fc4ab4e996e2792-1699492352; path=/; domain=.api.finra.org;
+      - __cfruid=c0ff44eb91fe528e039155137c71ec74bfbf2862-1699524706; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1604,13 +1604,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3200-67064b5a1124536c7f908b21;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb062-1d0e69ed2e1cd07304126263;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzAGFHkIAMEE_w=
+      - OIB_ZEI2oAMEfPQ=
       x-amzn-RequestId:
-      - 6450b527-091b-494f-8518-83e3842a9d80
+      - 9238b878-9c12-493c-b6b3-b931f59afb1a
     status:
       code: 200
       message: OK
@@ -1645,7 +1645,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232303e6d2b82ce-IAD
+      - 8235460aa9b71be7-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1653,9 +1653,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:37 GMT
+      - Thu, 09 Nov 2023 10:11:47 GMT
       FINRA-api-request-id:
-      - 3409db52-8854-4d0d-8057-8bb341ffd3d6
+      - 5aa7c1a2-bf29-4f03-9283-389642b079be
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1669,10 +1669,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=DAOKqvZdOf3ChvteraOMQOf3QRfJPyKHY0MNkRXaYX8-1699492357-0-AfI1BCfpHdOu07XKzMcgGi10VHdYWV3rJuYAmQkNcZcnT+hZlmpGj9rMTkX4RC3XUhJtJLXJfEtSENTKzzSciKs=;
-        path=/; expires=Thu, 09-Nov-23 01:42:37 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=gYCwFlUm4f1C08TrKEyKQ7g.3imJ4UW.dDDF9HdK9Ow-1699524707-0-AW55WPICdzLYDHwyaJJOi2ZMQ1fZ2Wk1gaQxlGF5dqUXBat+qq1sSVhsnZrM64aKQshgLfx/oV0lpDOf3P/ivYU=;
+        path=/; expires=Thu, 09-Nov-23 10:41:47 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=f119354a4e7a5f6fbf97cc442326ea57d776f185-1699492357; path=/; domain=.api.finra.org;
+      - __cfruid=62631d61a622916f0e95c8e00212e60ea26ee253-1699524707; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1681,13 +1681,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3204-605391317c70c6e42f03b5b7;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb063-261434b6742aff71251d05ed;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzAzHeYIAMEc0w=
+      - OIB_iGfTIAMEtxA=
       x-amzn-RequestId:
-      - 5ef3a0b7-408b-48bc-bf5a-e273c4afad7c
+      - d01bf5a3-0269-4cbe-a525-b4fafe38df59
     status:
       code: 200
       message: OK
@@ -1715,14 +1715,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYXmlNhmK7oIDkoVB3E4yYnBmEhyGYL4766++V0+IEkonJmf
-        oc0PynyoFMVLA6vNahyWiOr/HDM5XqcaBawe0IyowJdSeW6vWwpbx1H83XMGC9O034GCQEVOb0fC
-        GxIGC9jjoutNpxG+1x8AAAD//wMA+jRIDoMAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5heaU2GYruggOShUHcTjJicGYSHIZgvjvrr75XT4g
+        SSicmZ+hzQ/KfKgUxUsDq81qHJaI6v8cMzlepxoFrB7QjKjAl1J5bq9bClvHUfzdcwYL07TfgYJA
+        RU5vR8IbEgYL2OOi602nEb7XHwAAAP//AwD6NEgOgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82323040cdc01fe2-IAD
+      - 82354610dca81c67-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1730,9 +1730,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:37 GMT
+      - Thu, 09 Nov 2023 10:11:48 GMT
       FINRA-api-request-id:
-      - 1d3cac79-8bf7-489b-8e08-34325c5d0e74
+      - 1cebfcea-e81e-4716-9b6a-6ed39437b75f
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1746,10 +1746,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=zeQHWM50TIwuJYeuJ.CJY3lnHy5ZhrJ78S4p4n26pjA-1699492357-0-AUFX95TQ1OHE2tFq3/fP5XW0KAPTVXA11t+V6RPgYB9BXLTgDPyiEQMKItRYzjwP1i+iSms/jcvsEVWz9HmTnIw=;
-        path=/; expires=Thu, 09-Nov-23 01:42:37 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=xEQtSrTcuOzBd80u1fJU0PfzFSIHt2SK7LbjvpYQW1s-1699524708-0-Afa4R3oDgvHSptJmuRaZDjW7EUPZ0gyIvQs9grvp6WNosiNNR+sjfc4CJRdhRdYBvhAFljyg2GRPbSIWbd3Gx7I=;
+        path=/; expires=Thu, 09-Nov-23 10:41:48 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=86ddedcf1189cbc9bf57b29b320bb09a68fb655a-1699492357; path=/; domain=.api.finra.org;
+      - __cfruid=92ce87031da1e951584426f225e1d493a7267183-1699524708; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1758,13 +1758,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3205-739d96535bc94a587d16e5fe;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb064-590df2aa07bf239b3d80b52d;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzA3F3ToAMEd6A=
+      - OIB_sHf2oAMETTg=
       x-amzn-RequestId:
-      - 4250600e-14f4-44e6-abf3-2c69e59ac00c
+      - 3ca1f0ae-9d14-42d5-b1c9-a5568e49d345
     status:
       code: 200
       message: OK
@@ -1799,7 +1799,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232305c6d2b177d-IAD
+      - 82354616ba728aed-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1807,9 +1807,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:41 GMT
+      - Thu, 09 Nov 2023 10:11:49 GMT
       FINRA-api-request-id:
-      - ad53f653-3f36-42f4-8290-8e7c828fc515
+      - d01b35d3-48e2-4750-8733-290909f77923
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1823,10 +1823,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=A9Hg3aVQ75WXyJU1c03194D_9dThMpf8hPT8njp2hv0-1699492361-0-ASAttG8yrJXqLBBnz81Vm1VXlDI12X7Z0lz4jWgiVpJvu7i+jHXUZEdF0PePi2x1ko3GBzQ+dzva2+P6c/yqMk4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:41 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=p.coOysEEmctJbiCsLQmq6wiTl8JIxJxdOoXSoekFtc-1699524709-0-AQ5HTvWOua2qYqHQRnCWSWlDovlbKy9kG0HNQkUnwDkTWT88DamOcbeKdJslJZu+UokAB9Z3jlbrfJOhDDE9ank=;
+        path=/; expires=Thu, 09-Nov-23 10:41:49 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=be20ec0dedf7cded021121e08d32411ef9d0d3d8-1699492361; path=/; domain=.api.finra.org;
+      - __cfruid=9508c1c0fc80725e47f0ff219029556ec9e77572-1699524709; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1835,13 +1835,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3209-398930e4016b762d6bd51c86;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb065-3e72901b68dfaa070a65cb9c;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzBkFm_oAMEK9Q=
+      - OIB_2Ew-oAMENdg=
       x-amzn-RequestId:
-      - 30c54bd4-6413-441f-95ea-8643ac1062b4
+      - 5280853b-2586-46fe-b74b-a9f10c2f9b80
     status:
       code: 200
       message: OK
@@ -1869,14 +1869,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYU0aYpmK7oIDkoVB3E4yYnBNJHkMgTx311987t+gBNjuBC9
-        QpufmOlYMbLnBrYfjVGDWov/c8roaJNqZLD9SptRC/ClVJrbck9h5yiyf3jKYGGaDnsQELDw+e2Q
-        aYtMYEFJpTtpOi3he/sBAAD//wMAwKeSi4MAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hTRpimYruggOShUHcTjJicE0keQyBPHfXX3zu36A
+        E2O4EL1Cm5+Y6VgxsucGth+NUYNai/9zyuhok2pksP1Km1EL8KVUmttyT2HnKLJ/eMpgYZoOexAQ
+        sPD57ZBpi0xgQUmlO2k6LeF7+wEAAP//AwDAp5KLgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232306b483f0802-IAD
+      - 8235461cbe7d1c4f-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1884,9 +1884,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:44 GMT
+      - Thu, 09 Nov 2023 10:11:50 GMT
       FINRA-api-request-id:
-      - 4f0db2d8-117b-4d64-bddd-e4aa23ed46e7
+      - 4b4e91b7-8e94-4b5f-a080-710ecd505282
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1900,10 +1900,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=epTs_tsgBuVWwSUcqWAqspARu_6wtT1ITLTTfsQN9yQ-1699492364-0-AcZijLNDHzg5Bdgs/YVa+06I7mA8X0VdbIA2NasyNMQOqGnFxaW7RAajSI0SyFFo3VO98XECGVK64ugLinyTX+o=;
-        path=/; expires=Thu, 09-Nov-23 01:42:44 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=qRU4K7QdAWICLqvGQxk7WnPrpC7_ropVya0263pT5s4-1699524710-0-AWkLOqBFk+Hq+jNW9tohRy2NubhOO69aYgBwFKcRnNVEkhZoymLwgo19v2gNznAXuj1Wi1MdHagIgn0lci46U9U=;
+        path=/; expires=Thu, 09-Nov-23 10:41:50 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ec87668b2145bb89e52da9cbfdbeab858b9dd025-1699492364; path=/; domain=.api.finra.org;
+      - __cfruid=6b82d02b9f4feed4ea2ba9d51e19f05199e634ef-1699524710; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1912,13 +1912,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c320c-3699777a7a87c7fd5bd60bbe;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb066-0a90219567cf9af051adb64a;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzB9HUIoAMEYNA=
+      - OIB__GrMIAMEPlg=
       x-amzn-RequestId:
-      - b9db24d0-0edf-48fd-afd9-ddd862cb4177
+      - 4f599143-9ff7-4923-80f0-c041f5d34f78
     status:
       code: 200
       message: OK
@@ -1953,7 +1953,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232306efa373aea-IAD
+      - 823546229e568e92-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1961,9 +1961,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:44 GMT
+      - Thu, 09 Nov 2023 10:11:51 GMT
       FINRA-api-request-id:
-      - 611dabce-6ef2-48ef-9cb8-7854a4d5b3f3
+      - fd77fc72-86fe-4646-9b99-ac5e44166f32
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -1977,10 +1977,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=0a5_MuWn8nMg7XDo6mQYEmuZ_1l3OtP6G0kXUA5VKUk-1699492364-0-AYcDfgl7QZYUFXYBhxEaOc01P9KMTOelE/GghYyK//LUew25jr8o6U0Oi93KssNxXA2+dBgM3BgafGLYtuc6ufI=;
-        path=/; expires=Thu, 09-Nov-23 01:42:44 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=tDngqmurvKCIv9BVnt50flhdVm0_mJ1ep41maeOt1jc-1699524711-0-Adp2hIqOS8DtMGvRZ1YLglLJaIjxGBZlIPPcmh/p5t5saBrepTWzo6CwxwWG6DTkcHoQW6VjIjqoMInlDAkW+L8=;
+        path=/; expires=Thu, 09-Nov-23 10:41:51 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ec87668b2145bb89e52da9cbfdbeab858b9dd025-1699492364; path=/; domain=.api.finra.org;
+      - __cfruid=a647d6e448ef64d1533223c3efe317402a48f075-1699524711; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -1989,13 +1989,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c320c-7ea455947e0ab06c51fedfc7;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb067-39e9ab292325697e2eb05273;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzCBFQ4oAMET_g=
+      - OICAJEKdoAMEXRg=
       x-amzn-RequestId:
-      - 44e654ef-13a2-4625-aeb2-50c9320ac8b7
+      - eece6886-1f91-4830-9911-27c6c8fa0a56
     status:
       code: 200
       message: OK
@@ -2030,7 +2030,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232307e0e001fee-IAD
+      - 82354628cc7e8e8a-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2038,9 +2038,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:47 GMT
+      - Thu, 09 Nov 2023 10:11:52 GMT
       FINRA-api-request-id:
-      - 73dbec26-1d9b-4a51-b389-32344d46d86b
+      - c3a1c492-c54c-436c-9393-cabb3b679c04
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2054,10 +2054,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=unDE7Tf.ol1sk.Pskj7JE7h9BwRcmbqayDGEGS5ldfM-1699492367-0-AcAH9SevUFY/S3TekVP0Jrf1+0C682Ku1IyBY+FGa3qKyzTMURUKAc1T+1b4of0oqyMdKde+ZMqYvpcVlkhqZf4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:47 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=8MiF9zqidSsByi50PYDnkR1w0yWLWVpnFtbnczbA5Uc-1699524712-0-AdPlfwsGKlrkjaccelZ3C+pOHntn5l89Jzcoc9mt68570zgEZAO/QF+nUUi/Ph8PkZc5rZ1Und4YlMHiNea8ZoM=;
+        path=/; expires=Thu, 09-Nov-23 10:41:52 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=c7ab0b206a99a358bdd6c803e49d814605299d7c-1699492367; path=/; domain=.api.finra.org;
+      - __cfruid=f95b062000c11dcbcb066e8518476247f7e38f34-1699524712; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2066,13 +2066,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c320f-28f808de4af72cc4498e6ecb;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb068-3bbfdccd2c4dad9d005f2f30;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzCZEONIAMEQpg=
+      - OICATE5DIAMEd6Q=
       x-amzn-RequestId:
-      - 82d97675-8e21-46af-9c15-b8deab8396a6
+      - 4142145e-1cd7-4f08-a43d-e2cb4129a65a
     status:
       code: 200
       message: OK
@@ -2107,7 +2107,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82323080997e3879-IAD
+      - 8235462ecf441b98-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2115,9 +2115,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:47 GMT
+      - Thu, 09 Nov 2023 10:11:53 GMT
       FINRA-api-request-id:
-      - 0364adcc-2dce-4e27-a196-cefb42e2d0fb
+      - 7f8a586f-2da6-48c1-8b13-81c9d427db67
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2131,10 +2131,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=OylAzyxqOvZQJG8zLm2CD_0MTWH4VJb67xqFbnRlWvY-1699492367-0-Afl35RyXwqLquu3offYg3IOLpwDmZABu9S/19b/usdolS9ZrftL+WUdLbmqVAf4SW6HDNAqHXyiZM8zRZMbxSjc=;
-        path=/; expires=Thu, 09-Nov-23 01:42:47 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=GdEV9tjSA1U9ztFye99BgKfgtcCP1DUTXie4Xp.UM9A-1699524713-0-ARA8VDOF9G7NtHFy/5lrUlP2P8DqU75bnkgnCzfcbndKgvrnFSrgDM7tk47eu2vEg2+Pvni/bmgSQpkzMc6vLyU=;
+        path=/; expires=Thu, 09-Nov-23 10:41:53 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=c7ab0b206a99a358bdd6c803e49d814605299d7c-1699492367; path=/; domain=.api.finra.org;
+      - __cfruid=c32d45f02330e2981e0eebe454cec37f1351916a-1699524713; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2143,13 +2143,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c320f-7de3e1a6761ca64c2760bc41;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb068-68852bea0cb7e989624d7e87;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzCeGTWoAMEohQ=
+      - OICAcFBYIAMEMAA=
       x-amzn-RequestId:
-      - 583c4bba-0c52-44ed-973e-93481f8db9cd
+      - dc4f23d2-bc91-43bc-9771-9797b675b635
     status:
       code: 200
       message: OK
@@ -2184,7 +2184,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82323082de5b3b0b-IAD
+      - 82354634cdfb1bc8-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2192,9 +2192,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:48 GMT
+      - Thu, 09 Nov 2023 10:11:54 GMT
       FINRA-api-request-id:
-      - aa188f42-00cd-4c92-9c90-b02acf931906
+      - f4ee0a3e-1e20-4312-b387-b944b9d81a14
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2208,10 +2208,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=3v6wtIuyELAq35nrN8h6Uh1EWzVJhJj8yoBdD6uNeXo-1699492368-0-AQri+pBN9n+y0XCDFO1tsQOCVLwen2Whd3SxsUBCzwadJguGFG35+VcJrchGjdLegpQlECtCM0wGZ1uuWSMofLw=;
-        path=/; expires=Thu, 09-Nov-23 01:42:48 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=c5JHg.1gWDQJbnqiJP9hK4ENBvQ55Biez.nz0spmCZo-1699524714-0-Aavpu0h3erpmfCPJCz+ml0uUX6FwD2cUjQb0JPzSVNgLgEMO1ITrEzK3qPJM/B1ENulhXQ9dTgLyygnDqnspbkQ=;
+        path=/; expires=Thu, 09-Nov-23 10:41:54 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=25e99a13bd3a26643f3f816c98e84b18efdf8238-1699492368; path=/; domain=.api.finra.org;
+      - __cfruid=b8fe82bdc1d45ceeb387597f0a4b661a55ed0f2f-1699524714; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2220,13 +2220,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c320f-51bfa5b84a23a55f63941641;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb069-7a69ffcd4aaaaeed7371d0e6;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzChFqQoAMEY5Q=
+      - OICAmEtmIAMEflQ=
       x-amzn-RequestId:
-      - c967b0fa-a0c1-47f5-a89a-1424653e3fc3
+      - f34c80e7-2ea6-4f32-8852-d1bd5e75cf99
     status:
       code: 200
       message: OK
@@ -2254,14 +2254,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKMQsCIRQA4P/yZg88Myy3o5bghuKKhmh44YskT0Ofg0T/Pdr65u/yBk6M4Uz0
-        DG16YKZDxcieG9he90YasxT/55jR0SbVyL+wWispwJdSaWrzLYWdo8j+7imDhWHYjyAgYOHTyyHT
-        FpnAgpJq0UndKQ2f6xcAAP//AwCNyBsrgwAAAA==
+        H4sIAAAAAAAAAwAAAP//TMoxCwIhFADg//JmDzwzLLejluCG4oqGaHjhiyRPQ5+DRP892vrm7/IG
+        TozhTPQMbXpgpkPFyJ4b2F73RhqzFP/nmNHRJtXIv7BaKynAl1JpavMthZ2jyP7uKYOFYdiPICBg
+        4dPLIdMWmcCCkmrRSd0pDZ/rFwAA//8DAI3IGyuDAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232309e6d143b7e-IAD
+      - 8235463b1d9f1b87-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2269,9 +2269,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:52 GMT
+      - Thu, 09 Nov 2023 10:11:56 GMT
       FINRA-api-request-id:
-      - 5e1d9a53-8b55-49b6-b1a1-ac843d020e75
+      - 64096ab8-f0a0-4e31-90de-52627d2e3f55
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2285,10 +2285,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=AyGDmSRj8CuMwVzjLvSvu1zu1zgUhvjxccJL6IDglY8-1699492372-0-AekJf9+QOechB4txQ2RTrZ4ihnkIqyQtvoIgNpbfwF+I0deP6vwGaoHNbJ7OFBUpWM0zYwD+Ys0J66hOlqgPjo4=;
-        path=/; expires=Thu, 09-Nov-23 01:42:52 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=xVRoiz8a3lj_A5pVWW7VpMXXYR5wJHLKd9U_SNscL30-1699524716-0-AXoxPaqLksshK6Ax9s64M7JlCfXYydeqnFvSe3BE3sR6SVH0ORqubYG6/nvoIX+T3MYl8M9Nx+olIPEiU0oyZTc=;
+        path=/; expires=Thu, 09-Nov-23 10:41:56 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=805ac4bfc6750d52b36b68e2e68fad50975028a9-1699492372; path=/; domain=.api.finra.org;
+      - __cfruid=0b5cf4aa5b378225a1a32a7ef202b115f552a666-1699524716; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2297,13 +2297,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3214-29a5f4813d1e2d6f2f154d08;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb06b-5a0978ea632a7bb5547c74d2;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzDNFttoAMEcEg=
+      - OICA4GqOoAMEqgQ=
       x-amzn-RequestId:
-      - 39fc1242-219c-45e1-96ea-aa4bec57d36a
+      - 157ee665-96a0-44c6-bd0c-086c61bcaa29
     status:
       code: 200
       message: OK
@@ -2331,14 +2331,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQ7CIBAA0H+5mSbQilK2RhcTB001DsbhDGckIhg4BmL8d1ff/C4f4MQYzkTP
-        0OYHZjpUjOy5gVV6NMYMWvyfY0ZH61Qjg1VLKUctwJdSaW6vWwpbR5H93VMGC9O034GAgIVPb4dM
-        G2QCC73sh04uOrWC7/UHAAD//wMACqOxYYMAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxDsIgEADQf7mZJtCKUrZGFxMHTTUOxuEMZyQiGDgGYvx3V9/8Lh/g
+        xBjORM/Q5gdmOlSM7LmBVXo0xgxa/J9jRkfrVCODVUspRy3Al1Jpbq9bCltHkf3dUwYL07TfgYCA
+        hU9vh0wbZAILveyHTi46tYLv9QcAAP//AwAKo7FhgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230ad3fcf0608-IAD
+      - 82354646af058e8a-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2346,9 +2346,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:54 GMT
+      - Thu, 09 Nov 2023 10:11:57 GMT
       FINRA-api-request-id:
-      - 9fc3deb1-94b1-4597-ac02-e6f0c892cf97
+      - 2aa8c081-7449-41f6-aa6a-745204b1300e
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2362,10 +2362,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=_yj6_FySmpQLKvIwcS2kYkZLNqicvJbBbpCTV8IQTwU-1699492374-0-AQtqCSvqD57R4QeuAi82vfaDvb/us7HgVlLd89ZjepZIk1cKNtf8vqrArp8VZeiKb1S/FyCTIF+a2e5Wq116FYQ=;
-        path=/; expires=Thu, 09-Nov-23 01:42:54 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=YFqCJVJRZeF.bhkFCvaogvLCKKCPqbF6nCeMq4PNRPM-1699524717-0-AfbK3fXnntKhqbJHkzqC4i2ta9bZVrvjQK8nSDylKfQ4DIJWLSpq/LeRghF0vhT3yk+dSUowyDidnHmQ8VSzaoc=;
+        path=/; expires=Thu, 09-Nov-23 10:41:57 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=db81f16717b96fe9274095fed58e851b0436babb-1699492374; path=/; domain=.api.finra.org;
+      - __cfruid=b0b149ec32c4778a89e7d97791314d4d8f252d1a-1699524717; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2374,13 +2374,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3216-34c35c156ed536ad0e387ea5;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb06c-5bb29121160a2455288c6d01;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzDlHDmIAMEJjg=
+      - OICBCFUUoAMEYIQ=
       x-amzn-RequestId:
-      - e362109e-3ec3-4a23-8154-27568d17d05e
+      - 039a2937-15a2-4514-a75a-c2f549691277
     status:
       code: 200
       message: OK
@@ -2415,7 +2415,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230bc0a689c55-IAD
+      - 8235464c7f851b82-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2423,9 +2423,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:57 GMT
+      - Thu, 09 Nov 2023 10:11:58 GMT
       FINRA-api-request-id:
-      - 098d487d-f27b-4f48-901e-c0879e9b192a
+      - 28db05d6-84d0-46a9-b05a-208cc0434d12
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2439,10 +2439,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=0C.Fwbp2e6Pb0wrroTh.XTITrjYW5NeaEiiLUshV60c-1699492377-0-AcCkfIOfE7xLT+QnZnR6Gupfepg+mRsT4t/f1wDhOLAAhiBlZcMGw4+KwymcRsSQIvhkOjyCIFY9EJBTmUafgcA=;
-        path=/; expires=Thu, 09-Nov-23 01:42:57 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=otVcPz2NVYjriX6EB.2g1lc3UTjcNsG3yKCP.ZwbTFs-1699524718-0-AWirAO7uFSc6UrFlnaYsjS2tO5oy9v1W5EX7/AkNxzzxkKivrrDI3+rctz4TKQg2jqQxL8IF0xtkZhA3EjeJiek=;
+        path=/; expires=Thu, 09-Nov-23 10:41:58 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ad2fc9d1260e55a29a26e168b693424e41065d85-1699492377; path=/; domain=.api.finra.org;
+      - __cfruid=77cee23eabb41c70e10c38e3b6d45ba5bd0009aa-1699524718; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2451,13 +2451,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3218-0485392b129be98666d757c6;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb06d-1c3ff1ca14d814a73b055b60;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzD8FSpIAMEOjA=
+      - OICBMEoQIAMEAaA=
       x-amzn-RequestId:
-      - 1f81d8e3-74e7-45ba-940a-d6ce0654479f
+      - e815b38a-ad24-429b-a951-ef4ad50b254e
     status:
       code: 200
       message: OK
@@ -2492,7 +2492,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230bf0c1b2060-IAD
+      - 823546529c738ae1-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2500,9 +2500,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:12:57 GMT
+      - Thu, 09 Nov 2023 10:11:59 GMT
       FINRA-api-request-id:
-      - 9ae3aed0-1b0c-495f-a30c-2c70b581ef1b
+      - 12567cfd-742d-449b-b2ef-d1675c2a524c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2516,10 +2516,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=iKpVtVNC4oBI_5GofreYH6lIXr43Gd86mo1A5Gj3W2A-1699492377-0-AbCWMBYPG8RIGO2KlZzCUvXu8QTM5CqgyY3lMtpNiPp49aNH2Q4tlcHDVRfIjtkwGPs/0FLu6QLNLdIccRatdf0=;
-        path=/; expires=Thu, 09-Nov-23 01:42:57 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=v6dFm.AlbebcpV_HNIVtmNid.gYaRx91pR3zrqSYuKQ-1699524719-0-AfTwUQDk7A0SnqNKDJRqemX5vlB1KIBMRYji4txigwobg8HXy7H3aSFXOUwpyga4pqayt56RLmNWsbZ91fX8ufY=;
+        path=/; expires=Thu, 09-Nov-23 10:41:59 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=ad2fc9d1260e55a29a26e168b693424e41065d85-1699492377; path=/; domain=.api.finra.org;
+      - __cfruid=74d9f65c8aebf388e1fa1d02c52700c209b5ae62-1699524719; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2528,13 +2528,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3219-298898493af808a104c07ed0;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb06e-4423f5ae2f89b2114fb84b72;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzEBHWwoAMErUw=
+      - OICBWFowIAMEGNg=
       x-amzn-RequestId:
-      - 54157c2e-aac5-47dd-97c6-9d69d1328071
+      - 1443c2f8-8148-40a2-9b60-d23079007e62
     status:
       code: 200
       message: OK
@@ -2569,7 +2569,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230dd69df6906-IAD
+      - 82354658d85a8ae2-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2577,9 +2577,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:02 GMT
+      - Thu, 09 Nov 2023 10:12:00 GMT
       FINRA-api-request-id:
-      - 817e9c3b-c581-4d19-a2b2-007ac48a3a59
+      - aa8616a9-134c-4a59-a144-c204f092e843
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2593,10 +2593,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=K_Hqg1NaZdJXeEyrLWi2Flb8qZ54rvRPqVV9wjUnlsY-1699492382-0-AQDXUEvbySvTLbe1l/j+WbhDk9MIPR1yzJWwkx4CoyLWs/7aEcS493jzcsLFJp0kWGzP3UOEPRkraYMD79tvEaE=;
-        path=/; expires=Thu, 09-Nov-23 01:43:02 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=n8.et4Rl00qp8IBYQTV933buktWpVB8D6czK0aHASz4-1699524720-0-Ac8+MJLSeckva3K5po26F1vUtZWvsiU0R2/s6YQxeh2QFhUBBk1VaQ3WxRfN9fkDMcY0WSD26k/SZmiJsU2zYAo=;
+        path=/; expires=Thu, 09-Nov-23 10:42:00 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=f43da103255259b1fd7dc8bbb00217e32f54a1a7-1699492382; path=/; domain=.api.finra.org;
+      - __cfruid=7e79c74e553677c7fdea6e2b0f9568c270059cd2-1699524720; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2605,13 +2605,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c321e-351453973ad214fa58d9d147;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb06f-7e84b87545c54bed2c95a33f;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzEyH2iIAMEfPA=
+      - OICBfEUsIAMEfwA=
       x-amzn-RequestId:
-      - 0e09c22c-706f-4bcf-8fb6-ea255c617b49
+      - 82f5d727-6254-48ad-b1ff-400338297002
     status:
       code: 200
       message: OK
@@ -2646,7 +2646,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823230fb3d4a56e6-IAD
+      - 8235465ed97f1b98-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2654,9 +2654,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:07 GMT
+      - Thu, 09 Nov 2023 10:12:01 GMT
       FINRA-api-request-id:
-      - 44d55b1c-1393-48d1-9dcf-8828d2bfde70
+      - 49c80926-1c27-4e06-96ea-48ec445bd0ca
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2670,10 +2670,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=gvsOJC32zvG9ku8LjmTTP5YvFzC0pvoUY0LcVZtqxLM-1699492387-0-AWL6JCrZYH9+/rimus0kAGpZhniDp/xdQGf6Wnvhl8iAsYPBI1UZ0Ba1tTPEdjkb+rl8qMKVjYx4U9mcBv4MoyI=;
-        path=/; expires=Thu, 09-Nov-23 01:43:07 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=l52JTvM5Gwk3QQ9Pf1xzDJmsGMMNkkhxao4zI4olawU-1699524721-0-AQl3A4djTt0A7CjEfR2p9WBhvXceicJ3Ddx04E1HdAtdRfhOR1l3tEhslmVwk6U9D3ZQ0fEmUZ2JRnT5gp17zfs=;
+        path=/; expires=Thu, 09-Nov-23 10:42:01 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=4a9cdc94560a51787e493bfc960405964727cfba-1699492387; path=/; domain=.api.finra.org;
+      - __cfruid=88184a79d607e4a69239786976ec7f41911aadc3-1699524721; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2682,13 +2682,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3223-17d8ab6d7dcce57062991b14;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb070-594c0e5e069eeccd02bb1981;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzFiEH3oAMEqfg=
+      - OICBpHNtIAMESAg=
       x-amzn-RequestId:
-      - f01be8ce-e07f-463f-b58f-6b5cc45ffbbc
+      - 24dfdc25-b6a5-48d5-9dd3-88d231614e89
     status:
       code: 200
       message: OK
@@ -2723,7 +2723,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232310b4f112d15-IAD
+      - 82354664caf71b64-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2731,9 +2731,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:10 GMT
+      - Thu, 09 Nov 2023 10:12:02 GMT
       FINRA-api-request-id:
-      - 89bc460a-343e-4cad-84ff-8264d2dcdba5
+      - ac03d22e-833f-4e25-b499-5d91d4ff37da
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2747,10 +2747,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=whBibE3wnbEeFISpTWo0UUN.FtkVK3P3NMmc9Knxn9A-1699492390-0-AV8WepIhvZpYO757+J1gof1LYCX+y2+V/iQYmZG7Ol7170ogeLGfRsOMTM35zkijhG2gqulEoP8PQwYDCqMaCL8=;
-        path=/; expires=Thu, 09-Nov-23 01:43:10 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=Kh0v_aX3CTedzKvKHbZ8Pf9jPGOV4SYKCiq2OtnWXwI-1699524722-0-ATEN2whergiVg9Qk1ZcqEgHSAbjReQc7FO/ACHn/Aomityn11uUapxgowhTHZxHKFycpw3EOYyLiib3JjMBpf+w=;
+        path=/; expires=Thu, 09-Nov-23 10:42:02 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=e67ea17382a50033274a43ac1f7feaae29c2c99c-1699492390; path=/; domain=.api.finra.org;
+      - __cfruid=5f8373bc29aa18381a495a9b933532ba5fcc6bbf-1699524722; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2759,13 +2759,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3225-37d11ccf60263d88376ad213;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb071-6f50e3cf6428559a6b52b087;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzF7Gh0IAMEJ9A=
+      - OICBzFAuoAMEB4g=
       x-amzn-RequestId:
-      - 0c998aca-4506-46b7-855d-8dc8fca8fb5a
+      - 81ee42cd-2816-4086-9542-58aa8974e62d
     status:
       code: 200
       message: OK
@@ -2800,7 +2800,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232311abc1581a5-IAD
+      - 8235466ade651be1-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2808,9 +2808,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:12 GMT
+      - Thu, 09 Nov 2023 10:12:02 GMT
       FINRA-api-request-id:
-      - 0095d796-390f-4df9-844b-f15c90f2dc34
+      - a927f07f-eac9-4363-b22b-1d918d67a569
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2824,10 +2824,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=_zZgawgdOGyK0OlCaPTGWRlHtKVqW.0hBjO95FraVPU-1699492392-0-AT0ZIBuYg4f00lrIw/WaruBI3Qbq6r5RUbIWU26yfW5v2Ds1vNaLkGW4T3bUci41+UBZnP3qjVSENuTDOTwrEH0=;
-        path=/; expires=Thu, 09-Nov-23 01:43:12 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=vkHOHZ.D9DO6RJZ6jMDM4tZkVvJJILp0H1mtFoFvjHI-1699524722-0-AdmZDBdHom/g9UiqXi9vCgFKaTO3px6bOPqnFxWljS0JImW+9BCH4CERT2/Tal2xPyP/vMonYJBl8cGTj0jZUnE=;
+        path=/; expires=Thu, 09-Nov-23 10:42:02 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=3a134d17d7de4a0974a8ffac8624d1d317abd785-1699492392; path=/; domain=.api.finra.org;
+      - __cfruid=5f8373bc29aa18381a495a9b933532ba5fcc6bbf-1699524722; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2836,13 +2836,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3228-74adc5381997b74f279a0785;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb072-71a9644f5c97384456b20f52;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzGUGcaoAMEobw=
+      - OICB8HJAIAMElcA=
       x-amzn-RequestId:
-      - a921e998-fc9c-4936-855a-04902c4d14e9
+      - ab3703e6-a490-4c5b-9624-eb7a12f3e2f7
     status:
       code: 200
       message: OK
@@ -2870,14 +2870,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMq9DsIgEADgd7mZJhT7I2yNXUwcNNU4GIcznJGIYOAYiPHdXf3m7/IB
-        joz+TPT0dXlgokPBwI4rmHbsZD8MWvyfY0JLm1gCg2l7rddagMu50FJft+i3lgK7u6MEBqZpvwMB
-        HjOf3haZZmQCA0qqVSNVo0b4Xn8AAAD//wMADPdmeYMAAAA=
+        H4sIAAAAAAAAA0zKvQ7CIBAA4He5mSYU+yNsjV1MHDTVOBiHM5yRiGDgGIjx3V395u/yAY6M/kz0
+        9HV5YKJDwcCOK5h27GQ/DFr8n2NCS5tYAoNpe63XWoDLudBSX7fot5YCu7ujBAamab8DAR4zn94W
+        mWZkAgNKqlUjVaNG+F5/AAAA//8DAAz3ZnmDAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232311e2ad62d10-IAD
+      - 8235467089c41ba4-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2885,9 +2885,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:13 GMT
+      - Thu, 09 Nov 2023 10:12:03 GMT
       FINRA-api-request-id:
-      - 4ddff722-d227-4f87-9ac5-11b615aaa9ef
+      - 5a826168-0d60-4666-ba36-45db066cef56
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2901,10 +2901,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=pa_cdw161GKM8w6UfBuaXviuNwhN72_FkcvDSs.MsA0-1699492393-0-AfMxGIJXJZQY/hvbO0E7wubmdbLWmpS3Xy9hiKxDC5VRSDbHkEYAUisir2K6ALERKjVcDOwEzn5AkeQdrXfczHE=;
-        path=/; expires=Thu, 09-Nov-23 01:43:13 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=qPGTOSOAl1aHyC_VdhqzXyFeO.Eh8X6dm.sJ1dWBFLE-1699524723-0-Aa0x74T7y+x3P8NNoK39YPC4zvLbZ9dIB1cw0GM8eqZ2HRx7R8dPZI0Dh6d9Lu+9juo1+b64hnRFy/s96Uoz3Ss=;
+        path=/; expires=Thu, 09-Nov-23 10:42:03 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=82b46664322fa32bd6eda1ada0541b22fba2900d-1699492393; path=/; domain=.api.finra.org;
+      - __cfruid=d7f6b1b634a891d8e0d2efd5651f409c98240e07-1699524723; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2913,13 +2913,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3228-1b15fb6933a8a7bd7821ac5d;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb073-1bd35d5d679031086e54d046;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzGaFbdoAMEuvQ=
+      - OICCFGzTIAMEn_A=
       x-amzn-RequestId:
-      - fc2e7c5f-1066-4185-81b8-c875394e5bbf
+      - 5cca2f64-f272-43d8-9e63-afa973f29f23
     status:
       code: 200
       message: OK
@@ -2947,14 +2947,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5heZq1WQruggOShUHcTjJFYMxkeQ6BPHfXX3zu35A
-        klC4MD9DHR+U+ThTFC8VbNf3Bo1eq/9zyuR4k+YoYHG50gujwJcy81hf9xR2jqP4yXMGC8Nw2IOC
-        QEXOb0fCWxIGC9hi17TYoIbv7QcAAP//AwDnokSIgwAAAA==
+        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYXmatVkK7oIDkoVB3E4yRWDMZHkOgTx311987t+QJJQuDA/
+        Qx0flPk4UxQvFWzX9waNXqv/c8rkeJPmKGBxudILo8CXMvNYX/cUdo6j+MlzBgvDcNiDgkBFzm9H
+        wlsSBgvYYte02KCG7+0HAAD//wMA56JEiIMAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82323121683d2045-IAD
+      - 823546767fa71baa-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -2962,9 +2962,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:13 GMT
+      - Thu, 09 Nov 2023 10:12:04 GMT
       FINRA-api-request-id:
-      - e1baf83d-464c-4a26-b59d-360b7a5c88d8
+      - 66e850ce-02da-4257-bffa-6fb248829083
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -2978,10 +2978,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=U.Iz_XEH_Y2B6mQDXIifpsvMTkxmeVS.jzu8uX_e57E-1699492393-0-Afm5F2BUiAgoryGMBB7XjV8nimDkjAkNA1aSwA5DNleqTe9XKXRl2huYrVzTiXsI/aAD2CaF8XIcOOMhmv2zMyI=;
-        path=/; expires=Thu, 09-Nov-23 01:43:13 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=nSAY2DyBcUknSsFIYGgoypiVxGz6xiTHf0RW.lllzMs-1699524724-0-AfqLUmmLve2eUk0cqmysF9tZKZdQC2yBlUzOfQzvFbN923uKVZBUZ5KEHXJFIV5+C/2xuaczMHt98jZCtyF41Uc=;
+        path=/; expires=Thu, 09-Nov-23 10:42:04 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=82b46664322fa32bd6eda1ada0541b22fba2900d-1699492393; path=/; domain=.api.finra.org;
+      - __cfruid=aa8d0c1e4630496d903c9bb2e0091b46e72f607f-1699524724; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -2990,13 +2990,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3229-36717afc7d765a736ce5a819;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb074-10eed1620f6c033c5462736f;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzGfHPMoAMES_Q=
+      - OICCPFsPoAMEXIA=
       x-amzn-RequestId:
-      - 481c3bf5-242c-4862-9126-08d69e03bd44
+      - 4c2c7132-ab0d-4f74-99e0-e7ea79da2c31
     status:
       code: 200
       message: OK
@@ -3031,7 +3031,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232313e6fe75a8d-IAD
+      - 8235467c4f208aee-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3039,9 +3039,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:18 GMT
+      - Thu, 09 Nov 2023 10:12:05 GMT
       FINRA-api-request-id:
-      - b55d7cd9-b0a1-4315-ac8b-e7343fd48768
+      - b25241db-0812-4b8f-80d7-2ceeb96d920c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3055,10 +3055,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=AoOT.izB8wmTQb3IAJgNhNA6BD9RW1qSrnZND5vgpTo-1699492398-0-AaKDOcirxUXu4+LxldClzGtt4EB9i9hSxtLfrAX1aspJmmeKzi3aGkw+b4S88VpDaUsh8zuIUgcGfmm4sl1o9PM=;
-        path=/; expires=Thu, 09-Nov-23 01:43:18 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=MxYeibHMT21TZaW8BeitarI8T1hrzWzWLw0uBbCwCbk-1699524725-0-AY/w2MUninaoqEQkJBd1tfDUOmNae01+XVEvFKpD4cdwDWO+9CjIre1cpmRHk818PmI2GMgb5+ZG+9wOdKU5AWk=;
+        path=/; expires=Thu, 09-Nov-23 10:42:05 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=20b89953c5a33c089b4cb3d566e51fabc57fd5e0-1699492398; path=/; domain=.api.finra.org;
+      - __cfruid=21afe18db81d2342ad0c282f591af78095f34ee7-1699524725; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3067,13 +3067,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c322d-30c1b29864952d4963770491;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb075-72d3da0229edf8345050bb7e;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzHNE_uIAMEbwA=
+      - OICCYFDRoAMEcbw=
       x-amzn-RequestId:
-      - 76c5aa36-696e-49ce-bbce-039483dd9f12
+      - 4f8cb41c-b0e7-4356-a935-c2dc3c3e3d44
     status:
       code: 200
       message: OK
@@ -3108,7 +3108,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232314e1bec5b5e-IAD
+      - 823546823a9a1bc2-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3116,9 +3116,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:20 GMT
+      - Thu, 09 Nov 2023 10:12:06 GMT
       FINRA-api-request-id:
-      - 8bc7d01f-bf69-4790-9b3c-d78367b0d44e
+      - 5eb503b0-f334-473f-b644-43369ffd3643
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3132,10 +3132,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=OQnroHhNu16qyW5PuIxDoAjiumQonGym1diH9Ww5EnY-1699492400-0-AaU462XjXWAZawZnoAgDXSo7rUGZGi4UzGfesZV2Nwm/N9k18lDPOnlKU1sT5pyhu7Xxvd0wP0mFHnXOpPIgS28=;
-        path=/; expires=Thu, 09-Nov-23 01:43:20 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=wIejYVyhPeZEeyikvIDu2N._.rhkf2iL7584f85_6do-1699524726-0-AZ65v9TmePHbitMSv99hfdnzwb2XGOy+d47wTnxsxZcz6NOwZkcJPuH6ykSRVvUyrkXfs3X3AlWA1eAx8nH28cc=;
+        path=/; expires=Thu, 09-Nov-23 10:42:06 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=a3500b5c45f67eb109e1cd6b0401088df5a16e95-1699492400; path=/; domain=.api.finra.org;
+      - __cfruid=e38642caf49d97aad0f035e86644a11929961833-1699524726; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3144,13 +3144,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3230-00755f2a15584d443fc50629;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb076-48dc75f26e8764f33551a06d;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzHmE76IAMEaQg=
+      - OICCiHbqoAMEQZg=
       x-amzn-RequestId:
-      - 298f0ab9-46d7-4e7a-bc00-91808a187ca3
+      - 6518bef3-537f-438d-8524-0b1d7291c79b
     status:
       code: 200
       message: OK
@@ -3185,7 +3185,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232315d7e9b591a-IAD
+      - 823546881c198aed-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3193,9 +3193,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:23 GMT
+      - Thu, 09 Nov 2023 10:12:07 GMT
       FINRA-api-request-id:
-      - 1b2917e7-b8e4-4241-b598-a18db4f0a77f
+      - 964e6f08-7ece-4ea6-a18a-0180681d54cc
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3209,10 +3209,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=xXS3Tv5jifftMfzB0BtScQmOe.rQVAtq3mb8o6m5HWU-1699492403-0-AQW3gVrqSl+ocJc3DmPDQuaAxgyLLXzyerJ4mDvwtfvdQ2vx/HqvVOY3DpnlKbRhZzzQhAAN2cEkGDjnUQQntwE=;
-        path=/; expires=Thu, 09-Nov-23 01:43:23 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=BJZDFNrZQGFlbT.DZE5Hm67oLJtnxIpze3oK0wdmZpA-1699524727-0-AXx/yqYH9wXk9Gook9n7905iJyB5KpPTeIbsEhTCu3+x97bkb0OCn2hwovZTDyV6IyAdwZgfaEKOoIOTUiO3O7g=;
+        path=/; expires=Thu, 09-Nov-23 10:42:07 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=9dac5337e452741b9483201d66d5702758a449b9-1699492403; path=/; domain=.api.finra.org;
+      - __cfruid=1a9af115cb512b9e8d879eb40cbcd09c965c5e61-1699524727; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3221,13 +3221,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3232-6226e5905a33a602230bdc75;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb077-0ae8c37416a21c6d640352b6;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzH_E3eoAMEvFQ=
+      - OICCrGs3IAMESbQ=
       x-amzn-RequestId:
-      - a57b2da2-d7a3-4278-aac3-cc8220e49a4b
+      - 142125b4-a3e9-4b58-a74a-50854e9d04e2
     status:
       code: 200
       message: OK
@@ -3262,7 +3262,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232316def1307c5-IAD
+      - 8235468defd18aed-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3270,9 +3270,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:25 GMT
+      - Thu, 09 Nov 2023 10:12:08 GMT
       FINRA-api-request-id:
-      - 124ede50-4cfd-4e43-97a8-aca9ba89782b
+      - 2eb518bc-975b-4496-99e1-33585014994c
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3286,10 +3286,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=1.R33bvsL5uDJNtJA2efuizYR1DH_0tG4SRSXd3XJBE-1699492405-0-AazkhrVXD9wffueKUMj7WrYJjlunoxushLP9469BCim5gpaYzCUDCaj8MObPUR+hV7pC4XvLf5kkYSAYpUW1r6Y=;
-        path=/; expires=Thu, 09-Nov-23 01:43:25 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=mw.y_mIP9gksBcZ_4AdDxZXOBIGpvzaV2waB5eCz.OA-1699524728-0-ATA36WV3KN8DGHO/9ugXmpRvA8hG16iENfTltL6X2OzKvTzMR6iHEigzATeN9XZuiHBfuU0xDRBBpPhxjrXDyUU=;
+        path=/; expires=Thu, 09-Nov-23 10:42:08 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=039fbe9e5a509d68004111963a022e5b44a4fc45-1699492405; path=/; domain=.api.finra.org;
+      - __cfruid=c8cbed7999fbc773ceaf95be66700f221042bf2a-1699524728; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3298,13 +3298,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3235-104445eb71f72de94e21b615;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb078-5f4009b457cd46d01f1fe81b;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzIZHg3oAMEglA=
+      - OICC0FdAIAMEXCw=
       x-amzn-RequestId:
-      - 67e7a6bb-5fd6-43b8-b425-bc5d2b911c30
+      - af8ceed9-6f66-4820-8feb-451118d68981
     status:
       code: 200
       message: OK
@@ -3339,7 +3339,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232317ddba02009-IAD
+      - 82354693ca8c8ae5-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3347,9 +3347,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:28 GMT
+      - Thu, 09 Nov 2023 10:12:09 GMT
       FINRA-api-request-id:
-      - 87b55796-7e61-4a63-b99a-864caf4c6e36
+      - f3c264b2-277a-41ba-9dae-cc9e3e63ee79
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3363,10 +3363,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=RUf5r7y.5ib3lpu2z2v1C2KcoJYnPhhH4sVn1Xpt0xA-1699492408-0-AT1JooOWPDPxVsjK5g1bQ1sIfYay1xwPYS7aBMtPlsuxBprld55SxE1hMDsGF8sLhIhYtkXjY+K27MLhKZcBrpU=;
-        path=/; expires=Thu, 09-Nov-23 01:43:28 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=DqZg5BN7vWiXVZYtJMbBy3sPqit9Byw0N71HcZcaKN4-1699524729-0-ATkLGydYoEFra3I0yYp0SgUtdWq98EPLiHvodMZtAlMnxXiCD9p/vNLOMtz7BOTfa9dvXgS/UF+4H4X8YPbEGzQ=;
+        path=/; expires=Thu, 09-Nov-23 10:42:09 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=27dd9ee63994cabcfbe6b9e4f6719b026df6d212-1699492408; path=/; domain=.api.finra.org;
+      - __cfruid=69983077e071f6d71e4e9e179cc2b3a9ce45495d-1699524729; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3375,13 +3375,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3238-52e077a03b57dd581e80d071;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb079-762e5f520fc632c72228d809;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzIzErTIAMEMzg=
+      - OICC-HjGoAMEslQ=
       x-amzn-RequestId:
-      - 1f4e342a-6531-4a3b-8f75-e68c4d7b1f25
+      - dd749971-eaab-4824-82f1-e101d3aa3a20
     status:
       code: 200
       message: OK
@@ -3416,7 +3416,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 82323180df8a576c-IAD
+      - 8235469988151bda-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3424,9 +3424,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:28 GMT
+      - Thu, 09 Nov 2023 10:12:10 GMT
       FINRA-api-request-id:
-      - f7638a39-71f7-4a36-abe0-f4454424fa3c
+      - 474a0aa7-5940-4ab9-a36b-0179a7cd31aa
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3440,10 +3440,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=Oj8l6.7lixXhkWyUxBgBNQZqDKiUaMGt1QXbFokmtsY-1699492408-0-AQ8umI5qcDW8kwy17GuICqpXMsef0NBjWo38hO3UhloXuAYFj7wEXHKb1ai7qQsK3aB0ArHLNGTJBpZ5BFkYEpg=;
-        path=/; expires=Thu, 09-Nov-23 01:43:28 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=AcVyUgjNMsNdg1wh9tdMtuSOMmlhv7dlM76JxWEboic-1699524730-0-AT/TsUey6SV+wxmj6xNDsN6BWYJo4ZFdKwU+FvQx+cQSZJ5j1wAmblwVg1awWkCW7q3by2OX7IrJ+S8zIAHCxek=;
+        path=/; expires=Thu, 09-Nov-23 10:42:10 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=27dd9ee63994cabcfbe6b9e4f6719b026df6d212-1699492408; path=/; domain=.api.finra.org;
+      - __cfruid=1c9cd943fb380dab1d6f6b67e4f631e6dd0dea1b-1699524730; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3452,13 +3452,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3238-1c0fba8a4740204454c66e49;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07a-59219da1091dff3a541750d6;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzI3GxrIAMErBw=
+      - OICDHFROoAMELRg=
       x-amzn-RequestId:
-      - 035bf82e-d6bc-412e-9248-4d80f6c12c09
+      - 93012a4b-23ec-4e3d-b3f3-29b04c083ff5
     status:
       code: 200
       message: OK
@@ -3493,7 +3493,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232319d7fba093a-IAD
+      - 8235469fa8561bd4-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3501,9 +3501,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:33 GMT
+      - Thu, 09 Nov 2023 10:12:11 GMT
       FINRA-api-request-id:
-      - 9472e6e3-4781-4ef2-9f0c-ab88d2d8207a
+      - 3bc1cd21-4ee9-47da-be08-b697a580a199
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3517,10 +3517,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=W_J1VucVpNro6iDRIkeMUnoonILqQXUxbb.FR3uTZug-1699492413-0-AXKhvbwtdW5tIoxL/iqI1uftgNwE+srpAVdlAH8Kq0f/abnrmjxtXMlWV1FVM0KudXjl8pPX+WgZ0c/W9Jf59EU=;
-        path=/; expires=Thu, 09-Nov-23 01:43:33 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=x5mzIt3vyHv7GdvCeyEKjWpulwLYpIWhoPNqZ5ye6T0-1699524731-0-AQcNBxJ6Qfny0ymq0L+GuYjP7eM9LauX+7K+CFtWHLj+QkkUGsjCx5PAqTPSEMPxkqmjBjsacJP6YG4TBQGPDD4=;
+        path=/; expires=Thu, 09-Nov-23 10:42:11 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=25f4dc045f5f45b9eb141d81e7f240f4fccf48a2-1699492413; path=/; domain=.api.finra.org;
+      - __cfruid=92bad2eb0dbd391ac00e4ea56fd538c1726deffe-1699524731; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3529,13 +3529,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c323d-334e7a2b1473bcad62782b95;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07b-4d5bd7117cb25ed905b18ce7;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzJlEH9IAMEMAA=
+      - OICDRGJJoAMEV5w=
       x-amzn-RequestId:
-      - c790a18b-8e46-4f84-833f-b71567ec2770
+      - a5a12d24-1176-4bac-9b0c-cd991de48fef
     status:
       code: 200
       message: OK
@@ -3563,14 +3563,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCgIxDADQf8ncg7tQiHQ7dBEclFMcxCHSiMXaSpsORfx3V9/8Lh/Q
-        rBzPIs/YlwcXOTROGrSDQ7R2tLQy/+dY2Ms6t6TgJiIiNBBqbbL01y3HrZek4R6kgIN53u/AQOSq
-        p7dnlQ2rgAMcEYcJByT4Xn8AAAD//wMAiOKmBoMAAAA=
+        H4sIAAAAAAAAA0zKsQoCMQwA0H/J3IO7UIh0O3QRHJRTHMQh0ojF2kqbDkX8d1ff/C4f0KwczyLP
+        2JcHFzk0Thq0g0O0drS0Mv/nWNjLOrek4CYiIjQQam2y9Nctx62XpOEepICDed7vwEDkqqe3Z5UN
+        q4ADHBGHCQck+F5/AAAA//8DAIjipgaDAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823231a13b60061e-IAD
+      - 823546a58eb08e92-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3578,9 +3578,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:33 GMT
+      - Thu, 09 Nov 2023 10:12:12 GMT
       FINRA-api-request-id:
-      - 6ddffe94-9a57-43d6-8182-8f66bb5301b0
+      - f60ee83e-5afb-4197-8d74-069fda18bcc2
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3594,10 +3594,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=x4tSTn5ZQIwgPRXdYVSjj6yLPotJjMwg4S8rdFEEocw-1699492413-0-AWPUI32OKhpeJSvtNtW+E8mM+P7O0CmtC8QA08AzbyowWo796HEQi4FsLTKG4aCXEuaRMwMOyTYIqcaJtaw+TRE=;
-        path=/; expires=Thu, 09-Nov-23 01:43:33 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=efsMGrA9EQVO6jFbEDhu4yJAzZ3i7SIXTJl1cmYGbZ0-1699524732-0-AR3WRNRsViOukTQxSbIRmhHF5tM1/jP0THnFNMrrOLsC5RG2etYGha0fjD7F0VWkC5MRVheORrroNCu7cjK1iXs=;
+        path=/; expires=Thu, 09-Nov-23 10:42:12 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=22543c024d2cb926a7db17a08daa27514743951d-1699492413; path=/; domain=.api.finra.org;
+      - __cfruid=efc7691ea9fafccee1f8f2b005ebc71475096f60-1699524732; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3606,13 +3606,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c323d-26c1b8054080e08a40b33496;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07b-625cd3b55cbbf3c45b1e22ed;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzJrF7WoAMEDhw=
+      - OICDaEBzIAMELlw=
       x-amzn-RequestId:
-      - 6f283a3b-25ea-4e18-9b8f-fcedabad3a77
+      - 5133644d-5860-4c41-841a-9e0333bb0b60
     status:
       code: 200
       message: OK
@@ -3640,14 +3640,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYXkhGqzFV0Eh0oVB3E4yYnBmJTkMgTx311987t+QJJQuDC/
-        QpuflPlYKYqXBhY3/cqstVb/55TJ8TbVKGBR9zhoBb6UynN731PYO47iH54zWBjH6QAKAhU5L46E
-        dyQMFlAjdgY7M8D39gMAAP//AwCNRY9WgwAAAA==
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5heSEarMVXQSHShUHcTjJicGYlOQyBPHfXX3zu35A
+        klC4ML9Cm5+U+VgpipcGFjf9yqy1Vv/nlMnxNtUoYFH3OGgFvpTKc3vfU9g7juIfnjNYGMfpAAoC
+        FTkvjoR3JAwWUCN2BjszwPf2AwAA//8DAI1Fj1aDAAAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823231be3f643b7a-IAD
+      - 823546abfb641b64-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3655,9 +3655,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:38 GMT
+      - Thu, 09 Nov 2023 10:12:13 GMT
       FINRA-api-request-id:
-      - 2a934476-d8ec-49a3-a371-def01cd7fd67
+      - 7456e6ac-7f6c-44aa-ba73-c65a53f24dab
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3671,10 +3671,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=6ZIjFNtJY8tkqr_CTiX5fEjNVDVcr_t6zE.qBiEy6XA-1699492418-0-AQUk1OYFPCKE+xq4b7mgfJjULJLXBoOnG9lpTrsJ0uMUABoSppV2qieV9/kbw4SSt/JA66BUI6gWwhlltj6nuEw=;
-        path=/; expires=Thu, 09-Nov-23 01:43:38 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=HjBKCMY7TyRESk4CsRIzVccaMnhR2aj9xFJTe4_SzU4-1699524733-0-AZDoEePHEucnTUcEIOeFY4emw95doxJCnfrE5j4p8vjNUK07R8i9dsWr0KwNtp/6Qbhjp1MlC5s6WH0/CI/+H58=;
+        path=/; expires=Thu, 09-Nov-23 10:42:13 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=c2c467a0cf7834ccd0c8df67124717316a085a7a-1699492418; path=/; domain=.api.finra.org;
+      - __cfruid=94b583c231aee67c578954afdfc4af1eb4e8cd83-1699524733; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3683,13 +3683,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3242-197cb7657ece6ccd143233e3;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07d-3285fe892e2119824d99f3b7;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzKaHa5oAMEFjw=
+      - OICDlH8HIAMEQMw=
       x-amzn-RequestId:
-      - 4a725430-f841-4633-b692-4e695360a3e2
+      - 8552c90f-d526-4d78-b31a-d5187887eb37
     status:
       code: 200
       message: OK
@@ -3717,14 +3717,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//TMqxCsIwFAXQf7lzBJPUDtmKLoKDUsVBHJ7kiaExkfRlCOK/i5twxnN5
-        Q7JQPDNPsY0PKnyolCRIg9PW2G7VWfV/joU8r3NNAqe16W2vEOa58tietxy3npOEe+ACh2HY76AQ
-        aZbTy5PwhoThYJbGLPQPPtcvAAAA//8DAPm2gw+DAAAA
+        H4sIAAAAAAAAA0zKsQrCMBQF0H+5cwST1A7Zii6Cg1LFQRye5ImhMZH0ZQjiv4ubcMZzeUOyUDwz
+        T7GNDyp8qJQkSIPT1thu1Vn1f46FPK9zTQKnteltrxDmufLYnrcct56ThHvgAodh2O+gEGmW08uT
+        8IaE4WCWxiz0Dz7XLwAAAP//AwD5toMPgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823231dbadb92082-IAD
+      - 823546b21f178e92-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3732,9 +3732,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:43 GMT
+      - Thu, 09 Nov 2023 10:12:14 GMT
       FINRA-api-request-id:
-      - 46f54cf3-3b30-4349-85b1-af4221ed8c50
+      - f1334b21-a388-4750-a2ff-eb5f6fb0f5fd
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3748,10 +3748,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=HRWGLtX0O3UIUjWkNYqp4tgTQICU_TUL5DkslyX950A-1699492423-0-AQgGM7osXhNG5EGVdWAW/paIevhnNL2voEnji654WVQDRx6Z2SRPsJy9e6hv8AK8aBECllAeOHTlRfPORaE0PmY=;
-        path=/; expires=Thu, 09-Nov-23 01:43:43 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=qBsMPD9iVYpD5lQ31wb.SnuKSa1YeYGF5DqzKL52ttw-1699524734-0-AZ4PRhosA/ADvzut/32uMRXZoIUIvWAKHKHNYK5RXOs6y1Q9nfVJogLUNxUU+z+j4+Rz8vsOX7KKad7njPZ2rOw=;
+        path=/; expires=Thu, 09-Nov-23 10:42:14 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=16d7e568b519524a43a03ba2ef703ade649da65c-1699492423; path=/; domain=.api.finra.org;
+      - __cfruid=ba31f0333e9106fec695abedc65bfb1b8085052e-1699524734; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3760,13 +3760,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c3247-5bb1729b3605cc7433e97ae7;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07d-58662a186a2fbbff574f296f;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzLJFktIAMEdzA=
+      - OICDuGCSoAMEs8Q=
       x-amzn-RequestId:
-      - 60cbf1c7-76f6-4f9b-b08a-529fab93739d
+      - 2c91680f-cf27-4ce5-ac2c-223f82b446f5
     status:
       code: 200
       message: OK
@@ -3801,7 +3801,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823231f7885b07eb-IAD
+      - 823546b7f8f38ad5-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3809,9 +3809,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:47 GMT
+      - Thu, 09 Nov 2023 10:12:15 GMT
       FINRA-api-request-id:
-      - 37c65f42-9783-4fa9-b6eb-ace894794b28
+      - f4fb8f4a-8e3b-45bc-815f-e2e0f89626ae
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3825,10 +3825,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=SNh9vqJbcPezohPfApWbAAdUMCd4msaRzyuCQORIXto-1699492427-0-AQu8NXOkI5lUE6EhgNw6nvVWKj7Kz1J5KmGAh1SepP+na7GZTBxG7gHdq1FWjRQ8f3nY0Uh75CMxdXtV/wGKP+k=;
-        path=/; expires=Thu, 09-Nov-23 01:43:47 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=jNSSndjJoKZ42T_bj0d2XxfK08Y4K1Ih18N9Ddb4JZ4-1699524735-0-ATGlouckmwJQvnXG2JwaKhl4WexZ+syozQcdzwpG6n+jj+Lf1hf1TfIs6lofcv0AOzioOXlkD57y+pA02Mo1nHU=;
+        path=/; expires=Thu, 09-Nov-23 10:42:15 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=5adc7a62c1fe196018923c0ad34a157a57b5d736-1699492427; path=/; domain=.api.finra.org;
+      - __cfruid=c98ce1eb7f67905cc9ded08b84fd249e6ab2f033-1699524735; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3837,13 +3837,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c324b-137d4693371f1f313893a28b;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07e-7359752072be9cc964de7518;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzL1E-yoAMEgVw=
+      - OICD4HkcIAMED1A=
       x-amzn-RequestId:
-      - 27627545-a6fb-4079-8bf5-ad04d25c1448
+      - 8ba144c5-a929-468a-a609-e20446087d34
     status:
       code: 200
       message: OK
@@ -3878,7 +3878,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 823231fa6a023b0c-IAD
+      - 823546bdd97e1bd4-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3886,9 +3886,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:48 GMT
+      - Thu, 09 Nov 2023 10:12:16 GMT
       FINRA-api-request-id:
-      - e141ff15-f934-4cc1-be27-558c16d9ac73
+      - c809c3f3-35a4-4ba7-b5a1-1c70edd20848
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3902,10 +3902,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=OI9rnDnWTUohBe19VXohfr3uHS6MAIUlLvWIHfAjyo8-1699492428-0-AYJD6Gh/LP/sl+EFBxLTVazlPeNAHLz9bEzlkezJ+Apf0Wr+o2IWD3tf9NoARkiG6iC6sYmrEBfwP8BhmgGNvsM=;
-        path=/; expires=Thu, 09-Nov-23 01:43:48 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=HU_ZOYND3klJ2oPx_26GiInevDeWy5248AVpLmvcYIE-1699524736-0-AYysyIbI7rKZx65Js5xkSdxSIS00Bp55p74ZZLop2VDYJOpz0Iy1K+EDClUAfsZQ9Vt+v/86+eYMUeHtWtbr+/Q=;
+        path=/; expires=Thu, 09-Nov-23 10:42:16 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=4b374d7ce83befc1ab2ffaf9a7de55dabf4e1ce6-1699492428; path=/; domain=.api.finra.org;
+      - __cfruid=d446d088989a48e7ffd5bb9e8c522a7b98ad8f1f-1699524736; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3914,13 +3914,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c324b-140772c5532ebb8a58b1035f;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb07f-3927f673275f3df34bb9f0e1;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzL6GjwoAMELtg=
+      - OICEBHSQIAMEGvg=
       x-amzn-RequestId:
-      - cf19493a-2dcc-42ca-b4bb-33cc2b7d5b5c
+      - 73b775e8-ea2a-4cf2-9875-d1eb2bf15c08
     status:
       code: 200
       message: OK
@@ -3955,7 +3955,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232320a0bca5a70-IAD
+      - 823546c42ede1bda-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -3963,9 +3963,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:50 GMT
+      - Thu, 09 Nov 2023 10:12:17 GMT
       FINRA-api-request-id:
-      - 08ee27b9-50d3-48ce-9d08-cc5dc57a4513
+      - 8c5de2c4-43d3-4dfe-8829-897a7abedfcf
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -3979,10 +3979,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=toMpIuyCUuEd7yXZkgnmvLzUIjZMaOnQHl7PFf4BWvk-1699492430-0-AXtUFV3j48kj1GET0B5eXVR1ofbylVbw2FKoMe5LmNoyma80CM2GacxplCeAubtk/V82P3NqCNOSeHEcNhivcDU=;
-        path=/; expires=Thu, 09-Nov-23 01:43:50 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=fCxlMxVXtQAzoZ4ZoCY_ATOV6SNrpEAu0ihnTT61vpI-1699524737-0-AZlsrTuc/X2n+E4Rqhs2ZWSU8MKsKKBCGBAef0pZd3VDLfEenftMzs1G6pBfIL4mE4VPcGf1fyPNI9eShPR+D5o=;
+        path=/; expires=Thu, 09-Nov-23 10:42:17 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=46faacf896fe9cbf25943fbb67ca051234c3930e-1699492430; path=/; domain=.api.finra.org;
+      - __cfruid=460a5aef2402e8a21517d3d683b07c007e7cb337-1699524737; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -3991,13 +3991,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c324e-48e5374d6c5403ed6e36062d;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb080-7afb7ad7197f5fa633e09afe;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzMTEf1IAMEhzg=
+      - OICELGDBoAMEKWw=
       x-amzn-RequestId:
-      - f4ce6a44-6bd9-4d77-bad2-452276874efc
+      - 56cb6807-cc0f-4c87-9df6-dcc88c54e267
     status:
       code: 200
       message: OK
@@ -4025,14 +4025,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA0zKsQrCMBAA0H+5OYXmtJFmK7oIDkoVB3E4yYnBmEhyGYL4766++V0+IEkonJmf
-        oc0PynyoFMVLA7sYNZpej+r/HDM5XqcaBSyujBkGBb6UynN73VLYOo7i754zWJim/Q4UBCpyejsS
-        3pAwWMAesdO600v4Xn8AAAD//wMAzHUJ24MAAAA=
+        H4sIAAAAAAAAAwAAAP//TMqxCsIwEADQf7k5hea0kWYruggOShUHcTjJicGYSHIZgvjvrr75XT4g
+        SSicmZ+hzQ/KfKgUxUsDuxg1ml6P6v8cMzlepxoFLK6MGQYFvpTKc3vdUtg6juLvnjNYmKb9DhQE
+        KnJ6OxLekDBYwB6x07rTS/hefwAAAP//AwDMdQnbgwAAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-Ray:
-      - 8232320d6cfc05f5-IAD
+      - 823546cb2dfa1b69-DEL
       Connection:
       - keep-alive
       Content-Encoding:
@@ -4040,9 +4040,9 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 09 Nov 2023 01:13:51 GMT
+      - Thu, 09 Nov 2023 10:12:18 GMT
       FINRA-api-request-id:
-      - 138488cf-62de-4ff7-95e5-23d6b80861b1
+      - 654aa194-36e2-45fa-bedb-c7f37c7602de
       Record-Limit:
       - '5000'
       Record-Max-Limit:
@@ -4056,10 +4056,10 @@ interactions:
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=6goo9Yww4sLkxOS24G0F07oT.X4C9r0NdstP6L11Ffw-1699492431-0-ASRWa55359sp7dlsL/pHnIiRkBUbw9F3zUBM9j9ivIVe5f8QuJT+SXDlTMcxHBQtKY7cSZgp9FvWVlLwowZa3LY=;
-        path=/; expires=Thu, 09-Nov-23 01:43:51 GMT; domain=.api.finra.org; HttpOnly;
+      - __cf_bm=oWsv9OmkDYpMYCOcrR4hDJiSv2VU1D._1AsKBV4eEzg-1699524738-0-AWVv+5tAcKZbHkakfUoakML1HSbJBcwlOIw69WQL64lAkc/Spu+B21AtLmVTHn/67bJZ3eFlr0Sh+3Je2Czfq2Q=;
+        path=/; expires=Thu, 09-Nov-23 10:42:18 GMT; domain=.api.finra.org; HttpOnly;
         Secure; SameSite=None
-      - __cfruid=8eb569d00c324dd78ab207a06047d930d4d3db95-1699492431; path=/; domain=.api.finra.org;
+      - __cfruid=d2f8c014854e054595bf3406eeb8ed5250feef3f-1699524738; path=/; domain=.api.finra.org;
         HttpOnly; Secure; SameSite=None
       Total-Records-On-Page:
       - '1'
@@ -4068,13 +4068,13 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Amzn-Trace-Id:
-      - Root=1-654c324e-12a12b9239da0e8a6ed6bfb1;Sampled=0;lineage=31a07f80:0|04620952:0
+      - Root=1-654cb081-6854b1d7789eb99a163be381;Sampled=0;lineage=31a07f80:0|04620952:0
       X-Content-Type-Options:
       - nosniff
       x-amz-apigw-id:
-      - OGzMYFtVIAMEW5g=
+      - OICEWEsNIAMEDQg=
       x-amzn-RequestId:
-      - dede418c-1d80-416e-a723-815f408aad85
+      - 16798061-f82b-40a1-86c9-3b812233040e
     status:
       code: 200
       message: OK

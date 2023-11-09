@@ -12,11 +12,11 @@ from openbb_provider.standard_models.equity_short_interest import (
 
 
 class FinraShortInterestQueryParams(ShortInterestQueryParams):
-    """Finra Company Filings Query Params."""
+    """FINRA Company Filings Query Params."""
 
 
 class FinraShortInterestData(ShortInterestData):
-    """Finra Short Interest Data."""
+    """FINRA Short Interest Data."""
 
     __alias_dict__ = {
         "symbol": "symbolCode",
@@ -35,7 +35,7 @@ class FinraShortInterestData(ShortInterestData):
 class FinraShortInterestFetcher(
     Fetcher[FinraShortInterestQueryParams, List[FinraShortInterestData]]
 ):
-    """Finra Short Interest Fetcher."""
+    """FINRA Short Interest Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FinraShortInterestQueryParams:
@@ -48,8 +48,7 @@ class FinraShortInterestFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extracts the data from the Finra endpoint."""
-
+        """Extract the data from the Finra endpoint."""
         # Put the data in the cache
         prepare_data()
         # Get the data from the cache
@@ -81,6 +80,8 @@ class FinraShortInterestFetcher(
         ]
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[FinraShortInterestData]:
-        """Transforms the data."""
+    def transform_data(
+        query: FinraShortInterestQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FinraShortInterestData]:
+        """Transform the data."""
         return [FinraShortInterestData.model_validate(d) for d in data]
