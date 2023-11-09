@@ -1,36 +1,24 @@
 """Version script for the OpenBB Platform."""
-import os
 import shutil
 import subprocess
 from pathlib import Path
 
-import toml
+import pkg_resources
 
-PYPROJECT_TOML = (
-    Path(__file__).parent.parent.parent.parent.parent.resolve() / "pyproject.toml"
-)
+PACKAGE = "openbb"
 
 
-def get_package_version(pyproject_path: Path):
-    """Retrieve the version of a package from a pyproject.toml file."""
-    try:
-        # Load the pyproject.toml file content
-        with open(pyproject_path) as pyproject_file:
-            pyproject_data = toml.load(pyproject_file)
+def get_package_version(package: str):
+    """Retrieve the version of a package from installed pip packages."""
+    version = pkg_resources.get_distribution(package).version
 
-        # Access the tool.poetry.version section to get the version
-        version = pyproject_data["tool"]["poetry"]["version"]
+    if is_git_repo(Path(__file__).parent.resolve()):
+        version += "dev"
 
-        # Append 'dev' tag if the directory is a git repository
-        if version and is_git_repo(os.path.dirname(pyproject_path)):
-            version += "dev"
-
-        return version
-    except Exception:
-        return None
+    return version
 
 
-def is_git_repo(path="."):
+def is_git_repo(path: Path):
     """Check if the given directory is a git repository."""
     git_executable = shutil.which("git")
     if not git_executable:
@@ -48,4 +36,4 @@ def is_git_repo(path="."):
         return False
 
 
-VERSION = get_package_version(PYPROJECT_TOML)
+VERSION = get_package_version(PACKAGE)
