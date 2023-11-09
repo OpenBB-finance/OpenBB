@@ -10,7 +10,7 @@ from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class BondTradesQueryParams(QueryParams):
@@ -87,5 +87,5 @@ class BondTradesData(Data):
     )
     volume: Optional[int] = Field(
         default=None,
-        description="Volume of the bond trade.",
+        description=DATA_DESCRIPTIONS.get("volume", ""),
     )

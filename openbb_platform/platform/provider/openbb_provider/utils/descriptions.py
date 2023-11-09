@@ -18,11 +18,11 @@ QUERY_DESCRIPTIONS = {
 DATA_DESCRIPTIONS = {
     "symbol": "Symbol representing the entity requested in the data.",
     "date": "The date of the data.",
-    "open": "The open price of the symbol.",
-    "high": "The high price of the symbol.",
-    "low": "The low price of the symbol.",
-    "close": "The close price of the symbol.",
-    "volume": "The volume of the symbol.",
-    "adj_close": "The adjusted close price of the symbol.",
-    "vwap": "Volume Weighted Average Price of the symbol.",
+    "open": "The open price.",
+    "high": "The high price.",
+    "low": "The low price.",
+    "close": "The close price.",
+    "volume": "The trading volume.",
+    "adj_close": "The adjusted close price.",
+    "vwap": "Volume Weighted Average Price over the period.",
 }
