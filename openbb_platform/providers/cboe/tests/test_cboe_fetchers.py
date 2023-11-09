@@ -25,6 +25,36 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+@pytest.mark.record_http
+# @pytest.mark.skip(reason="Can't record")
+def test_cboe_available_indices_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeAvailableIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+# @pytest.mark.skip(reason="Can't record.")
+def test_cboe_index_search_fetcher(credentials=test_credentials):
+    params = {}
+
+    fetcher = CboeIndexSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+# @pytest.mark.skip(reason="Can't record. Likely geo-restricted.")
+def test_cboe_options_chains_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = CboeOptionsChainsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -40,16 +70,6 @@ def test_cboe_equity_search_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = CboeEquitySearchFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-@pytest.mark.skip(reason="Can't record. Likely geo-restricted.")
-def test_cboe_options_chains_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = CboeOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -87,16 +107,6 @@ def test_cboe_futures_curve_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="Can't record")
-def test_cboe_available_indices_fetcher(credentials=test_credentials):
-    params = {}
-
-    fetcher = CboeAvailableIndicesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_cboe_european_index_constituents_fetcher(credentials=test_credentials):
     params = {"symbol": "BUKBUS"}
 
@@ -123,16 +133,6 @@ def test_cboe_major_indices_historical_fetcher(credentials=test_credentials):
     params = {"symbol": "AAVE10RP"}
 
     fetcher = CboeMajorIndicesHistoricalFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-@pytest.mark.skip(reason="Can't record.")
-def test_cboe_index_search_fetcher(credentials=test_credentials):
-    params = {}
-
-    fetcher = CboeIndexSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
