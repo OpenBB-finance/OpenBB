@@ -1,3 +1,4 @@
+"""The OpenBB Platform System Settings."""
 import json
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from functools import partial
@@ -11,14 +12,16 @@ from openbb_core.app.constants import (
     OPENBB_DIRECTORY,
     SYSTEM_SETTINGS_PATH,
     USER_SETTINGS_PATH,
-    VERSION,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
+from openbb_core.app.version import VERSION
 
 FrozenField = partial(Field, frozen=True)
 
 
 class SystemSettings(Tagged):
+    """System settings model."""
+
     # System section
     os: str = FrozenField(default=str(pl.system()))
     python_version: str = FrozenField(default=str(pl.python_version()))
@@ -50,17 +53,20 @@ class SystemSettings(Tagged):
     model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
+        """Return a string representation of the model."""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
     @staticmethod
     def create_empty_json(path: Path) -> None:
+        """Create an empty JSON file."""
         path.write_text(json.dumps({}), encoding="utf-8")
 
     @model_validator(mode="after")
     @classmethod
     def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
+        """Create the OpenBB directory if it doesn't exist."""
         obb_dir = Path(values.openbb_directory).resolve()
         user_settings = Path(values.user_settings_path).resolve()
         system_settings = Path(values.system_settings_path).resolve()
@@ -75,6 +81,7 @@ class SystemSettings(Tagged):
     @model_validator(mode="after")
     @classmethod
     def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
+        """If the user has enabled log collection, then we need to add the Posthog."""
         if (
             not any([values.test_mode, values.logging_suppress])
             and values.log_collect
@@ -87,6 +94,7 @@ class SystemSettings(Tagged):
     @field_validator("logging_handlers")
     @classmethod
     def validate_logging_handlers(cls, v):
+        """Validate the logging handlers."""
         for value in v:
             if value not in ["stdout", "stderr", "noop", "file", "posthog"]:
                 raise ValueError("Invalid logging handler")

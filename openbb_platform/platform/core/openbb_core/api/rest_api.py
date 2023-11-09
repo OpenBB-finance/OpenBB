@@ -1,3 +1,4 @@
+"""REST API for the OpenBB Platform."""
 import logging
 
 from fastapi import FastAPI, Request
@@ -7,9 +8,9 @@ from openbb_core.api.app_loader import AppLoader
 from openbb_core.api.router.commands import router as router_commands
 from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
-from openbb_core.app.constants import VERSION
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.auth_service import AuthService
+from openbb_core.app.version import VERSION
 from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
@@ -69,6 +70,7 @@ Investment research for everyone, anywhere.
 
 @app.exception_handler(Exception)
 async def api_exception_handler(request: Request, exc: Exception):
+    """Exception handler for all other exceptions."""
     return JSONResponse(
         status_code=404,
         content={
@@ -80,6 +82,7 @@ async def api_exception_handler(request: Request, exc: Exception):
 
 @app.exception_handler(OpenBBError)
 async def openbb_exception_handler(request: Request, exc: OpenBBError):
+    """Exception handler for OpenBB errors."""
     openbb_error = exc.original
     status_code = 400 if "No results" in str(openbb_error) else 500
     return JSONResponse(

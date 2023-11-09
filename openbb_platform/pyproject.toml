@@ -8,6 +8,7 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
+toml = "^0.10.2"
 openbb-core = "^0.1.0a5"
 
 openbb-benzinga = "^0.1.0a4"
@@ -69,14 +70,13 @@ all = [
     "openbb-qa",
     "openbb-ta",
     "openbb-econometrics",
-    "openbb-stockgrid"
+    "openbb-stockgrid",
 ]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0.0"
 pytest-subtests = "^0.11.0"
 pytest-recorder = "^0.2.3"
-toml = "^0.10.2"
 
 [build-system]
 requires = ["poetry-core"]
