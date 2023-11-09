@@ -28,7 +28,7 @@ class BondReferenceQueryParams(QueryParams):
     )
     lei: Optional[str] = Field(
         default=None,
-        description="Legal Entity Identifier of the issuing entitiy.",
+        description="Legal Entity Identifier of the issuing entity.",
     )
     currency: Optional[Union[List, str]] = Field(
         default=None,
@@ -78,7 +78,7 @@ class BondReferenceData(Data):
     )
     lei: Optional[str] = Field(
         default=None,
-        description="Legal Entity Identifier of the issuing entitiy.",
+        description="Legal Entity Identifier of the issuing entity.",
     )
     figi: Optional[str] = Field(default=None, description="FIGI of the bond.")
     cusip: Optional[str] = Field(
