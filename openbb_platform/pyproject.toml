@@ -32,10 +32,11 @@ openbb-stocks = "^0.1.0a4"
 openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
 openbb-biztoc = { version = "^0.1.0a4", optional = true }
 openbb-cboe = { version = "^0.1.0a4", optional = true }
+openbb-finra = { version = "^0.1.0a4", optional = true }
 openbb-nasdaq = { version = "^0.1.0a4", optional = true }
 openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
-openbb-yfinance = { version = "^0.1.0a4", optional = true }
 openbb-stockgrid = { version = "^0.1.0a4", optional = true }
+openbb-yfinance = { version = "^0.1.0a4", optional = true }
 
 openbb-charting = { version = "^0.1.0a4", optional = true }
 openbb-futures = { version = "^0.1.0a4", optional = true }
@@ -60,16 +61,17 @@ all = [
     "openbb-alpha-vantage",
     "openbb-biztoc",
     "openbb-cboe",
-    "openbb-nasdaq",
-    "openbb-seeking-alpha",
-    "openbb-yfinance",
-    "openbb-ecb",
     "openbb-charting",
-    "openbb-futures",
-    "openbb-qa",
-    "openbb-ta",
+    "openbb-ecb",
     "openbb-econometrics",
-    "openbb-stockgrid"
+    "openbb-finra",
+    "openbb-futures",
+    "openbb-nasdaq",
+    "openbb-qa",
+    "openbb-seeking-alpha",
+    "openbb-stockgrid",
+    "openbb-ta",
+    "openbb-yfinance",
 ]
 
 [tool.poetry.group.dev.dependencies]
