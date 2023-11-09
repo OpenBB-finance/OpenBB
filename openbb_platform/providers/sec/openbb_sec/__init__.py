@@ -4,7 +4,6 @@ from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
-from openbb_sec.models.equity_short_interest import SecShortInterestFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
@@ -19,14 +18,13 @@ sec_provider = Provider(
     fetcher_dict={
         "CikMap": SecCikMapFetcher,
         "CompanyFilings": SecCompanyFilingsFetcher,
-        "Filings": SecCompanyFilingsFetcher,
-        "InstitutionsSearch": SecInstitutionsSearchFetcher,
-        "SchemaFiles": SecSchemaFilesFetcher,
-        "SicSearch": SecSicSearchFetcher,
         "EquityFTD": SecEquityFtdFetcher,
         "EquitySearch": SecEquitySearchFetcher,
-        "SymbolMap": SecSymbolMapFetcher,
+        "Filings": SecCompanyFilingsFetcher,
+        "InstitutionsSearch": SecInstitutionsSearchFetcher,
         "RssLitigation": SecRssLitigationFetcher,
-        "EquityShortInterest": SecShortInterestFetcher,
+        "SchemaFiles": SecSchemaFilesFetcher,
+        "SicSearch": SecSicSearchFetcher,
+        "SymbolMap": SecSymbolMapFetcher,
     },
 )

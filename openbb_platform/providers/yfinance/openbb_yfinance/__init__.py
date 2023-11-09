@@ -9,9 +9,9 @@ from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.company_news import YFinanceCompanyNewsFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
+from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistoricalFetcher
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
-from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
@@ -38,19 +38,19 @@ yfinance_provider = Provider(
         "CashFlowStatement": YFinanceCashFlowStatementFetcher,
         "CompanyNews": YFinanceCompanyNewsFetcher,
         "CryptoHistorical": YFinanceCryptoHistoricalFetcher,
+        "CurrencyHistorical": YFinanceCurrencyHistoricalFetcher,
         "EquityActive": YFActiveFetcher,
         "EquityAggressiveSmallCaps": YFAggressiveSmallCapsFetcher,
         "EquityGainers": YFGainersFetcher,
+        "EquityHistorical": YFinanceEquityHistoricalFetcher,
         "EquityLosers": YFLosersFetcher,
         "EquityUndervaluedGrowth": YFUndervaluedGrowthEquitiesFetcher,
         "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
         "EtfHistorical": YFinanceEtfHistoricalFetcher,
-        "ForexHistorical": YFinanceForexHistoricalFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
-        "EquityHistorical": YFinanceEquityHistoricalFetcher,
     },
 )

@@ -1,11 +1,11 @@
 {
     "openbb_core_extension": [
         "crypto@0.1.0a4",
+        "currency@0.1.0a4",
         "econometrics@0.1.0a4",
         "economy@0.1.0a4",
         "etf@0.1.0a3",
         "fixedincome@0.1.0a4",
-        "forex@0.1.0a4",
         "futures@0.1.0a4",
         "news@0.1.0a4",
         "openbb_charting@0.1.0a4",
@@ -19,16 +19,19 @@
         "benzinga@0.1.0a4",
         "biztoc@0.1.0a4",
         "cboe@0.1.0a4",
+        "ecb@0.1.0a4",
+        "finra@0.1.0a4",
         "fmp@0.1.0a4",
         "fred@0.1.0a4",
         "intrinio@0.1.0a4",
         "nasdaq@0.1.0a4",
         "oecd@0.1.0a4",
         "polygon@0.1.0a4",
-        "quandl@0.1.0a4",
         "sec@0.1.0a4",
         "seeking_alpha@0.1.0a4",
+        "stockgrid@0.1.0a4",
         "tradingeconomics@0.1.0a4",
+        "ultima@0.1.0a4",
         "wsj@0.1.0a4",
         "yfinance@0.1.0a4"
     ]

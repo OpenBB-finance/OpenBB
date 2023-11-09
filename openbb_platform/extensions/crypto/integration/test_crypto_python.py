@@ -3,6 +3,8 @@
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+# pylint: disable=redefined-outer-name
+
 
 @pytest.fixture(scope="session")
 def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
@@ -13,7 +15,21 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
         return openbb.obb
 
 
-# pylint: disable=redefined-outer-name
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"query": "asd"}),
+        ({"query": "btc", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_crypto_search(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.crypto.search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @pytest.mark.parametrize(
@@ -85,25 +101,8 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     ],
 )
 @pytest.mark.integration
-def test_crypto_load(params, obb):
-    result = obb.crypto.load(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"query": "asd"}),
-        ({"query": "btc", "provider": "fmp"}),
-    ],
-)
-@pytest.mark.integration
-def test_crypto_search(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.crypto.search(**params)
+def test_crypto_price_historical(params, obb):
+    result = obb.crypto.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -16,6 +16,8 @@ from openbb_fmp.models.company_news import FMPCompanyNewsFetcher
 from openbb_fmp.models.company_overview import FMPCompanyOverviewFetcher
 from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
+from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
+from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
 from openbb_fmp.models.discovery_filings import FMPFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
@@ -36,8 +38,6 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
-from openbb_fmp.models.forex_historical import FMPForexHistoricalFetcher
-from openbb_fmp.models.forex_pairs import FMPForexPairsFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -100,14 +100,14 @@ def test_fmp_crypto_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_forex_historical_fetcher(credentials=test_credentials):
+def test_fmp_currency_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "EURUSD",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = FMPForexHistoricalFetcher()
+    fetcher = FMPCurrencyHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -392,10 +392,10 @@ def test_fmp_executive_compensation_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_forex_pairs_fetcher(credentials=test_credentials):
+def test_fmp_currency_pairs_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = FMPForexPairsFetcher()
+    fetcher = FMPCurrencyPairsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

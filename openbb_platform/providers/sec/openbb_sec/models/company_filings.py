@@ -135,12 +135,11 @@ class SecCompanyFilingsFetcher(
 
     @staticmethod
     def extract_data(
-        query: SecCompanyFilingsQueryParams,
+        query: SecCompanyFilingsQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extracts the data from the SEC endpoint."""
-
         filings = pd.DataFrame()
 
         if query.symbol and not query.cik:
@@ -228,6 +227,8 @@ class SecCompanyFilingsFetcher(
         return filings.to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecCompanyFilingsData]:
+    def transform_data(
+        query: SecCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecCompanyFilingsData]:
         """Transforms the data."""
         return [SecCompanyFilingsData.model_validate(d) for d in data]

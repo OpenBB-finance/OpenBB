@@ -10,19 +10,10 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_crypto.price.price_router import router as price_router
+
 router = Router(prefix="")
-
-
-# pylint: disable=unused-argument
-@router.command(model="CryptoHistorical")
-def load(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Crypto Historical Price. Cryptocurrency historical price data."""
-    return OBBject(results=Query(**locals()).execute())
+router.include_router(price_router)
 
 
 @router.command(model="CryptoSearch")
@@ -32,5 +23,5 @@ def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Crypto Search. Cryptocurrency search data."""
+    """Cryptocurrency Search. Search available cryptocurrency pairs."""
     return OBBject(results=Query(**locals()).execute())

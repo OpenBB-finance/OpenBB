@@ -164,7 +164,7 @@ def test_{fetcher_name_snake}(credentials=test_credentials):
                 ]["fields"]
             )
 
-            if "forex" in fetcher_name.lower() and "symbol" in test_params:
+            if "currency" in fetcher_name.lower() and "symbol" in test_params:
                 test_params["symbol"] = "EUR/USD"
             if "crypto" in fetcher_name.lower() and "symbol" in test_params:
                 test_params["symbol"] = "BTC/USD"

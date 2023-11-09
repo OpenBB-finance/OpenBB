@@ -6,9 +6,9 @@ from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
+from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
-from openbb_intrinio.models.forex_pairs import IntrinioForexPairsFetcher
 from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
@@ -45,10 +45,10 @@ def test_intrinio_equity_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_forex_pairs_fetcher(credentials=test_credentials):
+def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = IntrinioForexPairsFetcher()
+    fetcher = IntrinioCurrencyPairsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

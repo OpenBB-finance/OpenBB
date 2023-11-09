@@ -9,9 +9,9 @@ from openbb_yfinance.models.balance_sheet import YFinanceBalanceSheetFetcher
 from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.company_news import YFinanceCompanyNewsFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
+from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistoricalFetcher
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
-from openbb_yfinance.models.forex_historical import YFinanceForexHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
@@ -56,14 +56,14 @@ def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_y_finance_forex_historical_fetcher(credentials=test_credentials):
+def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "EURUSD",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = YFinanceForexHistoricalFetcher()
+    fetcher = YFinanceCurrencyHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
