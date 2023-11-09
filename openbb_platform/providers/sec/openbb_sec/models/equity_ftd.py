@@ -1,16 +1,19 @@
-""" SEC Stock FTD Model """
+"""SEC Equity FTD Model."""
 
 import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_ftd import StockFtdData, StockFtdQueryParams
+from openbb_provider.standard_models.equity_ftd import (
+    EquityFtdData,
+    EquityFtdQueryParams,
+)
 from openbb_sec.utils.helpers import download_zip_file, get_ftd_urls
 from pydantic import Field
 
 
-class SecStockFtdQueryParams(StockFtdQueryParams):
-    """SEC Stock FTD Query Params."""
+class SecEquityFtdQueryParams(EquityFtdQueryParams):
+    """SEC Equity FTD Query Params."""
 
     limit: Optional[int] = Field(
         description="""
@@ -27,31 +30,30 @@ class SecStockFtdQueryParams(StockFtdQueryParams):
     )
 
 
-class SecStockFtdData(StockFtdData):
+class SecEquityFtdData(EquityFtdData):
     """SEC FTD Data."""
 
 
-class SecStockFtdFetcher(
+class SecEquityFtdFetcher(
     Fetcher[
-        SecStockFtdQueryParams,
-        List[SecStockFtdData],
+        SecEquityFtdQueryParams,
+        List[SecEquityFtdData],
     ]
 ):
     """SEC FTD Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> SecStockFtdQueryParams:
+    def transform_query(params: Dict[str, Any]) -> SecEquityFtdQueryParams:
         """Transform query params."""
-        return SecStockFtdQueryParams(**params)
+        return SecEquityFtdQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: SecStockFtdQueryParams,
+        query: SecEquityFtdQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extracts the data from the SEC website."""
-
         results = []
         limit = query.limit if query.limit is not None and query.limit > 0 else 0
         symbol = query.symbol.upper()
@@ -62,7 +64,7 @@ class SecStockFtdFetcher(
             urls = (
                 urls[:limit]
                 if not query.skip_reports
-                else urls[query.skip_reports : limit + query.skip_reports]
+                else urls[query.skip_reports : limit + query.skip_reports]  # noqa: E203
             )
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -75,5 +77,8 @@ class SecStockFtdFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecStockFtdData]:
-        return [SecStockFtdData.model_validate(d) for d in data]
+    def transform_data(
+        query: SecEquityFtdQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecEquityFtdData]:
+        """Transforms the data to the standard format."""
+        return [SecEquityFtdData.model_validate(d) for d in data]

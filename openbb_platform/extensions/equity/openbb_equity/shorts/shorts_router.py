@@ -15,7 +15,7 @@ router = Router(prefix="/shorts")
 # pylint: disable=unused-argument
 
 
-@router.command(model="StockFTD")
+@router.command(model="EquityFTD")
 def fails_to_deliver(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -13,19 +13,20 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class StockFtdQueryParams(QueryParams):
-    """Stock FTD Query Params."""
+class EquityFtdQueryParams(QueryParams):
+    """Equity FTD Query Params."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
         return v.upper()
 
 
-class StockFtdData(Data):
-    """Stock FTD Data."""
+class EquityFtdData(Data):
+    """Equity FTD Data."""
 
     settlement_date: Optional[dateType] = Field(
         description="The settlement date of the fail.", default=None
