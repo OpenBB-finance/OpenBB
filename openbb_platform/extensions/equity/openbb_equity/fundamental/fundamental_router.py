@@ -15,14 +15,14 @@ from pydantic import BaseModel
 router = Router(prefix="/fundamental")
 
 
-@router.command(model="StockMultiples")
+@router.command(model="EquityValuationMultiples")
 def multiples(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Multiples. Valuation multiples for a stock ticker."""
+    """Equity Valuation Multiples. Valuation multiples for a stock ticker."""
     return OBBject(results=Query(**locals()).execute())
 
 

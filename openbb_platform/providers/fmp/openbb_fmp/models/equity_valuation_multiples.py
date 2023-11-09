@@ -1,4 +1,4 @@
-"""FMP Stock Multiples Fetcher."""
+"""FMP Equity Valuation Multiples Fetcher."""
 
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
@@ -6,21 +6,21 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_multiples import (
-    StockMultiplesData,
-    StockMultiplesQueryParams,
+from openbb_provider.standard_models.equity_valuation_multiples import (
+    EquityValuationMultiplesData,
+    EquityValuationMultiplesQueryParams,
 )
 
 
-class FMPStockMultiplesQueryParams(StockMultiplesQueryParams):
-    """FMP Stock Multiples Query.
+class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams):
+    """FMP Equity Valuation Multiples Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Company-Key-Metrics
     """
 
 
-class FMPStockMultiplesData(StockMultiplesData):
-    """FMP Stock Multiples Data."""
+class FMPEquityValuationMultiplesData(EquityValuationMultiplesData):
+    """FMP Equity Valuation Multiples Data."""
 
     __alias_dict__ = {
         "revenue_per_share_ttm": "revenuePerShareTTM",
@@ -87,22 +87,24 @@ class FMPStockMultiplesData(StockMultiplesData):
     }
 
 
-class FMPStockMultiplesFetcher(
+class FMPEquityValuationMultiplesFetcher(
     Fetcher[
-        FMPStockMultiplesQueryParams,
-        List[FMPStockMultiplesData],
+        FMPEquityValuationMultiplesQueryParams,
+        List[FMPEquityValuationMultiplesData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockMultiplesQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> FMPEquityValuationMultiplesQueryParams:
         """Transform the query params."""
-        return FMPStockMultiplesQueryParams(**params)
+        return FMPEquityValuationMultiplesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockMultiplesQueryParams,
+        query: FMPEquityValuationMultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -124,7 +126,7 @@ class FMPStockMultiplesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockMultiplesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockMultiplesData]:
+        query: FMPEquityValuationMultiplesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquityValuationMultiplesData]:
         """Return the transformed data."""
-        return [FMPStockMultiplesData.model_validate(d) for d in data]
+        return [FMPEquityValuationMultiplesData.model_validate(d) for d in data]

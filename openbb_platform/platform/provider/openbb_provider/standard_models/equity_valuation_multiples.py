@@ -1,4 +1,4 @@
-"""Stock Multiples Data Model."""
+"""Equity Valuation Multiples Data Model."""
 
 from typing import List, Optional, Set, Union
 
@@ -9,8 +9,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class StockMultiplesQueryParams(QueryParams):
-    """Stock Multiples Query."""
+class EquityValuationMultiplesQueryParams(QueryParams):
+    """Equity Valuation Multiples Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: Optional[int] = Field(
@@ -18,6 +18,7 @@ class StockMultiplesQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -25,8 +26,8 @@ class StockMultiplesQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class StockMultiplesData(Data):
-    """Stock Multiples Data."""
+class EquityValuationMultiplesData(Data):
+    """Equity Valuation Multiples Data."""
 
     revenue_per_share_ttm: Optional[float] = Field(
         default=None,

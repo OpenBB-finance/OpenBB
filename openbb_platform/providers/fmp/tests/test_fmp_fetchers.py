@@ -21,6 +21,9 @@ from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscript
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
+from openbb_fmp.models.equity_valuation_multiples import (
+    FMPEquityValuationMultiplesFetcher,
+)
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
@@ -55,7 +58,6 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.stock_historical import FMPStockHistoricalFetcher
 from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
-from openbb_fmp.models.stock_multiples import FMPStockMultiplesFetcher
 from openbb_fmp.models.stock_ownership import FMPStockOwnershipFetcher
 from openbb_fmp.models.stock_quote import FMPStockQuoteFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
@@ -408,10 +410,10 @@ def test_fmp_equity_peers_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_stock_multiples_fetcher(credentials=test_credentials):
+def test_fmp_equity_valuation_multiples_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPStockMultiplesFetcher()
+    fetcher = FMPEquityValuationMultiplesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
