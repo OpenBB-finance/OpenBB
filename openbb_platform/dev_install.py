@@ -18,18 +18,17 @@ openbb-provider = { path = "./platform/provider", develop = true }
 openbb-core = { path = "./platform/core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
-openbb-fred = { path = "./providers/fred", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
+openbb-fred = { path = "./providers/fred", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
 openbb-sec = { path = "./providers/sec", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
-openbb-ultima = { path = "./providers/ultima", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
-openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
@@ -40,19 +39,20 @@ openbb-stocks = { path = "./extensions/stocks", develop = true }
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
-openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
-openbb-finra = { path = "./providers/finra", develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
-openbb-stockgrid = { path = "./providers/stockgrid" ,optional = true,  develop = true }
-openbb-wsj = { path = "./providers/wsj", develop = true }
 openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
+openbb-stockgrid = { path = "./providers/stockgrid" ,optional = true,  develop = true }
+openbb-ultima = { path = "./providers/ultima", optional = true, develop = true }
+openbb-finra = { path = "./providers/finra", develop = true }
+openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
+openbb-wsj = { path = "./providers/wsj", develop = true }
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
-openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
 openbb-qa = { path = "./extensions/qa", optional = true, develop = true }
 openbb-ta = { path = "./extensions/ta", optional = true, develop = true }
+openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 """
 
 pyproject_toml = toml.load(PYPROJECT)
