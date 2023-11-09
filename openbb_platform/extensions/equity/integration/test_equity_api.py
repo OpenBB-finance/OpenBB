@@ -301,11 +301,11 @@ def test_equity_fundamental_employee_count(params, headers):
     [({"symbol": "AAPL", "period": "annual", "limit": 30})],
 )
 @pytest.mark.integration
-def test_equity_estimates_analyst(params, headers):
+def test_equity_estimates_historical(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/analyst?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/historical?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

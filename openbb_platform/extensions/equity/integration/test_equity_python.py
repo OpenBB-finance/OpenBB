@@ -285,8 +285,8 @@ def test_equity_fundamental_employee_count(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_equity_estimates_analyst(params, obb):
-    result = obb.equity.estimates.analyst(**params)
+def test_equity_estimates_historical(params, obb):
+    result = obb.equity.estimates.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

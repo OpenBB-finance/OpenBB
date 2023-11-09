@@ -27,13 +27,13 @@ def price_target(
 
 
 @router.command(model="AnalystEstimates")
-def analyst(
+def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Analyst Estimates. Analyst stock recommendations."""
+    """Historical Analyst Estimates. Analyst stock recommendations."""
     return OBBject(results=Query(**locals()).execute())
 
 
