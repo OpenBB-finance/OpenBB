@@ -2,7 +2,6 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
-from openbb_sec.models.equity_short_interest import SecShortInterestFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
@@ -92,16 +91,6 @@ def test_sec_rss_litigation_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = SecRssLitigationFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.freeze_time("2021-10-21")
-@pytest.mark.record_http
-def test_sec_short_interest_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = SecShortInterestFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
