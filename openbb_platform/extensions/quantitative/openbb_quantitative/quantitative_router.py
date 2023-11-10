@@ -14,8 +14,8 @@ from openbb_core.app.utils import (
 from openbb_provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from openbb_qa.qa_helpers import get_fama_raw
-from openbb_qa.qa_models import (
+from .helpers import get_fama_raw
+from .models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,

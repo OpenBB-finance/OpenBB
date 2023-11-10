@@ -72,12 +72,12 @@ def get_data(menu: Literal["equity", "crypto"]):
     ],
 )
 @pytest.mark.integration
-def test_qa_normality(params, data_type):
+def test_quantitative_normality(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/normality?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/normality?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -91,12 +91,12 @@ def test_qa_normality(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_capm(params, data_type):
+def test_quantitative_capm(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/capm?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/capm?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -126,12 +126,12 @@ def test_qa_capm(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_om(params, data_type):
+def test_quantitative_om(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/om?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/om?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -145,12 +145,12 @@ def test_qa_om(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_kurtosis(params, data_type):
+def test_quantitative_kurtosis(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/kurtosis?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/kurtosis?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -180,12 +180,12 @@ def test_qa_kurtosis(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_unitroot(params, data_type):
+def test_quantitative_unitroot(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/unitroot?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/unitroot?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -199,12 +199,12 @@ def test_qa_unitroot(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_sh(params, data_type):
+def test_quantitative_sh(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/sh?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/sh?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -236,12 +236,12 @@ def test_qa_sh(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_so(params, data_type):
+def test_quantitative_so(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/so?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/so?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -254,12 +254,12 @@ def test_qa_so(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_skew(params, data_type):
+def test_quantitative_skew(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/skew?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/skew?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -289,12 +289,12 @@ def test_qa_skew(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_quantile(params, data_type):
+def test_quantitative_quantile(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/quantile?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/quantile?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -308,12 +308,12 @@ def test_qa_quantile(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_qa_summary(params, data_type):
+def test_quantitative_summary(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/qa/summary?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/summary?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
