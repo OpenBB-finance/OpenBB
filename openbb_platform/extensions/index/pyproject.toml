@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "openbb-economy"
+name = "openbb-index"
 version = "0.1.0a4"
-description = "Economy extension for OpenBB"
+description = "Index extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb_economy" }]
+packages = [{ include = "openbb_index" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-economy = "openbb_economy.economy_router:router"
+index = "openbb_index.index_router:router"

@@ -1,13 +1,13 @@
-# OpenBB Economy Extension
+# OpenBB Index Extension
 
-The Economy extension provides global macroeconomic data access for the OpenBB Platform.
+The Index extension provides global and european index data access for the OpenBB Platform.
 
 ## Installation
 
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install openbb-economy
+pip install openbb-index
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/feature/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).
