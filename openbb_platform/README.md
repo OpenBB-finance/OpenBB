@@ -36,7 +36,7 @@ pip install openbb[all]==4.0.0a4
 
 ```python
 >>> from openbb import obb
->>> output = obb.equity.price("AAPL")
+>>> output = obb.equity.price.historical("AAPL")
 >>> df = output.to_dataframe()
 >>> df.head()
               open    high     low  ...  change_percent             label  change_over_time

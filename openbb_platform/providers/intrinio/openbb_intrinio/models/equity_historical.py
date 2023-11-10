@@ -215,11 +215,12 @@ class IntrinioEquityHistoricalFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: IntrinioEquityHistoricalQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioEquityHistoricalQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
         return [IntrinioEquityHistoricalData.model_validate(d) for d in data]

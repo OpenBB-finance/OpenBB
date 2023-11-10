@@ -162,7 +162,7 @@ The OpenBB Platform dynamically knows where the standard models begin in the inh
 ##### Standard Data Example
 
 ```python
-class EquityHistoricalQueryData(Data):
+class EquityHistoricalData(Data):
     """Stock end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
@@ -291,7 +291,7 @@ In this section, we'll be adding a new data point to the OpenBB Platform. We wil
 
 #### Identify which type of data you want to add
 
-In this example, we'll be adding OHLC stock data that is used by the `obb.equity.load` command.
+In this example, we'll be adding OHLC stock data that is used by the `obb.equity.price.historical` command.
 
 Note that, if no command exists for your data, we need to add one under the right router.
 Each router is categorized under different extensions (stocks, currency, crypto, etc.).
@@ -300,7 +300,7 @@ Each router is categorized under different extensions (stocks, currency, crypto,
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `EquityHistorical` which can be found inside the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
+In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
@@ -317,7 +317,7 @@ For the `EquityHistorical` example, this would look like the following:
 ```python
 
 class <ProviderName>EquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """<ProviderName> Stock Historical Query.
+    """<ProviderName> Equity Historical Query.
 
     Source: https://www.<provider_name>.co/documentation/
     """
@@ -334,7 +334,7 @@ For the `StockHistorical` example, this would look like the following:
 ```python
 
 class <ProviderName>EquityHistoricalData(EquityHistoricalData):
-    """<ProviderName> Stock End of Day Data.
+    """<ProviderName> Equity Historical Data.
 
     Source: https://www.<provider_name>.co/documentation/
     """
@@ -356,7 +356,7 @@ For the `EquityHistorical` example, this would look like the following:
 ```python
 class <ProviderName>EquityHistoricalFetcher(
     Fetcher[
-        <ProviderName>EquityHistoricallQueryParams,
+        <ProviderName>EquityHistoricalQueryParams,
         List[<ProviderName>EquityHistoricalData],
     ]
 ):
@@ -533,7 +533,7 @@ It's a pydantic model that inherits from the `BaseModel` and can contain any giv
 
 ```python
 
->>> res = obb.equity.load("AAPL")
+>>> res = obb.equity.price.historical("AAPL")
 >>> res.results[0]
 
 AVEquityHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=173.35, close=176.65, volume=79829246.0, vwap=None, adj_close=None, dividend_amount=None, split_coefficient=None)
@@ -542,7 +542,7 @@ AVEquityHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=1
 
 > The `AVEquityHistoricalData` class, is a child class of the `Data` class.
 
-Note how we've indexed to get only the first element of the `results` list (which represents a single row, if we want to think about it as a tabular output). This simply means that we are getting a `List` of `AVEquityHistoricalData` from the `obb.equity.load` command. Or, we can also say that that's equivalent to `List[Data]`!
+Note how we've indexed to get only the first element of the `results` list (which represents a single row, if we want to think about it as a tabular output). This simply means that we are getting a `List` of `AVEquityHistoricalData` from the `obb.equity.price.historical` command. Or, we can also say that that's equivalent to `List[Data]`!
 
 This is very powerful, as we can now apply any data processing command to the `results` list, without worrying about the underlying data structure.
 That's why, on data processing commands (such as the `ta` menu) we will find on its function signature the following:
@@ -585,7 +585,7 @@ In other words, imagine you have a dataframe that you want to use with the `ta` 
 
 ```python
 
->>> res = obb.equity.load("AAPL")
+>>> res = obb.equity.price.historical("AAPL")
 >>> my_df = res.to_dataframe() # yes, you can convert your OBBject.results into a dataframe out-of-the-box!
 >>> my_records = df.to_dict(orient="records")
 
