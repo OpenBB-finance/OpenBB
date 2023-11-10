@@ -1,4 +1,4 @@
-"""Intrinio Stocks end of day fetcher."""
+"""Intrinio Equity end of day fetcher."""
 
 from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +16,7 @@ from pydantic import Field, PrivateAttr, model_validator
 
 
 class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """Intrinio Stock end of day Query.
+    """Intrinio Equity end of day Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
@@ -71,7 +71,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class IntrinioEquityHistoricalData(EquityHistoricalData):
-    """Intrinio Stock end of day Data."""
+    """Intrinio Equity end of day Data."""
 
     __alias_dict__ = {"date": "time"}
 
@@ -86,7 +86,7 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     )
     average: Optional[float] = Field(
         default=None,
-        description="Average trade price of an individual stock during the interval.",
+        description="Average trade price of an individual equity during the interval.",
     )
     change: Optional[float] = Field(
         default=None,
@@ -94,7 +94,7 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     )
     intra_period: Optional[bool] = Field(
         default=None,
-        description="If true, the stock price represents an unfinished period "
+        description="If true, the equity price represents an unfinished period "
         "(be it day, week, quarter, month, or year), meaning that the close "
         "price is the latest price available, not the official close price "
         "for the period",
@@ -122,12 +122,12 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     )
     factor: Optional[float] = Field(
         default=None,
-        description="factor by which to multiply stock prices before this "
-        "date, in order to calculate historically-adjusted stock prices.",
+        description="factor by which to multiply equity prices before this "
+        "date, in order to calculate historically-adjusted equity prices.",
     )
     split_ratio: Optional[float] = Field(
         default=None,
-        description="Ratio of the stock split, if a stock split occurred.",
+        description="Ratio of the equity split, if a equity split occurred.",
     )
     dividend: Optional[float] = Field(
         default=None,
@@ -215,9 +215,12 @@ class IntrinioEquityHistoricalFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: IntrinioEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
+        query: IntrinioEquityHistoricalQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
         return [IntrinioEquityHistoricalData.model_validate(d) for d in data]

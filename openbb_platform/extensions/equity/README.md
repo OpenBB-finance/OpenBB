@@ -1,26 +1,28 @@
-# OpenBB Stocks Extension
+# OpenBB Equity Extension
 
-This extension provides stock market data tools for the OpenBB Platform.
+This extension provides equity market data tools for the OpenBB Platform.
 
-Features of the Stocks extension include:
+Features of the Equity extension include:
 
-- Access to various stock market data sources
+- Access to various equity market data sources
 - Sub-modules such as:
-  - `ca` for fundamental analysis
-  - `dd` for in-depth due diligence
-  - `disc` for stock discovery
-  - `dps` for Dark Pool Shorts data
-  - `fa` for comparison analysis
-  - `gov` for government contracts data
-  - `ins` for insiders trading data
+  - `calendar` for equity-specific events
+  - `compare` for peer analysis
+  - `darkpool` for dark pool shorts data
+  - `discovery` for equity discovery
+  - `estimates` for analyst estimates
+  - `fundamental` for fundamental analysis
   - `options` for options
+  - `ownership` for internal and external ownership
+  - `price` for historical pricing data
+  - `shorts` for shorts data
 
 ## Installation
 
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install openbb-stocks
+pip install openbb-equity
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/feature/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).

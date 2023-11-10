@@ -149,7 +149,7 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[str, List[str]]]
+        country : Optional[Union[List[str], str]]
             Country of the event (provider: nasdaq, tradingeconomics)
         importance : Literal['Low', 'Medium', 'High']
             Importance of the event. (provider: tradingeconomics)
@@ -709,7 +709,7 @@ class ROUTER_economy(Container):
         date : datetime
             The date of the data.
         close : float
-            The close price of the symbol.
+            The close price.
         open : Optional[Union[float]]
             Opening price for the interval. Only valid when interval is 1m. (provider: cboe)
         high : Optional[Union[float]]
@@ -784,15 +784,15 @@ class ROUTER_economy(Container):
         price : float
             Current price of the constituent company in the index.
         open : float
-            The open price of the symbol.
+            The open price.
         high : float
-            The high price of the symbol.
+            The high price.
         low : float
-            The low price of the symbol.
+            The low price.
         close : float
-            The close price of the symbol.
+            The close price.
         volume : float
-            The volume of the symbol.
+            The trading volume.
         prev_close : Optional[Union[float]]
             Previous closing  price. (provider: cboe)
         change : Optional[Union[float]]
@@ -1263,15 +1263,15 @@ class ROUTER_economy(Container):
         date : datetime
             The date of the data.
         open : float
-            The open price of the symbol.
+            The open price.
         high : float
-            The high price of the symbol.
+            The high price.
         low : float
-            The low price of the symbol.
+            The low price.
         close : float
-            The close price of the symbol.
+            The close price.
         volume : Optional[Union[typing_extensions.Annotated[int, Strict(strict=True)]]]
-            The volume of the symbol.
+            The trading volume.
         calls_volume : Optional[Union[float]]
             Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         puts_volume : Optional[Union[float]]
@@ -1457,13 +1457,13 @@ class ROUTER_economy(Container):
         price : Optional[Union[float]]
             Current price of the index.
         open : Optional[Union[float]]
-            The open price of the symbol.
+            The open price.
         high : Optional[Union[float]]
-            The high price of the symbol.
+            The high price.
         low : Optional[Union[float]]
-            The low price of the symbol.
+            The low price.
         close : Optional[Union[float]]
-            The close price of the symbol.
+            The close price.
         prev_close : Optional[Union[float]]
             Previous closing price of the index.
         change : Optional[Union[float]]

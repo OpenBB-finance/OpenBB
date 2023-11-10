@@ -67,7 +67,7 @@ class ROUTER_futures(Container):
         expiration : str
             Futures expiration month.
         price : Optional[Union[float]]
-            The close price of the symbol.
+            The close price.
         symbol : Optional[Union[str]]
             The trading symbol for the tenor of future. (provider: cboe)
 
@@ -165,15 +165,15 @@ class ROUTER_futures(Container):
         date : datetime
             The date of the data.
         open : float
-            The open price of the symbol.
+            The open price.
         high : float
-            The high price of the symbol.
+            The high price.
         low : float
-            The low price of the symbol.
+            The low price.
         close : float
-            The close price of the symbol.
+            The close price.
         volume : float
-            The volume of the symbol.
+            The trading volume.
 
         Example
         -------

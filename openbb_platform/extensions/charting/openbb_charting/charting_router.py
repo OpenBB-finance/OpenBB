@@ -14,7 +14,7 @@ CHART_FORMAT = ChartFormat.plotly
 
 
 def equity_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks load chart."""
+    """Equity price chart."""
 
     def handle_indicators(ma):
         """Handle indicators."""
@@ -187,7 +187,7 @@ def ta_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def equity_fundamental_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks multiples chart."""
+    """Equity multiples chart."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)
