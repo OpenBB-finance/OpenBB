@@ -1,6 +1,6 @@
 """ETF Sectors data model."""
 
-from typing import List, Optional, Set, Union
+from typing import List, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -26,7 +26,6 @@ class EtfSectorsQueryParams(QueryParams):
 class EtfSectorsData(Data):
     """FMP ETF Sector Info."""
 
-    sector: str = Field(description="Sector of exposure.")
-    weight: Optional[float] = Field(
-        description="Exposure of the ETF to the sector in normalized percentage points."
+    sector: str = Field(
+        description="Sector of exposure. Corresponding values are normalized percentage points."
     )

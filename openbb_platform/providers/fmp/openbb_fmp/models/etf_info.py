@@ -1,5 +1,6 @@
 """FMP ETF Info fetcher."""
 
+import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -15,30 +16,63 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
+    domicile: Optional[str] = Field(
+        default=None,
+        description="Domicile of the ETF.",
+    )
+    issuer: Optional[str] = Field(
+        default=None,
+        alias="etfCompany",
+        description="The issuer of the ETF.",
+    )
     asset_class: Optional[str] = Field(
-        alias="assetClass", description="Asset class of the ETF."
+        default=None,
+        alias="assetClass",
+        description="Asset class of the ETF.",
     )
-    aum: Optional[float] = Field(description="Assets under management.")
-    avg_volume: Optional[float] = Field(
-        alias="avgVolume", description="Average trading volume of the ETF."
+    isin: Optional[str] = Field(
+        default=None,
+        description="ISIN of the ETF.",
     )
-    cusip: Optional[str] = Field(description="CUSIP of the ETF.")
-    description: Optional[str] = Field(description="Description of the ETF.")
-    domicile: Optional[str] = Field(description="Domicile of the ETF.")
-    etf_company: Optional[str] = Field(
-        alias="etfCompany", description="Company of the ETF."
+    cusip: Optional[str] = Field(
+        default=None,
+        description="CUSIP of the ETF.",
+    )
+    holdings_count: Optional[int] = Field(
+        default=None,
+        alias="holdingsCount",
+        description="Number of holdings in the ETF.",
+    )
+    aum: Optional[float] = Field(
+        default=None,
+        description="Assets under management.",
+    )
+    nav: Optional[float] = Field(
+        default=None,
+        description="Net asset value of the ETF.",
+    )
+    nav_currency: Optional[str] = Field(
+        default=None,
+        alias="navCurrency",
+        description="Currency of the ETF's net asset value.",
     )
     expense_ratio: Optional[float] = Field(
-        alias="expenseRatio", description="Expense ratio of the ETF."
+        default=None,
+        alias="expenseRatio",
+        description="Expense ratio of the ETF.",
     )
-    isin: Optional[str] = Field(description="ISIN of the ETF.")
-    nav: Optional[float] = Field(description="Net asset value of the ETF.")
-    nav_currency: Optional[str] = Field(
-        alias="navCurrency", description="Currency of the ETF's net asset value."
+    avg_volume: Optional[float] = Field(
+        default=None,
+        alias="avgVolume",
+        description="Average trading volume of the ETF.",
     )
-    website: Optional[str] = Field(description="Website link of the ETF.")
-    holdings_count: Optional[int] = Field(
-        alias="holdingsCount", description="Number of holdings in the ETF."
+    description: Optional[str] = Field(
+        default=None,
+        description="Description of the ETF.",
+    )
+    website: Optional[str] = Field(
+        default=None,
+        description="Website link of the ETF.",
     )
 
 
@@ -63,10 +97,27 @@ class FMPEtfInfoFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = (
+            query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
+        )
 
-        url = create_url(version=4, endpoint="etf-info", api_key=api_key, query=query)
+        results = []
 
-        return get_data_many(url, **kwargs)
+        def get_one(symbol):
+            url = create_url(
+                version=4,
+                endpoint="etf-info",
+                query={"symbol": symbol},
+                api_key=api_key,
+            )
+            result = get_data_many(url=url, **kwargs)
+            if result != {}:
+                results.extend(result)
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(get_one, symbols)
+
+        return results
 
     @staticmethod
     def transform_data(
@@ -75,5 +126,5 @@ class FMPEtfInfoFetcher(
         """Return the transformed data."""
         # remove "sectorList" key from data. it's handled by the sectors
         for d in data:
-            d.pop("sectorList", None)
+            d.pop("sectorsList", None)
         return [FMPEtfInfoData.model_validate(d) for d in data]

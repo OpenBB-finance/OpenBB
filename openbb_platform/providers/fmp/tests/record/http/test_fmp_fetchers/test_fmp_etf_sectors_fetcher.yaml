@@ -5,19 +5,21 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/IOO?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/VTI?apikey=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA43TS0sDMRAA4Ht/RQh4KyHt9pUerRV7EMXHSTyEdNwdyE4gmW0p4n83IoIHGRvI
-        KZOPzCMvI6Xe61ZKFwicsl4rfekLBnXrGTL6WPT4O+AI2HZ8DzkAsW/hK3RiFhe6Hn+M/4I2qe8H
-        wuAZE6lHyAcMIHorsxI9KkMPWW1OIVY2ik+zxp6FXcEbUMEDSJozUydgW4LcniRgYawEXCN5CrXc
-        Z5XJGdcI2A34yF3wWUxpMjVLqUA72g+F/x2BmZktBeWOO8jS/dom634t6+xc8B5qbmpbuE6nrDbS
-        q54gdJRiknvWzI2TKvTMGJFR7pX9+SKj108ovQZxbgMAAA==
+        H4sIAAAAAAAAA42TS0sEMRCE7/6KMOBNhnSn00k8+kIPovg4iYchxt3AbAZmsoqI/92IgiDSesit
+        +FLd1XW3o9Rre0p1S4p1mrt91R0MS47qfKhpzsO4dHufgueUV+t6meaYSh1W6UOKvQkIwQFatMza
+        ud2uqd/2fuMeTpvNtuQ41DwVdZ3mpxyTiPc9GtKekRBDsI5Felm2mzSrw5c4tk9GCQy6D4YwgPUA
+        2ltt/0M+So+pLPkpSWjudfCWkdEbwzaAQD4uaV69SDTqPVgIVjvw7MmiQDvJZSixRfav3ULLDrRm
+        YA1MaKy0gtM0jHUdh1kcHUwPBOyNcx6NcZLZs/KwXeqfBxbagRG2fMAYYkdeQF7UdZolmG7RIGkk
+        Js3WadYk4K7azOp4qa0HcgU8fXs0PgjImxTXZRonOXN0vbEAGAwbogCSyduax1yzHPXPln4tcef+
+        HUjYH1H/AwAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -37,9 +39,175 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 28 Oct 2023 13:06:21 GMT
+      - Fri, 10 Nov 2023 03:34:43 GMT
       ETag:
-      - W/"36e-QHhgqRHZ+lmslr6jTbT2OEyVRmE"
+      - W/"3ff-R4lQgHQb/d7N2Y9XI44vPmEY/gk"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/QQQ?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42STUsDMRCG7/0VYcFbCZOPySZea0Vv4sdJPCxxbAPbLGTTShH/u0nrUVIPgecw
+        efJOZl4XjH2Vw1g3k89T6q5Zt5p2u30MfshhiuyJ0iF4mrvlue6TwmabHyh5innYUL0hkKMyVmuj
+        BFa66krx9/Jve5z3O0psdfRjeWRsijVXaC0aLYSupP9jvqEPinM4UEttuHDKKQsGTCXZMK8jpc2x
+        ZQOOAp3TVgOcSDV0tyEO0Ydh/NfnFjWoonamqCu11Hc0jHnrh3ShdyukU8L2YCq1er+P7/s5p5K2
+        mbIMyqJDIzToSq1BPZaQbD3nITdTApdGOterHuBMDecz+W2cxqk9JgQueqmdlT1CIWzFfMlhDDlc
+        WH0uEZ3ttQZxot/dX7z9ACdf0VNcAwAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Nov 2023 03:34:44 GMT
+      ETag:
+      - W/"35c-MToHhE5gtA+iTnluFDibAFdvJoE"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/VOO?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA43TTUsDMRAG4Ht/RVjwVkJmMkkmHq0VPQjix0k8LDG2gW0WdtNKEf+7EcGTxB5y
+        G55M5p08L4T4qEeIbo6hjFN3LrqLfk5B3PYlTqkf5m75U/Ae02Zb7uIUYi79Jn6XokSw4BiUAq28
+        obOuFn8u/2JX4263zyn0JY1ZPMTpkEJs6izZkWPjtdOExjfxPO93cRKrYxjqHUPLBSW99myVZwMe
+        +CT4Mr7FPKdDbMlWknekAYkBAJVryOscp82xpZF0SMTsLCtliVrTvUq5z6HmddJkAaV2SiuNoMkw
+        atugr2M/lG3op+bTQUvNzmlFFTXkwDTIm/y6n8u/68USfM2IvVPEZLBF3tcuxXoudW3bG1u7JGRE
+        q4wC25rpYwzbPA5jOyV00nMVTUWNRcsN8amkIZXUDgclgbM1d21Njf33Vy1evgDae6zyrwMAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Nov 2023 03:34:44 GMT
+      ETag:
+      - W/"3af-1EBbr6U5mtm/iW1H5QaBFLK8J7k"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/etf-sector-weightings/IWM?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42TTUsEMQyG7/6KMuBNhrRJm9Sjq6IHUfw4iYeh1t3CbAdmuoqI/92KHqXrobfw
+        NG+e5PFAqY/6lOqWGMo0d8eqOxmWFNTVUOKchnHpjn4K3mJab8pNnEPMZVjH71LqDYtFsZaBWRs6
+        7Grx59Ff2NW03e5yCkNJU1Z3cX5NITbppkckZnLOW/JI2MbnZbeNs1q9h7H+MrbIGnogYgIQTwLa
+        6/+QT+NLzEt6jXtGoq0TIdTITrgBPstxXr+3YNw7bY2zBsEi1IYbtPOUhxyqsX/NVlNPDgHFG1fV
+        ifgG+iIOY9mEYW4mr8jqS5xUX4yM0iBe5ufdUvbul7Y9O6dJWzRGEFpNXpdNnFsw6D2RRV2zgkNm
+        33JzWyOrs6XUK2gLIgIPJKIFfGU2kPcxbPI0Tm3lNbIVC6g1AziDbBrIh5LGVNK+M/LsiK23xtu6
+        6vp3iw6evgCJZQOw/wMAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Nov 2023 03:34:45 GMT
+      ETag:
+      - W/"3ff-rm/9mLuDVDva1N63ROJaJgbDdRM"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

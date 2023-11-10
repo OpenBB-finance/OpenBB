@@ -508,7 +508,7 @@ def test_fmp_etf_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_info_fetcher(credentials=test_credentials):
-    params = {"symbol": "IOO"}
+    params = {"symbol": "VOO,IWM"}
 
     fetcher = FMPEtfInfoFetcher()
     result = fetcher.test(params, credentials)
@@ -517,7 +517,7 @@ def test_fmp_etf_info_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_etf_sectors_fetcher(credentials=test_credentials):
-    params = {"symbol": "IOO"}
+    params = {"symbol": "VTI,QQQ,VOO,IWM"}
 
     fetcher = FMPEtfSectorsFetcher()
     result = fetcher.test(params, credentials)

@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+import pandas as pd
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.etf_sectors import (
@@ -16,8 +17,6 @@ class FMPEtfSectorsQueryParams(EtfSectorsQueryParams):
 
 class FMPEtfSectorsData(EtfSectorsData):
     """FMP ETF Sector Weighting Data."""
-
-    __alias_dict__ = {"weight": "weightPercentage"}
 
 
 class FMPEtfSectorsFetcher(
@@ -41,23 +40,51 @@ class FMPEtfSectorsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        url = create_url(
-            version=3,
-            endpoint=f"etf-sector-weightings/{query.symbol.upper()}",
-            api_key=api_key,
+        symbols = (
+            query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]
         )
+        results = {}
 
-        return get_data_many(url, **kwargs)
+        for symbol in symbols:
+            data = {}
+            url = create_url(
+                version=3,
+                endpoint=f"etf-sector-weightings/{symbol}",
+                api_key=api_key,
+            )
+            result = get_data_many(url, **kwargs)
+            df = pd.DataFrame(result).set_index("sector")
+            if len(df) > 0:
+                for i in df.index:
+                    data.update(
+                        {
+                            i: float(df.loc[i]["weightPercentage"].replace("%", ""))
+                            * 0.01
+                        }
+                    )
+                results.update({symbol: data})
+
+        output = (
+            pd.DataFrame(results)
+            .transpose()
+            .reset_index()
+            .fillna(0)
+            .replace(0, None)
+            .rename(columns={"index": "symbol"})
+        ).transpose()
+        output.columns = output.loc["symbol"].to_list()
+        output = output.drop("symbol", axis=0).sort_values(
+            by=output.columns[0], ascending=False
+        )
+        return (
+            output.reset_index()
+            .rename(columns={"index": "sector"})
+            .to_dict(orient="records")
+        )
 
     @staticmethod
     def transform_data(
         query: FMPEtfSectorsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEtfSectorsData]:
         """Return the transformed data."""
-        for d in data:
-            if d["weightPercentage"] is not None and d["weightPercentage"].endswith(
-                "%"
-            ):
-                d["weightPercentage"] = float(d["weightPercentage"][:-1]) / 100
         return [FMPEtfSectorsData.model_validate(d) for d in data]
