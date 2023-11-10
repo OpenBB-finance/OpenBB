@@ -37,7 +37,6 @@ openbb-finra = { version = "^0.1.0a5", optional = true }
 openbb-nasdaq = { version = "^0.1.0a5", optional = true }
 openbb-seeking-alpha = { version = "^0.1.0a5", optional = true }
 openbb-stockgrid = { version = "^0.1.0a5", optional = true }
-openbb-ultima = { version = "^0.1.0a6", optional = true }
 openbb-wsj = { version = "^0.1.0a5", optional = true }
 openbb-yfinance = { version = "^0.1.0a5", optional = true }
 
@@ -61,7 +60,6 @@ qa = ["openbb-qa"]
 seeking_alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
 ta = ["openbb-ta"]
-ultima = ["openbb-ultima"]
 wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
 
@@ -79,7 +77,6 @@ all = [
     "openbb-seeking-alpha",
     "openbb-stockgrid",
     "openbb-ta",
-    "openbb-ultima",
     "openbb-wsj",
     "openbb-yfinance",
 ]
