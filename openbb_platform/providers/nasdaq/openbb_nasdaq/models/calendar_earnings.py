@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import requests
 from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
@@ -97,7 +97,6 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "eps_consensus",
         "num_estimates",
         "actual_eps",
-        "surprise_percent",
         mode="before",
         check_fields=False,
     )
@@ -110,6 +109,15 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
             .replace(")", "")
         )
         return float(v) if v else None
+
+    @field_validator(
+        "surprise_percent",
+        mode="before",
+        check_fields=False,
+    )
+    def validate_surprise_percent(cls, v: str):
+        v = v.replace("N/A", "")
+        return float(v) * 0.01 if v else None
 
 
 class NasdaqCalendarEarningsFetcher(
