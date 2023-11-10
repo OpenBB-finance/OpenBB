@@ -10,6 +10,7 @@ from openbb_yfinance.models.cash_flow import YFinanceCashFlowStatementFetcher
 from openbb_yfinance.models.company_news import YFinanceCompanyNewsFetcher
 from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFetcher
 from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistoricalFetcher
+from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -20,7 +21,6 @@ from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.major_indices_historical import (
     YFinanceMajorIndicesHistoricalFetcher,
 )
-from openbb_yfinance.models.stock_historical import YFinanceStockHistoricalFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -82,7 +82,7 @@ def test_y_finance_major_indices_historical_fetcher(credentials=test_credentials
 
 
 @pytest.mark.record_http
-def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
+def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -90,7 +90,7 @@ def test_y_finance_stock_historical_fetcher(credentials=test_credentials):
         "interval": "1d",
     }
 
-    fetcher = YFinanceStockHistoricalFetcher()
+    fetcher = YFinanceEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

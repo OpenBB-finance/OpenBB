@@ -14,6 +14,7 @@ PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
+openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-provider = { path = "./platform/provider", develop = true }
 openbb-core = { path = "./platform/core", develop = true }
 
@@ -34,7 +35,7 @@ openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
-openbb-stocks = { path = "./extensions/stocks", develop = true }
+openbb-equity = { path = "./extensions/equity", develop = true }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
