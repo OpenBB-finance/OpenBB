@@ -1,4 +1,4 @@
-"""Finra OTC Aggregates fetcher."""
+"""FINRA OTC Aggregates fetcher."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -16,11 +16,8 @@ class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
 
     tier: Literal["T1", "T2", "OTCE"] = Field(
         default="T1",
-        description=(
-            "T1 - Securities included in the S&P 500, Russell 1000 and selected "
-            "exchange-traded products; T2 - All other NMS stocks;"
-            "OTC - Over-the-Counter equity securities",
-        ),
+        description=""""T1 - Securities included in the S&P 500, Russell 1000 and selected exchange-traded products;
+        T2 - All other NMS stocks; OTC - Over-the-Counter equity securities""",
     )
     is_ats: bool = Field(
         default=True, description="ATS data if true, NON-ATS otherwise"
@@ -28,7 +25,7 @@ class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
 
 
 class FinraOTCAggregateData(OTCAggregateData):
-    """Finra OTC Aggregate Data."""
+    """FINRA OTC Aggregate Data."""
 
     __alias_dict__ = {
         "share_quantity": "totalWeeklyShareQuantity",
@@ -53,10 +50,12 @@ class FinraOTCAggregateFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extracts the data from the FINRA endpoint."""
+        """Extract the data from the FINRA endpoint."""
         return get_full_data(query.symbol, query.tier, query.is_ats)
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[FinraOTCAggregateData]:
-        """Transforms the data."""
+    def transform_data(
+        query: FinraOTCAggregateQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FinraOTCAggregateData]:
+        """Transform the data."""
         return [FinraOTCAggregateData.model_validate(d) for d in data if d]

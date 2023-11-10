@@ -1,3 +1,4 @@
+"""Custom technical indicators."""
 import warnings
 from datetime import datetime, timedelta
 
@@ -120,11 +121,13 @@ class Custom(PltTA):
     def plot_fib(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Add fibonacci to plotly figure."""
         try:
-            from openbb_ta.ta_helpers import calculate_fib_levels
+            from openbb_technical.helpers import (  # pylint: disable=import-outside-toplevel
+                calculate_fib_levels,
+            )
         except ImportError:
             warnings.warn(
                 "In order to use the Fibonacci indicator in your plot,"
-                " you need to install the `openbb_ta` package."
+                " you need to install the `openbb-technical` package."
             )
             return fig
 

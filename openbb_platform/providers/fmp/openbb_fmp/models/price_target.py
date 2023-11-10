@@ -1,4 +1,4 @@
-"""FMP Stock Ownership fetcher."""
+"""FMP Equity Ownership fetcher."""
 
 
 from datetime import datetime

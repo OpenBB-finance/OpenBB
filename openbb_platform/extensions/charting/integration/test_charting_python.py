@@ -5,20 +5,23 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_core.app.model.obbject import OBBject
 
 
+# pylint:disable=inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint:disable=import-outside-toplevel
 
         return openbb.obb
 
 
-data = {}
+# pylint:disable=redefined-outer-name
+
+data: dict = {}
 
 
-def get_stocks_data():
-    """Get stocks data."""
+def get_equity_data():
+    """Get equity data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
@@ -27,7 +30,7 @@ def get_stocks_data():
     symbol = "AAPL"
     provider = "fmp"
 
-    data["stocks_data"] = openbb.obb.stocks.load(
+    data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["stocks_data"]
@@ -46,9 +49,9 @@ def get_stocks_data():
     ],
 )
 @pytest.mark.integration
-def test_chart_stocks_load(params, obb):
-    """Test chart stocks load."""
-    result = obb.stocks.load(**params)
+def test_chart_equity_price_historical(params, obb):
+    """Test chart equity price historical."""
+    result = obb.equity.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -63,11 +66,11 @@ def test_chart_stocks_load(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_stocks_multiples(params, obb):
-    """Test chart stocks multiples."""
+def test_chart_equity_fundamental_multiples(params, obb):
+    """Test chart equity multiples."""
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.stocks.multiples(**params)
+    result = obb.equity.fundamental.multiples(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -89,11 +92,11 @@ def test_chart_stocks_multiples(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_stocks_news(params, obb):
-    """Test chart stocks news."""
+def test_chart_equity_news(params, obb):
+    """Test chart equity news."""
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.stocks.news(**params)
+    result = obb.equity.news(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -121,9 +124,9 @@ def test_chart_ta_adx(params, obb):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.adx(**params)
+    result = obb.technical.adx(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -150,9 +153,9 @@ def test_chart_ta_aroon(params, obb):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.aroon(**params)
+    result = obb.technical.aroon(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -180,9 +183,9 @@ def test_chart_ta_ema(params, obb):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.ema(**params)
+    result = obb.technical.ema(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -210,9 +213,9 @@ def test_chart_ta_hma(params, obb):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.hma(**params)
+    result = obb.technical.hma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -241,9 +244,9 @@ def test_chart_ta_macd(params, obb):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.macd(**params)
+    result = obb.technical.macd(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -272,9 +275,9 @@ def test_chart_ta_rsi(params, obb):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.rsi(**params)
+    result = obb.technical.rsi(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -302,9 +305,9 @@ def test_chart_ta_sma(params, obb):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.sma(**params)
+    result = obb.technical.sma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -332,9 +335,9 @@ def test_chart_ta_wma(params, obb):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.wma(**params)
+    result = obb.technical.wma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -362,9 +365,9 @@ def test_chart_ta_zlma(params, obb):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
 
-    params["data"] = get_stocks_data()
+    params["data"] = get_equity_data()
 
-    result = obb.ta.zlma(**params)
+    result = obb.technical.zlma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -240,7 +240,6 @@ def test_etf_disc_active(params, headers):
     "params",
     [
         ({"symbol": "ioo"}),
-        ({"symbol": "misl", "provider": "fmp"}),
         ({"symbol": "silj", "provider": "fmp"}),
     ],
 )

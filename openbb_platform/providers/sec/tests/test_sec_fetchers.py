@@ -2,13 +2,12 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
-from openbb_sec.models.equity_short_interest import SecShortInterestFetcher
+from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
+from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
 from openbb_sec.models.sic_search import SecSicSearchFetcher
-from openbb_sec.models.stock_ftd import SecStockFtdFetcher
-from openbb_sec.models.stock_search import SecStockSearchFetcher
 from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
 test_credentials = UserService().default_user_settings.credentials.dict()
@@ -43,19 +42,19 @@ def test_sec_symbol_map_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_sec_stock_ftd_fetcher(credentials=test_credentials):
+def test_sec_equity_ftd_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL", "limit": 1}
 
-    fetcher = SecStockFtdFetcher()
+    fetcher = SecEquityFtdFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
 
 @pytest.mark.record_http
-def test_sec_stock_search_fetcher(credentials=test_credentials):
+def test_sec_equity_search_fetcher(credentials=test_credentials):
     params = {"query": "trust", "use_cache": False}
 
-    fetcher = SecStockSearchFetcher()
+    fetcher = SecEquitySearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -92,16 +91,6 @@ def test_sec_rss_litigation_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = SecRssLitigationFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.freeze_time("2021-10-21")
-@pytest.mark.record_http
-def test_sec_short_interest_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = SecShortInterestFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

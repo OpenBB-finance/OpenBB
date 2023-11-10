@@ -21,6 +21,7 @@ repos:
     rev: 6.3.0
     hooks:
       - id: pydocstyle
+        additional_dependencies: [tomli]
         name: pydocstyle
         entry: pydocstyle
         language: python

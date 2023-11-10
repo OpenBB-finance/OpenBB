@@ -144,7 +144,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 ##### Standard QueryParams Example
 
 ```python
-class StockHistoricalQueryParams(QueryParams):
+class EquityHistoricalQueryParams(QueryParams):
     """Stock end of day Query."""
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[date] = Field(
@@ -162,7 +162,7 @@ The OpenBB Platform dynamically knows where the standard models begin in the inh
 ##### Standard Data Example
 
 ```python
-class StockHistoricalData(Data):
+class EquityHistoricalData(Data):
     """Stock end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
@@ -184,7 +184,7 @@ An extension adds functionality to the OpenBB Platform. It can be a new data sou
 
 We primarily have 3 types of extensions:
 
-1. OpenBB Extensions - built and maintained by the OpenBB team (e.g. `openbb-stocks`)
+1. OpenBB Extensions - built and maintained by the OpenBB team (e.g. `openbb-equity`)
 2. Community Extensions - built by anyone and primarily maintained by OpenBB (e.g. `openbb-yfinance`)
 3. Independent Extensions - built and maintained independently by anyone
 
@@ -291,7 +291,7 @@ In this section, we'll be adding a new data point to the OpenBB Platform. We wil
 
 #### Identify which type of data you want to add
 
-In this example, we'll be adding OHLC stock data that is used by the `obb.stocks.load` command.
+In this example, we'll be adding OHLC stock data that is used by the `obb.equity.price.historical` command.
 
 Note that, if no command exists for your data, we need to add one under the right router.
 Each router is categorized under different extensions (stocks, currency, crypto, etc.).
@@ -300,7 +300,7 @@ Each router is categorized under different extensions (stocks, currency, crypto,
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `StockHistorical` which can be found inside the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
+In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
@@ -312,12 +312,12 @@ If the standard model doesn't exist:
 
 Query Parameters are the parameters that are passed to the API endpoint in order to make the request.
 
-For the `StockHistorical` example, this would look like the following:
+For the `EquityHistorical` example, this would look like the following:
 
 ```python
 
-class <ProviderName>StockHistoricalQueryParams(StockHistoricalQueryParams):
-    """<ProviderName> Stock Historical Query.
+class <ProviderName>EquityHistoricalQueryParams(EquityHistoricalQueryParams):
+    """<ProviderName> Equity Historical Query.
 
     Source: https://www.<provider_name>.co/documentation/
     """
@@ -333,8 +333,8 @@ For the `StockHistorical` example, this would look like the following:
 
 ```python
 
-class <ProviderName>StockHistoricalData(StockHistoricalData):
-    """<ProviderName> Stock End of Day Data.
+class <ProviderName>EquityHistoricalData(EquityHistoricalData):
+    """<ProviderName> Equity Historical Data.
 
     Source: https://www.<provider_name>.co/documentation/
     """
@@ -343,7 +343,7 @@ class <ProviderName>StockHistoricalData(StockHistoricalData):
 
 ```
 
-> Note that, since `StockHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
+> Note that, since `EquityHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
 
 ##### Build the Fetcher
 
@@ -351,26 +351,26 @@ The `Fetcher` class is responsible for making the request to the API endpoint an
 
 It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
 
-For the `StockHistorical` example, this would look like the following:
+For the `EquityHistorical` example, this would look like the following:
 
 ```python
-class <ProviderName>StockHistoricalFetcher(
+class <ProviderName>EquityHistoricalFetcher(
     Fetcher[
-        <ProviderName>StockHistoricalQueryParams,
-        List[<ProviderName>StockHistoricalData],
+        <ProviderName>EquityHistoricalQueryParams,
+        List[<ProviderName>EquityHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> <ProviderName>StockHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> <ProviderName>EquityHistoricalQueryParams:
         """Transform the query parameters."""
 
-        return <ProviderName>StockHistoricalQueryParams(**transformed_params)
+        return <ProviderName>EquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: <ProviderName>StockHistoricalQueryParams,
+        query: <ProviderName>EquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -383,10 +383,10 @@ class <ProviderName>StockHistoricalFetcher(
     @staticmethod
     def transform_data(
         data: dict,
-    ) -> List[<ProviderName>StockHistoricalData]:
+    ) -> List[<ProviderName>EquityHistoricalData]:
         """Transform the data to the standard format."""
 
-        return [<ProviderName>StockHistoricalData.model_validate(d) for d in data]
+        return [<ProviderName>EquityHistoricalData.model_validate(d) for d in data]
 ```
 
 > Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**. See more on this [here](#the-tet-pattern).
@@ -399,7 +399,7 @@ In order to make the new provider visible to the OpenBB Platform, you'll need to
 """<Provider Name> Provider module."""
 from openbb_provider.abstract.provider import Provider
 
-from openbb_<provider_name>.models.stock_eod import <ProviderName>StockHistoricalFetcher
+from openbb_<provider_name>.models.equity_historical import <ProviderName>EquityHistoricalFetcher
 
 <provider_name>_provider = Provider(
     name="<provider_name>",
@@ -407,7 +407,7 @@ from openbb_<provider_name>.models.stock_eod import <ProviderName>StockHistorica
     description="Provider description goes here",
     required_credentials=["api_key"],
     fetcher_dict={
-        "StockHistorical": <ProviderName>StockHistoricalFetcher,
+        "EquityHistorical": <ProviderName>EquityHistoricalFetcher,
     },
 )
 ```
@@ -533,16 +533,16 @@ It's a pydantic model that inherits from the `BaseModel` and can contain any giv
 
 ```python
 
->>> res = obb.stocks.load("AAPL")
+>>> res = obb.equity.price.historical("AAPL")
 >>> res.results[0]
 
-AVStockHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=173.35, close=176.65, volume=79829246.0, vwap=None, adj_close=None, dividend_amount=None, split_coefficient=None)
+AVEquityHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=173.35, close=176.65, volume=79829246.0, vwap=None, adj_close=None, dividend_amount=None, split_coefficient=None)
 
 ```
 
-> The `AVStockHistoricalData` class, is a child class of the `Data` class.
+> The `AVEquityHistoricalData` class, is a child class of the `Data` class.
 
-Note how we've indexed to get only the first element of the `results` list (which represents a single row, if we want to think about it as a tabular output). This simply means that we are getting a `List` of `AVStockHistoricalData` from the `obb.stocks.load` command. Or, we can also say that that's equivalent to `List[Data]`!
+Note how we've indexed to get only the first element of the `results` list (which represents a single row, if we want to think about it as a tabular output). This simply means that we are getting a `List` of `AVEquityHistoricalData` from the `obb.equity.price.historical` command. Or, we can also say that that's equivalent to `List[Data]`!
 
 This is very powerful, as we can now apply any data processing command to the `results` list, without worrying about the underlying data structure.
 That's why, on data processing commands (such as the `ta` menu) we will find on its function signature the following:
@@ -585,7 +585,7 @@ In other words, imagine you have a dataframe that you want to use with the `ta` 
 
 ```python
 
->>> res = obb.stocks.load("AAPL")
+>>> res = obb.equity.price.historical("AAPL")
 >>> my_df = res.to_dataframe() # yes, you can convert your OBBject.results into a dataframe out-of-the-box!
 >>> my_records = df.to_dict(orient="records")
 
@@ -849,7 +849,7 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
 1. Create your Feature Branch, e.g. `git checkout -b feature/AmazingFeature`
 2. Check the files you have touched using `git status`
 3. Stage the files you want to commit, e.g.
-   `git add openbb_terminal/stocks/stocks_controller.py openbb_terminal/stocks/stocks_helper.py`.
+   `git add openbb_platform/platform/core/openbb_core/app/constants.py`.
    Note: **DON'T** add any files with personal information.
 4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR
    solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that

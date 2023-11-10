@@ -27,3 +27,14 @@ def test_get_command_coverage(mock_command_map):
 
     response = get_command_coverage(mock_command_map)
     assert response
+
+
+@patch("openbb_core.api.router.coverage.CommandMap")
+@patch("openbb_core.api.router.coverage.ProviderInterface")
+def test_get_command_model(mock_provider_interface, mock_command_map):
+    """Test get command model."""
+    mock_command_map.return_value.commands_model = {"command1": "model1"}
+    mock_provider_interface.return_value.map = {"model1": "provider1"}
+
+    response = get_command_coverage(mock_command_map)
+    assert response

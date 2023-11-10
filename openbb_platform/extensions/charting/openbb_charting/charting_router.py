@@ -13,8 +13,8 @@ router = Router(prefix="")
 CHART_FORMAT = ChartFormat.plotly
 
 
-def stocks_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks load chart."""
+def equity_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    """Equity price chart."""
 
     def handle_indicators(ma):
         """Handle indicators."""
@@ -41,8 +41,8 @@ def stocks_load(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def stocks_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Render stocks news table."""
+def equity_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    """Render equity news table."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)
@@ -56,7 +56,7 @@ def stocks_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 def _ta_ma(ma_type: str, **kwargs):
     """Plot moving average helper."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
-    window = kwargs.get("windowstocks_load", 50)
+    window = kwargs.get("window", 50)
     offset = kwargs.get("offset", 0)
     symbol = kwargs.get("symbol", "")
 
@@ -186,8 +186,8 @@ def ta_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return _ta_ma(ma_type, **kwargs)
 
 
-def stocks_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks multiples chart."""
+def equity_fundamental_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    """Equity multiples chart."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)

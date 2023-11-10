@@ -1,7 +1,7 @@
 from datetime import date
 
 import pytest
-from openbb_alpha_vantage.models.stock_historical import AVStockHistoricalFetcher
+from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -21,7 +21,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 @pytest.mark.skip(reason="This is a premium endpoint.")
-def test_av_stock_historical_fetcher(credentials=test_credentials):
+def test_av_equity_historical_fetcher(credentials=test_credentials):
     params = params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -29,6 +29,6 @@ def test_av_stock_historical_fetcher(credentials=test_credentials):
         "interval": "1d",
     }
 
-    fetcher = AVStockHistoricalFetcher()
+    fetcher = AVEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

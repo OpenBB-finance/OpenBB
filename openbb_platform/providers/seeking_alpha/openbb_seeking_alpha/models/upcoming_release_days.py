@@ -9,10 +9,8 @@ from openbb_provider.standard_models.upcoming_release_days import (
     UpcomingReleaseDaysData,
     UpcomingReleaseDaysQueryParams,
 )
-from pydantic import (
-    Field,
-    field_validator,
-)
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from pydantic import Field, field_validator
 
 
 class SAUpcomingReleaseDaysQueryParams(UpcomingReleaseDaysQueryParams):
@@ -20,6 +18,12 @@ class SAUpcomingReleaseDaysQueryParams(UpcomingReleaseDaysQueryParams):
 
     Source: https://seekingalpha.com/api/v3/earnings_calendar/tickers
     """
+
+    limit: int = Field(
+        description=QUERY_DESCRIPTIONS.get("limit", "")
+        + "In this case, the number of lookahead days.",
+        default=10,
+    )
 
 
 class SAUpcomingReleaseDaysData(UpcomingReleaseDaysData):
@@ -49,16 +53,7 @@ class SAUpcomingReleaseDaysFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SAUpcomingReleaseDaysQueryParams:
         """Transform the query."""
-        transformed_params = params
-
-        if params.get("start_date") is None:
-            transformed_params["start_date"] = datetime.now().date()
-        else:
-            transformed_params["start_date"] = datetime.strptime(
-                params["start_date"], "%Y-%m-%d"
-            ).date()
-
-        return SAUpcomingReleaseDaysQueryParams(**transformed_params)
+        return SAUpcomingReleaseDaysQueryParams(**params)
 
     @staticmethod
     def extract_data(
@@ -70,7 +65,7 @@ class SAUpcomingReleaseDaysFetcher(
         response = requests.get(
             url=(
                 f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
-                f"filter%5Bselected_date%5D={str(query.start_date)}"  # cspell:disable-line
+                f"filter%5Bselected_date%5D={str(datetime.now().date())}"  # cspell:disable-line
                 f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD"  # cspell:disable-line
             ),
             timeout=5,
