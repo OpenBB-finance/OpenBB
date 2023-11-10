@@ -38,7 +38,7 @@ The structure of command syntax is standardized across common fields.  This ensu
 - [date](/platform/usage/syntax_structure#dates)
 - [limit](/platform/usage/syntax_structure#limit)
 
-When looking at a function's docstring, the standard parameters (shared across multiple providers) are positioned first.  Provider-specific parameters positionally follow the `provider` argument.  The example below is from, `obb.stocks.quote`:
+When looking at a function's docstring, the standard parameters (shared across multiple providers) are positioned first.  Provider-specific parameters positionally follow the `provider` argument.  The example below is from, `obb.equity.price.quote`:
 
 ```console
 Parameters
@@ -71,7 +71,7 @@ uvicorn openbb_core.api.rest_api:app
 The `provider` parameter is the way to select the specific source of the data from the endpoint.  If a [preference for the default provider](/platform/usage/overview#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
 
 ```python
-historical_prices = obb.stocks.load("aapl", provider="alpha_vantage")
+historical_prices = obb.equity.price.historical("aapl", provider="alpha_vantage")
 ```
 
 Provider coverage can be ascertained with the command below:
@@ -87,11 +87,11 @@ Refer to, [Data Providers](/platform/usage/data_providers), for instructions on 
 Symbols are not case-sensitive, and where the function allows, can be entered as a `string`, `List[str]`, or a comma-separated `string`.  The exact format of the symbol may vary between providers - for example, share classes, exchange suffixes, and global composities.  An example of this difference is shown below:
 
 ```python
-obb.stocks.load("brk.b", provider="polygon")
+obb.equity.price.historical("brk.b", provider="polygon")
 ```
 
 ```python
-obb.stocks.load("brk-b", provider="fmp")
+obb.equity.price.historical("brk-b", provider="fmp")
 ```
 
 While some providers handle the different formats on their end, others do not.  This is something to consider when no results are returned from one source.
@@ -101,7 +101,7 @@ With providers supporting market data from multiple jurisdictions, the most comm
 ### One Symbol
 
 ```python
-quote = obb.stocks.quote(symbol="td", provider="fmp")
+quote = obb.equity.price.quote(symbol="td", provider="fmp")
 ```
 
 ### Multiple Symbols
@@ -113,12 +113,12 @@ The OpenBB Provider module enforces REST-compliant lists that can be entered in 
 This is the format required by the Fast API, when creating new data endpoints, it is important that the Python interface is able to accept both formats.
 
 ```python
-quotes = obb.stocks.quote("td,schw,jpm,ms", provider="fmp")
+quotes = obb.equity.price.quote("td,schw,jpm,ms", provider="fmp")
 ```
 
 ```python
 import requests
-r = requests.get("http://127.0.0.1:8000/api/v1/stocks/quote?provider=fmp&symbol=td,schw,ms,jpm")
+r = requests.get("http://127.0.0.1:8000/api/v1/equity/price/quote?provider=fmp&symbol=td,schw,ms,jpm")
 r.json()
 ```
 
@@ -127,15 +127,15 @@ r.json()
 Entering a list will provide the same outcome as above.
 
 ```python
-quotes = obb.stocks.quote(["td","schw","jpm","ms"], provider="fmp")
+quotes = obb.equity.price.quote(["td","schw","jpm","ms"], provider="fmp")
 ```
 
 Lists of symbols can be generated from the results of other functions, and then passed to the input.
 
 ```python
 symbol="spgi"
-symbols = obb.stocks.ca.peers(symbol).results.peers_list+[symbol]
-quotes = obb.stocks.quote(symbols)
+symbols = obb.equity.compare.peers(symbol).results.peers_list+[symbol]
+quotes = obb.equity.price.quote(symbols)
 ```
 
 :::note
@@ -145,10 +145,10 @@ To accomplish this same task through the Fast API, convert the list to a comma-s
 ```python
 import requests
 symbol="spgi"
-r = requests.get(f"http://127.0.0.1:8000/api/v1/stocks/ca/peers?provider=fmp&symbol={symbol}")
+r = requests.get(f"http://127.0.0.1:8000/api/v1/equity/compare/peers?provider=fmp&symbol={symbol}")
 symbols_list = r.json()["results"]["peers_list"]+[symbol]
 symbols = ",".join(symbols_list)
-response = requests.get(f"http://127.0.0.1:8000/api/v1/stocks/quote?provider=fmp&symbol={symbols}")
+response = requests.get(f"http://127.0.0.1:8000/api/v1/equity/price/quote?provider=fmp&symbol={symbols}")
 response.json()
 ```
 
@@ -157,7 +157,7 @@ response.json()
 Dates are entered everywhere as a string, formatted as, "YYYY-MM-DD".  If the function has only the `date` parameter, the data will be a snapshot instead of a time series.
 
 ```python
-historical_prices = obb.stocks.load(symbol="qqq", start_date="2023-01-10", end_date="2023-01-31", provider="fmp")
+historical_prices = obb.equity.price.historical(symbol="qqq", start_date="2023-01-10", end_date="2023-01-31", provider="fmp")
 ```
 
 For flexibility and programmatic purposes, a `datetime` object is also accepted.
@@ -167,12 +167,12 @@ from datetime import datetime
 symbol="qqq"
 start = datetime.strptime("100123", "%d%m%y")
 end = datetime.strptime("2023-01-31","%Y-%m-%d")
-historical_prices = obb.stocks.load(symbol, start_date=start, end_date=end, provider="fmp")
+historical_prices = obb.equity.price.historical(symbol, start_date=start, end_date=end, provider="fmp")
 ```
 
 ```python
 import requests
-response = requests.get(f"http://127.0.0.1:8000/api/v1/stocks/load?provider=fmp&symbol={symbol}&start_date={start}&end_date={end}")
+response = requests.get(f"http://127.0.0.1:8000/api/v1/equity/price/historical?provider=fmp&symbol={symbol}&start_date={start}&end_date={end}")
 response.json()
 ```
 
@@ -181,7 +181,7 @@ response.json()
 Where, optional, `limit` parameters are supplied, they are likely to have sensible default states that return N results starting from the most recent entry or the `start_date`.  Enter these values as an integer.
 
 ```python
-income = obb.stocks.fa.income("AAPL", period="quarter", provider="fmp", limit=4)
+income = obb.equity.fa.income("AAPL", period="quarter", provider="fmp", limit=4)
 ```
 
 ## **kwargs
@@ -190,11 +190,11 @@ All endpoints accept additional keyword arguments, but non-existent parameters w
 
 ```python
 kwargs = {"symbol":"msft","start_date":"2023-01-01","provider":"polygon"}
-historical_prices = obb.stocks.load(**kwargs)
+historical_prices = obb.equity.price.historical(**kwargs)
 ```
 
 ```python
-data = obb.stocks.quote("brk-b", provider="fmp", source="bats")
+data = obb.equity.price.quote("brk-b", provider="fmp", source="bats")
 data.warnings
 ```
 
