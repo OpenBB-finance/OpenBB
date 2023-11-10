@@ -40,7 +40,7 @@ Here's an example how it would look like in a python interface:
 
 ```python
 from openbb import obb
-stock_data = obb.stocks.load(symbol="TSLA", chart=True)
+equity_data = obb.equity.price(symbol="TSLA", chart=True)
 ```
 
 This results in a `OBBject` object containing a `chart` attribute, which contains Plotly JSON data.
@@ -48,7 +48,7 @@ This results in a `OBBject` object containing a `chart` attribute, which contain
 In order to display the chart, you need to call the `show()` method:
 
 ```python
-stock_data.show()
+equity_data.show()
 ```
 
 > Note: The `show()` method currently works either in a Jupyter Notebook or in a standalone python script with a PyWry based backend properly initialized.
@@ -62,7 +62,7 @@ To do so, you can run:
 
 Afterwards, you'll need to add the visualization to the [charting router](/openbb_platform/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
 
-- `/stocks/load` -> `stocks_load`
+- `/equity/price` -> `equity_price`
 - `/ta/ema` -> `ta_ema`
 
 When you spot the charting function on the charting router file, you can add the visualization to it.
