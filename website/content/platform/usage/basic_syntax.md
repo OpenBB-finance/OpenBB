@@ -31,12 +31,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The structure of command syntax is standardized across common fields.  This ensures that a `date` is always a `date` and the format remains consistent throughout.  Standardized parameters include, but are not limited to:
 
-- [provider](/platform/usage/syntax_structure#provider)
-- [symbol](/platform/usage/syntax_structure#symbol)
-- [start_date](/platform/usage/syntax_structure#dates)
-- [end_date](/platform/usage/syntax_structure#dates)
-- [date](/platform/usage/syntax_structure#dates)
-- [limit](/platform/usage/syntax_structure#limit)
+- [provider](#provider)
+- [symbol](#symbol)
+- [start_date](#dates)
+- [end_date](#dates)
+- [date](#dates)
+- [limit](#limit)
 
 When looking at a function's docstring, the standard parameters (shared across multiple providers) are positioned first.  Provider-specific parameters positionally follow the `provider` argument.  The example below is from, `obb.equity.price.quote`:
 
