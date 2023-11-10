@@ -133,7 +133,7 @@ def garman_klass(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate overn.
+        Length of window to calculate over.
     trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]

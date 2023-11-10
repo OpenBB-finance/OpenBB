@@ -27,7 +27,7 @@ openbb-etf = "^0.1.0a4"
 openbb-fixedincome = "^0.1.0a4"
 openbb-news = "^0.1.0a4"
 openbb-regulators = "^0.1.0a4"
-openbb-stocks = "^0.1.0a4"
+openbb-equity = "^0.1.0a4"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
@@ -61,7 +61,7 @@ yfinance = ["openbb-yfinance"]
 charting = ["openbb-charting"]
 futures = ["openbb-futures"]
 qa = ["openbb-qa"]
-ta = ["openbb-ta"]
+technical = ["openbb-technical"]
 econometrics = ["openbb-econometrics"]
 
 all = [
@@ -77,7 +77,7 @@ all = [
     "openbb-qa",
     "openbb-seeking-alpha",
     "openbb-stockgrid",
-    "openbb-ta",
+    "openbb-technical",
     "openbb-wsj",
     "openbb-yfinance",
 ]
