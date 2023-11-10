@@ -2,7 +2,7 @@
 
 | Extension | Package Name | Description | Maintainer |
 | --- | --- | --- | --- |
-| [Stocks](./extensions/stocks/README.md) | `openbb-stocks` | Historical pricing data, fundamentals, options, sector and industry, and overall due diligence. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
+| [Equity](./extensions/equity/README.md) | `openbb-equity` | Historical pricing data, fundamentals, options, sector and industry, and overall due diligence. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [Economy](./extensions/economy/README.md) | `openbb-economy` | Global macroeconomic data. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [Index](./extensions/index/README.md) | `openbb-index` | Market index data. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [News](./extensions/news/README.md) | `openbb-news` | News articles. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |

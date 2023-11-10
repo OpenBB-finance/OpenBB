@@ -52,24 +52,24 @@ def get_crypto_data():
     return data["crypto_data"]
 
 
-def get_data(menu: Literal["stocks", "crypto"]):
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+def get_data(menu: Literal["equity", "crypto"]):
+    funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
 
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "close"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_normality(params, data_type, obb):
+def test_quantitative_normality(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.normality(**params)
+    result = obb.quantitative.normality(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -77,16 +77,16 @@ def test_qa_normality(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "close"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_capm(params, data_type, obb):
+def test_quantitative_capm(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.capm(**params)
+    result = obb.quantitative.capm(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -101,7 +101,7 @@ def test_qa_capm(params, data_type, obb):
                 "threshold_start": "",
                 "threshold_end": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -115,11 +115,11 @@ def test_qa_capm(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_qa_om(params, data_type, obb):
+def test_quantitative_omega_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.om(**params)
+    result = obb.quantitative.omega_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -127,16 +127,16 @@ def test_qa_om(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "5"}, "stocks"),
+        ({"data": "", "target": "close", "window": "5"}, "equity"),
         ({"data": "", "target": "high", "window": "10"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_kurtosis(params, data_type, obb):
+def test_quantitative_kurtosis(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.kurtosis(**params)
+    result = obb.quantitative.kurtosis(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -152,7 +152,7 @@ def test_qa_kurtosis(params, data_type, obb):
                 "fuller_reg": "c",
                 "kpss_reg": "ct",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -166,11 +166,11 @@ def test_qa_kurtosis(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_qa_unitroot(params, data_type, obb):
+def test_quantitative_unitroot_test(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.unitroot(**params)
+    result = obb.quantitative.unitroot_test(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -178,16 +178,16 @@ def test_qa_unitroot(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "rfr": "", "window": ""}, "stocks"),
+        ({"data": "", "target": "close", "rfr": "", "window": ""}, "equity"),
         ({"data": "", "target": "high", "rfr": "0.5", "window": "250"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_sh(params, data_type, obb):
+def test_quantitative_sharpe_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.sh(**params)
+    result = obb.quantitative.sharpe_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -203,7 +203,7 @@ def test_qa_sh(params, data_type, obb):
                 "window": "",
                 "adjusted": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -218,11 +218,11 @@ def test_qa_sh(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_qa_so(params, data_type, obb):
+def test_quantitative_sortino_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.so(**params)
+    result = obb.quantitative.sortino_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -230,15 +230,15 @@ def test_qa_so(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "220"}, "stocks"),
+        ({"data": "", "target": "close", "window": "220"}, "equity"),
     ],
 )
 @pytest.mark.integration
-def test_qa_skew(params, data_type, obb):
+def test_quantitative_skewness(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.skew(**params)
+    result = obb.quantitative.skewness(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -254,7 +254,7 @@ def test_qa_skew(params, data_type, obb):
                 "window": "10",
                 "quantile_pct": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -268,11 +268,11 @@ def test_qa_skew(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_qa_quantile(params, data_type, obb):
+def test_quantitative_quantile(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.quantile(**params)
+    result = obb.quantitative.quantile(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -281,15 +281,15 @@ def test_qa_quantile(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close"}, "stocks"),
+        ({"data": "", "target": "close"}, "equity"),
         ({"data": "", "target": "high"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_qa_summary(params, data_type, obb):
+def test_quantitative_summary(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.qa.summary(**params)
+    result = obb.quantitative.summary(**params)
     assert result
     assert isinstance(result, OBBject)

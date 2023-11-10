@@ -11,8 +11,8 @@ python = ">=3.8,<3.12"
 openbb-core = "^0.1.0a5"
 
 openbb-benzinga = "^0.1.0a4"
-openbb-fred = "^0.1.0a4"
 openbb-fmp = "^0.1.0a4"
+openbb-fred = "^0.1.0a4"
 openbb-intrinio = "^0.1.0a4"
 openbb-oecd = "^0.1.0a4"
 openbb-polygon = "^0.1.0a4"
@@ -23,12 +23,12 @@ openbb-ultima = "^0.1.0a4"
 openbb-crypto = "^0.1.0a4"
 openbb-currency = "^0.1.0a4"
 openbb-economy = "^0.1.0a4"
+openbb-equity = "^0.1.0a4"
 openbb-etf = "^0.1.0a4"
 openbb-fixedincome = "^0.1.0a4"
 openbb-index = "^0.1.0a4"
 openbb-news = "^0.1.0a4"
 openbb-regulators = "^0.1.0a4"
-openbb-stocks = "^0.1.0a4"
 
 # Community dependencies
 openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
@@ -45,25 +45,25 @@ openbb-yfinance = { version = "^0.1.0a4", optional = true }
 openbb-charting = { version = "^0.1.0a4", optional = true }
 openbb-econometrics = { version = "^0.1.0a4", optional = true }
 openbb-futures = { version = "^0.1.0a4", optional = true }
-openbb-qa = { version = "^0.1.0a4", optional = true }
-openbb-ta = { version = "^0.1.0a4", optional = true }
+openbb-quantitative = { version = "^0.1.0a4", optional = true }
+openbb-technical = { version = "^0.1.0a4", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
+charting = ["openbb-charting"]
 ecb = ["openbb-ecb"]
+econometrics = ["openbb-econometrics"]
 finra = ["openbb-finra"]
+futures = ["openbb-futures"]
 nasdaq = ["openbb-nasdaq"]
+quantitative = ["openbb-quantitative"]
 seeking_alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
+technical = ["openbb-technical"]
 wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
-charting = ["openbb-charting"]
-futures = ["openbb-futures"]
-qa = ["openbb-qa"]
-ta = ["openbb-ta"]
-econometrics = ["openbb-econometrics"]
 
 all = [
     "openbb-alpha-vantage",
@@ -75,10 +75,10 @@ all = [
     "openbb-finra",
     "openbb-futures",
     "openbb-nasdaq",
-    "openbb-qa",
+    "openbb-quantitative",
     "openbb-seeking-alpha",
     "openbb-stockgrid",
-    "openbb-ta",
+    "openbb-technical",
     "openbb-wsj",
     "openbb-yfinance",
 ]

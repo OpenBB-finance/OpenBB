@@ -14,6 +14,7 @@ PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
+openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-provider = { path = "./platform/provider", develop = true }
 openbb-core = { path = "./platform/core", develop = true }
 
@@ -30,12 +31,12 @@ openbb-ultima = { path = "./providers/ultima", develop = true }
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
+openbb-equity = { path = "./extensions/equity", develop = true }
 openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
 openbb-index = { path = "./extensions/index", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
-openbb-equity = { path = "./extensions/equity", develop = true }
 
 # Community dependencies
 openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, develop = true }
@@ -52,8 +53,8 @@ openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = tr
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
-openbb-qa = { path = "./extensions/qa", optional = true, develop = true }
-openbb-ta = { path = "./extensions/ta", optional = true, develop = true }
+openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
+openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
 """
 
 pyproject_toml = toml.load(PYPROJECT)

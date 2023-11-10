@@ -1,3 +1,4 @@
+"""Technical Analysis Helpers."""
 import warnings
 from typing import Any, Literal, Optional, Tuple
 
@@ -14,7 +15,9 @@ def parkinson(
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
-    """Parkinson volatility uses the high and low price of the day rather than just close to close prices.
+    """Parkinson volatility.
+
+    Uses the high and low price of the day rather than just close to close prices.
     It is useful for capturing large price movements during the day.
 
     Parameters
@@ -35,7 +38,6 @@ def parkinson(
     pd.DataFrame : results
         Dataframe with results.
     """
-
     if window < 1:
         _warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
@@ -68,7 +70,9 @@ def standard_deviation(
     is_crypto: bool = False,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Standard deviation measures how widely returns are dispersed from the average return.
+    """Standard deviation.
+
+    Measures how widely returns are dispersed from the average return.
     It is the most common (and biased) estimator of volatility.
 
     Parameters
@@ -89,7 +93,6 @@ def standard_deviation(
     pd.DataFrame : results
         Dataframe with results.
     """
-
     if window < 2:
         _warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
@@ -119,7 +122,9 @@ def garman_klass(
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
-    """Garman-Klass volatility extends Parkinson volatility by taking into account the opening and closing price.
+    """Garman-Klass volatility.
+
+    Extends Parkinson volatility by taking into account the opening and closing price.
     As markets are most active during the opening and closing of a trading session.
     It makes volatility estimation more accurate.
 
@@ -128,7 +133,7 @@ def garman_klass(
     data : pd.DataFrame
         Dataframe of OHLC prices.
     window : int [default: 30]
-        Length of window to calculate overn.
+        Length of window to calculate over.
     trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
     is_crypto : bool [default: False]
@@ -141,7 +146,6 @@ def garman_klass(
     pd.DataFrame : results
         Dataframe with results.
     """
-
     if window < 1:
         _warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
@@ -175,7 +179,9 @@ def hodges_tompkins(
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
-    """Hodges-Tompkins volatility is a bias correction for estimation using an overlapping data sample.
+    """Hodges-Tompkins volatility.
+
+    Is a bias correction for estimation using an overlapping data sample.
     It produces unbiased estimates and a substantial gain in efficiency.
 
     Parameters
@@ -201,7 +207,6 @@ def hodges_tompkins(
     >>> data = openbb.stocks.load('BTC-USD')
     >>> df = openbb.ta.rvol_hodges_tompkins(data, is_crypto = True)
     """
-
     if window < 2:
         _warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
@@ -238,7 +243,9 @@ def rogers_satchell(
     is_crypto: bool = False,
     clean=True,
 ) -> pd.Series:
-    """Rogers-Satchell is an estimator for measuring the volatility with an average return not equal to zero.
+    """Rogers-Satchell Estimator.
+
+    Is an estimator for measuring the volatility with an average return not equal to zero.
     Unlike Parkinson and Garman-Klass estimators, Rogers-Satchell incorporates a drift term,
     mean return not equal to zero.
 
@@ -260,7 +267,6 @@ def rogers_satchell(
     pd.Series : results
         Pandas Series with results.
     """
-
     if window < 1:
         _warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
@@ -295,7 +301,9 @@ def yang_zhang(
     is_crypto: bool = False,
     clean=True,
 ) -> pd.DataFrame:
-    """Yang-Zhang volatility is the combination of the overnight (close-to-open volatility).
+    """Yang-Zhang Volatility.
+
+    Is the combination of the overnight (close-to-open volatility).
     It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
 
     Parameters
@@ -316,7 +324,6 @@ def yang_zhang(
     pd.DataFrame : results
         Dataframe with results.
     """
-
     if window < 2:
         _warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
@@ -372,6 +379,7 @@ def calculate_cones(
         "Yang-Zhang",
     ],
 ) -> pd.DataFrame:
+    """Calculate Cones."""
     estimator = pd.DataFrame()
 
     if lower_q > upper_q:
@@ -403,19 +411,19 @@ def calculate_cones(
     }
 
     for window in windows:
-        estimator = model_functions[model](
+        estimator = model_functions[model](  # type: ignore
             window=window, data=data, is_crypto=is_crypto
         )
 
         if estimator.empty:
             continue
 
-        min_.append(estimator.min())
-        max_.append(estimator.max())
-        median.append(estimator.median())
-        top_q.append(estimator.quantile(quantiles[1]))
-        bottom_q.append(estimator.quantile(quantiles[0]))
-        realized.append(estimator[-1])
+        min_.append(estimator.min())  # type: ignore
+        max_.append(estimator.max())  # type: ignore
+        median.append(estimator.median())  # type: ignore
+        top_q.append(estimator.quantile(quantiles[1]))  # type: ignore
+        bottom_q.append(estimator.quantile(quantiles[0]))  # type: ignore
+        realized.append(estimator[-1])  # type: ignore
 
         allowed_windows.append(window)
 
@@ -439,16 +447,17 @@ def calculate_cones(
 def clenow_momentum(
     values: pd.Series, window: int = 90
 ) -> Tuple[float, float, pd.Series]:
-    """
-    Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices
-    multiplied by the R^2 value of the regression
+    """Clenow Volatility Adjusted Momentum.
+
+    This is defined as the regression coefficient on log prices multiplied by the R^2
+    value of the regression.
 
     Parameters
     ----------
     values: pd.Series
         Values to perform regression for
     window: int
-        Length of lookback period
+        Length of look back period
 
     Returns
     -------
@@ -459,8 +468,9 @@ def clenow_momentum(
     pd.Series:
         Values for best fit line
     """
-
-    from sklearn.linear_model import LinearRegression
+    from sklearn.linear_model import (  # pylint: disable=import-outside-toplevel
+        LinearRegression,
+    )
 
     if len(values) < window:
         raise ValueError(f"Calculation asks for at least last {window} days of data")
@@ -487,7 +497,7 @@ def calculate_fib_levels(
     start_date: Optional[Any] = None,
     end_date: Optional[Any] = None,
 ) -> Tuple[pd.DataFrame, pd.Timestamp, pd.Timestamp, float, float, str]:
-    """Calculate Fibonacci levels
+    """Calculate Fibonacci levels.
 
     Parameters
     ----------

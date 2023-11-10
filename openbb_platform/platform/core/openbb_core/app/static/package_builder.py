@@ -285,8 +285,8 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
         code += "\nfrom openbb_provider.abstract.data import Data"
-        if path.startswith("/qa"):
-            code += "\nfrom openbb_qa.qa_models import "
+        if path.startswith("/quantitative"):
+            code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
@@ -556,7 +556,7 @@ class DocstringGenerator:
                 type_ = ""
                 description = ""
 
-            type_str = format_type(type_, char_limit=79)
+            type_str = format_type(type_, char_limit=79)  # type: ignore
             docstring += f"{param_name} : {type_str}\n"
             docstring += f"    {description}\n"
 
@@ -587,7 +587,7 @@ class DocstringGenerator:
                 _type = field.annotation
                 is_optional = not field.is_required()
                 if "BeforeValidator" in str(_type):
-                    _type = "Optional[int]" if is_optional else "int"
+                    _type = "Optional[int]" if is_optional else "int"  # type: ignore
 
                 field_type = (
                     str(_type)
@@ -607,7 +607,7 @@ class DocstringGenerator:
                 )
             except TypeError:
                 # Fallback to the annotation if the repr fails
-                field_type = field.annotation
+                field_type = field.annotation  # type: ignore
 
             docstring += f"{field.alias or name} : {field_type}\n"
             docstring += f"    {field.description}\n"
@@ -681,7 +681,6 @@ class MethodDefinition:
     @staticmethod
     def get_default(field: FieldInfo):
         """Get the default value of the field."""
-
         field_default = getattr(field, "default", None)
         if field_default is None or field_default is PydanticUndefined:
             return Parameter.empty
@@ -702,7 +701,7 @@ class MethodDefinition:
     @staticmethod
     def is_data_processing_function(path: str) -> bool:
         """Check if the function is a data processing function."""
-        methods = PathHandler.build_route_map()[path].methods
+        methods = PathHandler.build_route_map()[path].methods  # type: ignore
         return "POST" in methods
 
     @staticmethod
@@ -834,7 +833,7 @@ class MethodDefinition:
         return func_params
 
     @staticmethod
-    def build_func_returns(return_type: type, model_name: str = None) -> str:
+    def build_func_returns(return_type: type, model_name: Optional[str] = None) -> str:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
@@ -1056,7 +1055,7 @@ class Linters:
 
             command = [linter, self.directory]
             if flags:
-                command.extend(flags)
+                command.extend(flags)  # type: ignore
             subprocess.run(command, check=False)  # noqa: S603
 
             self.print_separator("-")

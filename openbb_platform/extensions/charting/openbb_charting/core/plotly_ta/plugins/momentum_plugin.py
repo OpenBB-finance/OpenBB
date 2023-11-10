@@ -1,3 +1,4 @@
+"""Momentum technical indicators."""
 import warnings
 
 import numpy as np
@@ -149,13 +150,14 @@ class Momentum(PltTA):
     @indicator()
     def plot_clenow(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Add current close price to plotly figure."""
-
         try:
-            from openbb_ta.ta_helpers import clenow_momentum
+            from openbb_technical.helpers import (  # pylint: disable=import-outside-toplevel
+                clenow_momentum,
+            )
         except ImportError:
             warnings.warn(
                 "In order to use the Clenow momentum indicator in your plot,"
-                " you need to install the `openbb_ta` package."
+                " you need to install the `openbb-technical` package."
             )
             return fig, inchart_index
 
@@ -352,7 +354,6 @@ class Momentum(PltTA):
     @indicator()
     def plot_macd(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
         """Add macd to plotly figure."""
-
         fig.add_bar(
             name="MACD Histogram",
             x=df_ta.index,
@@ -528,7 +529,7 @@ class Momentum(PltTA):
 
     @indicator()
     def plot_ichimoku(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        # Calculate Ichimoku indicator
+        """Calculate Ichimoku indicator."""
         conversion_period = (
             self.params["ichimoku"].get_argument_values("conversion_period") or 9
         )

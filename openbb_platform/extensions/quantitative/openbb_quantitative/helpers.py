@@ -1,4 +1,4 @@
-"""Helper functions for QA"""
+"""Helper functions for Quantitative Analysis."""
 
 from io import BytesIO
 from urllib.request import urlopen
