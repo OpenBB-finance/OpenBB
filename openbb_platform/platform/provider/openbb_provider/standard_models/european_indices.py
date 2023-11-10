@@ -14,7 +14,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class EuropeanIndexHistoricalQueryParams(QueryParams):
+class EuropeanIndicesQueryParams(QueryParams):
     """European Indices end of day Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
@@ -33,7 +33,7 @@ class EuropeanIndexHistoricalQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class EuropeanIndexHistoricalData(Data):
+class EuropeanIndicesData(Data):
     """European Indices end of day price data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))

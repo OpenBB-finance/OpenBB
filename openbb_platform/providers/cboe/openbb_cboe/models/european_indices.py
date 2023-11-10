@@ -7,15 +7,15 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 from openbb_cboe.utils.helpers import Europe
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.european_index_historical import (
-    EuropeanIndexHistoricalData,
-    EuropeanIndexHistoricalQueryParams,
+from openbb_provider.standard_models.european_indices import (
+    EuropeanIndicesData,
+    EuropeanIndicesQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field, field_validator
 
 
-class CboeEuropeanIndexHistoricalQueryParams(EuropeanIndexHistoricalQueryParams):
+class CboeEuropeanIndicesQueryParams(EuropeanIndicesQueryParams):
     """CBOE European Indices End of Day query.
 
     Source: https://www.cboe.com/europe/indices/
@@ -27,7 +27,7 @@ class CboeEuropeanIndexHistoricalQueryParams(EuropeanIndexHistoricalQueryParams)
     )
 
 
-class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
+class CboeEuropeanIndicesData(EuropeanIndicesData):
     """CBOE Stocks End of Day Data."""
 
     open: Optional[float] = Field(
@@ -55,18 +55,16 @@ class CboeEuropeanIndexHistoricalData(EuropeanIndexHistoricalData):
             return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
 
 
-class CboeEuropeanIndexHistoricalFetcher(
+class CboeEuropeanIndicesFetcher(
     Fetcher[
-        CboeEuropeanIndexHistoricalQueryParams,
-        List[CboeEuropeanIndexHistoricalData],
+        CboeEuropeanIndicesQueryParams,
+        List[CboeEuropeanIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> CboeEuropeanIndexHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> CboeEuropeanIndicesQueryParams:
         """Transform the query."""
         now = datetime.now().date()
         transformed_params = params
@@ -76,11 +74,11 @@ class CboeEuropeanIndexHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return CboeEuropeanIndexHistoricalQueryParams(**transformed_params)
+        return CboeEuropeanIndicesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: CboeEuropeanIndexHistoricalQueryParams,
+        query: CboeEuropeanIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -92,7 +90,7 @@ class CboeEuropeanIndexHistoricalFetcher(
         if query.symbol not in SYMBOLS:
             raise RuntimeError(
                 f"The symbol, {query.symbol},"
-                "was not found in the CBOE European Index directory. "
+                "was not found in the CBOE European Indices directory. "
                 "Use `available_indices(europe=True)` to see the full list of indices."
             )
         if query.interval == "1d":
@@ -141,7 +139,7 @@ class CboeEuropeanIndexHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeEuropeanIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeEuropeanIndexHistoricalData]:
+        query: CboeEuropeanIndicesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeEuropeanIndicesData]:
         """Transform the data to the standard format."""
-        return [CboeEuropeanIndexHistoricalData.model_validate(d) for d in data]
+        return [CboeEuropeanIndicesData.model_validate(d) for d in data]

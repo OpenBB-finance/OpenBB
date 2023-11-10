@@ -26,6 +26,17 @@ def market(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EuropeanIndices")
+def european(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """European Indices Historical. European indices historical data."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="MajorIndicesConstituents")
 def const(
     cc: CommandContext,
@@ -34,17 +45,6 @@ def const(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Major Indices Constituents. Constituents of an index."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="EuropeanIndexHistorical")
-def european_index(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """European Index Historical. Historical close values for selected European indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
