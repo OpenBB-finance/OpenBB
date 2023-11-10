@@ -22,6 +22,7 @@ openbb-ultima = "^0.1.0a4"
 
 openbb-crypto = "^0.1.0a4"
 openbb-currency = "^0.1.0a4"
+openbb-derivatives = "^0.1.0a4"
 openbb-economy = "^0.1.0a4"
 openbb-equity = "^0.1.0a4"
 openbb-etf = "^0.1.0a4"

@@ -30,6 +30,7 @@ openbb-ultima = { path = "./providers/ultima", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
+openbb-derivatives = { path = "./extensions/derivatives", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
 openbb-equity = { path = "./extensions/equity", develop = true }
 openbb-etf = { path = "./extensions/etf", develop = true }
