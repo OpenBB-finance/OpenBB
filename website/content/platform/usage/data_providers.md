@@ -55,7 +55,7 @@ pip uninstall openbb-yfinance
 | openbb-nasdaq | [Nasdaq Data Link](https://data.nasdaq.com/) connector. | pip install openbb-nasdaq | Community | None / Free |
 | openbb-oecd | [OECD](https://data.oecd.org/) data connector. | pip install openbb-oecd | Core | Free |
 | openbb-polygon | [Polygon](https://polygon.io/) data connector. | pip install openbb-polygon | Core | Free |
-| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector. | pip install openbb-sec | Core | Free |
+| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector. | pip install openbb-sec | Core | None |
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector. | pip install openbb-seeking-alpha | Community | None |
 | openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector. | pip install openbb-stockgrid | Community | None |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector. | pip install openbb-tradingeconomics | Core | Paid |
