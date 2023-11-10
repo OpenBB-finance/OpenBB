@@ -35,7 +35,7 @@ pip install openbb-yfinance
 
 Additions and removals update the router automatically to reflect the changes when the Python interpreter is refreshed.  Below is a list of data provider extensions.
 
-Uninstsall any extension with `pip uninstall`.
+Uninstall any extension with `pip uninstall`.
 
 ```console
 pip uninstall openbb-yfinance
