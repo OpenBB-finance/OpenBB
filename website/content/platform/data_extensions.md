@@ -1,6 +1,6 @@
 ---
 title: Data Extensions
-sidebar_position: 3
+sidebar_position: 2
 description: Learn about the OpenBB Platform and its extension framework that allows
   seamless integration of modules like 'openbb-yfinance'. Discover how installations
   and removals automatically update the router when the Python interpreter is refreshed. 
