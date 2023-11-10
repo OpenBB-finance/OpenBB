@@ -1,4 +1,4 @@
-"""Fred Index Historical data model."""
+"""FRED Indices data model."""
 
 
 from datetime import date as dateType
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class FredHistoricalQueryParams(QueryParams):
-    """Fred Index Historical Query."""
+class FredIndicesQueryParams(QueryParams):
+    """FRED Indices Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -35,7 +35,7 @@ class FredHistoricalQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class FredHistoricalData(Data):
+class FredIndicesData(Data):
     """Fred end of day price Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

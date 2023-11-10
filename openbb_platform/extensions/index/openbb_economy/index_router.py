@@ -37,6 +37,17 @@ def european(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="FredIndices")
+def fred(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fred Indices Historical. Historical close values for selected Fred indices."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="MajorIndicesConstituents")
 def const(
     cc: CommandContext,
@@ -125,15 +136,4 @@ def sp500_multiples(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """S&P 500 Multiples. Historical S&P 500 multiples and Shiller PE ratios."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="FredHistorical")
-def fred_index(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Fred Historical. Historical close values for selected Fred indices."""
     return OBBject(results=Query(**locals()).execute())
