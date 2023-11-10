@@ -198,7 +198,7 @@ add-ignore = "D401"
 
 [tool.flake8]
 max-line-length = 122
-ignore = "S101"
+ignore = "S101,W503"
 
 [tool.ruff]
 line-length = 122
