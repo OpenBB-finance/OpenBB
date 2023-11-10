@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
