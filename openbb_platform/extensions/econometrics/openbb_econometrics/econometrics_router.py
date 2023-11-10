@@ -1,10 +1,11 @@
+"""Econometrics Router."""
 import re
 from itertools import combinations
 from typing import Dict, List, Literal
 
 import numpy as np
 import pandas as pd
-import statsmodels.api as sm
+import statsmodels.api as sm  # type: ignore
 from linearmodels.panel import (
     BetweenOLS,
     FamaMacBeth,
@@ -18,9 +19,9 @@ from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
 from openbb_provider.abstract.data import Data
 from pydantic import PositiveInt
-from statsmodels.stats.diagnostic import acorr_breusch_godfrey
-from statsmodels.stats.stattools import durbin_watson
-from statsmodels.tsa.stattools import adfuller, grangercausalitytests
+from statsmodels.stats.diagnostic import acorr_breusch_godfrey  # type: ignore
+from statsmodels.stats.stattools import durbin_watson  # type: ignore
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: ignore
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
@@ -28,8 +29,8 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-def corr(data: List[Data]) -> OBBject[List[Data]]:
-    """Get the corrlelation matrix of an input dataset.
+def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
+    """Get the correlation matrix of an input dataset.
 
     Parameters
     ----------
@@ -58,7 +59,7 @@ def corr(data: List[Data]) -> OBBject[List[Data]]:
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def ols(
+def ols_regression(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -87,12 +88,12 @@ def ols(
 
 
 @router.command(methods=["POST"])
-def ols_summary(
+def ols_regression_summary(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Data]:
-    """Perform OLS regression.  This returns the summary object from statsmodels.
+    """Perform OLS regression. This returns the summary object from statsmodels.
 
     Parameters
     ----------
@@ -152,7 +153,7 @@ def ols_summary(
 
 
 @router.command(methods=["POST"])
-def dwat(
+def autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -180,7 +181,7 @@ def dwat(
 
 
 @router.command(methods=["POST"])
-def bgot(
+def residual_autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -221,7 +222,7 @@ def bgot(
 
 
 @router.command(methods=["POST"])
-def coint(
+def cointegration(
     data: List[Data],
     columns: List[str],
 ) -> OBBject[Data]:
@@ -249,7 +250,7 @@ def coint(
             c,
             gamma,
             alpha,
-            z,
+            _,  # z
             adfstat,
             pvalue,
         ) = get_engle_granger_two_step_cointegration_test(dataset[x], dataset[y])
@@ -265,7 +266,7 @@ def coint(
 
 
 @router.command(methods=["POST"])
-def granger(
+def causality(
     data: List[Data],
     y_column: str,
     x_column: str,
@@ -308,7 +309,7 @@ def granger(
 
 
 @router.command(methods=["POST"])
-def unitroot(
+def unit_root(
     data: List[Data],
     column: str,
     regression: Literal["c", "ct", "ctt"] = "c",
@@ -343,7 +344,7 @@ def unitroot(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelre(
+def panel_random_effects(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -372,7 +373,7 @@ def panelre(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelbols(
+def panel_between(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -401,12 +402,12 @@ def panelbols(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelpols(
+def panel_pooled(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
 ) -> OBBject[Dict]:
-    """Perform a Pooled coefficvient estimator regression on panel data.
+    """Perform a Pooled coefficient estimator regression on panel data.
 
     Parameters
     ----------
@@ -430,7 +431,7 @@ def panelpols(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelols(
+def panel_fixed(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -459,7 +460,7 @@ def panelols(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelfd(
+def panel_first_difference(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -488,7 +489,7 @@ def panelfd(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-def panelfmac(
+def panel_fmac(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
