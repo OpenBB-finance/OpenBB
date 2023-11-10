@@ -85,11 +85,11 @@ def get_data(menu: Literal["stocks", "crypto"]):
     ],
 )
 @pytest.mark.integration
-def test_ta_atr(params, data_type, obb):
+def test_technical_atr(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.atr(**params)
+    result = obb.technical.atr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -123,11 +123,11 @@ def test_ta_atr(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_fib(params, data_type, obb):
+def test_technical_fib(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.fib(**params)
+    result = obb.technical.fib(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -141,11 +141,11 @@ def test_ta_fib(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_obv(params, data_type, obb):
+def test_technical_obv(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.obv(**params)
+    result = obb.technical.obv(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -159,11 +159,11 @@ def test_ta_obv(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_fisher(params, data_type, obb):
+def test_technical_fisher(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.fisher(**params)
+    result = obb.technical.fisher(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -195,11 +195,11 @@ def test_ta_fisher(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_adosc(params, data_type, obb):
+def test_technical_adosc(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.adosc(**params)
+    result = obb.technical.adosc(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -235,11 +235,11 @@ def test_ta_adosc(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_bbands(params, data_type, obb):
+def test_technical_bbands(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.bbands(**params)
+    result = obb.technical.bbands(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -271,11 +271,11 @@ def test_ta_bbands(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_zlma(params, data_type, obb):
+def test_technical_zlma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.zlma(**params)
+    result = obb.technical.zlma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -297,11 +297,11 @@ def test_ta_zlma(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_aroon(params, data_type, obb):
+def test_technical_aroon(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.aroon(**params)
+    result = obb.technical.aroon(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -333,11 +333,11 @@ def test_ta_aroon(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_sma(params, data_type, obb):
+def test_technical_sma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.sma(**params)
+    result = obb.technical.sma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -371,11 +371,11 @@ def test_ta_sma(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_demark(params, data_type, obb):
+def test_technical_demark(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.demark(**params)
+    result = obb.technical.demark(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -389,11 +389,11 @@ def test_ta_demark(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_vwap(params, data_type, obb):
+def test_technical_vwap(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.vwap(**params)
+    result = obb.technical.vwap(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -427,11 +427,11 @@ def test_ta_vwap(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_macd(params, data_type, obb):
+def test_technical_macd(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.macd(**params)
+    result = obb.technical.macd(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -463,11 +463,11 @@ def test_ta_macd(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_hma(params, data_type, obb):
+def test_technical_hma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.hma(**params)
+    result = obb.technical.hma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -499,11 +499,11 @@ def test_ta_hma(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_donchian(params, data_type, obb):
+def test_technical_donchian(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.donchian(**params)
+    result = obb.technical.donchian(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -539,11 +539,11 @@ def test_ta_donchian(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_ichimoku(params, data_type, obb):
+def test_technical_ichimoku(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.ichimoku(**params)
+    result = obb.technical.ichimoku(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -565,11 +565,11 @@ def test_ta_ichimoku(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_clenow(params, data_type, obb):
+def test_technical_clenow(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.clenow(**params)
+    result = obb.technical.clenow(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -601,11 +601,11 @@ def test_ta_clenow(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_adx(params, data_type, obb):
+def test_technical_adx(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.adx(**params)
+    result = obb.technical.adx(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -619,11 +619,11 @@ def test_ta_adx(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_ad(params, data_type, obb):
+def test_technical_ad(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.ad(**params)
+    result = obb.technical.ad(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -655,11 +655,11 @@ def test_ta_ad(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_wma(params, data_type, obb):
+def test_technical_wma(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.wma(**params)
+    result = obb.technical.wma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -681,11 +681,11 @@ def test_ta_wma(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_cci(params, data_type, obb):
+def test_technical_cci(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.cci(**params)
+    result = obb.technical.cci(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -719,11 +719,11 @@ def test_ta_cci(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_rsi(params, data_type, obb):
+def test_technical_rsi(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.rsi(**params)
+    result = obb.technical.rsi(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -755,11 +755,11 @@ def test_ta_rsi(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_stoch(params, data_type, obb):
+def test_technical_stoch(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.stoch(**params)
+    result = obb.technical.stoch(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -793,11 +793,11 @@ def test_ta_stoch(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_kc(params, data_type, obb):
+def test_technical_kc(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.kc(**params)
+    result = obb.technical.kc(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -811,11 +811,11 @@ def test_ta_kc(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_cg(params, data_type, obb):
+def test_technical_cg(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.cg(**params)
+    result = obb.technical.cg(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -849,11 +849,11 @@ def test_ta_cg(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_cones(params, data_type, obb):
+def test_technical_cones(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.cones(**params)
+    result = obb.technical.cones(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -885,11 +885,11 @@ def test_ta_cones(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_ta_ema(params, data_type, obb):
+def test_technical_ema(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.ta.ema(**params)
+    result = obb.technical.ema(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

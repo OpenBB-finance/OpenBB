@@ -52,8 +52,8 @@ openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = tr
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
-openbb-qa = { path = "./extensions/qa", optional = true, develop = true }
-openbb-ta = { path = "./extensions/ta", optional = true, develop = true }
+openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
+openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
 """
 
 pyproject_toml = toml.load(PYPROJECT)
