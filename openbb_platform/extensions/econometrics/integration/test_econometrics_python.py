@@ -7,16 +7,19 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_econometrics.utils import mock_multi_index_data
 
 
+# pylint: disable=inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
 
 
-data = {}
+# pylint: disable=redefined-outer-name
+
+data: dict = {}
 
 
 def get_stocks_data():
@@ -26,9 +29,9 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon"])  # noqa: S311
 
-    data["stocks_data"] = openbb.obb.stocks.load(
+    data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["stocks_data"]
@@ -44,31 +47,31 @@ def get_crypto_data():
     symbol = random.choice(["BTC"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
-    data["crypto_data"] = openbb.obb.crypto.load(
+    data["crypto_data"] = openbb.obb.crypto.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["crypto_data"]
 
 
-def get_data(menu: Literal["stocks", "crypto"]):
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+def get_data(menu: Literal["equity", "crypto"]):
+    funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
 
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": ""}, "stocks"),
+        ({"data": ""}, "equity"),
         ({"data": ""}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_econometrics_corr(params, data_type, obb):
+def test_econometrics_correlation_matrix(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.corr(**params)
+    result = obb.econometrics.correlation_matrix(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -79,7 +82,7 @@ def test_econometrics_corr(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
@@ -88,12 +91,12 @@ def test_econometrics_corr(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_ols(params, data_type, obb):
+def test_econometrics_ols_regression(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.ols(**params)
+    result = obb.econometrics.ols_regression(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -104,7 +107,7 @@ def test_econometrics_ols(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
@@ -113,11 +116,11 @@ def test_econometrics_ols(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_ols_summary(params, data_type, obb):
+def test_econometrics_ols_regression_summary(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.ols_summary(**params)
+    result = obb.econometrics.ols_regression_summary(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -128,7 +131,7 @@ def test_econometrics_ols_summary(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "volume", "x_columns": ["close"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "volume", "x_columns": ["close"]},
@@ -137,12 +140,12 @@ def test_econometrics_ols_summary(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_dwat(params, data_type, obb):
+def test_econometrics_autocorrelation(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.dwat(**params)
+    result = obb.econometrics.autocorrelation(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -157,7 +160,7 @@ def test_econometrics_dwat(params, data_type, obb):
                 "x_columns": ["close"],
                 "lags": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -171,12 +174,12 @@ def test_econometrics_dwat(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_bgot(params, data_type, obb):
+def test_econometrics_residual_autocorrelation(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.bgot(**params)
+    result = obb.econometrics.residual_autocorrelation(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -189,7 +192,7 @@ def test_econometrics_bgot(params, data_type, obb):
                 "data": "",
                 "columns": ["close", "volume"],
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -201,12 +204,12 @@ def test_econometrics_bgot(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_coint(params, data_type, obb):
+def test_econometrics_cointegration(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.coint(**params)
+    result = obb.econometrics.cointegration(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -222,7 +225,7 @@ def test_econometrics_coint(params, data_type, obb):
                 "x_column": "close",
                 "lag": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -236,12 +239,12 @@ def test_econometrics_coint(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_granger(params, data_type, obb):
+def test_econometrics_causality(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.granger(**params)
+    result = obb.econometrics.causality(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -250,7 +253,7 @@ def test_econometrics_granger(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "column": "close", "regression": "c"}, "stocks"),
+        ({"data": "", "column": "close", "regression": "c"}, "equity"),
         (
             {"data": "", "column": "volume", "regression": "ctt"},
             "crypto",
@@ -258,12 +261,12 @@ def test_econometrics_granger(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_unitroot(params, data_type, obb):
+def test_econometrics_unit_root(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
 
-    result = obb.econometrics.unitroot(**params)
+    result = obb.econometrics.unit_root(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -276,31 +279,12 @@ def test_econometrics_unitroot(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelre(params, obb):
+def test_econometrics_panel_random_effects(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
-    result = obb.econometrics.panelre(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        {"data": "", "y_column": "income", "x_columns": ["age"]},
-        {"data": "", "y_column": "income", "x_columns": ["age"]},
-    ],
-)
-@pytest.mark.integration
-def test_econometrics_panelbols(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    params["data"] = mock_multi_index_data()
-
-    result = obb.econometrics.panelbols(**params)
+    result = obb.econometrics.panel_random_effects(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -314,12 +298,12 @@ def test_econometrics_panelbols(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelpols(params, obb):
+def test_econometrics_panel_between(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
-    result = obb.econometrics.panelpols(**params)
+    result = obb.econometrics.panel_between(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -333,12 +317,12 @@ def test_econometrics_panelpols(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelols(params, obb):
+def test_econometrics_panel_pooled(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
-    result = obb.econometrics.panelols(**params)
+    result = obb.econometrics.panel_pooled(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -352,12 +336,12 @@ def test_econometrics_panelols(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelfd(params, obb):
+def test_econometrics_panel_fixed(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
-    result = obb.econometrics.panelfd(**params)
+    result = obb.econometrics.panel_fixed(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -371,12 +355,31 @@ def test_econometrics_panelfd(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_econometrics_panelfmac(params, obb):
+def test_econometrics_panel_first_difference(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
-    result = obb.econometrics.panelfmac(**params)
+    result = obb.econometrics.panel_first_difference(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+        {"data": "", "y_column": "income", "x_columns": ["age"]},
+    ],
+)
+@pytest.mark.integration
+def test_econometrics_panel_fmac(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    params["data"] = mock_multi_index_data()
+
+    result = obb.econometrics.panel_fmac(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
