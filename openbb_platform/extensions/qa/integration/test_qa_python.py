@@ -6,16 +6,19 @@ import pytest
 from openbb_core.app.model.obbject import OBBject
 
 
+# pylint:disable=inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint:disable=import-outside-toplevel
 
         return openbb.obb
 
 
-data = {}
+# pylint:disable=redefined-outer-name
+
+data: dict = {}
 
 
 def get_stocks_data():
@@ -27,7 +30,7 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = openbb.obb.stocks.load(
+    data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["stocks_data"]
@@ -43,7 +46,7 @@ def get_crypto_data():
     symbol = random.choice(["BTC"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
-    data["crypto_data"] = openbb.obb.crypto.load(
+    data["crypto_data"] = openbb.obb.crypto.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["crypto_data"]

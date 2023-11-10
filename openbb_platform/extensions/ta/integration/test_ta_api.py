@@ -8,7 +8,7 @@ import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
-data = {}
+data: dict = {}
 
 
 def get_headers():
@@ -32,7 +32,7 @@ def get_data(menu: Literal["stocks", "crypto"]):
 
 def request_data(menu: str, symbol: str, provider: str):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    url = f"http://0.0.0.0:8000/api/v1/{menu}/load?symbol={symbol}&provider={provider}"
+    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}"
     result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
 
@@ -45,7 +45,7 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = request_data("stocks", symbol=symbol, provider=provider)
+    data["stocks_data"] = request_data("equity", symbol=symbol, provider=provider)
     return data["stocks_data"]
 
 

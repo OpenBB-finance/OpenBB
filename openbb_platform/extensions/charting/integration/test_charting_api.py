@@ -13,7 +13,9 @@ def headers():
     return get_headers()
 
 
-data = {}
+# pylint:disable=redefined-outer-name
+
+data: dict = {}
 
 
 def get_headers():
@@ -29,12 +31,12 @@ def get_headers():
     return data["headers"]
 
 
-def get_stocks_data():
-    """Get stocks data."""
+def get_equity_data():
+    """Get equity data."""
     if "stocks_data" in data:
         return data["stocks_data"]
 
-    url = "http://0.0.0.0:8000/api/v1/stocks/load?symbol=AAPL&provider=fmp"
+    url = "http://0.0.0.0:8000/api/v1/equity/price/historical?symbol=AAPL&provider=fmp"
     result = requests.get(url, headers=get_headers(), timeout=10)
     data["stocks_data"] = result.json()["results"]
 
@@ -54,12 +56,12 @@ def get_stocks_data():
     ],
 )
 @pytest.mark.integration
-def test_chart_stocks_load(params, headers):
-    """Test chart stocks load."""
+def test_chart_equity_price_historical(params, headers):
+    """Test chart equity load."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/load?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -77,12 +79,12 @@ def test_chart_stocks_load(params, headers):
     [({"symbol": "AAPL", "limit": 100, "chart": True})],
 )
 @pytest.mark.integration
-def test_chart_stocks_multiples(params, headers):
-    """Test chart stocks multiples."""
+def test_chart_equity_fundamental_multiples(params, headers):
+    """Test chart equity multiples."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/multiples?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/multiples?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -100,12 +102,12 @@ def test_chart_stocks_multiples(params, headers):
     [({"provider": "yfinance", "symbols": "AAPL", "limit": 20, "chart": True})],
 )
 @pytest.mark.integration
-def test_chart_stocks_news(params, headers):
-    """Test chart stocks news."""
+def test_chart_equity_news(params, headers):
+    """Test chart equity news."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/stocks/news?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/news?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -137,7 +139,7 @@ def test_chart_stocks_news(params, headers):
 def test_chart_ta_adx(params, headers):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/adx?{query_str}"
@@ -161,7 +163,7 @@ def test_chart_ta_adx(params, headers):
 def test_chart_ta_aroon(params, headers):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/aroon?{query_str}"
@@ -196,7 +198,7 @@ def test_chart_ta_aroon(params, headers):
 def test_chart_ta_ema(params, headers):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/ema?{query_str}"
@@ -231,7 +233,7 @@ def test_chart_ta_ema(params, headers):
 def test_chart_ta_hma(params, headers):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/hma?{query_str}"
@@ -267,7 +269,7 @@ def test_chart_ta_hma(params, headers):
 def test_chart_ta_macd(params, headers):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/macd?{query_str}"
@@ -303,7 +305,7 @@ def test_chart_ta_macd(params, headers):
 def test_chart_ta_rsi(params, headers):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/rsi?{query_str}"
@@ -338,7 +340,7 @@ def test_chart_ta_rsi(params, headers):
 def test_chart_ta_sma(params, headers):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/sma?{query_str}"
@@ -373,7 +375,7 @@ def test_chart_ta_sma(params, headers):
 def test_chart_ta_wma(params, headers):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/wma?{query_str}"
@@ -408,7 +410,7 @@ def test_chart_ta_wma(params, headers):
 def test_chart_ta_zlma(params, headers):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps(get_stocks_data())
+    body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/ta/zlma?{query_str}"

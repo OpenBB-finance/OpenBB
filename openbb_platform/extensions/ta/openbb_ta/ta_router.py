@@ -1,3 +1,4 @@
+"""Technical Analysis Router."""
 from typing import List, Literal, Optional
 
 import pandas as pd
@@ -32,9 +33,9 @@ def atr(
     drift: NonNegativeInt = 1,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    Average True Range is used to measure volatility, especially volatility caused by
-    gaps or limit moves.
+    """Average True Range.
+
+    Used to measure volatility, especially volatility caused by gaps or limit moves.
 
     Parameters
     ----------
@@ -59,10 +60,9 @@ def atr(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> atr_data = obb.ta.atr(data=stock_data.results)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_atr = pd.DataFrame(
@@ -102,10 +102,9 @@ def fib(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> fib_data = obb.ta.fib(data=stock_data.results, period=120)
     """
-
     df = basemodel_to_df(data, index=index)
 
     (
@@ -140,11 +139,11 @@ def obv(
     index: str = "date",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    The On Balance Volume (OBV) is a cumulative total of the up and
-    down volume. When the close is higher than the previous close, the volume is added
-    to the running total, and when the close is lower than the previous close, the volume
-    is subtracted from the running total.
+    """On Balance Volume (OBV).
+
+    Is a cumulative total of the up and down volume. When the close is higher than the
+    previous close, the volume is added to the running total, and when the close is
+    lower than the previous close, the volume is subtracted from the running total.
 
     To interpret the OBV, look for the OBV to move with the price or precede price moves.
     If the price moves before the OBV, then it is a non-confirmed move. A series of rising peaks,
@@ -168,10 +167,9 @@ def obv(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> obv_data = obb.ta.obv(data=stock_data.results, offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
     df_obv = pd.DataFrame(df_target.ta.obv(offset=offset))
@@ -188,12 +186,13 @@ def fisher(
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
 ) -> OBBject[List[Data]]:
-    """
-    The Fisher Transform is a technical indicator created by John F. Ehlers
-    that converts prices into a Gaussian normal distribution.1 The indicator
-    highlights when prices have   moved to an extreme, based on recent prices.
-    This may help in spotting turning points in the price of an asset. It also
-    helps show the trend and isolate the price waves within a trend.
+    """Fisher Transform.
+
+    A technical indicator created by John F. Ehlers that converts prices into a Gaussian
+    normal distribution. The indicator highlights when prices have moved to an extreme,
+    based on recent prices.
+    This may help in spotting turning points in the price of an asset. It also helps
+    show the trend and isolate the price waves within a trend.
 
     Parameters
     ----------
@@ -214,10 +213,9 @@ def fisher(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> fisher_data = obb.ta.fisher(data=stock_data.results, length=14, signal=1)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
@@ -235,9 +233,11 @@ def adosc(
     slow: PositiveInt = 10,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator
-    is essentially a momentum indicator, but of the Accumulation-Distribution line
+    """Accumulation/Distribution Oscillator.
+
+    Also known as the Chaikin Oscillator.
+
+    Essentially a momentum indicator, but of the Accumulation-Distribution line
     rather than merely price. It looks at both the strength of price moves and the
     underlying buying and selling pressure during a given time period. The oscillator
     reading above zero indicates net buying pressure, while one below zero registers
@@ -262,10 +262,9 @@ def adosc(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> adosc_data = obb.ta.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
@@ -285,10 +284,11 @@ def bbands(
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    Bollinger Bands consist of three lines. The middle band is a simple
-    moving average (generally 20 periods) of the typical price (TP). The upper and lower
-    bands are F standard deviations (generally 2) above and below the middle band.
+    """Bollinger Bands.
+
+    Consist of three lines. The middle band is a simple moving average (generally 20
+    periods) of the typical price (TP). The upper and lower bands are F standard
+    deviations (generally 2) above and below the middle band.
     The bands widen and narrow when the volatility of the price is higher or lower,
     respectively.
 
@@ -324,12 +324,11 @@ def bbands(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> bbands = obb.ta.bbands(
     >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
     >>> )
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
@@ -356,9 +355,9 @@ def zlma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    The zero lag exponential moving average (ZLEMA) indicator
-    was created by John Ehlers and Ric Way. The idea is do a
+    """The zero lag exponential moving average (ZLEMA).
+
+    Created by John Ehlers and Ric Way. The idea is do a
     regular exponential moving average (EMA) calculation but
     on a de-lagged data instead of doing it on the regular data.
     Data is de-lagged by removing the data from "lag" days ago
@@ -386,7 +385,7 @@ def zlma(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> zlma_data = obb.ta.zlma(data=stock_data.results, target="close", length=50, offset=0)
     """
     df = basemodel_to_df(data, index=index)
@@ -412,7 +411,8 @@ def aroon(
     length: int = 25,
     scalar: int = 100,
 ) -> OBBject[List[Data]]:
-    """
+    """Aroon Indicator.
+
     The word aroon is Sanskrit for "dawn's early light." The Aroon
     indicator attempts to show when a new trend is dawning. The indicator consists
     of two lines (Up and Down) that measure how long it has been since the highest
@@ -444,7 +444,7 @@ def aroon(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> aroon_data = obb.ta.aroon(data=stock_data.results, length=25, scalar=100)
     """
     df = basemodel_to_df(data, index=index)
@@ -464,7 +464,8 @@ def sma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
+    """Simple Moving Average.
+
     Moving Averages are used to smooth the data in an array to
     help eliminate noise and identify trends. The Simple Moving Average is literally
     the simplest form of a moving average. Each output value is the average of the
@@ -494,7 +495,7 @@ def sma(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> sma_data = obb.ta.sma(data=stock_data.results,target="close",length=50,offset=0)
     """
     df = basemodel_to_df(data, index=index)
@@ -522,8 +523,7 @@ def demark(
     asint: bool = True,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    Demark sequential indicator
+    """Demark sequential indicator.
 
     Parameters
     ----------
@@ -548,13 +548,15 @@ def demark(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> demark_data = obb.ta.demark(data=stock_data.results,offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    demark = ta.td_seq(df_target[target], asint=asint, show_all=show_all, offset=offset)
-    demark_df = df[[target]].reset_index().join(demark)
+    _demark = ta.td_seq(
+        df_target[target], asint=asint, show_all=show_all, offset=offset
+    )
+    demark_df = df[[target]].reset_index().join(_demark)
     results = df_to_basemodel(demark_df)
 
     return OBBject(results=results)
@@ -567,9 +569,10 @@ def vwap(
     anchor: str = "D",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    The Volume Weighted Average Price that measures the average typical price
-    by volume.  It is typically used with intraday charts to identify general direction.
+    """The Volume Weighted Average Price.
+
+    Measures the average typical price by volume.
+    It is typically used with intraday charts to identify general direction.
 
     Parameters
     ----------
@@ -592,10 +595,9 @@ def vwap(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> vwap_data = obb.ta.vwap(data=stock_data.results,anchor="D",offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
@@ -614,10 +616,10 @@ def macd(
     slow: int = 26,
     signal: int = 9,
 ) -> OBBject[List[Data]]:
-    """
-    The Moving Average Convergence Divergence (MACD) is the difference
-    between two Exponential Moving Averages. The Signal line is an Exponential Moving
-    Average of the MACD.
+    """The Moving Average Convergence Divergence (MACD).
+
+    Difference between two Exponential Moving Averages. The Signal line is an
+    Exponential Moving Average of the MACD.
 
     The MACD signals trend changes and indicates the start of new trend direction.
     High values indicate overbought conditions, low values indicate oversold conditions.
@@ -648,7 +650,7 @@ def macd(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> macd_data = obb.ta.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
     """
     df = basemodel_to_df(data, index=index)
@@ -676,9 +678,10 @@ def hma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    The Hull Moving Average solves the age old dilemma of making a moving average
-    more responsive to current price activity whilst maintaining curve smoothness.
+    """The Hull Moving Average.
+
+    Solves the age old dilemma of making a moving average more responsive to current
+    price activity whilst maintaining curve smoothness.
     In fact the HMA almost eliminates lag altogether and manages to improve smoothing
     at the same time.
 
@@ -703,7 +706,7 @@ def hma(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> hma_data = obb.ta.hma(data=stock_data.results,target="close",length=50,offset=0)
     """
     df = basemodel_to_df(data, index=index)
@@ -730,11 +733,11 @@ def donchian(
     upper_length: PositiveInt = 20,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    Donchian Channels are three lines generated by moving average
-    calculations that comprise an indicator formed by upper and lower
-    bands around a midrange or median band. The upper band marks the
-    highest price of a security over N periods while the lower band
+    """Donchian Channels.
+
+    Three lines generated by moving average calculations that comprise an indicator
+    formed by upper and lower bands around a midrange or median band. The upper band
+    marks the highest price of a security over N periods while the lower band
     marks the lowest price of a security over N periods. The area
     between the upper and lower bands represents the Donchian Channel.
 
@@ -759,10 +762,9 @@ def donchian(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> donchian_data = obb.ta.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     donchian_df = pd.DataFrame(
@@ -786,11 +788,13 @@ def ichimoku(
     offset: PositiveInt = 26,
     lookahead: bool = False,
 ) -> OBBject[List[Data]]:
-    """
-    The Ichimoku Cloud, also known as Ichimoku Kinko Hyo, is a versatile indicator that
-    defines support and resistance, identifies trend direction, gauges momentum and provides
-    trading signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
-    one look, chartists can identify the trend and look for potential signals within that trend.
+    """The Ichimoku Cloud.
+
+    Also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and
+    resistance, identifies trend direction, gauges momentum and provides trading
+    signals. Ichimoku Kinko Hyo translates into "one look equilibrium chart". With
+    one look, chartists can identify the trend and look for potential signals within
+    that trend.
 
     Parameters
     ----------
@@ -809,7 +813,6 @@ def ichimoku(
     lookahead : bool, optional
         drops the Chikou Span Column to prevent potential data leak
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_ichimoku, df_span = df_target.ta.ichimoku(
@@ -835,8 +838,7 @@ def clenow(
     target: str = "close",
     period: PositiveInt = 90,
 ) -> OBBject[List[Data]]:
-    """
-    Clenow Volatility Adjusted Momentum.
+    """Clenow Volatility Adjusted Momentum.
 
     Parameters
     ----------
@@ -857,10 +859,9 @@ def clenow(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> clenow_data = obb.ta.clenow(data=stock_data.results,period=90)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
 
@@ -882,12 +883,13 @@ def clenow(
 
 @router.command(methods=["POST"])
 def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
-    """
-    The Accumulation/Distribution Line is similar to the On Balance
-    Volume (OBV), which sums the volume times +1/-1 based on whether the close is
-    higher than the previous close. The Accumulation/Distribution indicator, however
-    multiplies the volume by the close location value (CLV). The CLV is based on the
-    movement of the issue within a single bar and can be +1, -1 or zero.
+    """The Accumulation/Distribution Line.
+
+    Similar to the On Balance Volume (OBV).
+    Sums the volume times +1/-1 based on whether the close is higher than the previous
+    close. The Accumulation/Distribution indicator, however multiplies the volume by the
+    close location value (CLV). The CLV is based on the movement of the issue within a
+    single bar and can be +1, -1 or zero.
 
 
     The Accumulation/Distribution Line is interpreted by looking for a divergence in
@@ -912,10 +914,9 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> ad_data = obb.ta.ad(data=stock_data.results,offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     ad_df = pd.DataFrame(df_target.ta.ad(offset=offset).dropna())
@@ -933,7 +934,8 @@ def adx(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """
+    """ADX.
+
     The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
     The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
     a high number to be a strong trend, and a low number, a weak trend.
@@ -959,7 +961,7 @@ def adx(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> adx_data = obb.ta.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
     """
     df = basemodel_to_df(data, index=index)
@@ -981,7 +983,8 @@ def wma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
+    """Weighted Moving Average.
+
     A Weighted Moving Average puts more weight on recent data and less on past data.
     This is done by multiplying each bar's price by a weighting factor. Because of its
     unique calculation, WMA will follow prices more closely than a corresponding Simple
@@ -1008,7 +1011,7 @@ def wma(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> wma_data = obb.ta.wma(data=stock_data.results, target="close", length=50, offset=0)
     """
     df = basemodel_to_df(data, index=index)
@@ -1034,7 +1037,8 @@ def cci(
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
 ) -> OBBject[List[Data]]:
-    """
+    """Commodity Channel Index (CCI).
+
     The CCI is designed to detect beginning and ending market trends.
     The range of 100 to -100 is the normal trading range. CCI values outside of this
     range indicate overbought or oversold conditions. You can also look for price
@@ -1057,7 +1061,6 @@ def cci(
     OBBject[List[Data]]
         The CCI data.
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
@@ -1076,10 +1079,11 @@ def rsi(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """
-    The Relative Strength Index (RSI) calculates a ratio of the
-    recent upward price movements to the absolute price movement. The RSI ranges
-    from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when
+    """Relative Strength Index (RSI).
+
+    RSI calculates a ratio of the recent upward price movements to the absolute price
+    movement. The RSI ranges from 0 to 100.
+    The RSI is interpreted as an overbought/oversold indicator when
     the value is over 70/below 30. You can also look for divergence with price. If
     the price is making new highs/lows, and the RSI is not, it indicates a reversal.
 
@@ -1106,7 +1110,7 @@ def rsi(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> rsi_data = obb.ta.rsi(data=stock_data.results, target="close", length=14, scalar=100.0, drift=1)
     """
     df = basemodel_to_df(data, index=index)
@@ -1134,7 +1138,8 @@ def stoch(
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
 ) -> OBBject[List[Data]]:
-    """
+    """Stochastic Oscillator.
+
     The Stochastic Oscillator measures where the close is in relation
     to the recent trading range. The values range from zero to 100. %D values over 75
     indicate an overbought condition; values under 25 indicate an oversold condition.
@@ -1163,10 +1168,9 @@ def stoch(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> stoch_data = obb.ta.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     stoch_df = pd.DataFrame(
@@ -1191,7 +1195,8 @@ def kc(
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
 ) -> OBBject[List[Data]]:
-    """
+    """Keltner Channels.
+
     Keltner Channels are volatility-based bands that are placed
     on either side of an asset's price and can aid in determining
     the direction of a trend.The Keltner channel uses the average
@@ -1221,10 +1226,9 @@ def kc(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> kc_data = obb.ta.kc(data=stock_data.results, length=20, scalar=20, mamode="ema", offset=0)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     kc_df = pd.DataFrame(
@@ -1245,7 +1249,8 @@ def kc(
 def cg(
     data: List[Data], index: str = "date", length: PositiveInt = 14
 ) -> OBBject[List[Data]]:
-    """
+    """Center of Gravity.
+
     The Center of Gravity indicator, in short, is used to anticipate future price movements
     and to trade on price reversals as soon as they happen. However, just like other oscillators,
     the COG indicator returns the best results in range-bound markets and should be avoided when
@@ -1269,10 +1274,9 @@ def cg(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> cg_data = obb.ta.cg(data=stock_data.results, length=14)
     """
-
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
@@ -1345,10 +1349,9 @@ def cones(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> cones_data = obb.ta.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
     """
-
     if lower_q > upper_q:
         lower_q, upper_q = upper_q, lower_q
 
@@ -1370,12 +1373,9 @@ def ema(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """
-    The Exponential Moving Average is a staple of technical
-    analysis and is used in countless technical indicators. In a Simple Moving
-    Average, each value in the time period carries equal weight, and values outside
-    of the time period are not included in the average. However, the Exponential
-    Moving Average is a cumulative calculation, including all data. Past values have
+    """Exponential Moving Average.
+
+    EMA is a cumulative calculation, including all data. Past values have
     a diminishing contribution to the average, while more recent values have a greater
     contribution. This method allows the moving average to be more responsive to changes
     in the data.
@@ -1401,7 +1401,7 @@ def ema(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.stocks.load(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
     >>> ema_data = obb.ta.ema(data=stock_data.results,target="close",length=50,offset=0)
 
     """

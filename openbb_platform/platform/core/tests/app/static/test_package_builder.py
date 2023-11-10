@@ -404,7 +404,7 @@ def test_build_path_list(path_list):
 
 def test_get_route(path_handler, route_map):
     """Test get route."""
-    route = path_handler.get_route(route_map=route_map, path="/stocks/load")
+    route = path_handler.get_route(route_map=route_map, path="/equity/price/historical")
 
     assert route
 
@@ -412,7 +412,7 @@ def test_get_route(path_handler, route_map):
 def test_get_child_path_list(path_handler, path_list):
     """Test get child path list."""
     child_path_list = path_handler.get_child_path_list(
-        path="/stocks", path_list=path_list
+        path="/equity", path_list=path_list
     )
 
     assert child_path_list
