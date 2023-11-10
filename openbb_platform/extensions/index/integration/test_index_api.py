@@ -23,49 +23,11 @@ def headers():
     [({"index": "dowjones", "provider": "fmp"})],
 )
 @pytest.mark.integration
-def test_index_const(params, headers):
+def test_index_constituents(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/const?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "countries": "spain",
-                "units": "growth_same",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "fred",
-            }
-        ),
-        (
-            {
-                "countries": ["portugal", "spain"],
-                "units": "growth_same",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "fred",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_cpi(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/cpi?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/constituents?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -161,11 +123,11 @@ def test_index_cpi(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_index(params, headers):
+def test_index_market(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/index?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/market?{query_str}"
     result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -203,11 +165,11 @@ def test_index_index(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_european_index(params, headers):
+def test_index_european(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european_index?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/european?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -218,11 +180,11 @@ def test_index_european_index(params, headers):
     [({"symbol": "BUKBUS", "provider": "cboe"})],
 )
 @pytest.mark.integration
-def test_index_european_index_constituents(params, headers):
+def test_index_european_constituents(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european_index_constituents?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/european_constituents?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -237,26 +199,11 @@ def test_index_european_index_constituents(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_available_indices(params, headers):
+def test_index_list(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/available_indices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"provider": "fmp"})],
-)
-@pytest.mark.integration
-def test_index_risk(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/risk?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/list?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -270,11 +217,11 @@ def test_index_risk(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_index_search(params, headers):
+def test_index_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/index_search?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/search?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -285,11 +232,11 @@ def test_index_index_search(params, headers):
     [({"provider": "cboe", "region": "US"})],
 )
 @pytest.mark.integration
-def test_index_index_snapshots(params, headers):
+def test_index_snapshots(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/index_snapshots?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/snapshots?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -380,151 +327,11 @@ def test_index_sp500_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_fred_index(params, headers):
+def test_index_fred(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/fred_index?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "units": "usd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "oecd",
-            }
-        ),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "units": "usd",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpnom(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/gdpnom?{query_str}"
-    result = requests.get(url, headers=headers, timeout=20)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "units": "yoy",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "oecd",
-            }
-        ),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpreal(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/gdpreal?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-                "provider": "oecd",
-            }
-        ),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpforecast(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/gdpforecast?{query_str}"
-    result = requests.get(url, headers=headers, timeout=20)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "nasdaq",
-                "start_date": "2023-10-24",
-                "end_date": "2023-11-03",
-                "country": "united_states,japan",
-            }
-        ),
-        (
-            {
-                "provider": "tradingeconomics",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "country": "mexico,sweden",
-                "importance": "Low",
-                "group": "gdp",
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_calendar(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/calendar?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/fred?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

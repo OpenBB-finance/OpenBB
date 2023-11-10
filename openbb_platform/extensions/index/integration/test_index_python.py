@@ -24,31 +24,8 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     ],
 )
 @pytest.mark.integration
-def test_index_const(params, obb):
-    result = obb.index.const(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "countries": ["portugal", "spain"],
-                "units": "growth_same",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_cpi(params, obb):
-    result = obb.index.cpi(**params)
+def test_index_constituents(params, obb):
+    result = obb.index.constituents(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -143,8 +120,8 @@ def test_index_cpi(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_index(params, obb):
-    result = obb.index.index(**params)
+def test_index_market(params, obb):
+    result = obb.index.market(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -181,8 +158,8 @@ def test_index_index(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_european_index(params, obb):
-    result = obb.index.european_index(**params)
+def test_index_european(params, obb):
+    result = obb.index.european(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -195,8 +172,8 @@ def test_index_european_index(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_european_index_constituents(params, obb):
-    result = obb.index.european_index_constituents(**params)
+def test_index_european_constituents(params, obb):
+    result = obb.index.european_constituents(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -212,22 +189,8 @@ def test_index_european_index_constituents(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_available_indices(params, obb):
-    result = obb.index.available_indices(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({}),
-    ],
-)
-@pytest.mark.integration
-def test_index_risk(params, obb):
-    result = obb.index.risk(**params)
+def test_index_list(params, obb):
+    result = obb.index.list(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -241,8 +204,8 @@ def test_index_risk(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_index_search(params, obb):
-    result = obb.index.index_search(**params)
+def test_index_search(params, obb):
+    result = obb.index.search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -255,8 +218,8 @@ def test_index_index_search(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_index_snapshots(params, obb):
-    result = obb.index.index_snapshots(**params)
+def test_index_snapshots(params, obb):
+    result = obb.index.snapshots(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -340,130 +303,8 @@ def test_index_sp500_multiples(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_fred_index(params, obb):
-    result = obb.index.fred_index(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"units": "usd", "start_date": "2021-01-01", "end_date": "2023-06-06"}),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "units": "usd",
-                "start_date": "2021-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpnom(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.index.gdpnom(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"units": "yoy", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "units": "yoy",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpreal(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.index.gdpreal(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-            }
-        ),
-        (
-            {
-                "country": "united_states",
-                "provider": "oecd",
-                "period": "annual",
-                "start_date": "2023-01-01",
-                "end_date": "2025-06-06",
-                "type": "real",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_gdpforecast(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.index.gdpforecast(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
-        (
-            {
-                "provider": "nasdaq",
-                "start_date": "2023-10-24",
-                "end_date": "2023-11-03",
-                "country": "united_states,japan",
-            }
-        ),
-        (
-            {
-                "provider": "tradingeconomics",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "country": "mexico,sweden",
-                "importance": "Medium",
-                "group": "gdp",
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_calendar(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.index.calendar(**params)
+def test_index_fred(params, obb):
+    result = obb.index.fred(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
