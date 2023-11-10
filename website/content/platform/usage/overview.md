@@ -1,13 +1,14 @@
 ---
 title: Overview
 sidebar_position: 1
-description: Information on getting started with the OpenBB Platform's Python client and Fast API; details
+description: An overview for getting started with the OpenBB Platform's Python client and Fast API; details
   on authorization, data providers, settings, responses, commands, logging, and features
   such as dynamic command execution.
 keywords:
 - OpenBB Platform
 - Python client
 - Fast API
+- getting started
 - authorization
 - data providers
 - OpenBB Hub
