@@ -48,30 +48,41 @@ def fred(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="MajorIndicesConstituents")
-def const(
+@router.command(model="IndexConstituents")
+def constituents(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Major Indices Constituents. Constituents of an index."""
+    """Index Constituents. Constituents of an index."""
     return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="EuropeanIndexConstituents")
-def european_index_constituents(
+def european_constituents(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Get  current levels for constituents of select European indices."""
+    """European Index Constituents. Constituents of select european indices."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="IndexSnapshots")
+def snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Index Snapshots. Current levels for all indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
 
 
 @router.command(model="AvailableIndices")
-def available_indices(
+def list(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -82,24 +93,13 @@ def available_indices(
 
 
 @router.command(model="IndexSearch")
-def index_search(
+def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Index Search. Search for indices."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="IndexSnapshots")
-def index_snapshots(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Index Snapshots. Current levels for all indices from a provider."""
     return OBBject(results=Query(**locals()).execute())
 
 

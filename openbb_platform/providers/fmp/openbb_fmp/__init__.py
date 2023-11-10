@@ -44,8 +44,8 @@ from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFe
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
-from openbb_fmp.models.major_indices_constituents import (
-    FMPMajorIndicesConstituentsFetcher,
+from openbb_fmp.models.index_constituents import (
+    FMPIndexConstituentsFetcher,
 )
 from openbb_fmp.models.market_indices import FMPMarketIndicesFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
@@ -110,7 +110,7 @@ fmp_provider = Provider(
         "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
         "KeyExecutives": FMPKeyExecutivesFetcher,
         "KeyMetrics": FMPKeyMetricsFetcher,
-        "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
+        "IndexConstituents": FMPIndexConstituentsFetcher,
         "MarketIndices": FMPMarketIndicesFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
