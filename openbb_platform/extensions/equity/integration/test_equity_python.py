@@ -123,7 +123,8 @@ def test_equity_calendar_split(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "nasdaq"}),
     ],
 )
 @pytest.mark.integration

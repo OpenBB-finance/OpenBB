@@ -321,8 +321,10 @@ def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
+    params = {
+        "start_date": date(2023, 11, 6),
+        "end_date": date(2023, 1, 10),
+    }
     fetcher = FMPCalendarEarningsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

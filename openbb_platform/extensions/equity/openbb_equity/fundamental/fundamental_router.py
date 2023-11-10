@@ -81,17 +81,6 @@ def dividends(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="CalendarEarnings")
-def earnings(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Historical Earnings for a given company."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="HistoricalEmployees")
 def employee_count(
     cc: CommandContext,
