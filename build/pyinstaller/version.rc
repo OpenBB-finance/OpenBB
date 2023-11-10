@@ -6,8 +6,8 @@ VSVersionInfo(
   ffi=FixedFileInfo(
     # filevers and prodvers should be always a tuple with four items: (1, 2, 3, 4)
     # Set not needed items to zero 0.
-    filevers=(3, 2, 3, 0),
-    prodvers=(3, 2, 3, 0),
+    filevers=(3, 2, 4, 0),
+    prodvers=(3, 2, 4, 0),
     # Contains a bitmask that specifies the valid bits 'flags'r
     mask=0x0,
     # Contains a bitmask that specifies the Boolean attributes of the file.
@@ -32,10 +32,10 @@ VSVersionInfo(
         [StringStruct('Comments', 'The OpenBB Terminal. For additional details, visit OpenBB.co'),
         StringStruct('CompanyName', 'OpenBB'),
         StringStruct('FileDescription', 'OpenBB Terminal Program'),
-        StringStruct('FileVersion', '3.2.3.0'),
+        StringStruct('FileVersion', '3.2.4.0'),
         StringStruct('InternalName', 'OpenBB Terminal'),
         StringStruct('ProductName', 'OpenBB Terminal'),
-        StringStruct('ProductVersion', '3.2.3.0')])
+        StringStruct('ProductVersion', '3.2.4.0')])
       ]),
     VarFileInfo([VarStruct('Translation', [1033, 1200])])
   ]
