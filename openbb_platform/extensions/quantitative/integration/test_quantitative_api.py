@@ -126,12 +126,12 @@ def test_quantitative_capm(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_om(params, data_type):
+def test_quantitative_omega_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/om?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/omega_ratio?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -180,12 +180,12 @@ def test_quantitative_kurtosis(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_unitroot(params, data_type):
+def test_quantitative_unitroot_test(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/unitroot?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/unitroot_test?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -199,12 +199,12 @@ def test_quantitative_unitroot(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sh(params, data_type):
+def test_quantitative_sharpe_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/sh?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/sharpe_ratio?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -236,12 +236,12 @@ def test_quantitative_sh(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_so(params, data_type):
+def test_quantitative_sortino_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/so?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/sortino_ratio?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -254,12 +254,12 @@ def test_quantitative_so(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skew(params, data_type):
+def test_quantitative_skewness(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/skew?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/skewness?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

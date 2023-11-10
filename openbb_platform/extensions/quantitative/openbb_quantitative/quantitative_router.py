@@ -108,7 +108,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
 
 @router.command(methods=["POST"])
-def om(
+def omega_ratio(
     data: List[Data],
     target: str,
     threshold_start: float = 0.0,
@@ -149,8 +149,8 @@ def om(
     threshold = np.linspace(threshold_start, threshold_end, 50)
     results = []
     for i in threshold:
-        omega = get_omega_ratio(series_target, i)
-        results.append(OmegaModel(threshold=i, omega=omega))
+        omega_ = get_omega_ratio(series_target, i)
+        results.append(OmegaModel(threshold=i, omega=omega_))
 
     return OBBject(results=results)
 
@@ -184,7 +184,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
 
 
 @router.command(methods=["POST"])
-def unitroot(
+def unitroot_test(
     data: List[Data],
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
@@ -237,7 +237,7 @@ def unitroot(
 
 
 @router.command(methods=["POST"])
-def sh(
+def sharpe_ratio(
     data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
 ) -> OBBject[List[Data]]:
     """Get Sharpe Ratio.
@@ -271,7 +271,7 @@ def sh(
 
 
 @router.command(methods=["POST"])
-def so(
+def sortino_ratio(
     data: List[Data],
     target: str,
     target_return: float = 0.0,
@@ -319,7 +319,7 @@ def so(
 
 
 @router.command(methods=["POST"])
-def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
+def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
     """Get Skewness.
 
     Parameters

@@ -115,11 +115,11 @@ def test_quantitative_capm(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_om(params, data_type, obb):
+def test_quantitative_omega_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.om(**params)
+    result = obb.quantitative.omega_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -166,11 +166,11 @@ def test_quantitative_kurtosis(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_unitroot(params, data_type, obb):
+def test_quantitative_unitroot_test(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.unitroot(**params)
+    result = obb.quantitative.unitroot_test(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -183,11 +183,11 @@ def test_quantitative_unitroot(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sh(params, data_type, obb):
+def test_quantitative_sharpe_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.sh(**params)
+    result = obb.quantitative.sharpe_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -218,11 +218,11 @@ def test_quantitative_sh(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_so(params, data_type, obb):
+def test_quantitative_sortino_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.so(**params)
+    result = obb.quantitative.sortino_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -234,11 +234,11 @@ def test_quantitative_so(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skew(params, data_type, obb):
+def test_quantitative_skewness(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.skew(**params)
+    result = obb.quantitative.skewness(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
