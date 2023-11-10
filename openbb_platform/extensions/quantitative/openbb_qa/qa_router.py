@@ -1,3 +1,4 @@
+"""Quantitative Analysis Router."""
 from typing import List, Literal
 
 import numpy as np
@@ -50,7 +51,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
-    from scipy import stats
+    from scipy import stats  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -75,7 +76,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 @router.command(methods=["POST"])
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model."""
-    import statsmodels.api as sm
+    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
 
@@ -172,7 +173,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Kurtosis.
     """
-    import pandas_ta as ta
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -210,7 +211,7 @@ def unitroot(
     OBBject[UnitRootModel]
         Unit root tests summary.
     """
-    from statsmodels.tsa import stattools
+    from statsmodels.tsa import stattools  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -279,7 +280,8 @@ def so(
 ) -> OBBject[List[Data]]:
     """Get Sortino Ratio.
 
-    For method & terminology see: http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
+    For method & terminology see:
+    http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
 
     Parameters
     ----------
@@ -311,9 +313,9 @@ def so(
     if adjusted:
         results = results / np.sqrt(2)
 
-    results = df_to_basemodel(results)
+    results_ = df_to_basemodel(results)
 
-    return OBBject(results=results)
+    return OBBject(results=results_)
 
 
 @router.command(methods=["POST"])
@@ -334,7 +336,7 @@ def skew(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Dat
     OBBject[List[Data]]
         Skewness.
     """
-    import pandas_ta as ta
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -369,7 +371,7 @@ def quantile(
     OBBject[List[Data]]
         Quantile.
     """
-    import pandas_ta as ta
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -378,9 +380,9 @@ def quantile(
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
     results = pd.concat([df_median, df_quantile], axis=1).dropna()
 
-    results = df_to_basemodel(results)
+    results_ = df_to_basemodel(results)
 
-    return OBBject(results=results)
+    return OBBject(results=results_)
 
 
 @router.command(methods=["POST"])
