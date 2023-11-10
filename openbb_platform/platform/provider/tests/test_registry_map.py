@@ -32,6 +32,6 @@ def test_map_and_models(load_registry_map):
     map_, return_map = load_registry_map.map, load_registry_map.return_map
     models = load_registry_map.models
 
-    assert "StockHistorical" in map_
-    assert "StockHistorical" in return_map
-    assert "StockHistorical" in models
+    assert "EquityHistorical" in map_
+    assert "EquityHistorical" in return_map
+    assert "EquityHistorical" in models

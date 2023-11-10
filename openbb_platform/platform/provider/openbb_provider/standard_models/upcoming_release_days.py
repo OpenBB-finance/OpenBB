@@ -1,27 +1,16 @@
 """Upcoming Release Days standard model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class UpcomingReleaseDaysQueryParams(QueryParams):
     """Upcoming Release Days Search Query Params."""
-
-    limit: int = Field(
-        description=QUERY_DESCRIPTIONS.get("limit", "")
-        + "In this case, the number of lookahead days.",
-        default=5,
-    )
-    start_date: Optional[dateType] = Field(
-        default=None,
-        description=QUERY_DESCRIPTIONS.get("start_date", ""),
-    )
 
 
 class UpcomingReleaseDaysData(Data):

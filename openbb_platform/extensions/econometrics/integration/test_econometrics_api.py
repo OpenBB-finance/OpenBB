@@ -8,7 +8,7 @@ import requests
 from openbb_core.env import Env
 from openbb_provider.utils.helpers import get_querystring
 
-data = {}
+data: dict = {}
 
 
 def get_headers():
@@ -62,6 +62,7 @@ def get_data(menu: Literal["stocks", "crypto"]):
     return funcs[menu]()
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -82,6 +83,7 @@ def test_econometrics_corr(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -113,6 +115,7 @@ def test_econometrics_ols_summary(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -144,6 +147,7 @@ def test_econometrics_dwat(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -185,6 +189,7 @@ def test_econometrics_bgot(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -222,6 +227,7 @@ def test_econometrics_coint(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [
@@ -247,6 +253,7 @@ def test_econometrics_granger(params, data_type):
     assert result.status_code == 200
 
 
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
 @pytest.mark.parametrize(
     "params, data_type",
     [({"data": "", "column": "high", "regression": "c"}, "stocks")],

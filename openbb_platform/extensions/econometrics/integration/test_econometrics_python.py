@@ -7,16 +7,19 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_econometrics.utils import mock_multi_index_data
 
 
+# pylint: disable=inconsistent-return-statements
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
     """Fixture to setup obb."""
     if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb
+        import openbb  # pylint: disable=import-outside-toplevel
 
         return openbb.obb
 
 
-data = {}
+# pylint: disable=redefined-outer-name
+
+data: dict = {}
 
 
 def get_stocks_data():
@@ -26,9 +29,9 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon"])  # noqa: S311
 
-    data["stocks_data"] = openbb.obb.stocks.load(
+    data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["stocks_data"]
@@ -44,21 +47,21 @@ def get_crypto_data():
     symbol = random.choice(["BTC"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
-    data["crypto_data"] = openbb.obb.crypto.load(
+    data["crypto_data"] = openbb.obb.crypto.price.historical(
         symbol=symbol, provider=provider
     ).results
     return data["crypto_data"]
 
 
-def get_data(menu: Literal["stocks", "crypto"]):
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+def get_data(menu: Literal["equity", "crypto"]):
+    funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
 
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": ""}, "stocks"),
+        ({"data": ""}, "equity"),
         ({"data": ""}, "crypto"),
     ],
 )
@@ -79,7 +82,7 @@ def test_econometrics_corr(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
@@ -104,7 +107,7 @@ def test_econometrics_ols(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "close", "x_columns": ["high"]},
@@ -128,7 +131,7 @@ def test_econometrics_ols_summary(params, data_type, obb):
     [
         (
             {"data": "", "y_column": "volume", "x_columns": ["close"]},
-            "stocks",
+            "equity",
         ),
         (
             {"data": "", "y_column": "volume", "x_columns": ["close"]},
@@ -157,7 +160,7 @@ def test_econometrics_dwat(params, data_type, obb):
                 "x_columns": ["close"],
                 "lags": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -189,7 +192,7 @@ def test_econometrics_bgot(params, data_type, obb):
                 "data": "",
                 "columns": ["close", "volume"],
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -222,7 +225,7 @@ def test_econometrics_coint(params, data_type, obb):
                 "x_column": "close",
                 "lag": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -250,7 +253,7 @@ def test_econometrics_granger(params, data_type, obb):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "column": "close", "regression": "c"}, "stocks"),
+        ({"data": "", "column": "close", "regression": "c"}, "equity"),
         (
             {"data": "", "column": "volume", "regression": "ctt"},
             "crypto",

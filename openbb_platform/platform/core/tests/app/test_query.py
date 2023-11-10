@@ -24,26 +24,26 @@ class MockBaseModel(BaseModel):
 def create_mock_query():
     """Mock query."""
 
-    class StockHistorical:
-        """Mock StockHistorical class."""
+    class EquityHistorical:
+        """Mock EquityHistorical class."""
 
         start_date = "2020-01-01"
         end_date = "2020-01-05"
         symbol = "AAPL"
 
-    return StockHistorical()
+    return EquityHistorical()
 
 
 def create_mock_extra_params():
     """Mock ExtraParams dataclass."""
 
     @dataclass
-    class StockHistorical:
+    class EquityHistorical:
         """Mock ExtraParams dataclass."""
 
         sort: str = "desc"
 
-    return StockHistorical()
+    return EquityHistorical()
 
 
 @pytest.fixture(scope="module")
@@ -75,13 +75,13 @@ def test_filter_extra_params_wrong_param(query):
     """Test filter_extra_params."""
 
     @dataclass
-    class StockHistorical:
+    class EquityHistorical:
         """Mock ExtraParams dataclass."""
 
         sort: str = "desc"
         limit: int = 4
 
-    extra_params = StockHistorical()
+    extra_params = EquityHistorical()
 
     extra = query.filter_extra_params(extra_params, "fmp")
     assert isinstance(extra, dict)
@@ -108,7 +108,9 @@ def query_instance():
     extra_params = create_mock_extra_params()
 
     cc = CommandContext()
-    setattr(cc.user_settings.credentials, "fmp_api_key", "1234")
+    setattr(
+        cc.user_settings.credentials, "fmp_api_key", "1234"  # pylint: disable=no-member
+    )
 
     return Query(
         cc=cc,
