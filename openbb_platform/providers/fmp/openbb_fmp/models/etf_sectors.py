@@ -1,5 +1,5 @@
 """FMP ETF Sector Weighting fetcher."""
-
+import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -45,7 +45,7 @@ class FMPEtfSectorsFetcher(
         )
         results = {}
 
-        for symbol in symbols:
+        def get_one(symbol):
             data = {}
             url = create_url(
                 version=3,
@@ -53,8 +53,8 @@ class FMPEtfSectorsFetcher(
                 api_key=api_key,
             )
             result = get_data_many(url, **kwargs)
-            df = pd.DataFrame(result).set_index("sector")
-            if len(df) > 0:
+            df = pd.DataFrame(result).set_index("sector") if len(result) > 0 else None
+            if df is not None:
                 for i in df.index:
                     data.update(
                         {
@@ -63,6 +63,12 @@ class FMPEtfSectorsFetcher(
                         }
                     )
                 results.update({symbol: data})
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(get_one, symbols)
+
+        if results == {}:
+            return []
 
         output = (
             pd.DataFrame(results)
