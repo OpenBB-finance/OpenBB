@@ -1,4 +1,4 @@
-"""FRED CPI Fetcher."""
+"""FRED Consumer Price Index Fetcher."""
 
 
 from typing import Any, Dict, List, Optional
@@ -6,28 +6,35 @@ from typing import Any, Dict, List, Optional
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cpi import CPIData, CPIQueryParams
+from openbb_provider.standard_models.cpi import (
+    ConsumerPriceIndexData,
+    ConsumerPriceIndexQueryParams,
+)
 
 
-class FREDCPIQueryParams(CPIQueryParams):
-    """CPI query."""
+class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
+    """Consumer Price Index query."""
 
 
-class FREDCPIData(CPIData):
-    """CPI data."""
+class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
+    """Consumer Price Index data."""
 
 
-class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
-    """FRED CPI Fetcher."""
+class FREDConsumerPriceIndexFetcher(
+    Fetcher[FREDConsumerPriceIndexQueryParams, List[FREDConsumerPriceIndexData]]
+):
+    """FRED Consumer Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDCPIQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FREDConsumerPriceIndexQueryParams:
         """Transform query."""
-        return FREDCPIQueryParams(**params)
+        return FREDConsumerPriceIndexQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDCPIQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
+        query: FREDConsumerPriceIndexQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> Dict:
         """Extract data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
@@ -52,8 +59,8 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
 
     @staticmethod
     def transform_data(
-        query: FREDCPIQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FREDCPIData]:
+        query: FREDConsumerPriceIndexQueryParams, data: Dict, **kwargs: Any
+    ) -> List[FREDConsumerPriceIndexData]:
         """Transform data."""
         transformed_data = {}
 
@@ -69,4 +76,6 @@ class FREDCPIFetcher(Fetcher[FREDCPIQueryParams, List[FREDCPIData]]):
         # Convert the dictionary to a list of dictionaries
         transformed_data = list(transformed_data.values())
 
-        return [FREDCPIData.model_validate(item) for item in transformed_data]
+        return [
+            FREDConsumerPriceIndexData.model_validate(item) for item in transformed_data
+        ]

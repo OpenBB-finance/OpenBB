@@ -1,4 +1,4 @@
-"""Economy Router."""
+"""Economy GDP Router."""
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -10,42 +10,39 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-from openbb_economy.gdp.gdp_router import router as gdp_router
-
-router = Router(prefix="")
-router.include_router(gdp_router)
+router = Router(prefix="/gdp")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="EconomicCalendar")
-def calendar(
+@router.command(model="ForecastGDP")
+def forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Economic Calendar."""
+    """Forecasted GDP Data."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="ConsumerPriceIndex")
-def cpi(
+@router.command(model="NominalGDP")
+def nominal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """CPI (Consumer Price Index) Data."""
+    """Nominal GDP Data."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="RiskPremium")
-def risk_premium(
+@router.command(model="RealGDP")
+def real(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Market Risk Premium. Historical Market Risk Premium."""
+    """Real GDP Data."""
     return OBBject(results=Query(**locals()).execute())

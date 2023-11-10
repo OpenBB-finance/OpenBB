@@ -1,12 +1,14 @@
+"""OECD Foreast GDP Fetcher."""
+
 import re
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_oecd.utils import constants, helpers
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.gdpforecast import (
-    GDPForecastData,
-    GDPForecastQueryParams,
+from openbb_provider.standard_models.gdp_forecast import (
+    ForecastGDPData,
+    ForecastGDPQueryParams,
 )
 from pydantic import Field, field_validator
 
@@ -14,23 +16,23 @@ gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
-class OECDGDPForecastQueryParams(GDPForecastQueryParams):
-    """GDP Forecast query."""
+class OECDForecastGDPQueryParams(ForecastGDPQueryParams):
+    """OECD GDP Forecast query."""
 
     country: GDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
     )
 
 
-class OECDGDPForecastData(GDPForecastData):
-    """GDP Forecast data from OECD."""
+class OECDForecastGDPData(ForecastGDPData):
+    """OECD GDP Forecast data."""
 
     @field_validator("date", mode="before")
     @classmethod
     def date_validate(
         cls, in_date: Union[date, Union[str, int]]
     ):  # pylint: disable=E0213
-        """Validate value."""
+        """Validate date."""
         # OECD Returns dates like 2022-Q2, so we map that to the end of the quarter.
         if isinstance(in_date, str):
             if re.match(r"\d{4}-Q[1-4]$", in_date):
@@ -45,47 +47,38 @@ class OECDGDPForecastData(GDPForecastData):
         return date
 
 
-class OECDGDPForecastFetcher(
-    Fetcher[OECDGDPForecastQueryParams, List[OECDGDPForecastData]]
+class OECDForecastGDPFetcher(
+    Fetcher[OECDForecastGDPQueryParams, List[OECDForecastGDPData]]
 ):
     """OECD GDP Forecast Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDGDPForecastQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDForecastGDPQueryParams:
+        """Transform the query."""
         transformed_params = params.copy()
         if transformed_params["start_date"] is None:
             transformed_params["start_date"] = date(1990, 1, 1)
         if transformed_params["end_date"] is None:
             transformed_params["end_date"] = date(date.today().year + 10, 12, 31)
 
-        return OECDGDPForecastQueryParams(**transformed_params)
+        return OECDForecastGDPQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDGDPForecastQueryParams,
+        query: OECDForecastGDPQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
+        """Return the raw data from the OECD endpoint."""
         units = query.period[0].upper()
-        if query.type == "real":
-            url = (
-                "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.REALGDPFORECAST.TOT.AGRWTH."
-                + units
-                + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
-                + str(query.start_date)
-                + "&endPeriod="
-                + str(query.end_date)
-            )
-        elif query.type == "nominal":
-            url = (
-                "https://stats.oecd.org/sdmx-json/data/DP_LIVE/.NOMGDPFORECAST.TOT.AGRWTH."
-                + units
-                + "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en&startPeriod="
-                + str(query.start_date)
-                + "&endPeriod="
-                + str(query.end_date)
-            )
+        type = "REAL" if query.type == "real" else "NOM"
 
+        base_url = "https://stats.oecd.org/sdmx-json/data/DP_LIVE"
+        url = (
+            f"{base_url}/.{type}GDPFORECAST.TOT.AGRWTH.{units}"
+            "/OECD?contentType=csv&detail=code&separator=comma&csv-lang=en"
+            f"&startPeriod={query.start_date}&endPeriod={query.end_date}"
+        )
         data_df = helpers.fetch_data(url, csv_kwargs={"encoding": "utf-8"}, **kwargs)
         # Sometimes there is weird unicode characters in the column names, so we need to rename them.
         # Even changing the encoding on the fetch doesn't seem to help.
@@ -106,6 +99,7 @@ class OECDGDPForecastFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDGDPForecastQueryParams, data: dict, **kwargs: Any
-    ) -> List[OECDGDPForecastData]:
-        return [OECDGDPForecastData.model_validate(d) for d in data]
+        query: OECDForecastGDPQueryParams, data: Dict, **kwargs: Any
+    ) -> List[OECDForecastGDPData]:
+        """Transform the data from the OECD endpoint."""
+        return [OECDForecastGDPData.model_validate(d) for d in data]

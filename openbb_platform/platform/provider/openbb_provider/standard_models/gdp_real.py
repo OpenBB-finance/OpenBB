@@ -1,4 +1,4 @@
-"""GDP data and query params."""
+"""Real GDP data model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -9,7 +9,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class GDPRealQueryParams(QueryParams):
+class RealGDPQueryParams(QueryParams):
     """Real GDP query."""
 
     units: Literal["idx", "qoq", "yoy"] = Field(
@@ -27,7 +27,7 @@ class GDPRealQueryParams(QueryParams):
     )
 
 
-class GDPRealData(Data):
+class RealGDPData(Data):
     """Real GDP data."""
 
     date: Optional[dateType] = Field(
@@ -36,6 +36,3 @@ class GDPRealData(Data):
     value: Optional[float] = Field(
         default=None, description="Nominal GDP value on the date."
     )
-
-
-QUERY_DESCRIPTIONS
