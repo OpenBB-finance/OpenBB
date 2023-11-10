@@ -12,13 +12,13 @@ Routers:
     /currency
     /econometrics
     /economy
+    /equity
     /etf
     /fixedincome
     /futures
     /news
     /qa
     /regulators
-    /stocks
     /ta
 
 Extensions:
@@ -26,14 +26,14 @@ Extensions:
     - currency@0.1.0a4
     - econometrics@0.1.0a4
     - economy@0.1.0a4
-    - etf@0.1.0a3
+    - equity@0.1.0a4
+    - etf@0.1.0a4
     - fixedincome@0.1.0a4
     - futures@0.1.0a4
     - news@0.1.0a4
     - openbb_charting@0.1.0a4
     - qa@0.1.0a4
     - regulators@0.1.0a4
-    - stocks@0.1.0a4
     - ta@0.1.0a4
 
     - alpha_vantage@0.1.0a4
@@ -84,6 +84,12 @@ Extensions:
         return economy.ROUTER_economy(command_runner=self._command_runner)
 
     @property
+    def equity(self):  # route = "/equity"
+        from . import equity
+
+        return equity.ROUTER_equity(command_runner=self._command_runner)
+
+    @property
     def etf(self):  # route = "/etf"
         from . import etf
 
@@ -118,12 +124,6 @@ Extensions:
         from . import regulators
 
         return regulators.ROUTER_regulators(command_runner=self._command_runner)
-
-    @property
-    def stocks(self):  # route = "/stocks"
-        from . import stocks
-
-        return stocks.ROUTER_stocks(command_runner=self._command_runner)
 
     @property
     def ta(self):  # route = "/ta"
