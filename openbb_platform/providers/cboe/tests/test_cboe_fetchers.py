@@ -1,3 +1,13 @@
+"""CBOE Fetchers Tests.
+
+The CBOE provider extension uses request caching.
+So, when an item like a symbol directory is already cached, the cassette recorder does
+not record the request event. If functions share a cached resource, it will only capture
+the cassette for the first instance.
+
+If an update of the cassettes is required the procedure is to delete the cache file and
+then only run the single test which needs to be recorded.
+"""
 from datetime import date
 
 import pytest
@@ -26,7 +36,6 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 
 @pytest.mark.record_http
-# @pytest.mark.skip(reason="Can't record")
 def test_cboe_available_indices_fetcher(credentials=test_credentials):
     params = {}
 
@@ -36,7 +45,6 @@ def test_cboe_available_indices_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-# @pytest.mark.skip(reason="Can't record.")
 def test_cboe_index_search_fetcher(credentials=test_credentials):
     params = {}
 
@@ -46,7 +54,6 @@ def test_cboe_index_search_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-# @pytest.mark.skip(reason="Can't record. Likely geo-restricted.")
 def test_cboe_options_chains_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
