@@ -18,8 +18,8 @@ from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.major_indices_historical import (
-    YFinanceMajorIndicesHistoricalFetcher,
+from openbb_yfinance.models.market_indices import (
+    YFinanceMarketIndicesFetcher,
 )
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
@@ -69,14 +69,14 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_y_finance_major_indices_historical_fetcher(credentials=test_credentials):
+def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     params = {
         "symbol": "SPY",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = YFinanceMajorIndicesHistoricalFetcher()
+    fetcher = YFinanceMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

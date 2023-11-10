@@ -47,7 +47,7 @@ from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
 from openbb_fmp.models.major_indices_constituents import (
     FMPMajorIndicesConstituentsFetcher,
 )
-from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.market_indices import FMPMarketIndicesFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
@@ -111,7 +111,7 @@ fmp_provider = Provider(
         "KeyExecutives": FMPKeyExecutivesFetcher,
         "KeyMetrics": FMPKeyMetricsFetcher,
         "MajorIndicesConstituents": FMPMajorIndicesConstituentsFetcher,
-        "MajorIndicesHistorical": FMPMajorIndicesHistoricalFetcher,
+        "MarketIndices": FMPMarketIndicesFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "PriceTarget": FMPPriceTargetFetcher,

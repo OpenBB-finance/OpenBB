@@ -1,4 +1,4 @@
-"""FMP Major Indices end of day fetcher."""
+"""FMP Market Indices end of day fetcher."""
 
 
 from datetime import datetime

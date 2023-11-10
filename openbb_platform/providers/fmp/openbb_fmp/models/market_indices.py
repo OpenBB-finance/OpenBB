@@ -1,4 +1,4 @@
-"""FMP Major Indices end of day fetcher."""
+"""FMP Market Indices end of day fetcher."""
 
 
 from datetime import datetime
@@ -7,16 +7,16 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_historical import (
-    MajorIndicesHistoricalData,
-    MajorIndicesHistoricalQueryParams,
+from openbb_provider.standard_models.market_indices import (
+    MarketIndicesData,
+    MarketIndicesQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, NonNegativeInt
 
 
-class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
-    """FMP Major Indices end of day Query.
+class FMPMarketIndicesQueryParams(MarketIndicesQueryParams):
+    """FMP Market Indices end of day Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-index-price-api/
     """
@@ -31,8 +31,8 @@ class FMPMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     ] = Field(default="1day", description="Data granularity.")
 
 
-class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
-    """FMP Major Indices end of day Data."""
+class FMPMarketIndicesData(MarketIndicesData):
+    """FMP Market Indices end of day Data."""
 
     adj_close: Optional[float] = Field(
         description="Adjusted Close Price of the symbol.",
@@ -59,16 +59,16 @@ class FMPMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     )
 
 
-class FMPMajorIndicesHistoricalFetcher(
+class FMPMarketIndicesFetcher(
     Fetcher[
-        FMPMajorIndicesHistoricalQueryParams,
-        List[FMPMajorIndicesHistoricalData],
+        FMPMarketIndicesQueryParams,
+        List[FMPMarketIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPMajorIndicesHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPMarketIndicesQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -79,11 +79,11 @@ class FMPMajorIndicesHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPMajorIndicesHistoricalQueryParams(**transformed_params)
+        return FMPMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesHistoricalQueryParams,
+        query: FMPMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -103,7 +103,7 @@ class FMPMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPMajorIndicesHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPMajorIndicesHistoricalData]:
+        query: FMPMarketIndicesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPMarketIndicesData]:
         """Return the transformed data."""
-        return [FMPMajorIndicesHistoricalData.model_validate(d) for d in data]
+        return [FMPMarketIndicesData.model_validate(d) for d in data]
