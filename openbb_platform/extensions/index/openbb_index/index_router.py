@@ -103,31 +103,6 @@ def search(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="COTSearch")
-def cot_search(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """
-    Curated Commitment of Traders Reports.
-    Fuzzy search and list of curated Commitment of Traders Reports series information.
-    """
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="COT")
-def cot(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="SP500Multiples")
 def sp500_multiples(
     cc: CommandContext,

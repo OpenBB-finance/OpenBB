@@ -228,46 +228,6 @@ def test_index_snapshots(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "nasdaq"}),
-    ],
-)
-@pytest.mark.integration
-def test_index_cot_search(params, obb):
-    result = obb.index.cot_search(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "id": "13874P",
-                "data_type": "FO",
-                "legacy_format": True,
-                "report_type": "ALL",
-                "measure": "CR",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "transform": "diff",
-                "provider": "nasdaq",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_cot(params, obb):
-    result = obb.index.cot(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "series_name": "PE Ratio by Month",

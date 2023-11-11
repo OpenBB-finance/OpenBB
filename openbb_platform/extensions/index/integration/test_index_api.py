@@ -244,50 +244,6 @@ def test_index_snapshots(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"query": "grain", "provider": "nasdaq"})],
-)
-@pytest.mark.integration
-def test_index_cot_search(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/cot_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "id": "13874P",
-                "data_type": "FO",  # cspell: disable-line
-                "legacy_format": True,
-                "report_type": "ALL",
-                "measure": "CR",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "transform": "diff",
-                "provider": "nasdaq",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_cot(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/cot?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
     [
         (
             {
