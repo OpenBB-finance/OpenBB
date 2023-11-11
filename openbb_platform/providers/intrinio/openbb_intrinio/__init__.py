@@ -7,7 +7,7 @@ from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
-from openbb_intrinio.models.fred_historical import IntrinioFredHistoricalFetcher
+from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
@@ -28,7 +28,7 @@ intrinio_provider = Provider(
         "CurrencyPairs": IntrinioCurrencyPairsFetcher,
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
-        "FredHistorical": IntrinioFredHistoricalFetcher,
+        "FredIndices": IntrinioFredIndicesFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,

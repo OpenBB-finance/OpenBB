@@ -120,7 +120,7 @@ def test_chart_equity_news(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_adx(params, obb):
+def test_chart_technical_adx(params, obb):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
 
@@ -149,7 +149,7 @@ def test_chart_ta_adx(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_aroon(params, obb):
+def test_chart_technical_aroon(params, obb):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
 
@@ -179,7 +179,7 @@ def test_chart_ta_aroon(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_ema(params, obb):
+def test_chart_technical_ema(params, obb):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
 
@@ -209,7 +209,7 @@ def test_chart_ta_ema(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_hma(params, obb):
+def test_chart_technical_hma(params, obb):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -240,7 +240,7 @@ def test_chart_ta_hma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_macd(params, obb):
+def test_chart_technical_macd(params, obb):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
 
@@ -271,7 +271,7 @@ def test_chart_ta_macd(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_rsi(params, obb):
+def test_chart_technical_rsi(params, obb):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
 
@@ -301,7 +301,7 @@ def test_chart_ta_rsi(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_sma(params, obb):
+def test_chart_technical_sma(params, obb):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -331,7 +331,7 @@ def test_chart_ta_sma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_wma(params, obb):
+def test_chart_technical_wma(params, obb):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -361,7 +361,7 @@ def test_chart_ta_wma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_zlma(params, obb):
+def test_chart_technical_zlma(params, obb):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
 

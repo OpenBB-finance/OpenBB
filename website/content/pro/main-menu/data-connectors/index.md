@@ -33,7 +33,7 @@ This method allows users to import an API endpoint that is directly rendered int
 
 ## Advanced
 
-For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookiecutter or build a language-agnostic API. More information can be found here (add link)
+For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found here (add link)
 
 ## Third-party
 
