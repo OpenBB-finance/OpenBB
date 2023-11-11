@@ -1,5 +1,10 @@
 ---
+<<<<<<<< HEAD:website/content/terminal/menus/stocks/options.md
 title: Options
+========
+title: Introduction
+sidebar_position: 1
+>>>>>>>> develop:website/content/terminal/data-available/stocks/options/introduction.md
 description: This is an informative page providing a detailed overview of how to navigate
   and use the Options Menu to analyze equity options. It discusses the functions,
   and gives clear examples of how to fetch and analyze options data such as chains,
@@ -26,6 +31,7 @@ keywords:
 - volatility smile
 - second order Greeks
 - greeks command
+<<<<<<<< HEAD:website/content/terminal/menus/stocks/options.md
 - puts
 - calls
 - surface
@@ -36,6 +42,9 @@ keywords:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Options - Stocks - Menus | OpenBB Terminal Docs" />
+========
+---
+>>>>>>>> develop:website/content/terminal/data-available/stocks/options/introduction.md
 
 The Options menu provides the user with tools for analyzing equity options.  Wikipedia is a great resource for definitions and for learning about the mechanics of derivatives, read it [here](https://en.wikipedia.org/wiki/Option_(finance)).  These are complex, leveraged, financial instruments requiring specialized knowledge and a different frame-of-mind than the approach taken by an equities long-only investor.  Always conduct thorough due diligence.
 
