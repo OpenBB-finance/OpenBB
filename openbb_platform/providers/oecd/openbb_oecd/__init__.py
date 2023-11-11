@@ -1,7 +1,7 @@
 """FRED provider module."""
-from openbb_oecd.models.gdp_forecast import OECDForecastGDPFetcher
-from openbb_oecd.models.gdp_nominal import OECDNominalGDPFetcher
-from openbb_oecd.models.gdp_real import OECDRealGDPFetcher
+from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
+from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
+from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
 from openbb_provider.abstract.provider import Provider
 
 oecd_provider = Provider(
@@ -9,8 +9,8 @@ oecd_provider = Provider(
     website="https://stats.oecd.org/",
     description="""OECD""",
     fetcher_dict={
-        "NominalGDP": OECDNominalGDPFetcher,
-        "RealGDP": OECDRealGDPFetcher,
-        "ForecastGDP": OECDForecastGDPFetcher,
+        "GdpNominal": OECDGdpNominalFetcher,
+        "GdpReal": OECDGdpRealFetcher,
+        "GdpForecast": OECDGdpForecastFetcher,
     },
 )

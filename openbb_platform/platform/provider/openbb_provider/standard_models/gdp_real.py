@@ -9,7 +9,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class RealGDPQueryParams(QueryParams):
+class GdpRealQueryParams(QueryParams):
     """Real GDP query."""
 
     units: Literal["idx", "qoq", "yoy"] = Field(
@@ -27,7 +27,7 @@ class RealGDPQueryParams(QueryParams):
     )
 
 
-class RealGDPData(Data):
+class GdpRealData(Data):
     """Real GDP data."""
 
     date: Optional[dateType] = Field(

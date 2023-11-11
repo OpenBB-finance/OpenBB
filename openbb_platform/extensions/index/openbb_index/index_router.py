@@ -22,7 +22,7 @@ def market(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Market Indices Historical. Market Indices historical data."""
+    """Historical Market Indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -33,7 +33,7 @@ def european(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """European Indices Historical. European indices historical data."""
+    """Historical European Indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -44,7 +44,7 @@ def fred(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Fred Indices Historical. Historical close values for selected Fred indices."""
+    """Historical Fred Indices. Close values for selected Fred indices."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -82,7 +82,7 @@ def snapshots(
 
 
 @router.command(model="AvailableIndices")
-def list(
+def available_indices(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

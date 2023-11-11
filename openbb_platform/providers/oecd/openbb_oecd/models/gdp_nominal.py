@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from openbb_oecd.utils import constants, helpers
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.gdp_nominal import (
-    NominalGDPData,
-    NominalGDPQueryParams,
+    GdpNominalData,
+    GdpNominalQueryParams,
 )
 from pydantic import Field, field_validator
 
@@ -15,7 +15,7 @@ gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys())
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
-class OECDNominalGDPQueryParams(NominalGDPQueryParams):
+class OECDGdpNominalQueryParams(GdpNominalQueryParams):
     """OECD Nominal GDP query."""
 
     country: GDPCountriesLiteral = Field(
@@ -23,7 +23,7 @@ class OECDNominalGDPQueryParams(NominalGDPQueryParams):
     )
 
 
-class OECDNominalGDPData(NominalGDPData):
+class OECDGdpNominalData(GdpNominalData):
     """OECD Nominal GDP data."""
 
     @field_validator("date", mode="before")
@@ -35,13 +35,13 @@ class OECDNominalGDPData(NominalGDPData):
         return date
 
 
-class OECDNominalGDPFetcher(
-    Fetcher[OECDNominalGDPQueryParams, List[OECDNominalGDPData]]
+class OECDGdpNominalFetcher(
+    Fetcher[OECDGdpNominalQueryParams, List[OECDGdpNominalData]]
 ):
     """OECD Nominal GDP Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDNominalGDPQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDGdpNominalQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params["start_date"] is None:
@@ -49,11 +49,11 @@ class OECDNominalGDPFetcher(
         if transformed_params["end_date"] is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
 
-        return OECDNominalGDPQueryParams(**transformed_params)
+        return OECDGdpNominalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDNominalGDPQueryParams,
+        query: OECDGdpNominalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -82,7 +82,7 @@ class OECDNominalGDPFetcher(
 
     @staticmethod
     def transform_data(
-        query: OECDNominalGDPQueryParams, data: Dict, **kwargs: Any
-    ) -> List[OECDNominalGDPData]:
+        query: OECDGdpNominalQueryParams, data: Dict, **kwargs: Any
+    ) -> List[OECDGdpNominalData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDNominalGDPData.model_validate(d) for d in data]
+        return [OECDGdpNominalData.model_validate(d) for d in data]

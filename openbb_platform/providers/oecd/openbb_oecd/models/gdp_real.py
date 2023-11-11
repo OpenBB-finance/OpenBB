@@ -6,14 +6,14 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_oecd.utils import constants, helpers
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.gdp_real import RealGDPData, RealGDPQueryParams
+from openbb_provider.standard_models.gdp_real import GdpRealData, GdpRealQueryParams
 from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys())
 RGDPCountriesLiteral = Literal[rgdp_countries]  # type: ignore
 
 
-class OECDRealGDPQueryParams(RealGDPQueryParams):
+class OECDGdpRealQueryParams(GdpRealQueryParams):
     """OECD Real GDP query."""
 
     country: RGDPCountriesLiteral = Field(
@@ -21,7 +21,7 @@ class OECDRealGDPQueryParams(RealGDPQueryParams):
     )
 
 
-class OECDRealGDPData(RealGDPData):
+class OECDGdpRealData(GdpRealData):
     """OECD Real GDP data."""
 
     @field_validator("date", mode="before")
@@ -30,23 +30,23 @@ class OECDRealGDPData(RealGDPData):
         """Validate value."""
         if isinstance(in_date, str):
             year, quarter = in_date.split("-")
-            year = int(year)
+            _year = int(year)
             if quarter == "Q1":
-                return date(year, 3, 31)
-            elif quarter == "Q2":
-                return date(year, 6, 30)
-            elif quarter == "Q3":
-                return date(year, 9, 30)
-            elif quarter == "Q4":
-                return date(year, 12, 31)
+                return date(_year, 3, 31)
+            if quarter == "Q2":
+                return date(_year, 6, 30)
+            if quarter == "Q3":
+                return date(_year, 9, 30)
+            if quarter == "Q4":
+                return date(_year, 12, 31)
         return in_date
 
 
-class OECDRealGDPFetcher(Fetcher[OECDRealGDPQueryParams, List[OECDRealGDPData]]):
+class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]]):
     """OECD Real GDP Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDRealGDPQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDGdpRealQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params["start_date"] is None:
@@ -54,11 +54,11 @@ class OECDRealGDPFetcher(Fetcher[OECDRealGDPQueryParams, List[OECDRealGDPData]])
         if transformed_params["end_date"] is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
 
-        return OECDRealGDPQueryParams(**transformed_params)
+        return OECDGdpRealQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDRealGDPQueryParams,
+        query: OECDGdpRealQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -87,7 +87,7 @@ class OECDRealGDPFetcher(Fetcher[OECDRealGDPQueryParams, List[OECDRealGDPData]])
 
     @staticmethod
     def transform_data(
-        query: OECDRealGDPQueryParams, data: Dict, **kwargs: Any
-    ) -> List[OECDRealGDPData]:
+        query: OECDGdpRealQueryParams, data: Dict, **kwargs: Any
+    ) -> List[OECDGdpRealData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDRealGDPData.model_validate(d) for d in data]
+        return [OECDGdpRealData.model_validate(d) for d in data]

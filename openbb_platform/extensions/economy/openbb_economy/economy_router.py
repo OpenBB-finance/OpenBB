@@ -36,7 +36,7 @@ def cpi(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """CPI (Consumer Price Index) Data."""
+    """Consumer Price Index (CPI) Data."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -47,5 +47,5 @@ def risk_premium(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Market Risk Premium. Historical Market Risk Premium."""
+    """Historical Market Risk Premium."""
     return OBBject(results=Query(**locals()).execute())

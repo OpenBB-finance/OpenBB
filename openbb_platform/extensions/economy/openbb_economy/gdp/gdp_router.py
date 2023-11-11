@@ -15,7 +15,7 @@ router = Router(prefix="/gdp")
 # pylint: disable=unused-argument
 
 
-@router.command(model="ForecastGDP")
+@router.command(model="GdpForecast")
 def forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +26,7 @@ def forecast(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="NominalGDP")
+@router.command(model="GdpNominal")
 def nominal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +37,7 @@ def nominal(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="RealGDP")
+@router.command(model="GdpReal")
 def real(
     cc: CommandContext,
     provider_choices: ProviderChoices,
