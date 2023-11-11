@@ -199,11 +199,11 @@ def test_index_european_constituents(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_list(params, headers):
+def test_index_available_indices(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/list?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/index/available_indices?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
