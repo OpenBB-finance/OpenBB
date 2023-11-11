@@ -1,4 +1,4 @@
-"""Currency Reference RatesModel."""
+"""Currency Reference Rates Model."""
 
 from datetime import (
     date as dateType,
