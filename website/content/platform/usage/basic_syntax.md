@@ -80,7 +80,7 @@ Provider coverage can be ascertained with the command below:
 obb.coverage.providers
 ```
 
-Refer to, [Data Providers](/platform/usage/data_providers), for instructions on installing data provider extensions.
+Refer to, [Data Providers](/platform/usage/data_extensions), for instructions on installing data provider extensions.
 
 ## Symbol
 
