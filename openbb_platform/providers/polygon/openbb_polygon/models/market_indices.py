@@ -1,4 +1,4 @@
-"""Polygon major indices end of day fetcher."""
+"""Polygon Market Indices end of day fetcher."""
 
 
 from datetime import datetime
@@ -7,16 +7,16 @@ from typing import Any, Dict, List, Literal, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_polygon.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_historical import (
-    MajorIndicesHistoricalData,
-    MajorIndicesHistoricalQueryParams,
+from openbb_provider.standard_models.market_indices import (
+    MarketIndicesData,
+    MarketIndicesQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, PositiveInt
 
 
-class PolygonMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
-    """Polygon major indices end of day Query.
+class PolygonMarketIndicesQueryParams(MarketIndicesQueryParams):
+    """Polygon Market Indices end of day Query.
 
     Source: https://polygon.io/docs/indices/getting-started
     """
@@ -36,8 +36,8 @@ class PolygonMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams
     )
 
 
-class PolygonMajorIndicesHistoricalData(MajorIndicesHistoricalData):
-    """Polygon major indices end of day Data."""
+class PolygonMarketIndicesData(MarketIndicesData):
+    """Polygon Market Indices end of day Data."""
 
     __alias_dict__ = {
         "date": "t",
@@ -56,16 +56,14 @@ class PolygonMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     )
 
 
-class PolygonMajorIndicesHistoricalFetcher(
+class PolygonMarketIndicesFetcher(
     Fetcher[
-        PolygonMajorIndicesHistoricalQueryParams,
-        List[PolygonMajorIndicesHistoricalData],
+        PolygonMarketIndicesQueryParams,
+        List[PolygonMarketIndicesData],
     ]
 ):
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> PolygonMajorIndicesHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> PolygonMarketIndicesQueryParams:
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -74,11 +72,11 @@ class PolygonMajorIndicesHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return PolygonMajorIndicesHistoricalQueryParams(**transformed_params)
+        return PolygonMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: PolygonMajorIndicesHistoricalQueryParams,
+        query: PolygonMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -101,8 +99,8 @@ class PolygonMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonMajorIndicesHistoricalQueryParams,
+        query: PolygonMarketIndicesQueryParams,
         data: dict,
         **kwargs: Any,
-    ) -> List[PolygonMajorIndicesHistoricalData]:
-        return [PolygonMajorIndicesHistoricalData.model_validate(d) for d in data]
+    ) -> List[PolygonMarketIndicesData]:
+        return [PolygonMarketIndicesData.model_validate(d) for d in data]

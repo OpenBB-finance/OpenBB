@@ -1,4 +1,4 @@
-"""yfinance Major Indices End of Day fetcher."""
+"""yfinance Market Indices end of Day fetcher."""
 # ruff: noqa: SIM105
 
 
@@ -8,9 +8,9 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_historical import (
-    MajorIndicesHistoricalData,
-    MajorIndicesHistoricalQueryParams,
+from openbb_provider.standard_models.market_indices import (
+    MarketIndicesData,
+    MarketIndicesQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_provider.utils.errors import EmptyDataError
@@ -20,8 +20,8 @@ from pandas import to_datetime
 from pydantic import Field
 
 
-class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
-    """YFinance Major Indices End of Day Query.
+class YFinanceMarketIndicesQueryParams(MarketIndicesQueryParams):
+    """YFinance Market Indices end of Day Query.
 
     Source: https://finance.yahoo.com/world-indices
     """
@@ -34,22 +34,20 @@ class YFinanceMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParam
     rounding: bool = Field(default=True, description="Round prices to two decimals?")
 
 
-class YFinanceMajorIndicesHistoricalData(MajorIndicesHistoricalData):
-    """YFinance Major Indices End of Day Data."""
+class YFinanceMarketIndicesData(MarketIndicesData):
+    """YFinance Market Indices end of Day Data."""
 
 
-class YFinanceMajorIndicesHistoricalFetcher(
+class YFinanceMarketIndicesFetcher(
     Fetcher[
-        YFinanceMajorIndicesHistoricalQueryParams,
-        List[YFinanceMajorIndicesHistoricalData],
+        YFinanceMarketIndicesQueryParams,
+        List[YFinanceMarketIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the yfinance endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> YFinanceMajorIndicesHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> YFinanceMarketIndicesQueryParams:
         """Transform the query."""
         transformed_params = params
         now = datetime.now().date()
@@ -60,11 +58,11 @@ class YFinanceMajorIndicesHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return YFinanceMajorIndicesHistoricalQueryParams(**params)
+        return YFinanceMarketIndicesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: YFinanceMajorIndicesHistoricalQueryParams,
+        query: YFinanceMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
@@ -121,9 +119,9 @@ class YFinanceMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceMajorIndicesHistoricalQueryParams,
+        query: YFinanceMarketIndicesQueryParams,
         data: dict,
         **kwargs: Any,
-    ) -> List[YFinanceMajorIndicesHistoricalData]:
+    ) -> List[YFinanceMarketIndicesData]:
         """Transform the data to the standard format."""
-        return [YFinanceMajorIndicesHistoricalData.model_validate(d) for d in data]
+        return [YFinanceMarketIndicesData.model_validate(d) for d in data]

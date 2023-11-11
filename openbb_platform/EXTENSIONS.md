@@ -4,6 +4,7 @@
 | --- | --- | --- | --- |
 | [Equity](./extensions/equity/README.md) | `openbb-equity` | Historical pricing data, fundamentals, options, sector and industry, and overall due diligence. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [Economy](./extensions/economy/README.md) | `openbb-economy` | Global macroeconomic data. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
+| [Index](./extensions/index/README.md) | `openbb-index` | Market index data. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [News](./extensions/news/README.md) | `openbb-news` | News articles. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [Crypto](./extensions/crypto/README.md) | `openbb-crypto` | Cryptocurrency historical pricing data. | [@OpenBB-Finance](https://github.com/OpenBB-finance) |
 | [Fixed Income](./extensions/fixed_income/README.md) | `openbb-fixed-income` | Central bank decisions, yield curves, government bonds and corporate bonds data.  | [@OpenBB-Finance](https://github.com/OpenBB-finance) |

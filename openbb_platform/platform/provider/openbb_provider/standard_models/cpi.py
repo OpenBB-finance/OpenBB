@@ -66,7 +66,7 @@ CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
 CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 
 
-class CPIQueryParams(QueryParams):
+class ConsumerPriceIndexQueryParams(QueryParams):
     """CPI query."""
 
     countries: List[CPI_COUNTRIES] = Field(
@@ -98,7 +98,7 @@ class CPIQueryParams(QueryParams):
     )
 
 
-class CPIData(Data):
+class ConsumerPriceIndexData(Data):
     """CPI data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))

@@ -1,4 +1,4 @@
-"""GDP data and query params."""
+"""Forecast GDP data model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -9,8 +9,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class GDPForecastQueryParams(QueryParams):
-    """GDP Forecast query."""
+class ForecastGDPQueryParams(QueryParams):
+    """Forecast GDP query."""
 
     period: Literal["quarter", "annual"] = Field(
         default="annual",
@@ -29,8 +29,8 @@ class GDPForecastQueryParams(QueryParams):
     )
 
 
-class GDPForecastData(Data):
-    """Nominal GDP data."""
+class ForecastGDPData(Data):
+    """Forecast GDP data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")

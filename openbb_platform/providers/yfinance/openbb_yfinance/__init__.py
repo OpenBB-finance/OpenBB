@@ -18,8 +18,8 @@ from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.major_indices_historical import (
-    YFinanceMajorIndicesHistoricalFetcher,
+from openbb_yfinance.models.market_indices import (
+    YFinanceMarketIndicesFetcher,
 )
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
@@ -51,6 +51,6 @@ yfinance_provider = Provider(
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
-        "MajorIndicesHistorical": YFinanceMajorIndicesHistoricalFetcher,
+        "MarketIndices": YFinanceMarketIndicesFetcher,
     },
 )

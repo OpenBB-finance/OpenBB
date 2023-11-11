@@ -11,8 +11,8 @@ from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
 from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
 from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
-from openbb_polygon.models.major_indices_historical import (
-    PolygonMajorIndicesHistoricalFetcher,
+from openbb_polygon.models.market_indices import (
+    PolygonMarketIndicesFetcher,
 )
 from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 
@@ -46,14 +46,14 @@ def test_polygon_equity_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_polygon_major_indices_historical_fetcher(credentials=test_credentials):
+def test_polygon_market_indices_fetcher(credentials=test_credentials):
     params = {
         "symbol": "NDX",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 5, 10),
     }
 
-    fetcher = PolygonMajorIndicesHistoricalFetcher()
+    fetcher = PolygonMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

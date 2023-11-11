@@ -18,14 +18,14 @@ from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.european_index_constituents import (
     CboeEuropeanIndexConstituentsFetcher,
 )
-from openbb_cboe.models.european_index_historical import (
-    CboeEuropeanIndexHistoricalFetcher,
+from openbb_cboe.models.european_indices import (
+    CboeEuropeanIndicesFetcher,
 )
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
 from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
-from openbb_cboe.models.major_indices_historical import (
-    CboeMajorIndicesHistoricalFetcher,
+from openbb_cboe.models.market_indices import (
+    CboeMarketIndicesFetcher,
 )
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
 from openbb_core.app.service.user_service import UserService
@@ -123,23 +123,23 @@ def test_cboe_european_index_constituents_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_cboe_european_index_historical_fetcher(credentials=test_credentials):
+def test_cboe_european_indices_fetcher(credentials=test_credentials):
     params = {
         "symbol": "BUKBUS",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = CboeEuropeanIndexHistoricalFetcher()
+    fetcher = CboeEuropeanIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
 
 @pytest.mark.record_http
-def test_cboe_major_indices_historical_fetcher(credentials=test_credentials):
+def test_cboe_market_indices_fetcher(credentials=test_credentials):
     params = {"symbol": "AAVE10RP"}
 
-    fetcher = CboeMajorIndicesHistoricalFetcher()
+    fetcher = CboeMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

@@ -27,6 +27,7 @@ openbb-economy = "^0.1.0a4"
 openbb-equity = "^0.1.0a4"
 openbb-etf = "^0.1.0a4"
 openbb-fixedincome = "^0.1.0a4"
+openbb-index = "^0.1.0a4"
 openbb-news = "^0.1.0a4"
 openbb-regulators = "^0.1.0a4"
 
