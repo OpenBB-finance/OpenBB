@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
@@ -57,20 +57,18 @@ class FMPHistoricalEpsData(HistoricalEpsData):
         alias="fiscalDateEnding",
     )
 
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v: str):  # pylint: disable=E0213
+    @field_validator(
+        "report_date",
+        "updated_date",
+        "period_ending",
+        mode="before",
+        check_fields=False,
+    )
+    def date_validate(cls, v: Union[datetime, str]):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("updatedFromDate", mode="before", check_fields=False)
-    def updated_from_date_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the updated from date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
-
-    @field_validator("fiscalDateEnding", mode="before", check_fields=False)
-    def fiscal_date_ending_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the fiscal date ending as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d") if v else None
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strftime(v, "%Y-%m-%d") if v else None
 
 
 class FMPHistoricalEpsFetcher(
