@@ -1,7 +1,10 @@
 """FMP Historical EPS fetcher."""
 
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
@@ -10,7 +13,7 @@ from openbb_provider.standard_models.historical_eps import (
     HistoricalEpsData,
     HistoricalEpsQueryParams,
 )
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
@@ -22,6 +25,37 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
 
 class FMPHistoricalEpsData(HistoricalEpsData):
     """FMP Historical EPS Data."""
+
+    actual_eps: Optional[float] = Field(
+        default=None,
+        description="The actual earnings per share announced.",
+        alias="eps",
+    )
+    revenue_estimated: Optional[float] = Field(
+        default=None,
+        description="Estimated consensus revenue for the reporting period.",
+        alias="revenueEstimated",
+    )
+    actual_revenue: Optional[float] = Field(
+        default=None,
+        description="The actual reported revenue.",
+        alias="revenue",
+    )
+    reporting_time: Optional[str] = Field(
+        default=None,
+        description="The reporting time - e.g. after market close.",
+        alias="time",
+    )
+    updated_at: Optional[dateType] = Field(
+        default=None,
+        description="The date when the data was last updated.",
+        alias="updatedFromDate",
+    )
+    period_ending: Optional[dateType] = Field(
+        default=None,
+        description="The fiscal period end date.",
+        alias="fiscalDateEnding",
+    )
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v: str):  # pylint: disable=E0213
