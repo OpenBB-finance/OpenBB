@@ -158,7 +158,7 @@ def test_y_finance_income_statement_fetcher(credentials=test_credentials):
     assert result is None
 
 
-def test_y_finance_available_indices_fetcher(credentials=test_credentials):
+def test_y_finance_available_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFinanceAvailableIndicesFetcher()

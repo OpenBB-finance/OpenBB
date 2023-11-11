@@ -189,8 +189,8 @@ def test_index_european_constituents(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_available_indices(params, obb):
-    result = obb.index.available_indices(**params)
+def test_index_available(params, obb):
+    result = obb.index.available(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

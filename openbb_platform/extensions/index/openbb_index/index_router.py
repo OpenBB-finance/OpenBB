@@ -82,7 +82,7 @@ def snapshots(
 
 
 @router.command(model="AvailableIndices")
-def available_indices(
+def available(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
