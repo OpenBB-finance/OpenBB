@@ -1,12 +1,17 @@
+"""Pydantic models for Quantitative Analysis."""
 from pydantic import BaseModel
 
 
 class TestModel(BaseModel):
+    """Base model for QA tests."""
+
     statistic: float
     p_value: float
 
 
 class NormalityModel(BaseModel):
+    """Normality model."""
+
     kurtosis: TestModel
     skewness: TestModel
     jarque_bera: TestModel
@@ -15,26 +20,36 @@ class NormalityModel(BaseModel):
 
 
 class ADFTestModel(TestModel):
+    """Augmented Dickey-Fuller test model."""
+
     nlags: int
     nobs: int
     icbest: float
 
 
 class KPSSTestModel(TestModel):
+    """Kwiatkowski–Phillips–Schmidt–Shin test model."""
+
     nlags: int
 
 
 class UnitRootModel(BaseModel):
+    """Unit root model."""
+
     adf: ADFTestModel
     kpss: KPSSTestModel
 
 
 class OmegaModel(BaseModel):
+    """Omega model."""
+
     threshold: float
     omega: float
 
 
 class SummaryModel(BaseModel):
+    """Summary model."""
+
     count: int
     mean: float
     std: float
@@ -47,6 +62,8 @@ class SummaryModel(BaseModel):
 
 
 class CAPMModel(BaseModel):
+    """CAPM model."""
+
     market_risk: float
     systematic_risk: float
     idiosyncratic_risk: float

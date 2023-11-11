@@ -1,28 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from openbb_core.app.static.container import Container
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
-import openbb_provider
-import pandas
-import numpy
 import datetime
-import pydantic
-from pydantic import BaseModel
-from inspect import Parameter
-import typing
-from typing import List, Dict, Union, Optional, Literal
-from annotated_types import Ge, Le, Gt, Lt
-from typing_extensions import Annotated
-from openbb_core.app.utils import df_to_basemodel
+from typing import List, Literal, Union
+
+import typing_extensions
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
-
 from openbb_core.app.static.filters import filter_inputs
-
 from openbb_provider.abstract.data import Data
-import openbb_core.app.model.command_context
-import openbb_core.app.model.obbject
-import types
 
 
 class ROUTER_fixedincome(Container):
@@ -64,19 +51,19 @@ class ROUTER_fixedincome(Container):
     @validate
     def sofr(
         self,
-        start_date: Annotated[
+        start_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: Annotated[
+        end_date: typing_extensions.Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Union[Literal["fred"], None] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Secured Overnight Financing Rate.
@@ -87,11 +74,11 @@ class ROUTER_fixedincome(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        provider : Union[Literal['fred'], None]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -101,9 +88,9 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : Union[List[SOFR]]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Union[Literal['fred'], None]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -116,7 +103,7 @@ class ROUTER_fixedincome(Container):
         ----
         date : date
             The date of the data.
-        rate : Optional[float]
+        rate : Union[float]
             SOFR rate.
 
         Example

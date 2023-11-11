@@ -126,7 +126,7 @@ def test_chart_ta_adx(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.adx(**params)
+    result = obb.technical.adx(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -155,7 +155,7 @@ def test_chart_ta_aroon(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.aroon(**params)
+    result = obb.technical.aroon(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -185,7 +185,7 @@ def test_chart_ta_ema(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.ema(**params)
+    result = obb.technical.ema(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -215,7 +215,7 @@ def test_chart_ta_hma(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.hma(**params)
+    result = obb.technical.hma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -246,7 +246,7 @@ def test_chart_ta_macd(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.macd(**params)
+    result = obb.technical.macd(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -277,7 +277,7 @@ def test_chart_ta_rsi(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.rsi(**params)
+    result = obb.technical.rsi(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -307,7 +307,7 @@ def test_chart_ta_sma(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.sma(**params)
+    result = obb.technical.sma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -337,7 +337,7 @@ def test_chart_ta_wma(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.wma(**params)
+    result = obb.technical.wma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -367,7 +367,7 @@ def test_chart_ta_zlma(params, obb):
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.zlma(**params)
+    result = obb.technical.zlma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

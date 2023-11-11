@@ -24,9 +24,9 @@ def get_headers():
     return data["headers"]
 
 
-def get_data(menu: Literal["stocks", "crypto"]):
+def get_data(menu: Literal["equity", "crypto"]):
     """Get data either from stocks or crypto."""
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
+    funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
 
@@ -78,7 +78,7 @@ def get_crypto_data():
                 "drift": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -94,13 +94,13 @@ def get_crypto_data():
     ],
 )
 @pytest.mark.integration
-def test_ta_atr(params, data_type):
+def test_technical_atr(params, data_type):
     """Test ta atr."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/atr?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/atr?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=15, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -118,7 +118,7 @@ def test_ta_atr(params, data_type):
                 "start_date": "",
                 "end_date": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -134,13 +134,13 @@ def test_ta_atr(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_fib(params, data_type):
+def test_technical_fib(params, data_type):
     """Test ta fib."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/fib?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/fib?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -149,18 +149,18 @@ def test_ta_fib(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "", "offset": ""}, "equity"),
         ({"data": "", "index": "date", "offset": "1"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_obv(params, data_type):
+def test_technical_obv(params, data_type):
     """Test ta obv."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/obv?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/obv?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -169,18 +169,18 @@ def test_ta_obv(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "length": "", "signal": ""}, "stocks"),
+        ({"data": "", "index": "", "length": "", "signal": ""}, "equity"),
         ({"data": "", "index": "date", "length": "15", "signal": "2"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_fisher(params, data_type):
+def test_technical_fisher(params, data_type):
     """Test ta fisher."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/fisher?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/fisher?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -197,7 +197,7 @@ def test_ta_fisher(params, data_type):
                 "slow": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -212,13 +212,13 @@ def test_ta_fisher(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_adosc(params, data_type):
+def test_technical_adosc(params, data_type):
     """Test ta adosc."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/adosc?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/adosc?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -237,7 +237,7 @@ def test_ta_adosc(params, data_type):
                 "mamode": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -254,13 +254,13 @@ def test_ta_adosc(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_bbands(params, data_type):
+def test_technical_bbands(params, data_type):
     """Test ta bbands."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/bbands?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/bbands?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -277,7 +277,7 @@ def test_ta_bbands(params, data_type):
                 "length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -292,13 +292,13 @@ def test_ta_bbands(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_zlma(params, data_type):
+def test_technical_zlma(params, data_type):
     """Test ta zlma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/zlma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/zlma?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -307,7 +307,7 @@ def test_ta_zlma(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
+        ({"data": "", "index": "", "length": "", "scalar": ""}, "equity"),
         (
             {
                 "data": "",
@@ -320,13 +320,13 @@ def test_ta_zlma(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_aroon(params, data_type):
+def test_technical_aroon(params, data_type):
     """Test ta aroon."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/aroon?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/aroon?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -343,7 +343,7 @@ def test_ta_aroon(params, data_type):
                 "length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -358,13 +358,13 @@ def test_ta_aroon(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_sma(params, data_type):
+def test_technical_sma(params, data_type):
     """Test ta sma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/sma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/sma?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -382,7 +382,7 @@ def test_ta_sma(params, data_type):
                 "asint": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -398,13 +398,13 @@ def test_ta_sma(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_demark(params, data_type):
+def test_technical_demark(params, data_type):
     """Test ta demark."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/demark?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/demark?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -413,18 +413,18 @@ def test_ta_demark(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "anchor": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "", "anchor": "", "offset": ""}, "equity"),
         ({"data": "", "index": "date", "anchor": "W", "offset": "5"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_vwap(params, data_type):
+def test_technical_vwap(params, data_type):
     """Test ta vwap."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/vwap?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/vwap?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -442,7 +442,7 @@ def test_ta_vwap(params, data_type):
                 "slow": "",
                 "signal": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -458,13 +458,13 @@ def test_ta_vwap(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_macd(params, data_type):
+def test_technical_macd(params, data_type):
     """Test ta macd."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/macd?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/macd?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -481,7 +481,7 @@ def test_ta_macd(params, data_type):
                 "length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -496,13 +496,13 @@ def test_ta_macd(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_hma(params, data_type):
+def test_technical_hma(params, data_type):
     """Test ta hma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/hma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/hma?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -519,7 +519,7 @@ def test_ta_hma(params, data_type):
                 "upper_length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -534,13 +534,13 @@ def test_ta_hma(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_donchian(params, data_type):
+def test_technical_donchian(params, data_type):
     """Test ta donchian."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/donchian?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/donchian?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -559,7 +559,7 @@ def test_ta_donchian(params, data_type):
                 "offset": "",
                 "lookahead": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -576,13 +576,13 @@ def test_ta_donchian(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_ichimoku(params, data_type):
+def test_technical_ichimoku(params, data_type):
     """Test ta ichimoku."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/ichimoku?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/ichimoku?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -591,7 +591,7 @@ def test_ta_ichimoku(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "date", "target": "close", "period": "10"}, "stocks"),
+        ({"data": "", "index": "date", "target": "close", "period": "10"}, "equity"),
         (
             {
                 "data": "",
@@ -604,13 +604,13 @@ def test_ta_ichimoku(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_clenow(params, data_type):
+def test_technical_clenow(params, data_type):
     """Test ta clenow."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/clenow?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/clenow?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=15, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -619,18 +619,18 @@ def test_ta_clenow(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "offset": ""}, "stocks"),
+        ({"data": "", "index": "", "offset": ""}, "equity"),
         ({"data": "", "index": "date", "offset": "5"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_ad(params, data_type):
+def test_technical_ad(params, data_type):
     """Test ta ad."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/ad?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/ad?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -647,7 +647,7 @@ def test_ta_ad(params, data_type):
                 "scalar": "",
                 "drift": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -662,13 +662,13 @@ def test_ta_ad(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_adx(params, data_type):
+def test_technical_adx(params, data_type):
     """Test ta adx."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/adx?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/adx?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -685,7 +685,7 @@ def test_ta_adx(params, data_type):
                 "length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -700,13 +700,13 @@ def test_ta_adx(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_wma(params, data_type):
+def test_technical_wma(params, data_type):
     """Test ta wma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/wma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/wma?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -715,7 +715,7 @@ def test_ta_wma(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
+        ({"data": "", "index": "", "length": "", "scalar": ""}, "equity"),
         (
             {
                 "data": "",
@@ -728,13 +728,13 @@ def test_ta_wma(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_cci(params, data_type):
+def test_technical_cci(params, data_type):
     """Test ta cci."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/cci?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/cci?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -752,7 +752,7 @@ def test_ta_cci(params, data_type):
                 "scalar": "",
                 "drift": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -768,13 +768,13 @@ def test_ta_cci(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_rsi(params, data_type):
+def test_technical_rsi(params, data_type):
     """Test ta rsi."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/rsi?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/rsi?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -791,7 +791,7 @@ def test_ta_rsi(params, data_type):
                 "slow_d_period": "",
                 "slow_k_period": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -806,13 +806,13 @@ def test_ta_rsi(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_stoch(params, data_type):
+def test_technical_stoch(params, data_type):
     """Test ta stoch."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/stoch?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/stoch?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -830,7 +830,7 @@ def test_ta_stoch(params, data_type):
                 "mamode": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -846,13 +846,13 @@ def test_ta_stoch(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_kc(params, data_type):
+def test_technical_kc(params, data_type):
     """Test ta kc."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/kc?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/kc?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -861,18 +861,18 @@ def test_ta_kc(params, data_type):
 @pytest.mark.parametrize(
     "params, data_type",
     [
-        ({"data": "", "index": "", "length": ""}, "stocks"),
+        ({"data": "", "index": "", "length": ""}, "equity"),
         ({"data": "", "index": "date", "length": "20"}, "crypto"),
     ],
 )
 @pytest.mark.integration
-def test_ta_cg(params, data_type):
+def test_technical_cg(params, data_type):
     """Test ta cg."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/cg?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/cg?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -890,7 +890,7 @@ def test_ta_cg(params, data_type):
                 "model": "",
                 "is_crypto": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -906,13 +906,13 @@ def test_ta_cg(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_cones(params, data_type):
+def test_technical_cones(params, data_type):
     """Test ta cones."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/cones?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/cones?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -929,7 +929,7 @@ def test_ta_cones(params, data_type):
                 "length": "",
                 "offset": "",
             },
-            "stocks",
+            "equity",
         ),
         (
             {
@@ -944,13 +944,13 @@ def test_ta_cones(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_ta_ema(params, data_type):
+def test_technical_ema(params, data_type):
     """Test ta ema."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/ema?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/ema?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
