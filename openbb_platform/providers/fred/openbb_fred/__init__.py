@@ -1,7 +1,7 @@
 """FRED provider module."""
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDCPIFetcher
+from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -30,7 +30,7 @@ fred_provider = Provider(
      816,000 economic time series from various sources.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "CPI": FREDCPIFetcher,
+        "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
         "ESTR": FREDESTRFetcher,

@@ -1,4 +1,4 @@
-"""GDP data and query params."""
+"""Forecast GDP data model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -9,13 +9,13 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class GDPNomQueryParams(QueryParams):
-    """Nominal GDP query."""
+class GdpForecastQueryParams(QueryParams):
+    """Forecast GDP query."""
 
-    units: Literal["usd", "usd_cap"] = Field(
-        default="usd",
-        description=QUERY_DESCRIPTIONS.get("units", "")
-        + " Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
+    period: Literal["quarter", "annual"] = Field(
+        default="annual",
+        description=QUERY_DESCRIPTIONS.get("period", "")
+        + " Units for nominal GDP period. Either quarter or annual.",
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -23,10 +23,14 @@ class GDPNomQueryParams(QueryParams):
     end_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
+    type: Literal["nominal", "real"] = Field(
+        default="real",
+        description="Type of GDP to get forecast of. Either nominal or real.",
+    )
 
 
-class GDPNomData(Data):
-    """Nominal GDP data."""
+class GdpForecastData(Data):
+    """Forecast GDP data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")

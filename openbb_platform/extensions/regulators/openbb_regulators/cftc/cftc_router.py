@@ -1,4 +1,7 @@
-"""Economy Router."""
+# pylint: disable=W0613:unused-argument
+# ruff: noqa: F401
+"""Commodity Futures Trading Commission (CFTC) Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -10,42 +13,29 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-from openbb_economy.gdp.gdp_router import router as gdp_router
-
-router = Router(prefix="")
-router.include_router(gdp_router)
-
-# pylint: disable=unused-argument
+router = Router(prefix="/cftc")
 
 
-@router.command(model="EconomicCalendar")
-def calendar(
+@router.command(model="COTSearch")
+def cot_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Economic Calendar."""
+    """Curated Commitment of Traders Reports.
+
+    Fuzzy search and list of curated Commitment of Traders Reports series information.
+    """
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="ConsumerPriceIndex")
-def cpi(
+@router.command(model="COT")
+def cot(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Consumer Price Index (CPI) Data."""
-    return OBBject(results=Query(**locals()).execute())
-
-
-@router.command(model="RiskPremium")
-def risk_premium(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Historical Market Risk Premium."""
+    """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
     return OBBject(results=Query(**locals()).execute())

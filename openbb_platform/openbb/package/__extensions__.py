@@ -16,6 +16,7 @@ Routers:
     /etf
     /fixedincome
     /futures
+    /index
     /news
     /qa
     /regulators
@@ -30,6 +31,7 @@ Extensions:
     - etf@0.1.0a4
     - fixedincome@0.1.0a4
     - futures@0.1.0a4
+    - index@0.1.0a4
     - news@0.1.0a4
     - openbb_charting@0.1.0a4
     - qa@0.1.0a4
@@ -106,6 +108,12 @@ Extensions:
         from . import futures
 
         return futures.ROUTER_futures(command_runner=self._command_runner)
+
+    @property
+    def index(self):  # route = "/index"
+        from . import index
+
+        return index.ROUTER_index(command_runner=self._command_runner)
 
     @property
     def news(self):  # route = "/news"

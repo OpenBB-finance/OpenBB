@@ -1,4 +1,4 @@
-"""FMP Major Indices end of day fetcher."""
+"""FMP Market Indices end of day fetcher."""
 
 
 from datetime import datetime
@@ -6,15 +6,15 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_constituents import (
-    MajorIndicesConstituentsData,
-    MajorIndicesConstituentsQueryParams,
+from openbb_provider.standard_models.index_constituents import (
+    IndexConstituentsData,
+    IndexConstituentsQueryParams,
 )
 from pydantic import field_validator
 
 
-class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams):
-    """FMP Major Indices Constituents query.
+class FMPIndexConstituentsQueryParams(IndexConstituentsQueryParams):
+    """FMP Index Constituents query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/list-of-dow-companies-api/
             https://site.financialmodelingprep.com/developer/docs/list-of-sp-500-companies-api/
@@ -22,8 +22,8 @@ class FMPMajorIndicesConstituentsQueryParams(MajorIndicesConstituentsQueryParams
     """
 
 
-class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
-    """FMP Major Indices Constituents data."""
+class FMPIndexConstituentsData(IndexConstituentsData):
+    """FMP Index Constituents data."""
 
     __alias_dict__ = {"headquarter": "headQuarter"}
 
@@ -48,24 +48,22 @@ class FMPMajorIndicesConstituentsData(MajorIndicesConstituentsData):
             return v
 
 
-class FMPMajorIndicesConstituentsFetcher(
+class FMPIndexConstituentsFetcher(
     Fetcher[
-        FMPMajorIndicesConstituentsQueryParams,
-        List[FMPMajorIndicesConstituentsData],
+        FMPIndexConstituentsQueryParams,
+        List[FMPIndexConstituentsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> FMPMajorIndicesConstituentsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPIndexConstituentsQueryParams:
         """Transform the query params."""
-        return FMPMajorIndicesConstituentsQueryParams(**params)
+        return FMPIndexConstituentsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPMajorIndicesConstituentsQueryParams,
+        query: FMPIndexConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -79,7 +77,7 @@ class FMPMajorIndicesConstituentsFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPMajorIndicesConstituentsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPMajorIndicesConstituentsData]:
+        query: FMPIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPIndexConstituentsData]:
         """Return the raw data from the FMP endpoint."""
-        return [FMPMajorIndicesConstituentsData.model_validate(d) for d in data]
+        return [FMPIndexConstituentsData.model_validate(d) for d in data]

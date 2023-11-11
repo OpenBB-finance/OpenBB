@@ -1,4 +1,4 @@
-"""Intrinio Fred Index Historical data fetcher."""
+"""Intrinio FRED Indices data fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -6,16 +6,16 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.fred_historical import (
-    FredHistoricalData,
-    FredHistoricalQueryParams,
+from openbb_provider.standard_models.fred_indices import (
+    FredIndicesData,
+    FredIndicesQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field
 
 
-class IntrinioFredHistoricalQueryParams(FredHistoricalQueryParams):
-    """Intrinio Fred Index Historical Query.
+class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
+    """Intrinio FRED Indices Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_economic_index_historical_data_v2
     """
@@ -30,20 +30,20 @@ class IntrinioFredHistoricalQueryParams(FredHistoricalQueryParams):
     )
 
 
-class IntrinioFredHistoricalData(FredHistoricalData):
-    """Intrinio Fred Index Historical Data."""
+class IntrinioFredIndicesData(FredIndicesData):
+    """Intrinio FRED Indices Data."""
 
 
-class IntrinioFredHistoricalFetcher(
+class IntrinioFredIndicesFetcher(
     Fetcher[
-        IntrinioFredHistoricalQueryParams,
-        List[IntrinioFredHistoricalData],
+        IntrinioFredIndicesQueryParams,
+        List[IntrinioFredIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioFredHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioFredIndicesQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -54,11 +54,11 @@ class IntrinioFredHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return IntrinioFredHistoricalQueryParams(**transformed_params)
+        return IntrinioFredIndicesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioFredHistoricalQueryParams,
+        query: IntrinioFredIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -101,7 +101,7 @@ class IntrinioFredHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioFredHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioFredHistoricalData]:
+        query: IntrinioFredIndicesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioFredIndicesData]:
         """Return the transformed data."""
-        return [IntrinioFredHistoricalData.model_validate(d) for d in data]
+        return [IntrinioFredIndicesData.model_validate(d) for d in data]

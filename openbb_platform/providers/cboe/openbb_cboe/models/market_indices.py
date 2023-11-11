@@ -1,4 +1,4 @@
-"""CBOE Major Indices End of Day fetcher."""
+"""CBOE Market Indices end of Day fetcher."""
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
@@ -10,15 +10,15 @@ from openbb_cboe.utils.helpers import (
     get_ticker_info,
 )
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.major_indices_historical import (
-    MajorIndicesHistoricalData,
-    MajorIndicesHistoricalQueryParams,
+from openbb_provider.standard_models.market_indices import (
+    MarketIndicesData,
+    MarketIndicesQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
 from pydantic import Field
 
 
-class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
+class CboeMarketIndicesQueryParams(MarketIndicesQueryParams):
     """CBOE Stock end of day query.
 
     Source: https://www.cboe.com/
@@ -30,7 +30,7 @@ class CboeMajorIndicesHistoricalQueryParams(MajorIndicesHistoricalQueryParams):
     )
 
 
-class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
+class CboeMarketIndicesData(MarketIndicesData):
     """CBOE Stocks End of Day Data."""
 
     calls_volume: Optional[float] = Field(
@@ -47,24 +47,22 @@ class CboeMajorIndicesHistoricalData(MajorIndicesHistoricalData):
     )
 
 
-class CboeMajorIndicesHistoricalFetcher(
+class CboeMarketIndicesFetcher(
     Fetcher[
-        CboeMajorIndicesHistoricalQueryParams,
-        List[CboeMajorIndicesHistoricalData],
+        CboeMarketIndicesQueryParams,
+        List[CboeMarketIndicesData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> CboeMajorIndicesHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> CboeMarketIndicesQueryParams:
         """Transform the query. Setting the start and end dates for a 1 year period."""
-        return CboeMajorIndicesHistoricalQueryParams(**params)
+        return CboeMarketIndicesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: CboeMajorIndicesHistoricalQueryParams,
+        query: CboeMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -207,7 +205,7 @@ class CboeMajorIndicesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeMajorIndicesHistoricalQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[CboeMajorIndicesHistoricalData]:
+        query: CboeMarketIndicesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[CboeMarketIndicesData]:
         """Transform the data to the standard format."""
-        return [CboeMajorIndicesHistoricalData.model_validate(d) for d in data]
+        return [CboeMarketIndicesData.model_validate(d) for d in data]
