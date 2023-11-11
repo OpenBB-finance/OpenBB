@@ -102,7 +102,7 @@ base64_msg = base64_bytes.decode('ascii')
 
 
 symbol="SPY"
-url = f"http://127.0.0.1:8000/api/v1/equity/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
+url = f"http://127.0.0.1:8000/api/v1/equity/price/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
 headers = {"accept": "application/json", "Authorization": f"Basic {base64_msg}"}
 
 response = requests.get(url=url, headers=headers)
