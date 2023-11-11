@@ -136,13 +136,13 @@ def test_chart_equity_news(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_adx(params, headers):
+def test_chart_technical_adx(params, headers):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/adx?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/adx?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -160,13 +160,13 @@ def test_chart_ta_adx(params, headers):
     [({"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True})],
 )
 @pytest.mark.integration
-def test_chart_ta_aroon(params, headers):
+def test_chart_technical_aroon(params, headers):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/aroon?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/aroon?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -195,13 +195,13 @@ def test_chart_ta_aroon(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_ema(params, headers):
+def test_chart_technical_ema(params, headers):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/ema?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/ema?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -230,13 +230,13 @@ def test_chart_ta_ema(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_hma(params, headers):
+def test_chart_technical_hma(params, headers):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/hma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/hma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -266,13 +266,13 @@ def test_chart_ta_hma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_macd(params, headers):
+def test_chart_technical_macd(params, headers):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/macd?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/macd?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -302,13 +302,13 @@ def test_chart_ta_macd(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_rsi(params, headers):
+def test_chart_technical_rsi(params, headers):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/rsi?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/rsi?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -337,13 +337,13 @@ def test_chart_ta_rsi(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_sma(params, headers):
+def test_chart_technical_sma(params, headers):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/sma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/sma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -372,13 +372,13 @@ def test_chart_ta_sma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_wma(params, headers):
+def test_chart_technical_wma(params, headers):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/wma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/wma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -407,13 +407,13 @@ def test_chart_ta_wma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_zlma(params, headers):
+def test_chart_technical_zlma(params, headers):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/ta/zlma?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/technical/zlma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
