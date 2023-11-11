@@ -1,11 +1,8 @@
 ---
 title: Forecast
 description: A comprehensive guide exploring the Forecast menu, a machine learning
-<<<<<<<< HEAD:website/content/terminal/menus/forecast.md
   toolkit providing high-level, state-of-the-art, components.
-========
   toolkit providing high-level components for quickly providing state-of-the-art results.
->>>>>>>> develop:website/content/terminal/data-available/forecast.md
   Features include Data Loading, Data Exploration, Feature Engineering, Time Series
   Forecasting, Anomaly Detection, and Miscellaneous AI Tools. This page presents real-world
   examples and workflows for beginners and advanced users.
@@ -31,11 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<<<<<<<< HEAD:website/content/terminal/menus/forecast.md
-<HeadTitle title="Forecast - Menus | OpenBB Terminal Docs" />
-========
 <HeadTitle title="Forecast - Data Available | OpenBB Terminal Docs" />
->>>>>>>> develop:website/content/terminal/data-available/forecast.md
 
 The Forecast menu is a machine learning toolkit that provides practitioners with high-level, state-of-the-art, components.  Classical or deep learning models can be combined with low-level components and fine tuned to build new approaches and custom tuned models.  Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 

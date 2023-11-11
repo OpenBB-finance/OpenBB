@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Customization - Overview - Usage | OpenBB Terminal Docs" />
 The OpenBB Terminal contains two menus for altering the behaviour and presentation of the Terminal, Settings and Feature Flags, both of which are accessed from the main menu.
-
+<br/>
 
 
 ## Settings Menu
