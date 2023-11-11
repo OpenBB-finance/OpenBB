@@ -228,11 +228,15 @@ Exported files can also be loaded by declaring the `--file` argument. Place the 
 The `candle` command displays a chart of the loaded symbol. It needs no arguments to display, but modifiers can enhance the content of the chart. Commands can also be sequenced together with a `/` separating each individual command.
 
 ```console
-(🦋) /stocks/ $ load MSFT
+/stocks/load MSFT
+```
 
+```console
 Loading Daily data for MSFT with starting period 2020-04-08.
+```
 
-(🦋) /stocks/ $ candle
+```console
+candle
 ```
 
 ![stocks/candle](https://user-images.githubusercontent.com/85772166/231903835-a0157626-1329-4d5a-80a1-8d21b71adcb1.png)

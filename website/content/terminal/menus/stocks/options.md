@@ -1,6 +1,5 @@
 ---
-title: Introduction
-sidebar_position: 1
+title: Options
 description:
   This is an informative page providing a detailed overview of how to navigate
   and use the Options Menu to analyze equity options. It discusses the functions,

@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Stock Screener - Stocks - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Stock Screener - Stocks - Menus | OpenBB Terminal Docs" />
 
 The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 

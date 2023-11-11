@@ -19,12 +19,17 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Mutual Funds - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Mutual Funds - Menus | OpenBB Terminal Docs" />
 
+The Mutual Funds menu provides a global view of the mutual funds universe.  
 
-The Mutual Funds menu provides a global view of the mutual funds universe.  Enter the menu by typing, `/funds`.
+## Usage
 
-## Menu
+Enter the menu by typing, `funds`, from the main menu. Or, use the absolute path:
+
+```console
+/funds
+```
 
 Commands in the Mutual Funds menu are grouped according to the workflow.
 
@@ -41,7 +46,7 @@ Commands in the Mutual Funds menu are grouped according to the workflow.
 | alswe        |             Display the fund's allocation data (Sweden-only). |
 | infoswe      |                           Get fund information (Sweden only). |
 
-### Select a Country
+### Country
 
 To use the menu, a country must be selected, and the default is `united_states`.  To select a different one, type `country`, followed by the `spacebar`.  This will bring up a list that can be picked from using the up/down arrow keys.
 
@@ -73,9 +78,7 @@ load F0CAN05LTL
 The fund RBC Premium Money Market Fund A - 52.8.RBF447 (F0CAN05LTL) was successfully loaded.
 ```
 
-## Examples
-
-### holdings
+### Holdings
 
 With a fund loaded, get the weighting of the portfolio using the `holdings` command.
 
@@ -97,7 +100,7 @@ funds/country united_states/load F00000VW8Z/holdings
 
 ![Holdings](https://user-images.githubusercontent.com/85772166/235047003-7e4e0e0f-7a72-416e-a40a-8f9d30027c35.png)
 
-### plot
+### Plot
 
 Plot historical performance of the fund against its benchmark index or the broad category.
 
@@ -107,7 +110,7 @@ Plot historical performance of the fund against its benchmark index or the broad
 
 ![Plot Performance](https://user-images.githubusercontent.com/85772166/235047052-0f7cd672-534f-4a03-b6af-a5ec53ff1718.png)
 
-### sector
+### Sector
 
 The `sector` command displays a breakdown of sector weightings, compared against the benchmark index and broad category.
 
@@ -117,7 +120,7 @@ The `sector` command displays a breakdown of sector weightings, compared against
 
 ![Sector Breakdown](https://user-images.githubusercontent.com/85772166/235047206-01cfd8c3-d65f-4bfa-ae47-ba0869a0c38e.png)
 
-### infoswe
+### Infoswe
 
 Use the `infoswe` command when the target country is, `sweden`, and a loaded fund is issued by Avanza.
 

@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Forecast - Data Available | OpenBB Terminal Docs" />
+<HeadTitle title="Forecast - Menus | OpenBB Terminal Docs" />
 
 The Forecast menu is a machine learning toolkit that provides practitioners with high-level, state-of-the-art, components.  Classical or deep learning models can be combined with low-level components and fine tuned to build new approaches and custom tuned models.  Bring in multiple datasets and train machine learning models with unlimited external factors to see how underlying data may change future forecasting predictions and accuracy.
 
@@ -42,7 +42,7 @@ The Forecast menu is entered from the Main menu, `forecast`, or with the absolut
 
 ![The Forecast Menu](https://user-images.githubusercontent.com/85772166/233540050-071524c6-f374-4241-aa31-cf33b7685e22.png)
 
-There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/data-available/crypto) and [`/stocks` menu](/terminal/data-available/stocks)
+There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/menus/crypto/introduction.md) and [`/stocks` menu](/terminal/menus/stocks/introduction.md)
 
 The menu is divided into sections for:
 
@@ -59,7 +59,7 @@ and the functions within these groups are described in the following sections.
 
 #### With the Load Command
 
-If the Forecast menu has not been entered directly through the [`/crypto`](/terminal/data-available/crypto) or [`/stocks`](/terminal/data-available/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
+If the Forecast menu has not been entered directly through the [`/crypto`](/website/content/terminal/menus/crypto) or [`/stocks`](/website/content/terminal/menus/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
 
 ![Loading Data](https://user-images.githubusercontent.com/85772166/233540104-2aad880e-c077-448a-9aff-9d2f18baf19e.png)
 
