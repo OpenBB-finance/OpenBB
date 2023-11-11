@@ -13,6 +13,7 @@ from openbb_provider.standard_models.historical_eps import (
     HistoricalEpsData,
     HistoricalEpsQueryParams,
 )
+from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, field_validator
 
 
@@ -21,6 +22,11 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
     """
+
+    limit: Optional[int] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
+    )
 
 
 class FMPHistoricalEpsData(HistoricalEpsData):
