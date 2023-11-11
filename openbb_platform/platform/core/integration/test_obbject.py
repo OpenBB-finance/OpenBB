@@ -63,7 +63,7 @@ def test_to_numpy(obb):
 def test_to_dict(obb):
     """Test obbject to dict."""
 
-    fed_dict = obb.fixedincome.fed(start_date="2010-01-01").to_dict()
+    fed_dict = obb.fixedincome.rate.effr(start_date="2010-01-01").to_dict()
     assert isinstance(fed_dict, dict)
 
 
