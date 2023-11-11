@@ -4,14 +4,15 @@
         "currency@0.1.0a4",
         "econometrics@0.1.0a4",
         "economy@0.1.0a4",
-        "etf@0.1.0a3",
+        "equity@0.1.0a4",
+        "etf@0.1.0a4",
         "fixedincome@0.1.0a4",
         "futures@0.1.0a4",
+        "index@0.1.0a4",
         "news@0.1.0a4",
         "openbb_charting@0.1.0a4",
         "qa@0.1.0a4",
         "regulators@0.1.0a4",
-        "stocks@0.1.0a4",
         "ta@0.1.0a4"
     ],
     "openbb_provider_extension": [

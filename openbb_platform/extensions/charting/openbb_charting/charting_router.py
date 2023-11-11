@@ -1,12 +1,13 @@
 """Charting router."""
 from typing import Any, Dict, Tuple
 
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.openbb_figure_table import OpenBBFigureTable
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_core.app.model.charts.chart import ChartFormat
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df
+
+from .core.openbb_figure import OpenBBFigure
+from .core.openbb_figure_table import OpenBBFigureTable
+from .core.plotly_ta.ta_class import PlotlyTA
 
 router = Router(prefix="")
 
@@ -14,7 +15,7 @@ CHART_FORMAT = ChartFormat.plotly
 
 
 def equity_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks load chart."""
+    """Equity price chart."""
 
     def handle_indicators(ma):
         """Handle indicators."""
@@ -73,13 +74,13 @@ def _ta_ma(ma_type: str, **kwargs):
     return fig, content
 
 
-def ta_zlma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_zlma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Zero lag moving average chart."""
     ma_type = "zlma"
     return _ta_ma(ma_type, **kwargs)
 
 
-def ta_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Aroon chart."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 25)
@@ -99,13 +100,13 @@ def ta_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def ta_sma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_sma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Plot simple moving average chart."""
     ma_type = "sma"
     return _ta_ma(ma_type, **kwargs)
 
 
-def ta_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     fast = kwargs.get("fast", 12)
@@ -126,13 +127,13 @@ def ta_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def ta_hma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_hma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Hull moving average chart."""
     ma_type = "hma"
     return _ta_ma(ma_type, **kwargs)
 
 
-def ta_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Average directional movement index chart."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 14)
@@ -153,13 +154,13 @@ def ta_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def ta_wma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_wma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Weighted moving average chart."""
     ma_type = "wma"
     return _ta_ma(ma_type, **kwargs)
 
 
-def ta_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Relative strength index chart."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     window = kwargs.get("window", 14)
@@ -180,14 +181,14 @@ def ta_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def ta_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Exponential moving average chart."""
     ma_type = "ema"
     return _ta_ma(ma_type, **kwargs)
 
 
 def equity_fundamental_multiples(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Stocks multiples chart."""
+    """Equity multiples chart."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     standard_params = kwargs["standard_params"].__dict__
     columnwidth = standard_params.get("columnwidth", None)

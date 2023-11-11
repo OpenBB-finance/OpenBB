@@ -343,18 +343,19 @@ def get_market_cap(symbol) -> float:
         latest_year = market_cap.index[-1]
 
         value = market_cap.loc[latest_year]["Market capitalization"]
+        values_str = str(value)
 
-        if "M" in value:
-            updated_value = float(value.split(" M")[0]) * 1000000
-        elif "B" in value:
-            updated_value = float(value.split(" B")[0]) * 1000000000
-        elif "T" in value:
-            updated_value = float(value.split(" T")[0]) * 1000000000000
+        # use values_str in string operations
+        if values_str.endswith("M"):
+            updated_value = float(values_str.split(" M", maxsplit=1)[0]) * 1000000
+        elif values_str.endswith("B"):
+            updated_value = float(values_str.split(" B", maxsplit=1)[0]) * 1000000000
+        elif values_str.endswith("T"):
+            updated_value = float(values_str.split(" T", maxsplit=1)[0]) * 1000000000000
         else:
-            updated_value = float(value)
+            updated_value = float(values_str)
     else:
         updated_value = 0
-
     return updated_value
 
 

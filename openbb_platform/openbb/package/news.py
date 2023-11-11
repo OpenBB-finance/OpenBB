@@ -157,7 +157,7 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
+        >>> obb.equity.news(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
         inputs = filter_inputs(

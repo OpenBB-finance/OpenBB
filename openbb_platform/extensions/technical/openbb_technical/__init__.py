@@ -1,0 +1,1 @@
+"""OpenBB Technical Analysis Extension."""

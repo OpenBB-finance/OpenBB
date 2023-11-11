@@ -120,13 +120,13 @@ def test_chart_equity_news(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_adx(params, obb):
+def test_chart_technical_adx(params, obb):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.adx(**params)
+    result = obb.technical.adx(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -149,13 +149,13 @@ def test_chart_ta_adx(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_aroon(params, obb):
+def test_chart_technical_aroon(params, obb):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.aroon(**params)
+    result = obb.technical.aroon(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -179,13 +179,13 @@ def test_chart_ta_aroon(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_ema(params, obb):
+def test_chart_technical_ema(params, obb):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.ema(**params)
+    result = obb.technical.ema(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -209,13 +209,13 @@ def test_chart_ta_ema(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_hma(params, obb):
+def test_chart_technical_hma(params, obb):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.hma(**params)
+    result = obb.technical.hma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -240,13 +240,13 @@ def test_chart_ta_hma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_macd(params, obb):
+def test_chart_technical_macd(params, obb):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.macd(**params)
+    result = obb.technical.macd(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -271,13 +271,13 @@ def test_chart_ta_macd(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_rsi(params, obb):
+def test_chart_technical_rsi(params, obb):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.rsi(**params)
+    result = obb.technical.rsi(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -301,13 +301,13 @@ def test_chart_ta_rsi(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_sma(params, obb):
+def test_chart_technical_sma(params, obb):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.sma(**params)
+    result = obb.technical.sma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -331,13 +331,13 @@ def test_chart_ta_sma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_wma(params, obb):
+def test_chart_technical_wma(params, obb):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.wma(**params)
+    result = obb.technical.wma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -361,13 +361,13 @@ def test_chart_ta_wma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_ta_zlma(params, obb):
+def test_chart_technical_zlma(params, obb):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
-    result = obb.ta.zlma(**params)
+    result = obb.technical.zlma(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

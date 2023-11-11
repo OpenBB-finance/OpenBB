@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "openbb-terminal"
-version = "3.2.3"
+name = "openbb"
+version = "3.2.4"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
@@ -16,7 +16,7 @@ openbb = 'terminal:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1,<3.11, !=3.9.7"
-scipy = "1.10.1"                                                      #Pinning on July 6 for pip issues
+scipy = "1.10.1" #Pinning on July 6 for pip issues
 iso8601 = "^0.1.14"
 FundamentalAnalysis = "^0.2.6"
 requests = "^2.31.0"
@@ -120,8 +120,10 @@ ffn = "0.3.6"
 jupyter-client = "7.4.1"
 jupyter-server = "1.23.6"
 python-jose = "^3.3.0"
-nixtlats = "^0.1.11"                                                  # Pinning for stability
-nltk = "^3.8.1"                                                       # Is a dependence for llama index
+nixtlats = "^0.1.11" # Pinning for stability
+nltk = "^3.8.1" # Is a dependence for llama index
+openai = "0.28.1"
+
 
 [tool.poetry.extras]
 forecast = [
@@ -198,7 +200,7 @@ add-ignore = "D401"
 
 [tool.flake8]
 max-line-length = 122
-ignore = "S101"
+ignore = "S101,W503"
 
 [tool.ruff]
 line-length = 122

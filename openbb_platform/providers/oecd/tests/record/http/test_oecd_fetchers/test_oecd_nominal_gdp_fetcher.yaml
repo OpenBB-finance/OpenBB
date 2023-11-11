@@ -1,0 +1,91 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://stats.oecd.org/sdmx-json/data/DP_LIVE/.GDP.TOT.MLN_USD.A/OECD?contentType=csv&csv-lang=en&detail=code&endPeriod=2023-06-06&separator=comma&startPeriod=2020-01-01
+  response:
+    body:
+      string: !!binary |
+        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
+        XTSgJAAA
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST,GET,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - private
+      Content-Disposition:
+      - attachment;filename=DP_LIVE_10112023143407092.csv
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/csv
+      Date:
+      - Fri, 10 Nov 2023 13:34:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

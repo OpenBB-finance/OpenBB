@@ -31,7 +31,6 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 - Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
 
-
 ## Usage
 
 To use the extension, run any of the OpenBB Platform endpoints with the `chart` argument set to `True`.
@@ -40,7 +39,7 @@ Here's an example how it would look like in a python interface:
 
 ```python
 from openbb import obb
-stock_data = obb.stocks.load(symbol="TSLA", chart=True)
+equity_data = obb.equity.price.historical(symbol="TSLA", chart=True)
 ```
 
 This results in a `OBBject` object containing a `chart` attribute, which contains Plotly JSON data.
@@ -48,7 +47,7 @@ This results in a `OBBject` object containing a `chart` attribute, which contain
 In order to display the chart, you need to call the `show()` method:
 
 ```python
-stock_data.show()
+equity_data.show()
 ```
 
 > Note: The `show()` method currently works either in a Jupyter Notebook or in a standalone python script with a PyWry based backend properly initialized.
@@ -62,8 +61,8 @@ To do so, you can run:
 
 Afterwards, you'll need to add the visualization to the [charting router](/openbb_platform/extensions/charting/openbb_charting/charting_router.py). The convention to match the endpoint with the respective charting function is the following:
 
-- `/stocks/load` -> `stocks_load`
-- `/ta/ema` -> `ta_ema`
+- `/equity/price/historical` -> `equity_price_historical`
+- `/technical/ema` -> `technical_ema`
 
 When you spot the charting function on the charting router file, you can add the visualization to it.
 

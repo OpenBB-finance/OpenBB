@@ -1,4 +1,4 @@
-"""Python interface integration tests for the stocks extension."""
+"""Python interface integration tests for the equity extension."""
 from datetime import time
 
 import pytest
