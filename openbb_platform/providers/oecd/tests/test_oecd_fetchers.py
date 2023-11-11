@@ -2,9 +2,9 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_oecd.models.gdpforecast import OECDGDPForecastFetcher
-from openbb_oecd.models.gdpnom import OECDGDPNomFetcher
-from openbb_oecd.models.gdpreal import OECDGDPRealFetcher
+from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
+from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
+from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -22,35 +22,35 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_oecdgdp_nom_fetcher(credentials=test_credentials):
+def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
 
-    fetcher = OECDGDPNomFetcher()
+    fetcher = OECDGdpNominalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
 
 @pytest.mark.record_http
-def test_oecdgdp_real_fetcher(credentials=test_credentials):
+def test_oecd_real_gdp_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
-    fetcher = OECDGDPRealFetcher()
+    fetcher = OECDGdpRealFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
 
 @pytest.mark.record_http
-def test_oecdgdp_forecast_fetcher(credentials=test_credentials):
+def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
     }
 
-    fetcher = OECDGDPForecastFetcher()
+    fetcher = OECDGdpForecastFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

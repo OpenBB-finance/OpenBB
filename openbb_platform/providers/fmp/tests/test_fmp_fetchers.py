@@ -44,13 +44,13 @@ from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalStockSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
+from openbb_fmp.models.index_constituents import (
+    FMPIndexConstituentsFetcher,
+)
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
-from openbb_fmp.models.major_indices_constituents import (
-    FMPMajorIndicesConstituentsFetcher,
-)
-from openbb_fmp.models.major_indices_historical import FMPMajorIndicesHistoricalFetcher
+from openbb_fmp.models.market_indices import FMPMarketIndicesFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
@@ -113,14 +113,14 @@ def test_fmp_currency_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_major_indices_historical_fetcher(credentials=test_credentials):
+def test_fmp_market_indices_fetcher(credentials=test_credentials):
     params = {
         "symbol": "^DJI",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = FMPMajorIndicesHistoricalFetcher()
+    fetcher = FMPMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -437,10 +437,10 @@ def test_fmp_risk_premium_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_major_indices_constituents_fetcher(credentials=test_credentials):
+def test_fmp_index_constituents_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = FMPMajorIndicesConstituentsFetcher()
+    fetcher = FMPIndexConstituentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
