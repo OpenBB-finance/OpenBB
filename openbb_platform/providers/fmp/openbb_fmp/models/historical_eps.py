@@ -58,7 +58,7 @@ class FMPHistoricalEpsData(HistoricalEpsData):
     )
 
     @field_validator(
-        "report_date",
+        "date",
         "updated_date",
         "period_ending",
         mode="before",
