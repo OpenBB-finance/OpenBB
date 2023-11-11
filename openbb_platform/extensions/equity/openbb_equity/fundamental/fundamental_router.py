@@ -209,7 +209,7 @@ def historical_eps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical Earnings Per Share for a Comapny."""
+    """Historical Earnings Per Share for a Company."""
     return OBBject(results=Query(**locals()).execute())
 
 
