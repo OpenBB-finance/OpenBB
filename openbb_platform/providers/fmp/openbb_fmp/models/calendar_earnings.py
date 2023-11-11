@@ -39,7 +39,7 @@ class FMPCalendarEarningsData(CalendarEarningsData):
 
     actual_eps: Optional[float] = Field(
         default=None,
-        description="The actual earnings per share (USD) announced.",
+        description="The actual earnings per share announced.",
         alias="eps",
     )
     actual_revenue: Optional[float] = Field(
