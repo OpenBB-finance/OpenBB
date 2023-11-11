@@ -202,6 +202,17 @@ def filings(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="HistoricalEps")
+def historical_eps(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Historical Earnings Per Share for a Comapny."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="HistoricalStockSplits")
 def historical_splits(
     cc: CommandContext,
