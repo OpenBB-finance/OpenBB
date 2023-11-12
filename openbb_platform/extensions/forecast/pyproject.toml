@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "openbb-forecast"
+version = "0.1.0a4"
+description = "Forecast Model for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_forecast" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+statsmodels = "^0.14.0"
+scikit-learn = "^1.3.1"
+openbb-core = "^0.1.0a5"
+darts = "^0.23.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+forecast = "openbb_forecast.forecast_router:router"

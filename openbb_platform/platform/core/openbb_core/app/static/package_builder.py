@@ -271,6 +271,12 @@ class ImportDefinition:
             code += "\nfrom openbb_qa.qa_models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
 
+        if path.startswith("/forecast"):
+            code += "\nfrom openbb_forecast.forecast_models import "
+            code += (
+                "(QuantileAnomalyModel, StatisticalForecastModel,TorchForecastModel)"
+            )
+
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
