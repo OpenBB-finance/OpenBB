@@ -206,7 +206,7 @@ def test_economy_gdp_real(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_economy_balance_of_paymentsl(params, obb):
+def test_economy_balance_of_payments(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.balance_of_payments(**params)
