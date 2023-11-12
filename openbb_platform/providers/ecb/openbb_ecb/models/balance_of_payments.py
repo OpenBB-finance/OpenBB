@@ -81,7 +81,6 @@ class ECBBalanceOfPaymentsFetcher(
         )
         series_ids = list(series_ids.values())
         names = list(series_ids)
-        results = []
         data = {}
 
         def get_one(series_id, name):
