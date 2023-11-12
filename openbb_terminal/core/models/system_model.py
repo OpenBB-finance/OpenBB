@@ -1,7 +1,7 @@
 import platform
 from typing import List, Literal
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, root_validator, validator
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models import BaseModel
@@ -61,7 +61,7 @@ class SystemModel(BaseModel):
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()
 
-    @model_validator()
+    @root_validator(allow_reuse=True)
     @classmethod
     def add_additional_handlers(cls, values):
         if (
@@ -73,14 +73,14 @@ class SystemModel(BaseModel):
 
         return values
 
-    @model_validator()
+    @root_validator(allow_reuse=True)
     @classmethod
     def validate_send_to_s3(cls, values):
         if "posthog" in values["LOGGING_HANDLERS"] or values["LOG_COLLECT"] is False:
             values["LOGGING_SEND_TO_S3"] = False
         return values
 
-    @field_validator("LOGGING_HANDLERS")
+    @validator("LOGGING_HANDLERS", allow_reuse=True)
     @classmethod
     def validate_logging_handlers(cls, v):
         for value in v:
