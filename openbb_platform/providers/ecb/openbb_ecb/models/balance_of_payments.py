@@ -84,9 +84,9 @@ class ECBBalanceOfPaymentsFetcher(
         results = []
         data = {}
 
-        def get_one(serie, name):
+        def get_one(serie, name):  # cspell:disable-line
             result = {}
-            temp = get_series_data(serie)
+            temp = get_series_data(serie)  # cspell:disable-line
             result.update({name: {d["PERIOD"]: d["OBS_VALUE_AS_IS"] for d in temp}})
             data.update(result)
 
