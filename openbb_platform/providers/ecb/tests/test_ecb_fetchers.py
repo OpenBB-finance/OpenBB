@@ -4,6 +4,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_ecb.models.balance_of_payments import ECBBalanceOfPaymentsFetcher
 from openbb_ecb.models.eu_yield_curve import ECBEUYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -28,5 +29,15 @@ def test_ecbeu_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": datetime.date(2023, 1, 1)}
 
     fetcher = ECBEUYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_ecb_balance_of_payments_fetcher(credentials=test_credentials):
+    """Test ECB Balance of Payments Fetcher."""
+    params = {"report_type": "services", "frequency": "quarterly", "country": None}
+
+    fetcher = ECBBalanceOfPaymentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

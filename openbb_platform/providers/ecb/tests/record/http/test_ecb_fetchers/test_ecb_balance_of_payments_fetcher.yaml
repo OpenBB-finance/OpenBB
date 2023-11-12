@@ -1,0 +1,464 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.C.S._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:25 GMT
+      ETag:
+      - W/"1699824085"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:55 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:25 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.C.SI._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:26 GMT
+      ETag:
+      - W/"1699824085"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:56 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:25 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-CDN:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.D.SI._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        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
+        MsR9Gw184dtovgbhL/8DwVMpFhdKAAA=
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:26 GMT
+      ETag:
+      - W/"1699824086"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:56 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:26 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.D.SI._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        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
+        MsR9Gw184dtovgbhL/8DwVMpFhdKAAA=
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:27 GMT
+      ETag:
+      - W/"1699824086"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:56 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:26 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-CDN:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.D.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.D.SN._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA53MX0vDMBAA8K8SAr7ZaxIfZAUfVh0oK91cNxQplGhuGnRNSVJhiN/d23CPewkc
+        x/373Q+Pdoch6t3ACy5VJmWmhLpiUhRKFuqaX3LaB/2OtK8d8/jmvGFbN/aH7Nng3bc1aJjthzHS
+        OT2LY7h15iCUEDQadPygZvT2ps0DeovhE/enco77zPZb1+ZGk9WvX9jm5bKBR6jhYQJPEppjrOEO
+        mil0L/8x26ygW0P3THfTqrpQYrGidJaW6XSWTu/T6TydVum0Pkv57x90z18qMAIAAA==
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:27 GMT
+      ETag:
+      - W/"1699824087"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:57 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:27 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://data.ecb.europa.eu/data-detail-api/BPS.Q.N.I9.W1.S1.S1.T.C.SA._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SB._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SE._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SH._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SK._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SL._Z._Z._Z.EUR._T._X.N.ALL%20OR%20BPS.Q.N.I9.W1.S1.S1.T.C.SN._Z._Z._Z.EUR._T._X.N.ALL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA53MX2vCMBAA8K8SAr7Za5I9yAo+qAgbls5Zx4YUSjTnFjabkqQDGfvuO8f26Evg
+        OO7f7754tCcMUZ96XnCpMikzJdQNk6JQslATPua0D/oVaV855vHgvGFHN3SX7Fnv3ac1aJjt+iHS
+        OT2LQ1g4cxFKCBr1Or5RM3g7bfKA3mJ4x/N/ucJzZruja3Kjyer9Bzb5fF3DI1RwfwvPEurf2MIC
+        6hm0u79YPm2g3UL7Qnezshwp8bChdJXO0+kynd6l01U6LdNpdZXy7x+K3V6lMAIAAA==
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Content-language:
+      - en
+      Date:
+      - Sun, 12 Nov 2023 21:21:27 GMT
+      ETag:
+      - W/"1699824087"
+      Expires:
+      - Sun, 12 Nov 2023 21:21:57 GMT
+      Last-Modified:
+      - Sun, 12 Nov 2023 21:21:27 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=1000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - cookie, accept-encoding
+      X-CDN:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - MISS
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 9 (https://www.drupal.org)
+      X-UA-Compatible:
+      - IE=edge
+    status:
+      code: 200
+      message: OK
+version: 1
