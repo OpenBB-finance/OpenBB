@@ -1,15 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Union
+from typing import List, Literal, Optional, Union
 
-import typing_extensions
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
 from openbb_provider.abstract.data import Data
+from typing_extensions import Annotated
 
 
 class ROUTER_economy(Container):
@@ -26,35 +26,35 @@ class ROUTER_economy(Container):
     @validate
     def calendar(
         self,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fmp", "nasdaq", "tradingeconomics"], None] = None,
+        provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Economic Calendar.
 
         Parameters
         ----------
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fmp', 'nasdaq', 'tradingeconomics'], None]
+        provider : Optional[Literal['fmp', 'tradingeconomics']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[List[str], str]]
-            Country of the event (provider: nasdaq, tradingeconomics)
+        country : Optional[Union[str, List[str]]]
+            Country of the event (provider: tradingeconomics)
         importance : Literal['Low', 'Medium', 'High']
             Importance of the event. (provider: tradingeconomics)
         group : Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
@@ -63,9 +63,9 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EconomicCalendar]]
+            results : List[EconomicCalendar]
                 Serializable results.
-            provider : Union[Literal['fmp', 'nasdaq', 'tradingeconomics'], None]
+            provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -76,17 +76,17 @@ class ROUTER_economy(Container):
 
         EconomicCalendar
         ----------------
-        date : Optional[Union[datetime]]
+        date : Optional[datetime]
             The date of the data.
-        country : Optional[Union[str]]
+        country : Optional[str]
             Country of event.
-        event : Optional[Union[str]]
+        event : Optional[str]
             Event name.
-        reference : Optional[Union[str]]
+        reference : Optional[str]
             Abbreviated period for which released data refers to.
-        source : Optional[Union[str]]
+        source : Optional[str]
             Source of the data.
-        sourceurl : Optional[Union[str]]
+        sourceurl : Optional[str]
             Source URL.
         actual : Optional[Union[str, float]]
             Latest released value.
@@ -96,24 +96,22 @@ class ROUTER_economy(Container):
             Average forecast among a representative group of economists.
         forecast : Optional[Union[str, float]]
             Trading Economics projections
-        url : Optional[Union[str]]
+        url : Optional[str]
             Trading Economics URL
         importance : Optional[Union[Literal[0, 1, 2, 3], str]]
             Importance of the event. 1-Low, 2-Medium, 3-High
-        currency : Optional[Union[str]]
+        currency : Optional[str]
             Currency of the data.
-        unit : Optional[Union[str]]
+        unit : Optional[str]
             Unit of the data.
-        change : Optional[Union[float]]
+        change : Optional[float]
             Value change since previous. (provider: fmp)
-        change_percent : Optional[Union[float]]
+        change_percent : Optional[float]
             Percentage change since previous. (provider: fmp)
-        updated_at : Optional[Union[datetime]]
+        updated_at : Optional[datetime]
             Last updated timestamp. (provider: fmp)
-        created_at : Optional[Union[datetime]]
+        created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
-        description : Optional[Union[str]]
-            Event description. (provider: nasdaq)
 
         Example
         -------
@@ -140,7 +138,7 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        countries: typing_extensions.Annotated[
+        countries: Annotated[
             List[
                 Literal[
                     "australia",
@@ -196,40 +194,40 @@ class ROUTER_economy(Container):
             ],
             OpenBBCustomParameter(description="The country or countries to get data."),
         ],
-        units: typing_extensions.Annotated[
+        units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
             OpenBBCustomParameter(
                 description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: growth from the previous period\n    - `growth_same`: growth from the same period in the previous year\n    - `index_2015`: index with base year 2015."
             ),
         ] = "growth_same",
-        frequency: typing_extensions.Annotated[
+        frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
             OpenBBCustomParameter(
                 description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
             ),
         ] = "monthly",
-        harmonized: typing_extensions.Annotated[
+        harmonized: Annotated[
             bool,
             OpenBBCustomParameter(
                 description="Whether you wish to obtain harmonized data."
             ),
         ] = False,
-        start_date: typing_extensions.Annotated[
+        start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        end_date: typing_extensions.Annotated[
+        end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Union[Literal["fred"], None] = None,
+        provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """CPI (Consumer Price Index) Data.
+        """Consumer Price Index (CPI) Data.
 
         Parameters
         ----------
@@ -246,11 +244,11 @@ class ROUTER_economy(Container):
             Options: `monthly`, `quarter`, and `annual`.
         harmonized : bool
             Whether you wish to obtain harmonized data.
-        start_date : Union[datetime.date, None]
+        start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None]
+        end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Union[Literal['fred'], None]
+        provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
@@ -258,9 +256,9 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[List[ConsumerPriceIndex]]
+            results : List[ConsumerPriceIndex]
                 Serializable results.
-            provider : Union[Literal['fred'], None]
+            provider : Optional[Literal['fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -308,13 +306,13 @@ class ROUTER_economy(Container):
 
     @validate
     def risk_premium(
-        self, provider: Union[Literal["fmp"], None] = None, **kwargs
+        self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject[List[Data]]:
-        """Market Risk Premium. Historical Market Risk Premium.
+        """Historical Market Risk Premium.
 
         Parameters
         ----------
-        provider : Union[Literal['fmp'], None]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -322,9 +320,9 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[List[RiskPremium]]
+            results : List[RiskPremium]
                 Serializable results.
-            provider : Union[Literal['fmp'], None]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -337,11 +335,11 @@ class ROUTER_economy(Container):
         -----------
         country : str
             Market country.
-        continent : Optional[Union[str]]
+        continent : Optional[str]
             Continent of the country.
-        total_equity_risk_premium : Optional[Union[typing_extensions.Annotated[float, Gt(gt=0)]]]
+        total_equity_risk_premium : Optional[Annotated[float, Gt(gt=0)]]
             Total equity risk premium for the country.
-        country_risk_premium : Optional[Union[typing_extensions.Annotated[float, Ge(ge=0)]]]
+        country_risk_premium : Optional[Annotated[float, Ge(ge=0)]]
             Country-specific risk premium.
 
         Example

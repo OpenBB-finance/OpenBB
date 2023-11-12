@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -11,36 +11,30 @@ from openbb_provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
-class ROUTER_crypto(Container):
-    """/crypto
-    /price
-    search
+class ROUTER_equity_compare(Container):
+    """/equity/compare
+    peers
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @property
-    def price(self):  # route = "/crypto/price"
-        from . import crypto_price
-
-        return crypto_price.ROUTER_crypto_price(command_runner=self._command_runner)
-
     @validate
-    def search(
+    def peers(
         self,
-        query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Search query.")
-        ] = "",
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
-        """Cryptocurrency Search. Search available cryptocurrency pairs.
+    ) -> OBBject[Data]:
+        """Equity Peers. Company peers.
 
         Parameters
         ----------
-        query : Optional[str]
-            Search query.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -49,7 +43,7 @@ class ROUTER_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoSearch]
+            results : EquityPeers
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -60,23 +54,15 @@ class ROUTER_crypto(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        CryptoSearch
-        ------------
-        symbol : str
-            Symbol representing the entity requested in the data. (Crypto)
-        name : Optional[str]
-            Name of the crypto.
-        currency : Optional[str]
-            The currency the crypto trades for. (provider: fmp)
-        exchange : Optional[str]
-            The exchange code the crypto trades on. (provider: fmp)
-        exchange_name : Optional[str]
-            The short name of the exchange the crypto trades on. (provider: fmp)
+        EquityPeers
+        -----------
+        peers_list : List[str]
+            A list of equity peers based on sector, exchange and market cap.
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.crypto.search()
+        >>> obb.equity.compare.peers(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -84,12 +70,12 @@ class ROUTER_crypto(Container):
                 "provider": provider,
             },
             standard_params={
-                "query": query,
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
             },
             extra_params=kwargs,
         )
 
         return self._run(
-            "/crypto/search",
+            "/equity/compare/peers",
             **inputs,
         )
