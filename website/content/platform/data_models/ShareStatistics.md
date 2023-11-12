@@ -1,27 +1,12 @@
 ---
 title: Share Statistics
-description: This page provides detailed implementation methods for ShareStatistics.
-  It includes parameters and data involved, such as symbol, provider, date, and shares
-  data.
-keywords:
-- ShareStatistics
-- symbol
-- provider
-- date
-- free_float
-- float_shares
-- outstanding_shares
-- source
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Share Statistics - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -62,8 +47,8 @@ ShareStatisticsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | A specific date to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | free_float | float | Percentage of unrestricted shares of a publicly-traded company. |
 | float_shares | float | Number of shares available for trading by the general public. |
 | outstanding_shares | float | Total number of shares of a publicly-traded company. |
@@ -71,3 +56,4 @@ ShareStatisticsQueryParams,
 </TabItem>
 
 </Tabs>
+

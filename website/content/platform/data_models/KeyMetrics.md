@@ -1,52 +1,12 @@
 ---
 title: Key Metrics
-description: A documentation page for the OpenBB Provider KeyMetrics with class details,
-  parameters for both standard and fmp data, and the import statement. The classes
-  include KeyMetricsData and KeyMetricsQueryParams, and the metrics reported include
-  everything from basic revenue per share, net income per share, to more detailed
-  metrics like return on invested capital (ROIC), return on equity (ROE), and many
-  others.
-keywords:
-- OpenBB Provider
-- Key Metrics
-- KeyMetricsData
-- KeyMetricsQueryParams
-- Python
-- Docusaurus
-- Implementation Details
-- Parameters
-- Data
-- class names
-- import statement
-- Tabs
-- TabItem
-- standard
-- fmp
-- symbol
-- data
-- return
-- limit
-- provider
-- ttm
-- roic
-- return on invested capital
-- roe
-- return on equity
-- graham number
-- stock-based compensation to revenue
-- enterprise value to EBITDA
-- debt to equity ratio
-- net debt to EBITDA
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Key Metrics - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -75,7 +35,7 @@ KeyMetricsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 100 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
@@ -85,7 +45,7 @@ KeyMetricsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 100 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | with_ttm | bool | Include trailing twelve months (TTM) data. | False | True |
@@ -100,7 +60,7 @@ KeyMetricsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | date | date | The date of the data. |
 | period | str | Period of the data. |
 | revenue_per_share | float | Revenue per share |
@@ -166,7 +126,7 @@ KeyMetricsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | date | date | The date of the data. |
 | period | str | Period of the data. |
 | revenue_per_share | float | Revenue per share |
@@ -230,3 +190,4 @@ KeyMetricsQueryParams,
 </TabItem>
 
 </Tabs>
+

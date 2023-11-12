@@ -1,27 +1,12 @@
 ---
 title: Price Target
-description: This page provides implementation details and parameters for the PriceTarget
-  model in the OpenBB Provider. You can also find import statements and data parameters
-  for Standard and FMP solutions.
-keywords:
-- OpenBB Provider API
-- PriceTarget
-- Python
-- Standard
-- FMP
-- Implementation details
-- Data Parameters
-- Class Names
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Price Target - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -71,7 +56,7 @@ PriceTargetQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | published_date | datetime | Published date of the price target. |
 | news_url | str | News URL of the price target. |
 | news_title | str | News title of the price target. |
@@ -88,7 +73,7 @@ PriceTargetQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | published_date | datetime | Published date of the price target. |
 | news_url | str | News URL of the price target. |
 | news_title | str | News title of the price target. |
@@ -105,3 +90,4 @@ PriceTargetQueryParams,
 </TabItem>
 
 </Tabs>
+

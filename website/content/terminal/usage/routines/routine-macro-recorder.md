@@ -33,7 +33,7 @@ OpenBB script routines can be captured with the macro recorder, controlled with 
 For example, if you copy and paste the following prompt in the OpenBB Terminal and press enter, you will see an example.
 
 ```console
-$ /record/economy/cpi/treasury/index sp500/stop
+/record/economy/cpi/treasury/index sp500/stop
 ```
 
 The following shows the output from this pipeline of commands.

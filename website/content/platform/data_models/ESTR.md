@@ -1,38 +1,12 @@
 ---
 title: Euro Short-Term Rate
-description: Instructions on how to use the ESTR Query Parameters and Data Classes
-  in Python. Includes information on importing the classes, setting parameters and
-  interpreting the data.
-keywords:
-- ESTR
-- query parameters
-- data class
-- Python
-- import statement
-- start date
-- end date
-- provider
-- fred
-- data interpretation
-- volume weighted trimmed mean rate
-- number of transactions
-- number of active banks
-- total volume
-- share of volume of the 5 largest active banks
-- rate at 75th percentile of volume
-- rate at 25th percentile of volume
-- rate
-- date
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Euro Short-Term Rate - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -89,3 +63,4 @@ ESTRQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,36 +1,12 @@
 ---
 title: Stock Insider Trading
-description: This page provides in-depth details about Stock Insider Trading including
-  data classes, parameters and structure. The content is a part of the official documentation
-  for the OpenBB Provider Standard Models.
-keywords:
-- Docusaurus
-- SEO
-- Metadata
-- Stock Insider Trading
-- StockInsiderTradingData
-- StockInsiderTradingQueryParams
-- Symbol
-- Transaction Type
-- Filing Date
-- Reporting CIK
-- Securities Owned
-- Type of Owner
-- Acquisition or Disposition
-- Securities Transacted
-- Security Name
-- Price
-- Link
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Stock Insider Trading - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -59,8 +35,8 @@ StockInsiderTradingQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| transactionType | Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], str] | Type of the transaction. | ['P-Purchase'] | True |
-| page | int | Page number of the data to fetch. | 0 | True |
+| transaction_type | Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], str] | Type of the transaction. | ['P-Purchase'] | True |
+| limit | int | The number of data entries to return. | 100 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
@@ -73,7 +49,7 @@ StockInsiderTradingQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | filing_date | datetime | Filing date of the stock insider trading. |
 | transaction_date | date | Transaction date of the stock insider trading. |
 | reporting_cik | int | Reporting CIK of the stock insider trading. |
@@ -91,3 +67,4 @@ StockInsiderTradingQueryParams,
 </TabItem>
 
 </Tabs>
+

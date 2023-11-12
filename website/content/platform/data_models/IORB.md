@@ -1,30 +1,12 @@
 ---
 title: Interest on Reserve Balances
-description: This page provides detailed information about implementation and parameters
-  of IORB classes including IORB, IORBQueryParams, and IORBData and the way to import
-  them using Python. It also explains different parameters like start_date, end_date,
-  provider, and how to use them.
-keywords:
-- IORB
-- IORBQueryParams
-- IORBData
-- Python
-- Start_date
-- End_date
-- Provider
-- fred
-- Data
-- Rate
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Interest on Reserve Balances - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -71,3 +53,4 @@ IORBQueryParams,
 </TabItem>
 
 </Tabs>
+

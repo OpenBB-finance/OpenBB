@@ -1,30 +1,12 @@
 ---
 title: Fed Funds Rate
-description: This page provides detailed information on the implementation, parameters
-  and data associated with FEDFUNDS, including FEDFUNDSQueryParams and FEDFUNDSData.
-  Learn how to effectively use the FED rate and familiarize yourself with the Python
-  Import Statement.
-keywords:
-- FEDFUNDS
-- FEDFUNDSQueryParams
-- FEDFUNDSData
-- FED rate
-- Implementation details
-- Python
-- Import Statement
-- Parameters
-- Data
-- Class names
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Fed Funds Rate - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -81,3 +63,4 @@ FEDFUNDSQueryParams,
 </TabItem>
 
 </Tabs>
+

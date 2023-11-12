@@ -1,4 +1,4 @@
-name: Test SDKV4
+name: Test Platform V4
 
 on:
   pull_request:

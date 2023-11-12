@@ -1,40 +1,12 @@
 ---
 title: Income Statement
-description: This page provides comprehensive information about the implementation
-  of the IncomeStatement model, its parameters, data features, and details about its
-  use with different providers like FMP, Intrinio, and Polygon. It contains essential
-  items such as class names and import statements, standard, FMP, Intrinio, and Polygon
-  parameters, alongside the standard, FMP, and Polygon data parameters.
-keywords:
-- IncomeStatement model
-- Finance
-- SEO
-- Class names
-- Import Statements
-- FMP
-- Intrinio
-- Polygon
-- Python
-- Documentation
-- API
-- Implementation details
-- Parameters
-- Data
-- Standard
-- Parameters class
-- Data class
-- IncomeStatementData
-- IncomeStatementQueryParams
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Income Statement - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -63,9 +35,9 @@ IncomeStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -73,22 +45,10 @@ IncomeStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | cik | str | The CIK of the company if no symbol is provided. | None | True |
-</TabItem>
-
-<TabItem value='intrinio' label='intrinio'>
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| type | Literal['reported', 'standardized'] | Type of the statement to be fetched. | reported | True |
-| year | int | Year of the statement to be fetched. | None | True |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
@@ -96,12 +56,9 @@ IncomeStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| company_name | str | Name of the company. | None | True |
-| company_name_search | str | Name of the company to search. | None | True |
-| sic | str | The Standard Industrial Classification (SIC) of the company. | None | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | filing_date | date | Filing date of the financial statement. | None | True |
 | filing_date_lt | date | Filing date less than the given date. | None | True |
 | filing_date_lte | date | Filing date less than or equal to the given date. | None | True |
@@ -126,38 +83,38 @@ IncomeStatementQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the income statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. In this case, the date of the income statement. |
 | period | str | Period of the income statement. |
 | cik | str | Central Index Key. |
-| revenue | int | Revenue. |
-| cost_of_revenue | int | Cost of revenue. |
-| gross_profit | int | Gross profit. |
-| cost_and_expenses | int | Cost and expenses. |
+| revenue | float | Revenue. |
+| cost_of_revenue | float | Cost of revenue. |
+| gross_profit | float | Gross profit. |
+| cost_and_expenses | float | Cost and expenses. |
 | gross_profit_ratio | float | Gross profit ratio. |
-| research_and_development_expenses | int | Research and development expenses. |
-| general_and_administrative_expenses | int | General and administrative expenses. |
+| research_and_development_expenses | float | Research and development expenses. |
+| general_and_administrative_expenses | float | General and administrative expenses. |
 | selling_and_marketing_expenses | float | Selling and marketing expenses. |
-| selling_general_and_administrative_expenses | int | Selling, general and administrative expenses. |
-| other_expenses | int | Other expenses. |
-| operating_expenses | int | Operating expenses. |
-| depreciation_and_amortization | int | Depreciation and amortization. |
-| ebitda | int | Earnings before interest, taxes, depreciation and amortization. |
+| selling_general_and_administrative_expenses | float | Selling, general and administrative expenses. |
+| other_expenses | float | Other expenses. |
+| operating_expenses | float | Operating expenses. |
+| depreciation_and_amortization | float | Depreciation and amortization. |
+| ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
-| operating_income | int | Operating income. |
+| operating_income | float | Operating income. |
 | operating_income_ratio | float | Operating income ratio. |
-| interest_income | int | Interest income. |
-| interest_expense | int | Interest expense. |
-| total_other_income_expenses_net | int | Total other income expenses net. |
-| income_before_tax | int | Income before tax. |
+| interest_income | float | Interest income. |
+| interest_expense | float | Interest expense. |
+| total_other_income_expenses_net | float | Total other income expenses net. |
+| income_before_tax | float | Income before tax. |
 | income_before_tax_ratio | float | Income before tax ratio. |
-| income_tax_expense | int | Income tax expense. |
-| net_income | int | Net income. |
+| income_tax_expense | float | Income tax expense. |
+| net_income | float | Net income. |
 | net_income_ratio | float | Net income ratio. |
 | eps | float | Earnings per share. |
 | eps_diluted | float | Earnings per share diluted. |
-| weighted_average_shares_outstanding | int | Weighted average shares outstanding. |
-| weighted_average_shares_outstanding_dil | int | Weighted average shares outstanding diluted. |
+| weighted_average_shares_outstanding | float | Weighted average shares outstanding. |
+| weighted_average_shares_outstanding_dil | float | Weighted average shares outstanding diluted. |
 | link | str | Link to the income statement. |
 | final_link | str | Final link to the income statement. |
 </TabItem>
@@ -166,38 +123,38 @@ IncomeStatementQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the income statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. In this case, the date of the income statement. |
 | period | str | Period of the income statement. |
 | cik | str | Central Index Key. |
-| revenue | int | Revenue. |
-| cost_of_revenue | int | Cost of revenue. |
-| gross_profit | int | Gross profit. |
-| cost_and_expenses | int | Cost and expenses. |
+| revenue | float | Revenue. |
+| cost_of_revenue | float | Cost of revenue. |
+| gross_profit | float | Gross profit. |
+| cost_and_expenses | float | Cost and expenses. |
 | gross_profit_ratio | float | Gross profit ratio. |
-| research_and_development_expenses | int | Research and development expenses. |
-| general_and_administrative_expenses | int | General and administrative expenses. |
+| research_and_development_expenses | float | Research and development expenses. |
+| general_and_administrative_expenses | float | General and administrative expenses. |
 | selling_and_marketing_expenses | float | Selling and marketing expenses. |
-| selling_general_and_administrative_expenses | int | Selling, general and administrative expenses. |
-| other_expenses | int | Other expenses. |
-| operating_expenses | int | Operating expenses. |
-| depreciation_and_amortization | int | Depreciation and amortization. |
-| ebitda | int | Earnings before interest, taxes, depreciation and amortization. |
+| selling_general_and_administrative_expenses | float | Selling, general and administrative expenses. |
+| other_expenses | float | Other expenses. |
+| operating_expenses | float | Operating expenses. |
+| depreciation_and_amortization | float | Depreciation and amortization. |
+| ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
-| operating_income | int | Operating income. |
+| operating_income | float | Operating income. |
 | operating_income_ratio | float | Operating income ratio. |
-| interest_income | int | Interest income. |
-| interest_expense | int | Interest expense. |
-| total_other_income_expenses_net | int | Total other income expenses net. |
-| income_before_tax | int | Income before tax. |
+| interest_income | float | Interest income. |
+| interest_expense | float | Interest expense. |
+| total_other_income_expenses_net | float | Total other income expenses net. |
+| income_before_tax | float | Income before tax. |
 | income_before_tax_ratio | float | Income before tax ratio. |
-| income_tax_expense | int | Income tax expense. |
-| net_income | int | Net income. |
+| income_tax_expense | float | Income tax expense. |
+| net_income | float | Net income. |
 | net_income_ratio | float | Net income ratio. |
 | eps | float | Earnings per share. |
 | eps_diluted | float | Earnings per share diluted. |
-| weighted_average_shares_outstanding | int | Weighted average shares outstanding. |
-| weighted_average_shares_outstanding_dil | int | Weighted average shares outstanding diluted. |
+| weighted_average_shares_outstanding | float | Weighted average shares outstanding. |
+| weighted_average_shares_outstanding_dil | float | Weighted average shares outstanding diluted. |
 | link | str | Link to the income statement. |
 | final_link | str | Final link to the income statement. |
 | reported_currency | str | Reporting currency. |
@@ -210,38 +167,38 @@ IncomeStatementQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the income statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. In this case, the date of the income statement. |
 | period | str | Period of the income statement. |
 | cik | str | Central Index Key. |
-| revenue | int | Revenue. |
-| cost_of_revenue | int | Cost of revenue. |
-| gross_profit | int | Gross profit. |
-| cost_and_expenses | int | Cost and expenses. |
+| revenue | float | Revenue. |
+| cost_of_revenue | float | Cost of revenue. |
+| gross_profit | float | Gross profit. |
+| cost_and_expenses | float | Cost and expenses. |
 | gross_profit_ratio | float | Gross profit ratio. |
-| research_and_development_expenses | int | Research and development expenses. |
-| general_and_administrative_expenses | int | General and administrative expenses. |
+| research_and_development_expenses | float | Research and development expenses. |
+| general_and_administrative_expenses | float | General and administrative expenses. |
 | selling_and_marketing_expenses | float | Selling and marketing expenses. |
-| selling_general_and_administrative_expenses | int | Selling, general and administrative expenses. |
-| other_expenses | int | Other expenses. |
-| operating_expenses | int | Operating expenses. |
-| depreciation_and_amortization | int | Depreciation and amortization. |
-| ebitda | int | Earnings before interest, taxes, depreciation and amortization. |
+| selling_general_and_administrative_expenses | float | Selling, general and administrative expenses. |
+| other_expenses | float | Other expenses. |
+| operating_expenses | float | Operating expenses. |
+| depreciation_and_amortization | float | Depreciation and amortization. |
+| ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
-| operating_income | int | Operating income. |
+| operating_income | float | Operating income. |
 | operating_income_ratio | float | Operating income ratio. |
-| interest_income | int | Interest income. |
-| interest_expense | int | Interest expense. |
-| total_other_income_expenses_net | int | Total other income expenses net. |
-| income_before_tax | int | Income before tax. |
+| interest_income | float | Interest income. |
+| interest_expense | float | Interest expense. |
+| total_other_income_expenses_net | float | Total other income expenses net. |
+| income_before_tax | float | Income before tax. |
 | income_before_tax_ratio | float | Income before tax ratio. |
-| income_tax_expense | int | Income tax expense. |
-| net_income | int | Net income. |
+| income_tax_expense | float | Income tax expense. |
+| net_income | float | Net income. |
 | net_income_ratio | float | Net income ratio. |
 | eps | float | Earnings per share. |
 | eps_diluted | float | Earnings per share diluted. |
-| weighted_average_shares_outstanding | int | Weighted average shares outstanding. |
-| weighted_average_shares_outstanding_dil | int | Weighted average shares outstanding diluted. |
+| weighted_average_shares_outstanding | float | Weighted average shares outstanding. |
+| weighted_average_shares_outstanding_dil | float | Weighted average shares outstanding diluted. |
 | link | str | Link to the income statement. |
 | final_link | str | Final link to the income statement. |
 | income_loss_from_continuing_operations_before_tax | float | Income/Loss From Continuing Operations After Tax |
@@ -256,3 +213,4 @@ IncomeStatementQueryParams,
 </TabItem>
 
 </Tabs>
+
