@@ -1,32 +1,12 @@
 ---
 title: Institutional Ownership
-description: Documentation for the Institutional Ownership model, its associated query
-  parameters, and data fields. Contains import details, parameter specifications,
-  and data field explanations, including investors holding, number of 13F shares,
-  total invested, and the change in ownership percent.
-keywords:
-- Docusaurus
-- Marketing Strategy
-- SEO
-- Institutional Ownership
-- Python
-- OpenBB Provider
-- Model Classes
-- Data Representation
-- Query Parameters
-- 13F Shares
-- Ownership Percent
-- Investors Holding
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Institutional Ownership - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -69,7 +49,7 @@ InstitutionalOwnershipQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | cik | str | CIK of the company. |
 | date | date | The date of the data. |
 | investors_holding | int | Number of investors holding the stock. |
@@ -108,3 +88,4 @@ InstitutionalOwnershipQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,34 +1,12 @@
 ---
 title: Cash Flow Statement
-description: This document helps understand how the standard models like CashFlowStatement,
-  CashFlowStatementQueryParams, and CashFlowStatementData are used to retrieve financial
-  data. It provides clear guidelines on how to use the query parameters to fetch data
-  from different finance data providers like fmp, intrinio, and polygon.
-keywords:
-- CashFlowStatement
-- CashFlowStatementQueryParams
-- CashFlowStatementData
-- Docusaurus
-- Python
-- financial models
-- economic data
-- query parameters
-- finance
-- financial reporting
-- financial data providers
-- fmp
-- intrinio
-- polygon
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Cash Flow Statement - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -57,9 +35,9 @@ CashFlowStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -67,22 +45,10 @@ CashFlowStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | cik | str | Central Index Key (CIK) of the company. | None | True |
-</TabItem>
-
-<TabItem value='intrinio' label='intrinio'>
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| type | Literal['reported', 'standardized'] | Type of the statement to be fetched. | reported | True |
-| year | int | Year of the statement to be fetched. |  | False |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
@@ -90,12 +56,9 @@ CashFlowStatementQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| company_name | str | Name of the company. | None | True |
-| company_name_search | str | Name of the company to search. | None | True |
-| sic | str | The Standard Industrial Classification (SIC) of the company. | None | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | filing_date | date | Filing date of the financial statement. | None | True |
 | filing_date_lt | date | Filing date less than the given date. | None | True |
 | filing_date_lte | date | Filing date less than or equal to the given date. | None | True |
@@ -120,76 +83,76 @@ CashFlowStatementQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the fetched statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | period | str | Reporting period of the statement. |
 | cik | str | Central Index Key (CIK) of the company. |
-| net_income | int | Net income. |
-| depreciation_and_amortization | int | Depreciation and amortization. |
-| stock_based_compensation | int | Stock based compensation. |
-| deferred_income_tax | int | Deferred income tax. |
-| other_non_cash_items | int | Other non-cash items. |
-| changes_in_operating_assets_and_liabilities | int | Changes in operating assets and liabilities. |
-| accounts_receivables | int | Accounts receivables. |
-| inventory | int | Inventory. |
-| vendor_non_trade_receivables | int | Vendor non-trade receivables. |
-| other_current_and_non_current_assets | int | Other current and non-current assets. |
-| accounts_payables | int | Accounts payables. |
-| deferred_revenue | int | Deferred revenue. |
-| other_current_and_non_current_liabilities | int | Other current and non-current liabilities. |
-| net_cash_flow_from_operating_activities | int | Net cash flow from operating activities. |
-| purchases_of_marketable_securities | int | Purchases of investments. |
-| sales_from_maturities_of_investments | int | Sales and maturities of investments. |
-| investments_in_property_plant_and_equipment | int | Investments in property, plant, and equipment. |
-| payments_from_acquisitions | int | Acquisitions, net of cash acquired, and other |
-| other_investing_activities | int | Other investing activities |
-| net_cash_flow_from_investing_activities | int | Net cash used for investing activities. |
-| taxes_paid_on_net_share_settlement | int | Taxes paid on net share settlement of equity awards. |
-| dividends_paid | int | Payments for dividends and dividend equivalents |
-| common_stock_repurchased | int | Payments related to repurchase of common stock |
-| debt_proceeds | int | Proceeds from issuance of term debt |
-| debt_repayment | int | Payments of long-term debt |
-| other_financing_activities | int | Other financing activities, net |
-| net_cash_flow_from_financing_activities | int | Net cash flow from financing activities. |
-| net_change_in_cash | int | Net increase (decrease) in cash, cash equivalents, and restricted cash |
+| net_income | float | Net income. |
+| depreciation_and_amortization | float | Depreciation and amortization. |
+| stock_based_compensation | float | Stock based compensation. |
+| deferred_income_tax | float | Deferred income tax. |
+| other_non_cash_items | float | Other non-cash items. |
+| changes_in_operating_assets_and_liabilities | float | Changes in operating assets and liabilities. |
+| accounts_receivables | float | Accounts receivables. |
+| inventory | float | Inventory. |
+| vendor_non_trade_receivables | float | Vendor non-trade receivables. |
+| other_current_and_non_current_assets | float | Other current and non-current assets. |
+| accounts_payables | float | Accounts payables. |
+| deferred_revenue | float | Deferred revenue. |
+| other_current_and_non_current_liabilities | float | Other current and non-current liabilities. |
+| net_cash_flow_from_operating_activities | float | Net cash flow from operating activities. |
+| purchases_of_marketable_securities | float | Purchases of investments. |
+| sales_from_maturities_of_investments | float | Sales and maturities of investments. |
+| investments_in_property_plant_and_equipment | float | Investments in property, plant, and equipment. |
+| payments_from_acquisitions | float | Acquisitions, net of cash acquired, and other |
+| other_investing_activities | float | Other investing activities |
+| net_cash_flow_from_investing_activities | float | Net cash used for investing activities. |
+| taxes_paid_on_net_share_settlement | float | Taxes paid on net share settlement of equity awards. |
+| dividends_paid | float | Payments for dividends and dividend equivalents |
+| common_stock_repurchased | float | Payments related to repurchase of common stock |
+| debt_proceeds | float | Proceeds from issuance of term debt |
+| debt_repayment | float | Payments of long-term debt |
+| other_financing_activities | float | Other financing activities, net |
+| net_cash_flow_from_financing_activities | float | Net cash flow from financing activities. |
+| net_change_in_cash | float | Net increase (decrease) in cash, cash equivalents, and restricted cash |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the fetched statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | period | str | Reporting period of the statement. |
 | cik | str | Central Index Key (CIK) of the company. |
-| net_income | int | Net income. |
-| depreciation_and_amortization | int | Depreciation and amortization. |
-| stock_based_compensation | int | Stock based compensation. |
-| deferred_income_tax | int | Deferred income tax. |
-| other_non_cash_items | int | Other non-cash items. |
-| changes_in_operating_assets_and_liabilities | int | Changes in operating assets and liabilities. |
-| accounts_receivables | int | Accounts receivables. |
-| inventory | int | Inventory. |
-| vendor_non_trade_receivables | int | Vendor non-trade receivables. |
-| other_current_and_non_current_assets | int | Other current and non-current assets. |
-| accounts_payables | int | Accounts payables. |
-| deferred_revenue | int | Deferred revenue. |
-| other_current_and_non_current_liabilities | int | Other current and non-current liabilities. |
-| net_cash_flow_from_operating_activities | int | Net cash flow from operating activities. |
-| purchases_of_marketable_securities | int | Purchases of investments. |
-| sales_from_maturities_of_investments | int | Sales and maturities of investments. |
-| investments_in_property_plant_and_equipment | int | Investments in property, plant, and equipment. |
-| payments_from_acquisitions | int | Acquisitions, net of cash acquired, and other |
-| other_investing_activities | int | Other investing activities |
-| net_cash_flow_from_investing_activities | int | Net cash used for investing activities. |
-| taxes_paid_on_net_share_settlement | int | Taxes paid on net share settlement of equity awards. |
-| dividends_paid | int | Payments for dividends and dividend equivalents |
-| common_stock_repurchased | int | Payments related to repurchase of common stock |
-| debt_proceeds | int | Proceeds from issuance of term debt |
-| debt_repayment | int | Payments of long-term debt |
-| other_financing_activities | int | Other financing activities, net |
-| net_cash_flow_from_financing_activities | int | Net cash flow from financing activities. |
-| net_change_in_cash | int | Net increase (decrease) in cash, cash equivalents, and restricted cash |
+| net_income | float | Net income. |
+| depreciation_and_amortization | float | Depreciation and amortization. |
+| stock_based_compensation | float | Stock based compensation. |
+| deferred_income_tax | float | Deferred income tax. |
+| other_non_cash_items | float | Other non-cash items. |
+| changes_in_operating_assets_and_liabilities | float | Changes in operating assets and liabilities. |
+| accounts_receivables | float | Accounts receivables. |
+| inventory | float | Inventory. |
+| vendor_non_trade_receivables | float | Vendor non-trade receivables. |
+| other_current_and_non_current_assets | float | Other current and non-current assets. |
+| accounts_payables | float | Accounts payables. |
+| deferred_revenue | float | Deferred revenue. |
+| other_current_and_non_current_liabilities | float | Other current and non-current liabilities. |
+| net_cash_flow_from_operating_activities | float | Net cash flow from operating activities. |
+| purchases_of_marketable_securities | float | Purchases of investments. |
+| sales_from_maturities_of_investments | float | Sales and maturities of investments. |
+| investments_in_property_plant_and_equipment | float | Investments in property, plant, and equipment. |
+| payments_from_acquisitions | float | Acquisitions, net of cash acquired, and other |
+| other_investing_activities | float | Other investing activities |
+| net_cash_flow_from_investing_activities | float | Net cash used for investing activities. |
+| taxes_paid_on_net_share_settlement | float | Taxes paid on net share settlement of equity awards. |
+| dividends_paid | float | Payments for dividends and dividend equivalents |
+| common_stock_repurchased | float | Payments related to repurchase of common stock |
+| debt_proceeds | float | Proceeds from issuance of term debt |
+| debt_repayment | float | Payments of long-term debt |
+| other_financing_activities | float | Other financing activities, net |
+| net_cash_flow_from_financing_activities | float | Net cash flow from financing activities. |
+| net_change_in_cash | float | Net increase (decrease) in cash, cash equivalents, and restricted cash |
 | reported_currency | str | Reported currency in the statement. |
 | filling_date | date | Filling date. |
 | accepted_date | datetime | Accepted date. |
@@ -208,3 +171,4 @@ CashFlowStatementQueryParams,
 </TabItem>
 
 </Tabs>
+

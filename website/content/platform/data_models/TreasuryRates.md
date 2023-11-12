@@ -1,41 +1,12 @@
 ---
 title: Treasury Rates
-description: Documentation on how to use the TreasuryRates model within our software.
-  Explains how to import the necessary classes and define parameters and data.
-keywords:
-- TreasuryRates
-- TreasuryRatesQueryParams
-- TreasuryRatesData
-- start_date
-- end_date
-- provider
-- date
-- month_1
-- month_2
-- month_3
-- month_6
-- year_1
-- year_2
-- year_3
-- year_5
-- year_7
-- year_10
-- year_20
-- year_30
-- treasury rate
-- financial data
-- data query
-- import classes
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Treasury Rates - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -93,3 +64,4 @@ TreasuryRatesQueryParams,
 </TabItem>
 
 </Tabs>
+

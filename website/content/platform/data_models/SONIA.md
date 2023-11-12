@@ -1,32 +1,12 @@
 ---
 title: Sterling Overnight Index Average
-description: This page provides detailed information on the implementation of the
-  SONIA model, its parameters, data structure and how to use it. It includes class
-  names, import statements and parameter options.
-keywords:
-- SONIA
-- Implementation details
-- Import Statement
-- Parameters
-- Data
-- Model name
-- Parameters class
-- Data class
-- start_date
-- end_date
-- provider
-- date
-- rate
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Sterling Overnight Index Average - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -83,3 +63,4 @@ SONIAQueryParams,
 </TabItem>
 
 </Tabs>
+

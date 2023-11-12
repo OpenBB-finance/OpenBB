@@ -1,35 +1,12 @@
 ---
 title: Extensive set of ratios over time
-description: This documentation contains details about extracting financial ratios
-  data using FinancialRatiosData and FinancialRatiosQueryParams. Specific parameters
-  and data for standard and 'fmp' provider are provided. The import statement is also
-  included for ease of implementation.
-keywords:
-- Docusaurus SEO
-- Financial Ratios
-- FinancialRatiosData
-- FinancialRatiosQueryParams
-- financial data
-- Python import
-- Data parameters
-- annual financial data
-- quarter financial data
-- fmp provider
-- Standard financial data
-- Financial data provider
-- Financial ratios details
-- Debt ratio
-- Pretax profit margin
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Extensive set of ratios over time - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -58,7 +35,7 @@ FinancialRatiosQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 12 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
@@ -68,7 +45,7 @@ FinancialRatiosQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 12 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | with_ttm | bool | Include trailing twelve months (TTM) data. | False | True |
@@ -83,8 +60,8 @@ FinancialRatiosQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol of the company. |
-| date | str | Date of the financial ratios. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | str | The date of the data. |
 | period | str | Period of the financial ratios. |
 | current_ratio | float | Current ratio. |
 | quick_ratio | float | Quick ratio. |
@@ -143,3 +120,4 @@ FinancialRatiosQueryParams,
 </TabItem>
 
 </Tabs>
+
