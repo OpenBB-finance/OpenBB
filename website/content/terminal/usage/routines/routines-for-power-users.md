@@ -56,7 +56,7 @@ For instance, the example below shows how you can run the same script for `MSFT`
 
 Let's look into the following routine (the file can be downloaded [here](https://www.dropbox.com/s/usooz6y29r1xldb/routines_template_with_inputs.openbb?dl=1)):
 
-```
+```bash
 # This script requires you to use arguments. This can be done with the following:
 # exe --file routines_template_with_inputs.openbb -i TSLA,AAPL,MSFT
 
@@ -91,7 +91,6 @@ This script includes `$ARGV[0]`, `$ARGV[1]` and `$ARGV[2]`. This means that the 
 
 Note: Make sure you saved this script in the `~/OpenBBUserData/routines/` folder else you are not able to execute it.
 
-
 ## Set Variables
 
 In addition to enabling users to run scripts with external variables using the keyword `ARGV`, we also support the use of internal variables within the script. These variables are defined by starting with the `$` character.
@@ -104,11 +103,11 @@ Which has the following output:
 
 Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
 
-### Example
+### Variables Example
 
 Example of the script below:
 
-```
+```bash
 # Set date variable
 $DATE = 2022-01-01
 
@@ -133,7 +132,6 @@ When a single element is defined, then the user can access it through the variab
 
 Note that slicing is also possible, and the same convention as python is utilized. If the user has defined inputs `AAPL,MSFT,TSLA,NVDA,GOOG` then by selecting `$ARGV[1:3]` the tickers `MSFT,TSLA` are selected.
 
-
 ## Relative Time Keyword Variables
 
 In addition to the powerful variables discussed earlier, OpenBB also supports the usage of relative keywords, particularly for working with dates. These relative keywords provide flexibility when specifying dates about the current day. There are four types of relative keywords:
@@ -148,7 +146,7 @@ In addition to the powerful variables discussed earlier, OpenBB also supports th
 
 The result will be a date with the conventional date associated with OpenBB, i.e. `YYYY-MM-DD`.
 
-### Example
+### Relative Time Example
 
 By picking on the previous example, we can add to the load `--start` argument the keyword `$18MONTHSAGO`.
 
@@ -157,7 +155,6 @@ By picking on the previous example, we can add to the load `--start` argument th
 This will result in the following output:
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/78d6235e-15a1-47cb-a99c-19694b6af0d9)
-
 
 ## Foreach Loop
 
@@ -171,23 +168,23 @@ To create a foreach loop, you need to follow these steps:
 
 3. Conclude the loop with the keyword `end`.
 
-### Examples
+### Loop Examples
 
-```
+```bash
 # Iterates through ARGV elements from position 1 onwards
 foreach $$VAR in $ARGV[1:]
     load $$VAR --start $DATES[0] --end $DATES[1]/dps/psi/..
 end
 ```
 
-```
+```bash
 # Loops through all $ARGV variables
 FOREACH $$SOMETHING in $ARGV
     load $$SOMETHING --start $DATE[0]/ins/stats/..
  end
 ```
 
-```
+```bash
 # Iterates through ARGV elements in position 1,2
 foreach $$VAR in $ARGV[1:3]
     load $$VAR --start 2022-01-01
@@ -197,7 +194,7 @@ foreach $$VAR in $ARGV[1:3]
 END
 ```
 
-```
+```bash
 # Loops through PLTR and BB
 foreach $$X in PLTR,BB
     load $$X --start $LASTJANUARY

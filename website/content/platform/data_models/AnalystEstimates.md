@@ -1,33 +1,12 @@
 ---
-title: Analyst Estimates
-description: This page provides detailed information on the Analyst Estimates standard
-  models - AnalystEstimatesData and AnalystEstimatesQueryParams. Find import statements,
-  parameters, and data schemas for these classes.
-keywords:
-- Analyst Estimates
-- Standard Models
-- AnalystEstimatesData
-- AnalystEstimatesQueryParams
-- Python
-- Import Statement
-- Parameters
-- Data Schema
-- Estimated Revenue
-- Estimated EBITDA
-- Estimated EBIT
-- Estimated Net Income
-- Estimated SGA Expense
-- Estimated EPS
+title: Historical Analyst Estimates
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Analyst Estimates - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -56,7 +35,7 @@ AnalystEstimatesQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['quarter', 'annual'] | Period of the data to return. | annual | True |
+| period | Literal['quarter', 'annual'] | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 30 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
@@ -70,8 +49,8 @@ AnalystEstimatesQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | A specific date to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | estimated_revenue_low | int | Estimated revenue low. |
 | estimated_revenue_high | int | Estimated revenue high. |
 | estimated_revenue_avg | int | Estimated revenue average. |
@@ -95,3 +74,4 @@ AnalystEstimatesQueryParams,
 </TabItem>
 
 </Tabs>
+

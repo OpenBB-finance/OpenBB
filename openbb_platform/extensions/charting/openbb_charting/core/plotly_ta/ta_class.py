@@ -1,3 +1,4 @@
+"""Technical Analysis class for Plotly."""
 # pylint: disable=R0902
 import importlib
 import inspect
@@ -22,7 +23,7 @@ PLOTLY_TA: Optional["PlotlyTA"] = None
 
 
 class PlotlyTA(PltTA):
-    """Plotly Technical Analysis class
+    """Plotly Technical Analysis class.
 
     This class is a singleton. It is created and then reused, to assure
     the plugins are only loaded once. This is done by overriding the __new__
@@ -57,10 +58,10 @@ class PlotlyTA(PltTA):
 
     Examples
     --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> from openbb_terminal.core.plots.plotly_ta.ta_class import PlotlyTA
+    >>> from openbb import obb
+    >>> from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 
-    >>> df = openbb.stocks.load("SPY")
+    >>> df = obb.equity.price.historical("SPY")
     >>> indicators = dict(
     >>>     sma=dict(length=[20, 50, 100]),
     >>>     adx=dict(length=14),
@@ -75,7 +76,7 @@ class PlotlyTA(PltTA):
 
     >>> ta = PlotlyTA()
     >>> fig = ta.plot(df, indicators=indicators)
-    >>> df2 = openbb.stocks.load("AAPL")
+    >>> df2 = obb.equity.price.historical("AAPL")
     >>> fig2 = ta.plot(df2)
     >>> fig.show()
     >>> fig2.show()
@@ -92,7 +93,7 @@ class PlotlyTA(PltTA):
     theme: Optional[ChartStyle] = None
 
     def __new__(cls, *args, **kwargs):
-        """This method is overridden to create a singleton instance of the class."""
+        """Method is overridden to create a singleton instance of the class."""
         cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
         cls.theme = cls.setup_theme(cls.charting_settings)
         cls.inchart_colors = cls.theme.get_colors()
@@ -111,7 +112,7 @@ class PlotlyTA(PltTA):
     def __init__(
         self, *args, charting_settings: Optional[ChartingSettings] = None, **kwargs
     ):  # pylint: disable=unused-argument
-        """This method is overridden to do nothing, except to clear the internal data structures."""
+        """Method is overridden to do nothing, except to clear the internal data structures."""
         if not args and not kwargs:
             self._clear_data()
         else:
@@ -120,7 +121,7 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def setup_theme(charting_settings: ChartingSettings) -> ChartStyle:
-        """Setup theme for charting"""
+        """Setup theme for charting."""
         return ChartStyle(
             charting_settings.chart_style,
             charting_settings.user_styles_directory,
@@ -128,26 +129,32 @@ class PlotlyTA(PltTA):
 
     @property
     def ma_mode(self) -> List[str]:
+        """List of available moving average modes."""
         return list(set(self.__ma_mode__))
 
     @ma_mode.setter
     def ma_mode(self, value: List[str]):
+        """Set list of available moving average modes."""
         self.__ma_mode__ = value
 
     @property
     def inchart(self) -> List[str]:
+        """List of available inchart indicators."""
         return list(set(self.__inchart__))
 
     @inchart.setter
     def inchart(self, value: List[str]):
+        """Set list of available inchart indicators."""
         self.__inchart__ = value
 
     @property
     def subplots(self) -> List[str]:
+        """List of available subplots."""
         return list(set(self.__subplots__))
 
     @subplots.setter
     def subplots(self, value: List[str]):
+        """Set list of available subplots."""
         self.__subplots__ = value
 
     # pylint: disable=R0913
@@ -162,7 +169,7 @@ class PlotlyTA(PltTA):
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
-        """This method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+        """Method should not be called directly. Use the PlotlyTA.plot() static method instead."""
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
@@ -234,7 +241,7 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def _locate_plugins(debug: Optional[bool] = False) -> None:
-        """Locate all the plugins in the plugins folder"""
+        """Locate all the plugins in the plugins folder."""
         path = (
             Path(sys.executable).parent
             if hasattr(sys, "frozen")
@@ -268,7 +275,7 @@ class PlotlyTA(PltTA):
                     PlotlyTA.plugins.append(obj)
 
     def _clear_data(self):
-        """Clear and reset all data to default values"""
+        """Clear and reset all data to default values."""
         self.df_stock = None
         self.indicators = {}
         self.params = None
@@ -276,11 +283,11 @@ class PlotlyTA(PltTA):
         self.show_volume = True
 
     def calculate_indicators(self):
-        """Return dataframe with all indicators"""
+        """Return dataframe with all indicators."""
         return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)
 
     def get_subplot(self, subplot: str) -> bool:
-        """Return True if subplots will be able to be plotted with current data"""
+        """Return True if subplots will be able to be plotted with current data."""
         if subplot == "volume":
             return self.show_volume
 
@@ -319,7 +326,7 @@ class PlotlyTA(PltTA):
         return output
 
     def check_subplots(self, subplots: list) -> list:
-        """Return list of subplots that can be plotted with current data"""
+        """Return list of subplots that can be plotted with current data."""
         output = []
         for subplot in subplots:
             if self.get_subplot(subplot):
@@ -328,7 +335,7 @@ class PlotlyTA(PltTA):
         return output
 
     def get_fig_settings_dict(self):
-        """Return dictionary with settings for plotly figure"""
+        """Return dictionary with settings for plotly figure."""
         row_params = {
             "0": dict(rows=1, row_width=[1]),
             "1": dict(rows=2, row_width=[0.3, 0.7]),
@@ -351,7 +358,7 @@ class PlotlyTA(PltTA):
         return output
 
     def init_plot(self, symbol: str = "", candles: bool = True) -> OpenBBFigure:
-        """Create plotly figure with subplots
+        """Create plotly figure with subplots.
 
         Parameters
         ----------
@@ -417,7 +424,7 @@ class PlotlyTA(PltTA):
         candles: bool = True,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
-        """Plot indicators on plotly figure
+        """Plot indicators on plotly figure.
 
         Parameters
         ----------
@@ -529,7 +536,7 @@ class PlotlyTA(PltTA):
         return figure
 
     def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
-        """Process plotly figure before plotting indicators
+        """Process plotly figure before plotting indicators.
 
         Parameters
         ----------

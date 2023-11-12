@@ -1,35 +1,12 @@
 ---
 title: Historical Employees
-description: Details on the implementation of HistoricalEmployees model including
-  class names, parameters information (such as symbol, provider), and data information
-  (like cik, acceptance_time, period_of_report, company_name, form_type, filing_date,
-  employee_count and source).
-keywords:
-- HistoricalEmployees
-- HistoricalEmployeesData
-- HistoricalEmployeesQueryParams
-- Parameters
-- Data
-- symbol
-- provider
-- cik
-- acceptance_time
-- period_of_report
-- company_name
-- form_type
-- filing_date
-- employee_count
-- source
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Historical Employees - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -70,7 +47,7 @@ HistoricalEmployeesQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | cik | int | CIK of the company to retrieve the historical employees of. |
 | acceptance_time | datetime | Time of acceptance of the company employee. |
 | period_of_report | date | Date of reporting of the company employee. |
@@ -82,3 +59,4 @@ HistoricalEmployeesQueryParams,
 </TabItem>
 
 </Tabs>
+

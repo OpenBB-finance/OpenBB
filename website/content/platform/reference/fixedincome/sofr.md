@@ -1,30 +1,43 @@
 ---
 title: sofr
-description: This documentation page provides information about the Secured Overnight
-  Financing Rate (SOFR), along with details on how to fetch the data using different
-  parameters from the Fred provider.
+description: Learn about the Secured Overnight Financing Rate (SOFR), a measure of
+  the cost of borrowing cash overnight collateralized by Treasury securities. Explore
+  the SOFR Python function parameters, data returns, and more.
 keywords:
 - Secured Overnight Financing Rate
 - SOFR
-- Treasury securities
-- Data retrieval
-- Fred provider
-- SOFR rate
+- borrowing cash overnight
+- collateralizing by Treasury securities
+- SOFR python function
+- SOFR parameters
+- start_date
+- end_date
+- provider
+- SOFR period
+- returns
+- results
+- provider name
+- warnings
+- chart
+- metadata
+- data
+- date
+- rate
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="fixedincome.sofr - Reference | OpenBB Platform Docs" />
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Secured Overnight Financing Rate.
-    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-    borrowing cash overnight collateralized by Treasury securities.
+
+The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+borrowing cash overnight collateralizing by Treasury securities.
 
 ```python wordwrap
-sofr(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fred)
+obb.fixedincome.sofr(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fred)
 ```
 
 ---
@@ -89,3 +102,4 @@ OBBject
 </TabItem>
 
 </Tabs>
+

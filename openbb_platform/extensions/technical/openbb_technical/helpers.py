@@ -204,8 +204,8 @@ def hodges_tompkins(
 
     Example
     -------
-    >>> data = openbb.stocks.load('BTC-USD')
-    >>> df = openbb.ta.rvol_hodges_tompkins(data, is_crypto = True)
+    >>> data = obb.equity.price.historical('BTC-USD')
+    >>> df = obb.technical.hodges_tompkins(data, is_crypto = True)
     """
     if window < 2:
         _warn("Error: Window must be at least 2, defaulting to 30.")
@@ -468,7 +468,7 @@ def clenow_momentum(
     pd.Series:
         Values for best fit line
     """
-    from sklearn.linear_model import (  # pylint: disable=import-outside-toplevel
+    from sklearn.linear_model import (  # pylint: disable=import-outside-toplevel  # type: ignore
         LinearRegression,
     )
 

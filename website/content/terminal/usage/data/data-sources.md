@@ -35,7 +35,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short video on where the data comes from"
 />
 
-## Relationship with data vendors
+## Relationship With Data Vendors
 
 Most commands will require obtaining API keys from various data providers. OpenBB provides methods for consuming these data feeds, but has no control over the quality or quantity of data provided to an end-user. **No API Keys are required to get started using the Terminal**.
 
@@ -45,15 +45,17 @@ See the list of data providers [here](/terminal/usage/data/api-keys), along with
 OpenBB doesn't store any financial data in its servers. We aggregate access to multiple data sources through API calls and standardize that interaction to provide users a seamless experience when dealing with different data vendors
 :::
 
-## Changing data source in command
+## Changing the Data Source In-Command
 
-Many commands have multiple datasources attached to it. A great example is `/stocka/fa/income` that allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. In order to specify the data vendor you want to utilize for that specific command you can utilize the argument `--source`.
+Many commands have multiple data sources associated with it. A great example is `/stocka/fa/income`, which allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. In order to specify the data vendor for that particular command, use the `--source` argument.
 
 This also becomes clear from the help menu.
 
+```console
+/stocks/fa/income -h
 ```
-(🦋) /stocks/fa/ $ income -h
 
+```console
 usage: income [-t TICKER] [-q] [-r] [-p column] [-h] [--export EXPORT] [--sheet-name SHEET_NAME [SHEET_NAME ...]] [-l LIMIT] [--source {FinancialModelingPrep,Polygon,AlphaVantage,EODHD,YahooFinance}]
 
 Prints a complete income statement over time. This can be either quarterly or annually.
@@ -77,45 +79,51 @@ optional arguments:
 For more information and examples, use 'about income' to access the related guide.
 ```
 
-Within the source arguments it shows the exact sources as previously mentioned. Therefore, with this information in hand it is possible to switch to a different source e.g. with `income --source Polygon`. Do keep in mind that you might need to have an API key to use this source, see [here](/terminal/usage/data/api-keys).
+Within the source arguments it shows the available sources. An API key may be required to use a source, see this [page](/terminal/usage/data/api-keys) for insructions on obtaining and setting credentials.
 
 ![Selecting a new Data Source](https://user-images.githubusercontent.com/85772166/233730763-54fd6400-f3ad-44a0-9c73-254d91ac2085.png)
 
-The available sources for each command are displayed on the right of the command, and they can be distinguished by the square brackets and distinct font color group. By default, if the user doesn't specify `--source` the terminal will use the first data provider displayed.
+The available sources for each command are displayed on the right of the command, and they can be distinguished by the square brackets and distinct font color group. By default, if the user doesn't specify `--source` the Terminal will use the first data provider displayed.
 
+### Setting Default Source Through Hub (easy)
 
-### Setting default source through Hub (easy)
+The default data vendor can be selected with more ease through the OpenBB Hub. Instructions can be found [here](/terminal/usage/hub).
 
-The default data vendor can be selected with more ease through the OpenBB Hub. Instructions can be found here.
-
-
-### Setting default source through Terminal
+### Setting Default Source Through Terminal
 
 The default data source for each command (where multiple sources are available) can be defined within the [`/sources`](/terminal/usage/data/data-sources) menu.
 
-For example, if you would like to change the default data provider for the `income` command from the `stocks/fa` menu you can first run the command `get --cmd stocks/fa/income`. This returns the following:
+For example, changing the default data provider for the `income` command:
 
 ```console
-(🦋) /sources/ $ get --cmd stocks/fa/income
+/sources/get --cmd stocks/fa/income
+```
 
+```conole
 Default   : FinancialModelingPrep
 Available : FinancialModelingPrep, Polygon, AlphaVantage, EODHD, YahooFinance
 ```
 
-Then, with `set` command you can change the default data provider. For example, we can change the data provider to `Polygon` with
+Then, change the default data provider with the, `set`, command. For example, change the data provider to `Polygon` with
 the following:
 
 ```console
-(🦋) /sources/ $ set --cmd stocks/fa/income --source Polygon
+/sources/set --cmd stocks/fa/income --source Polygon
+```
 
+A confirmation message is displayed.
+
+```console
 Default data source for 'stocks/fa/income' set to 'Polygon'.
 ```
 
-and we can use `get` once more to confirm this update:
+Using, `get`, once more will confirm the update:
 
 ```console
-(🦋) /sources/ $ get --cmd stocks/fa/income
+/sources/get --cmd stocks/fa/income
+```
 
+```console
 Default   : Polygon
 Available : Polygon, FinancialModelingPrep, AlphaVantage, EODHD, YahooFinance
 ```

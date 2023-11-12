@@ -24,7 +24,7 @@ def otc(
 ) -> OBBject[BaseModel]:
     """Weekly aggregate trade data for Over The Counter deals.
 
-    ATS and non-ATS) trading data for each ATS/firm
+    ATS and non-ATS trading data for each ATS/firm
     with trade reporting obligations under FINRA rules.
     """
     return OBBject(results=Query(**locals()).execute())

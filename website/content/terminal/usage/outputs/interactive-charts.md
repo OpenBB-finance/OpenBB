@@ -43,6 +43,7 @@ A common type of output in OpenBB are interactive charts which open in a separat
 ![Chart Tools](https://user-images.githubusercontent.com/85772166/233247997-55c03cbd-9ca9-4f5e-b3fb-3e5a9c63b6eb.png)
 
 The toolbar is located at the bottom of the window, and provides methods for:
+
 - Panning and zooming.
 - Modifying the title and axis labels.
 - Adjusting the hover read out.
@@ -70,7 +71,7 @@ After placement, the text can be updated or deleted by clicking on it again.
 
 ![Delete Annotation](https://user-images.githubusercontent.com/85772166/233728428-55d2a8e5-a68a-4cd1-9dbf-4c1cd697187e.png)
 
-## Change title
+## Change Titles
 
 The title of the chart is edited by clicking the button, `Change Titles`, near the middle center of the toolbar, immediately to the right of the `Add Text` button.
 
@@ -79,6 +80,7 @@ The title of the chart is edited by clicking the button, `Change Titles`, near t
 ![Edit Colors](https://user-images.githubusercontent.com/85772166/233729318-8af947fa-ce2a-43e2-85ab-657e583ac8b1.png)
 
 The fourth group of icons on the toolbar are for drawing lines and shapes.
+
 - Edit the colors.
 - Draw a straight line.
 - Draw a freeform line.

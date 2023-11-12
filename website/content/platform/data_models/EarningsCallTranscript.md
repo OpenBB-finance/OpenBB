@@ -1,35 +1,12 @@
 ---
 title: Earnings Call Transcript
-description: This page describes the implementation of the Earnings Call Transcript
-  model in the OpenBB Provider library. It provides details about the Python import
-  statements, class names, parameters, and data associated with this model. This includes
-  the relevant parameters for querying financial data like symbol, year, and quarter,
-  and data fields such as content of the earnings call transcript.
-keywords:
-- Earnings Call Transcript
-- EarningsCallTranscriptData
-- EarningsCallTranscriptQueryParams
-- OpenBB Provider
-- FMP provider
-- Python import statement
-- Python standard models
-- Data Query Params
-- Financial data
-- Financial Model
-- Yearly earnings call transcript
-- Quarterly earnings call transcript
-- Earnings data
-- Earnings data content
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Earnings Call Transcript - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -59,7 +36,6 @@ EarningsCallTranscriptQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | year | int | Year of the earnings call transcript. |  | False |
-| quarter | int | Quarter of the earnings call transcript. | 1 | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
@@ -72,7 +48,7 @@ EarningsCallTranscriptQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | quarter | int | Quarter of the earnings call transcript. |
 | year | int | Year of the earnings call transcript. |
 | date | datetime | The date of the data. |
@@ -80,3 +56,4 @@ EarningsCallTranscriptQueryParams,
 </TabItem>
 
 </Tabs>
+
