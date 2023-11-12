@@ -14,7 +14,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [View](#view)
     - [Controller](#controller)
     - [Add SDK endpoint (V3)](#add-sdk-endpoint-v3)
-    - [Add SDK endpoint (V4)](#add-sdk-endpoint-v4)
+    - [Add OpenBB Platform endpoint (V4)](#add-openbb-platform-endpoint-v4)
     - [Add Unit Tests](#add-unit-tests)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
@@ -509,7 +509,7 @@ In order to add a command to the SDK, follow these steps:
     python generate_sdk.py sort
     ```
 
-### Add SDK endpoint (V4)
+### Add OpenBB Platform endpoint (V4)
 
 Refer to the documentation [here](openbb_platform\CONTRIBUTING.md).
 
