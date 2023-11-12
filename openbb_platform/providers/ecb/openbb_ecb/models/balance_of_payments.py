@@ -79,21 +79,19 @@ class ECBBalanceOfPaymentsFetcher(
         series_ids = generate_bps_series_ids(
             query.frequency, query.report_type, country=query.country
         )
-        series = list(series_ids.values())
+        series_ids = list(series_ids.values())
         names = list(series_ids)
         results = []
         data = {}
 
-        # cspell:disable-line
-        def get_one(serie, name):
+        def get_one(series_id, name):
             result = {}
-            # cspell:disable-line
-            temp = get_series_data(serie)
+            temp = get_series_data(series_id)
             result.update({name: {d["PERIOD"]: d["OBS_VALUE_AS_IS"] for d in temp}})
             data.update(result)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(get_one, series, names)
+            executor.map(get_one, series_ids, names)
         if data != {}:
             results = (
                 pd.DataFrame(data)
