@@ -30,7 +30,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     videoLegend="Short introduction on interactive tables"
 />
 
-A common type of output in OpenBB are interactive tables which open in a separated window (due to our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
+A common type of output in OpenBB are interactive tables which open in a separated window (utilizing our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
 
 <details>
 <summary>Table cheat sheet </summary>

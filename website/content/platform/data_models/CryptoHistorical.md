@@ -1,42 +1,12 @@
 ---
-title: Crypto Historical Price
-description: Detailed documentation on Crypto Historical Data including model classes,
-  query parameters, and data. Information on import statements and tabulated data
-  for standard, fmp and polygon parameters are also provided.
-keywords:
-- CryptoHistorical
-- CryptoHistoricalQueryParams
-- CryptoHistoricalData
-- openbb_provider.standard_models.crypto_historical
-- symbol
-- start_date
-- end_date
-- provider
-- timeseries
-- interval
-- multiplier
-- timespan
-- sort
-- limit
-- adjusted
-- date
-- open
-- high
-- low
-- close
-- volume
-- vwap
-- transactions
+title: Cryptocurrency Historical Price
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Crypto Historical Price - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -64,20 +34,20 @@ CryptoHistoricalQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | timeseries | int | Number of days to look back. | None | True |
 | interval | Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'] | Data granularity. | 1day | True |
 </TabItem>
@@ -86,15 +56,27 @@ CryptoHistoricalQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol Pair to get data for in CURR1-CURR2 or CURR1CURR2 format. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | multiplier | int | Multiplier of the timespan. | 1 | True |
 | timespan | Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'] | Timespan of the data. | day | True |
 | sort | Literal['asc', 'desc'] | Sort order of the data. | desc | True |
 | limit | int | The number of data entries to return. | 49999 | True |
 | adjusted | bool | Whether the data is adjusted. | True | True |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
+| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| interval | Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'] | Data granularity. | 1d | True |
+| period | Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'] | Time period of the data to return. | max | True |
 </TabItem>
 
 </Tabs>
@@ -107,12 +89,12 @@ CryptoHistoricalQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | datetime | The date of the data. |
-| open | float | The open price of the symbol. |
-| high | float | The high price of the symbol. |
-| low | float | The low price of the symbol. |
-| close | float | The close price of the symbol. |
-| volume | float | The volume of the symbol. |
-| vwap | float | Volume Weighted Average Price of the symbol. |
+| open | float | The open price. |
+| high | float | The high price. |
+| low | float | The low price. |
+| close | float | The close price. |
+| volume | float | The trading volume. |
+| vwap | float | Volume Weighted Average Price over the period. |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -120,12 +102,12 @@ CryptoHistoricalQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | datetime | The date of the data. |
-| open | float | The open price of the symbol. |
-| high | float | The high price of the symbol. |
-| low | float | The low price of the symbol. |
-| close | float | The close price of the symbol. |
-| volume | float | The volume of the symbol. |
-| vwap | float | Volume Weighted Average Price of the symbol. |
+| open | float | The open price. |
+| high | float | The high price. |
+| low | float | The low price. |
+| close | float | The close price. |
+| volume | float | The trading volume. |
+| vwap | float | Volume Weighted Average Price over the period. |
 | adj_close | float | Adjusted Close Price of the symbol. |
 | unadjusted_volume | float | Unadjusted volume of the symbol. |
 | change | float | Change in the price of the symbol from the previous day. |
@@ -139,13 +121,14 @@ CryptoHistoricalQueryParams,
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | date | datetime | The date of the data. |
-| open | float | The open price of the symbol. |
-| high | float | The high price of the symbol. |
-| low | float | The low price of the symbol. |
-| close | float | The close price of the symbol. |
-| volume | float | The volume of the symbol. |
-| vwap | float | Volume Weighted Average Price of the symbol. |
+| open | float | The open price. |
+| high | float | The high price. |
+| low | float | The low price. |
+| close | float | The close price. |
+| volume | float | The trading volume. |
+| vwap | float | Volume Weighted Average Price over the period. |
 | transactions | int | Number of transactions for the symbol in the time period. |
 </TabItem>
 
 </Tabs>
+

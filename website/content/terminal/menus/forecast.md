@@ -2,6 +2,7 @@
 title: Forecast
 description: A comprehensive guide exploring the Forecast menu, a machine learning
   toolkit providing high-level, state-of-the-art, components.
+  toolkit providing high-level components for quickly providing state-of-the-art results.
   Features include Data Loading, Data Exploration, Feature Engineering, Time Series
   Forecasting, Anomaly Detection, and Miscellaneous AI Tools. This page presents real-world
   examples and workflows for beginners and advanced users.
@@ -41,7 +42,7 @@ The Forecast menu is entered from the Main menu, `forecast`, or with the absolut
 
 ![The Forecast Menu](https://user-images.githubusercontent.com/85772166/233540050-071524c6-f374-4241-aa31-cf33b7685e22.png)
 
-There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/data-available/crypto) and [`/stocks` menu](/terminal/data-available/stocks)
+There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/menus/crypto/introduction.md) and [`/stocks` menu](/terminal/menus/stocks/introduction.md)
 
 The menu is divided into sections for:
 
@@ -58,7 +59,7 @@ and the functions within these groups are described in the following sections.
 
 #### With the Load Command
 
-If the Forecast menu has not been entered directly through the [`/crypto`](/terminal/data-available/crypto) or [`/stocks`](/terminal/data-available/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
+If the Forecast menu has not been entered directly through the [`/crypto`](/website/content/terminal/menus/crypto) or [`/stocks`](/website/content/terminal/menus/stocks) menus, a dataset must be loaded before commencing any work.  Use the `load` command to open one from a CSV file placed in the OpenBBUserData folder.  The paths where the auto completion engine is looking for files is printed on the screen directly above the `load` command, `Looking for data in:`
 
 ![Loading Data](https://user-images.githubusercontent.com/85772166/233540104-2aad880e-c077-448a-9aff-9d2f18baf19e.png)
 

@@ -1,32 +1,12 @@
 ---
 title: Key Executives
-description: This page provides detailed information on how to use the KeyExecutives
-  model in openbb_provider, including parameter specifications and the data structure.
-keywords:
-- KeyExecutives
-- openbb_provider
-- KeyExecutivesQueryParams
-- KeyExecutivesData
-- Symbol
-- Provider
-- Fmp
-- Parameters
-- Data
-- Python
-- Standard models
-- Gender
-- Title
-- Query
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Key Executives - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -77,3 +57,4 @@ KeyExecutivesQueryParams,
 </TabItem>
 
 </Tabs>
+

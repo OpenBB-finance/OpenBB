@@ -1,29 +1,12 @@
 ---
 title: Secured Overnight Financing Rate
-description: This page provides implementation details for SOFR rates. It contains
-  code snippets to import the related classes, the parameters and data details. It
-  is organized in tabs, separating 'standard' and 'fred' information.
-keywords:
-- SOFR
-- SOFRData
-- SOFRQueryParams
-- Python
-- code snippets
-- implementation details
-- parameters
-- data
-- fred
-- standard
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Secured Overnight Financing Rate - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -80,3 +63,4 @@ SOFRQueryParams,
 </TabItem>
 
 </Tabs>
+

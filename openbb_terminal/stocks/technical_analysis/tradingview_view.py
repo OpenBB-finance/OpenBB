@@ -49,7 +49,9 @@ def print_recommendation(
     if (isinstance(recom, pd.DataFrame) and recom.empty) or (
         not isinstance(recom, pd.DataFrame) and not recom
     ):
-        console.print("[red]The API did not return any recommendations.[/red]\n")
+        console.print(
+            "[red]The API did not return recommendations. Please make sure to include the desired parameters.[/red]\n"
+        )
         return
 
     export_data(

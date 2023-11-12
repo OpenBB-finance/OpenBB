@@ -96,8 +96,8 @@ class ScreenerController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        f0 = r"(p\/e|fwd p\/e|p\/s|p\/b|p\/c|p\/fcf)"
-        f1 = r"(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)"
+        f0 = r"(p\/e|fwdp\/e|p\/s|p\/b|p\/c|p\/fcf)"
+        f1 = r"(P\/E|FwdP\/E|P\/S|P\/B|P\/C|P\/FCF)"
 
         sort_filter = r"((\ -s |\ --sort ).*?" + r"(" + f0 + r"|" + f1 + r")" + r"*)"
 

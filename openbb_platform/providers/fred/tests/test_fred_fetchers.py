@@ -6,7 +6,7 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDCPIFetcher
+from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -45,10 +45,10 @@ def vcr_config():
 @pytest.mark.record_http
 @pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredcpi_fetcher(credentials=test_credentials):
-    """Test FREDCPIFetcher."""
+    """Test FREDConsumerPriceIndexFetcher."""
     params = {"countries": ["portugal", "spain"]}
 
-    fetcher = FREDCPIFetcher()
+    fetcher = FREDConsumerPriceIndexFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
