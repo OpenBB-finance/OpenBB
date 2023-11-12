@@ -76,11 +76,11 @@ class ECBBalanceOfPaymentsFetcher(
 
         results: List[Dict] = []
 
-        series_ids = generate_bps_series_ids(
+        _series_ids = generate_bps_series_ids(
             query.frequency, query.report_type, country=query.country
         )
-        series_ids = list(series_ids.values())
-        names = list(series_ids)
+        names = list(_series_ids)
+        series_ids = list(_series_ids.values())
         data = {}
 
         def get_one(series_id, name):
