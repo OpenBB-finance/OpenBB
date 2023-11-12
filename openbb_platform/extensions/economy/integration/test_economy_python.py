@@ -179,9 +179,30 @@ def test_economy_gdp_real(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"report_type": "summary", "frequency": "monthly", "country": None}),
-        ({"report_type": "direct_investment", "frequency": "monthly", "country": None}),
-        ({"report_type": "main", "frequency": "quarterly", "country": "united_states"}),
+        (
+            {
+                "report_type": "summary",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "direct_investment",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "main",
+                "frequency": "quarterly",
+                "country": "united_states",
+                "provider": "ecb",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
