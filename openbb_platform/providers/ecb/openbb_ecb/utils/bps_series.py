@@ -27,6 +27,7 @@ BPS_COUNTRIES = Literal[
     "united_kingdom",
     "united_states",
     "total",
+    None
 ]
 
 BPS_COUNTRIES_DICT = {
