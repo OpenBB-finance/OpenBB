@@ -1,51 +1,12 @@
 ---
-title: Executive Compensation
-description: This page provides detailed information about the 'Executive Compensation'
-  model that includes specific names, parameters, and data associated with it. The
-  content provides details of different executive compensations including salary,
-  bonuses, stock awards, and total compensation for specific company executives referenced
-  via symbols and Central Index Key (CIK). It defines the classes, import statement,
-  parameters and data specification.
-keywords:
-- Executive Compensation
-- Python
-- ExecutiveCompensationQueryParams
-- ExecutiveCompensationData
-- Implementation details
-- Class names
-- Data class
-- Parameters class
-- Model name
-- Import Statement
-- Parameters
-- fmp
-- CIK
-- symbol
-- provider
-- Data
-- salary
-- bonus
-- stock award
-- incentive plan compensation
-- total compensation
-- filing date
-- accepted date
-- name and position
-- year
-- all other compensation
-- url
-- Tabs
-- TabItem
+title: Get Executive Compensation
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Executive Compensation - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -86,7 +47,7 @@ ExecutiveCompensationQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | cik | str | Central Index Key (CIK) of the company. |
 | filing_date | date | Date of the filing. |
 | accepted_date | datetime | Date the filing was accepted. |
@@ -102,3 +63,4 @@ ExecutiveCompensationQueryParams,
 </TabItem>
 
 </Tabs>
+

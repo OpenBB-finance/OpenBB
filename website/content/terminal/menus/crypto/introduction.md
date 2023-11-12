@@ -94,6 +94,6 @@ The Cryptocurrency menu has an extensive list of available sub-menus ranging fro
 
 There are also entry points to Terminal toolkits:
 
-- [Forecast](/website/content/terminal/menus/forecast.md): Forecast menu.
-- [Quantitative Analysis](/website/content/terminal/menus/common/qa.md): Quantitative Analysis menu.
-- [Technical Analysis](/website/content/terminal/menus/common/ta.md): Technical Analysis menu.
+- [Forecast](/terminal/menus/forecast.md): Forecast menu.
+- [Quantitative Analysis](/terminal/menus/common/qa.md): Quantitative Analysis menu.
+- [Technical Analysis](/terminal/menus/common/ta.md): Technical Analysis menu.

@@ -1,35 +1,12 @@
 ---
-title: Market Risk Premium
-description: This page provides technical documentation on the implementation of the
-  'RiskPremium' class with parameters and data attributes. It involves understanding
-  Python syntax and detailed explanation of each attribute.
-keywords:
-- Docusaurus
-- Metadata
-- SEO
-- Risk
-- Premium
-- Implementation
-- Python
-- Parameters
-- Data
-- Class names
-- Query
-- Country
-- Continent
-- Market
-- Equity
-- FMP
+title: Historical Market Risk Premium
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Market Risk Premium - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -76,3 +53,4 @@ RiskPremiumQueryParams,
 </TabItem>
 
 </Tabs>
+
