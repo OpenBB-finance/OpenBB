@@ -13,7 +13,7 @@ from pydantic.fields import FieldInfo
 
 website_path = Path(__file__).parent.absolute()
 
-reference_import = """
+REFERENCE_IMPORT = """
 import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
@@ -21,35 +21,62 @@ import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
 
 def generate_markdown(meta_command: dict):
-    markdown = f"""---
-title: {meta_command["name"]}
-description: OpenBB Platform Function
----\n\n"""
+    markdown = f"---\ntitle: {meta_command['name']}\ndescription: OpenBB Platform Function\n---\n\n"
 
-    markdown += """import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';\n\n"""
+    markdown += "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
+    markdown += (
+        "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
+    )
 
-    markdown += f"# {meta_command['name']}\n\n"
     markdown += generate_markdown_section(meta_command)
     return markdown
 
 
 def generate_markdown_section(meta: Dict[str, Any]):
-    markdown = f"{meta['description']}\n\n"
-    markdown += f"```python wordwrap\n{meta['func_def']}\n```\n\n"
+    # Process description to handle docstring examples
+    lines = meta["description"].split("\n")
+    description = []
+    example_code = []
+    in_example_block = False
+
+    for line in lines:
+        if line.strip().startswith(">>>"):
+            in_example_block = True
+            # Remove leading '>>>' and spaces
+            example_line = line.strip()[4:]
+            example_code.append(example_line)
+        else:
+            if in_example_block:
+                # We've reached the end of an example block
+                in_example_block = False
+                # Append the gathered example code as a block
+                description.append("```python\n" + "\n".join(example_code) + "\n```\n")
+                example_code = []  # Reset for the next example block
+            # Add the current line to the description
+            description.append(line.strip())
+
+    # Join the description parts and handle any remaining example code
+    if example_code:  # If there's an example block at the end of the docstring
+        description.append("```python\n" + "\n".join(example_code) + "\n```\n")
+
+    markdown_description = "\n".join(description)
+
+    markdown = markdown_description + "\n\n"
+    if not example_code:  # Only add function definition if there was no example code
+        markdown += "```python wordwrap\n" + meta["func_def"] + "\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if meta["params"]:
         markdown += generate_params_markdown_section(meta)
     else:
-        markdown += "This function does not take any parameters.\n\n"
+        markdown += "This function does not take standardized parameters.\n\n"
 
     markdown += "---\n\n## Returns\n\n"
     if meta["returns"]:
         return_desc = meta["returns"]["doc"] if meta["returns"]["doc"] else ""
         markdown += f"```python wordwrap\n{return_desc}\n```\n\n"
     else:
-        markdown += "This function does not return anything\n\n"
+        markdown += "This function does not return a standardized model\n\n"
 
     markdown += "---\n\n"
 
@@ -117,7 +144,7 @@ def write_reference_index(
     data_models : bool, optional
         Whether the folder is a data_models folder, by default False
     """
-    f.write(f"# {fname}\n{reference_import}")
+    f.write(f"# {fname}\n{REFERENCE_IMPORT}")
     for folder in path.glob("*"):
         if folder.is_dir():
             f.write(
@@ -239,11 +266,21 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 }
             )
 
+        # Extract the full path from the 'path' variable, excluding the method name
+        path_components = path.strip("/").split("/")
+        # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
+        full_command_path = "obb." + ".".join(path_components[:-1])
+
+        # Now add the actual function name
+        func_name = route.endpoint.__name__
+        full_command_path += f".{func_name}"
+
+        # Update the func_def to include the full path
         def_params = [
             f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
             for d in meta_command["params"]
         ]
-        meta_command["func_def"] = f"{func_name}({', '.join(def_params)})"
+        meta_command["func_def"] = f"{full_command_path}({', '.join(def_params)})"
 
         available_providers = re.sub(
             r"Optional\[Literal\[([^\]]*)\]",
@@ -418,8 +455,8 @@ def generate_implementation_details_markdown_section(data_model: str) -> str:
     return markdown
 
 
-def generate_sdk_markdown() -> None:
-    """Generate markdown files for OpenBB FastAPI SDK Docusaurus website."""
+def generate_platform_markdown() -> None:
+    """Generate markdown files for OpenBB Docusaurus website."""
     route_map = PathHandler.build_route_map()
     path_list = sorted(PathHandler.build_path_list(route_map=route_map))
 
@@ -459,13 +496,12 @@ def generate_sdk_markdown() -> None:
                 data_model_card_description,
             ) = generate_data_model_card_info(meta_command)
 
-            data_markdown = f"""---
-title: {data_model_card_title}
-description: OpenBB Platform Data Model
----\n\n
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-\n\n"""
+            data_markdown = (
+                f"---\ntitle: {data_model_card_title}\n"
+                "description: OpenBB Platform Data Model\n---\n\n"
+                "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
+                "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
+            )
 
             data_markdown += generate_implementation_details_markdown_section(
                 data_model
@@ -543,4 +579,4 @@ import TabItem from '@theme/TabItem';
 
 
 if __name__ == "__main__":
-    generate_sdk_markdown()
+    generate_platform_markdown()
