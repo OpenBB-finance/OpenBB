@@ -1,59 +1,12 @@
 ---
 title: Balance Sheet Statement Growth
-description: This documentation page provides detailed implementation guidelines for
-  `BalanceSheetGrowth` including class parameters, import statement, data entries
-  and much more. It it designed to make it easy even for beginners to understand and
-  work on `BalanceSheetGrowth`.
-keywords:
-- BalanceSheetGrowth
-- BalanceSheetGrowthData
-- BalanceSheetGrowthQueryParams
-- import statement
-- parameters
-- data entries
-- growth rate
-- symbol
-- limit
-- provider
-- date
-- period
-- cash and cash equivalents
-- short-term investments
-- net receivables
-- inventory
-- other current assets
-- net property, plant, and equipment
-- goodwill
-- intangible assets
-- long-term investments
-- tax assets
-- other non-current assets
-- other assets
-- accounts payable
-- short-term debt
-- tax payables
-- deferred revenue
-- long-term debt
-- other current liabilities
-- non-current liabilities
-- common stock
-- retained earnings
-- accumulated other comprehensive income/loss
-- total stockholders' equity
-- total liabilities
-- total investments
-- total debt
-- net debt
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Balance Sheet Statement Growth - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -95,7 +48,7 @@ BalanceSheetGrowthQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
+| symbol | str | Symbol representing the entity requested in the data. |
 | date | date | The date of the data. |
 | period | str | Reporting period. |
 | growth_cash_and_cash_equivalents | float | Growth rate of cash and cash equivalents. |
@@ -140,3 +93,4 @@ BalanceSheetGrowthQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,13 +1,14 @@
 ---
 title: Overview
 sidebar_position: 1
-description: Information about OpenBB Platform's Python client and Fast API; details
+description: An overview for getting started with the OpenBB Platform's Python client and Fast API; details
   on authorization, data providers, settings, responses, commands, logging, and features
   such as dynamic command execution.
 keywords:
 - OpenBB Platform
 - Python client
 - Fast API
+- getting started
 - authorization
 - data providers
 - OpenBB Hub
@@ -101,7 +102,7 @@ base64_msg = base64_bytes.decode('ascii')
 
 
 symbol="SPY"
-url = f"http://127.0.0.1:8000/api/v1/stocks/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
+url = f"http://127.0.0.1:8000/api/v1/equity/price/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
 headers = {"accept": "application/json", "Authorization": f"Basic {base64_msg}"}
 
 response = requests.get(url=url, headers=headers)
@@ -122,7 +123,7 @@ Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as 
     "polygon_api_key": "REPLACE",
     "benzinga_api_key": "REPLACE",
     "fred_api_key": "REPLACE",
-    "quandl_api_key": "REPLACE",
+    "nasdaq_api_key": "REPLACE",
     "intrinio_api_key": "REPLACE",
     "alpha_vantage_api_key": "REPLACE",
     }
@@ -172,6 +173,23 @@ HTTP_PROXY="http://10.10.10.10:8000"
 
 ## User Settings
 
+| **Preference**        | **Default**                      | **Options**            | **Description** |
+|-----------------------|----------------------------------|------------------------|---------------|
+| data_directory        | /home/OpenBBUserData             | Any path.              | When launching the application for the first time  this directory will be created. It serves as the default location where the application stores usage artifacts  such as logs and exports. |
+| export_directory      | /home/OpenBBUserData/exports     | Any path.              | The OpenBB Charting Extension provides the capability to export images in various formats. This is the directory where it attempts to save such exports.  |
+| cache_directory | /home/OpenBBUserData/cache | Any path.              | The directory where http requests and database caches are stored, for functions with caching. |
+| user_styles_directory | /home/OpenBBUserData/styles/user | Any path.              | The OpenBB Charting Extension supports custom stylization. This directory is the location where it looks for user-defined styles. If no user styles are found in this directory  the application will proceed with the default styles.  |
+| charting_extension    | openbb_charting                  | ["openbb_charting"] | Name of the charting extension to be used with the application.  |
+| chart_style           | dark                             | ["dark", "light"]    | The default color style to use with the OpenBB Charting Extension plots. Options include "dark" and "light".  |
+| plot_enable_pywry     | True                             | [True, False]        | Whether the application should enable PyWry. If PyWry is disabled  the image will open in your default browser  otherwise  it will be displayed within your editor or in a separate PyWry window.  |
+| plot_pywry_width      | 1400                             | Any positive integer.  | PyWry window width.  |
+| plot_pywry_height     | 762                              | Any positive integer.  | PyWry window height. |
+| plot_open_export      | False                            | [True, False]        | Controls whether the "Save As" window should pop up as soon as the image is displayed."  |
+| table_style           | dark                             | ["dark", "light"]         | "The default color style to use with the OpenBB Charting Extension tables. Options are "dark" and "light""   |
+| request_timeout       | 15                               | Any positive integer.  | Specifies the timeout duration for HTTP requests.  |
+| metadata              | True                             | [True, False]        | Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.  |
+| output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe` | `numpy` or `polars` will render the application's API non-functional. |
+
 User settings can be set from the Python interface directly.
 
 ```python
@@ -183,7 +201,7 @@ obb.user.preferences
 obb.user.defaults
 ```
 
-Notably, `obb.user.defaults`, defines default providers for any command.  They are stored in the `user_settings.json` file, under `routes`.
+Notably, `obb.user.defaults`, defines default providers for any command.  They are stored in the `user_settings.json` file, under `routes`.  Below is an example of what it might look like.
 
 ```json
 {
@@ -195,21 +213,22 @@ Notably, `obb.user.defaults`, defines default providers for any command.  They a
     },
     "defaults": {
         "routes": {
-            "/stocks/fa/balance": {
+            "/equity/fundamental/balance": {
                 "provider": "polygon"
             },
-            "/stocks/load": {
+            "/equity/price/historical": {
                 "provider": "fmp"
             },
-            "/stocks/news": {
+            "/equity/news": {
                 "provider": "benzinga"
             }
         }
     },
     {
-        "data_directory": "~/.openbb_platform", // Where to store data
-        "export_directory": "~/.openbb_platform/exports", // Where to store exports
-        "user_styles_directory": "~/.openbb_platform/styles/user", // Where to store user styles
+        "data_directory": "~/OpenBBUserData", // Where to store data
+        "export_directory": "~/OpenBBUserData/exports", // Where to store exports
+        "cache_directory": "~/OpenBBUserData/cache", // Where to store the cache
+        "user_styles_directory": "~/OpenBBUserData/styles/user", // Where to store user styles
         "charting_extension": "openbb_charting", // Charting extension to use
         "chart_style": "dark", // Chart style to use (dark or light)
         "plot_enable_pywry": true, // Whether to enable PyWry
@@ -223,6 +242,16 @@ Notably, `obb.user.defaults`, defines default providers for any command.  They a
     }
 }
 ```
+
+:::note
+
+### **Notes on Preferences**
+
+- If a `OpenBBUserData` folder in not in the home directory, the application will create one on first run. The user preferences with paths all default to this folder, be it exports, styles or data - this can be changed at any time to suit.
+- The `OpenBBUserData` will still be created even if preferences are not pointing to it, this is because the application needs a place to store logs and other artifacts.
+- One way of exporting files or images on the OpenBB Platform is to leverage that functionality from the OpenBB Charting Extension. The `export_directory` preference is the location where the extension will attempt to save such exports.
+
+:::
 
 ## Basic Response
 
@@ -240,7 +269,7 @@ extra: ...              # Extra info.
 ```python
 from openbb import obb
 
-data = obb.stocks.load("SPY", provider="polygon")
+data = obb.equity.price.historical("SPY", provider="polygon")
 
 data
 ```
@@ -271,7 +300,7 @@ from openbb_core.app.model.obbject import OBBject
 
 data = []
 symbol="SPY"
-url = f"http://127.0.0.1:8000/api/v1/stocks/load?provider=polygon&symbol={symbol}"
+url = f"http://127.0.0.1:8000/api/v1/equity/price/historical?provider=polygon&symbol={symbol}"
 headers = {"accept": "application/json"}
 
 response = requests.get(url, headers=headers, timeout=3)
@@ -290,7 +319,7 @@ Dynamic execution provides an alternate entry point to functions.  This method r
 from openbb_core.app.command_runner import CommandRunner
 runner = CommandRunner()
 output = runner.run(
-    "/stocks/fa/ratios",
+    "/equity/fundamental/ratios",
     provider_choices={
         "provider": "fmp",
     },
@@ -341,4 +370,4 @@ obb.account.save()
 obb.account.logout()
 ```
 
-Any saved changes will be pulled to a new session after logging in.  If `remember_me=False`, ending the Python session will be an equivalent to logging out.
+Any saved changes will be pulled to a new session after logging in.  Ending the Python session will be an equivalent to logging out, if `remember_me=False`.

@@ -1,28 +1,12 @@
 ---
 title: Revenue Geographic
-description: This page provides implementation details and parameters related to the
-  RevenueGeographic data model. This includes parameters for querying data, the data
-  structure, provider options, as well as data output details about global revenue
-  distribution.
-keywords:
-- RevenueGeographic
-- RevenueGeographicQueryParams
-- RevenueGeographicData
-- data model
-- implementation details
-- revenue distribution
-- parameters
-- geographic segment data
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Revenue Geographic - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -51,7 +35,7 @@ RevenueGeographicQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['quarter', 'annual'] | Period of the data to return. | annual | True |
+| period | Literal['quarter', 'annual'] | Time period of the data to return. | annual | True |
 | structure | Literal['hierarchical', 'flat'] | Structure of the returned data. | flat | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
@@ -75,3 +59,4 @@ RevenueGeographicQueryParams,
 </TabItem>
 
 </Tabs>
+

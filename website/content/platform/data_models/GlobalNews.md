@@ -1,41 +1,12 @@
 ---
 title: Global News
-description: This page provides implementation details for retrieving global news
-  data using OpenBB provider models. Different parameters and datas are documented
-  for different news providers such as Benzinga, FMP, and Intrinio. Understanding
-  and using the parameters included here will allow for more efficient and targeted
-  news retrieval.
-keywords:
-- OpenBB
-- Global News
-- GlobalNewsData
-- GlobalNewsQueryParams
-- Python
-- docusaurus
-- Benzinga
-- FMP
-- Intrinio
-- ISIN
-- Cusip
-- News parameters
-- News retrieval
-- News attributes
-- Class names
-- Import statement
-- News providers
-- News Data
-- API
-- Documentation
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Global News - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -63,16 +34,16 @@ GlobalNewsQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| limit | int | Number of articles to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 </TabItem>
 
 <TabItem value='benzinga' label='benzinga'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| limit | int | Number of articles to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | display | Literal['headline', 'abstract', 'full'] | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). | full | True |
 | date | str | Date of the news to retrieve. | None | True |
 | start_date | str | Start date of the news to retrieve. | None | True |
@@ -89,6 +60,18 @@ GlobalNewsQueryParams,
 | content_types | str | Content types of the news to retrieve. | None | True |
 </TabItem>
 
+<TabItem value='biztoc' label='biztoc'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| filter | Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag'] | Filter by type of news. | latest | True |
+| source | str | Filter by a specific publisher. Only valid when filter is set to source. | bloomberg | True |
+| tag | str | Tag, topic, to filter articles by. Only valid when filter is set to tag. | None | True |
+| term | str | Search term to filter articles by. This overrides all other filters. | None | True |
+</TabItem>
+
 </Tabs>
 
 ## Data
@@ -98,9 +81,9 @@ GlobalNewsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| date | datetime | Published date of the news. |
+| date | datetime | The date of the data. Here it is the published date of the news. |
 | title | str | Title of the news. |
-| image | str | Image URL of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
 </TabItem>
@@ -109,28 +92,42 @@ GlobalNewsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| date | datetime | Published date of the news. |
+| date | datetime | The date of the data. Here it is the published date of the news. |
 | title | str | Title of the news. |
-| image | str | Image URL of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | id | str | ID of the news. |
 | author | str | Author of the news. |
 | teaser | str | Teaser of the news. |
-| images | List[Dict[str, str]] | Images associated with the news. |
 | channels | str | Channels associated with the news. |
 | stocks | str | Stocks associated with the news. |
 | tags | str | Tags associated with the news. |
 | updated | datetime | None |
 </TabItem>
 
+<TabItem value='biztoc' label='biztoc'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | datetime | The date of the data. Here it is the published date of the news. |
+| title | str | Title of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
+| text | str | Text/body of the news. |
+| url | str | URL of the news. |
+| favicon | str | Icon image for the source of the article. |
+| tags | List[str] | Tags for the article. |
+| id | str | Unique Article ID. |
+| score | float | Search relevance score for the article. |
+</TabItem>
+
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| date | datetime | Published date of the news. |
+| date | datetime | The date of the data. Here it is the published date of the news. |
 | title | str | Title of the news. |
-| image | str | Image URL of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | site | str | Site of the news. |
@@ -140,9 +137,9 @@ GlobalNewsQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| date | datetime | Published date of the news. |
+| date | datetime | The date of the data. Here it is the published date of the news. |
 | title | str | Title of the news. |
-| image | str | Image URL of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
 | id | str | Article ID. |
@@ -150,3 +147,4 @@ GlobalNewsQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,35 +1,12 @@
 ---
 title: Balance Sheet
-description: This page provides comprehensive details on parameters and data for balance
-  sheets. It includes import statements, class names, and specific figures required
-  for data fetching from financial data providers 'standard', 'fmp', 'intrinio', and
-  'polygon'.
-keywords:
-- balance sheet
-- financial data
-- OpenBB provider
-- standard models
-- Python
-- financial data fetching
-- data provider
-- financial statement
-- import statement
-- class names
-- parameters
-- data
-- fmp
-- intrinio
-- polygon
+description: OpenBB Platform Data Model
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Balance Sheet - Data_Models | OpenBB Platform Docs" />
-
+<!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
 
 ---
 
@@ -58,9 +35,9 @@ BalanceSheetQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -68,22 +45,10 @@ BalanceSheetQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | cik | str | Central Index Key (CIK) of the company. | None | True |
-</TabItem>
-
-<TabItem value='intrinio' label='intrinio'>
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| type | Literal['reported', 'standardized'] | Type of the statement to be fetched. | reported | True |
-| year | int | Year of the statement to be fetched. | None | True |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
@@ -91,12 +56,9 @@ BalanceSheetQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| company_name | str | Name of the company. | None | True |
-| company_name_search | str | Name of the company to search. | None | True |
-| sic | str | The Standard Industrial Classification (SIC) of the company. | None | True |
+| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | filing_date | date | Filing date of the financial statement. | None | True |
 | filing_date_lt | date | Filing date less than the given date. | None | True |
 | filing_date_lte | date | Filing date less than or equal to the given date. | None | True |
@@ -121,104 +83,104 @@ BalanceSheetQueryParams,
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the fetched statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | cik | str | Central Index Key (CIK) of the company. |
 | currency | str | Reporting currency. |
 | filling_date | date | Filling date. |
 | accepted_date | datetime | Accepted date. |
 | period | str | Reporting period of the statement. |
-| cash_and_cash_equivalents | int | Cash and cash equivalents |
-| short_term_investments | int | Short-term investments |
-| long_term_investments | int | Long-term investments |
-| inventory | int | Inventory |
-| net_receivables | int | Receivables, net |
-| marketable_securities | int | Marketable securities |
-| property_plant_equipment_net | int | Property, plant and equipment, net |
-| goodwill | int | Goodwill |
-| assets | int | Total assets |
-| current_assets | int | Total current assets |
-| other_current_assets | int | Other current assets |
-| intangible_assets | int | Intangible assets |
-| tax_assets | int | Accrued income taxes |
-| other_assets | int | Other assets |
-| non_current_assets | int | Total non-current assets |
-| other_non_current_assets | int | Other non-current assets |
-| account_payables | int | Accounts payable |
-| tax_payables | int | Accrued income taxes |
-| deferred_revenue | int | Accrued income taxes, other deferred revenue |
-| total_assets | int | Total assets |
-| long_term_debt | int | Long-term debt, Operating lease obligations, Long-term finance lease obligations |
-| short_term_debt | int | Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year |
-| liabilities | int | Total liabilities |
-| other_current_liabilities | int | Other current liabilities |
-| current_liabilities | int | Total current liabilities |
-| total_liabilities_and_total_equity | int | Total liabilities and total equity |
-| other_liabilities | int | Other liabilities |
-| other_non_current_liabilities | int | Other non-current liabilities |
-| non_current_liabilities | int | Total non-current liabilities |
-| total_liabilities_and_stockholders_equity | int | Total liabilities and stockholders' equity |
-| other_stockholder_equity | int | Other stockholders equity |
-| total_stockholders_equity | int | Total stockholders' equity |
-| total_liabilities | int | Total liabilities |
-| common_stock | int | Common stock |
-| preferred_stock | int | Preferred stock |
-| accumulated_other_comprehensive_income_loss | int | Accumulated other comprehensive income (loss) |
-| retained_earnings | int | Retained earnings |
-| minority_interest | int | Minority interest |
-| total_equity | int | Total equity |
+| cash_and_cash_equivalents | float | Cash and cash equivalents |
+| short_term_investments | float | Short-term investments |
+| long_term_investments | float | Long-term investments |
+| inventory | float | Inventory |
+| net_receivables | float | Receivables, net |
+| marketable_securities | float | Marketable securities |
+| property_plant_equipment_net | float | Property, plant and equipment, net |
+| goodwill | float | Goodwill |
+| assets | float | Total assets |
+| current_assets | float | Total current assets |
+| other_current_assets | float | Other current assets |
+| intangible_assets | float | Intangible assets |
+| tax_assets | float | Accrued income taxes |
+| non_current_assets | float | Total non-current assets |
+| other_non_current_assets | float | Other non-current assets |
+| account_payables | float | Accounts payable |
+| tax_payables | float | Accrued income taxes |
+| deferred_revenue | float | Accrued income taxes, other deferred revenue |
+| other_assets | float | Other assets |
+| total_assets | float | Total assets |
+| long_term_debt | float | Long-term debt, Operating lease obligations, Long-term finance lease obligations |
+| short_term_debt | float | Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year |
+| liabilities | float | Total liabilities |
+| other_current_liabilities | float | Other current liabilities |
+| current_liabilities | float | Total current liabilities |
+| total_liabilities_and_total_equity | float | Total liabilities and total equity |
+| other_non_current_liabilities | float | Other non-current liabilities |
+| non_current_liabilities | float | Total non-current liabilities |
+| total_liabilities_and_stockholders_equity | float | Total liabilities and stockholders' equity |
+| other_stockholder_equity | float | Other stockholders equity |
+| total_stockholders_equity | float | Total stockholders' equity |
+| other_liabilities | float | Other liabilities |
+| total_liabilities | float | Total liabilities |
+| common_stock | float | Common stock |
+| preferred_stock | float | Preferred stock |
+| accumulated_other_comprehensive_income_loss | float | Accumulated other comprehensive income (loss) |
+| retained_earnings | float | Retained earnings |
+| minority_interest | float | Minority interest |
+| total_equity | float | Total equity |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol to get data for. |
-| date | date | Date of the fetched statement. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| date | date | The date of the data. |
 | cik | str | Central Index Key (CIK) of the company. |
 | currency | str | Reporting currency. |
 | filling_date | date | Filling date. |
 | accepted_date | datetime | Accepted date. |
 | period | str | Reporting period of the statement. |
-| cash_and_cash_equivalents | int | Cash and cash equivalents |
-| short_term_investments | int | Short-term investments |
-| long_term_investments | int | Long-term investments |
-| inventory | int | Inventory |
-| net_receivables | int | Receivables, net |
-| marketable_securities | int | Marketable securities |
-| property_plant_equipment_net | int | Property, plant and equipment, net |
-| goodwill | int | Goodwill |
-| assets | int | Total assets |
-| current_assets | int | Total current assets |
-| other_current_assets | int | Other current assets |
-| intangible_assets | int | Intangible assets |
-| tax_assets | int | Accrued income taxes |
-| other_assets | int | Other assets |
-| non_current_assets | int | Total non-current assets |
-| other_non_current_assets | int | Other non-current assets |
-| account_payables | int | Accounts payable |
-| tax_payables | int | Accrued income taxes |
-| deferred_revenue | int | Accrued income taxes, other deferred revenue |
-| total_assets | int | Total assets |
-| long_term_debt | int | Long-term debt, Operating lease obligations, Long-term finance lease obligations |
-| short_term_debt | int | Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year |
-| liabilities | int | Total liabilities |
-| other_current_liabilities | int | Other current liabilities |
-| current_liabilities | int | Total current liabilities |
-| total_liabilities_and_total_equity | int | Total liabilities and total equity |
-| other_liabilities | int | Other liabilities |
-| other_non_current_liabilities | int | Other non-current liabilities |
-| non_current_liabilities | int | Total non-current liabilities |
-| total_liabilities_and_stockholders_equity | int | Total liabilities and stockholders' equity |
-| other_stockholder_equity | int | Other stockholders equity |
-| total_stockholders_equity | int | Total stockholders' equity |
-| total_liabilities | int | Total liabilities |
-| common_stock | int | Common stock |
-| preferred_stock | int | Preferred stock |
-| accumulated_other_comprehensive_income_loss | int | Accumulated other comprehensive income (loss) |
-| retained_earnings | int | Retained earnings |
-| minority_interest | int | Minority interest |
-| total_equity | int | Total equity |
+| cash_and_cash_equivalents | float | Cash and cash equivalents |
+| short_term_investments | float | Short-term investments |
+| long_term_investments | float | Long-term investments |
+| inventory | float | Inventory |
+| net_receivables | float | Receivables, net |
+| marketable_securities | float | Marketable securities |
+| property_plant_equipment_net | float | Property, plant and equipment, net |
+| goodwill | float | Goodwill |
+| assets | float | Total assets |
+| current_assets | float | Total current assets |
+| other_current_assets | float | Other current assets |
+| intangible_assets | float | Intangible assets |
+| tax_assets | float | Accrued income taxes |
+| non_current_assets | float | Total non-current assets |
+| other_non_current_assets | float | Other non-current assets |
+| account_payables | float | Accounts payable |
+| tax_payables | float | Accrued income taxes |
+| deferred_revenue | float | Accrued income taxes, other deferred revenue |
+| other_assets | float | Other assets |
+| total_assets | float | Total assets |
+| long_term_debt | float | Long-term debt, Operating lease obligations, Long-term finance lease obligations |
+| short_term_debt | float | Short-term borrowings, Long-term debt due within one year, Operating lease obligations due within one year, Finance lease obligations due within one year |
+| liabilities | float | Total liabilities |
+| other_current_liabilities | float | Other current liabilities |
+| current_liabilities | float | Total current liabilities |
+| total_liabilities_and_total_equity | float | Total liabilities and total equity |
+| other_non_current_liabilities | float | Other non-current liabilities |
+| non_current_liabilities | float | Total non-current liabilities |
+| total_liabilities_and_stockholders_equity | float | Total liabilities and stockholders' equity |
+| other_stockholder_equity | float | Other stockholders equity |
+| total_stockholders_equity | float | Total stockholders' equity |
+| other_liabilities | float | Other liabilities |
+| total_liabilities | float | Total liabilities |
+| common_stock | float | Common stock |
+| preferred_stock | float | Preferred stock |
+| accumulated_other_comprehensive_income_loss | float | Accumulated other comprehensive income (loss) |
+| retained_earnings | float | Retained earnings |
+| minority_interest | float | Minority interest |
+| total_equity | float | Total equity |
 | calendar_year | int | Calendar Year |
 | cash_and_short_term_investments | int | Cash and Short Term Investments |
 | goodwill_and_intangible_assets | int | Goodwill and Intangible Assets |
@@ -233,3 +195,4 @@ BalanceSheetQueryParams,
 </TabItem>
 
 </Tabs>
+
