@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-futures"
-version = "0.1.0a4"
+version = "0.1.0a5"
 description = "Futures extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_futures" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = "^0.1.0a5"
+openbb-core = "^0.1.0a6"
 
 [build-system]
 requires = ["poetry-core"]

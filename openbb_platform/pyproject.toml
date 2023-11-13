@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "4.0.0a4"
+version = "4.0.0a7"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,45 +8,45 @@ packages = [{ include = "openbb" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = "^0.1.0a5"
+openbb-core = "^0.1.0a6"
 
-openbb-benzinga = "^0.1.0a4"
-openbb-fmp = "^0.1.0a4"
-openbb-fred = "^0.1.0a4"
-openbb-intrinio = "^0.1.0a4"
-openbb-oecd = "^0.1.0a4"
-openbb-polygon = "^0.1.0a4"
-openbb-sec = "^0.1.0a4"
-openbb-tradingeconomics = "^0.1.0a4"
+openbb-benzinga = "^0.1.0a5"
+openbb-fmp = "^0.1.0a5"
+openbb-fred = "^0.1.0a5"
+openbb-intrinio = "^0.1.0a5"
+openbb-oecd = "^0.1.0a5"
+openbb-polygon = "^0.1.0a5"
+openbb-sec = "^0.1.0a5"
+openbb-tradingeconomics = "^0.1.0a5"
 
-openbb-crypto = "^0.1.0a4"
-openbb-currency = "^0.1.0a4"
-openbb-economy = "^0.1.0a4"
-openbb-equity = "^0.1.0a4"
-openbb-etf = "^0.1.0a4"
-openbb-fixedincome = "^0.1.0a4"
-openbb-index = "^0.1.0a4"
-openbb-news = "^0.1.0a4"
-openbb-regulators = "^0.1.0a4"
+openbb-crypto = "^0.1.0a5"
+openbb-currency = "^0.1.0a5"
+openbb-economy = "^0.1.0a5"
+openbb-equity = "^0.1.0a5"
+openbb-etf = "^0.1.0a5"
+openbb-fixedincome = "^0.1.0a5"
+openbb-index = "^0.1.0a5"
+openbb-news = "^0.1.0a5"
+openbb-regulators = "^0.1.0a5"
 
 # Community dependencies
-openbb-alpha-vantage = { version = "^0.1.0a4", optional = true }
-openbb-biztoc = { version = "^0.1.0a4", optional = true }
-openbb-cboe = { version = "^0.1.0a4", optional = true }
-openbb-ecb = { version = "^0.1.0a4", optional = true }
-openbb-finra = { version = "^0.1.0a4", optional = true }
-openbb-nasdaq = { version = "^0.1.0a4", optional = true }
-openbb-seeking-alpha = { version = "^0.1.0a4", optional = true }
-openbb-stockgrid = { version = "^0.1.0a4", optional = true }
-openbb-ultima = { version = "^0.1.0a4", optional = true }
-openbb-wsj = { version = "^0.1.0a4", optional = true }
-openbb-yfinance = { version = "^0.1.0a4", optional = true }
+openbb-alpha-vantage = { version = "^0.1.0a5", optional = true }
+openbb-biztoc = { version = "^0.1.0a5", optional = true }
+openbb-cboe = { version = "^0.1.0a5", optional = true }
+openbb-ecb = { version = "^0.1.0a5", optional = true }
+openbb-finra = { version = "^0.1.0a5", optional = true }
+openbb-nasdaq = { version = "^0.1.0a5", optional = true }
+openbb-seeking-alpha = { version = "^0.1.0a5", optional = true }
+openbb-stockgrid = { version = "^0.1.0a5", optional = true }
+openbb-ultima = { version = "^0.1.0a6", optional = true }
+openbb-wsj = { version = "^0.1.0a5", optional = true }
+openbb-yfinance = { version = "^0.1.0a5", optional = true }
 
-openbb-charting = { version = "^0.1.0a4", optional = true }
-openbb-econometrics = { version = "^0.1.0a4", optional = true }
-openbb-futures = { version = "^0.1.0a4", optional = true }
-openbb-quantitative = { version = "^0.1.0a4", optional = true }
-openbb-technical = { version = "^0.1.0a4", optional = true }
+openbb-charting = { version = "^0.1.0a5", optional = true }
+openbb-econometrics = { version = "^0.1.0a5", optional = true }
+openbb-futures = { version = "^0.1.0a5", optional = true }
+openbb-quantitative = { version = "^0.1.0a5", optional = true }
+openbb-technical = { version = "^0.1.0a5", optional = true }
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
