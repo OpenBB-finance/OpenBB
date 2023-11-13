@@ -95,6 +95,10 @@ class IncomeStatementData(Data):
     depreciation_and_amortization: Optional[StrictFloat] = Field(
         default=None, description="Depreciation and amortization."
     )
+    ebit: Optional[StrictFloat] = Field(
+        default=None,
+        description="Earnings before interest, and taxes.",
+    )
     ebitda: Optional[StrictFloat] = Field(
         default=None,
         description="Earnings before interest, taxes, depreciation and amortization.",
