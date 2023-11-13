@@ -101,15 +101,10 @@ class IntrinioCashFlowStatementFetcher(
 
         def get_financial_statement_data(period: str, data: List[Dict]) -> None:
             statement_data: Dict = {}
-            calculations_data: Dict = {}
 
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
             statement_data = get_data_one(statement_url, **kwargs)
-
-            intrinio_id = f"{query.symbol}-calculations-{period}"
-            calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            calculations_data = get_data_one(calculations_url, **kwargs)
 
             data.append(
                 {
@@ -117,8 +112,7 @@ class IntrinioCashFlowStatementFetcher(
                     "period": statement_data["fundamental"]["fiscal_period"],
                     "cik": statement_data["fundamental"]["company"]["cik"],
                     "symbol": statement_data["fundamental"]["company"]["ticker"],
-                    "financials": statement_data["standardized_financials"]
-                    + calculations_data["standardized_financials"],
+                    "financials": statement_data["standardized_financials"],
                 }
             )
 
