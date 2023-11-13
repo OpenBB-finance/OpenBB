@@ -503,20 +503,20 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "0.1.0a6"
+version = "1.0.0b0"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-0.1.0a6-py3-none-any.whl", hash = "sha256:2ba2df6ae6913dfd15427518de0c065c1eb9ad353e255e2b65e13f028914cec7"},
-    {file = "openbb_core-0.1.0a6.tar.gz", hash = "sha256:6c4044f5b3cc104f1a6c997a177fe4db06723fd169adeddff6b75709bfc9e956"},
+    {file = "openbb_core-1.0.0b0-py3-none-any.whl", hash = "sha256:e748497f837ff3a471a72d40976763ce77883894c8de167689673bd62f8ef774"},
+    {file = "openbb_core-1.0.0b0.tar.gz", hash = "sha256:d804a149767178265ed6be54c8d2ae8cd807c555925cf90eb49783faba35c836"},
 ]
 
 [package.dependencies]
 fastapi = ">=0.103.1,<0.104.0"
 html5lib = ">=1.1,<2.0"
 importlib_metadata = ">=6.8.0,<7.0.0"
-openbb-provider = ">=0.1.0a4,<0.2.0"
+openbb-provider = ">=1.0.0b0,<2.0.0"
 pandas = ">=1.5.3"
 posthog = ">=3.0.1,<4.0.0"
 python-jose = ">=3.3.0,<4.0.0"
@@ -527,13 +527,13 @@ websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_provider-0.1.0a5-py3-none-any.whl", hash = "sha256:f5fb4ff02e524ee671fc21c85e63d3e3a2441c93288eb2e85894f2905aadf04b"},
-    {file = "openbb_provider-0.1.0a5.tar.gz", hash = "sha256:7083968319250addfc8f21f74f94a2c4010346c2656b7cea6b1d560a576e2b75"},
+    {file = "openbb_provider-1.0.0b0-py3-none-any.whl", hash = "sha256:7411aa1f1f2237e08939e439f7d7866e3a1cdbc7daeae4eda2a0eb0e4fbd4bbf"},
+    {file = "openbb_provider-1.0.0b0.tar.gz", hash = "sha256:e29a1d50cc58ccc85a36946ddbe866fbf73c2da8742772a5f8884d5f60508804"},
 ]
 
 [package.dependencies]
@@ -581,8 +581,8 @@ files = [
 [package.dependencies]
 numpy = [
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
-    {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
     {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -1328,17 +1328,6 @@ files = [
 ]
 
 [[package]]
-name = "xmltodict"
-version = "0.13.0"
-description = "Makes working with XML feel like you are working with JSON"
-optional = false
-python-versions = ">=3.4"
-files = [
-    {file = "xmltodict-0.13.0-py2.py3-none-any.whl", hash = "sha256:aa89e8fd76320154a40d19a0df04a4695fb9dc5ba977cbb68ab3e4eb225e7852"},
-    {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
-]
-
-[[package]]
 name = "yarl"
 version = "1.9.2"
 description = "Yet another URL library"
@@ -1443,4 +1432,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "b155619d5d1e8c223da4abbe7461f1d7425b3e8985f69c7acfe673bc1a9df0e0"
+content-hash = "e7208f39c0b1af849f7321049d610cf9e33b471d539a6abd829c55a1905dd3b0"

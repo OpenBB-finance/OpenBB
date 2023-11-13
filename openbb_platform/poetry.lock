@@ -1293,78 +1293,123 @@ files = [
 ]
 
 [[package]]
+name = "numpy"
+version = "1.26.2"
+description = "Fundamental package for array computing in Python"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "numpy-1.26.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3703fc9258a4a122d17043e57b35e5ef1c5a5837c3db8be396c82e04c1cf9b0f"},
+    {file = "numpy-1.26.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:cc392fdcbd21d4be6ae1bb4475a03ce3b025cd49a9be5345d76d7585aea69440"},
+    {file = "numpy-1.26.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:36340109af8da8805d8851ef1d74761b3b88e81a9bd80b290bbfed61bd2b4f75"},
+    {file = "numpy-1.26.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bcc008217145b3d77abd3e4d5ef586e3bdfba8fe17940769f8aa09b99e856c00"},
+    {file = "numpy-1.26.2-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:3ced40d4e9e18242f70dd02d739e44698df3dcb010d31f495ff00a31ef6014fe"},
+    {file = "numpy-1.26.2-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:b272d4cecc32c9e19911891446b72e986157e6a1809b7b56518b4f3755267523"},
+    {file = "numpy-1.26.2-cp310-cp310-win32.whl", hash = "sha256:22f8fc02fdbc829e7a8c578dd8d2e15a9074b630d4da29cda483337e300e3ee9"},
+    {file = "numpy-1.26.2-cp310-cp310-win_amd64.whl", hash = "sha256:26c9d33f8e8b846d5a65dd068c14e04018d05533b348d9eaeef6c1bd787f9919"},
+    {file = "numpy-1.26.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:b96e7b9c624ef3ae2ae0e04fa9b460f6b9f17ad8b4bec6d7756510f1f6c0c841"},
+    {file = "numpy-1.26.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:aa18428111fb9a591d7a9cc1b48150097ba6a7e8299fb56bdf574df650e7d1f1"},
+    {file = "numpy-1.26.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:06fa1ed84aa60ea6ef9f91ba57b5ed963c3729534e6e54055fc151fad0423f0a"},
+    {file = "numpy-1.26.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:96ca5482c3dbdd051bcd1fce8034603d6ebfc125a7bd59f55b40d8f5d246832b"},
+    {file = "numpy-1.26.2-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:854ab91a2906ef29dc3925a064fcd365c7b4da743f84b123002f6139bcb3f8a7"},
+    {file = "numpy-1.26.2-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:f43740ab089277d403aa07567be138fc2a89d4d9892d113b76153e0e412409f8"},
+    {file = "numpy-1.26.2-cp311-cp311-win32.whl", hash = "sha256:a2bbc29fcb1771cd7b7425f98b05307776a6baf43035d3b80c4b0f29e9545186"},
+    {file = "numpy-1.26.2-cp311-cp311-win_amd64.whl", hash = "sha256:2b3fca8a5b00184828d12b073af4d0fc5fdd94b1632c2477526f6bd7842d700d"},
+    {file = "numpy-1.26.2-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:a4cd6ed4a339c21f1d1b0fdf13426cb3b284555c27ac2f156dfdaaa7e16bfab0"},
+    {file = "numpy-1.26.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:5d5244aabd6ed7f312268b9247be47343a654ebea52a60f002dc70c769048e75"},
+    {file = "numpy-1.26.2-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6a3cdb4d9c70e6b8c0814239ead47da00934666f668426fc6e94cce869e13fd7"},
+    {file = "numpy-1.26.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:aa317b2325f7aa0a9471663e6093c210cb2ae9c0ad824732b307d2c51983d5b6"},
+    {file = "numpy-1.26.2-cp312-cp312-musllinux_1_1_aarch64.whl", hash = "sha256:174a8880739c16c925799c018f3f55b8130c1f7c8e75ab0a6fa9d41cab092fd6"},
+    {file = "numpy-1.26.2-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:f79b231bf5c16b1f39c7f4875e1ded36abee1591e98742b05d8a0fb55d8a3eec"},
+    {file = "numpy-1.26.2-cp312-cp312-win32.whl", hash = "sha256:4a06263321dfd3598cacb252f51e521a8cb4b6df471bb12a7ee5cbab20ea9167"},
+    {file = "numpy-1.26.2-cp312-cp312-win_amd64.whl", hash = "sha256:b04f5dc6b3efdaab541f7857351aac359e6ae3c126e2edb376929bd3b7f92d7e"},
+    {file = "numpy-1.26.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:4eb8df4bf8d3d90d091e0146f6c28492b0be84da3e409ebef54349f71ed271ef"},
+    {file = "numpy-1.26.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:1a13860fdcd95de7cf58bd6f8bc5a5ef81c0b0625eb2c9a783948847abbef2c2"},
+    {file = "numpy-1.26.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:64308ebc366a8ed63fd0bf426b6a9468060962f1a4339ab1074c228fa6ade8e3"},
+    {file = "numpy-1.26.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:baf8aab04a2c0e859da118f0b38617e5ee65d75b83795055fb66c0d5e9e9b818"},
+    {file = "numpy-1.26.2-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:d73a3abcac238250091b11caef9ad12413dab01669511779bc9b29261dd50210"},
+    {file = "numpy-1.26.2-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:b361d369fc7e5e1714cf827b731ca32bff8d411212fccd29ad98ad622449cc36"},
+    {file = "numpy-1.26.2-cp39-cp39-win32.whl", hash = "sha256:bd3f0091e845164a20bd5a326860c840fe2af79fa12e0469a12768a3ec578d80"},
+    {file = "numpy-1.26.2-cp39-cp39-win_amd64.whl", hash = "sha256:2beef57fb031dcc0dc8fa4fe297a742027b954949cabb52a2a376c144e5e6060"},
+    {file = "numpy-1.26.2-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:1cc3d5029a30fb5f06704ad6b23b35e11309491c999838c31f124fee32107c79"},
+    {file = "numpy-1.26.2-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:94cc3c222bb9fb5a12e334d0479b97bb2df446fbe622b470928f5284ffca3f8d"},
+    {file = "numpy-1.26.2-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:fe6b44fb8fcdf7eda4ef4461b97b3f63c466b27ab151bec2366db8b197387841"},
+    {file = "numpy-1.26.2.tar.gz", hash = "sha256:f65738447676ab5777f11e6bbbdb8ce11b785e105f690bc45966574816b6d3ea"},
+]
+
+[[package]]
 name = "openbb-alpha-vantage"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Alpha Vantage extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_alpha_vantage-0.1.0a5-py3-none-any.whl", hash = "sha256:dbe532fe525efd433852ec8eefdc78c60240f81bbb6f914d268eb3bd51c71379"},
-    {file = "openbb_alpha_vantage-0.1.0a5.tar.gz", hash = "sha256:4322b476e15b3859721e4bd02ee2dd92bb9fa9f0c70ec1f8a7d1e84fb30ca076"},
+    {file = "openbb_alpha_vantage-1.0.0b0-py3-none-any.whl", hash = "sha256:3d484669be5af01d66a950f02238f3ce1fec1b504c38e830dec14ea97d22b4ed"},
+    {file = "openbb_alpha_vantage-1.0.0b0.tar.gz", hash = "sha256:d2d1c16deb646fb0c1a4c6c0934ece581ddd1835ef749315f05f422340d29be0"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-benzinga"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Benzinga extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_benzinga-0.1.0a5-py3-none-any.whl", hash = "sha256:fa2ad395fcd0033ddb89c99f6929f534ea7c71a6ff25c98f71ac2ddb9c9aa265"},
-    {file = "openbb_benzinga-0.1.0a5.tar.gz", hash = "sha256:c9ea48d32a5b5e5a73a8990525b5d89c991fd78ec2d08458f7b07346ff1505ea"},
+    {file = "openbb_benzinga-1.0.0b0-py3-none-any.whl", hash = "sha256:3bcc90d2ebf53ffaac0ca55752f9c5dca5ce151e0f6d4127d13a062db96e8872"},
+    {file = "openbb_benzinga-1.0.0b0.tar.gz", hash = "sha256:d2a9da161504e79bf110954d185863a1ee1dd8b2f31e67f9b9f35f862c13c9be"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-biztoc"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = ""
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_biztoc-0.1.0a5-py3-none-any.whl", hash = "sha256:096b7e1a61a9b5b5539ed4379822bf321eb78a8e49420cfbe887b60b255e85c7"},
-    {file = "openbb_biztoc-0.1.0a5.tar.gz", hash = "sha256:a46782a466a655ee0b899b76a6d7632be31da7608fd4f939ed4d9b7bea7b507b"},
+    {file = "openbb_biztoc-1.0.0b0-py3-none-any.whl", hash = "sha256:7dd233427effa0326088fb4529fea6f2693776cc3cd9e4f52dbed2d5aaa7c3c5"},
+    {file = "openbb_biztoc-1.0.0b0.tar.gz", hash = "sha256:29faea29936ff415bf8ebf80cce2aeb779570b524bade3b473c7f70529334ba1"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 requests-cache = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "openbb-cboe"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "CBOE extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_cboe-0.1.0a5-py3-none-any.whl", hash = "sha256:a5ce66230da91b92e313d6913854c272d5e0e98749d3afab0d4870831044ed96"},
-    {file = "openbb_cboe-0.1.0a5.tar.gz", hash = "sha256:1ec5ffb6c3e51b62425ad2393c8e0509a013f32382cc253361590b66b0725d07"},
+    {file = "openbb_cboe-1.0.0b0-py3-none-any.whl", hash = "sha256:9979b09510e13dd7a49e717379e15a3df5a1b487fed6cad83f70253bd6113787"},
+    {file = "openbb_cboe-1.0.0b0.tar.gz", hash = "sha256:21213e0161e34a1ff74cc8cd7c2b9ad3dcf279c291935127f7704c316c76469d"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 requests-cache = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "openbb-charting"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Charting extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_charting-0.1.0a5-py3-none-any.whl", hash = "sha256:a6abe59a46a0639ab6186faeb78fc9175681192cfddf451100747120e678eba6"},
-    {file = "openbb_charting-0.1.0a5.tar.gz", hash = "sha256:ae9a8b3455ef082e7a9323d66118749e3e127e3244452883392d9e0db4a60df2"},
+    {file = "openbb_charting-1.0.0b0-py3-none-any.whl", hash = "sha256:3e27666a18c10a4ff8ada129dc932f8da81663f3d78b1c70d8c4d3c3ef2a3fca"},
+    {file = "openbb_charting-1.0.0b0.tar.gz", hash = "sha256:64fc66dc7d5e69b27eb9c376bc290e4c792197ecebdb73e0ebb1e3d6ca2f874d"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.8.4,<4.0.0"
 nbformat = ">=5.9.2,<6.0.0"
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 pandas-ta = ">=0.3.14b,<0.4.0"
 plotly = ">=5.17.0,<6.0.0"
 pywry = ">=0.6.1,<0.7.0"
@@ -1375,20 +1420,20 @@ svglib = ">=1.5.1,<2.0.0"
 
 [[package]]
 name = "openbb-core"
-version = "0.1.0a6"
+version = "1.0.0b0"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-0.1.0a6-py3-none-any.whl", hash = "sha256:2ba2df6ae6913dfd15427518de0c065c1eb9ad353e255e2b65e13f028914cec7"},
-    {file = "openbb_core-0.1.0a6.tar.gz", hash = "sha256:6c4044f5b3cc104f1a6c997a177fe4db06723fd169adeddff6b75709bfc9e956"},
+    {file = "openbb_core-1.0.0b0-py3-none-any.whl", hash = "sha256:e748497f837ff3a471a72d40976763ce77883894c8de167689673bd62f8ef774"},
+    {file = "openbb_core-1.0.0b0.tar.gz", hash = "sha256:d804a149767178265ed6be54c8d2ae8cd807c555925cf90eb49783faba35c836"},
 ]
 
 [package.dependencies]
 fastapi = ">=0.103.1,<0.104.0"
 html5lib = ">=1.1,<2.0"
 importlib_metadata = ">=6.8.0,<7.0.0"
-openbb-provider = ">=0.1.0a4,<0.2.0"
+openbb-provider = ">=1.0.0b0,<2.0.0"
 pandas = ">=1.5.3"
 posthog = ">=3.0.1,<4.0.0"
 python-jose = ">=3.3.0,<4.0.0"
@@ -1399,258 +1444,273 @@ websockets = ">=10.4,<11.0"
 
 [[package]]
 name = "openbb-crypto"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Crypto extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_crypto-0.1.0a5-py3-none-any.whl", hash = "sha256:f78002f346e1682ee06a2496726a603cd6d481cfe0c1eca58f44a7aac78e4f3d"},
-    {file = "openbb_crypto-0.1.0a5.tar.gz", hash = "sha256:f0ae1ac8084e6d503d3c456076e0234f0c115db8a3fb5336493c1ddcef76a2eb"},
+    {file = "openbb_crypto-1.0.0b0-py3-none-any.whl", hash = "sha256:3183ab2a9787a2096ed503652952e817aa82014e6486cfdf033feef20cf9a330"},
+    {file = "openbb_crypto-1.0.0b0.tar.gz", hash = "sha256:a3f3b5c14c23110c9a9c36cd9afa3ab3df1707685640cd7b2d48c6853af98c40"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-currency"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Currency extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_currency-0.1.0a5-py3-none-any.whl", hash = "sha256:2180314dee1187e86d34e64ecca33254c324840f47a5feb0addd3289ed69b183"},
-    {file = "openbb_currency-0.1.0a5.tar.gz", hash = "sha256:f9abfb88fa8e03fd2c9b3bf0d9209383202f2cc4664b62cefa5fcbe907e36341"},
+    {file = "openbb_currency-1.0.0b0-py3-none-any.whl", hash = "sha256:5daf05db1bc176a6b6521d1121d7d9ca402798d69902d1d51ddd0e50e5a115b8"},
+    {file = "openbb_currency-1.0.0b0.tar.gz", hash = "sha256:b2b4e298be65ff8507d6aeb7b052c33992c2d82c21e9031bfe03f0acb9e2235d"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-ecb"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "ECB extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_ecb-0.1.0a5-py3-none-any.whl", hash = "sha256:9db9581d4906141c32666678c1baf60b2f86ba2bd16ba751b6d610089e743a9d"},
-    {file = "openbb_ecb-0.1.0a5.tar.gz", hash = "sha256:6a295a68ca0bb6e3afe0d4e65f263656d67d53e7f56974d4568e9f59c3920ebf"},
+    {file = "openbb_ecb-1.0.0b0-py3-none-any.whl", hash = "sha256:3849eec951db0e0d5d77c29c72f9a03c5acb827f6868aeaddb6542432dc958b0"},
+    {file = "openbb_ecb-1.0.0b0.tar.gz", hash = "sha256:483dd724d368979450f67fd9e942344103d3d7bdd720bd79847c07d5f4bd0a13"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-econometrics"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Econometrics Toolkit for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_econometrics-0.1.0a5-py3-none-any.whl", hash = "sha256:cc4c140fe03cafe5afb96e7d031d147a7455d49e124a812f0c3c2137ffb14449"},
-    {file = "openbb_econometrics-0.1.0a5.tar.gz", hash = "sha256:82aa7667e050bafae425e4fb0a86872683126fd43b0343477b8fe6ad6e012d12"},
+    {file = "openbb_econometrics-1.0.0b0-py3-none-any.whl", hash = "sha256:88ffac746ac145bb56d9f64cfeebe7eb0c877692ab7ce798fb38f6b17518da84"},
+    {file = "openbb_econometrics-1.0.0b0.tar.gz", hash = "sha256:a98a51af8335e1d211d2d3f07c045b1538cc9bf1f5bc667eb2f0f3c5601490d8"},
 ]
 
 [package.dependencies]
 arch = ">=5.5.0,<6.0.0"
 linearmodels = "<=4.25"
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 scipy = ">=1.10.1,<2.0.0"
 statsmodels = ">=0.14.0,<0.15.0"
 
 [[package]]
 name = "openbb-economy"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Economy extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_economy-0.1.0a5-py3-none-any.whl", hash = "sha256:ce2d65a21712c4b0d7e5f9385ed7545617697ecc6685123521bf62b56bc94206"},
-    {file = "openbb_economy-0.1.0a5.tar.gz", hash = "sha256:c39d94be758844eb0c6161dc33369d7f2f3e29677666fe97fa6747befb898c6f"},
+    {file = "openbb_economy-1.0.0b0-py3-none-any.whl", hash = "sha256:3bdea4904b30b1bff5d47c91592f0e0f7112a042d94f92fec9955ce4547151e6"},
+    {file = "openbb_economy-1.0.0b0.tar.gz", hash = "sha256:53162a7427b1bac3d7a6b9a43732e0ba7d0350e7783ae061b9530c41e50f2bdd"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-equity"
-version = "0.1.0a4"
+version = "1.0.0b0"
 description = "Equity extension for OpenBB"
-optional = false
-python-versions = "*"
-files = []
-develop = true
-
-[package.source]
-type = "directory"
-url = "extensions/equity"
-
-[[package]]
-name = "openbb-etf"
-version = "0.1.0a4"
-description = "ETF extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_etf-0.1.0a4-py3-none-any.whl", hash = "sha256:9237a4b9dbed804ff508d4f92c0de33f0cc23e0570f1d1750f071c4f61d473b2"},
-    {file = "openbb_etf-0.1.0a4.tar.gz", hash = "sha256:ae11a6329f5e549573dc2c10478938c61ee4f0c9d143d2c4d1f9b167d57a2f3e"},
+    {file = "openbb_equity-1.0.0b0-py3-none-any.whl", hash = "sha256:2790fad8271041da5d8f9f16f2a3ae914766990c1e1c1857fa6b1a35a070561c"},
+    {file = "openbb_equity-1.0.0b0.tar.gz", hash = "sha256:39f02d1aec44dd322774053a4dc7dac6eca37abd67de1c6920e7ada627d1144f"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a4,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
+
+[[package]]
+name = "openbb-etf"
+version = "1.0.0b0"
+description = "ETF extension for OpenBB"
+optional = false
+python-versions = ">=3.8,<3.12"
+files = [
+    {file = "openbb_etf-1.0.0b0-py3-none-any.whl", hash = "sha256:37dc3754444e53dd155a4f4d5887ca29612e65f084e6aedf8090bde4e02bc073"},
+    {file = "openbb_etf-1.0.0b0.tar.gz", hash = "sha256:f3ad99a593e419bcada29905f958fe8b41297a74f0c94844582cb2aabfc65eb0"},
+]
+
+[package.dependencies]
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-finra"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "FINRA extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_finra-0.1.0a5-py3-none-any.whl", hash = "sha256:6d36c2c3f36de1406b67840522e9531c8fa05e6bff93b43f71898c8c52a89860"},
-    {file = "openbb_finra-0.1.0a5.tar.gz", hash = "sha256:48e4ad879011978afb5f2e6350d73806495aafbcffbc458cdfb5d7de8155cb78"},
+    {file = "openbb_finra-1.0.0b0-py3-none-any.whl", hash = "sha256:1fc735b88c17fb7037e3ae0638600ef01c2007f0b3120d23470f0226abc88feb"},
+    {file = "openbb_finra-1.0.0b0.tar.gz", hash = "sha256:12bddcc7898bc5cb441e759c425bbcf8a6f18f7d235e085ca308347d4b9f5015"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-fixedincome"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Fixed income extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_fixedincome-0.1.0a5-py3-none-any.whl", hash = "sha256:53ca459cc473f187551f4f8fb2f9f8b8b3d476f1dbd7fefe059685a1f2cf505d"},
-    {file = "openbb_fixedincome-0.1.0a5.tar.gz", hash = "sha256:e9226d269ef4d85a1c920a8cfa3834de7d3ed05c518e9eac13ddb13214247c33"},
+    {file = "openbb_fixedincome-1.0.0b0-py3-none-any.whl", hash = "sha256:28c27785ad5e9cc45d761203b9efc43322132ac9e8dcbad3b3261fd815e89cbe"},
+    {file = "openbb_fixedincome-1.0.0b0.tar.gz", hash = "sha256:52079df4f35952125559a50e3e62a6fc1d537a1b0a5cd512bb74c03fbbcfb4ff"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-fmp"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "FMP extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_fmp-0.1.0a5-py3-none-any.whl", hash = "sha256:916818ff19ef7ba5f13d34c50afd6841fb8e6c0c310df828d896aedeec7a78e6"},
-    {file = "openbb_fmp-0.1.0a5.tar.gz", hash = "sha256:6520c81c207786de706f6ca61a09d9362dbe768b40988e8339be34dcae978d4d"},
+    {file = "openbb_fmp-1.0.0b0-py3-none-any.whl", hash = "sha256:830838c1972d1c92ba05d1d5d4357e1ab177406b4271f872952c462c729f1755"},
+    {file = "openbb_fmp-1.0.0b0.tar.gz", hash = "sha256:06638c712479f6ce06155ea2ab59796df85bb594c9d0e9026d250b7d65745d67"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-fred"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "FRED extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_fred-0.1.0a5-py3-none-any.whl", hash = "sha256:19ac8bb6fbe73e13b669cd375771267b7febc14d27d74551155fa522fbe84433"},
-    {file = "openbb_fred-0.1.0a5.tar.gz", hash = "sha256:9bd86a9e93c24139d6c87122c254806fe92938dec764522ce37bc06cd74fa5e6"},
+    {file = "openbb_fred-1.0.0b0-py3-none-any.whl", hash = "sha256:3c39a2348d226ae0c8821fdafb8d254c7744753f59986d1c0e6dfacb3baf96be"},
+    {file = "openbb_fred-1.0.0b0.tar.gz", hash = "sha256:9c0a8aae7c5a4e99fd1fa4fb80a686055c79b605a504312cab7db550242f60b1"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-futures"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Futures extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_futures-0.1.0a5-py3-none-any.whl", hash = "sha256:8c39954d6f7a5ea0f5ebae5747e285bdf7020e18cdb4a9a7189e84241fd3cd01"},
-    {file = "openbb_futures-0.1.0a5.tar.gz", hash = "sha256:687022a9ab7a6dfdd62545ffbd623faae3e48c549014e96eb4bb3ebb17009c56"},
+    {file = "openbb_futures-1.0.0b0-py3-none-any.whl", hash = "sha256:506e919fde8d0876ced7b7e94f93e711775b8b4b9618ab9cfdfb20b995d3bff0"},
+    {file = "openbb_futures-1.0.0b0.tar.gz", hash = "sha256:7372a91c60e82f3dd3970ef591c59d98c7c288aec774803f2403f3e81d0ff524"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
+
+[[package]]
+name = "openbb-index"
+version = "1.0.0b0"
+description = "Index extension for OpenBB"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "openbb_index-1.0.0b0-py3-none-any.whl", hash = "sha256:92aafd7d2265f7e7bc93e167bc863fffd0644f4c369daf10d67f36b4bf0b9a95"},
+    {file = "openbb_index-1.0.0b0.tar.gz", hash = "sha256:232079250d4359f93fd6a1e4243011a5036ab3e5f3f28372f009f8a3b6e5d511"},
+]
+
+[package.dependencies]
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-intrinio"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Intrinio extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_intrinio-0.1.0a5-py3-none-any.whl", hash = "sha256:6311de065a82dd9451e4089633f0554b48580d8646c7da65a2af773fa4416dc2"},
-    {file = "openbb_intrinio-0.1.0a5.tar.gz", hash = "sha256:a1e435fb583de5e5cb0040cf9e3422bb0b9cb15b98fe9766250ac976590fa1a6"},
+    {file = "openbb_intrinio-1.0.0b0-py3-none-any.whl", hash = "sha256:b218bb5ccfda95cfc349cec1d2a43332bda673c9c58789e91a56fb0236ef07cb"},
+    {file = "openbb_intrinio-1.0.0b0.tar.gz", hash = "sha256:2c8f11fa59eb61d9600080e33aa07302a6aad3cacc6ac17dfe22650c08d1bdb9"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a6,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 requests-cache = ">=1.1.0,<2.0.0"
 
 [[package]]
 name = "openbb-nasdaq"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Nasdaq extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_nasdaq-0.1.0a5-py3-none-any.whl", hash = "sha256:2edd163199350d1c57e1831c0e33d69b3dd45475c06f167fc7ccbec173c88964"},
-    {file = "openbb_nasdaq-0.1.0a5.tar.gz", hash = "sha256:c8fb305bb6aa6cf71981bd910f6be8370e239f33f5c990f39510dcd94edfa059"},
+    {file = "openbb_nasdaq-1.0.0b0-py3-none-any.whl", hash = "sha256:65c17777840d860efbf72a11507ec4c313b17670751430ff37e93390a7497df8"},
+    {file = "openbb_nasdaq-1.0.0b0.tar.gz", hash = "sha256:073dc90c28ca883aaa6b7ae1323647c6a0af475c4c127160e661d656b595c5a5"},
 ]
 
 [package.dependencies]
 nasdaq-data-link = ">=1.0.4,<2.0.0"
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 random-user-agent = ">=1.0.1,<2.0.0"
 
 [[package]]
 name = "openbb-news"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "News extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_news-0.1.0a5-py3-none-any.whl", hash = "sha256:ea471d1cbf3879711fac5cea3700f0805ddac4ae3b96cdde81352f3f1d32a752"},
-    {file = "openbb_news-0.1.0a5.tar.gz", hash = "sha256:4c861981538a1a8e18dac697ac1550e875b0cc74c5273eef9f0d9bb4fe7acddd"},
+    {file = "openbb_news-1.0.0b0-py3-none-any.whl", hash = "sha256:2696b71cbd4ff40936eebc23ff8b13e21a88ee661c5a11d84d84890591f9216d"},
+    {file = "openbb_news-1.0.0b0.tar.gz", hash = "sha256:393757f32fd002a87395581aaa776a952733801c29c91578af23a4e5ca5f864b"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-oecd"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "OECD extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_oecd-0.1.0a5-py3-none-any.whl", hash = "sha256:87b92cc91eabdab0aa54f7dccc62674747e30ac2a6ce29c918f89b0827a8a739"},
-    {file = "openbb_oecd-0.1.0a5.tar.gz", hash = "sha256:8ef945f12e1591fed75a21af750fb300d32be172f204566e3a591f5516d148a8"},
+    {file = "openbb_oecd-1.0.0b0-py3-none-any.whl", hash = "sha256:93cc5e35a9164ac2af2e503f1aecc1a3c7e2aecb9f57d9f9237fcd979174351c"},
+    {file = "openbb_oecd-1.0.0b0.tar.gz", hash = "sha256:8167bbfda7e9c0f1d0778cfd50292ba756e6cd6a6d03c8eaf7f8b4b3b953a57e"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 urllib3 = ">1.26.16"
 
 [[package]]
 name = "openbb-polygon"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Polygon extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_polygon-0.1.0a5-py3-none-any.whl", hash = "sha256:1883bd714dc5f771260977f8d3c9e57336916fb17865dad718e78beffa19dafd"},
-    {file = "openbb_polygon-0.1.0a5.tar.gz", hash = "sha256:81a107d3dad13001fe221c3968345b9a9c57984254d4c49649a9f6c1c8413e58"},
+    {file = "openbb_polygon-1.0.0b0-py3-none-any.whl", hash = "sha256:ea47aba8779f39c75234c8cecf29b8fcd409693d4eee346c63f63ff31956bcd2"},
+    {file = "openbb_polygon-1.0.0b0.tar.gz", hash = "sha256:60e07e265f916bc4859b054cd90317ddfec9dbae1f11f03a1732f986012dcb33"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-provider"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "OpenBB package to execute queries to financial data providers"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_provider-0.1.0a5-py3-none-any.whl", hash = "sha256:f5fb4ff02e524ee671fc21c85e63d3e3a2441c93288eb2e85894f2905aadf04b"},
-    {file = "openbb_provider-0.1.0a5.tar.gz", hash = "sha256:7083968319250addfc8f21f74f94a2c4010346c2656b7cea6b1d560a576e2b75"},
+    {file = "openbb_provider-1.0.0b0-py3-none-any.whl", hash = "sha256:7411aa1f1f2237e08939e439f7d7866e3a1cdbc7daeae4eda2a0eb0e4fbd4bbf"},
+    {file = "openbb_provider-1.0.0b0.tar.gz", hash = "sha256:e29a1d50cc58ccc85a36946ddbe866fbf73c2da8742772a5f8884d5f60508804"},
 ]
 
 [package.dependencies]
@@ -1662,155 +1722,140 @@ requests = ">=2.31.0,<3.0.0"
 urllib3 = "<2.0.0"
 
 [[package]]
-name = "openbb-qa"
-version = "0.1.0a5"
+name = "openbb-quantitative"
+version = "1.0.0b0"
 description = "Quantitative Analysis extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_qa-0.1.0a5-py3-none-any.whl", hash = "sha256:c62d37a4c777dc84a321d980e12438057cad53b7c02718ffb12a1886cd3c10f7"},
-    {file = "openbb_qa-0.1.0a5.tar.gz", hash = "sha256:6c4910d3437b3bb0d65e3f70c64c73dee5c549ce6faa3b48ccf29a49c1eae006"},
+    {file = "openbb_quantitative-1.0.0b0-py3-none-any.whl", hash = "sha256:0ba9d9123aa48d2cbf67160fc87f3d09b9c6fe187f3ee2cc276eca2dea6b9a17"},
+    {file = "openbb_quantitative-1.0.0b0.tar.gz", hash = "sha256:c58a828e671c00dc0494017d00631effb3f5c58b95584627f744c1892dd9f5b6"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 pandas-ta = ">=0.3.14b,<0.4.0"
 scipy = ">=1.10.1,<2.0.0"
 statsmodels = ">=0.14.0,<0.15.0"
 
 [[package]]
 name = "openbb-regulators"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Markets and Agency Regulators extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_regulators-0.1.0a5-py3-none-any.whl", hash = "sha256:2751cf328f1dc00fbf1de6b877f7f62d3a8115161a5261b13bb5680d4395bb33"},
-    {file = "openbb_regulators-0.1.0a5.tar.gz", hash = "sha256:7283f74583d99dacbb55b610550ac44609c2195e74d2232d097fc37ff1f6ea75"},
+    {file = "openbb_regulators-1.0.0b0-py3-none-any.whl", hash = "sha256:547b86e07b2065adfd35b020058067cc5a39378ae88c765b0700ab3f3ae9643d"},
+    {file = "openbb_regulators-1.0.0b0.tar.gz", hash = "sha256:133f13ff9c154fa6648f527d0685d7e06ee10029205e50ffb9854cca9915ecf4"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-sec"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "SEC extension for OpenBB"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_sec-0.1.0a5-py3-none-any.whl", hash = "sha256:3b08e663444239f0390b71c44a2df6b85079c8eac19fa2d320dfc0c740f16c2b"},
-    {file = "openbb_sec-0.1.0a5.tar.gz", hash = "sha256:25b5d642ee945f1d50ebf62b5a8b1ced5ebed5f1dfb35fe193cf9f9a225bb8be"},
+    {file = "openbb_sec-1.0.0b0-py3-none-any.whl", hash = "sha256:bd7c436c61b54f8a78c0c472d93dac2aa06fd29f3b44151f1a4dfad26d400772"},
+    {file = "openbb_sec-1.0.0b0.tar.gz", hash = "sha256:ba9c896eb7e2f6c1f8c239a458194fdfabfec0e2bced2e8892f26b4ef79bfcf2"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
-openbb-regulators = ">=0.1.0a4,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 pytest-freezegun = ">=0.4.2,<0.5.0"
 requests-cache = ">=1.1.0,<2.0.0"
 xmltodict = ">=0.13.0,<0.14.0"
 
 [[package]]
 name = "openbb-seeking-alpha"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Seeking Alpha extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_seeking_alpha-0.1.0a5-py3-none-any.whl", hash = "sha256:2481a0813b1849b18f814fa01e9116982ced08b87cf678221692bbb9b84f8e87"},
-    {file = "openbb_seeking_alpha-0.1.0a5.tar.gz", hash = "sha256:9e948390887006f12996ba97eea23a105c8018a16ad9f97f00bb89ccb7f69cde"},
+    {file = "openbb_seeking_alpha-1.0.0b0-py3-none-any.whl", hash = "sha256:ba886c730ccb2cd2bc4816b609a9b0ccc1b53abe96e1813e619b5050b3c92844"},
+    {file = "openbb_seeking_alpha-1.0.0b0.tar.gz", hash = "sha256:51293fca0e58823b520102d99afb81c3dc02985dd06ad3903934ac9ba9f13ad7"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-stockgrid"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "stockgrid extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_stockgrid-0.1.0a5-py3-none-any.whl", hash = "sha256:68622b90968418bd44b6402d69ded3648c61621c97717b51e582ebb5a69c639e"},
-    {file = "openbb_stockgrid-0.1.0a5.tar.gz", hash = "sha256:f093ceffcad5d76c72916187c30fba08c52737a022dc5fe9a0f41871b653e274"},
+    {file = "openbb_stockgrid-1.0.0b0-py3-none-any.whl", hash = "sha256:e964d6797593958ea49b94a7f6583ffe8f696c71f26f345eaef50c7f9c174c47"},
+    {file = "openbb_stockgrid-1.0.0b0.tar.gz", hash = "sha256:b657d2cd3dc290fc7572c137229d6ad8557372ff63c06c61df4875eba61966aa"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 pytest-freezegun = ">=0.4.2,<0.5.0"
 
 [[package]]
-name = "openbb-ta"
-version = "0.1.0a5"
+name = "openbb-technical"
+version = "1.0.0b0"
 description = "Technical Analysis extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<3.12"
 files = [
-    {file = "openbb_ta-0.1.0a5-py3-none-any.whl", hash = "sha256:487d1994647a2ae5b2521a2ca68a481208e8bf8a34bcaef96a89ae9268850632"},
-    {file = "openbb_ta-0.1.0a5.tar.gz", hash = "sha256:860df622d0c4636ae97137b97e225331d0ff0cf3dc237aea2811650f33f6ef1c"},
+    {file = "openbb_technical-1.0.0b0-py3-none-any.whl", hash = "sha256:8783429026448d360bf7463ef7f5c046f36cabc35d6c2358e17ad1a3f545a8fe"},
+    {file = "openbb_technical-1.0.0b0.tar.gz", hash = "sha256:1f2678c554530e07692a5f18b9a8dfdfb76ffcf5a6058a2f02f5b7c2bd06c5f3"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 scikit-learn = ">=1.3.1,<2.0.0"
 scipy = ">=1.10.1,<2.0.0"
 statsmodels = ">=0.14.0,<0.15.0"
 
 [[package]]
 name = "openbb-tradingeconomics"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "Trading Economics extension for OpenBB"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_tradingeconomics-0.1.0a5-py3-none-any.whl", hash = "sha256:102fb9f1fdee1b38ec50b748cd6f4ff054f74bb92559b853076ad1f29254dc8e"},
-    {file = "openbb_tradingeconomics-0.1.0a5.tar.gz", hash = "sha256:df04ea36044bef123f4191eeaf182a07b813f69c695f85e493019fa1405a53a2"},
+    {file = "openbb_tradingeconomics-1.0.0b0-py3-none-any.whl", hash = "sha256:4fab7ab4890333ec421500d0f57c7ca229fbf0dac1d94fdc6b5db3b27f9916fc"},
+    {file = "openbb_tradingeconomics-1.0.0b0.tar.gz", hash = "sha256:50db04168c6824f898c34f414d16d548b1b1c8c56c69c9daa125486babc69b4c"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
-
-[[package]]
-name = "openbb-ultima"
-version = "0.1.0a6"
-description = "Ultima Insights extension for OpenBB"
-optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "openbb_ultima-0.1.0a6-py3-none-any.whl", hash = "sha256:cf468f8868804d30681691e2b556331c35e30ffec323732cd12b7903c1177f5f"},
-    {file = "openbb_ultima-0.1.0a6.tar.gz", hash = "sha256:0eb84e4b6e7b385859e18a94d5409f9f9e50540ea95b497f106f18279b8eae14"},
-]
-
-[package.dependencies]
-openbb-core = ">=0.1.0a2,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-wsj"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "wsj extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_wsj-0.1.0a5-py3-none-any.whl", hash = "sha256:f54bbd8ca9da8ad0939c9c63dc23ec79bb6ca1ec4fa83c771c9ccfaf18eb56af"},
-    {file = "openbb_wsj-0.1.0a5.tar.gz", hash = "sha256:a0fd83f74ea958baf48d56d132663ff88d2835d270f3309d49e11708584633f0"},
+    {file = "openbb_wsj-1.0.0b0-py3-none-any.whl", hash = "sha256:1d1fb8f92bc4d24dc6777c6061108a2b9988b8e129211d8afbddc41731108bf9"},
+    {file = "openbb_wsj-1.0.0b0.tar.gz", hash = "sha256:881623777b26d40cfc3539856e4e14f9ff534677ff812acf5a8554c4a517d38b"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 
 [[package]]
 name = "openbb-yfinance"
-version = "0.1.0a5"
+version = "1.0.0b0"
 description = "yfinance extension for OpenBB"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_yfinance-0.1.0a5-py3-none-any.whl", hash = "sha256:ea009fb098e38368c76223acc72cb06bb644ca83e065cd120a7405338d0b8f4a"},
-    {file = "openbb_yfinance-0.1.0a5.tar.gz", hash = "sha256:16668329e0b5a6539a2eaa8e7c7e1cb86f050178f587101a454c1e6d2e00924e"},
+    {file = "openbb_yfinance-1.0.0b0-py3-none-any.whl", hash = "sha256:c0f55c1aed5f7a9b653ae6769c85c26bf13140c9f309c503432e7dc8a366e1dd"},
+    {file = "openbb_yfinance-1.0.0b0.tar.gz", hash = "sha256:e62cbf62cdcfe026b4f8628c2cb2cc746c706365730435fcb7638de71907ece7"},
 ]
 
 [package.dependencies]
-openbb-core = ">=0.1.0a5,<0.2.0"
+openbb-core = ">=1.0.0b0,<2.0.0"
 yfinance = ">=0.2.27,<0.3.0"
 
 [[package]]
@@ -1860,8 +1905,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
     {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
+    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
     {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
 ]
 python-dateutil = ">=2.8.2"
@@ -2996,8 +3041,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.18", markers = "python_version != \"3.10\" or platform_system != \"Windows\" or platform_python_implementation == \"PyPy\""},
     {version = ">=1.22.3", markers = "python_version == \"3.10\" and platform_system == \"Windows\" and platform_python_implementation != \"PyPy\""},
+    {version = ">=1.18", markers = "python_version != \"3.10\" or platform_system != \"Windows\" or platform_python_implementation == \"PyPy\""},
 ]
 packaging = ">=21.3"
 pandas = ">=1.0"
@@ -3590,7 +3635,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-futures", "openbb-nasdaq", "openbb-qa", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-ta", "openbb-wsj", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-futures", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-wsj", "openbb-yfinance"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
@@ -3600,14 +3645,14 @@ econometrics = ["openbb-econometrics"]
 finra = ["openbb-finra"]
 futures = ["openbb-futures"]
 nasdaq = ["openbb-nasdaq"]
-qa = ["openbb-qa"]
+quantitative = ["openbb-quantitative"]
 seeking-alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
-ta = ["openbb-ta"]
+technical = ["openbb-technical"]
 wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "173f1589e51f3cb61c8a251cde2441460b671889f9c150d5c1f9f084a213714b"
+content-hash = "fbf45aec062f61404351deb1814249507a2235953168f346f863651e2d4c5301"

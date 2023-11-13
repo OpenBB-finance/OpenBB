@@ -4,7 +4,6 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_ecb.models.currency_reference_rates import ECBCurrencyReferenceRatesFetcher
 from openbb_ecb.models.eu_yield_curve import ECBEUYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -29,14 +28,5 @@ def test_ecbeu_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": datetime.date(2023, 1, 1)}
 
     fetcher = ECBEUYieldCurveFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_ecb_currency_reference_rates_fetcher(credentials=test_credentials):
-    """Test ECBCurrencyReferenceRatesFetcher."""
-    params = {}
-    fetcher = ECBCurrencyReferenceRatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
