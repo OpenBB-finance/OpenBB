@@ -28,6 +28,9 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     __alias_dict__ = {
         "research_and_development_expenses": "ResearchAndDevelopmentExpense",
         "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
+        "ebit": "earnings before interest and taxes (ebit)",
+        "ebitda": "earnings before interest, taxes, depreciation and amortization (ebitda)",
+        "ebitda_margin": "ebitda margin",
         "operating_income": "OperatingIncomeLoss",
         "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
         "eps_diluted": "EarningsPerShareDiluted",
@@ -59,6 +62,7 @@ class IntrinioIncomeStatementFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "income_statement"
         period_type = "FY" if query.period == "annual" else "QTR"
+        data_tags = ["ebit", "ebitda", "ebitdamargin"]
 
         fundamentals_data: Dict = {}
         data: List[Dict] = []
@@ -81,7 +85,7 @@ class IntrinioIncomeStatementFetcher(
 
         def get_financial_statement_data(period: str, data: List[Dict]) -> None:
             statement_data: Dict = {}
-            calculations_data: Dict = {}
+            calculations_data: List = []
 
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
@@ -89,7 +93,14 @@ class IntrinioIncomeStatementFetcher(
 
             intrinio_id = f"{query.symbol}-calculations-{period}"
             calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            calculations_data = get_data_one(calculations_url, **kwargs)
+            calculations_data = get_data_one(calculations_url, **kwargs).get(
+                "standardized_financials", []
+            )
+            calculations_data = [
+                item
+                for item in calculations_data
+                if item["data_tag"]["tag"] in data_tags
+            ]
 
             data.append(
                 {
@@ -98,7 +109,7 @@ class IntrinioIncomeStatementFetcher(
                     "cik": statement_data["fundamental"]["company"]["cik"],
                     "symbol": statement_data["fundamental"]["company"]["ticker"],
                     "financials": statement_data["standardized_financials"]
-                    + calculations_data["standardized_financials"],
+                    + calculations_data,
                 }
             )
 
