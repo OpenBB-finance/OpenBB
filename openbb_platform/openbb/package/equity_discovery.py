@@ -12,44 +12,16 @@ from openbb_provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
-class ROUTER_fixedincome(Container):
-    """/fixedincome
-    /corporate
-    /government
-    /rate
-    sofr
-    /spreads
+class ROUTER_equity_discovery(Container):
+    """/equity/discovery
+    filings
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
-    @property
-    def corporate(self):  # route = "/fixedincome/corporate"
-        from . import fixedincome_corporate
-
-        return fixedincome_corporate.ROUTER_fixedincome_corporate(
-            command_runner=self._command_runner
-        )
-
-    @property
-    def government(self):  # route = "/fixedincome/government"
-        from . import fixedincome_government
-
-        return fixedincome_government.ROUTER_fixedincome_government(
-            command_runner=self._command_runner
-        )
-
-    @property
-    def rate(self):  # route = "/fixedincome/rate"
-        from . import fixedincome_rate
-
-        return fixedincome_rate.ROUTER_fixedincome_rate(
-            command_runner=self._command_runner
-        )
-
     @validate
-    def sofr(
+    def filings(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -63,14 +35,20 @@ class ROUTER_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        form_type: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="Fuzzy filter by form type. E.g. 10-K, 10, 8, 6-K, etc."
+            ),
+        ] = None,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Secured Overnight Financing Rate.
-
-            The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-            borrowing cash overnight collateralizing by Treasury securities.
-
+        """Get the most-recent filings submitted to the SEC.
 
         Parameters
         ----------
@@ -78,19 +56,23 @@ class ROUTER_fixedincome(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
+        form_type : Optional[str]
+            Fuzzy filter by form type. E.g. 10-K, 10, 8, 6-K, etc.
+        limit : int
+            The number of data entries to return.
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
-            Period of SOFR rate. (provider: fred)
+        is_done : Optional[Literal['true', 'false']]
+            Flag for whether or not the filing is done. (provider: fmp)
 
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : List[DiscoveryFilings]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -99,17 +81,27 @@ class ROUTER_fixedincome(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        SOFR
-        ----
-        date : date
-            The date of the data.
-        rate : Optional[float]
-            SOFR rate.
+        DiscoveryFilings
+        ----------------
+        timestamp : datetime
+            The timestamp from when the filing was accepted.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        cik : str
+            The CIK of the filing
+        title : str
+            The title of the filing
+        form_type : str
+            The form type of the filing
+        url : Optional[str]
+            The URL of the filing
+        is_done : Optional[Literal['True', 'False']]
+            Whether or not the filing is done. (provider: fmp)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.sofr()
+        >>> obb.equity.discovery.filings(limit=100)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -119,19 +111,13 @@ class ROUTER_fixedincome(Container):
             standard_params={
                 "start_date": start_date,
                 "end_date": end_date,
+                "form_type": form_type,
+                "limit": limit,
             },
             extra_params=kwargs,
         )
 
         return self._run(
-            "/fixedincome/sofr",
+            "/equity/discovery/filings",
             **inputs,
-        )
-
-    @property
-    def spreads(self):  # route = "/fixedincome/spreads"
-        from . import fixedincome_spreads
-
-        return fixedincome_spreads.ROUTER_fixedincome_spreads(
-            command_runner=self._command_runner
         )
