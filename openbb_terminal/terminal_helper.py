@@ -131,7 +131,7 @@ def update_terminal():
     return 0
 
 
-def open_openbb_documentation(
+def open_openbb_documentation(  # noqa: PLR0912
     path,
     url="https://docs.openbb.co/terminal",
     command=None,
