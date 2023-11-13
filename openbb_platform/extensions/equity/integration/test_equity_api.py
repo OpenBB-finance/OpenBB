@@ -129,7 +129,8 @@ def test_equity_calendar_split(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "nasdaq"}),
     ],
 )
 @pytest.mark.integration
@@ -1360,6 +1361,23 @@ def test_equity_market_snapshots(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/market_snapshots?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_historical_eps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamnetal/historical_eps?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
