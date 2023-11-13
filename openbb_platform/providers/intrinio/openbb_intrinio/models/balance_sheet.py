@@ -116,7 +116,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["tag"])
+                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["date"]
