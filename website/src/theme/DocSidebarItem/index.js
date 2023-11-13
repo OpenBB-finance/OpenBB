@@ -6,6 +6,7 @@ import React from "react";
 import { useIFrameContext } from "../Root";
 
 function shouldHideItem(item, productPath) {
+
   if (item.items) {
     return item.items.every((childItem) =>
       shouldHideItem(childItem, productPath)
@@ -30,6 +31,11 @@ export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
   const isPro = pathname.startsWith("/pro");
+
+  // Check if the item is the OpenBB Terminal Pro section
+  if (item.customProps?.hiddenByDefault && !isPro) {
+    return null;
+  }
 
   if (isIFrame) {
     const firstTwoPathSegments = pathname.split("/").slice(0, 3).join("/");

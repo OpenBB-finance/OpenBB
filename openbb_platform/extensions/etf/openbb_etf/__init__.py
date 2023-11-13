@@ -1,0 +1,1 @@
+"""OpenBB ETF Extension."""

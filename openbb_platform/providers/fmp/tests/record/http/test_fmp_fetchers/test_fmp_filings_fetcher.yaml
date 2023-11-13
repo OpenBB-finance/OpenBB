@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/rss_feed?apikey=MOCK_API_KEY&limit=10&type=8-K
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA+2WXW+bMBSG7/srrFy1UohtbMLHXcJYG60hUUK1btM0MeI1qElAhCSdpv33GZs0
+        TFuRIbeRQDKvj8+LHx3r+MsVAL/4C0Anj/MV6zigY2kfgAbcSfAJjHy3B64RQhjplCDjBly/j1cs
+        u+l05aJFmIs1OtKJhrGGTID7jlE8x5BVvHkuQpZ5nm4dCA+HQ2/Lot5TsoeDLFrGe7aFbPEUZpBn
+        C2FpBU+uOuFjZFsVSeN2UtTizYK99Jb5+mgYxcLvFHyc+JFk62/5z/S4y6Oex9Ezywqx2PTr1pJN
+        EZhnO8aF3903Sc1zHvkIbrNkl4LRJpLEkI2J2UfqxIjelph0gidTAQxTsyKVwLhYB6wMVgc2973H
+        5sBWjKXA362/swy4SZZKYJZuYstUB4Zbl5h0EuWkY2KjAphFiUkrkgAmxFpgMlUTYMNZY2DefDqZ
+        BXPg+YE3CwYjf8xH4HY2eZh2K2eUGphSSxWg4VDUFmBpJXBRm2BD5wSJbZq4IgmCQqw9ozKVOsHb
+        8fB+ekF4LsKPF4TnIvx8QXguwsYE+SaSbdg99VlsEptS5ZsJdXDrPltawZNr2WjtivTaaO1aWDJY
+        HdbAHTRm5U7GgefegcC79/h4/OCP3EEwmvhzPjWbAvjOg7L1ckbYVm691EG0LUNhJHBhRPuGzb95
+        hZV3OylpwqwQazuv/Gd1gu44aF5uwZJl4T7cRAwM4yRdhtn6r+IzLIKRMjjioPbFJ63+Rdf/H7p+
+        bfHJVOroguH07g10V1//AFf2mClDDAAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 07 Nov 2023 21:59:03 GMT
+      ETag:
+      - W/"c43-Wq4q+y+esq/ZbGYXS+Rgb98YS8g"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

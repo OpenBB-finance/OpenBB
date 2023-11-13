@@ -1,5 +1,4 @@
 __pycache__/
-logs/
 *.pyc
 .DS_Store
 *.env
@@ -13,6 +12,8 @@ venv/
 !notebooks/jupyter/.gitkeep
 .python-version
 .mypy_cache
+.ruff_cache
+.pytest_cache
 iframe_figures/
 exports/*
 .idea
@@ -46,12 +47,15 @@ openbb_terminal/core/plots/assets/plotly*.js
 **/node_modules/*
 # pyinstaller artifacts
 *.pyo
-dist/*
+**/dist/*
 build/terminal
 build/nsis/app
 DMG/*
 *.dmg
 *.sh
+
+# User settings for the SDK
+user_settings.json
 
 # User stylesheets
 openbb_terminal/miscellaneous/styles/user/hub.richstyle.json
@@ -71,3 +75,12 @@ cache/
 
 # lightning logs
 lightning_logs/
+
+# testing artifacts
+*/mocked_path
+
+# CA certificates
+*.pem
+
+# Platform auto generated files
+openbb_platform/openbb/package/*

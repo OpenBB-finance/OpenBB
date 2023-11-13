@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-10?adjusted=True&apiKey=MOCK_API_KEY&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/0zUz2rDRhAG8HfZsxjm/+zo2PTWQw9toVBKcWyFpA0JseWUEvLuRZZ2Zd/WCP/8
+        zXzarzK/HP+ZzmUsv48//Prw2y8/lqF8XKfzfw/v17e5jIRDOU+X6+t8ufvmcPr7epmnUxnn83Xq
+        T5Txj6/yWUaurAzImRHhpuJD+fy3jBRCAuYhQ3lfjhQBqUM5LgdVAfWhPC8HQx/K6+0ZNaChLLKH
+        CNaKy2cob2U0D0T6Hm6qhEZAGAWyiYs1lFUhDKmhSpt44+sm6vKbq4gMGZ1kZt1JNyL1jSQiqeBJ
+        5MqhrLmZnkEQWHU1PdcQq8oG1FSqtKqehKB7UBLHXeVMM9tUN08wCU3jYOK0roqBGlNTjZrqqQwS
+        q+qZ2FQUsNpV1PQ7lVNZN3VZqoNxKpKne42mVkXAXa1sEF2tgG2n3CbsHgiVm8rpwruqYUFtqevo
+        vGZYKkVwR9mBk9uAqybIhi5/wHOLWmvd0DAE7GvlGn7XJKlhhi1qiiMQuzibEHrtqhhkDd9U9+xR
+        qyoob1ERm+pqUHc1Eu/KZMS1ZlOJUYGzppkuzVlJrwgoqZ2sPejCa9tppTZdywTfxQ3ccoYztpWS
+        ESfwAqJkqkhHk8EIO0rWSYelbyuJ0khlsH2hTnFXI7HK2VISCyIImYkIeXI3TRNMe1ATbibRraPP
+        6zx1M3Up8QaaEN+/LSym338O5TIf5uuljOXnn8pyTX1cp8v818upjIUmVpk4H0+ajwc6nJCe9OhP
+        xyO5PJGXoRzbjff9fwAAAP//RZi8tykFAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '596'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:08:18 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - 1e243e29bd49ba1ad01f4c6fcc163f16
+    status:
+      code: 200
+      message: OK
+version: 1

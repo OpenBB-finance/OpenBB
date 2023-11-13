@@ -1,0 +1,23 @@
+{
+    "openbb_core_extension": [
+        "crypto@1.0.0b0",
+        "currency@1.0.0b0",
+        "economy@1.0.0b0",
+        "equity@1.0.0b0",
+        "etf@1.0.0b0",
+        "fixedincome@1.0.0b0",
+        "index@1.0.0b0",
+        "news@1.0.0b0",
+        "regulators@1.0.0b0"
+    ],
+    "openbb_provider_extension": [
+        "benzinga@1.0.0b0",
+        "fmp@1.0.0b0",
+        "fred@1.0.0b0",
+        "intrinio@1.0.0b0",
+        "oecd@1.0.0b0",
+        "polygon@1.0.0b0",
+        "sec@1.0.0b0",
+        "tradingeconomics@1.0.0b0"
+    ]
+}

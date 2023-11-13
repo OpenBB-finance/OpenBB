@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "openbb-provider"
+version = "1.0.0b0"
+description = "OpenBB package to execute queries to financial data providers"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_provider" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+importlib_metadata = "^6.8.0"
+pydantic = "^2.4.2"
+requests = "^2.31.0"
+urllib3 = "<2.0.0"
+importlib-metadata = "^6.8.0"
+python-dotenv = "^1.0.0"
+pytest-recorder = "^0.2.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

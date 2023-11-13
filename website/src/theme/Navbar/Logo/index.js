@@ -16,6 +16,11 @@ export default function NavbarLogo() {
       <Link to={`/${type}`} className="mb-1 md:mb-0 md:ml-0">
         {getLogo(type)}
       </Link>
+      {type === "sdk" && (
+        <div className="text-white text-xs pt-2">
+          OpenBB SDK has been deprecated in detriment of the Platform. More details here.
+        </div>
+      )}
     </div>
   );
 }

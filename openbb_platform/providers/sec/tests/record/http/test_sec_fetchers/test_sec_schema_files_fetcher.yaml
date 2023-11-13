@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://xbrl.fasb.org/us-gaap/2022/
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9WVXW/TMBSG7/crDr7gLnWTtjB1TlBpOqjol7ZOCCEu3MRtrDl2sF3Y9utxko6V
+        qRGd4GK7cZz4PUfv4xP7kFfxfLj8shjBx+V0Aour95PxEJCH8efOEON4GdcLnVYA51xSgfFohqIT
+        ktlcRCdAMkZT9wRiuRUsGsuU3YBaA94ab0NpgYN2EBBcrzo93gWQlUpvyzx+Y4xbqhLTVRVaTnVE
+        bAY/qOAbGSKrChQRnm/A6CREmCdKGrwSVF63NnyNgAoboq/j4fyb02GbldERoZBptg7Ru2E4O5uH
+        MYpmNGcE08OaqdMMUDShxkKuUr7mLG0UX9biS37XnDCuNTEzieaF5Uo+SLFD3EdNlDAFdaw9R5Dp
+        fVUtSf+2GzT5YzMWg4vRbBmPL+otScsUD+5+VwBFC6qZtBBzzRKr9O3OYx3wWq5McXb/CjsHmm8y
+        iyIADw4qn2B7K6+l+in3nbtdOej56vLDYLAof5lzLtiEG9u6yQWKDn/fx3jk20l9zw88vwNB0Pfb
+        AE2AndNP/wq4ViJlep+vqSYpN64c5XiM9za02/3eabP3/1CcJ3j/nuitYBXA/fQ4Cr/X7759JhRM
+        2JKgery8GrhT7M5w6b+evDwCY3Nnvxyfi/dE5YVmxrD0mBtqd6l65V3UuuMu4eMvx3B1IfD73V4j
+        15tWMG3mOrKn4F23Jbjqz64JV33+FyhXzx8nCAAA
+    headers:
+      Connection:
+      - Keep-Alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '543'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Date:
+      - Tue, 07 Nov 2023 21:03:01 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - CFLWWW
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

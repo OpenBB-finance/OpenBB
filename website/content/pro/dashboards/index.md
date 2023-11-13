@@ -14,6 +14,8 @@ keywords:
 - Create new dashboard
 ---
 
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Dashboards | OpenBB Terminal Pro Docs" />

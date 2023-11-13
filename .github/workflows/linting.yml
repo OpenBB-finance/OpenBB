@@ -12,9 +12,9 @@ on:
     types: [opened, synchronize, edited]
   push:
     branches:
-      - 'feature/*'
-      - 'hotfix/*'
-      - 'release/*'
+      - "feature/*"
+      - "hotfix/*"
+      - "release/*"
   merge_group:
     types: [checks_requested]
 
@@ -48,7 +48,7 @@ jobs:
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=vai,mis,gard,commun,statics,ro,zar,zlot,jewl,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel,ket,toke,certi,buidl,ot,te,buda,shs,welp --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller,./website/config.toml -x openbb_terminal/economy/fedreserve_model.py
+      - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: ruff .
       - run: mypy --ignore-missing-imports openbb_terminal
       - run: pylint terminal.py openbb_terminal tests
