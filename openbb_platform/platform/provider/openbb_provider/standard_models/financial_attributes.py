@@ -39,4 +39,4 @@ class FinancialAttributesData(Data):
     """Financial Attributes Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    value: float = Field(description="The value of the data.")
+    value: Optional[float] = Field(default=None, description="The value of the data.")

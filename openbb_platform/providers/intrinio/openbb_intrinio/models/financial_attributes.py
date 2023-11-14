@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.financial_attributes import (
     FinancialAttributesData,
@@ -63,7 +63,8 @@ class IntrinioFinancialAttributesFetcher(
         query_str = f"{query_str}&frequency={frequency}"
 
         url = f"{base_url}/historical_data/{query.symbol}/{query.tag}?{query_str}&api_key={api_key}"
-        data = get_data_one(url).get("historical_data", [])
+        # data = get_data_one(url).get("historical_data", [])
+        data = get_data_many(url, "historical_data")
 
         return data
 
