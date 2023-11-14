@@ -140,7 +140,7 @@ git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
 When it is done, checkout the branch where the code is living:
 
 ```console
-git checkout feature/openbb-sdk-v4
+git checkout develop
 ```
 
 Then, `cd` into the directory:

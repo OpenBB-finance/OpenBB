@@ -22,7 +22,7 @@ The command below provides access to the core functionalities behind the [OpenBB
 pip install openbb-terminal
 ```
 
-If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/installation).
+If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/platform/installation).
 
 ## Usage
 
@@ -32,7 +32,7 @@ Access our fully fledged financial SDK with a single line of python code.
 from openbb_terminal.sdk import openbb
 ```
 
-Everything you need to use the OpenBB SDK can be found on our [Official Documentation](https://docs.openbb.co/sdk).
+Everything you need to use the OpenBB SDK can be found on our [Official Documentation](https://docs.openbb.co/platform).
 
 Main uses cases can be seen below.
 ___

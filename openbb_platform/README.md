@@ -30,7 +30,7 @@ pip install openbb[all] --pre
 
 > The `--pre` flag is required to install the latest alpha version.
 
-> Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
+> Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/platform).
 
 ## Python
 
