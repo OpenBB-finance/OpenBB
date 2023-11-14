@@ -1,37 +1,37 @@
-# faqs
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+<HeadTitle title="FAQs | OpenBB Terminal Docs" />
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-
-<ReferenceCard
-    title="Bugs, Support, and Feedback"
-    description="Familiarize yourself with common issues and bug reports within our OpenBB"
-    url="faqs/Bugs, Support, and Feedback"
-/>
-<ReferenceCard
-    title="Data and Sources"
-    description="The page discusses the data sources and functionalities of OpenBB, an"
-    url="faqs/Data and Sources"
-/>
-<ReferenceCard
-    title="Developer Issues"
-    description="This page helps with frequently asked questions regarding debugging,"
-    url="faqs/Developer Issues"
-/>
-<ReferenceCard
-    title="General Operation"
-    description="Learn how to overcome system-related issues by enabling the 'developer"
-    url="faqs/General Operation"
-/>
-<ReferenceCard
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
     title="Installation and Updates"
-    description="This page provides comprehensive insights about installing and updating"
-    url="faqs/Installation and Updates"
+    description="Check this page if you are having issues with installation and updates"
+    url="faqs/installation_updates"
 />
-<ReferenceCard
+<NewReferenceCard
     title="Launching"
-    description="Comprehensive troubleshooting guide for various software and system compatibility"
-    url="faqs/Launching"
+    description="Comprehensive troubleshooting guide when issues at launch"
+    url="faqs/launching"
+/>
+<NewReferenceCard
+    title="General Operation"
+    description="Generic questions regarding the OpenBB Terminal usage"
+    url="faqs/general_operation"
+/>
+<NewReferenceCard
+    title="Data and Sources"
+    description="If you have questions regarding data sources, this is where you should come"
+    url="faqs/data_sources"
+/>
+<NewReferenceCard
+    title="Bugs, Support, and Feedback"
+    description="Explore where to report bugs, request support and provide feedback"
+    url="faqs/bugs_support_feedback"
+/>
+<NewReferenceCard
+    title="Developer Issues"
+    description="If you are contributing to the OpenBB Terminal, refer to this page"
+    url="faqs/developer_issues"
 />
 </ul>
