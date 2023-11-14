@@ -1,22 +1,26 @@
-# usage
+---
+title: Usage
+---
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<HeadTitle title="Usage | OpenBB Terminal Docs" />
 
-<ReferenceCard
-        title="Customizing"
-        description="individual, overview, server"
-        url="usage/customizing"
-    />
-<ReferenceCard
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
     title="Discord"
-    description="Learn how to use the OpenBB Discord Bot using slash commands to explore"
-    url="usage/Discord"
+    description="Learn how to use the OpenBB Bot on Discord"
+    url="usage/discord"
 />
-<ReferenceCard
+<NewReferenceCard
     title="Telegram"
-    description="A complete guide on how to use the OpenBB Telegram Bot for stock and"
-    url="usage/Telegram"
+    description="Learn how to use the OpenBB Bot on Telegram"
+    url="usage/telegram"
+/>
+<NewReferenceCard
+    title="Customizing"
+    description="Customize your OpenBB Bot experience through the OpenBB Hub"
+    url="usage/customizing"
 />
 </ul>
