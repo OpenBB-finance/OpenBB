@@ -1,16 +1,16 @@
 """Tiingo Equity end of day fetcher."""
 
-from datetime import datetime, time
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
-
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_provider.utils.helpers import make_request
 from pydantic import Field, PrivateAttr, model_validator
 
 
