@@ -3,7 +3,9 @@ name: Test Platform V4
 on:
   pull_request:
     branches:
-      - feature/openbb-sdk-v4
+      - develop
+    paths:
+      - 'openbb_platform/**'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -14,9 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
+
         matrix:
           python_version:
-            ["3.8", "3.9", "3.10", "3.11"]
+            ["3.9", "3.10", "3.11"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
