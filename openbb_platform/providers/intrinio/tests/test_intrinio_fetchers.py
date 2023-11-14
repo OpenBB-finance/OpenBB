@@ -9,6 +9,9 @@ from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_attributes import (
+    IntrinioFinancialAttributesFetcher,
+)
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
@@ -158,5 +161,24 @@ def test_intrinio_search_financial_attributes(credentials=test_credentials):
     params = {"query": "ebit"}
 
     fetcher = IntrinioSearchFinancialAttributesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_attributes(credentials=test_credentials):
+    params = {
+        "provider": "intrinio",
+        "symbol": "AAPL",
+        "tag": "ebit",
+        "period": "annual",
+        "limit": 1000,
+        "type": None,
+        "start_date": date(2013, 1, 1),
+        "end_date": date(2023, 1, 1),
+        "sort": "desc",
+    }
+
+    fetcher = IntrinioFinancialAttributesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

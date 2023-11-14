@@ -114,6 +114,17 @@ def search_financial_attributes(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="FinancialAttributes")
+def financial_attributes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fetch the value of financial attributes for a selected company and fiscal period."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="IncomeStatement")
 def income(
     cc: CommandContext,
