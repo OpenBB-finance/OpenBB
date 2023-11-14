@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Customization
 sidebar_position: 1
 description: A guide to OpenBB Bot settings customization, including chart themes,
   alerts, autoposting, and more. Learn how to link your account and start personalizing
@@ -18,10 +18,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Overview - Customizing - Usage | OpenBB Bot Docs" />
+<HeadTitle title="Customizing - Usage | OpenBB Bot Docs" />
 
 For the best user experience, you will want to customize the OpenBB Bot settings. Different types of customizations we offer are:
-
 <div className="flex">
   <ul>
     <li>
