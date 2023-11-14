@@ -1,27 +1,46 @@
-# OpenBB Terminal/Usage Reference
+---
+title: Usage
+---
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<HeadTitle title="Usage | OpenBB Terminal Docs" />
 
-<ReferenceCard
-        title="Data"
-        description="api-keys, custom-data, data-sources"
-        url="terminal/usage/data"
-    />
-<ReferenceCard
-        title="Outputs"
-        description="export-data, interactive-charts, interactive-tables"
-        url="terminal/usage/outputs"
-    />
-<ReferenceCard
-        title="Overview"
-        description="commands-and-arguments, customizing-the-terminal, structure-and-navigation"
-        url="terminal/usage/overview"
-    />
-<ReferenceCard
-        title="Routines"
-        description="community-routines, introduction-to-routines, overlay-financial-data, pipeline-of-commands, routine-macro-recorder, routines-for-power-users"
-        url="terminal/usage/routines"
-    />
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Overview"
+    description="Overall overview on how to get started with the OpenBB Terminal"
+    url="terminal/usage/overview"
+/>
+<NewReferenceCard
+    title="Data"
+    description="Understand how data works on the OpenBB Terminal and where it comes from"
+    url="terminal/usage/data"
+/>
+<NewReferenceCard
+    title="Outputs"
+    description="Explanation of interactive tables and charts, but also how to export data"
+    url="terminal/usage/outputs"
+/>
+<NewReferenceCard
+    title="Routines"
+    description="Create a workflow that can be automated like an analyst"
+    url="terminal/usage/routines"
+/>
+<NewReferenceCard
+    title="AskOBB Feature"
+    description="Leverage natural language for data retrieval"
+    url="terminal/usage/askobb-feature"
+/>
+<NewReferenceCard
+    title="Hub Synchronization"
+    description="Optimize your experience by utilizing the OpenBB Hub"
+    url="terminal/usage/hub"
+/>
+<NewReferenceCard
+    title="Keyboard Hotkey Macros"
+    description="Configure your mechanical keyboard to create macros that work with the terminal"
+    url="terminal/usage/keyboard-hotkey-macros"
+/>
 </ul>

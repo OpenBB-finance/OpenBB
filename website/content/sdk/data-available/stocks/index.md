@@ -1,6 +1,6 @@
 ---
 title: Stocks
-sidebar_position: 1
+sidebar_position: 0
 description: This documentation page describes all the modules that are within the stocks menu of OpenBB.
 keywords:
 - stocks

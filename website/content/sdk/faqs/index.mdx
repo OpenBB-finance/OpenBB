@@ -1,37 +1,41 @@
-# faqs
+---
+title: FAQs
+---
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<HeadTitle title="FAQs | OpenBB SDK Docs" />
 
-<ReferenceCard
-    title="bugs_support_feedback"
-    description="test"
-    url="faqs/bugs_support_feedback"
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Installation and Updates"
+    description="Check this page if you are having issues with installation and updates"
+    url="faqs/installation_updates"
 />
-<ReferenceCard
-    title="data_sources"
-    description="test"
-    url="faqs/data_sources"
-/>
-<ReferenceCard
-    title="developer_issues"
-    description="test"
-    url="faqs/developer_issues"
-/>
-<ReferenceCard
-    title="general_operation"
-    description="test"
-    url="faqs/general_operation"
-/>
-<ReferenceCard
-    title="import_errors"
-    description="test"
+<NewReferenceCard
+    title="Import Errors"
+    description="Troubleshoot import errors here"
     url="faqs/import_errors"
 />
-<ReferenceCard
-    title="installation_updates"
-    description="test"
-    url="faqs/installation_updates"
+<NewReferenceCard
+    title="General Operation"
+    description="Generic questions regarding the OpenBB SDK usage"
+    url="faqs/general_operation"
+/>
+<NewReferenceCard
+    title="Data and Sources"
+    description="If you have questions regarding data sources, this is where you should come"
+    url="faqs/data_sources"
+/>
+<NewReferenceCard
+    title="Bugs, Support, and Feedback"
+    description="Explore where to report bugs, request support and provide feedback"
+    url="faqs/bugs_support_feedback"
+/>
+<NewReferenceCard
+    title="Developer Issues"
+    description="If you are contributing to the OpenBB SDK, refer to this page"
+    url="faqs/developer_issues"
 />
 </ul>

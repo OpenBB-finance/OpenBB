@@ -1,17 +1,21 @@
-# usage
+---
+title: Usage
+---
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<HeadTitle title="Usage | OpenBB SDK Docs" />
 
-<ReferenceCard
-    title="api-keys"
-    description="test"
-    url="usage/api-keys"
-/>
-<ReferenceCard
-    title="basics"
-    description="test"
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Basics"
+    description="Go through basics to get started with the OpenBB SDK"
     url="usage/basics"
+/>
+<NewReferenceCard
+    title="API Keys"
+    description="Set up your API keys to start using the OpenBB SDK"
+    url="usage/api-keys"
 />
 </ul>
