@@ -79,7 +79,7 @@ def install_local(_extras: bool = False):
     """
     original_lock = LOCK.read_text()
     original_pyproject = PYPROJECT.read_text()
-    extras_args = ["-E", "all"] if _extras else []
+    extras_args = ["-E", "all", "--with", "dev"] if _extras else []
 
     try:
         # we create a temporary pyproject.toml
