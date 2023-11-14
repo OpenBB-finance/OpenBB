@@ -82,8 +82,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          editUrl: "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           routeBasePath: "/",
@@ -114,7 +113,7 @@ const config = {
       },
       algolia: {
         appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd", // pragma: allowlist secret
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",  // pragma: allowlist secret
         indexName: "openbbterminal",
         contextualSearch: false,
       },
