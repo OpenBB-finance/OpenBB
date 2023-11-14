@@ -106,8 +106,6 @@ class IntrinioIncomeStatementFetcher(
                 {
                     "date": statement_data["fundamental"]["end_date"],
                     "period": statement_data["fundamental"]["fiscal_period"],
-                    "cik": statement_data["fundamental"]["company"]["cik"],
-                    "symbol": statement_data["fundamental"]["company"]["ticker"],
                     "financials": statement_data["standardized_financials"]
                     + calculations_data,
                 }
@@ -134,8 +132,6 @@ class IntrinioIncomeStatementFetcher(
 
             sub_dict["date"] = item["date"]
             sub_dict["period"] = item["period"]
-            sub_dict["cik"] = item["cik"]
-            sub_dict["symbol"] = item["symbol"]
 
             # Intrinio does not return Q4 data but FY data instead
             if query.period == "quarter" and item["period"] == "FY":
