@@ -23,11 +23,11 @@ export default function NewReferenceCard({
   return (
     <Link
       className={clsx(
-        "rounded border-2 hover:!text-black dark:hover:!text-white !no-underline p-6 cursor-pointer relative overflow-hidden hover:shadow-2xl hover:-translate-y-2 transform transition-all duration-300 ease-in-out font-bold shadow-2xl",
+        "rounded border-2 hover:!text-black dark:hover:!text-white !no-underline p-6 cursor-pointer relative overflow-hidden hover:-translate-y-2 transform transition-all duration-300 ease-in-out font-bold shadow-md",
         {
-          "bg-[#b186bb] border-[#b186bb] hover:border-black dark:bg-[#3a204f] dark:border-[#3a204f] dark:hover:border-white": cleanedPath.startsWith("/bot"),
-          "bg-[#669DCB] border-[#669DCB] hover:border-black dark:bg-[#004A87] dark:border-[#004A87] dark:hover:border-white": cleanedPath.startsWith("/terminal"),
-          "bg-[#F5B166] border-[#F5B166] hover:border-black dark:bg-[#511d11] dark:border-[#511d11] dark:hover:border-white": cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/platform"),
+          "hover:bg-[#669DCB] border-[#669DCB] dark:hover:bg-[#004A87] dark:border-[#004A87]": cleanedPath.startsWith("/terminal"),
+          "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]": cleanedPath.startsWith("/bot"),
+          "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]": cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/platform"),
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/sdk") &&
@@ -38,11 +38,13 @@ export default function NewReferenceCard({
       to={url}
     >
       <div className="absolute top-0 right-0 left-0 bottom-0" />
-      <p className={"py-2 font-bold text-lg my-0"}>
-        {title}
-        {something}
-      </p>
-      <ChevronRightIcon className="absolute top-0 right-0 bottom-0 my-auto mr-4" />
+      <div className="flex items-center">
+        <p className={"py-2 font-bold text-lg my-0"}>
+          {title}
+          {something}
+        </p>
+        <ChevronRightIcon className="ml-auto mr-4" />
+      </div>
       {description ? (
         <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0">{description}</p>
       ) : null}
