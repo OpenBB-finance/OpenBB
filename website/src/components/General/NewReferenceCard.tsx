@@ -25,9 +25,9 @@ export default function NewReferenceCard({
       className={clsx(
         "rounded border-2 hover:!text-black dark:hover:!text-white !no-underline p-6 cursor-pointer relative overflow-hidden hover:shadow-2xl hover:-translate-y-2 transform transition-all duration-300 ease-in-out font-bold shadow-2xl",
         {
-          "bg-[#669DCB] dark:bg-[#004A87]": cleanedPath.startsWith("/terminal"),
-          "bg-[#F5B166] dark:bg-[#511d11]": cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/platform"),
           "bg-[#b186bb] border-[#b186bb] hover:border-black dark:bg-[#3a204f] dark:border-[#3a204f] dark:hover:border-white": cleanedPath.startsWith("/bot"),
+          "bg-[#669DCB] border-[#669DCB] hover:border-black dark:bg-[#004A87] dark:border-[#004A87] dark:hover:border-white": cleanedPath.startsWith("/terminal"),
+          "bg-[#F5B166] border-[#F5B166] hover:border-black dark:bg-[#511d11] dark:border-[#511d11] dark:hover:border-white": cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/platform"),
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/sdk") &&
