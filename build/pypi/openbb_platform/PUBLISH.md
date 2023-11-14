@@ -36,7 +36,7 @@ Publishing checklist:
             - Bump the dependency package versions
             - Re-build the static assets that are bundled with the package
 
-    > Note that, in order to packages picking the latest versions of the dependencies, it might be necessary to clear the local cache of the dependencies:
+    > Note that, in order for packages to pick up the latest versions of dependencies, it might be necessary to clear the local cache of the dependencies:
     >
     > We can do that with `pip cache purge` and `poetry cache clear pypi --all`
     >
