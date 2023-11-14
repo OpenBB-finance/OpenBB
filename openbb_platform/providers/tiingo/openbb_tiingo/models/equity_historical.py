@@ -2,7 +2,6 @@
 
 from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
-import requests
 from dateutil.relativedelta import relativedelta
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.equity_historical import (
@@ -12,7 +11,7 @@ from openbb_provider.standard_models.equity_historical import (
 from openbb_provider.utils.helpers import make_request
 
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-]from pydantic import Field, PrivateAttr, model_validator
+from pydantic import Field, PrivateAttr, model_validator
 
 
 class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
