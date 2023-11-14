@@ -103,6 +103,17 @@ def employee_count(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="SearchFinancialAttributes")
+def search_financial_attributes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Search financial attributes for financial statements."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="IncomeStatement")
 def income(
     cc: CommandContext,

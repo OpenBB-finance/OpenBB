@@ -12,6 +12,9 @@ from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.search_financial_attributes import (
+    IntrinioSearchFinancialAttributesFetcher,
+)
 from openbb_provider.abstract.provider import Provider
 
 intrinio_provider = Provider(
@@ -33,5 +36,6 @@ intrinio_provider = Provider(
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
+        "SearchFinancialAttributes": IntrinioSearchFinancialAttributesFetcher,
     },
 )

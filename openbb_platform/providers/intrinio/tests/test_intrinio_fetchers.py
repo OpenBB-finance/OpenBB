@@ -14,6 +14,9 @@ from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.search_financial_attributes import (
+    IntrinioSearchFinancialAttributesFetcher,
+)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -146,5 +149,14 @@ def test_intrinio_calendar_ipo_fetcher(credentials=test_credentials):
     params = {"status": "upcoming"}
 
     fetcher = IntrinioCalendarIpoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_search_financial_attributes(credentials=test_credentials):
+    params = {"query": "ebit"}
+
+    fetcher = IntrinioSearchFinancialAttributesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

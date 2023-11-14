@@ -964,7 +964,7 @@ def test_equity_news(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 100})],
+    [({"symbol": "AAPL", "limit": 100, "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_multiples(params, headers):
@@ -972,6 +972,23 @@ def test_equity_fundamental_multiples(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/multiples?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"query": "ebit", "limit": 100, "provider": "intrinio"}),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_search_financial_attributes(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/search_financial_attributes?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

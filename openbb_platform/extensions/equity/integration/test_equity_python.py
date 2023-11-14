@@ -894,12 +894,26 @@ def test_equity_news(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 100}),
+        ({"symbol": "AAPL", "limit": 100, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_multiples(params, obb):
     result = obb.equity.fundamental.multiples(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"query": "ebit", "limit": 100, "provider": "intrinio"}),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_search_financial_attributes(params, obb):
+    result = obb.equity.fundamental.search_financial_attributes(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
