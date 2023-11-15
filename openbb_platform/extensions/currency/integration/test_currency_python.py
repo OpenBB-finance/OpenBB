@@ -136,3 +136,15 @@ def test_currency_price_historical(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({})],
+)
+@pytest.mark.integration
+def test_currency_reference_rates(params, obb):
+    result = obb.currency.reference_rates(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.model_dump()["results"].items()) > 0
