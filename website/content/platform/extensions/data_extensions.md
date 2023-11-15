@@ -25,7 +25,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data - Extensions | OpenBB Platform Docs" />
 
-Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform.  Each source (provider) is its own independent extension, even if there is only one endpoint accessible.  This allows every data source to be inserted or removed, at any time, without distrubing the operation of the Core components.  Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed.
+Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform.  Each source (provider) is its own independent extension, even if there is only one endpoint accessible.  This allows every data source to be inserted or removed, at any time, without distrubing the operation of the Core components.
+
+Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed.  Additional Python libraries will be installed, where required, by the extension.
+
+## Provider Coverage
 
 The total installed coverage can be determined through the Python interface, as a dictionary.
 
@@ -34,7 +38,9 @@ from openbb import obb
 obb.coverage.providers
 ```
 
-Published data extensions will have names beginning with `openbb`.  For example, yFinance.
+## Installation
+
+All data extensions are installed with similar syntax.  Published data extensions will have names beginning with `openbb`.  For example, yFinance.
 
 ```console
 pip install openbb-yfinance
