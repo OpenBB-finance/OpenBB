@@ -1,4 +1,5 @@
 from datetime import date
+from unittest import mock
 
 import pytest
 from openbb_core.app.service.user_service import UserService
@@ -9,11 +10,17 @@ from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_attributes import (
+    IntrinioFinancialAttributesFetcher,
+)
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.search_financial_attributes import (
+    IntrinioSearchFinancialAttributesFetcher,
+)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -28,6 +35,15 @@ def vcr_config():
             ("api_key", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.fixture(autouse=True, scope="module")
+def mock_cpu_count():
+    with mock.patch(
+        "os.cpu_count"
+    ) as mock_cpu_count:  # pylint: disable=redefined-outer-name
+        mock_cpu_count.return_value = -3
+        yield
 
 
 @pytest.mark.record_http
@@ -98,7 +114,6 @@ def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -108,7 +123,6 @@ def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -118,7 +132,6 @@ def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_income_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -146,5 +159,33 @@ def test_intrinio_calendar_ipo_fetcher(credentials=test_credentials):
     params = {"status": "upcoming"}
 
     fetcher = IntrinioCalendarIpoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_search_financial_attributes(credentials=test_credentials):
+    params = {"query": "ebit"}
+
+    fetcher = IntrinioSearchFinancialAttributesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_attributes(credentials=test_credentials):
+    params = {
+        "provider": "intrinio",
+        "symbol": "AAPL",
+        "tag": "ebit",
+        "period": "annual",
+        "limit": 1000,
+        "type": None,
+        "start_date": date(2013, 1, 1),
+        "end_date": date(2023, 1, 1),
+        "sort": "desc",
+    }
+
+    fetcher = IntrinioFinancialAttributesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

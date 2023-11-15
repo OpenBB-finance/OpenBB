@@ -76,27 +76,27 @@ pip install poetry toml
 Install from PyPI with:
 
 ```console
-pip install openbb==4.0.0a4
+pip install openbb --pre
 ```
-
-:::note
-While still under active development, the version number is required to install the core OpenBB Platform.
-:::
 
 To install all of the extensions and providers:
 
 ```console
-pip install openbb[all]==4.0.0a4
+pip install openbb[all] --pre
 ```
+
+:::note
+While still under active development, the `pre` flag is required to install the core OpenBB Platform latest version.
+:::
 
 To install a single extension:
 
 ```console
-pip install openbb[charting]==4.0.0a4
+pip install openbb[charting] --pre
 ```
 
 ```console
-pip install openbb[ta]==4.0.0a4
+pip install openbb[ta] --pre
 ```
 
 Import the package with:

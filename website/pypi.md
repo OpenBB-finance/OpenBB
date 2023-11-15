@@ -19,7 +19,7 @@ More information on this product can be found [here](https://openbb.co/products/
 The command below provides access to the core functionalities behind the [OpenBB Terminal](https://openbb.co/products/terminal).
 
 ```python
-pip install openbb
+pip install openbb-terminal
 ```
 
 If you wish to utilize our **Portfolio Optimization** or **Machine Learning / Artificial Intelligence** toolkits, please see instructions [here](https://docs.openbb.co/sdk/installation).
