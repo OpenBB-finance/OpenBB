@@ -25,6 +25,7 @@ openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
 openbb-sec = { path = "./providers/sec", develop = true }
+openbb-tiingo = { path = "./providers/tiingo", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
