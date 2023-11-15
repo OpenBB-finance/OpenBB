@@ -4,47 +4,43 @@ from typing import Any, Dict, List, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.trailing_dividend_yield import (
-    TrailingDivYieldHistoricalData,
-    TrailingDivYieldHistoricalQueryParams,
+    TrailingDivYieldData,
+    TrailingDivYieldQueryParams,
 )
 from openbb_provider.utils.helpers import make_request
 
 
-class TiingoTrailingDivYieldHistoricalQueryParams(
-    TrailingDivYieldHistoricalQueryParams
-):
+class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
     """Tiingo trailing dividend yield Query.
 
     Source: https://www.tiingo.com/documentation/end-of-day
     """
 
 
-class TiingoTrailingDivYieldHistoricalData(TrailingDivYieldHistoricalData):
+class TiingoTrailingDivYieldData(TrailingDivYieldData):
     """Tiingo trailing dividend yield Data."""
 
-    __alias_dict__ = {"trailing_1y_yield": "trailingDiv1Y"}
+    __alias_dict__ = {"trailing_dividend_yield": "trailingDiv1Y"}
 
 
-class TiingoTrailingDivYieldHistoricalFetcher(
+class TiingoTrailingDivYieldFetcher(
     Fetcher[
-        TiingoTrailingDivYieldHistoricalQueryParams,
-        List[TiingoTrailingDivYieldHistoricalData],
+        TiingoTrailingDivYieldQueryParams,
+        List[TiingoTrailingDivYieldData],
     ]
 ):
     """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> TiingoTrailingDivYieldHistoricalQueryParams:
+    def transform_query(params: Dict[str, Any]) -> TiingoTrailingDivYieldQueryParams:
         """Transform the query params."""
         transformed_params = params
-        return TiingoTrailingDivYieldHistoricalQueryParams(**transformed_params)
+        return TiingoTrailingDivYieldQueryParams(**transformed_params)
 
     # pylint: disable=protected-access
     @staticmethod
     def extract_data(
-        query: TiingoTrailingDivYieldHistoricalQueryParams,
+        query: TiingoTrailingDivYieldQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -63,10 +59,10 @@ class TiingoTrailingDivYieldHistoricalFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: TiingoTrailingDivYieldHistoricalQueryParams,
+        query: TiingoTrailingDivYieldQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[TiingoTrailingDivYieldHistoricalData]:
+    ) -> List[TiingoTrailingDivYieldData]:
         """Return the transformed data."""
 
-        return [TiingoTrailingDivYieldHistoricalData.model_validate(d) for d in data]
+        return [TiingoTrailingDivYieldData.model_validate(d) for d in data]

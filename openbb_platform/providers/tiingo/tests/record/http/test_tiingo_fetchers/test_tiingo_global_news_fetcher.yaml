@@ -1,0 +1,894 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":59573624,\"publishedDate\":\"2023-11-15T18:05:17.402226Z\",\"title\":\"Deciphering
+        grape development: A molecular phenology scale for grapevine berry maturation\",\"url\":\"https://phys.org/news/2023-11-deciphering-grape-molecular-phenology-scale.html\",\"description\":\"Fruit
+        development encompasses a series of physical, biochemical, and physiological
+        shifts influenced by both genetic programming and environmental factors. The
+        growth patterns of fruits like grapes are generally consistent within the
+        same species, but can vary due to genetics and environmental conditions.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Molecular
+        & Computational Biology\"],\"crawlDate\":\"2023-11-15T18:05:20.424110Z\",\"tickers\":[]},{\"id\":59573636,\"publishedDate\":\"2023-11-15T18:04:52Z\",\"title\":\"Children's
+        Place Retail Stores Q3 2024 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037159-childrens-place-retail-stores-q3-2024-earnings-preview\",\"description\":\"Children's
+        Place Retail Stores (PLCE) is set to announce Q3 earnings on November 16th.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:05:29.283226Z\",\"tickers\":[]},{\"id\":59573626,\"publishedDate\":\"2023-11-15T18:04:43Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Position in Nuveen New Jersey Quality Municipal
+        Income Fund\",\"url\":\"https://www.gurufocus.com/news/2124591/saba-capital-management-lp-bolsters-position-in-nuveen-new-jersey-quality-municipal-income-fund\",\"description\":\"Introduction
+        to the Transaction  Saba Capital Management, L.P. (Trades, Portfolio), a prominent
+        investment firm, has recently expanded its portfolio with a sign\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Nxj\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:22.934459Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ne-ws\",\"nxj\"]},{\"id\":59573634,\"publishedDate\":\"2023-11-15T18:04:23Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Position in Eaton Vance California Municipal
+        Bond Fund\",\"url\":\"https://www.gurufocus.com/news/2124590/saba-capital-management-lp-bolsters-position-in-eaton-vance-california-municipal-bond-fund\",\"description\":\"Introduction
+        to the Transaction  Saba Capital Management, L.P. (Trades, Portfolio), a prominent
+        investment firm, has recently increased its stake in the Eaton V\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Evm\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Industrials\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:28.452001Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"etn\",\"evm\",\"gim\",\"ne-ws\"]},{\"id\":59573631,\"publishedDate\":\"2023-11-15T18:04:15Z\",\"title\":\"Institutional
+        Venture Management XIII, LLC Adjusts Stake in The Honest Co Inc\",\"url\":\"https://www.gurufocus.com/news/2124589/institutional-venture-management-xiii-llc-adjusts-stake-in-the-honest-co-inc\",\"description\":\"Overview
+        of Institutional Venture Management XIII, LLC (Trades, Portfolio)'s Recent
+        Transaction In a notable move within the investment community, Institutional\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Hnst\",\"Ispo\",\"Lz\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:26.553938Z\",\"tickers\":[\"hnst\",\"ispo\",\"lz\",\"lz\",\"ne-ws\"]},{\"id\":59573635,\"publishedDate\":\"2023-11-15T18:04:14Z\",\"title\":\"(NYSE:WSM)\",\"url\":\"https://seekingalpha.com/news/4037158-williams-sonoma-q3-2024-earnings-preview\",\"description\":\"Williams-Sonoma
+        is set to announce Q3 earnings with a decreased consensus EPS estimate of
+        $3.34 and revenue estimate of $1.94B.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:28.754024Z\",\"tickers\":[\"wsm\"]},{\"id\":59573620,\"publishedDate\":\"2023-11-15T18:03:55Z\",\"title\":\"PDS
+        Biotechnology Corporation (NASDAQ:PDSB) Q3 2023 Earnings Call Transcript\",\"url\":\"https://www.insidermonkey.com/blog/pds-biotechnology-corporation-nasdaqpdsb-q3-2023-earnings-call-transcript-1223799/\",\"description\":\"Operator:
+        Greetings and welcome to the PDS Biotechnology Third Quarter 2023 Earnings
+        Call and Webcast. At this time, all participants are in a listen-only mode.
+        [Operator Instructions].\",\"source\":\"insidermonkey.com\",\"tags\":[\"Healthcare\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:00.029494Z\",\"tickers\":[\"pdsb\"]},{\"id\":59573621,\"publishedDate\":\"2023-11-15T18:03:54Z\",\"title\":\"When
+        Roy\u2019s Sahara walked on the wrong side of the law, and lost\",\"url\":\"https://www.livemint.com/companies/news/when-roy-s-sahara-walked-on-the-wrong-side-of-the-law-and-lost-11700071205810.html\",\"description\":\"Subrata
+        Roy's death puts the spotlight on the litigation surrounding the Sahara group
+        and the  \u20B925,000 crore with the capital markets regulator for distribution
+        to investors.\",\"source\":\"livemint.com\",\"tags\":[\"Amit Shah\",\"Appeals\",\"Criminal
+        Proceedings\",\"Litigation\",\"Sahara\",\"Sebi\",\"Sfio\",\"Stock\",\"Subrata
+        Roy\",\"Supreme Court\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:05.986908Z\",\"tickers\":[\"sfio\"]},{\"id\":59573630,\"publishedDate\":\"2023-11-15T18:03:49Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with Federated Hermes Premier
+        Municipal Income ...\",\"url\":\"https://www.gurufocus.com/news/2124588/saba-capital-management-lp-bolsters-portfolio-with-federated-hermes-premier-municipal-income-fund-acquisition\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio with the acquisition of 1,169,884
+        shares in\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Fmn\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:25.713879Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"fmn\",\"gim\",\"ne-ws\"]},{\"id\":59573633,\"publishedDate\":\"2023-11-15T18:03:44Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with Nuveen Pennsylvania Quality
+        Municipal ...\",\"url\":\"https://www.gurufocus.com/news/2124587/saba-capital-management-lp-bolsters-portfolio-with-nuveen-pennsylvania-quality-municipal-income-fund-nqp-shares\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio by adding shares of the Nuveen Pennsylvania\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Nqp\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:27.796477Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ne-ws\",\"nqp\"]},{\"id\":59573629,\"publishedDate\":\"2023-11-15T18:03:38Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with DWS Strategic Municipal Income
+        Trust ...\",\"url\":\"https://www.gurufocus.com/news/2124586/saba-capital-management-lp-bolsters-portfolio-with-dws-strategic-municipal-income-trust-acquisition\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio with the acquisition of 12,208,17
+        shares in\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Ksm\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:25.061678Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ksm\",\"ne-ws\"]},{\"id\":59573606,\"publishedDate\":\"2023-11-15T18:03:35Z\",\"title\":\"Biden
+        and China's Xi to Meet at APEC Summit in San Francisco: Live Updates\",\"url\":\"https://www.nytimes.com/live/2023/11/15/world/biden-xi-apec-summit\",\"description\":\"Hints
+        of how the two leaders will try to nudge toward agreements on some issues
+        have emerged, even as officials have tried to temper expectations.\",\"source\":\"nytimes.com\",\"tags\":[\"Asia-Pacific
+        Economic Cooperation\",\"Biden\",\"China\",\"International Trade And World
+        Market\",\"Joseph R Jr\",\"Tiingo Top\",\"United States International Relations\",\"Xi
+        Jinping\"],\"crawlDate\":\"2023-11-15T18:04:32.093088Z\",\"tickers\":[]},{\"id\":59573638,\"publishedDate\":\"2023-11-15T18:03:34Z\",\"title\":\"NetEase
+        Q3 2023 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037157-netease-q3-2023-earnings-preview\",\"description\":\"NetEase
+        is set to release its Q3 earnings with an expected EPS of $1.47 and revenue
+        of $3.78B.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:05:30.966304Z\",\"tickers\":[]},{\"id\":59573588,\"publishedDate\":\"2023-11-15T18:03:29.477643Z\",\"title\":\"Why
+        are baby boomers dominating the hot U.S. housing market?\",\"url\":\"https://www.deseret.com/u-s-world/2023/11/15/23962316/housing-market-baby-boomers-dominating-buying-selling-homes\",\"description\":\"The
+        typical age for a repeat buyer \u2014 someone who has bought a house before
+        \u2014 is 58, according to new data from the National Association of Realtors\",\"source\":\"deseret.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:43.928540Z\",\"tickers\":[]},{\"id\":59573587,\"publishedDate\":\"2023-11-15T18:03:29.426375Z\",\"title\":\"\u2018Big
+        Play Vele\u2019: Utah receiver Devaughn Vele making the most out of his increased
+        touches\",\"url\":\"https://www.deseret.com/2023/11/15/23959495/utah-wide-receiver-devaughn-vele-increased-catches\",\"description\":\"Utes
+        have made concerted effort to get leading receiver the ball more, cumulating
+        in a five-catch, 145-yard outing in Utes\u2019 35-28 loss to Washington\",\"source\":\"deseret.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:42.447785Z\",\"tickers\":[]},{\"id\":59573628,\"publishedDate\":\"2023-11-15T18:03:24Z\",\"title\":\"Insider
+        Buying: Director Roland Diggelmann Acquires Shares of Mettler-Toledo International
+        Inc\",\"url\":\"https://www.gurufocus.com/news/2124585/insider-buying-director-roland-diggelmann-acquires-shares-of-mettlertoledo-international-inc\",\"description\":\"\\nMettler-Toledo
+        International Inc (NYSE:MTD), a leading global supplier of precision instruments
+        and services, has recently witnessed insider buying activity th\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Healthcare\",\"Mtd\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:24.137077Z\",\"tickers\":[\"mtd\",\"ne-ws\"]},{\"id\":59573632,\"publishedDate\":\"2023-11-15T18:03:23Z\",\"title\":\"STILWELL
+        JOSEPH Bolsters Position in Sound Financial Bancorp Inc\",\"url\":\"https://www.gurufocus.com/news/2124584/stilwell-joseph-bolsters-position-in-sound-financial-bancorp-inc\",\"description\":\"Introduction
+        to the Transaction  On November 13, 2023, STILWELL JOSEPH (Trades, Portfolio),
+        a notable investment firm, expanded its portfolio by adding 398,150 \",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Financial
+        Services\",\"Gurufocus\",\"Gurufocus Research\",\"News\",\"Sfbc\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:05:27.141659Z\",\"tickers\":[\"ne-ws\",\"sfbc\"]},{\"id\":59573627,\"publishedDate\":\"2023-11-15T18:03:15Z\",\"title\":\"Insider
+        Sell: Director Steven Kohlhagen Sells Shares of AMETEK Inc\",\"url\":\"https://www.gurufocus.com/news/2124583/insider-sell-director-steven-kohlhagen-sells-shares-of-ametek-inc\",\"description\":\"Recent
+        filings with the Securities and Exchange Commission have revealed that Director
+        Steven Kohlhagen sold 810 shares of AMETEK Inc (AME) on November 14, 2023\",\"source\":\"gurufocus.com\",\"tags\":[\"Ame\",\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Industrials\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:23.546152Z\",\"tickers\":[\"ame\",\"ne-ws\"]},{\"id\":59573639,\"publishedDate\":\"2023-11-15T18:02:57.156000Z\",\"title\":\"Ex-Goldman
+        Duo Seek Out Recession Busting Franchise Operators\",\"url\":\"https://www.bloomberg.com/news/newsletters/2023-11-15/ex-goldman-duo-seek-out-recession-busting-franchise-operators\",\"description\":null,\"source\":\"bloomberg.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T18:05:33.082334Z\",\"tickers\":[\"dis\",\"manu\"]},{\"id\":59573637,\"publishedDate\":\"2023-11-15T18:02:54Z\",\"title\":\"American
+        Lithium lifts higher as Peru court confirms asset titles (NASDAQ:AMLI)\",\"url\":\"https://seekingalpha.com/news/4037156-american-lithium-lifts-higher-as-peru-court-confirms-asset-titles\",\"description\":\"American
+        Lithium rises as a court upholds its ownership of disputed concessions in
+        Peru, amid a broader rally in lithium stocks.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Basic
+        Materials\",\"Peru\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:30.095923Z\",\"tickers\":[\"amli\",\"lthm\",\"pll\"]},{\"id\":59573589,\"publishedDate\":\"2023-11-15T18:02:37.428000Z\",\"title\":\"Week
+        12 college football schedule: How to watch all 72 FBS games\",\"url\":\"https://www.ajc.com/sports/state-sports/week-12-college-football-schedule-how-to-watch-all-72-fbs-games/DU5JWU4TKFDT3MLLH3IDMURQEQ/\",\"description\":\"Here
+        are the TV times, networks and livestreaming opportunities for all FBS games
+        Tuesday-Saturday. All times are EDT.\",\"source\":\"ajc.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:45.809894Z\",\"tickers\":[]},{\"id\":59573538,\"publishedDate\":\"2023-11-15T18:02:35Z\",\"title\":\"Bath
+        & Body Works Q3 2024 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037154-bath-body-works-q3-2024-earnings-preview\",\"description\":\"Bath
+        & Body Works (BBWI) is set to announce Q3 earnings on November 16th.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:02:56.098055Z\",\"tickers\":[]},{\"id\":59573564,\"publishedDate\":\"2023-11-15T18:02:33Z\",\"title\":\"40+
+        Columbia Student Orgs Join Israel \u2018Apartheid Divest\u2019 Coalition\",\"url\":\"https://patch.com/new-york/upper-west-side-nyc/40-columbia-student-orgs-join-israel-apartheid-divest-coalition\",\"description\":\"The
+        student groups said they were \\\"moved to action by the ostensibly politically-motivated\\\"
+        suspension of two student groups last week. \\r\\n\",\"source\":\"patch.com\",\"tags\":[\"Apartheid\",\"Coalition\",\"Columbia\",\"Crime\",\"Divest\",\"Israel\",\"New
+        York\",\"Safety\",\"Student\",\"Upper West Side\"],\"crawlDate\":\"2023-11-15T18:03:17.815667Z\",\"tickers\":[]},{\"id\":59573559,\"publishedDate\":\"2023-11-15T18:02:25Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In IL: New Ranking\",\"url\":\"https://patch.com/illinois/across-il/these-are-best-elementary-middle-schools-il-new-ranking-says\",\"description\":\"Illinois
+        elementary and middle schools scored well and are considered the best educational
+        systems in the country, according to U.S. News\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Illinois\",\"Elementary\",\"Illinois\",\"Middle\",\"Ranking\",\"Schools\"],\"crawlDate\":\"2023-11-15T18:03:14.623488Z\",\"tickers\":[]},{\"id\":59573512,\"publishedDate\":\"2023-11-15T18:02:24.904220Z\",\"title\":\"Unearthing
+        the terroir effect: Grapevine's transcriptional response to soil variability\",\"url\":\"https://phys.org/news/2023-11-unearthing-terroir-effect-grapevine-transcriptional.html\",\"description\":\"Grapevine
+        is a globally significant fruit crop that exhibits remarkable phenotypic plasticity
+        (PP) due to genotype-per-environment interactions (a concept known as terroir).
+        This adaptability impacts physiological, molecular and biochemical aspects
+        of the plant.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Molecular
+        & Computational Biology\"],\"crawlDate\":\"2023-11-15T18:02:41.846417Z\",\"tickers\":[]},{\"id\":59573503,\"publishedDate\":\"2023-11-15T18:02:24.890298Z\",\"title\":\"Surveying
+        wetlands for infectious bird flu\u2014and finding it\",\"url\":\"https://phys.org/news/2023-11-surveying-wetlands-infectious-bird-fluand.html\",\"description\":\"Recently,
+        morning omelets and holiday dinners have gotten more expensive. One likely
+        cause is bird flu, outbreaks of which led to the deaths of millions of chickens
+        and turkeys from infection or culling in 2022, according to the U.S. Department
+        of Agriculture, and which still demands rigorous monitoring of wild populations.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Ecology\",\"Turkey\"],\"crawlDate\":\"2023-11-15T18:02:37.613526Z\",\"tickers\":[]},{\"id\":59573552,\"publishedDate\":\"2023-11-15T18:02:22Z\",\"title\":\"ChatGPT
+        picks 3 cryptocurrencies to use as cash vs. CBDCs\",\"url\":\"https://finbold.com/chatgpt-picks-3-cryptocurrencies-to-use-as-cash-vs-cbdcs/\",\"description\":\"Finbold
+        asked ChatGPT-4 to mention 10 decentralized cryptocurrencies to use as cash
+        as an alternative to the rise of CBDCs.\",\"source\":\"finbold.com\",\"tags\":[\"Btc\",\"Cbdcs\",\"Chatgpt-4\",\"CryptoCurrency\",\"Cryptocurrency\",\"ETF\",\"Finance\",\"Imf\",\"Ltc\",\"Real
+        Estate\",\"Stock\",\"Unknown Sector\",\"Xmr\"],\"crawlDate\":\"2023-11-15T18:03:08.173729Z\",\"tickers\":[\"btc\",\"ltc\",\"pifi\"]},{\"id\":59573513,\"publishedDate\":\"2023-11-15T18:01:56Z\",\"title\":\"Public
+        invited to Barry Humphries' Opera House memorial\",\"url\":\"https://thewest.com.au/entertainment/public-invited-to-barry-humphries-opera-house-memorial-c-12569671\",\"description\":\"Australia
+        will farewell Barry Humphries in style at the Sydney Opera House, with limited
+        tickets publicly available this week.\",\"source\":\"thewest.com.au\",\"tags\":[\"Australia\",\"Entertainment\"],\"crawlDate\":\"2023-11-15T18:02:41.096932Z\",\"tickers\":[]},{\"id\":59573539,\"publishedDate\":\"2023-11-15T18:01:54Z\",\"title\":\"Stratasys
+        Q3 2023 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037153-stratasys-q3-2023-earnings-preview\",\"description\":\"Stratasys
+        is set to announce its Q3 earnings results, with EPS estimate at $0.03 and
+        revenue estimate at $161.25M.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:02:56.972408Z\",\"tickers\":[\"ssys\"]},{\"id\":59573562,\"publishedDate\":\"2023-11-15T18:01:48Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In MA, New Ranking Says\",\"url\":\"https://patch.com/massachusetts/across-ma/these-are-best-elementary-middle-schools-ma-new-ranking-says\",\"description\":\"U.S.
+        News & World Report based its 2024 elementary and middle school rankings on
+        public data from the U.S. Department of Education.\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Massachusetts\",\"Elementary\",\"Massachusetts\",\"Middle\",\"Ranking\",\"Schools\"],\"crawlDate\":\"2023-11-15T18:03:15.770242Z\",\"tickers\":[]},{\"id\":59573472,\"publishedDate\":\"2023-11-15T18:01:44Z\",\"title\":\"2023's
+        best early Black Friday luggage deals you can already shop\",\"url\":\"https://www.cbsnews.com/essentials/best-black-friday-luggage-deals/\",\"description\":\"Shop
+        the best Black Friday 2023 luggage deals on carry-ons and check-in suitcases.\",\"source\":\"cbsnews.com\",\"tags\":[\"Cbs
+        Essentials - Black Friday 2023\",\"Cbs Essentials - Luggage\",\"Essentials\",\"Essentials
+        - Deals\",\"Essentials - Travel\",\"Stock\",\"Tiingo Top\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:23.942174Z\",\"tickers\":[\"smsey\"]},{\"id\":59573569,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Pokmon
+        Is Responsible For Jujutsu Kaisen Season 2's Most Controversial Scene\",\"url\":\"https://screenrant.com/jujutsu-kaisen-season-2-dimming-pokemon-porygon-incident/\",\"description\":\"Jujutsu
+        Kaisen's dimming controversy is due to Pokemon.\",\"source\":\"screenrant.com\",\"tags\":[\"Anime\",\"Jujutsu
+        Kaisen\",\"Pokemon\"],\"crawlDate\":\"2023-11-15T18:03:21.705956Z\",\"tickers\":[]},{\"id\":59573571,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"J.J.
+        Abrams' Star Trek Reboot \\\"Starting Over Was Brilliant,\\\" Says Popular
+        TNG & DS9 Writer\",\"url\":\"https://screenrant.com/star-trek-abrams-reboot-brilliant-ronald-moore-supporter/\",\"description\":\"Ronald
+        D. Moore was all for J.J. Abrams rebooting Star Trek.\",\"source\":\"screenrant.com\",\"tags\":[\"Basic
+        Materials\",\"Movies\",\"Real Estate\",\"Star Trek\",\"Star Trek (2009)\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:03:23.759253Z\",\"tickers\":[\"pgre\",\"pzg\"]},{\"id\":59573575,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Star
+        Wars Just Introduced a Grotesque New Take on Its 'Severed Arms' Motif\",\"url\":\"https://screenrant.com/star-wars-introduces-new-severed-arms-scourge-dark-droids/\",\"description\":\"Star
+        Wars reverses the severed arms trend...\",\"source\":\"screenrant.com\",\"tags\":[\"Comics\",\"Star
+        Wars\"],\"crawlDate\":\"2023-11-15T18:03:25.506599Z\",\"tickers\":[]},{\"id\":59573577,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Hayden
+        Christensen's 10 Best Star Wars Moments As Anakin Skywalker, Ranked\",\"url\":\"https://screenrant.com/star-wars-hayden-christensen-anakin-skywalker-best-moments/\",\"description\":\"Christensen
+        as Anakin Skywalker has great moments.\",\"source\":\"screenrant.com\",\"tags\":[\"Movies\",\"Star
+        Wars\"],\"crawlDate\":\"2023-11-15T18:03:27.873300Z\",\"tickers\":[]},{\"id\":59573579,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Gen
+        V Interview: VFX Supervisor Karen Heston Breaks Down New Powers & Big Story
+        Moments\",\"url\":\"https://screenrant.com/gen-v-vfx-supervisor-karen-heston-interview/\",\"description\":\"Gen
+        V season 1 is out now on Prime Video.\",\"source\":\"screenrant.com\",\"tags\":[\"Gen
+        V\",\"Interviews\",\"The Boys\"],\"crawlDate\":\"2023-11-15T18:03:31.245175Z\",\"tickers\":[]},{\"id\":59573501,\"publishedDate\":\"2023-11-15T18:01:36Z\",\"title\":\"Google\u2019s
+        new Titan security keys are ready for a world without passwords\",\"url\":\"https://www.theverge.com/2023/11/15/23962443/google-titan-security-key-passwordless-login\",\"description\":\"More
+        security, less passwords.\",\"source\":\"theverge.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:02:35.455651Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59573507,\"publishedDate\":\"2023-11-15T18:01:35Z\",\"title\":\"Man
+        Arrested With Gold Worth Rs 64 Lakh Near India-Bangladesh Border\",\"url\":\"https://www.ndtv.com/india-news/man-arrested-with-gold-worth-rs-64-lakh-near-india-bangladesh-border-4576468\",\"description\":\"The
+        Border Security Force (BSF), under the South Bengal frontier, thwarted a unique
+        attempt of gold smuggling and arrested a 59-year-old man with two packets
+        containing gold, weighing 1,059.400 grams while being smuggled from Bangladesh
+        to India.\",\"source\":\"ndtv.com\",\"tags\":[\"Bangladesh\",\"Bsf Arrests
+        Man Gold\",\"Gold Worth Rs 64 Lakh Seized\",\"India\",\"India Bangladesh Border
+        Gold Seized\"],\"crawlDate\":\"2023-11-15T18:02:38.895413Z\",\"tickers\":[]},{\"id\":59573586,\"publishedDate\":\"2023-11-15T18:01:21.866000Z\",\"title\":\"ATL's
+        First Transit Trip-Planning App Launches, Dubbed a 'Game Changer' for Commuters\",\"url\":\"https://www.ajc.com/partner/marietta-daily-journal/atls-first-transit-trip-planning-app-launches-dubbed-a-game-changer-for-commuters/KOV2EVO2OJH5NLPBKDKPCDIEQE/\",\"description\":\"ATL's
+        First Transit Trip-Planning App Launches, Dubbed a 'Game Changer' for Commuters\",\"source\":\"ajc.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:40.002370Z\",\"tickers\":[]},{\"id\":59573478,\"publishedDate\":\"2023-11-15T18:01:18Z\",\"title\":\"Black
+        Friday Deal: Save Money On An Xbox Series S Plus An Extra Controller\",\"url\":\"https://www.cnet.com/deals/black-friday-deal-save-money-on-an-xbox-series-s-plus-an-extra-controller/\",\"description\":\"You
+        can save $80 on this bundle now.\",\"source\":\"cnet.com\",\"tags\":[\"Gaming\",\"Microsoft\",\"Testimonial\",\"Video
+        Games\",\"Xbox\"],\"crawlDate\":\"2023-11-15T18:02:25.988647Z\",\"tickers\":[]},{\"id\":59573534,\"publishedDate\":\"2023-11-15T18:01:17Z\",\"title\":\"Barclays
+        picks OneMain, AmEx, others as Overweight stocks in a Neutral sector (NYSE:OMF)\",\"url\":\"https://seekingalpha.com/news/4037152-barclays-picks-onemain-amex-others-as-overweight-stocks-in-a-neutral-sector\",\"description\":\"Barclays
+        initiates coverage of U.S. consumer finance sector, highlighting attractive
+        stocks in lending, mortgage, and aircraft leasing industries.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Financial
+        Services\",\"Financials\",\"Industrials\",\"Real Estate\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:55.567691Z\",\"tickers\":[\"aer\",\"agnc\",\"al\",\"axp\",\"bcs\",\"bfh\",\"brsp\",\"coop\",\"dfs\",\"esnt\",\"faf\",\"fnf\",\"fnfv\",\"mtg\",\"navi\",\"nmih\",\"omf\",\"pfsi\",\"rdn\",\"rkt\",\"slm\",\"sofi\",\"syf\",\"uwmc\"]},{\"id\":59573474,\"publishedDate\":\"2023-11-15T18:01:10Z\",\"title\":\"Vay
+        begins remotely operated drives in Las Vegas without a human present [Video]\",\"url\":\"https://electrek.co/2023/11/15/vay-begins-remotely-operated-drives-las-vegas-without-human-present-video/\",\"description\":\"Six
+        months after sharing initial plans to expand to the US and begin remotely
+        operated journeys in Las Vegas, Vay...\",\"source\":\"electrek.co\",\"tags\":[\"News\"],\"crawlDate\":\"2023-11-15T18:02:24.336634Z\",\"tickers\":[]},{\"id\":59573470,\"publishedDate\":\"2023-11-15T18:01:03Z\",\"title\":\"Jeff
+        Bezos and Lauren Sanchez relentlessly mocked over their Vogue photo shoot\",\"url\":\"https://www.independent.co.uk/life-style/jeff-bezos-lauren-sanchez-vogue-amazon-b2447967.html\",\"description\":\"\u2018These
+        are AI-generated, you cannot convince me otherwise\u2019 \",\"source\":\"independent.co.uk\",\"tags\":[\"Jeff
+        Bezos\",\"Lauren Sanchez\",\"Vogue\"],\"crawlDate\":\"2023-11-15T18:02:20.845947Z\",\"tickers\":[]},{\"id\":59573497,\"publishedDate\":\"2023-11-15T18:01:00Z\",\"title\":\"Illumina,
+        Inc. (ILMN) Investor Notice: Robbins LLP Reminds Investors of Class Action
+        Filed Against Illumina, Inc.\",\"url\":\"https://www.businesswire.com/news/home/20231115291259/en/Illumina-Inc.-ILMN-Investor-Notice-Robbins-LLP-Reminds-Investors-of-Class-Action-Filed-Against-Illumina-Inc./?feedref=JjAwJuNHiystnCoBq_hl-adS5VAKkf1zsgyV8tTPInVcgiwDl5F89IquLVWUqfRVgLxDkSKfgoruKb9yWl5as-PbWreMWuYBefATrZ0EPTVXw2Oldt-3VQjUwU4Zj5HZBSvR87oUDgbHejiywQBpbg%3D%3D\",\"description\":\"Illumina,
+        Inc. (ILMN) Misled Investors Regarding Insider's Personal Motives for Acquiring
+        GRAIL\",\"source\":\"businesswire.com\",\"tags\":[\"Healthcare\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:02:33.805346Z\",\"tickers\":[\"ilmn\"]},{\"id\":59573475,\"publishedDate\":\"2023-11-15T18:00:52Z\",\"title\":\"Custom
+        showers and designer crates: welcome to the \u2018barkitecture\u2019 boom\",\"url\":\"https://www.theguardian.com/wellness/2023/nov/15/pet-friendly-interior-home-design-barkitecture\",\"description\":\"Fueled
+        by social media images, magazine spreads, and home renovation TV shows, Americans
+        are investing heavily into home design for pets\",\"source\":\"theguardian.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Pets\",\"Stock\",\"Well Actually\"],\"crawlDate\":\"2023-11-15T18:02:26.589554Z\",\"tickers\":[\"hgv\",\"hlt\"]},{\"id\":59573431,\"publishedDate\":\"2023-11-15T18:00:44.843514Z\",\"title\":\"Iceland
+        on high alert for volcanic eruption\u2014what we know so far\",\"url\":\"https://phys.org/news/2023-11-iceland-high-volcanic-eruptionwhat.html\",\"description\":\"The
+        Reykjanes peninsula in south-west Iceland trembled with an intense swarm of
+        earthquakes on the afternoon of Friday November 10. Hundreds of quakes were
+        detected on the regional networks of seismometers and several were strong
+        enough to be felt in Reykjavik, 50 kilometers away.\",\"source\":\"phys.org\",\"tags\":[\"Earth\",\"Earth
+        Sciences\",\"Iceland\"],\"crawlDate\":\"2023-11-15T18:00:53.425871Z\",\"tickers\":[]},{\"id\":59573477,\"publishedDate\":\"2023-11-15T18:00:36Z\",\"title\":\"It\u2019s
+        Official: The Jordan Spizike Low Is Preparing Its Own \u201CBred\u201D Installment\",\"url\":\"https://sneakernews.com/2023/11/15/jordan-spizike-low-black-red-fq1759-006/\",\"description\":\"Over
+        the past few months, Jordan Brand has been preparing a low-top version of
+        the historically divisive Jordan Spizike for a Spring 2024 debut. With...\",\"source\":\"sneakernews.com\",\"tags\":[\"Air
+        Jordan\",\"Jordan\",\"Jordan Spizike Low\",\"Release Dates\",\"Upcoming Sneakers\"],\"crawlDate\":\"2023-11-15T18:02:25.242152Z\",\"tickers\":[]},{\"id\":59573573,\"publishedDate\":\"2023-11-15T18:00:35Z\",\"title\":\"Google's
+        updated Titan security key can store up to 250 passkeys\",\"url\":\"https://www.engadget.com/googles-updated-titan-security-key-can-store-up-to-250-passkeys-180035899.html?src=rss\",\"description\":\"Google
+        has updated its lineup of Titan security keys with some features that'll make
+        them work better with passkeys as well as passwords.\",\"source\":\"engadget.com\",\"tags\":[\"Author_Name|Nathan
+        Ingraham\",\"Information Technology\",\"Language|En-Us\",\"Provider_Name|Engadget\",\"Region|Us\",\"Site|Engadget\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:03:24.426481Z\",\"tickers\":[\"goog\",\"googl\"]},{\"id\":59573566,\"publishedDate\":\"2023-11-15T18:00:34Z\",\"title\":\"Record
+        70% of Bitcoin supply lies dormant for a year or more\",\"url\":\"https://cryptoslate.com/insights/record-70-of-bitcoin-supply-lies-dormant-for-a-year-or-more/\",\"description\":\"Unprecedented
+        levels of inactivity observed in Bitcoin markets, with a majority of supply
+        unmoved for extended periods.\",\"source\":\"cryptoslate.com\",\"tags\":[\"CryptoCurrency\"],\"crawlDate\":\"2023-11-15T18:03:19.231118Z\",\"tickers\":[]},{\"id\":59573440,\"publishedDate\":\"2023-11-15T18:00:32Z\",\"title\":\"If
+        Your Bitcoin Wallet Is A Product Of The 2016 Technology, You Could Be In Trouble
+        \u2013 Here\u2019s Why\",\"url\":\"https://www.newsbtc.com/news/i2016-bitcoin-wallet-could-be-problematic/\",\"description\":\"Is
+        your Bitcoin wallet shackled by the outdated chains of 2016 technology? Brace
+        yourself, for trouble may be lurking in the shadows, ready to pounce on\",\"source\":\"newsbtc.com\",\"tags\":[\"Bitcoin
+        Wallet\",\"Btc\",\"Crypto Wallet\",\"CryptoCurrency\",\"Cryptocurrency Market
+        News\",\"Digital Currency\",\"ETF\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:01:21.010893Z\",\"tickers\":[\"btc\",\"pifi\"]},{\"id\":59573486,\"publishedDate\":\"2023-11-15T18:00:28Z\",\"title\":\"Austerity
+        is behind the mouldy housing imperilling people\u2019s health\",\"url\":\"https://www.theguardian.com/society/2023/nov/15/austerity-is-behind-the-mouldy-housing-imperilling-peoples-health\",\"description\":\"Letters:
+        There is already a system for local councils to tackle damp and cold homes,
+        but it has been undermined by 13 years of cuts, writes Dr Stephen Battersby.
+        Plus letters from Dr Richard Turkington and Neil Blackshaw\",\"source\":\"theguardian.com\",\"tags\":[\"Austerity\",\"Communities\",\"Conservatives\",\"Housing\",\"Local
+        Government\",\"Politics\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T18:02:29.973329Z\",\"tickers\":[]},{\"id\":59573554,\"publishedDate\":\"2023-11-15T18:00:28Z\",\"title\":\"Samsung\u2019s
+        Gauss AI model set to launch ahead of Apple for its devices\",\"url\":\"https://coingeek.com/samsung-gauss-ai-model-set-to-launch-ahead-of-apple-for-its-devices/\",\"description\":\"Samsung
+        unveils Gauss, an AI chatbot for mobiles set to outpace Apple's advancements,
+        offering varied functionalities and future integrations across Samsung's product
+        line.\",\"source\":\"coingeek.com\",\"tags\":[\"Ai\",\"Artificial Intelligence\",\"Business\",\"CryptoCurrency\",\"Financial
+        Services\",\"Gauss\",\"Samsung\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:03:09.521777Z\",\"tickers\":[\"aaic\",\"aapl\",\"ai\",\"goog\",\"googl\",\"meta\",\"msft\",\"ssnlf\"]},{\"id\":59573494,\"publishedDate\":\"2023-11-15T18:00:23Z\",\"title\":\"Why
+        a \u2018three-state solution\u2019 will never work in the Middle East\",\"url\":\"https://www.theguardian.com/world/2023/nov/15/why-a-three-state-solution-will-never-work-in-the-middle-east\",\"description\":\"Letter:
+        A proposal for an alternative to a two-state solution is rejected by Fran
+        Russell and Prof Saville Kushner\",\"source\":\"theguardian.com\",\"tags\":[\"Gaza\",\"Israel\",\"Israel-Hamas
+        War\",\"Middle East\",\"Middle East And North Africa\",\"Palestinian Territories\"],\"crawlDate\":\"2023-11-15T18:02:31.743473Z\",\"tickers\":[]},{\"id\":59573490,\"publishedDate\":\"2023-11-15T18:00:20Z\",\"title\":\"Here's
+        How Much You Would Have Made Owning Fortinet Stock In The Last 10 Years\",\"url\":\"https://www.benzinga.com/news/23/11/35811456/heres-how-much-you-would-have-made-owning-fortinet-stock-in-the-last-10-years\",\"description\":\"
+        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Bzi-Pod\",\"Ftnt\",\"News\",\"Stock\",\"Technology\",\"Trading
+        Ideas\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:30.716832Z\",\"tickers\":[\"ftnt\",\"ne-ws\"]},{\"id\":59573487,\"publishedDate\":\"2023-11-15T18:00:14Z\",\"title\":\"Here's
+        How Much You Would Have Made Owning Parker Hannifin Stock In The Last 15 Years\",\"url\":\"https://www.benzinga.com/news/23/11/35811454/heres-how-much-you-would-have-made-owning-parker-hannifin-stock-in-the-last-15-years\",\"description\":\"
+        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Bzi-Pod\",\"Industrials\",\"News\",\"Ph\",\"Stock\",\"Trading
+        Ideas\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:29.913867Z\",\"tickers\":[\"-p-h\",\"ne-ws\",\"ph\"]},{\"id\":59573416,\"publishedDate\":\"2023-11-15T18:00:11Z\",\"title\":\"Endangered
+        Woman, 74, Last Seen On Aurora's East Side: Police\",\"url\":\"https://patch.com/illinois/aurora/endangered-woman-74-last-seen-auroras-east-side-police\",\"description\":\"Police
+        said the woman was last seen wearing a pink dress and no shoes in the 300
+        block of Pine Avenue.\",\"source\":\"patch.com\",\"tags\":[\"Aurora\",\"Crime\",\"Endangered\",\"Illinois\",\"Police\",\"Safety\"],\"crawlDate\":\"2023-11-15T18:00:30.845176Z\",\"tickers\":[]},{\"id\":59573491,\"publishedDate\":\"2023-11-15T18:00:11Z\",\"title\":\"Birmingham\u2019s
+        budget crisis won\u2019t be solved by another round of Tory cuts\",\"url\":\"https://www.theguardian.com/society/2023/nov/15/birmingham-budget-crisis-wont-be-solved-by-another-round-of-tory-cuts\",\"description\":\"Letters:
+        Cllr Phil Davis says Labour should not be blamed for the shortfall in funds
+        at Birmingham city council\",\"source\":\"theguardian.com\",\"tags\":[\"Birmingham\",\"Conservatives\",\"Labour\",\"Local
+        Government\",\"Michael Gove\",\"Politics\",\"Society\",\"Tiingo Top\",\"Uk\"],\"crawlDate\":\"2023-11-15T18:02:30.805390Z\",\"tickers\":[]},{\"id\":59573439,\"publishedDate\":\"2023-11-15T18:00:08Z\",\"title\":\"Central
+        Insurance Strengthens Executive Leadership Team With Strategic Appointments\",\"url\":\"https://www.newswire.com/news/central-insurance-strengthens-executive-leadership-team-with-strategic-22172804\",\"description\":\"\",\"source\":\"newswire.com\",\"tags\":[\"C-Suite
+        Announcement\",\"Company Update\",\"Executive Leadership\"],\"crawlDate\":\"2023-11-15T18:01:18.924524Z\",\"tickers\":[]},{\"id\":59573438,\"publishedDate\":\"2023-11-15T18:00:07Z\",\"title\":\"CityTeam
+        Chester Announces New Executive Director\",\"url\":\"https://www.newswire.com/news/cityteam-chester-announces-new-executive-director-22172167\",\"description\":\"Richona
+        McKnight to lead CityTeam into the next phase of love and service for the
+        community\",\"source\":\"newswire.com\",\"tags\":[\"Addiction\",\"Chester\",\"Delaware
+        County\",\"Homelessness\",\"Recovery\"],\"crawlDate\":\"2023-11-15T18:01:17.954054Z\",\"tickers\":[]},{\"id\":59573432,\"publishedDate\":\"2023-11-15T18:00:07Z\",\"title\":\"Babcock
+        & Wilcox, Rail Vision, Shapeways Holdings among industrial movers\",\"url\":\"https://seekingalpha.com/news/4037151-babcock-wilcox-rail-vision-shapeways-holdings-among-industrial-movers\",\"description\":\"Read
+        about the top gainers and losers in the stock market, including Babcock &
+        Wilcox Enterprises and Shapeways Holdings, as well as sector performance.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:00:55.070464Z\",\"tickers\":[\"bw\"]},{\"id\":59573481,\"publishedDate\":\"2023-11-15T18:00:05Z\",\"title\":\"We
+        have a government-in-waiting with no real ideas\",\"url\":\"https://www.theguardian.com/politics/2023/nov/15/we-have-a-government-in-waiting-with-no-real-ideas\",\"description\":\"Letter:
+        With crises hitting us head-on, the shadow cabinet thinks that yesterday\u2019s
+        reformism can tackle today\u2019s emergencies, says Nick Moss\",\"source\":\"theguardian.com\",\"tags\":[\"Economics\",\"John
+        Mcdonnell\",\"Keir Starmer\",\"Labour\",\"Politics\",\"Rachel Reeves\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T18:02:27.412378Z\",\"tickers\":[]},{\"id\":59573492,\"publishedDate\":\"2023-11-15T18:00:05Z\",\"title\":\"7,771
+        ETH Worth $15M Was Just Burned\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/11/35811441/7-771-eth-worth-15m-was-just-burned\",\"description\":\"What
+        happened: On Tuesday a total of 7,771.17 Ether (CRYPTO: ETH) worth $15,647,645,
+        based on the current value of Ethereum at time of publication ($2,013.55),
+        was burned from Ethereum transactions.\",\"source\":\"benzinga.com\",\"tags\":[\"$Eth\",\"Benzinga\",\"Bzi-Cb\",\"CryptoCurrency\",\"Cryptocurrency\",\"Markets\",\"Movers\",\"Trading
+        Ideas\"],\"crawlDate\":\"2023-11-15T18:02:31.726841Z\",\"tickers\":[]},{\"id\":59573437,\"publishedDate\":\"2023-11-15T18:00:04Z\",\"title\":\"Handbag
+        Designer 101 Podcast: A Must-Listen Journey into the World of Handbag Design
+        with Emily Blumenthal\",\"url\":\"https://www.newswire.com/news/handbag-designer-101-podcast-a-must-listen-journey-into-the-world-of-22172161\",\"description\":\"Discover
+        the Artistry Behind Iconic Handbags in the 'Handbag Designer 101 Podcast'
+        - Unveiling the Craft and Creativity with Creators Across the Handbag Industry\",\"source\":\"newswire.com\",\"tags\":[\"Handbag\",\"How
+        To\",\"Podcast\"],\"crawlDate\":\"2023-11-15T18:01:16.449678Z\",\"tickers\":[]},{\"id\":59573420,\"publishedDate\":\"2023-11-15T18:00:02Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In WI, New Ranking Says\",\"url\":\"https://patch.com/wisconsin/across-wi/these-are-best-elementary-middle-schools-wi-new-ranking-says\",\"description\":\"The
+        news outlet based its 2024 Best Elementary and Middle School rankings on publicly
+        available data from the U.S. Department of Education.\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Wisconsin\",\"Elementary\",\"Middle\",\"Ranking\",\"Schools\",\"Wisconsin\"],\"crawlDate\":\"2023-11-15T18:00:36.630511Z\",\"tickers\":[]},{\"id\":59573436,\"publishedDate\":\"2023-11-15T18:00:01Z\",\"title\":\"Service
+        Direct Introduces Marketplace Form Leads for Home Service Contractors\",\"url\":\"https://www.newswire.com/news/service-direct-introduces-marketplace-form-leads-for-home-service-22168319\",\"description\":\"The
+        new product will help home service businesses to connect with potential customers
+        and grow their business cost-effectively.\",\"source\":\"newswire.com\",\"tags\":[\"Form
+        Leads\",\"Lead Generation\",\"Pay Per Lead\"],\"crawlDate\":\"2023-11-15T18:01:14.954659Z\",\"tickers\":[]},{\"id\":59573422,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        Iconic Big Wheel Brings Little Riders BIG Adventure for the Holidays!\",\"url\":\"https://www.prnewswire.com/news-releases/the-iconic-big-wheel-brings-little-riders-big-adventure-for-the-holidays-301978007.html\",\"description\":\"/PRNewswire/
+        - Right on time for the holidays, Schylling toys is bringing Big Wheel, National
+        Toy Hall of Fame and the iconic low-riding trike, back with a...\",\"source\":\"prnewswire.com\",\"tags\":[\"Children\",\"Consumer
+        & Cosmetics\",\"Entertainment\",\"Household\",\"New Products & Services\",\"Retail\",\"Toys\"],\"crawlDate\":\"2023-11-15T18:00:39.668945Z\",\"tickers\":[]},{\"id\":59573424,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Fujifilm
+        and Bristol Myers Squibb Sign Power Purchase Agreements with National Grid
+        Renewables\",\"url\":\"https://www.prnewswire.com/news-releases/fujifilm-and-bristol-myers-squibb-sign-power-purchase-agreements-with-national-grid-renewables-301989463.html\",\"description\":\"/PRNewswire/
+        -- National Grid Renewables has announced the execution of two power purchase
+        agreements (PPAs) for its Blevins Solar Project (Blevins), a...\",\"source\":\"prnewswire.com\",\"tags\":[\"Alternative
+        Energies\",\"Environmental Products & Services\",\"Licensing\",\"Oil & Energy\",\"Stock\",\"Unknown
+        Sector\",\"Utilities\"],\"crawlDate\":\"2023-11-15T18:00:41.044619Z\",\"tickers\":[\"fujiy\",\"ngg\"]},{\"id\":59573425,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"North
+        America and Europe OE Benchmarking of EV Aftersales Report 2023-2030 with
+        2022 as the Base Year\",\"url\":\"https://www.prnewswire.com/news-releases/north-america-and-europe-oe-benchmarking-of-ev-aftersales-report-2023-2030-with-2022-as-the-base-year-301989240.html\",\"description\":\"/PRNewswire/
+        -- The \\\"OE Benchmarking of EV Aftersales in North America and Europe\\\"
+        report has been added to ResearchAndMarkets.com's offering. This report...\",\"source\":\"prnewswire.com\",\"tags\":[\"Automotive\",\"Computer
+        Software\",\"Market Research Reports\",\"North America\",\"Publishing & Information
+        Services\",\"Transportation\",\"Trucking & Railroad\"],\"crawlDate\":\"2023-11-15T18:00:41.678962Z\",\"tickers\":[]},{\"id\":59573426,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Navigating
+        Growth Trajectories and Industry Dynamics Drives Forces and Challenges in
+        the Ethylene Dichloride Market | Future Market Insights, Inc.\",\"url\":\"https://www.prnewswire.com/news-releases/navigating-growth-trajectories-and-industry-dynamics-drives-forces-and-challenges-in-the-ethylene-dichloride-market--future-market-insights-inc-301989189.html\",\"description\":\"Future
+        Market Insights, Inc. (FMI), a renowned market research and consulting service
+        provider, has recently expanded its comprehensive market intelligence...\",\"source\":\"prnewswire.com\",\"tags\":[\"Chemical\",\"Market
+        Research Reports\"],\"crawlDate\":\"2023-11-15T18:00:42.234500Z\",\"tickers\":[]},{\"id\":59573427,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Happy
+        Birthday Neopets: Celebrating 24 Years of Epic Fandom!\",\"url\":\"https://www.prnewswire.com/news-releases/happy-birthday-neopets-celebrating-24-years-of-epic-fandom-301988962.html\",\"description\":\"/PRNewswire/
+        - Neopets, a hallmark of early 2000s nostalgia for millennials across the
+        globe, celebrates two significant events this November: its 24th year in...\",\"source\":\"prnewswire.com\",\"tags\":[\"Children\",\"Computer
+        & Electronics\",\"Diversity\",\"Electronic Gaming\",\"Entertainment\",\"Equity
+        & Inclusion\",\"Multimedia & Internet\",\"New Products & Services\"],\"crawlDate\":\"2023-11-15T18:00:42.832792Z\",\"tickers\":[]},{\"id\":59573428,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Software-Defined
+        Networking (SDN) market growth is driven by the high demand for the adoption
+        of cloud solutions - Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/software-defined-networking-sdn-market-growth-is-driven-by-the-high-demand-for-the-adoption-of-cloud-solutions---technavio-301988762.html\",\"description\":\"/PRNewswire/
+        -- In a recent Technavio report titled Software-Defined Networking (SDN) market
+        Analysis North America, APAC, Europe, South America, Middle East...\",\"source\":\"prnewswire.com\",\"tags\":[\"Cloud
+        Computing Internet Of Things\",\"Computer & Electronics\",\"Computer Software\",\"Internet
+        Technology\",\"Market Research Reports\",\"Middle East\",\"Networks\",\"North
+        America\",\"South America\",\"Telecommunications Industry\"],\"crawlDate\":\"2023-11-15T18:00:43.429274Z\",\"tickers\":[]},{\"id\":59573429,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Rails-to-Trails
+        Conservancy 2023 Grants Lift Up Efforts to Develop and Activate Trail Networks
+        Nationwide\",\"url\":\"https://www.prnewswire.com/news-releases/rails-to-trails-conservancy-2023-grants-lift-up-efforts-to-develop-and-activate-trail-networks-nationwide-301989494.html\",\"description\":\"/PRNewswire/
+        -- Rails-to-Trails Conservancy (RTC) today announced that it has awarded $348,000
+        in grants that support programs working to develop and activate...\",\"source\":\"prnewswire.com\",\"tags\":[\"Camping
+        & Hiking\",\"General Sports\",\"Outdoors\"],\"crawlDate\":\"2023-11-15T18:00:44.209473Z\",\"tickers\":[]},{\"id\":59573623,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"BJ\u2019s
+        Restaurants, Inc. to Present at the 2023 Barclays Eat, Sleep, Play Conference\",\"url\":\"https://www.globenewswire.com/news-release/2023/11/15/2781335/0/en/BJ-s-Restaurants-Inc-to-Present-at-the-2023-Barclays-Eat-Sleep-Play-Conference.html?f=22&fvtc=2&fvtv=1\",\"description\":\"HUNTINGTON
+        BEACH, Calif., Nov.  15, 2023  (GLOBE NEWSWIRE) -- BJ\u2019s Restaurants,
+        Inc. (NASDAQ: BJRI) announced today that management will be participating...\",\"source\":\"globenewswire.com\",\"tags\":[\"Bj'S
+        Restaurants\",\"Consumer Cyclical\",\"Inc.\",\"Nasdaq:Bjri\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:18.518885Z\",\"tickers\":[\"bjri\"]},{\"id\":59573625,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Oxurion
+        Receives Transparency Notification from Atlas Special Opportunities LLC\",\"url\":\"https://www.globenewswire.com/news-release/2023/11/15/2781337/0/en/Oxurion-Receives-Transparency-Notification-from-Atlas-Special-Opportunities-LLC.html?f=22&fvtc=2&fvtv=1\",\"description\":\"Regulated
+        Information  Leuven, BELGIUM, Boston, MA, US \u2013 November 15, 2023 \u2013
+        7.00 PM CET Oxurion NV (Euronext Brussels: OXUR), a biopharmaceutical company...\",\"source\":\"globenewswire.com\",\"tags\":[\"Belgium\",\"Brussels
+        Stock Exchange:Oxur\",\"Oxurion Nv\"],\"crawlDate\":\"2023-11-15T18:05:20.290113Z\",\"tickers\":[]},{\"id\":59573417,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Djibouti's
+        New  60 MW Wind Farm Boosts Green Energy\",\"url\":\"https://oilprice.com/Alternative-Energy/Wind-Power/Djiboutis-New-60-MW-Wind-Farm-Boosts-Green-Energy.html\",\"description\":\"Djibouti
+        is advancing its renewable energy initiatives with the inauguration of the
+        Ghoubet wind farm, significantly increasing its energy capacity and reducing
+        CO2 emissions.\",\"source\":\"oilprice.com\",\"tags\":[\"Djibouti\",\"Energy\",\"Energy
+        Transition\",\"Ghoubet Wind Farm\",\"Renewables\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:00:35.587652Z\",\"tickers\":[\"siegy\"]},{\"id\":59573433,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Fran
+        Frischilla reacts to Rick Pitino\u2019s start at St. John\u2019s\",\"url\":\"https://nypost.com/video/fran-frischilla-reacts-to-rick-pitinos-start-at-st-johns/\",\"description\":\"ESPN
+        college basketball analyst Fran Frischilla joins New York Post Sports anchor
+        Dexter Henry to discuss St. John\u2019s start to the Rick Pitino era and if
+        the Red Storm program is capable of ev\u2026\",\"source\":\"nypost.com\",\"tags\":[\"Fran
+        Fraschilla\",\"Rick Pitino\",\"Sports\",\"St. John'S Red Storm\",\"Videos\"],\"crawlDate\":\"2023-11-15T18:00:55.798110Z\",\"tickers\":[]},{\"id\":59573441,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"2
+        \u201CSanta Claus\u201D Dividends To Buy Before 2024\",\"url\":\"https://www.forbes.com/sites/brettowens/2023/11/15/2-santa-claus-dividends-to-buy-before-2024/\",\"description\":\"Look,
+        we\u2019ve all loved watching our dividend payers rocket to the moon these
+        past few weeks. Best part is, most of the market has been onboard!\",\"source\":\"forbes.com\",\"tags\":[\"Dividend
+        Growth Stocks\",\"ETF\",\"Fed\",\"Kohl'S\",\"Macerich\",\"Reit\",\"Santa Claus
+        Rally 2024\"],\"crawlDate\":\"2023-11-15T18:01:20.794140Z\",\"tickers\":[\"reit\"]},{\"id\":59573471,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"10
+        Most Popular Feeding Mats for 2023\",\"url\":\"https://www.jpost.com/advisor/pets/10-most-popular-feeding-mats-773399\",\"description\":\"Say
+        goodbye to messy floors and hello to hassle-free meal times with our top-rated
+        feeding mats. Find the perfect one for your furry friend now!\",\"source\":\"jpost.com\",\"tags\":[\"Best
+        Products\",\"Product Reviews\",\"Review\"],\"crawlDate\":\"2023-11-15T18:02:23.815512Z\",\"tickers\":[]},{\"id\":59573482,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Please
+        stop giving nihilists a bad name\",\"url\":\"https://www.theguardian.com/politics/2023/nov/15/please-stop-giving-nihilists-a-bad-name\",\"description\":\"Brief
+        letters: Tories v nihilists | Esther McVey | Cabinet post for John Cleese?
+        | John Crace on Nadine Dorries | Condensed milk | NHS dentists\",\"source\":\"theguardian.com\",\"tags\":[\"Books\",\"Brief
+        Letters\",\"Children\",\"Conservatives\",\"Dentists\",\"Esther Mcvey\",\"Gb
+        News\",\"Nadine Dorries\",\"Nhs\",\"Politics Books\",\"Sugar\",\"Tiingo Top\",\"Uk\"],\"crawlDate\":\"2023-11-15T18:02:28.354923Z\",\"tickers\":[]},{\"id\":59573495,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"BJ's
+        Restaurants, Inc. to Present at the 2023 Barclays Eat, Sleep, Play Conference\",\"url\":\"https://www.benzinga.com/pressreleases/23/11/g35811436/bjs-restaurants-inc-to-present-at-the-2023-barclays-eat-sleep-play-conference\",\"description\":\"HUNTINGTON
+        BEACH, Calif., Nov. 15, 2023 (GLOBE NEWSWIRE) -- BJ's Restaurants, Inc. (NASDAQ:BJRI)
+        announced today that management will be participating in a fireside chat at
+        the Barclays Eat, Sleep, Play Conference on\",\"source\":\"benzinga.com\",\"tags\":[\"Bjri\",\"Consumer
+        Cyclical\",\"Financial Services\",\"General\",\"News\",\"Press Releases\",\"Restaurants\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:33.039653Z\",\"tickers\":[\"bcs\",\"bjri\",\"ne-ws\"]},{\"id\":59573498,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Protect
+        your home from a disaster \u2013 without falling foul of the small print\",\"url\":\"https://www.telegraph.co.uk/money/bills/insurance/protect-your-home-from-disaster-falling-foul-smallprint/\",\"description\":\"Discover
+        how to choose emergency cover and improve your chances of a successful claim\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Better
+        Life Evergreen\",\"Better Life Guide\",\"Insurance Industry\",\"Money\",\"Standard\",\"Tiingo
+        Top\",\"Uk Property\"],\"crawlDate\":\"2023-11-15T18:02:35.379566Z\",\"tickers\":[]},{\"id\":59573502,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Jenson
+        Button: Americanisation of F1 is a good thing\",\"url\":\"https://www.telegraph.co.uk/us/sports/formula-1/jenson-button-interview-las-vegas-race-brawn-documentary/\",\"description\":\"Exclusive
+        interview: Former champion says this weekend's Las Vegas Grand Prix can open
+        the door to a fourth race in the States\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Formula
+        1\",\"Formula 1 Grand Prix\",\"Jenson Button\",\"Las Vegas\",\"Sport\",\"Standard\",\"Tiingo
+        Top\",\"Us Content\"],\"crawlDate\":\"2023-11-15T18:02:36.355885Z\",\"tickers\":[]},{\"id\":59573504,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        five greatest celebrity TV interviews\",\"url\":\"https://www.telegraph.co.uk/tv/2023/11/15/five-best-celebrity-tv-interviews-louis-theroux/\",\"description\":\"From
+        Louis Theroux and Pete Doherty to Francis Bacon versus Melvyn Bragg, these
+        are the most shocking, revealing and moving celebrity chats\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Celebrity
+        News\",\"Culture\",\"Culture Editor'S Choice\",\"Judi Dench\",\"Louis Theroux\",\"Pete
+        Doherty\",\"Standard\",\"Television\",\"Television Editor'S Choice\"],\"crawlDate\":\"2023-11-15T18:02:37.571819Z\",\"tickers\":[]},{\"id\":59573505,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Perth
+        a \u2018hunting ground\u2019 for property investors going for profit over
+        proximity\",\"url\":\"https://www.smh.com.au/national/western-australia/perth-a-hunting-ground-for-property-investors-going-for-profit-over-proximity-20231115-p5ek4w.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"The
+        west\u2019s popularity with real estate buyers from the east coast has seen
+        the distance between where landlords live and where they invest almost double
+        in the past year.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:38.069430Z\",\"tickers\":[]},{\"id\":59573508,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Did
+        you hear the one about Hamish and PVL in business class ...\",\"url\":\"https://www.smh.com.au/sport/did-you-hear-the-one-about-hamish-and-pvl-in-business-class-20231115-p5ek41.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Beyond
+        the punchline, there\u2019s a serious side to the poaching wars between the
+        rival rugby codes.\",\"source\":\"smh.com.au\",\"tags\":[\"Financials\",\"Sport\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:02:40.076493Z\",\"tickers\":[\"nct\"]},{\"id\":59573510,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Publicity
+        spin had killed the TV interview \u2013 so thank goodness for Pete Doherty\",\"url\":\"https://www.telegraph.co.uk/tv/2023/11/15/publicity-spin-killed-the-tv-interview/\",\"description\":\"The
+        PR machine has made our stars seem bland or inauthentic. So Louis Theroux's
+        encounter with The Libertines star was a welcome exception\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Bbc\",\"Comment\",\"Culture\",\"Culture
+        Editor'S Choice\",\"Documentary\",\"Graham Norton\",\"Louis Theroux\",\"Pete
+        Doherty\",\"Television\",\"Television Editor'S Choice\"],\"crawlDate\":\"2023-11-15T18:02:40.268172Z\",\"tickers\":[]},{\"id\":59573511,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Gai
+        Waterhouse enters fray over Racing NSW board row\",\"url\":\"https://www.smh.com.au/cbd/gai-waterhouse-enters-fray-over-racing-nsw-board-row-20231115-p5ek9z.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"The
+        Australian racing legend lines up behind critics of the Minns government\u2019s
+        plan to grant Racing NSW\u2019s powerful chair Russell Balding an unprecedented
+        14-year term on the board.\",\"source\":\"smh.com.au\",\"tags\":[\"Australia\",\"National\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:41.811013Z\",\"tickers\":[\"seg\",\"twtr\"]},{\"id\":59573514,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Beloved
+        Vietnam War vet and former RSL president Trevor Kenny remembered after passing\",\"url\":\"https://thewest.com.au/news/south-western-times/beloved-vietnam-war-vet-and-former-rsl-president-trevor-kenny-remembered-after-passing-c-12487372\",\"description\":\"A
+        key part of the Bunbury veteran\u2019s community has been remembered by friends
+        and family after his death, aged 81.\",\"source\":\"thewest.com.au\",\"tags\":[\"South-West\",\"South-Western-Times\",\"Vietnam\"],\"crawlDate\":\"2023-11-15T18:02:42.256663Z\",\"tickers\":[]},{\"id\":59573515,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Is
+        right now the worst time to buy a house?\",\"url\":\"https://www.smh.com.au/property/news/is-right-now-the-worst-time-to-buy-a-house-20231115-p5ek4u.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Houses
+        are getting more expensive and monthly mortgage repayments are going up too,
+        but will next year be any better?\",\"source\":\"smh.com.au\",\"tags\":[\"News\",\"Property\"],\"crawlDate\":\"2023-11-15T18:02:43.211024Z\",\"tickers\":[]},{\"id\":59573517,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        Matildas of classical music: Our top players return each year for this supergroup\",\"url\":\"https://www.smh.com.au/culture/music/the-matildas-of-classical-music-our-top-players-return-each-year-for-this-supergroup-20231115-p5ek48.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Once
+        a year, the AWO brings home the best of our classical musicians from around
+        the world. This year they take on the Everest of symphonies.\",\"source\":\"smh.com.au\",\"tags\":[\"Culture\",\"Music\"],\"crawlDate\":\"2023-11-15T18:02:44.583175Z\",\"tickers\":[]},{\"id\":59573518,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"GSCA
+        2023-24: Little separates top three teams after three successful run chases
+        secure round four victories\",\"url\":\"https://thewest.com.au/news/great-southern-herald/gsca-2023-24-little-separates-top-three-teams-after-three-successful-run-chases-secure-round-four-victories-c-12539530\",\"description\":\"Kojonup,
+        Broomehill and Tambellup are locked together on 16 points after each secured
+        victories in round four of the Great Southern Cricket Association on Saturday.\",\"source\":\"thewest.com.au\",\"tags\":[\"Albany-Advertiser\",\"Great-Southern\",\"Great-Southern-Herald\",\"Great-Southern-Sport\",\"Regional\"],\"crawlDate\":\"2023-11-15T18:02:44.940314Z\",\"tickers\":[]},{\"id\":59573521,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Ryan
+        Ashley Darken: Why did we give evil a second chance? First victim of child
+        kidnapper speaks out\",\"url\":\"https://thewest.com.au/news/crime/ryan-ashley-darken-why-did-we-give-evil-a-second-chance-first-victim-of-child-kidnapper-speaks-out-c-12430628\",\"description\":\"When
+        Ryan Ashley Darken brazenly abducted a little girl from outside her school
+        earlier this year, it was not the first time had he preyed on an innocent
+        child.\",\"source\":\"thewest.com.au\",\"tags\":[\"Court-Justice\",\"Crime\",\"Police\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:47.170357Z\",\"tickers\":[]},{\"id\":59573520,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"20
+        extraordinary Australian holidays that beat travelling overseas\",\"url\":\"https://www.smh.com.au/traveller/inspiration/20-extraordinary-australian-holidays-that-beat-travelling-overseas-20231103-p5ehik.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"We
+        tend to overlook domestic travel, but it can help us widen our aperture for
+        awe, leaving us better able to take in the magic in our own backyard.\",\"source\":\"smh.com.au\",\"tags\":[\"Australia\",\"Inspiration\",\"Travel\"],\"crawlDate\":\"2023-11-15T18:02:47.914650Z\",\"tickers\":[]},{\"id\":59573523,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Your
+        horoscope for Thursday, November 16, 2023\",\"url\":\"https://thewest.com.au/lifestyle/horoscopes/your-horoscope-for-thursday-november-16-2023-c-12404171\",\"description\":\"Read
+        what your zodiac sign predicts for your day.\",\"source\":\"thewest.com.au\",\"tags\":[\"Horoscopes\",\"Lifestyle\"],\"crawlDate\":\"2023-11-15T18:02:48.367212Z\",\"tickers\":[]},{\"id\":59573524,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"So
+        much talent, nowhere to perform: Sydney\u2019s \u2018major missed opportunity\u2019\",\"url\":\"https://www.smh.com.au/national/nsw/so-much-talent-nowhere-to-perform-sydney-s-major-missed-opportunity-20231115-p5ek62.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"A
+        lack of suitable venues is undermining the \u201Cunprecedented flourishing
+        of musical talent\u201D in Sydney\u2019s suburbs, a business-backed think
+        tank has warned.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Nsw\"],\"crawlDate\":\"2023-11-15T18:02:48.966973Z\",\"tickers\":[]},{\"id\":59573525,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"City
+        of Fremantle endorses pursuit to remember migrant Italian grandparents\",\"url\":\"https://thewest.com.au/news/wa/city-of-fremantle-endorses-pursuit-to-remember-migrant-italian-grandparents--c-12510849\",\"description\":\"A
+        third-generation Beaconsfield woman is on a quest to honour her grandparents
+        by giving a Beaconsfield laneway the family name.\_\",\"source\":\"thewest.com.au\",\"tags\":[\"Fremantle\",\"Local-Government\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:49.495174Z\",\"tickers\":[]},{\"id\":59573526,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Scientists
+        warn Coldplay fans to dust off face masks ahead of Perth concerts\",\"url\":\"https://www.smh.com.au/national/western-australia/scientists-warn-coldplay-fans-to-dust-off-face-masks-ahead-of-perth-concerts-20231115-p5ek45.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"With
+        an out of date vaccine, hospital admissions rising and 40,000 interstate and
+        overseas crowds at this weekend\u2019s Coldplay concerts, epidemiologists
+        are warning COVID cases could spike.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:50.303676Z\",\"tickers\":[]},{\"id\":59573527,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Women
+        in Trades workshop shines light on under-represented industry\",\"url\":\"https://thewest.com.au/news/south-western-times/women-in-trades-workshop-shines-light-on-under-represented-industry-c-12487394\",\"description\":\"Around
+        70 people attended the Women in Trades workshop, meant to teach women and
+        girls about the opportunities and realities of pursuing a career in the trades\",\"source\":\"thewest.com.au\",\"tags\":[\"South-West\",\"South-Western-Times\"],\"crawlDate\":\"2023-11-15T18:02:50.553394Z\",\"tickers\":[]},{\"id\":59573529,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Diwali
+        set to light up Bunbury in its 12th year\",\"url\":\"https://thewest.com.au/news/south-western-times/diwali-set-to-light-up-bunbury-in-its-12th-year-c-12487381\",\"description\":\"Bunbury
+        is set to shine bright for Diwali with the South West Indian Group putting
+        on its 12th year of festivities.\",\"source\":\"thewest.com.au\",\"tags\":[\"India\",\"South-West\",\"South-Western-Times\"],\"crawlDate\":\"2023-11-15T18:02:51.500448Z\",\"tickers\":[]},{\"id\":59573528,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Why
+        Minns\u2019 house is feeling less like home\",\"url\":\"https://www.smh.com.au/politics/nsw/why-minns-house-is-feeling-less-like-home-20231115-p5ek40.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Parliament
+        is emerging as a headache for NSW Labor, more so if it alienates a tetchy
+        crossbench. No wonder it\u2019s slashed the number of sitting days next year.\",\"source\":\"smh.com.au\",\"tags\":[\"Nsw\",\"Politics\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T18:02:51.880821Z\",\"tickers\":[]}]"
+    headers:
+      allow:
+      - GET, HEAD, OPTIONS
+      content-length:
+      - '58262'
+      content-type:
+      - application/json
+      date:
+      - Wed, 15 Nov 2023 18:05:33 GMT
+      server:
+      - nginx/1.18.0 (Ubuntu)
+      vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":59573624,\"publishedDate\":\"2023-11-15T18:05:17.402226Z\",\"title\":\"Deciphering
+        grape development: A molecular phenology scale for grapevine berry maturation\",\"url\":\"https://phys.org/news/2023-11-deciphering-grape-molecular-phenology-scale.html\",\"description\":\"Fruit
+        development encompasses a series of physical, biochemical, and physiological
+        shifts influenced by both genetic programming and environmental factors. The
+        growth patterns of fruits like grapes are generally consistent within the
+        same species, but can vary due to genetics and environmental conditions.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Molecular
+        & Computational Biology\"],\"crawlDate\":\"2023-11-15T18:05:20.424110Z\",\"tickers\":[]},{\"id\":59573636,\"publishedDate\":\"2023-11-15T18:04:52Z\",\"title\":\"Children's
+        Place Retail Stores Q3 2024 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037159-childrens-place-retail-stores-q3-2024-earnings-preview\",\"description\":\"Children's
+        Place Retail Stores (PLCE) is set to announce Q3 earnings on November 16th.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:05:29.283226Z\",\"tickers\":[]},{\"id\":59573626,\"publishedDate\":\"2023-11-15T18:04:43Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Position in Nuveen New Jersey Quality Municipal
+        Income Fund\",\"url\":\"https://www.gurufocus.com/news/2124591/saba-capital-management-lp-bolsters-position-in-nuveen-new-jersey-quality-municipal-income-fund\",\"description\":\"Introduction
+        to the Transaction  Saba Capital Management, L.P. (Trades, Portfolio), a prominent
+        investment firm, has recently expanded its portfolio with a sign\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Nxj\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:22.934459Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ne-ws\",\"nxj\"]},{\"id\":59573634,\"publishedDate\":\"2023-11-15T18:04:23Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Position in Eaton Vance California Municipal
+        Bond Fund\",\"url\":\"https://www.gurufocus.com/news/2124590/saba-capital-management-lp-bolsters-position-in-eaton-vance-california-municipal-bond-fund\",\"description\":\"Introduction
+        to the Transaction  Saba Capital Management, L.P. (Trades, Portfolio), a prominent
+        investment firm, has recently increased its stake in the Eaton V\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Evm\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Industrials\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:28.452001Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"etn\",\"evm\",\"gim\",\"ne-ws\"]},{\"id\":59573631,\"publishedDate\":\"2023-11-15T18:04:15Z\",\"title\":\"Institutional
+        Venture Management XIII, LLC Adjusts Stake in The Honest Co Inc\",\"url\":\"https://www.gurufocus.com/news/2124589/institutional-venture-management-xiii-llc-adjusts-stake-in-the-honest-co-inc\",\"description\":\"Overview
+        of Institutional Venture Management XIII, LLC (Trades, Portfolio)'s Recent
+        Transaction In a notable move within the investment community, Institutional\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Hnst\",\"Ispo\",\"Lz\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:26.553938Z\",\"tickers\":[\"hnst\",\"ispo\",\"lz\",\"lz\",\"ne-ws\"]},{\"id\":59573635,\"publishedDate\":\"2023-11-15T18:04:14Z\",\"title\":\"(NYSE:WSM)\",\"url\":\"https://seekingalpha.com/news/4037158-williams-sonoma-q3-2024-earnings-preview\",\"description\":\"Williams-Sonoma
+        is set to announce Q3 earnings with a decreased consensus EPS estimate of
+        $3.34 and revenue estimate of $1.94B.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:28.754024Z\",\"tickers\":[\"wsm\"]},{\"id\":59573620,\"publishedDate\":\"2023-11-15T18:03:55Z\",\"title\":\"PDS
+        Biotechnology Corporation (NASDAQ:PDSB) Q3 2023 Earnings Call Transcript\",\"url\":\"https://www.insidermonkey.com/blog/pds-biotechnology-corporation-nasdaqpdsb-q3-2023-earnings-call-transcript-1223799/\",\"description\":\"Operator:
+        Greetings and welcome to the PDS Biotechnology Third Quarter 2023 Earnings
+        Call and Webcast. At this time, all participants are in a listen-only mode.
+        [Operator Instructions].\",\"source\":\"insidermonkey.com\",\"tags\":[\"Healthcare\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:00.029494Z\",\"tickers\":[\"pdsb\"]},{\"id\":59573621,\"publishedDate\":\"2023-11-15T18:03:54Z\",\"title\":\"When
+        Roy\u2019s Sahara walked on the wrong side of the law, and lost\",\"url\":\"https://www.livemint.com/companies/news/when-roy-s-sahara-walked-on-the-wrong-side-of-the-law-and-lost-11700071205810.html\",\"description\":\"Subrata
+        Roy's death puts the spotlight on the litigation surrounding the Sahara group
+        and the  \u20B925,000 crore with the capital markets regulator for distribution
+        to investors.\",\"source\":\"livemint.com\",\"tags\":[\"Amit Shah\",\"Appeals\",\"Criminal
+        Proceedings\",\"Litigation\",\"Sahara\",\"Sebi\",\"Sfio\",\"Stock\",\"Subrata
+        Roy\",\"Supreme Court\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:05.986908Z\",\"tickers\":[\"sfio\"]},{\"id\":59573630,\"publishedDate\":\"2023-11-15T18:03:49Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with Federated Hermes Premier
+        Municipal Income ...\",\"url\":\"https://www.gurufocus.com/news/2124588/saba-capital-management-lp-bolsters-portfolio-with-federated-hermes-premier-municipal-income-fund-acquisition\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio with the acquisition of 1,169,884
+        shares in\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Fmn\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:25.713879Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"fmn\",\"gim\",\"ne-ws\"]},{\"id\":59573633,\"publishedDate\":\"2023-11-15T18:03:44Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with Nuveen Pennsylvania Quality
+        Municipal ...\",\"url\":\"https://www.gurufocus.com/news/2124587/saba-capital-management-lp-bolsters-portfolio-with-nuveen-pennsylvania-quality-municipal-income-fund-nqp-shares\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio by adding shares of the Nuveen Pennsylvania\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"News\",\"Nqp\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:27.796477Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ne-ws\",\"nqp\"]},{\"id\":59573629,\"publishedDate\":\"2023-11-15T18:03:38Z\",\"title\":\"Saba
+        Capital Management, L.P. Bolsters Portfolio with DWS Strategic Municipal Income
+        Trust ...\",\"url\":\"https://www.gurufocus.com/news/2124586/saba-capital-management-lp-bolsters-portfolio-with-dws-strategic-municipal-income-trust-acquisition\",\"description\":\"
+        Saba Capital Management, L.P. (Trades, Portfolio), a prominent investment
+        firm, has recently expanded its portfolio with the acquisition of 12,208,17
+        shares in\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Bcat\",\"Bigz\",\"Bmez\",\"ETF\",\"Ecat\",\"Gim\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Ksm\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:25.061678Z\",\"tickers\":[\"bcat\",\"bigz\",\"bmez\",\"ecat\",\"gim\",\"ksm\",\"ne-ws\"]},{\"id\":59573606,\"publishedDate\":\"2023-11-15T18:03:35Z\",\"title\":\"Biden
+        and China's Xi to Meet at APEC Summit in San Francisco: Live Updates\",\"url\":\"https://www.nytimes.com/live/2023/11/15/world/biden-xi-apec-summit\",\"description\":\"Hints
+        of how the two leaders will try to nudge toward agreements on some issues
+        have emerged, even as officials have tried to temper expectations.\",\"source\":\"nytimes.com\",\"tags\":[\"Asia-Pacific
+        Economic Cooperation\",\"Biden\",\"China\",\"International Trade And World
+        Market\",\"Joseph R Jr\",\"Tiingo Top\",\"United States International Relations\",\"Xi
+        Jinping\"],\"crawlDate\":\"2023-11-15T18:04:32.093088Z\",\"tickers\":[]},{\"id\":59573638,\"publishedDate\":\"2023-11-15T18:03:34Z\",\"title\":\"NetEase
+        Q3 2023 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037157-netease-q3-2023-earnings-preview\",\"description\":\"NetEase
+        is set to release its Q3 earnings with an expected EPS of $1.47 and revenue
+        of $3.78B.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:05:30.966304Z\",\"tickers\":[]},{\"id\":59573588,\"publishedDate\":\"2023-11-15T18:03:29.477643Z\",\"title\":\"Why
+        are baby boomers dominating the hot U.S. housing market?\",\"url\":\"https://www.deseret.com/u-s-world/2023/11/15/23962316/housing-market-baby-boomers-dominating-buying-selling-homes\",\"description\":\"The
+        typical age for a repeat buyer \u2014 someone who has bought a house before
+        \u2014 is 58, according to new data from the National Association of Realtors\",\"source\":\"deseret.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:43.928540Z\",\"tickers\":[]},{\"id\":59573587,\"publishedDate\":\"2023-11-15T18:03:29.426375Z\",\"title\":\"\u2018Big
+        Play Vele\u2019: Utah receiver Devaughn Vele making the most out of his increased
+        touches\",\"url\":\"https://www.deseret.com/2023/11/15/23959495/utah-wide-receiver-devaughn-vele-increased-catches\",\"description\":\"Utes
+        have made concerted effort to get leading receiver the ball more, cumulating
+        in a five-catch, 145-yard outing in Utes\u2019 35-28 loss to Washington\",\"source\":\"deseret.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:42.447785Z\",\"tickers\":[]},{\"id\":59573628,\"publishedDate\":\"2023-11-15T18:03:24Z\",\"title\":\"Insider
+        Buying: Director Roland Diggelmann Acquires Shares of Mettler-Toledo International
+        Inc\",\"url\":\"https://www.gurufocus.com/news/2124585/insider-buying-director-roland-diggelmann-acquires-shares-of-mettlertoledo-international-inc\",\"description\":\"\\nMettler-Toledo
+        International Inc (NYSE:MTD), a leading global supplier of precision instruments
+        and services, has recently witnessed insider buying activity th\",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Healthcare\",\"Mtd\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:24.137077Z\",\"tickers\":[\"mtd\",\"ne-ws\"]},{\"id\":59573632,\"publishedDate\":\"2023-11-15T18:03:23Z\",\"title\":\"STILWELL
+        JOSEPH Bolsters Position in Sound Financial Bancorp Inc\",\"url\":\"https://www.gurufocus.com/news/2124584/stilwell-joseph-bolsters-position-in-sound-financial-bancorp-inc\",\"description\":\"Introduction
+        to the Transaction  On November 13, 2023, STILWELL JOSEPH (Trades, Portfolio),
+        a notable investment firm, expanded its portfolio by adding 398,150 \",\"source\":\"gurufocus.com\",\"tags\":[\"Article\",\"Financial
+        Services\",\"Gurufocus\",\"Gurufocus Research\",\"News\",\"Sfbc\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:05:27.141659Z\",\"tickers\":[\"ne-ws\",\"sfbc\"]},{\"id\":59573627,\"publishedDate\":\"2023-11-15T18:03:15Z\",\"title\":\"Insider
+        Sell: Director Steven Kohlhagen Sells Shares of AMETEK Inc\",\"url\":\"https://www.gurufocus.com/news/2124583/insider-sell-director-steven-kohlhagen-sells-shares-of-ametek-inc\",\"description\":\"Recent
+        filings with the Securities and Exchange Commission have revealed that Director
+        Steven Kohlhagen sold 810 shares of AMETEK Inc (AME) on November 14, 2023\",\"source\":\"gurufocus.com\",\"tags\":[\"Ame\",\"Article\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Industrials\",\"News\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:23.546152Z\",\"tickers\":[\"ame\",\"ne-ws\"]},{\"id\":59573639,\"publishedDate\":\"2023-11-15T18:02:57.156000Z\",\"title\":\"Ex-Goldman
+        Duo Seek Out Recession Busting Franchise Operators\",\"url\":\"https://www.bloomberg.com/news/newsletters/2023-11-15/ex-goldman-duo-seek-out-recession-busting-franchise-operators\",\"description\":null,\"source\":\"bloomberg.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T18:05:33.082334Z\",\"tickers\":[\"dis\",\"manu\"]},{\"id\":59573637,\"publishedDate\":\"2023-11-15T18:02:54Z\",\"title\":\"American
+        Lithium lifts higher as Peru court confirms asset titles (NASDAQ:AMLI)\",\"url\":\"https://seekingalpha.com/news/4037156-american-lithium-lifts-higher-as-peru-court-confirms-asset-titles\",\"description\":\"American
+        Lithium rises as a court upholds its ownership of disputed concessions in
+        Peru, amid a broader rally in lithium stocks.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Basic
+        Materials\",\"Peru\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:05:30.095923Z\",\"tickers\":[\"amli\",\"lthm\",\"pll\"]},{\"id\":59573589,\"publishedDate\":\"2023-11-15T18:02:37.428000Z\",\"title\":\"Week
+        12 college football schedule: How to watch all 72 FBS games\",\"url\":\"https://www.ajc.com/sports/state-sports/week-12-college-football-schedule-how-to-watch-all-72-fbs-games/DU5JWU4TKFDT3MLLH3IDMURQEQ/\",\"description\":\"Here
+        are the TV times, networks and livestreaming opportunities for all FBS games
+        Tuesday-Saturday. All times are EDT.\",\"source\":\"ajc.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:45.809894Z\",\"tickers\":[]},{\"id\":59573538,\"publishedDate\":\"2023-11-15T18:02:35Z\",\"title\":\"Bath
+        & Body Works Q3 2024 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037154-bath-body-works-q3-2024-earnings-preview\",\"description\":\"Bath
+        & Body Works (BBWI) is set to announce Q3 earnings on November 16th.\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:02:56.098055Z\",\"tickers\":[]},{\"id\":59573564,\"publishedDate\":\"2023-11-15T18:02:33Z\",\"title\":\"40+
+        Columbia Student Orgs Join Israel \u2018Apartheid Divest\u2019 Coalition\",\"url\":\"https://patch.com/new-york/upper-west-side-nyc/40-columbia-student-orgs-join-israel-apartheid-divest-coalition\",\"description\":\"The
+        student groups said they were \\\"moved to action by the ostensibly politically-motivated\\\"
+        suspension of two student groups last week. \\r\\n\",\"source\":\"patch.com\",\"tags\":[\"Apartheid\",\"Coalition\",\"Columbia\",\"Crime\",\"Divest\",\"Israel\",\"New
+        York\",\"Safety\",\"Student\",\"Upper West Side\"],\"crawlDate\":\"2023-11-15T18:03:17.815667Z\",\"tickers\":[]},{\"id\":59573559,\"publishedDate\":\"2023-11-15T18:02:25Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In IL: New Ranking\",\"url\":\"https://patch.com/illinois/across-il/these-are-best-elementary-middle-schools-il-new-ranking-says\",\"description\":\"Illinois
+        elementary and middle schools scored well and are considered the best educational
+        systems in the country, according to U.S. News\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Illinois\",\"Elementary\",\"Illinois\",\"Middle\",\"Ranking\",\"Schools\"],\"crawlDate\":\"2023-11-15T18:03:14.623488Z\",\"tickers\":[]},{\"id\":59573512,\"publishedDate\":\"2023-11-15T18:02:24.904220Z\",\"title\":\"Unearthing
+        the terroir effect: Grapevine's transcriptional response to soil variability\",\"url\":\"https://phys.org/news/2023-11-unearthing-terroir-effect-grapevine-transcriptional.html\",\"description\":\"Grapevine
+        is a globally significant fruit crop that exhibits remarkable phenotypic plasticity
+        (PP) due to genotype-per-environment interactions (a concept known as terroir).
+        This adaptability impacts physiological, molecular and biochemical aspects
+        of the plant.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Molecular
+        & Computational Biology\"],\"crawlDate\":\"2023-11-15T18:02:41.846417Z\",\"tickers\":[]},{\"id\":59573503,\"publishedDate\":\"2023-11-15T18:02:24.890298Z\",\"title\":\"Surveying
+        wetlands for infectious bird flu\u2014and finding it\",\"url\":\"https://phys.org/news/2023-11-surveying-wetlands-infectious-bird-fluand.html\",\"description\":\"Recently,
+        morning omelets and holiday dinners have gotten more expensive. One likely
+        cause is bird flu, outbreaks of which led to the deaths of millions of chickens
+        and turkeys from infection or culling in 2022, according to the U.S. Department
+        of Agriculture, and which still demands rigorous monitoring of wild populations.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Ecology\",\"Turkey\"],\"crawlDate\":\"2023-11-15T18:02:37.613526Z\",\"tickers\":[]},{\"id\":59573552,\"publishedDate\":\"2023-11-15T18:02:22Z\",\"title\":\"ChatGPT
+        picks 3 cryptocurrencies to use as cash vs. CBDCs\",\"url\":\"https://finbold.com/chatgpt-picks-3-cryptocurrencies-to-use-as-cash-vs-cbdcs/\",\"description\":\"Finbold
+        asked ChatGPT-4 to mention 10 decentralized cryptocurrencies to use as cash
+        as an alternative to the rise of CBDCs.\",\"source\":\"finbold.com\",\"tags\":[\"Btc\",\"Cbdcs\",\"Chatgpt-4\",\"CryptoCurrency\",\"Cryptocurrency\",\"ETF\",\"Finance\",\"Imf\",\"Ltc\",\"Real
+        Estate\",\"Stock\",\"Unknown Sector\",\"Xmr\"],\"crawlDate\":\"2023-11-15T18:03:08.173729Z\",\"tickers\":[\"btc\",\"ltc\",\"pifi\"]},{\"id\":59573513,\"publishedDate\":\"2023-11-15T18:01:56Z\",\"title\":\"Public
+        invited to Barry Humphries' Opera House memorial\",\"url\":\"https://thewest.com.au/entertainment/public-invited-to-barry-humphries-opera-house-memorial-c-12569671\",\"description\":\"Australia
+        will farewell Barry Humphries in style at the Sydney Opera House, with limited
+        tickets publicly available this week.\",\"source\":\"thewest.com.au\",\"tags\":[\"Australia\",\"Entertainment\"],\"crawlDate\":\"2023-11-15T18:02:41.096932Z\",\"tickers\":[]},{\"id\":59573539,\"publishedDate\":\"2023-11-15T18:01:54Z\",\"title\":\"Stratasys
+        Q3 2023 Earnings Preview\",\"url\":\"https://seekingalpha.com/news/4037153-stratasys-q3-2023-earnings-preview\",\"description\":\"Stratasys
+        is set to announce its Q3 earnings results, with EPS estimate at $0.03 and
+        revenue estimate at $161.25M.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:02:56.972408Z\",\"tickers\":[\"ssys\"]},{\"id\":59573562,\"publishedDate\":\"2023-11-15T18:01:48Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In MA, New Ranking Says\",\"url\":\"https://patch.com/massachusetts/across-ma/these-are-best-elementary-middle-schools-ma-new-ranking-says\",\"description\":\"U.S.
+        News & World Report based its 2024 elementary and middle school rankings on
+        public data from the U.S. Department of Education.\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Massachusetts\",\"Elementary\",\"Massachusetts\",\"Middle\",\"Ranking\",\"Schools\"],\"crawlDate\":\"2023-11-15T18:03:15.770242Z\",\"tickers\":[]},{\"id\":59573472,\"publishedDate\":\"2023-11-15T18:01:44Z\",\"title\":\"2023's
+        best early Black Friday luggage deals you can already shop\",\"url\":\"https://www.cbsnews.com/essentials/best-black-friday-luggage-deals/\",\"description\":\"Shop
+        the best Black Friday 2023 luggage deals on carry-ons and check-in suitcases.\",\"source\":\"cbsnews.com\",\"tags\":[\"Cbs
+        Essentials - Black Friday 2023\",\"Cbs Essentials - Luggage\",\"Essentials\",\"Essentials
+        - Deals\",\"Essentials - Travel\",\"Stock\",\"Tiingo Top\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:23.942174Z\",\"tickers\":[\"smsey\"]},{\"id\":59573569,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Pokmon
+        Is Responsible For Jujutsu Kaisen Season 2's Most Controversial Scene\",\"url\":\"https://screenrant.com/jujutsu-kaisen-season-2-dimming-pokemon-porygon-incident/\",\"description\":\"Jujutsu
+        Kaisen's dimming controversy is due to Pokemon.\",\"source\":\"screenrant.com\",\"tags\":[\"Anime\",\"Jujutsu
+        Kaisen\",\"Pokemon\"],\"crawlDate\":\"2023-11-15T18:03:21.705956Z\",\"tickers\":[]},{\"id\":59573571,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"J.J.
+        Abrams' Star Trek Reboot \\\"Starting Over Was Brilliant,\\\" Says Popular
+        TNG & DS9 Writer\",\"url\":\"https://screenrant.com/star-trek-abrams-reboot-brilliant-ronald-moore-supporter/\",\"description\":\"Ronald
+        D. Moore was all for J.J. Abrams rebooting Star Trek.\",\"source\":\"screenrant.com\",\"tags\":[\"Basic
+        Materials\",\"Movies\",\"Real Estate\",\"Star Trek\",\"Star Trek (2009)\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:03:23.759253Z\",\"tickers\":[\"pgre\",\"pzg\"]},{\"id\":59573575,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Star
+        Wars Just Introduced a Grotesque New Take on Its 'Severed Arms' Motif\",\"url\":\"https://screenrant.com/star-wars-introduces-new-severed-arms-scourge-dark-droids/\",\"description\":\"Star
+        Wars reverses the severed arms trend...\",\"source\":\"screenrant.com\",\"tags\":[\"Comics\",\"Star
+        Wars\"],\"crawlDate\":\"2023-11-15T18:03:25.506599Z\",\"tickers\":[]},{\"id\":59573577,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Hayden
+        Christensen's 10 Best Star Wars Moments As Anakin Skywalker, Ranked\",\"url\":\"https://screenrant.com/star-wars-hayden-christensen-anakin-skywalker-best-moments/\",\"description\":\"Christensen
+        as Anakin Skywalker has great moments.\",\"source\":\"screenrant.com\",\"tags\":[\"Movies\",\"Star
+        Wars\"],\"crawlDate\":\"2023-11-15T18:03:27.873300Z\",\"tickers\":[]},{\"id\":59573579,\"publishedDate\":\"2023-11-15T18:01:41Z\",\"title\":\"Gen
+        V Interview: VFX Supervisor Karen Heston Breaks Down New Powers & Big Story
+        Moments\",\"url\":\"https://screenrant.com/gen-v-vfx-supervisor-karen-heston-interview/\",\"description\":\"Gen
+        V season 1 is out now on Prime Video.\",\"source\":\"screenrant.com\",\"tags\":[\"Gen
+        V\",\"Interviews\",\"The Boys\"],\"crawlDate\":\"2023-11-15T18:03:31.245175Z\",\"tickers\":[]},{\"id\":59573501,\"publishedDate\":\"2023-11-15T18:01:36Z\",\"title\":\"Google\u2019s
+        new Titan security keys are ready for a world without passwords\",\"url\":\"https://www.theverge.com/2023/11/15/23962443/google-titan-security-key-passwordless-login\",\"description\":\"More
+        security, less passwords.\",\"source\":\"theverge.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:02:35.455651Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59573507,\"publishedDate\":\"2023-11-15T18:01:35Z\",\"title\":\"Man
+        Arrested With Gold Worth Rs 64 Lakh Near India-Bangladesh Border\",\"url\":\"https://www.ndtv.com/india-news/man-arrested-with-gold-worth-rs-64-lakh-near-india-bangladesh-border-4576468\",\"description\":\"The
+        Border Security Force (BSF), under the South Bengal frontier, thwarted a unique
+        attempt of gold smuggling and arrested a 59-year-old man with two packets
+        containing gold, weighing 1,059.400 grams while being smuggled from Bangladesh
+        to India.\",\"source\":\"ndtv.com\",\"tags\":[\"Bangladesh\",\"Bsf Arrests
+        Man Gold\",\"Gold Worth Rs 64 Lakh Seized\",\"India\",\"India Bangladesh Border
+        Gold Seized\"],\"crawlDate\":\"2023-11-15T18:02:38.895413Z\",\"tickers\":[]},{\"id\":59573586,\"publishedDate\":\"2023-11-15T18:01:21.866000Z\",\"title\":\"ATL's
+        First Transit Trip-Planning App Launches, Dubbed a 'Game Changer' for Commuters\",\"url\":\"https://www.ajc.com/partner/marietta-daily-journal/atls-first-transit-trip-planning-app-launches-dubbed-a-game-changer-for-commuters/KOV2EVO2OJH5NLPBKDKPCDIEQE/\",\"description\":\"ATL's
+        First Transit Trip-Planning App Launches, Dubbed a 'Game Changer' for Commuters\",\"source\":\"ajc.com\",\"tags\":[],\"crawlDate\":\"2023-11-15T18:03:40.002370Z\",\"tickers\":[]},{\"id\":59573478,\"publishedDate\":\"2023-11-15T18:01:18Z\",\"title\":\"Black
+        Friday Deal: Save Money On An Xbox Series S Plus An Extra Controller\",\"url\":\"https://www.cnet.com/deals/black-friday-deal-save-money-on-an-xbox-series-s-plus-an-extra-controller/\",\"description\":\"You
+        can save $80 on this bundle now.\",\"source\":\"cnet.com\",\"tags\":[\"Gaming\",\"Microsoft\",\"Testimonial\",\"Video
+        Games\",\"Xbox\"],\"crawlDate\":\"2023-11-15T18:02:25.988647Z\",\"tickers\":[]},{\"id\":59573534,\"publishedDate\":\"2023-11-15T18:01:17Z\",\"title\":\"Barclays
+        picks OneMain, AmEx, others as Overweight stocks in a Neutral sector (NYSE:OMF)\",\"url\":\"https://seekingalpha.com/news/4037152-barclays-picks-onemain-amex-others-as-overweight-stocks-in-a-neutral-sector\",\"description\":\"Barclays
+        initiates coverage of U.S. consumer finance sector, highlighting attractive
+        stocks in lending, mortgage, and aircraft leasing industries.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Financial
+        Services\",\"Financials\",\"Industrials\",\"Real Estate\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:55.567691Z\",\"tickers\":[\"aer\",\"agnc\",\"al\",\"axp\",\"bcs\",\"bfh\",\"brsp\",\"coop\",\"dfs\",\"esnt\",\"faf\",\"fnf\",\"fnfv\",\"mtg\",\"navi\",\"nmih\",\"omf\",\"pfsi\",\"rdn\",\"rkt\",\"slm\",\"sofi\",\"syf\",\"uwmc\"]},{\"id\":59573474,\"publishedDate\":\"2023-11-15T18:01:10Z\",\"title\":\"Vay
+        begins remotely operated drives in Las Vegas without a human present [Video]\",\"url\":\"https://electrek.co/2023/11/15/vay-begins-remotely-operated-drives-las-vegas-without-human-present-video/\",\"description\":\"Six
+        months after sharing initial plans to expand to the US and begin remotely
+        operated journeys in Las Vegas, Vay...\",\"source\":\"electrek.co\",\"tags\":[\"News\"],\"crawlDate\":\"2023-11-15T18:02:24.336634Z\",\"tickers\":[]},{\"id\":59573470,\"publishedDate\":\"2023-11-15T18:01:03Z\",\"title\":\"Jeff
+        Bezos and Lauren Sanchez relentlessly mocked over their Vogue photo shoot\",\"url\":\"https://www.independent.co.uk/life-style/jeff-bezos-lauren-sanchez-vogue-amazon-b2447967.html\",\"description\":\"\u2018These
+        are AI-generated, you cannot convince me otherwise\u2019 \",\"source\":\"independent.co.uk\",\"tags\":[\"Jeff
+        Bezos\",\"Lauren Sanchez\",\"Vogue\"],\"crawlDate\":\"2023-11-15T18:02:20.845947Z\",\"tickers\":[]},{\"id\":59573497,\"publishedDate\":\"2023-11-15T18:01:00Z\",\"title\":\"Illumina,
+        Inc. (ILMN) Investor Notice: Robbins LLP Reminds Investors of Class Action
+        Filed Against Illumina, Inc.\",\"url\":\"https://www.businesswire.com/news/home/20231115291259/en/Illumina-Inc.-ILMN-Investor-Notice-Robbins-LLP-Reminds-Investors-of-Class-Action-Filed-Against-Illumina-Inc./?feedref=JjAwJuNHiystnCoBq_hl-adS5VAKkf1zsgyV8tTPInVcgiwDl5F89IquLVWUqfRVgLxDkSKfgoruKb9yWl5as-PbWreMWuYBefATrZ0EPTVXw2Oldt-3VQjUwU4Zj5HZBSvR87oUDgbHejiywQBpbg%3D%3D\",\"description\":\"Illumina,
+        Inc. (ILMN) Misled Investors Regarding Insider's Personal Motives for Acquiring
+        GRAIL\",\"source\":\"businesswire.com\",\"tags\":[\"Healthcare\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:02:33.805346Z\",\"tickers\":[\"ilmn\"]},{\"id\":59573475,\"publishedDate\":\"2023-11-15T18:00:52Z\",\"title\":\"Custom
+        showers and designer crates: welcome to the \u2018barkitecture\u2019 boom\",\"url\":\"https://www.theguardian.com/wellness/2023/nov/15/pet-friendly-interior-home-design-barkitecture\",\"description\":\"Fueled
+        by social media images, magazine spreads, and home renovation TV shows, Americans
+        are investing heavily into home design for pets\",\"source\":\"theguardian.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Pets\",\"Stock\",\"Well Actually\"],\"crawlDate\":\"2023-11-15T18:02:26.589554Z\",\"tickers\":[\"hgv\",\"hlt\"]},{\"id\":59573431,\"publishedDate\":\"2023-11-15T18:00:44.843514Z\",\"title\":\"Iceland
+        on high alert for volcanic eruption\u2014what we know so far\",\"url\":\"https://phys.org/news/2023-11-iceland-high-volcanic-eruptionwhat.html\",\"description\":\"The
+        Reykjanes peninsula in south-west Iceland trembled with an intense swarm of
+        earthquakes on the afternoon of Friday November 10. Hundreds of quakes were
+        detected on the regional networks of seismometers and several were strong
+        enough to be felt in Reykjavik, 50 kilometers away.\",\"source\":\"phys.org\",\"tags\":[\"Earth\",\"Earth
+        Sciences\",\"Iceland\"],\"crawlDate\":\"2023-11-15T18:00:53.425871Z\",\"tickers\":[]},{\"id\":59573477,\"publishedDate\":\"2023-11-15T18:00:36Z\",\"title\":\"It\u2019s
+        Official: The Jordan Spizike Low Is Preparing Its Own \u201CBred\u201D Installment\",\"url\":\"https://sneakernews.com/2023/11/15/jordan-spizike-low-black-red-fq1759-006/\",\"description\":\"Over
+        the past few months, Jordan Brand has been preparing a low-top version of
+        the historically divisive Jordan Spizike for a Spring 2024 debut. With...\",\"source\":\"sneakernews.com\",\"tags\":[\"Air
+        Jordan\",\"Jordan\",\"Jordan Spizike Low\",\"Release Dates\",\"Upcoming Sneakers\"],\"crawlDate\":\"2023-11-15T18:02:25.242152Z\",\"tickers\":[]},{\"id\":59573573,\"publishedDate\":\"2023-11-15T18:00:35Z\",\"title\":\"Google's
+        updated Titan security key can store up to 250 passkeys\",\"url\":\"https://www.engadget.com/googles-updated-titan-security-key-can-store-up-to-250-passkeys-180035899.html?src=rss\",\"description\":\"Google
+        has updated its lineup of Titan security keys with some features that'll make
+        them work better with passkeys as well as passwords.\",\"source\":\"engadget.com\",\"tags\":[\"Author_Name|Nathan
+        Ingraham\",\"Information Technology\",\"Language|En-Us\",\"Provider_Name|Engadget\",\"Region|Us\",\"Site|Engadget\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:03:24.426481Z\",\"tickers\":[\"goog\",\"googl\"]},{\"id\":59573566,\"publishedDate\":\"2023-11-15T18:00:34Z\",\"title\":\"Record
+        70% of Bitcoin supply lies dormant for a year or more\",\"url\":\"https://cryptoslate.com/insights/record-70-of-bitcoin-supply-lies-dormant-for-a-year-or-more/\",\"description\":\"Unprecedented
+        levels of inactivity observed in Bitcoin markets, with a majority of supply
+        unmoved for extended periods.\",\"source\":\"cryptoslate.com\",\"tags\":[\"CryptoCurrency\"],\"crawlDate\":\"2023-11-15T18:03:19.231118Z\",\"tickers\":[]},{\"id\":59573440,\"publishedDate\":\"2023-11-15T18:00:32Z\",\"title\":\"If
+        Your Bitcoin Wallet Is A Product Of The 2016 Technology, You Could Be In Trouble
+        \u2013 Here\u2019s Why\",\"url\":\"https://www.newsbtc.com/news/i2016-bitcoin-wallet-could-be-problematic/\",\"description\":\"Is
+        your Bitcoin wallet shackled by the outdated chains of 2016 technology? Brace
+        yourself, for trouble may be lurking in the shadows, ready to pounce on\",\"source\":\"newsbtc.com\",\"tags\":[\"Bitcoin
+        Wallet\",\"Btc\",\"Crypto Wallet\",\"CryptoCurrency\",\"Cryptocurrency Market
+        News\",\"Digital Currency\",\"ETF\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:01:21.010893Z\",\"tickers\":[\"btc\",\"pifi\"]},{\"id\":59573486,\"publishedDate\":\"2023-11-15T18:00:28Z\",\"title\":\"Austerity
+        is behind the mouldy housing imperilling people\u2019s health\",\"url\":\"https://www.theguardian.com/society/2023/nov/15/austerity-is-behind-the-mouldy-housing-imperilling-peoples-health\",\"description\":\"Letters:
+        There is already a system for local councils to tackle damp and cold homes,
+        but it has been undermined by 13 years of cuts, writes Dr Stephen Battersby.
+        Plus letters from Dr Richard Turkington and Neil Blackshaw\",\"source\":\"theguardian.com\",\"tags\":[\"Austerity\",\"Communities\",\"Conservatives\",\"Housing\",\"Local
+        Government\",\"Politics\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T18:02:29.973329Z\",\"tickers\":[]},{\"id\":59573554,\"publishedDate\":\"2023-11-15T18:00:28Z\",\"title\":\"Samsung\u2019s
+        Gauss AI model set to launch ahead of Apple for its devices\",\"url\":\"https://coingeek.com/samsung-gauss-ai-model-set-to-launch-ahead-of-apple-for-its-devices/\",\"description\":\"Samsung
+        unveils Gauss, an AI chatbot for mobiles set to outpace Apple's advancements,
+        offering varied functionalities and future integrations across Samsung's product
+        line.\",\"source\":\"coingeek.com\",\"tags\":[\"Ai\",\"Artificial Intelligence\",\"Business\",\"CryptoCurrency\",\"Financial
+        Services\",\"Gauss\",\"Samsung\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:03:09.521777Z\",\"tickers\":[\"aaic\",\"aapl\",\"ai\",\"goog\",\"googl\",\"meta\",\"msft\",\"ssnlf\"]},{\"id\":59573494,\"publishedDate\":\"2023-11-15T18:00:23Z\",\"title\":\"Why
+        a \u2018three-state solution\u2019 will never work in the Middle East\",\"url\":\"https://www.theguardian.com/world/2023/nov/15/why-a-three-state-solution-will-never-work-in-the-middle-east\",\"description\":\"Letter:
+        A proposal for an alternative to a two-state solution is rejected by Fran
+        Russell and Prof Saville Kushner\",\"source\":\"theguardian.com\",\"tags\":[\"Gaza\",\"Israel\",\"Israel-Hamas
+        War\",\"Middle East\",\"Middle East And North Africa\",\"Palestinian Territories\"],\"crawlDate\":\"2023-11-15T18:02:31.743473Z\",\"tickers\":[]},{\"id\":59573490,\"publishedDate\":\"2023-11-15T18:00:20Z\",\"title\":\"Here's
+        How Much You Would Have Made Owning Fortinet Stock In The Last 10 Years\",\"url\":\"https://www.benzinga.com/news/23/11/35811456/heres-how-much-you-would-have-made-owning-fortinet-stock-in-the-last-10-years\",\"description\":\"
+        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Bzi-Pod\",\"Ftnt\",\"News\",\"Stock\",\"Technology\",\"Trading
+        Ideas\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:30.716832Z\",\"tickers\":[\"ftnt\",\"ne-ws\"]},{\"id\":59573487,\"publishedDate\":\"2023-11-15T18:00:14Z\",\"title\":\"Here's
+        How Much You Would Have Made Owning Parker Hannifin Stock In The Last 15 Years\",\"url\":\"https://www.benzinga.com/news/23/11/35811454/heres-how-much-you-would-have-made-owning-parker-hannifin-stock-in-the-last-15-years\",\"description\":\"
+        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Bzi-Pod\",\"Industrials\",\"News\",\"Ph\",\"Stock\",\"Trading
+        Ideas\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:02:29.913867Z\",\"tickers\":[\"-p-h\",\"ne-ws\",\"ph\"]},{\"id\":59573416,\"publishedDate\":\"2023-11-15T18:00:11Z\",\"title\":\"Endangered
+        Woman, 74, Last Seen On Aurora's East Side: Police\",\"url\":\"https://patch.com/illinois/aurora/endangered-woman-74-last-seen-auroras-east-side-police\",\"description\":\"Police
+        said the woman was last seen wearing a pink dress and no shoes in the 300
+        block of Pine Avenue.\",\"source\":\"patch.com\",\"tags\":[\"Aurora\",\"Crime\",\"Endangered\",\"Illinois\",\"Police\",\"Safety\"],\"crawlDate\":\"2023-11-15T18:00:30.845176Z\",\"tickers\":[]},{\"id\":59573491,\"publishedDate\":\"2023-11-15T18:00:11Z\",\"title\":\"Birmingham\u2019s
+        budget crisis won\u2019t be solved by another round of Tory cuts\",\"url\":\"https://www.theguardian.com/society/2023/nov/15/birmingham-budget-crisis-wont-be-solved-by-another-round-of-tory-cuts\",\"description\":\"Letters:
+        Cllr Phil Davis says Labour should not be blamed for the shortfall in funds
+        at Birmingham city council\",\"source\":\"theguardian.com\",\"tags\":[\"Birmingham\",\"Conservatives\",\"Labour\",\"Local
+        Government\",\"Michael Gove\",\"Politics\",\"Society\",\"Tiingo Top\",\"Uk\"],\"crawlDate\":\"2023-11-15T18:02:30.805390Z\",\"tickers\":[]},{\"id\":59573439,\"publishedDate\":\"2023-11-15T18:00:08Z\",\"title\":\"Central
+        Insurance Strengthens Executive Leadership Team With Strategic Appointments\",\"url\":\"https://www.newswire.com/news/central-insurance-strengthens-executive-leadership-team-with-strategic-22172804\",\"description\":\"\",\"source\":\"newswire.com\",\"tags\":[\"C-Suite
+        Announcement\",\"Company Update\",\"Executive Leadership\"],\"crawlDate\":\"2023-11-15T18:01:18.924524Z\",\"tickers\":[]},{\"id\":59573438,\"publishedDate\":\"2023-11-15T18:00:07Z\",\"title\":\"CityTeam
+        Chester Announces New Executive Director\",\"url\":\"https://www.newswire.com/news/cityteam-chester-announces-new-executive-director-22172167\",\"description\":\"Richona
+        McKnight to lead CityTeam into the next phase of love and service for the
+        community\",\"source\":\"newswire.com\",\"tags\":[\"Addiction\",\"Chester\",\"Delaware
+        County\",\"Homelessness\",\"Recovery\"],\"crawlDate\":\"2023-11-15T18:01:17.954054Z\",\"tickers\":[]},{\"id\":59573432,\"publishedDate\":\"2023-11-15T18:00:07Z\",\"title\":\"Babcock
+        & Wilcox, Rail Vision, Shapeways Holdings among industrial movers\",\"url\":\"https://seekingalpha.com/news/4037151-babcock-wilcox-rail-vision-shapeways-holdings-among-industrial-movers\",\"description\":\"Read
+        about the top gainers and losers in the stock market, including Babcock &
+        Wilcox Enterprises and Shapeways Holdings, as well as sector performance.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:00:55.070464Z\",\"tickers\":[\"bw\"]},{\"id\":59573481,\"publishedDate\":\"2023-11-15T18:00:05Z\",\"title\":\"We
+        have a government-in-waiting with no real ideas\",\"url\":\"https://www.theguardian.com/politics/2023/nov/15/we-have-a-government-in-waiting-with-no-real-ideas\",\"description\":\"Letter:
+        With crises hitting us head-on, the shadow cabinet thinks that yesterday\u2019s
+        reformism can tackle today\u2019s emergencies, says Nick Moss\",\"source\":\"theguardian.com\",\"tags\":[\"Economics\",\"John
+        Mcdonnell\",\"Keir Starmer\",\"Labour\",\"Politics\",\"Rachel Reeves\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T18:02:27.412378Z\",\"tickers\":[]},{\"id\":59573492,\"publishedDate\":\"2023-11-15T18:00:05Z\",\"title\":\"7,771
+        ETH Worth $15M Was Just Burned\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/11/35811441/7-771-eth-worth-15m-was-just-burned\",\"description\":\"What
+        happened: On Tuesday a total of 7,771.17 Ether (CRYPTO: ETH) worth $15,647,645,
+        based on the current value of Ethereum at time of publication ($2,013.55),
+        was burned from Ethereum transactions.\",\"source\":\"benzinga.com\",\"tags\":[\"$Eth\",\"Benzinga\",\"Bzi-Cb\",\"CryptoCurrency\",\"Cryptocurrency\",\"Markets\",\"Movers\",\"Trading
+        Ideas\"],\"crawlDate\":\"2023-11-15T18:02:31.726841Z\",\"tickers\":[]},{\"id\":59573437,\"publishedDate\":\"2023-11-15T18:00:04Z\",\"title\":\"Handbag
+        Designer 101 Podcast: A Must-Listen Journey into the World of Handbag Design
+        with Emily Blumenthal\",\"url\":\"https://www.newswire.com/news/handbag-designer-101-podcast-a-must-listen-journey-into-the-world-of-22172161\",\"description\":\"Discover
+        the Artistry Behind Iconic Handbags in the 'Handbag Designer 101 Podcast'
+        - Unveiling the Craft and Creativity with Creators Across the Handbag Industry\",\"source\":\"newswire.com\",\"tags\":[\"Handbag\",\"How
+        To\",\"Podcast\"],\"crawlDate\":\"2023-11-15T18:01:16.449678Z\",\"tickers\":[]},{\"id\":59573420,\"publishedDate\":\"2023-11-15T18:00:02Z\",\"title\":\"These
+        Are The Best Elementary, Middle Schools In WI, New Ranking Says\",\"url\":\"https://patch.com/wisconsin/across-wi/these-are-best-elementary-middle-schools-wi-new-ranking-says\",\"description\":\"The
+        news outlet based its 2024 Best Elementary and Middle School rankings on publicly
+        available data from the U.S. Department of Education.\",\"source\":\"patch.com\",\"tags\":[\"Across
+        Wisconsin\",\"Elementary\",\"Middle\",\"Ranking\",\"Schools\",\"Wisconsin\"],\"crawlDate\":\"2023-11-15T18:00:36.630511Z\",\"tickers\":[]},{\"id\":59573436,\"publishedDate\":\"2023-11-15T18:00:01Z\",\"title\":\"Service
+        Direct Introduces Marketplace Form Leads for Home Service Contractors\",\"url\":\"https://www.newswire.com/news/service-direct-introduces-marketplace-form-leads-for-home-service-22168319\",\"description\":\"The
+        new product will help home service businesses to connect with potential customers
+        and grow their business cost-effectively.\",\"source\":\"newswire.com\",\"tags\":[\"Form
+        Leads\",\"Lead Generation\",\"Pay Per Lead\"],\"crawlDate\":\"2023-11-15T18:01:14.954659Z\",\"tickers\":[]},{\"id\":59573422,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        Iconic Big Wheel Brings Little Riders BIG Adventure for the Holidays!\",\"url\":\"https://www.prnewswire.com/news-releases/the-iconic-big-wheel-brings-little-riders-big-adventure-for-the-holidays-301978007.html\",\"description\":\"/PRNewswire/
+        - Right on time for the holidays, Schylling toys is bringing Big Wheel, National
+        Toy Hall of Fame and the iconic low-riding trike, back with a...\",\"source\":\"prnewswire.com\",\"tags\":[\"Children\",\"Consumer
+        & Cosmetics\",\"Entertainment\",\"Household\",\"New Products & Services\",\"Retail\",\"Toys\"],\"crawlDate\":\"2023-11-15T18:00:39.668945Z\",\"tickers\":[]},{\"id\":59573424,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Fujifilm
+        and Bristol Myers Squibb Sign Power Purchase Agreements with National Grid
+        Renewables\",\"url\":\"https://www.prnewswire.com/news-releases/fujifilm-and-bristol-myers-squibb-sign-power-purchase-agreements-with-national-grid-renewables-301989463.html\",\"description\":\"/PRNewswire/
+        -- National Grid Renewables has announced the execution of two power purchase
+        agreements (PPAs) for its Blevins Solar Project (Blevins), a...\",\"source\":\"prnewswire.com\",\"tags\":[\"Alternative
+        Energies\",\"Environmental Products & Services\",\"Licensing\",\"Oil & Energy\",\"Stock\",\"Unknown
+        Sector\",\"Utilities\"],\"crawlDate\":\"2023-11-15T18:00:41.044619Z\",\"tickers\":[\"fujiy\",\"ngg\"]},{\"id\":59573425,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"North
+        America and Europe OE Benchmarking of EV Aftersales Report 2023-2030 with
+        2022 as the Base Year\",\"url\":\"https://www.prnewswire.com/news-releases/north-america-and-europe-oe-benchmarking-of-ev-aftersales-report-2023-2030-with-2022-as-the-base-year-301989240.html\",\"description\":\"/PRNewswire/
+        -- The \\\"OE Benchmarking of EV Aftersales in North America and Europe\\\"
+        report has been added to ResearchAndMarkets.com's offering. This report...\",\"source\":\"prnewswire.com\",\"tags\":[\"Automotive\",\"Computer
+        Software\",\"Market Research Reports\",\"North America\",\"Publishing & Information
+        Services\",\"Transportation\",\"Trucking & Railroad\"],\"crawlDate\":\"2023-11-15T18:00:41.678962Z\",\"tickers\":[]},{\"id\":59573426,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Navigating
+        Growth Trajectories and Industry Dynamics Drives Forces and Challenges in
+        the Ethylene Dichloride Market | Future Market Insights, Inc.\",\"url\":\"https://www.prnewswire.com/news-releases/navigating-growth-trajectories-and-industry-dynamics-drives-forces-and-challenges-in-the-ethylene-dichloride-market--future-market-insights-inc-301989189.html\",\"description\":\"Future
+        Market Insights, Inc. (FMI), a renowned market research and consulting service
+        provider, has recently expanded its comprehensive market intelligence...\",\"source\":\"prnewswire.com\",\"tags\":[\"Chemical\",\"Market
+        Research Reports\"],\"crawlDate\":\"2023-11-15T18:00:42.234500Z\",\"tickers\":[]},{\"id\":59573427,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Happy
+        Birthday Neopets: Celebrating 24 Years of Epic Fandom!\",\"url\":\"https://www.prnewswire.com/news-releases/happy-birthday-neopets-celebrating-24-years-of-epic-fandom-301988962.html\",\"description\":\"/PRNewswire/
+        - Neopets, a hallmark of early 2000s nostalgia for millennials across the
+        globe, celebrates two significant events this November: its 24th year in...\",\"source\":\"prnewswire.com\",\"tags\":[\"Children\",\"Computer
+        & Electronics\",\"Diversity\",\"Electronic Gaming\",\"Entertainment\",\"Equity
+        & Inclusion\",\"Multimedia & Internet\",\"New Products & Services\"],\"crawlDate\":\"2023-11-15T18:00:42.832792Z\",\"tickers\":[]},{\"id\":59573428,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Software-Defined
+        Networking (SDN) market growth is driven by the high demand for the adoption
+        of cloud solutions - Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/software-defined-networking-sdn-market-growth-is-driven-by-the-high-demand-for-the-adoption-of-cloud-solutions---technavio-301988762.html\",\"description\":\"/PRNewswire/
+        -- In a recent Technavio report titled Software-Defined Networking (SDN) market
+        Analysis North America, APAC, Europe, South America, Middle East...\",\"source\":\"prnewswire.com\",\"tags\":[\"Cloud
+        Computing Internet Of Things\",\"Computer & Electronics\",\"Computer Software\",\"Internet
+        Technology\",\"Market Research Reports\",\"Middle East\",\"Networks\",\"North
+        America\",\"South America\",\"Telecommunications Industry\"],\"crawlDate\":\"2023-11-15T18:00:43.429274Z\",\"tickers\":[]},{\"id\":59573429,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Rails-to-Trails
+        Conservancy 2023 Grants Lift Up Efforts to Develop and Activate Trail Networks
+        Nationwide\",\"url\":\"https://www.prnewswire.com/news-releases/rails-to-trails-conservancy-2023-grants-lift-up-efforts-to-develop-and-activate-trail-networks-nationwide-301989494.html\",\"description\":\"/PRNewswire/
+        -- Rails-to-Trails Conservancy (RTC) today announced that it has awarded $348,000
+        in grants that support programs working to develop and activate...\",\"source\":\"prnewswire.com\",\"tags\":[\"Camping
+        & Hiking\",\"General Sports\",\"Outdoors\"],\"crawlDate\":\"2023-11-15T18:00:44.209473Z\",\"tickers\":[]},{\"id\":59573623,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"BJ\u2019s
+        Restaurants, Inc. to Present at the 2023 Barclays Eat, Sleep, Play Conference\",\"url\":\"https://www.globenewswire.com/news-release/2023/11/15/2781335/0/en/BJ-s-Restaurants-Inc-to-Present-at-the-2023-Barclays-Eat-Sleep-Play-Conference.html?f=22&fvtc=2&fvtv=1\",\"description\":\"HUNTINGTON
+        BEACH, Calif., Nov.  15, 2023  (GLOBE NEWSWIRE) -- BJ\u2019s Restaurants,
+        Inc. (NASDAQ: BJRI) announced today that management will be participating...\",\"source\":\"globenewswire.com\",\"tags\":[\"Bj'S
+        Restaurants\",\"Consumer Cyclical\",\"Inc.\",\"Nasdaq:Bjri\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:05:18.518885Z\",\"tickers\":[\"bjri\"]},{\"id\":59573625,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Oxurion
+        Receives Transparency Notification from Atlas Special Opportunities LLC\",\"url\":\"https://www.globenewswire.com/news-release/2023/11/15/2781337/0/en/Oxurion-Receives-Transparency-Notification-from-Atlas-Special-Opportunities-LLC.html?f=22&fvtc=2&fvtv=1\",\"description\":\"Regulated
+        Information  Leuven, BELGIUM, Boston, MA, US \u2013 November 15, 2023 \u2013
+        7.00 PM CET Oxurion NV (Euronext Brussels: OXUR), a biopharmaceutical company...\",\"source\":\"globenewswire.com\",\"tags\":[\"Belgium\",\"Brussels
+        Stock Exchange:Oxur\",\"Oxurion Nv\"],\"crawlDate\":\"2023-11-15T18:05:20.290113Z\",\"tickers\":[]},{\"id\":59573417,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Djibouti's
+        New  60 MW Wind Farm Boosts Green Energy\",\"url\":\"https://oilprice.com/Alternative-Energy/Wind-Power/Djiboutis-New-60-MW-Wind-Farm-Boosts-Green-Energy.html\",\"description\":\"Djibouti
+        is advancing its renewable energy initiatives with the inauguration of the
+        Ghoubet wind farm, significantly increasing its energy capacity and reducing
+        CO2 emissions.\",\"source\":\"oilprice.com\",\"tags\":[\"Djibouti\",\"Energy\",\"Energy
+        Transition\",\"Ghoubet Wind Farm\",\"Renewables\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:00:35.587652Z\",\"tickers\":[\"siegy\"]},{\"id\":59573433,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Fran
+        Frischilla reacts to Rick Pitino\u2019s start at St. John\u2019s\",\"url\":\"https://nypost.com/video/fran-frischilla-reacts-to-rick-pitinos-start-at-st-johns/\",\"description\":\"ESPN
+        college basketball analyst Fran Frischilla joins New York Post Sports anchor
+        Dexter Henry to discuss St. John\u2019s start to the Rick Pitino era and if
+        the Red Storm program is capable of ev\u2026\",\"source\":\"nypost.com\",\"tags\":[\"Fran
+        Fraschilla\",\"Rick Pitino\",\"Sports\",\"St. John'S Red Storm\",\"Videos\"],\"crawlDate\":\"2023-11-15T18:00:55.798110Z\",\"tickers\":[]},{\"id\":59573441,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"2
+        \u201CSanta Claus\u201D Dividends To Buy Before 2024\",\"url\":\"https://www.forbes.com/sites/brettowens/2023/11/15/2-santa-claus-dividends-to-buy-before-2024/\",\"description\":\"Look,
+        we\u2019ve all loved watching our dividend payers rocket to the moon these
+        past few weeks. Best part is, most of the market has been onboard!\",\"source\":\"forbes.com\",\"tags\":[\"Dividend
+        Growth Stocks\",\"ETF\",\"Fed\",\"Kohl'S\",\"Macerich\",\"Reit\",\"Santa Claus
+        Rally 2024\"],\"crawlDate\":\"2023-11-15T18:01:20.794140Z\",\"tickers\":[\"reit\"]},{\"id\":59573471,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"10
+        Most Popular Feeding Mats for 2023\",\"url\":\"https://www.jpost.com/advisor/pets/10-most-popular-feeding-mats-773399\",\"description\":\"Say
+        goodbye to messy floors and hello to hassle-free meal times with our top-rated
+        feeding mats. Find the perfect one for your furry friend now!\",\"source\":\"jpost.com\",\"tags\":[\"Best
+        Products\",\"Product Reviews\",\"Review\"],\"crawlDate\":\"2023-11-15T18:02:23.815512Z\",\"tickers\":[]},{\"id\":59573482,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Please
+        stop giving nihilists a bad name\",\"url\":\"https://www.theguardian.com/politics/2023/nov/15/please-stop-giving-nihilists-a-bad-name\",\"description\":\"Brief
+        letters: Tories v nihilists | Esther McVey | Cabinet post for John Cleese?
+        | John Crace on Nadine Dorries | Condensed milk | NHS dentists\",\"source\":\"theguardian.com\",\"tags\":[\"Books\",\"Brief
+        Letters\",\"Children\",\"Conservatives\",\"Dentists\",\"Esther Mcvey\",\"Gb
+        News\",\"Nadine Dorries\",\"Nhs\",\"Politics Books\",\"Sugar\",\"Tiingo Top\",\"Uk\"],\"crawlDate\":\"2023-11-15T18:02:28.354923Z\",\"tickers\":[]},{\"id\":59573495,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"BJ's
+        Restaurants, Inc. to Present at the 2023 Barclays Eat, Sleep, Play Conference\",\"url\":\"https://www.benzinga.com/pressreleases/23/11/g35811436/bjs-restaurants-inc-to-present-at-the-2023-barclays-eat-sleep-play-conference\",\"description\":\"HUNTINGTON
+        BEACH, Calif., Nov. 15, 2023 (GLOBE NEWSWIRE) -- BJ's Restaurants, Inc. (NASDAQ:BJRI)
+        announced today that management will be participating in a fireside chat at
+        the Barclays Eat, Sleep, Play Conference on\",\"source\":\"benzinga.com\",\"tags\":[\"Bjri\",\"Consumer
+        Cyclical\",\"Financial Services\",\"General\",\"News\",\"Press Releases\",\"Restaurants\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:33.039653Z\",\"tickers\":[\"bcs\",\"bjri\",\"ne-ws\"]},{\"id\":59573498,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Protect
+        your home from a disaster \u2013 without falling foul of the small print\",\"url\":\"https://www.telegraph.co.uk/money/bills/insurance/protect-your-home-from-disaster-falling-foul-smallprint/\",\"description\":\"Discover
+        how to choose emergency cover and improve your chances of a successful claim\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Better
+        Life Evergreen\",\"Better Life Guide\",\"Insurance Industry\",\"Money\",\"Standard\",\"Tiingo
+        Top\",\"Uk Property\"],\"crawlDate\":\"2023-11-15T18:02:35.379566Z\",\"tickers\":[]},{\"id\":59573502,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Jenson
+        Button: Americanisation of F1 is a good thing\",\"url\":\"https://www.telegraph.co.uk/us/sports/formula-1/jenson-button-interview-las-vegas-race-brawn-documentary/\",\"description\":\"Exclusive
+        interview: Former champion says this weekend's Las Vegas Grand Prix can open
+        the door to a fourth race in the States\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Formula
+        1\",\"Formula 1 Grand Prix\",\"Jenson Button\",\"Las Vegas\",\"Sport\",\"Standard\",\"Tiingo
+        Top\",\"Us Content\"],\"crawlDate\":\"2023-11-15T18:02:36.355885Z\",\"tickers\":[]},{\"id\":59573504,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        five greatest celebrity TV interviews\",\"url\":\"https://www.telegraph.co.uk/tv/2023/11/15/five-best-celebrity-tv-interviews-louis-theroux/\",\"description\":\"From
+        Louis Theroux and Pete Doherty to Francis Bacon versus Melvyn Bragg, these
+        are the most shocking, revealing and moving celebrity chats\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Celebrity
+        News\",\"Culture\",\"Culture Editor'S Choice\",\"Judi Dench\",\"Louis Theroux\",\"Pete
+        Doherty\",\"Standard\",\"Television\",\"Television Editor'S Choice\"],\"crawlDate\":\"2023-11-15T18:02:37.571819Z\",\"tickers\":[]},{\"id\":59573505,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Perth
+        a \u2018hunting ground\u2019 for property investors going for profit over
+        proximity\",\"url\":\"https://www.smh.com.au/national/western-australia/perth-a-hunting-ground-for-property-investors-going-for-profit-over-proximity-20231115-p5ek4w.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"The
+        west\u2019s popularity with real estate buyers from the east coast has seen
+        the distance between where landlords live and where they invest almost double
+        in the past year.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:38.069430Z\",\"tickers\":[]},{\"id\":59573508,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Did
+        you hear the one about Hamish and PVL in business class ...\",\"url\":\"https://www.smh.com.au/sport/did-you-hear-the-one-about-hamish-and-pvl-in-business-class-20231115-p5ek41.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Beyond
+        the punchline, there\u2019s a serious side to the poaching wars between the
+        rival rugby codes.\",\"source\":\"smh.com.au\",\"tags\":[\"Financials\",\"Sport\",\"Stock\"],\"crawlDate\":\"2023-11-15T18:02:40.076493Z\",\"tickers\":[\"nct\"]},{\"id\":59573510,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Publicity
+        spin had killed the TV interview \u2013 so thank goodness for Pete Doherty\",\"url\":\"https://www.telegraph.co.uk/tv/2023/11/15/publicity-spin-killed-the-tv-interview/\",\"description\":\"The
+        PR machine has made our stars seem bland or inauthentic. So Louis Theroux's
+        encounter with The Libertines star was a welcome exception\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Bbc\",\"Comment\",\"Culture\",\"Culture
+        Editor'S Choice\",\"Documentary\",\"Graham Norton\",\"Louis Theroux\",\"Pete
+        Doherty\",\"Television\",\"Television Editor'S Choice\"],\"crawlDate\":\"2023-11-15T18:02:40.268172Z\",\"tickers\":[]},{\"id\":59573511,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Gai
+        Waterhouse enters fray over Racing NSW board row\",\"url\":\"https://www.smh.com.au/cbd/gai-waterhouse-enters-fray-over-racing-nsw-board-row-20231115-p5ek9z.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"The
+        Australian racing legend lines up behind critics of the Minns government\u2019s
+        plan to grant Racing NSW\u2019s powerful chair Russell Balding an unprecedented
+        14-year term on the board.\",\"source\":\"smh.com.au\",\"tags\":[\"Australia\",\"National\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T18:02:41.811013Z\",\"tickers\":[\"seg\",\"twtr\"]},{\"id\":59573514,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Beloved
+        Vietnam War vet and former RSL president Trevor Kenny remembered after passing\",\"url\":\"https://thewest.com.au/news/south-western-times/beloved-vietnam-war-vet-and-former-rsl-president-trevor-kenny-remembered-after-passing-c-12487372\",\"description\":\"A
+        key part of the Bunbury veteran\u2019s community has been remembered by friends
+        and family after his death, aged 81.\",\"source\":\"thewest.com.au\",\"tags\":[\"South-West\",\"South-Western-Times\",\"Vietnam\"],\"crawlDate\":\"2023-11-15T18:02:42.256663Z\",\"tickers\":[]},{\"id\":59573515,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Is
+        right now the worst time to buy a house?\",\"url\":\"https://www.smh.com.au/property/news/is-right-now-the-worst-time-to-buy-a-house-20231115-p5ek4u.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Houses
+        are getting more expensive and monthly mortgage repayments are going up too,
+        but will next year be any better?\",\"source\":\"smh.com.au\",\"tags\":[\"News\",\"Property\"],\"crawlDate\":\"2023-11-15T18:02:43.211024Z\",\"tickers\":[]},{\"id\":59573517,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"The
+        Matildas of classical music: Our top players return each year for this supergroup\",\"url\":\"https://www.smh.com.au/culture/music/the-matildas-of-classical-music-our-top-players-return-each-year-for-this-supergroup-20231115-p5ek48.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Once
+        a year, the AWO brings home the best of our classical musicians from around
+        the world. This year they take on the Everest of symphonies.\",\"source\":\"smh.com.au\",\"tags\":[\"Culture\",\"Music\"],\"crawlDate\":\"2023-11-15T18:02:44.583175Z\",\"tickers\":[]},{\"id\":59573518,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"GSCA
+        2023-24: Little separates top three teams after three successful run chases
+        secure round four victories\",\"url\":\"https://thewest.com.au/news/great-southern-herald/gsca-2023-24-little-separates-top-three-teams-after-three-successful-run-chases-secure-round-four-victories-c-12539530\",\"description\":\"Kojonup,
+        Broomehill and Tambellup are locked together on 16 points after each secured
+        victories in round four of the Great Southern Cricket Association on Saturday.\",\"source\":\"thewest.com.au\",\"tags\":[\"Albany-Advertiser\",\"Great-Southern\",\"Great-Southern-Herald\",\"Great-Southern-Sport\",\"Regional\"],\"crawlDate\":\"2023-11-15T18:02:44.940314Z\",\"tickers\":[]},{\"id\":59573521,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Ryan
+        Ashley Darken: Why did we give evil a second chance? First victim of child
+        kidnapper speaks out\",\"url\":\"https://thewest.com.au/news/crime/ryan-ashley-darken-why-did-we-give-evil-a-second-chance-first-victim-of-child-kidnapper-speaks-out-c-12430628\",\"description\":\"When
+        Ryan Ashley Darken brazenly abducted a little girl from outside her school
+        earlier this year, it was not the first time had he preyed on an innocent
+        child.\",\"source\":\"thewest.com.au\",\"tags\":[\"Court-Justice\",\"Crime\",\"Police\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:47.170357Z\",\"tickers\":[]},{\"id\":59573520,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"20
+        extraordinary Australian holidays that beat travelling overseas\",\"url\":\"https://www.smh.com.au/traveller/inspiration/20-extraordinary-australian-holidays-that-beat-travelling-overseas-20231103-p5ehik.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"We
+        tend to overlook domestic travel, but it can help us widen our aperture for
+        awe, leaving us better able to take in the magic in our own backyard.\",\"source\":\"smh.com.au\",\"tags\":[\"Australia\",\"Inspiration\",\"Travel\"],\"crawlDate\":\"2023-11-15T18:02:47.914650Z\",\"tickers\":[]},{\"id\":59573523,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Your
+        horoscope for Thursday, November 16, 2023\",\"url\":\"https://thewest.com.au/lifestyle/horoscopes/your-horoscope-for-thursday-november-16-2023-c-12404171\",\"description\":\"Read
+        what your zodiac sign predicts for your day.\",\"source\":\"thewest.com.au\",\"tags\":[\"Horoscopes\",\"Lifestyle\"],\"crawlDate\":\"2023-11-15T18:02:48.367212Z\",\"tickers\":[]},{\"id\":59573524,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"So
+        much talent, nowhere to perform: Sydney\u2019s \u2018major missed opportunity\u2019\",\"url\":\"https://www.smh.com.au/national/nsw/so-much-talent-nowhere-to-perform-sydney-s-major-missed-opportunity-20231115-p5ek62.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"A
+        lack of suitable venues is undermining the \u201Cunprecedented flourishing
+        of musical talent\u201D in Sydney\u2019s suburbs, a business-backed think
+        tank has warned.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Nsw\"],\"crawlDate\":\"2023-11-15T18:02:48.966973Z\",\"tickers\":[]},{\"id\":59573525,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"City
+        of Fremantle endorses pursuit to remember migrant Italian grandparents\",\"url\":\"https://thewest.com.au/news/wa/city-of-fremantle-endorses-pursuit-to-remember-migrant-italian-grandparents--c-12510849\",\"description\":\"A
+        third-generation Beaconsfield woman is on a quest to honour her grandparents
+        by giving a Beaconsfield laneway the family name.\_\",\"source\":\"thewest.com.au\",\"tags\":[\"Fremantle\",\"Local-Government\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:49.495174Z\",\"tickers\":[]},{\"id\":59573526,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Scientists
+        warn Coldplay fans to dust off face masks ahead of Perth concerts\",\"url\":\"https://www.smh.com.au/national/western-australia/scientists-warn-coldplay-fans-to-dust-off-face-masks-ahead-of-perth-concerts-20231115-p5ek45.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"With
+        an out of date vaccine, hospital admissions rising and 40,000 interstate and
+        overseas crowds at this weekend\u2019s Coldplay concerts, epidemiologists
+        are warning COVID cases could spike.\",\"source\":\"smh.com.au\",\"tags\":[\"National\",\"Wa\"],\"crawlDate\":\"2023-11-15T18:02:50.303676Z\",\"tickers\":[]},{\"id\":59573527,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Women
+        in Trades workshop shines light on under-represented industry\",\"url\":\"https://thewest.com.au/news/south-western-times/women-in-trades-workshop-shines-light-on-under-represented-industry-c-12487394\",\"description\":\"Around
+        70 people attended the Women in Trades workshop, meant to teach women and
+        girls about the opportunities and realities of pursuing a career in the trades\",\"source\":\"thewest.com.au\",\"tags\":[\"South-West\",\"South-Western-Times\"],\"crawlDate\":\"2023-11-15T18:02:50.553394Z\",\"tickers\":[]},{\"id\":59573529,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Diwali
+        set to light up Bunbury in its 12th year\",\"url\":\"https://thewest.com.au/news/south-western-times/diwali-set-to-light-up-bunbury-in-its-12th-year-c-12487381\",\"description\":\"Bunbury
+        is set to shine bright for Diwali with the South West Indian Group putting
+        on its 12th year of festivities.\",\"source\":\"thewest.com.au\",\"tags\":[\"India\",\"South-West\",\"South-Western-Times\"],\"crawlDate\":\"2023-11-15T18:02:51.500448Z\",\"tickers\":[]},{\"id\":59573528,\"publishedDate\":\"2023-11-15T18:00:00Z\",\"title\":\"Why
+        Minns\u2019 house is feeling less like home\",\"url\":\"https://www.smh.com.au/politics/nsw/why-minns-house-is-feeling-less-like-home-20231115-p5ek40.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Parliament
+        is emerging as a headache for NSW Labor, more so if it alienates a tetchy
+        crossbench. No wonder it\u2019s slashed the number of sitting days next year.\",\"source\":\"smh.com.au\",\"tags\":[\"Nsw\",\"Politics\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T18:02:51.880821Z\",\"tickers\":[]}]"
+    headers:
+      allow:
+      - GET, HEAD, OPTIONS
+      content-length:
+      - '58262'
+      content-type:
+      - application/json
+      date:
+      - Wed, 15 Nov 2023 18:05:33 GMT
+      server:
+      - nginx/1.18.0 (Ubuntu)
+      vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

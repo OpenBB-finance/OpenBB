@@ -1,0 +1,584 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":59573501,\"publishedDate\":\"2023-11-15T18:01:36Z\",\"title\":\"Google\u2019s
+        new Titan security keys are ready for a world without passwords\",\"url\":\"https://www.theverge.com/2023/11/15/23962443/google-titan-security-key-passwordless-login\",\"description\":\"More
+        security, less passwords.\",\"source\":\"theverge.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T18:02:35.455651Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59573554,\"publishedDate\":\"2023-11-15T18:00:28Z\",\"title\":\"Samsung\u2019s
+        Gauss AI model set to launch ahead of Apple for its devices\",\"url\":\"https://coingeek.com/samsung-gauss-ai-model-set-to-launch-ahead-of-apple-for-its-devices/\",\"description\":\"Samsung
+        unveils Gauss, an AI chatbot for mobiles set to outpace Apple's advancements,
+        offering varied functionalities and future integrations across Samsung's product
+        line.\",\"source\":\"coingeek.com\",\"tags\":[\"Ai\",\"Artificial Intelligence\",\"Business\",\"CryptoCurrency\",\"Financial
+        Services\",\"Gauss\",\"Samsung\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T18:03:09.521777Z\",\"tickers\":[\"aaic\",\"aapl\",\"ai\",\"goog\",\"googl\",\"meta\",\"msft\",\"ssnlf\"]},{\"id\":59573176,\"publishedDate\":\"2023-11-15T17:49:31Z\",\"title\":\"Microsoft
+        Stock Breaks Out Past Buy Point Amid Big AI News\",\"url\":\"https://www.investors.com/research/microsoft-stock-breaks-out-past-buy-point-amid-big-ai-news/\",\"description\":\"Dow
+        Jones leader Microsoft hosts the Ignite 2023 event Wednesday and Thursday.\",\"source\":\"investors.com\",\"tags\":[\"All
+        News And Stock Ideas\",\"Communication Services\",\"Ibd 50 Growth Stocks To
+        Watch\",\"Research\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:50:26.200898Z\",\"tickers\":[\"intc\",\"iqnt\",\"msft\",\"nvda\"]},{\"id\":59573183,\"publishedDate\":\"2023-11-15T17:48:20Z\",\"title\":\"Keep
+        your carpets muck-free with the best Bissell Little Green deal all year\",\"url\":\"https://www.techradar.com/seasonal-sales/keep-your-carpets-muck-free-with-the-best-bissell-little-green-deal-all-year\",\"description\":\"Bissell's
+        Little Green carpet cleaner is over $45-off for Black Friday\",\"source\":\"techradar.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Consumer Discretionary\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:50:41.289102Z\",\"tickers\":[\"aapl\",\"addyy\",\"dis\",\"jwn\"]},{\"id\":59573094,\"publishedDate\":\"2023-11-15T17:46:59Z\",\"title\":\"FBI
+        and CISA warn of opportunistic Rhysida ransomware attacks\",\"url\":\"https://www.bleepingcomputer.com/news/security/fbi-and-cisa-warn-of-opportunistic-rhysida-ransomware-attacks/\",\"description\":\"The
+        FBI and CISA warned today of Rhysida ransomware gang's opportunistic attacks
+        targeting organizations across multiple industry sectors.\",\"source\":\"bleepingcomputer.com\",\"tags\":[\"Security\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:47:15.366557Z\",\"tickers\":[\"msft\"]},{\"id\":59573274,\"publishedDate\":\"2023-11-15T17:45:06Z\",\"title\":\"UPDATE
+        1-Microsoft introduces its own chips for AI, with eye on cost\",\"url\":\"https://finance.yahoo.com/news/1-microsoft-introduces-own-chips-174506834.html\",\"description\":\"Microsoft
+        on Wednesday announced a duo of custom-designed computing chips, joining other
+        big tech firms that - faced with the high cost of delivering artificial intelligence
+        services - are bringing key technologies in-house.  Microsoft said it does
+        not plan to sell the chips but instead will use them to power its own subscription
+        software offerings and as part of its Azure cloud computing service.  At its
+        Ignite developer conference in Seattle, Microsoft introduced a new chip, called
+        Maia, to speed up AI computing tasks and provide a foundation for its $30-a-month
+        \\\"Copilot\\\" service for business software users, as well as for developers
+        who want to make custom AI services.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Amazon
+        Web Services\",\"Cloud Computing Service\",\"Microsoft\",\"Scott Guthrie\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:54:29.565399Z\",\"tickers\":[\"msft\",\"nvda\",\"tsm\"]},{\"id\":59573051,\"publishedDate\":\"2023-11-15T17:45:00Z\",\"title\":\"Microsoft
+        Just Announced An AI Chip That Could Go Up Against Nvidia\",\"url\":\"https://talkmarkets.com/content/stocks--equities/microsoft-just-announced-an-ai-chip-that-could-go-up-against-nvidia?post=419086\",\"description\":\"Microsoft
+        unveiled the Maia 100 AI accelerator at its Ignite conference today.\",\"source\":\"talkmarkets.com\",\"tags\":[\"Communication
+        Services\",\"Equities\",\"Stock\",\"Stocks\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:46:22.319442Z\",\"tickers\":[\"intc\",\"iqnt\",\"msft\",\"nvda\"]},{\"id\":59573107,\"publishedDate\":\"2023-11-15T17:44:15.545000Z\",\"title\":\"Wall
+        Street\u2019s Hunt for Water Profits Soaks Up Cities\u2019 Precious Supply\",\"url\":\"https://www.bloomberg.com/news/newsletters/2023-11-15/wall-street-soaks-up-senegal-s-fresh-water-for-profit-big-take\",\"description\":null,\"source\":\"bloomberg.com\",\"tags\":[\"Stock\",\"Technology\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T17:47:34.258475Z\",\"tickers\":[\"aapl\"]},{\"id\":59573053,\"publishedDate\":\"2023-11-15T17:43:03Z\",\"title\":\"Bing
+        Chat now goes by Copilot and feels a lot more like ChatGPT\",\"url\":\"https://www.zdnet.com/article/bing-chat-now-goes-by-copilot-and-feels-a-lot-more-like-chatgpt/\",\"description\":\"Microsoft
+        makes its generative AI tool more of a standalone experience --  including
+        its own web page, no Bing required.\",\"source\":\"zdnet.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:46:24.422536Z\",\"tickers\":[\"msft\"]},{\"id\":59572961,\"publishedDate\":\"2023-11-15T17:41:53Z\",\"title\":\"Microsoft
+        Launches Custom AI Chips, As Competition Heats Up With Nvidia And Google\",\"url\":\"https://www.forbes.com/sites/brianbushard/2023/11/15/microsoft-launches-custom-ai-chips-as-competition-heats-up-with-nvidia-and-google/\",\"description\":\"Tech
+        behemoth Microsoft unveiled two new chips designed for artificial intelligence.\",\"source\":\"forbes.com\",\"tags\":[\"Ai
+        Startup Anthropic\",\"Amazon\",\"Anthropic\",\"Google\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:43:34.569633Z\",\"tickers\":[\"msft\"]},{\"id\":59572931,\"publishedDate\":\"2023-11-15T17:40:39Z\",\"title\":\"Latest
+        market-sensitive news and views - Nov. 15\",\"url\":\"https://www.kitco.com/news/2023-11-15/Latest-market-sensitive-news-and-views-Nov-15.html\",\"description\":\"(Kitco
+        News) - Asian and European markets were mixed to firmer in overnight trading.
+        U.S. Dow opened around 90 points higher. Inflation in Britain fell to its
+        lowest level in two years. And consumer spending and industrial output in
+        China rebounded last month, a hopeful sign for the world\u2019s No. 2 economy.
+        \",\"source\":\"kitco.com\",\"tags\":[\"China\",\"CryptoCurrency\",\"Energy\",\"Financial
+        Services\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:42:25.829330Z\",\"tickers\":[\"c\",\"goog\",\"googl\",\"jpm\",\"jpm-ws\",\"msft\",\"xom\"]},{\"id\":59572759,\"publishedDate\":\"2023-11-15T17:35:06Z\",\"title\":\"Ready
+        to sign up for ChatGPT Plus? Join the club (er, waitlist)\",\"url\":\"https://www.zdnet.com/article/ready-to-sign-up-for-chatgpt-plus-join-the-club-er-waitlist/\",\"description\":\"OpenAI
+        just had to bring back the waitlist for ChatGPT Plus subscriptions. Here's
+        why.\",\"source\":\"zdnet.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:36:19.635578Z\",\"tickers\":[\"msft\"]},{\"id\":59572676,\"publishedDate\":\"2023-11-15T17:33:00Z\",\"title\":\"CRITICALSTART
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/criticalstart-is-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989482.html\",\"description\":\"/PRNewswire/
+        -- Today, Critical Start, a leading provider of Managed Detection and Response
+        (MDR) cybersecurity solutions and pioneer of Managed Cyber Risk...\",\"source\":\"prnewswire.com\",\"tags\":[\"Artificial
+        Intelligence\",\"Computer & Electronics\",\"Computer Software\",\"High Tech
+        Security\",\"Licensing\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:41.936802Z\",\"tickers\":[\"msft\"]},{\"id\":59572966,\"publishedDate\":\"2023-11-15T17:33:00Z\",\"title\":\"CRITICALSTART
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"http://www.hawaiinewsnow.com/prnewswire/2023/11/15/criticalstart-is-proud-participant-microsoft-security-copilot-partner-private-preview/\",\"description\":\"CRITICALSTART\xAE
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\\nPublished:
+        Nov. 15, 2023 at 7:33 AM HST\\n|\\nUpdated: moments ago\\nPLANO, Texas\\n,\\nNov.
+        15, 2023\\n/PRNewswire/ -- Today,\\nCritical Start\\n, a leading provider
+        of \",\"source\":\"hawaiinewsnow.com\",\"tags\":[\"CryptoCurrency\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:43:41.822507Z\",\"tickers\":[\"msft\"]},{\"id\":59572586,\"publishedDate\":\"2023-11-15T17:30:10Z\",\"title\":\"Microsoft
+        Security Copilot wants to use the power of AI to keep your business protected\",\"url\":\"https://www.techradar.com/pro/microsoft-security-copilot-wants-to-use-the-power-of-ai-to-keep-your-business-protected\",\"description\":\"Microsoft
+        Security Copilot brings online safety boost to all\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:32:25.846245Z\",\"tickers\":[\"msft\"]},{\"id\":59572992,\"publishedDate\":\"2023-11-15T17:30:01Z\",\"title\":\"Generative
+        AI will create a \u2018tsunami of disinformation\u2019 during the 2024 election\",\"url\":\"https://finance.yahoo.com/news/generative-ai-will-create-a-tsunami-of-disinformation-during-the-2024-election-173001900.html\",\"description\":\"Generative
+        AI is going to create a 'tsunami of disinformation' leading into the 2024
+        election.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"2024 Us Presidential
+        Election\",\"Ai Technologies\",\"Disinformation\",\"Financial Services\",\"Generative
+        Ai\",\"Kamala Harris\",\"Social Media Companies\",\"Stock\",\"Technology\",\"Trump\"],\"crawlDate\":\"2023-11-15T17:44:40.855042Z\",\"tickers\":[\"aaba\",\"goog\",\"googl\",\"msft\",\"yhoo\"]},{\"id\":59573276,\"publishedDate\":\"2023-11-15T17:30:00Z\",\"title\":\"CRITICALSTART
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/criticalstart-proud-participant-microsoft-security-173000069.html\",\"description\":\"Today,
+        Critical Start, a leading provider of Managed Detection and Response (MDR)
+        cybersecurity solutions and pioneer of Managed Cyber Risk Reduction (MCRR),
+        announced its participation in the Microsoft Security Copilot Partner Private
+        Preview. Critical Start was selected based on their proven experience with
+        Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting edge functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Cyber
+        Risk\",\"Microsoft\",\"Organizations\",\"Private Preview\",\"Product Development\",\"Security
+        Operations\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:54:31.607293Z\",\"tickers\":[\"msft\"]},{\"id\":59572519,\"publishedDate\":\"2023-11-15T17:25:13Z\",\"title\":\"Samsung\u2019s
+        best-value QLED 4K TV has some giant Black Friday sales \u2013 here\u2019s
+        what I recommend\",\"url\":\"https://www.techradar.com/televisions/samsungs-best-value-qled-4k-tv-has-some-giant-black-friday-sales-heres-what-i-recommend\",\"description\":\"This
+        could be the cheapest you\u2019ll get Samsung\u2019s Q80C 4K QLED TV\",\"source\":\"techradar.com\",\"tags\":[\"Communication
+        Services\",\"Consumer Cyclical\",\"Consumer Discretionary\",\"Industrials\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T17:29:27.061147Z\",\"tickers\":[\"aapl\",\"addyy\",\"cajpy\",\"dis\",\"jwn\",\"ninoy\",\"vod\"]},{\"id\":59572167,\"publishedDate\":\"2023-11-15T17:19:37Z\",\"title\":\"Microsoft
+        launches two new Copilots, adding AI-guidance for Service and Sales\",\"url\":\"https://www.zdnet.com/article/microsoft-launches-two-new-copilots-adding-ai-guidance-for-service-and-sales/\",\"description\":\"The
+        new Copilots can automatically bring up answers for a call center conversation,
+        or prepare a sales meeting briefing document with customer details.\",\"source\":\"zdnet.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:22:37.094908Z\",\"tickers\":[\"msft\"]},{\"id\":59572719,\"publishedDate\":\"2023-11-15T17:15:51Z\",\"title\":\"Ken
+        Fisher Portfolio: 12 Biggest Positions\",\"url\":\"https://finance.yahoo.com/news/ken-fisher-portfolio-12-biggest-171551288.html\",\"description\":\"In
+        this piece, we will take a look at the 12 latest stock picks in Ken Fisher\u2019s
+        investment portfolio. If you want to skip our introduction to one of the richest
+        and most well known hedge fund investors in the world, then take a look at
+        Ken Fisher Portfolio: 5 Biggest Positions. Ken Fisher is [\u2026]\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Fisher Asset Management\",\"Fisher Investment\",\"Fisher Investments\",\"Healthcare\",\"Hedge
+        Fund\",\"Insider Monkey\",\"Investment Portfolio\",\"Ken Fisher\",\"Microsoft
+        Corporation\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:35:36.943642Z\",\"tickers\":[\"aapl\",\"adbe\",\"amd\",\"asml\",\"crm\",\"goog\",\"googl\",\"hd\",\"lly\",\"meta\",\"msft\",\"nvda\",\"tsm\"]},{\"id\":59572056,\"publishedDate\":\"2023-11-15T17:15:00Z\",\"title\":\"SGNL.ai
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/sgnlai-is-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989465.html\",\"description\":\"/PRNewswire/
+        -- SGNL.ai, the industry's first Continuous Access Management company, today
+        announced its participation in the Microsoft Security Copilot Partner...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
+        & Electronics\",\"Computer Software\",\"High Tech Security\",\"Licensing\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:16:40.924235Z\",\"tickers\":[\"msft\"]},{\"id\":59572057,\"publishedDate\":\"2023-11-15T17:15:00Z\",\"title\":\"Authomize
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/authomize-is-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989404.html\",\"description\":\"/PRNewswire/
+        -- Authomize today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. Authomize was selected based on their...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
+        & Electronics\",\"Computer Software\",\"High Tech Security\",\"Networks\",\"New
+        Products & Services\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:16:41.525698Z\",\"tickers\":[\"msft\"]},{\"id\":59572131,\"publishedDate\":\"2023-11-15T17:15:00Z\",\"title\":\"SGNL.ai
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"http://www.hawaiinewsnow.com/prnewswire/2023/11/15/sgnlai-is-proud-participant-microsoft-security-copilot-partner-private-preview/\",\"description\":\"SGNL.ai
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\\nPublished:
+        Nov. 15, 2023 at 7:15 AM HST\\n|\\nUpdated: moments ago\\nPALO ALTO, Calif.\\n,\\nNov.
+        15, 2023\\n/PRNewswire/ -- SGNL.ai, the industry's first Continuous Access
+        \",\"source\":\"hawaiinewsnow.com\",\"tags\":[\"CryptoCurrency\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:19:39.572346Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59572667,\"publishedDate\":\"2023-11-15T17:15:00Z\",\"title\":\"Authomize
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/authomize-proud-participant-microsoft-security-171500301.html\",\"description\":\"Authomize
+        today announced its participation in the Microsoft Security Copilot Partner
+        Private Preview. Authomize was selected based on their proven experience with
+        Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting edge functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Authomize\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:32.774136Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572704,\"publishedDate\":\"2023-11-15T17:15:00Z\",\"title\":\"SGNL.ai
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/sgnl-ai-proud-participant-microsoft-171500777.html\",\"description\":\"SGNL.ai,
+        the industry's first Continuous Access Management company, today announced
+        its participation in the Microsoft Security Copilot Partner Private Preview.
+        SGNL was selected based on their proven experience with Microsoft Security
+        technologies, willingness to explore and provide feedback on cutting edge
+        functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Sgnl\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T17:35:25.053148Z\",\"tickers\":[\"goog\",\"googl\",\"msft\",\"sgnl\"]},{\"id\":59572460,\"publishedDate\":\"2023-11-15T17:14:45Z\",\"title\":\"Berkshire
+        Hathaway sells GM and Activision stakes, buys into Sirius XM\",\"url\":\"https://www.investing.com/news/stock-market-news/berkshire-hathaway-sells-gm-and-activision-stakes-buys-into-sirius-xm-93CH-3235483\",\"description\":\"Berkshire
+        Hathaway sells GM and Activision stakes, buys into Sirius XM\",\"source\":\"investing.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Energy\",\"Financial Services\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:27:20.158407Z\",\"tickers\":[\"atvi\",\"brk-a\",\"brk-b\",\"cvx\",\"gm\",\"msft\",\"siri\"]},{\"id\":59572104,\"publishedDate\":\"2023-11-15T17:10:42.184000Z\",\"title\":\"Meta
+        appeals against EU gatekeeper status for Messenger, Marketplace\",\"url\":\"https://www.reuters.com/technology/meta-appeals-against-eu-gatekeeper-status-messenger-marketplace-2023-11-15/\",\"description\":\"Meta
+        on Wednesday appealed against \\\"gatekeeper\\\" designations for its Messenger
+        and Marketplace platforms, the first Big Tech company to challenge new European
+        Union rules setting out dos and don'ts for the online services.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32A1Jb\",\"2023:Ml_Kbn32A1Jb:1\",\"2023:Ml_Kbn32A1Jb:2\",\"2023:Ml_Kbn32A1Jb:3\",\"2023:Ml_Kbn32A1Jc\",\"2023:Ml_Kbn32A1Jc:1\",\"2023:Ml_Kbn32A1Jc:2\",\"2023:Ml_Kbn32A1Jc:3\",\"2023:Ml_L4N3Cg2X1\",\"2023:Ml_L4N3Cg2X1:1853273007\",\"Consumer
+        Cyclical\",\"Guid:Tag:Reuters.Com\",\"Stock\",\"Technology\",\"Usn:Kbn32A1Jb\",\"Usn:Kbn32A1Jc\",\"Usn:L4N3Cg2X1\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-15T17:18:20.729097Z\",\"tickers\":[\"aapl\",\"amzn\",\"googl\",\"meta\",\"msft\"]},{\"id\":59572272,\"publishedDate\":\"2023-11-15T17:09:00Z\",\"title\":\"Uptycs
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/uptycs-proud-participant-microsoft-security-170900383.html\",\"description\":\"WALTHAM,
+        Mass., Nov. 15, 2023 (GLOBE NEWSWIRE) -- Uptycs, provider of the first unified
+        CNAPP and XDR platform, today announced its participation in the Microsoft
+        Security Copilot Partner Private Preview. Uptycs was selected based on their
+        proven experience with Microsoft Security technologies, willingness to explore
+        and provide feedback on cutting edge functionality, and close relationship
+        with Microsoft. \u201CIn the context of security, AI\u2019s impact is likely
+        to be profound, tilting the scales in f\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Private
+        Preview\",\"Stock\",\"Technology\",\"Uptycs\"],\"crawlDate\":\"2023-11-15T17:24:01.448712Z\",\"tickers\":[\"msft\"]},{\"id\":59571929,\"publishedDate\":\"2023-11-15T17:08:19Z\",\"title\":\"Microsoft
+        unveils first AI chip, Maia 100, and Cobalt CPU\",\"url\":\"https://www.zdnet.com/article/microsoft-unveils-first-ai-chip-maia-100-and-cobalt-cpu/\",\"description\":\"Microsoft
+        follows in the custom silicon footsteps of Google's TPU and Amazon's Graviton.\",\"source\":\"zdnet.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:13:15.776451Z\",\"tickers\":[\"armh\",\"goog\",\"googl\",\"msft\",\"nvda\",\"orcl\",\"vmw\"]},{\"id\":59572631,\"publishedDate\":\"2023-11-15T17:07:55Z\",\"title\":\"13
+        Best Performing S&P 500 Stocks in the Last 5 Years\",\"url\":\"https://finance.yahoo.com/news/13-best-performing-p-500-170755396.html\",\"description\":\"In
+        this piece, we will take a look at the 13 best performing S&P500 stocks over
+        the past five years. If you want to skip our introduction to one of the most
+        widely followed and coveted stock market indexes in the world, then take a
+        look at 5 Best Performing S&P 500 Stocks in the [\u2026]\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Enphase Energy\",\"Financial Services\",\"Healthcare\",\"Inc.\",\"Industrials\",\"Nvidia
+        Corporation\",\"S&P500\",\"Stock\",\"Stock Market Indexes\",\"Technology\",\"Top
+        Performing Stocks\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:33:48.095640Z\",\"tickers\":[\"aapl\",\"amzn\",\"cdns\",\"enph\",\"fico\",\"goog\",\"googl\",\"hub-a\",\"hub-b\",\"hubb\",\"klac\",\"lly\",\"lrcx\",\"lulu\",\"mmm\",\"msft\",\"nvda\",\"odfl\",\"pwr\",\"spgi\",\"tsla\"]},{\"id\":59571851,\"publishedDate\":\"2023-11-15T17:06:00Z\",\"title\":\"Arkose
+        Labs is a proud participant in the Microsoft Security Copilot Partner Private
+        Preview\",\"url\":\"https://www.businesswire.com/news/home/20231114800794/en/Arkose-Labs-is-a-proud-participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-d0q77hRjGWvCunvqSsMC5PkKuEqWGdtYcKRejd3o8qMqnKfqP6Z7nZVMLG-WqUNUuIFBOuQU34x9_qUrqnb9IFt3G9xeKEyIFKgj2nxZILuWb2_mZzaa2HVGkrPJ34F1Q%3D%3D\",\"description\":\"Arkose
+        Labs, a leader in bot management and account security, announced its participation
+        in the Microsoft Security Copilot Partner Private Preview.\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:11:25.541150Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572166,\"publishedDate\":\"2023-11-15T17:06:00Z\",\"title\":\"Arkose
+        Labs is a proud participant in the Microsoft Security Copilot Partner Private
+        Preview\",\"url\":\"https://www.businesswire.com/news/home/20231114800794/en/Arkose-Labs-is-a-proud-participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Arkose
+        Labs, a leader in bot management and account security, announced its participation
+        in the Microsoft Security Copilot Partner Private Preview.\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:22:34.932068Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572640,\"publishedDate\":\"2023-11-15T17:06:00Z\",\"title\":\"Arkose
+        Labs is a proud participant in the Microsoft Security Copilot Partner Private
+        Preview\",\"url\":\"https://finance.yahoo.com/news/arkose-labs-proud-participant-microsoft-170600081.html\",\"description\":\"SAN
+        MATEO, Calif., November 15, 2023--Arkose Labs, a leader in bot management
+        and account security, announced its participation in the Microsoft Security
+        Copilot Partner Private Preview.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Arkose\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:08.984611Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572803,\"publishedDate\":\"2023-11-15T17:05:10Z\",\"title\":\"Sam
+        Altman Seems to Imply That OpenAI Is Building God\",\"url\":\"https://futurism.com/sam-altman-imply-openai-building-god\",\"description\":\"In
+        a recent interview, Altman described AGI as a \\\"magic intelligence in the
+        sky,\\\" which sounds an awful lot like a God.\",\"source\":\"futurism.com\",\"tags\":[\"Agi\",\"Artificial
+        Intelligence\",\"Openai\",\"Sam Altman\",\"Stock\",\"Superintelligence\",\"Technology\",\"Tiingo
+        Top\"],\"crawlDate\":\"2023-11-15T17:37:33.646058Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59571748,\"publishedDate\":\"2023-11-15T17:04:14Z\",\"title\":\"Emyode
+        is proud to announce Its B Corp certification\",\"url\":\"https://www.benzinga.com/pressreleases/23/11/g35810227/emyode-is-proud-to-announce-its-b-corp-certification\",\"description\":\"MONTREAL,
+        Nov. 15, 2023 (GLOBE NEWSWIRE) -- Emyode is proud to announce that we have
+        achieved certification as a B Corporation (Benefit Corporation), reaffirming
+        our commitment to values that prioritize not only our\",\"source\":\"benzinga.com\",\"tags\":[\"General\",\"Press
+        Releases\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:29.154869Z\",\"tickers\":[\"msft\"]},{\"id\":59572376,\"publishedDate\":\"2023-11-15T17:04:00Z\",\"title\":\"Emyode
+        is proud to announce Its B Corp certification\",\"url\":\"https://finance.yahoo.com/news/emyode-proud-announce-b-corp-170400278.html\",\"description\":\"Emyode
+        B Corp Certification Emyode is proud to announce its B Corp certification
+        MONTREAL, Nov. 15, 2023 (GLOBE NEWSWIRE) -- Emyode is proud to announce that
+        we have achieved certification as a B Corporation (Benefit Corporation), reaffirming
+        our commitment to values that prioritize not only our employees but also the
+        environment, community, and ethical business practices. Emyode has been certified
+        by B Lab, the not-for-profit behind the B Corp movement, as having met rigorous
+        social and environ\",\"source\":\"finance.yahoo.com\",\"tags\":[\"B Corp Certification\",\"B
+        Lab\",\"Benefit Corporation\",\"Certification\",\"Customized Solutions\",\"Environmental
+        Standards\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:24:49.669004Z\",\"tickers\":[\"msft\"]},{\"id\":59571828,\"publishedDate\":\"2023-11-15T17:03:06Z\",\"title\":\"Meta
+        appeals against EU gatekeeper status for Messenger, Marketplace\",\"url\":\"https://www.channelnewsasia.com/business/meta-appeals-against-eu-gatekeeper-status-messenger-marketplace-3923401\",\"description\":\"STOCKHOLM/BRUSSELS
+        : Meta on Wednesday appealed against \\\"gatekeeper\\\" designations for its
+        Messenger and Marketplace platforms, the first Big Tech company to challenge
+        new European Union rules setting out dos and don'ts for the online services.As
+        part of its latest crackdown on Big Tech, the EU in Septembe\",\"source\":\"channelnewsasia.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:09:23.243542Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]},{\"id\":59572484,\"publishedDate\":\"2023-11-15T17:03:06Z\",\"title\":\"Meta
+        appeals against EU gatekeeper status for Messenger, Marketplace\",\"url\":\"https://www.aol.com/news/meta-appeals-against-eu-gatekeeper-170306312.html\",\"description\":\"Meta
+        on Wednesday appealed against \\\"gatekeeper\\\" designations for its Messenger
+        and Marketplace platforms, the first Big Tech company to challenge new European
+        Union rules setting out dos and don'ts for the online services. As part of
+        its latest crackdown on Big Tech, the EU in September picked 22 \\\"gatekeeper\\\"
+        services, run by six of the world's biggest tech companies, to face new rules
+        under the Digital Markets Act (DMA).\",\"source\":\"aol.com\",\"tags\":[\"Big
+        Tech\",\"Dma\",\"ETF\",\"European Union\",\"Facebook\",\"Marketplace\",\"Messenger\",\"Meta\",\"Online
+        Services\",\"Stock\",\"Tech Companies\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:27:34.465700Z\",\"tickers\":[\"dma\",\"goog\",\"googl\",\"meta\",\"meta\",\"metv\",\"msft\"]},{\"id\":59572648,\"publishedDate\":\"2023-11-15T17:03:06Z\",\"title\":\"Meta
+        appeals against EU gatekeeper status for Messenger, Marketplace\",\"url\":\"https://finance.yahoo.com/news/meta-appeals-against-eu-gatekeeper-170306291.html\",\"description\":\"Meta
+        on Wednesday appealed against \\\"gatekeeper\\\" designations for its Messenger
+        and Marketplace platforms, the first Big Tech company to challenge new European
+        Union rules setting out dos and don'ts for the online services.  As part of
+        its latest crackdown on Big Tech, the EU in September picked 22 \\\"gatekeeper\\\"
+        services, run by six of the world's biggest tech companies, to face new rules
+        under the Digital Markets Act (DMA).\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Big
+        Tech\",\"Dma\",\"ETF\",\"European Union\",\"Facebook\",\"Marketplace\",\"Messenger\",\"Meta\",\"Online
+        Services\",\"Stock\",\"Tech Companies\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:34:15.990014Z\",\"tickers\":[\"dma\",\"goog\",\"googl\",\"meta\",\"meta\",\"metv\",\"msft\"]},{\"id\":59571590,\"publishedDate\":\"2023-11-15T17:03:00Z\",\"title\":\"BlueVoyant
+        is a Proud Participant in the Microsoft Security Copilot Design Advisory Council\",\"url\":\"https://www.prnewswire.com/news-releases/bluevoyant-is-a-proud-participant-in-the-microsoft-security-copilot-design-advisory-council-301989264.html\",\"description\":\"/PRNewswire/
+        -- BlueVoyant, a cybersecurity company that illuminates, validates, and mitigates
+        internal and external risks, today announced its participation...\",\"source\":\"prnewswire.com\",\"tags\":[\"Artificial
+        Intelligence\",\"Computer & Electronics\",\"Computer Software\",\"Corporate
+        Social Responsibility\",\"High Tech Security\",\"Joint Ventures\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:03:58.225913Z\",\"tickers\":[\"msft\"]},{\"id\":59571893,\"publishedDate\":\"2023-11-15T17:03:00Z\",\"title\":\"BlueVoyant
+        is a Proud Participant in the Microsoft Security Copilot Design Advisory Council\",\"url\":\"https://finance.yahoo.com/news/bluevoyant-proud-participant-microsoft-security-170300220.html\",\"description\":\"BlueVoyant,
+        a cybersecurity company that illuminates, validates, and mitigates internal
+        and external risks, today announced its participation in the Microsoft Security
+        Copilot Design Advisory Council. BlueVoyant was selected based on the team's
+        proven experience with Microsoft Security technologies, willingness to explore
+        and provide feedback on cutting-edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Advisory Council\",\"Managed
+        Security Services\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:12:42.803085Z\",\"tickers\":[\"msft\"]},{\"id\":59571589,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"Ontinue
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/ontinue-is-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989441.html\",\"description\":\"/PRNewswire/
+        -- Ontinue, a leading provider of AI-powered managed extended detection and
+        response (MXDR) services and winner of the 2023 Microsoft Security...\",\"source\":\"prnewswire.com\",\"tags\":[\"Artificial
+        Intelligence\",\"Computer & Electronics\",\"Computer Software\",\"High Tech
+        Security\",\"Licensing\",\"New Products & Services\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:03:57.599485Z\",\"tickers\":[\"msft\"]},{\"id\":59571789,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"CISO
+        Global Participates in Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.globenewswire.com/news-release/2023/11/15/2781279/0/en/CISO-Global-Participates-in-Microsoft-Security-Copilot-Partner-Private-Preview.html?f=22&fvtc=2&fvtv=1\",\"description\":\"SCOTTSDALE,
+        Ariz., Nov.  15, 2023  (GLOBE NEWSWIRE) -- CISO Global (NASDAQCM: CISO) today
+        announced its participation in the Microsoft Security Copilot...\",\"source\":\"globenewswire.com\",\"tags\":[\"Ann
+        Johnson\",\"Argo\",\"Ciso Global\",\"Cto Jerald Dawkins\",\"Cybersecurity\",\"Financial
+        Services\",\"Large Language Model\",\"Nasdaq:Ciso\",\"Nasdaqcm: Ciso\",\"Security
+        Copilot Partner\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:57.358234Z\",\"tickers\":[\"argo\",\"msft\"]},{\"id\":59571761,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"SafeBreach
+        Is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115727801/en/SafeBreach-Is-a-Proud-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"SafeBreach,
+        the pioneer in breach and attack simulation (BAS), today announced its participation
+        in the Microsoft Security Copilot Partner Private Pre\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:35.689207Z\",\"tickers\":[\"msft\"]},{\"id\":59571771,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"Strata
+        Identity Is Proud to Be a Participant in the Microsoft Security Copilot Partner
+        Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115680617/en/Strata-Identity-Is-Proud-to-Be-a-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Strata
+        Identity was selected based on their proven experience with Microsoft Security
+        technologies.\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:39.694471Z\",\"tickers\":[\"lnkd\",\"msft\",\"twtr\"]},{\"id\":59571773,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"ContraForce
+        is a Proud Participant in Microsoft\u2019s Security Copilot Partner Private
+        Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115658669/en/ContraForce-is-a-Proud-Participant-in-Microsoft%E2%80%99s-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"ContraForce
+        today announced its participation in the Microsoft Security Copilot Partner
+        Preview. ContraForce was selected based on their proven experi\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:42.055111Z\",\"tickers\":[\"msft\"]},{\"id\":59571878,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"Ontinue
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/ontinue-proud-participant-microsoft-security-170100844.html\",\"description\":\"Ontinue,
+        a leading provider of AI-powered managed extended detection and response (MXDR)
+        services and winner of the 2023 Microsoft Security Services Innovator of the
+        Year award, today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. Ontinue was selected based on their proven experience
+        with Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting edge functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Ontinue\",\"Organizations\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:12:29.943633Z\",\"tickers\":[\"msft\"]},{\"id\":59571881,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"CISO
+        Global Participates in Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/ciso-global-participates-microsoft-security-170100204.html\",\"description\":\"SCOTTSDALE,
+        Ariz., Nov. 15, 2023 (GLOBE NEWSWIRE) -- CISO Global (NASDAQCM: CISO) today
+        announced its participation in the Microsoft Security Copilot Partner Private
+        Preview. CISO Global was selected based on their proven experience with Microsoft
+        Security technologies, willingness to explore and provide feedback on cutting
+        edge functionality, and their close relationship with Microsoft. \u201CAI
+        is one of the defining technologies of our time and has the potential to drive
+        meaningful, step-change pr\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Ciso\",\"Copilot\",\"Cybersecurity\",\"Microsoft\",\"Product
+        Development\",\"Providing Feedback\",\"Security Program Management\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:12:31.905926Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572649,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"Strata
+        Identity Is Proud to Be a Participant in the Microsoft Security Copilot Partner
+        Private Preview\",\"url\":\"https://finance.yahoo.com/news/strata-identity-proud-participant-microsoft-170100363.html\",\"description\":\"BOULDER,
+        Colo., November 15, 2023--Strata Identity was selected based on their proven
+        experience with Microsoft Security technologies.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Private
+        Preview\",\"Stock\",\"Strata Identity\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:17.177288Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572651,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"ContraForce
+        is a Proud Participant in Microsoft\u2019s Security Copilot Partner Private
+        Preview\",\"url\":\"https://finance.yahoo.com/news/contraforce-proud-participant-microsoft-security-170100721.html\",\"description\":\"MCKINNEY,
+        Texas, November 15, 2023--ContraForce today announced its participation in
+        the Microsoft Security Copilot Partner Preview. ContraForce was selected based
+        on their proven experience with Microsoft Security technologies, willingness
+        to explore and provide feedback on cutting edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Security
+        Operations\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:19.075967Z\",\"tickers\":[\"msft\"]},{\"id\":59572652,\"publishedDate\":\"2023-11-15T17:01:00Z\",\"title\":\"SafeBreach
+        Is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/safebreach-proud-participant-microsoft-security-170100531.html\",\"description\":\"SUNNYVALE,
+        Calif., November 15, 2023--SafeBreach, the pioneer in breach and attack simulation
+        (BAS), today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. SafeBreach was selected based on their proven experience
+        with Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting-edge functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Safebreach\",\"Security
+        Operations Center\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:20.610682Z\",\"tickers\":[\"msft\"]},{\"id\":59571855,\"publishedDate\":\"2023-11-15T17:00:46Z\",\"title\":\"How
+        to Use the Toolbar in Microsoft PC Manager on Windows 11\",\"url\":\"https://www.makeuseof.com/how-to-use-toolbar-in-microsoft-pc-manager-windows-11/\",\"description\":\"Get
+        quicker access to the utilities in the Microsoft PC Manager with a helpful
+        toolbar. \",\"source\":\"makeuseof.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:11:31.877294Z\",\"tickers\":[\"msft\"]},{\"id\":59571649,\"publishedDate\":\"2023-11-15T17:00:01.957000Z\",\"title\":\"Russia's
+        Sandworm Linked to Unprecedented Danish Energy Hack\",\"url\":\"https://www.bloomberg.com/news/newsletters/2023-11-15/russia-s-sandworm-linked-to-unprecedented-danish-energy-hack\",\"description\":null,\"source\":\"bloomberg.com\",\"tags\":[\"Industrials\",\"Russian
+        Federation\",\"Stock\",\"Technology\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T17:05:36.342323Z\",\"tickers\":[\"aapl\",\"ba\",\"googl\",\"msft\"]},{\"id\":59571430,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Zimperium
+        Recognized as a Proud Participant in the Microsoft Security Copilot Partner
+        Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/zimperium-recognized-as-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989046.html\",\"description\":\"/PRNewswire/
+        -- Zimperium, the only mobile-first security platform for mobile devices and
+        mobile apps, today announced its participation in the Microsoft...\",\"source\":\"prnewswire.com\",\"tags\":[\"Artificial
+        Intelligence\",\"Computer & Electronics\",\"Computer Software\",\"High Tech
+        Security\",\"Licensing\",\"New Products & Services\",\"Stock\",\"Technology\",\"Telecommunications
+        Industry\"],\"crawlDate\":\"2023-11-15T17:00:43.893696Z\",\"tickers\":[\"msft\"]},{\"id\":59571431,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Commvault
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.prnewswire.com/news-releases/commvault-is-a-proud-participant-in-the-microsoft-security-copilot-partner-private-preview-301989423.html\",\"description\":\"/PRNewswire/
+        -- Commvault, a leading provider of cyber resilience and data protection solutions
+        for hybrid cloud organizations, today announced its...\",\"source\":\"prnewswire.com\",\"tags\":[\"Artificial
+        Intelligence\",\"Computer & Electronics\",\"Computer Software\",\"High Tech
+        Security\",\"New Products & Services\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:00:44.571070Z\",\"tickers\":[\"msft\"]},{\"id\":59571601,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"SecurityScorecard
+        Joins Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115803425/en/SecurityScorecard-Joins-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fTiTHZ_tL7veK4k7YjFBuWKa1ah7uC6RdZY8DBvigxR7fxFuNFTHSunhvli30RlBNXya2izy9YOgHlBiZQk2LPgxNjXHjsNmKaXEz4koEK2b14xTzGINXzl6XdKCab6Yw%3D%3D\",\"description\":\"MICROSOFT
+        IGNITE 2023 \u2013 SecurityScorecard today announced its participation in
+        the Microsoft Security Copilot Partner Private Preview. SecurityScoreca\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:04:26.126298Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59571644,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Esri
+        Integrates with Microsoft Fabric to Deliver Leading Spatial Analytics Capabilities\",\"url\":\"https://www.businesswire.com/news/home/20231115725911/en/Esri-Integrates-with-Microsoft-Fabric-to-Deliver-Leading-Spatial-Analytics-Capabilities/?feedref=JjAwJuNHiystnCoBq_hl-d0q77hRjGWvCunvqSsMC5PkKuEqWGdtYcKRejd3o8qMqnKfqP6Z7nZVMLG-WqUNUuIFBOuQU34x9_qUrqnb9IFt3G9xeKEyIFKgj2nxZILuWb2_mZzaa2HVGkrPJ34F1Q%3D%3D\",\"description\":\"To
+        meet the growing demand for spatial analytics, Esri is extending its long-standing
+        strategic collaboration with Microsoft through a unified analyti\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:05:33.481902Z\",\"tickers\":[\"msft\"]},{\"id\":59571690,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Commvault
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"http://www.hawaiinewsnow.com/prnewswire/2023/11/15/commvault-is-proud-participant-microsoft-security-copilot-partner-private-preview/\",\"description\":\"Commvault
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\\nPublished:
+        Nov. 15, 2023 at 7:00 AM HST\\n|\\nUpdated: 6 minutes ago\\nTINTON FALLS,
+        N.J.\\n,\\nNov. 15, 2023\\n/PRNewswire/ --\_Commvault, a leading provider
+        of cyber resi\",\"source\":\"hawaiinewsnow.com\",\"tags\":[\"CryptoCurrency\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:06:33.648938Z\",\"tickers\":[\"cvlt\",\"msft\"]},{\"id\":59571739,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Informatica
+        Unveils New Unified Cloud Analytics Experiences with Microsoft Fabric and
+        Microsoft Azure OpenAI Service\",\"url\":\"https://www.businesswire.com/news/home/20231115382318/en/Informatica-Unveils-New-Unified-Cloud-Analytics-Experiences-with-Microsoft-Fabric-and-Microsoft-Azure-OpenAI-Service/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Informatica
+        (NYSE: INFA), an enterprise cloud data management leader, announced deeper
+        integrations across the Microsoft Azure ecosystem. The latest m\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T17:07:23.656422Z\",\"tickers\":[\"infa\",\"infa\",\"msft\"]},{\"id\":59571751,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"HYAS
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115833995/en/HYAS-is-a-Proud-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"HYAS
+        Infosec today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. HYAS Infosec was selected based on their pro\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:30.568270Z\",\"tickers\":[\"msft\"]},{\"id\":59571753,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Cyware
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115247824/en/Cyware-is-a-Proud-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Cyware
+        today announced its participation in the Microsoft Security Copilot Partner
+        Private Preview. Cyware was selected based on their proven experien\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:31.817516Z\",\"tickers\":[\"msft\"]},{\"id\":59571755,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Gigamon
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115707174/en/Gigamon-is-a-Proud-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Microsoft
+        Ignite 2023 \u2014 Gigamon, the leading deep observability company, today
+        announced its participation in the Microsoft Security Copilot Partner P\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:33.011014Z\",\"tickers\":[\"msft\"]},{\"id\":59571764,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Versa
+        Networks Announces Participation in Microsoft Security Copilot Partner Private
+        Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115800677/en/Versa-Networks-Announces-Participation-in-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Versa
+        Networks, the global leader in AI/ML-powered Unified Secure Access Service
+        Edge (SASE) and Software-Defined WAN (SD-WAN), today announced its pa\",\"source\":\"businesswire.com\",\"tags\":[\"ETF\",\"Financial
+        Services\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:07:37.213976Z\",\"tickers\":[\"bcf\",\"bgio\",\"blk\",\"msft\",\"twtr\"]},{\"id\":59571769,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Cequence
+        Is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115027377/en/Cequence-Is-a-Proud-Participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Cequence
+        Security today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. Cequence was selected based on their pr\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:07:38.479200Z\",\"tickers\":[\"msft\"]},{\"id\":59571841,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Ural
+        Gear Up Review: No Longer From Russia, Still With Love\",\"url\":\"https://jalopnik.com/ural-gear-up-review-no-longer-from-russia-still-with-1851001365\",\"description\":\"Ural's
+        three-wheelers are built with care and character, but built for whom?\",\"source\":\"jalopnik.com\",\"tags\":[\"All-Terrain
+        Vehicle\",\"Basketball\",\"Bicycle\",\"Brembo\",\"Gorbachev\",\"Hospitality\",\"Imz-Ural\",\"Jalopnik\",\"Motorcycle\",\"Recreation\",\"Russian
+        Federation\",\"Sidecar\",\"Stock\",\"Technology\",\"Unknown Sector\",\"Ural\"],\"crawlDate\":\"2023-11-15T17:10:23.137249Z\",\"tickers\":[\"msft\",\"ural\",\"yamcy\"]},{\"id\":59571909,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Illumio
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/illumio-proud-participant-microsoft-security-170000355.html\",\"description\":\"SUNNYVALE,
+        Calif., Nov. 15, 2023 (GLOBE NEWSWIRE) -- Illumio, Inc., the Zero Trust Segmentation
+        company, today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. Illumio was selected based on their proven experience
+        with Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting edge functionality, and close relationship with Microsoft. \u201CAI
+        is one of the defining technologies of our time and has the potential to drive
+        meaningful, s\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Illumio\",\"Microsoft\",\"Stock\",\"Technology\",\"Zero
+        Trust\"],\"crawlDate\":\"2023-11-15T17:12:50.942625Z\",\"tickers\":[\"msft\"]},{\"id\":59571930,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Zimperium
+        Recognized as a Proud Participant in the Microsoft Security Copilot Partner
+        Private Preview\",\"url\":\"https://finance.yahoo.com/news/zimperium-recognized-proud-participant-microsoft-170000412.html\",\"description\":\"Zimperium,
+        the only mobile-first security platform for mobile devices and mobile apps,
+        today announced its participation in the Microsoft Security Copilot Partner
+        Private Preview. Zimperium was selected based on their proven experience with
+        Microsoft Security technologies, willingness to explore and provide feedback
+        on cutting-edge functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Mobile
+        Devices\",\"Security Platform\",\"Stock\",\"Technology\",\"Unknown Sector\",\"Zimperium\"],\"crawlDate\":\"2023-11-15T17:13:16.180848Z\",\"tickers\":[\"msft\",\"sftbf\"]},{\"id\":59572041,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Esri
+        Integrates with Microsoft Fabric to Deliver Leading Spatial Analytics Capabilities\",\"url\":\"https://www.businesswire.com/news/home/20231115725911/en/Esri-Integrates-with-Microsoft-Fabric-to-Deliver-Leading-Spatial-Analytics-Capabilities/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"To
+        meet the growing demand for spatial analytics, Esri is extending its long-standing
+        strategic collaboration with Microsoft through a unified analyti\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:15:46.061200Z\",\"tickers\":[\"msft\"]},{\"id\":59572042,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"SecurityScorecard
+        Joins Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231115803425/en/SecurityScorecard-Joins-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"MICROSOFT
+        IGNITE 2023 \u2013 SecurityScorecard today announced its participation in
+        the Microsoft Security Copilot Partner Private Preview. SecurityScoreca\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:15:47.348796Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572192,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"HYAS
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/hyas-proud-participant-microsoft-security-170000855.html\",\"description\":\"VANCOUVER,
+        British Columbia, November 15, 2023--HYAS Infosec today announced its participation
+        in the Microsoft Security Copilot Partner Private Preview. HYAS Infosec was
+        selected based on their proven experience with Microsoft Security technologies,
+        willingness to explore and provide feedback on cutting-edge functionality,
+        and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Hyas\",\"Microsoft\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T17:23:14.619981Z\",\"tickers\":[\"hyas\",\"msft\"]},{\"id\":59572197,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Cequence
+        Is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/cequence-proud-participant-microsoft-security-170000231.html\",\"description\":\"SUNNYVALE,
+        Calif., November 15, 2023--Cequence Security today announced its participation
+        in the Microsoft Security Copilot Partner Private Preview. Cequence was selected
+        based on their proven experience with Microsoft Security technologies, willingness
+        to explore and provide feedback on cutting-edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Microsoft\",\"Providing
+        Feedback\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:23:20.620259Z\",\"tickers\":[\"msft\"]},{\"id\":59572255,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Informatica
+        Unveils New Unified Cloud Analytics Experiences with Microsoft Fabric and
+        Microsoft Azure OpenAI Service\",\"url\":\"https://finance.yahoo.com/news/informatica-unveils-unified-cloud-analytics-170000281.html\",\"description\":\"REDWOOD
+        CITY, Calif., November 15, 2023--Informatica (NYSE: INFA), an enterprise cloud
+        data management leader, announced deeper integrations across the Microsoft
+        Azure ecosystem. The latest milestones will deliver seamless access to data
+        capabilities for millions of global Azure customers. The co-developments were
+        unveiled at Microsoft Ignite, the annual developer and IT professionals conference
+        underway in Seattle.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Claire\",\"Data
+        Capabilities\",\"Data Management\",\"Fabric\",\"Idmc\",\"Informatica\",\"Microsoft\",\"Microsoft
+        Azure\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:23:54.313056Z\",\"tickers\":[\"infa\",\"infa\",\"msft\"]},{\"id\":59572264,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"SecurityScorecard
+        Joins Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/securityscorecard-joins-microsoft-security-copilot-170000133.html\",\"description\":\"SEATTLE,
+        November 15, 2023--MICROSOFT IGNITE 2023 \u2013 SecurityScorecard today announced
+        its participation in the Microsoft Security Copilot Partner Private Preview.
+        SecurityScorecard was selected based on its proven experience with Microsoft
+        Security technologies, willingness to explore and provide feedback on cutting-edge
+        functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Copilot\",\"Microsoft\",\"Security
+        Ratings\",\"Securityscorecard\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:23:57.729144Z\",\"tickers\":[\"lnkd\",\"msft\"]},{\"id\":59572295,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Cyware
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/cyware-proud-participant-microsoft-security-170000692.html\",\"description\":\"NEW
+        YORK, November 15, 2023--Cyware today announced its participation in the Microsoft
+        Security Copilot Partner Private Preview. Cyware was selected based on their
+        proven experience with Microsoft Security technologies, willingness to explore
+        and provide feedback on cutting edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Cyware\",\"Machine
+        Speed\",\"Microsoft\",\"Security Operations\",\"Security Teams\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:24:13.241839Z\",\"tickers\":[\"msft\"]},{\"id\":59572396,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Gigamon
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/gigamon-proud-participant-microsoft-security-170000841.html\",\"description\":\"SEATTLE,
+        November 15, 2023--Microsoft Ignite 2023 \u2014 Gigamon, the leading deep
+        observability company, today announced its participation in the Microsoft
+        Security Copilot Partner Private Preview. Gigamon was selected based on its
+        proven experience with Microsoft Security technologies, willingness to explore
+        and provide feedback on cutting-edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Gigamon\",\"Microsoft\",\"Observability\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:25:00.829331Z\",\"tickers\":[\"msft\"]},{\"id\":59572635,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Esri
+        Integrates with Microsoft Fabric to Deliver Leading Spatial Analytics Capabilities\",\"url\":\"https://finance.yahoo.com/news/esri-integrates-microsoft-fabric-deliver-170000120.html\",\"description\":\"REDLANDS,
+        Calif., November 15, 2023--To meet the growing demand for spatial analytics,
+        Esri is extending its long-standing strategic collaboration with Microsoft
+        through a unified analytics platform powered by spatial capabilities. Microsoft
+        Fabric, now in General Availability as announced today at Microsoft Ignite,
+        will accelerate time to insights and reveal unexplored patterns, trends, and
+        connections through the integration of spatial analytics from Esri\u2019s
+        ArcGIS software.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Esri\",\"Fabric\",\"Microsoft\",\"Microsoft
+        Power Bi\",\"Spatial Data\",\"Stock\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:33:58.331660Z\",\"tickers\":[\"esri\",\"msft\"]},{\"id\":59572645,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Commvault
+        is a Proud Participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/commvault-proud-participant-microsoft-security-170000188.html\",\"description\":\"Commvault,
+        a leading provider of cyber resilience and data protection solutions for hybrid
+        cloud organizations, today announced its participation in the Microsoft Security
+        Copilot Partner Private Preview. Commvault was selected based on its proven
+        experience with Microsoft Security technologies, willingness to explore and
+        provide feedback on cutting edge functionality, and close relationship with
+        Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Commvault\",\"Cyber
+        Resilience\",\"Data Intelligence\",\"Data Protection\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:34:14.860762Z\",\"tickers\":[\"cvlt\",\"msft\"]},{\"id\":59572663,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Meta
+        appeals against EU gatekeeper status for Messenger, Marketplace\",\"url\":\"https://finance.yahoo.com/news/meta-appeals-against-eu-gatekeeper-170000793.html\",\"description\":\"Meta
+        on Wednesday appealed against \\\"gatekeeper\\\" designations for its Messenger
+        and Marketplace platforms, the first Big Tech company to challenge new European
+        Union rules setting out dos and don'ts for the online services.  As part of
+        its latest crackdown on Big Tech, the EU in September picked 22 \\\"gatekeeper\\\"
+        services, run by six of the world's biggest tech companies, to face new rules
+        under the Digital Markets Act (DMA).\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Big
+        Tech\",\"Dma\",\"ETF\",\"European Union\",\"Facebook\",\"Marketplace\",\"Messenger\",\"Meta\",\"Online
+        Services\",\"Stock\",\"Tech Companies\",\"Technology\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T17:34:27.974123Z\",\"tickers\":[\"dma\",\"goog\",\"googl\",\"meta\",\"meta\",\"metv\",\"msft\"]},{\"id\":59572666,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Versa
+        Networks Announces Participation in Microsoft Security Copilot Partner Private
+        Preview\",\"url\":\"https://finance.yahoo.com/news/versa-networks-announces-participation-microsoft-170000084.html\",\"description\":\"SANTA
+        CLARA, Calif., November 15, 2023--Versa Networks, the global leader in AI/ML-powered
+        Unified Secure Access Service Edge (SASE) and Software-Defined WAN (SD-WAN),
+        today announced its participation in the Microsoft Security Copilot Partner
+        Private Preview. Versa was selected based on its proven experience with Microsoft
+        Security technologies, willingness to explore and provide feedback on cutting-edge
+        functionality, and close relationship with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Chief
+        Security Architect\",\"Copilot\",\"ETF\",\"Financial Services\",\"Microsoft\",\"Private
+        Preview\",\"Product Development\",\"Sase\",\"Stock\",\"Technology\",\"Unified
+        Secure Access Service Edge\",\"Unknown Sector\",\"Versa\",\"Versa Networks\"],\"crawlDate\":\"2023-11-15T17:34:31.487628Z\",\"tickers\":[\"bcf\",\"bgio\",\"blk\",\"msft\"]},{\"id\":59573174,\"publishedDate\":\"2023-11-15T17:00:00Z\",\"title\":\"Meta
+        Challenges EU\u2019s Crackdown on Dominance of Big Tech Firms\",\"url\":\"https://www.bloomberg.com/news/articles/2023-11-15/meta-platforms-inc-appeals-eu-s-crackdown-on-big-tech-dominance\",\"description\":null,\"source\":\"bloomberg.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Technology\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-15T17:50:24.028641Z\",\"tickers\":[\"aapl\",\"amzn\",\"googl\",\"meta\"]},{\"id\":59571521,\"publishedDate\":\"2023-11-15T16:59:46Z\",\"title\":\"Microsoft
+        Debuts Homegrown AI Chip To Lessen Reliance On Nvidia\",\"url\":\"https://www.investors.com/news/technology/microsoft-stock-software-giant-debuts-new-ai-chip/\",\"description\":\"Microsoft
+        debuted a new AI chip to run its Azure cloud infrastructure and lessen its
+        reliance on AI chip leader Nvidia. Microsoft stock rose.\",\"source\":\"investors.com\",\"tags\":[\"All
+        News And Stock Ideas\",\"Artificial Intelligence\",\"Chip Stocks Semiconductor
+        Industry News\",\"Ibd Long-Term Leaders\",\"Magnificent Seven Stocks\",\"Stock\",\"Tech
+        Leaders\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:02:30.211991Z\",\"tickers\":[\"amd\",\"msft\",\"nvda\"]},{\"id\":59572600,\"publishedDate\":\"2023-11-15T16:57:22Z\",\"title\":\"Microsoft
+        just announced an AI chip that could go up against Nvidia\",\"url\":\"https://kalkinemedia.com/us/business-news/latest/microsoft-just-announced-an-ai-chip-that-could-go-up-against-nvidia\",\"description\":\"Microsoft
+        just announced an AI chip that could go up against Nvidia\",\"source\":\"kalkinemedia.com\",\"tags\":[\"Microsoft
+        Just Announced An Ai Chip That Could Go Up Against Nvidia\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T17:32:47.699715Z\",\"tickers\":[\"msft\"]},{\"id\":59571188,\"publishedDate\":\"2023-11-15T16:49:10Z\",\"title\":\"Microsoft
+        goes all-in on Gen AI: Everything it announced at Ignite\",\"url\":\"https://venturebeat.com/ai/microsoft-goes-all-in-on-gen-ai-everything-it-announced-at-ignite/\",\"description\":\"From
+        new AI chip hardware and software to security, and open source format moves,
+        Microsoft showcased its commitment to driving forward to in generative AI.\",\"source\":\"venturebeat.com\",\"tags\":[\"Business
+        & Industrial\",\"Category-\",\"Computers & Electronics\",\"Stock\",\"Technology\",\"Tiingo
+        Top\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-15T16:52:30.674756Z\",\"tickers\":[\"aci\",\"goog\",\"googl\",\"intu\",\"msft\"]},{\"id\":59571089,\"publishedDate\":\"2023-11-15T16:43:00Z\",\"title\":\"Apple,
+        Microsoft, Nvidia\u2014What Tech Stocks Hedge Funds Are Buying and Selling\",\"url\":\"https://www.barrons.com/articles/apple-microsoft-nvidia-stocks-hedge-funds-9bc4bf46\",\"description\":\"It's
+        filing season for a string of major hedge funds, and big tech names like Apple,
+        Microsoft, and Nvidia  were among the most-traded equities in the third quarter.\",\"source\":\"barrons.com\",\"tags\":[\"Aapl\",\"Alphabet\",\"Alternative
+        Investments\",\"Apple\",\"Applications Software\",\"Berkshire Hathaway\",\"Berkshire
+        Hathaway Cl B\",\"Brk.B\",\"Brka\",\"C&E Exclusion Filter\",\"C&E Industry
+        Filter\",\"C&E Industry News Filter\",\"Computer Hardware\",\"Computers\",\"Computing\",\"Consumer
+        Cyclical\",\"Consumer Electronics\",\"Content Types\",\"Corporate\",\"Corporate
+        Actions\",\"CryptoCurrency\",\"Divestments\",\"E-Commerce\",\"ETF\",\"Entertainment\",\"Etailing\",\"Factiva
+        Filters\",\"Financial\",\"Financial News\",\"Financial Services\",\"Financial
+        Vehicles\",\"Freight Transport\",\"Funds\",\"Googl\",\"Graphics Processing
+        Units\",\"Hedge Funds\",\"Industrial\",\"Industrial Electronics\",\"Industrial
+        Goods\",\"Industrial News\",\"Integrated Circuits\",\"Internet Search Engines\",\"Investing\",\"Iwe
+        Filter\",\"Land Transport\",\"Logistics\",\"Markets\",\"Media\",\"Microsoft\",\"Msft\",\"North
+        America\",\"Nvda\",\"Nvidia\",\"Online Service Providers\",\"Ownership Changes\",\"Rapid
+        Response\",\"Retail\",\"Routine Market\",\"Securities\",\"Semiconductors\",\"Social
+        Media Platforms\",\"Software\",\"Stock\",\"Synd\",\"Technology\",\"Tools\",\"Transportation\",\"Trucking\",\"Trusts\",\"Unknown
+        Sector\",\"Wholesale\"],\"crawlDate\":\"2023-11-15T16:49:23.228186Z\",\"tickers\":[\"aapl\",\"amzn\",\"arm\",\"brka\",\"googl\",\"meta\",\"meta\",\"metv\",\"msft\",\"nvda\",\"tsla\"]},{\"id\":59571310,\"publishedDate\":\"2023-11-15T16:36:40Z\",\"title\":\"Here
+        are this year\u2019s top 40 startups at Station F\",\"url\":\"https://techcrunch.com/2023/11/15/here-are-this-years-top-40-startups-at-station-f/\",\"description\":\"Station
+        F has shared a list of the 40 most promising startups that participate in
+        one of its startup programs.\",\"source\":\"techcrunch.com\",\"tags\":[\"Consumer
+        Discretionary\",\"CryptoCurrency\",\"Next 40\",\"Startups\",\"Station F\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:55:45.322885Z\",\"tickers\":[\"msft\",\"qmco\",\"qtww\"]},{\"id\":59570863,\"publishedDate\":\"2023-11-15T16:36:10Z\",\"title\":\"Microsoft\u2019s
+        closing of free upgrade loophole appears to be breaking some Windows 11 and
+        10 PCs\",\"url\":\"https://www.techradar.com/computing/windows/microsofts-closing-of-free-upgrade-loophole-appears-to-be-breaking-some-windows-11-and-10-pcs\",\"description\":\"Thinking
+        of upgrading a component in your Windows 11 or 10 PC? Some users are best
+        off waiting for now...\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:40:22.255269Z\",\"tickers\":[\"msft\"]},{\"id\":59570585,\"publishedDate\":\"2023-11-15T16:30:24.647414Z\",\"title\":\"Warren
+        Buffett's Berkshire ditches GM along with some other big names\",\"url\":\"https://www.autoblog.com/2023/11/15/warren-buffetts-berkshire-ditches-gm-along-with-some-other-big-names/\",\"description\":\"Berkshire
+        Hathaway said it has shed its holdings in General Motors, Johnson & Johnson
+        and Procter & Gamble, and trimmed its stake in Amazon.com.\",\"source\":\"autoblog.com\",\"tags\":[\"Automotive\",\"Basic
+        Materials\",\"Consumer Cyclical\",\"Consumer Defensive\",\"Consumer Discretionary\",\"Earnings\",\"Energy\",\"Financial
+        Services\",\"Financials\",\"Gm\",\"Healthcare\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T16:30:28.327369Z\",\"tickers\":[\"aapl\",\"amzn\",\"atvi\",\"batrk\",\"brk-a\",\"brk-b\",\"ce\",\"cvx\",\"fwona\",\"fwonk\",\"gl\",\"glpc\",\"gm\",\"jnj\",\"lmca\",\"lmcb\",\"lmck\",\"lsxmb\",\"lsxmk\",\"msft\",\"pg\",\"xom\"]},{\"id\":59570289,\"publishedDate\":\"2023-11-15T16:19:00Z\",\"title\":\"HUMAN
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://www.businesswire.com/news/home/20231114808173/en/HUMAN-is-a-proud-participant-in-the-Microsoft-Security-Copilot-Partner-Private-Preview/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"HUMAN
+        Security today announced its participation in the Microsoft Security Copilot
+        Partner Private Preview. HUMAN was selected based on their proven e\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:22:18.050846Z\",\"tickers\":[\"msft\"]},{\"id\":59571167,\"publishedDate\":\"2023-11-15T16:19:00Z\",\"title\":\"HUMAN
+        is a proud participant in the Microsoft Security Copilot Partner Private Preview\",\"url\":\"https://finance.yahoo.com/news/human-proud-participant-microsoft-security-161900169.html\",\"description\":\"NEW
+        YORK, November 15, 2023--HUMAN Security today announced its participation
+        in the Microsoft Security Copilot Partner Private Preview. HUMAN was selected
+        based on their proven experience with Microsoft Security technologies, willingness
+        to explore and provide feedback on cutting edge functionality, and close relationship
+        with Microsoft.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Human Security\",\"Microsoft\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:52:00.788806Z\",\"tickers\":[\"msft\"]},{\"id\":59570148,\"publishedDate\":\"2023-11-15T16:15:00Z\",\"title\":\"OpenAI
+        Pauses ChatGPT Plus Signups as Demand Surges\",\"url\":\"https://gizmodo.com/openai-pauses-chatgpt-plus-signups-demand-surges-1851024026\",\"description\":\"Sam
+        Altman\u2019s AI company has been plagued with outages and hacks this week,
+        and now the company is pausing premium signups.\",\"source\":\"gizmodo.com\",\"tags\":[\"Chatbot\",\"Chatgpt\",\"Financials\",\"Generative
+        Pre-Trained Transformer\",\"Gizmodo\",\"Gpt\",\"Gpt-3\",\"Gpt-4\",\"Large
+        Language Models\",\"Microsoft\",\"Openai\",\"Sam Altman\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:18:15.553012Z\",\"tickers\":[\"gpt\",\"msft\"]},{\"id\":59570007,\"publishedDate\":\"2023-11-15T16:13:34Z\",\"title\":\"Microsoft
+        unveils new AI chips at Ignite conference; shares slip (MSFT)\",\"url\":\"https://seekingalpha.com/news/4037081-microsoft-unveils-new-ai-chips-ignite-conference-shares-slip\",\"description\":\"Microsoft
+        (MSFT) showed off its first two in-house processors on Wednesday at its annual
+        Ignite conference. Read for more.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Communication
+        Services\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:14:28.019851Z\",\"tickers\":[\"intc\",\"iqnt\",\"msft\",\"nvda\"]},{\"id\":59570543,\"publishedDate\":\"2023-11-15T16:12:47.546000Z\",\"title\":\"Apple's
+        iPhone 14 users get another year of free satellite SOS access\",\"url\":\"https://www.reuters.com/technology/apples-iphone-14-users-get-another-year-free-satellite-sos-access-2023-11-15/\",\"description\":\"Apple
+        said on Wednesday iPhone 14 users would get free access to its emergency SOS
+        feature for another year.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32A1Fh\",\"2023:Ml_Kbn32A1Fh:1\",\"2023:Ml_Kbn32A1Fi\",\"2023:Ml_Kbn32A1Fi:1\",\"2023:Ml_L4N3Cg3Nq\",\"2023:Ml_L4N3Cg3Nq:1378974826\",\"Guid:Tag:Reuters.Com\",\"Stock\",\"Technology\",\"Usn:Kbn32A1Fh\",\"Usn:Kbn32A1Fi\",\"Usn:L4N3Cg3Nq\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-15T16:28:24.265744Z\",\"tickers\":[\"aapl\"]},{\"id\":59570445,\"publishedDate\":\"2023-11-15T16:07:51Z\",\"title\":\"Microsoft
+        introduces its own chips for AI, with eye on cost\",\"url\":\"https://www.channelnewsasia.com/business/microsoft-introduces-its-own-chips-ai-eye-cost-3923241\",\"description\":\"Microsoft
+        on Wednesday announced a duo of custom-designed computing chips, joining other
+        big tech firms that - faced with the high cost of delivering artificial intelligence
+        services - are bringing key technologies in-house.Microsoft said it does not
+        plan to sell the chips but instead will use them to pow\",\"source\":\"channelnewsasia.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:24:50.610560Z\",\"tickers\":[\"msft\",\"nvda\",\"tsm\"]},{\"id\":59569813,\"publishedDate\":\"2023-11-15T16:05:42.137000Z\",\"title\":\"Microsoft
+        introduces its own chips for AI, with eye on cost\",\"url\":\"https://www.reuters.com/technology/microsoft-introduces-its-own-chips-ai-with-eye-cost-2023-11-15/\",\"description\":\"Microsoft
+        on Wednesday announced a duo of custom-designed computing chips, joining other
+        big tech firms that - faced with the high cost of delivering artificial intelligence
+        services - are bringing key technologies in-house.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32A1Eu\",\"2023:Ml_Kbn32A1Eu:1\",\"2023:Ml_Kbn32A1Ev\",\"2023:Ml_Kbn32A1Ev:1\",\"2023:Ml_L1N3Cg057\",\"2023:Ml_L1N3Cg057:457012540\",\"Consumer
+        Cyclical\",\"Guid:Tag:Reuters.Com\",\"Stock\",\"Technology\",\"Usn:Kbn32A1Eu\",\"Usn:Kbn32A1Ev\",\"Usn:L1N3Cg057\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-15T16:10:34.549405Z\",\"tickers\":[\"amd\",\"amzn\",\"googl\",\"msft\",\"nvda\"]},{\"id\":59569782,\"publishedDate\":\"2023-11-15T16:05:27Z\",\"title\":\"So
+        Microsoft Teams is getting a whole lot of AI additions - but you might actually
+        like these ones\",\"url\":\"https://www.techradar.com/pro/so-microsoft-teams-is-getting-a-whole-lot-of-ai-additions-but-you-might-actually-like-these-ones\",\"description\":\"Generative
+        AI and Copilot land on Microsoft Teams\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:08:37.306568Z\",\"tickers\":[\"msft\"]},{\"id\":59570266,\"publishedDate\":\"2023-11-15T16:05:13Z\",\"title\":\"Microsoft
+        introduces its own chips for AI, with eye on cost\",\"url\":\"https://finance.yahoo.com/news/microsoft-introduces-own-chips-ai-160513823.html\",\"description\":\"Microsoft
+        on Wednesday announced a duo of custom-designed computing chips, joining other
+        big tech firms that - faced with the high cost of delivering artificial intelligence
+        services - are bringing key technologies in-house.  Microsoft said it does
+        not plan to sell the chips but instead will use them to power its own subscription
+        software offerings and as part of its Azure cloud computing service.  At its
+        Ignite developer conference in Seattle, Microsoft introduced a new chip, called
+        Maia, to speed up AI computing tasks and provide a foundation for its $30-a-month
+        \\\"Copilot\\\" service for business software users, as well as for developers
+        who want to make custom AI services.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Cloud
+        Computing Service\",\"Microsoft\",\"Scott Guthrie\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-15T16:21:49.376666Z\",\"tickers\":[\"msft\",\"nvda\",\"tsm\"]},{\"id\":59569671,\"publishedDate\":\"2023-11-15T16:04:20Z\",\"title\":\"KING
+        LUTHER CAPITAL MANAGEMENT CORP Bolsters Portfolio with TXO Partners LP Stake\",\"url\":\"https://www.gurufocus.com/news/2124517/king-luther-capital-management-corp-bolsters-portfolio-with-txo-partners-lp-stake\",\"description\":\"Introduction
+        to the Transaction KING LUTHER CAPITAL MANAGEMENT CORP (Trades, Portfolio),
+        an established investment management firm, has recently expanded its in\",\"source\":\"gurufocus.com\",\"tags\":[\"Aapl\",\"Amzn\",\"Article\",\"Consumer
+        Cyclical\",\"Dsgr\",\"Gurufocus\",\"Gurufocus Research\",\"Industrials\",\"Msft\",\"News\",\"Stock\",\"Technology\",\"Tmo\",\"Txo\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T16:04:59.686521Z\",\"tickers\":[\"aapl\",\"amzn\",\"dsgr\",\"dsgr\",\"msft\",\"ne-ws\",\"txo\"]},{\"id\":59570342,\"publishedDate\":\"2023-11-15T16:04:20Z\",\"title\":\"KING
+        LUTHER CAPITAL MANAGEMENT CORP Bolsters Portfolio with TXO Partners LP Stake\",\"url\":\"https://finance.yahoo.com/news/king-luther-capital-management-corp-160420973.html\",\"description\":\"Introduction
+        to the Transaction KING LUTHER CAPITAL MANAGEMENT CORP (Trades, Portfolio),
+        an established investment management firm, has recently expanded its investment
+        portfolio by adding shares of TXO Partners LP.  This strategic move has increased
+        the firm's total holdings in TXO to 2,591,530 shares, reflecting a 0.24% position
+        in their portfolio and an 8.43% ownership of the traded company.  Profile
+        of KING LUTHER CAPITAL MANAGEMENT CORP (Trades, Portfolio) Founded in 1979,
+        KING LUTHER CAPITAL MANAGEMENT CORP (Trades, Portfolio) has grown from a single
+        office in Fort Worth to multiple locations across Texas.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Capital
+        Management\",\"Consumer Cyclical\",\"Investment Philosophy\",\"Investment
+        Portfolio\",\"Investment Professionals\",\"Market Capitalization\",\"Portfolio\",\"Stock\",\"Technology\",\"Trades\",\"Txo\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-15T16:23:10.811848Z\",\"tickers\":[\"aapl\",\"amzn\",\"msft\",\"txo\"]},{\"id\":59569667,\"publishedDate\":\"2023-11-15T16:03:37Z\",\"title\":\"Daniel
+        Loeb's Third Point Makes a Bold Bet on Meta Platforms with a 5.01% Stake\",\"url\":\"https://www.gurufocus.com/news/2124512/daniel-loebs-third-point-makes-a-bold-bet-on-meta-platforms-with-a-501-stake\",\"description\":\"Insights
+        from the Latest 13F Filing Reveal Significant Portfolio Adjustments\\n\\nDaniel
+        Loeb (Trades, Portfolio), the founder and driving force behind Third Point
+        \",\"source\":\"gurufocus.com\",\"tags\":[\"Amzn\",\"Article\",\"Baba\",\"Bbwi\",\"Communication
+        Services\",\"Consumer Cyclical\",\"Dhr\",\"ETF\",\"Googl\",\"Gurufocus\",\"Gurufocus
+        Research\",\"Healthcare\",\"Meta\",\"Msft\",\"News\",\"Nvda\",\"Pcg\",\"Stock\",\"Technology\",\"Tmus\",\"Tsm\",\"Unknown
+        Sector\",\"Utilities\",\"X\"],\"crawlDate\":\"2023-11-15T16:04:56.669011Z\",\"tickers\":[\"amzn\",\"baba\",\"bbwi\",\"dhr\",\"googl\",\"meta\",\"meta\",\"metv\",\"msft\",\"ne-ws\",\"nvda\",\"pcg\",\"tmus\",\"tsm\"]},{\"id\":59570269,\"publishedDate\":\"2023-11-15T16:03:37Z\",\"title\":\"Daniel
+        Loeb's Third Point Makes a Bold Bet on Meta Platforms with a 5.01% Stake\",\"url\":\"https://finance.yahoo.com/news/daniel-loebs-third-point-makes-160337604.html\",\"description\":\"Insights
+        from the Latest 13F Filing Reveal Significant Portfolio Adjustments\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Basic
+        Materials\",\"Communication Services\",\"Consumer Cyclical\",\"Daniel Loeb\",\"Financials\",\"Healthcare\",\"Investment
+        Portfolio\",\"Stock\",\"Technology\",\"Trades\",\"Utilities\"],\"crawlDate\":\"2023-11-15T16:21:51.173633Z\",\"tickers\":[\"amzn\",\"baba\",\"bbwi\",\"dhr\",\"efsi\",\"goog\",\"googl\",\"meta\",\"msft\",\"nvda\",\"pcg\",\"tmus\",\"tsm\",\"x\"]}]"
+    headers:
+      allow:
+      - GET, HEAD, OPTIONS
+      content-length:
+      - '74864'
+      content-type:
+      - application/json
+      date:
+      - Wed, 15 Nov 2023 18:05:33 GMT
+      server:
+      - nginx/1.18.0 (Ubuntu)
+      vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

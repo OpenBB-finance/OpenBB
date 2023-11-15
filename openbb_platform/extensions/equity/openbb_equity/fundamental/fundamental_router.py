@@ -242,5 +242,5 @@ def trailing_dividend_yield(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Earnings Call Transcript. Earnings call transcript for a given company."""
+    """Trailing 1yr dividend yield."""
     return OBBject(results=Query(**locals()).execute())

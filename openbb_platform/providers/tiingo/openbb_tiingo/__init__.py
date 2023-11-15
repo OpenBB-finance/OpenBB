@@ -7,7 +7,7 @@ from openbb_tiingo.models.currency_historical import TiingoCurrencyHistoricalFet
 from openbb_tiingo.models.equity_historical import TiingoEquityHistoricalFetcher
 from openbb_tiingo.models.global_news import TiingoGlobalNewsFetcher
 from openbb_tiingo.models.trailing_dividend_yield import (
-    TiingoTrailingDivYieldHistoricalFetcher,
+    TiingoTrailingDivYieldFetcher,
 )
 
 tiingo_provider = Provider(
@@ -21,6 +21,6 @@ tiingo_provider = Provider(
         "GlobalNews": TiingoGlobalNewsFetcher,
         "CryptoHistorical": TiingoCryptoHistoricalFetcher,
         "CurrencyHistorical": TiingoCurrencyHistoricalFetcher,
-        "TrailingDividendYield": TiingoTrailingDivYieldHistoricalFetcher,
+        "TrailingDividendYield": TiingoTrailingDivYieldFetcher,
     },
 )
