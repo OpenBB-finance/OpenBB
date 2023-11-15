@@ -54,6 +54,8 @@ Uninstall any extension with `pip uninstall`.
 pip uninstall openbb-yfinance
 ```
 
+## Available Data Extensions
+
 | Extension Name | Description | Installation Command | Core/Community | Minimum Subscription Type Required |
 |:-----------------|:-----------:|:-------------------:|:-----------------:|--------------------------------------:|
 | openbb-alpha-vantage | [Alpha Vantage](https://www.alphavantage.co/) data connector. | pip install openbb-alpha-vantage | Community | Free |
