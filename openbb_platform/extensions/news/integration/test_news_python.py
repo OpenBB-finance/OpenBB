@@ -62,6 +62,12 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "term": "MSFT",
             }
         ),
+        (
+            {
+                "provider": "tiingo",
+                "limit": 30,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
