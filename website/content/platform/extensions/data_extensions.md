@@ -1,6 +1,6 @@
 ---
 title: Data Extensions
-sidebar_position: 2
+sidebar_position: 1
 description: Learn about the OpenBB Platform and its extension framework that allows
   seamless integration of modules like 'openbb-yfinance'. Discover how installations
   and removals automatically update the router when the Python interpreter is refreshed.
@@ -23,11 +23,18 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Extensions - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Data - Extensions | OpenBB Platform Docs" />
 
-When the core OpenBB Platform package is installed, familiar components might be missing.  This is to keep the core components as light as possible.  The extension framework allows individual pieces to be installed and removed seamlessly within the environment.  Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed.
+Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform.  Each source (provider) is its own independent extension, even if there is only one endpoint accessible.  This allows every data source to be inserted or removed, at any time, without distrubing the operation of the Core components.  Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed.
 
-For example, yFinance.
+The total installed coverage can be determined through the Python interface, as a dictionary.
+
+```python
+from openbb import obb
+obb.coverage.providers
+```
+
+Published data extensions will have names beginning with `openbb`.  For example, yFinance.
 
 ```console
 pip install openbb-yfinance
@@ -59,10 +66,10 @@ pip uninstall openbb-yfinance
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector. | pip install openbb-seeking-alpha | Community | None |
 | openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector. | pip install openbb-stockgrid | Community | None |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector. | pip install openbb-tradingeconomics | Core | Paid |
-| openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector. | pip install openbb-ultima | Core | Paid |
+| openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector. | pip install openbb-ultima | Community | Paid |
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector. | pip install openbb-wsj | Community | None |
 | openbb-yfinance | [Yahoo Finance](https://finance.yahoo.com/) data connector. | pip install openbb-yfinance | Community | None |
 
-Have you published a data provider extension and want it featured on this list?  Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion.  Code contributions, for new and existing, data providers are always welcome!
+Have you published a data provider extension and want it featured on this list?  Tell us about it!  Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion.  Code contributions, for new and existing, data providers are always welcome.
 
-Search [PyPI](https://pypi.org/search/?q=openbb-) to find more extensions, like `openbb-qa` and `openbb-ta`
+Search [PyPI](https://pypi.org/search/?q=openbb-) to find more extensions.
