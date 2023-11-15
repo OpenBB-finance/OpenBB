@@ -28,7 +28,7 @@ class NasdaqTopRetailData(TopRetailData):
         return datetime.strptime(v, "%Y-%m-%d").date()
 
 
-class NasdaqTopRetailFetcher(Fetcher[TopRetailQueryParams, List[NasdaqTopRetailData]]):
+class NasdaqTopRetailFetcher(Fetcher[NasdaqTopRetailQueryParams, List[NasdaqTopRetailData]]):
     """Nasdaq Top Retail Fetcher."""
 
     @staticmethod
