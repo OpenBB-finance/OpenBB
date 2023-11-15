@@ -57,6 +57,12 @@ class Fetcher(Generic[Q, R]):
         return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
+    def require_credentials(self) -> bool:
+        """Wether credentials are required to extract data, can be disabled by specific
+        Fetcher implementation, by default True"""
+        return True
+
+    @classproperty
     def query_params_type(self) -> Q:
         """Get the type of query."""
         # pylint: disable=E1101
