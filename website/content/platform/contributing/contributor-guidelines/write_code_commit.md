@@ -1,22 +1,14 @@
 ---
 title: Write Code and Commit
 sidebar_position: 5
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide provides detailed instructions on how to write code and commit changes for the OpenBB Platform. It covers the process of creating a PR, branch naming conventions, and important guidelines to follow when committing changes.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
-- OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- OpenBB code writing
+- Commit changes
+- PR creation
+- Branch naming conventions
+- Commit guidelines
+- GitHub
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

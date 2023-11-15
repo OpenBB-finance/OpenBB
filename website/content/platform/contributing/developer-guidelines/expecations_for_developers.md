@@ -1,22 +1,13 @@
 ---
 title: Expectations for Developers
 sidebar_position: 1
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide outlines the expectations for developers contributing to the OpenBB Platform. It covers key areas such as use cases, documentation, code quality, testing, performance, and collaboration.
 keywords:
 - OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
-- OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- Developer guidelines
+- Code quality
+- Testing
+- Collaboration
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

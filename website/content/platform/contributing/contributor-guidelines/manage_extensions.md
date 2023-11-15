@@ -1,22 +1,13 @@
 ---
 title: Manage Extensions
 sidebar_position: 3
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide provides detailed instructions on how to manage extensions in the OpenBB Platform. It covers the installation of extensions hosted on PyPI and locally developed extensions, as well as adding an extension as a dependency.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
 - OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- Extension management
+- PyPI extensions
+- Local extensions
+- Extension dependencies
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

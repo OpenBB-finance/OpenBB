@@ -1,22 +1,13 @@
 ---
 title: Introduction
 sidebar_position: 1
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This introduction to the Contributor Guidelines provides an overview of how to enhance the OpenBB Platform's codebase. It highlights the various ways to contribute, from adding new data points and commands to creating new extensions and improving documentation.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
+- OpenBB Contributor Guidelines
+- Codebase enhancement
 - OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- Documentation improvement
+- OpenBB Platform contribution
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -1,22 +1,13 @@
 ---
 title: Quality Assurance
 sidebar_position: 2
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
-- OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- OpenBB QA process
+- Unit and integration tests
+- QA tools
+- Extension testing
+- Import time optimization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

@@ -1,22 +1,13 @@
 ---
 title: Architectural Considerations
 sidebar_position: 6
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide provides insights into the architectural considerations of the OpenBB Platform. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
-- OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
+- OpenBB Platform Architecture
+- Key Classes
+- Import Statements
+- TET Pattern
+- Fetcher Classes
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

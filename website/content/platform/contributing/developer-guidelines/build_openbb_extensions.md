@@ -1,22 +1,13 @@
 ---
-title: Build OpenBB Extensions
+title: Building Extensions for OpenBB Platform
 sidebar_position: 2
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide provides a comprehensive walkthrough on how to create custom extensions for the OpenBB Platform. It covers the process from generating the extension structure to sharing it with the community.
 keywords:
 - OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
-- Data standardization
-- OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
 - Custom extension
-- Contribution
+- Python development
+- Data integration
+- Community contribution
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

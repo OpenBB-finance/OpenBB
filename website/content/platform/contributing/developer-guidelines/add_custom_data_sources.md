@@ -1,22 +1,13 @@
 ---
 title: Add Custom Data Sources
 sidebar_position: 5
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide provides detailed instructions on how to add custom data sources to the OpenBB Platform. It covers the process of creating a custom extension, standardizing data, defining models, and creating a Fetcher class.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- Data integration
+- OpenBB custom data sources
 - Data standardization
+- Pydantic models
+- Fetcher class
 - OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';

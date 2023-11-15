@@ -1,22 +1,20 @@
 ---
 title: Expectations For Contributors
 sidebar_position: 1
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: This guide outlines the expectations for contributors to the OpenBB Platform. It covers aspects such as use cases, documentation, code quality, testing, performance, and collaboration. Whether you're enhancing functionality, building extensions, or contributing code.
 keywords:
 - OpenBB Platform
 - Open source
 - Python interface
 - REST API
-- Data integration
-- Data standardization
+- Code contribution
+- Documentation
+- Code quality
+- Testing
+- Performance optimization
+- Collaboration
+- Use cases
 - OpenBB extensions
-- openbb-core
-- Python package
-- High-Level Architecture
-- Custom extension
-- Contribution
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
