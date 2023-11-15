@@ -9,7 +9,8 @@ from openbb_provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
     CurrencyHistoricalQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
+from openbb_provider.utils.helpers import get_querystring
+from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field
 
 
@@ -19,9 +20,15 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://www.tiingo.com/documentation/end-of-day
     """
 
+    __alias_dict__ = {
+        "symbol": "tickers",
+        "start_date": "startDate",
+        "end_date": "endDate",
+    }
+
     interval: Literal[
         "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+    ] = Field(default="1day", description="Data granularity.", alias="resampleFreq")
 
 
 class TiingoCurrencyHistoricalData(CurrencyHistoricalData):
@@ -60,17 +67,12 @@ class TiingoCurrencyHistoricalFetcher(
         """Return the raw data from the Tiingo endpoint."""
         api_key = credentials.get("tiingo_token") if credentials else ""
 
-        base_url = (
-            f"https://api.tiingo.com/tiingo/fx/prices?tickers={query.symbol}"
-            f"&startDate={query.start_date}"
-            f"&endDate={query.end_date}"
-            f"&resampleFreq={query.interval}"
-            f"&token={api_key}"
-        )
+        base_url = "https://api.tiingo.com/tiingo/fx/prices"
+        query_str = get_querystring(query.model_dump(by_alias=True), [])
+        url = f"{base_url}?{query_str}&token={api_key}"
+        data = get_data_many(url)
 
-        request = make_request(base_url)
-        request.raise_for_status()
-        return request.json()
+        return data
 
     # pylint: disable=unused-argument
     @staticmethod
@@ -80,5 +82,4 @@ class TiingoCurrencyHistoricalFetcher(
         **kwargs: Any,
     ) -> List[TiingoCurrencyHistoricalData]:
         """Return the transformed data."""
-
         return [TiingoCurrencyHistoricalData.model_validate(d) for d in data]
