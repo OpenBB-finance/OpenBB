@@ -29,6 +29,7 @@ class classproperty:
 class Fetcher(Generic[Q, R]):
     """Abstract class for the fetcher."""
 
+    # Tell query executor if credentials are required. Can be overridden by subclasses.
     require_credentials = True
 
     @staticmethod
