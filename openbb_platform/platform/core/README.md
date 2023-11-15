@@ -243,7 +243,7 @@ Steps to create an `OBBject` extension:
 
     ```python
     from openbb_core.app.model.extension import Extension
-    ext = Extension(name="example", required_credentials=["some_api_key"])
+    ext = Extension(name="example", credentials=["some_api_key"])
     ```
 
 3. Optionally declare an `OBBject` accessor, it will use the extension name:

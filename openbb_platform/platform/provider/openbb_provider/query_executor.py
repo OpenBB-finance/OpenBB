@@ -41,12 +41,13 @@ class QueryExecutor:
         require_credentials: bool,
     ) -> Dict[str, str]:
         """Filter credentials and check if they match provider requirements."""
-        if provider.required_credentials:
+        filtered_credentials = {}
+
+        if provider.credentials:
             if credentials is None:
                 credentials = {}
 
-            filtered_credentials = {}
-            for c in provider.required_credentials:
+            for c in provider.credentials:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
                     if require_credentials:

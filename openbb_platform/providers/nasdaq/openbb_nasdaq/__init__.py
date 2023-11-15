@@ -14,7 +14,7 @@ nasdaq_provider = Provider(
     description="""Positioned at the nexus of technology and the capital markets, Nasdaq
 provides premier platforms and services for global capital markets and beyond with
 unmatched technology, insights and markets expertise.""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "CalendarDividend": NasdaqDividendCalendarFetcher,
         "CalendarIpo": NasdaqCalendarIpoFetcher,

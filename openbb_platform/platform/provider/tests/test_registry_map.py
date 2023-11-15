@@ -12,9 +12,9 @@ def load_registry_map():
     return registry_map
 
 
-def test_get_required_credentials(load_registry_map):
-    """Test if the _get_required_credentials method behaves as expected."""
-    required_creds = load_registry_map.required_credentials
+def test_get_credentials(load_registry_map):
+    """Test if the _get_credentials method behaves as expected."""
+    required_creds = load_registry_map.credentials
 
     assert "fmp_api_key" in required_creds
 
