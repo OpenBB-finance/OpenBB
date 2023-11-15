@@ -1,4 +1,5 @@
 from datetime import date
+from unittest import mock
 
 import pytest
 from openbb_core.app.service.user_service import UserService
@@ -34,6 +35,15 @@ def vcr_config():
             ("api_key", "MOCK_API_KEY"),
         ],
     }
+
+
+@pytest.fixture(autouse=True, scope="module")
+def mock_cpu_count():
+    with mock.patch(
+        "os.cpu_count"
+    ) as mock_cpu_count:  # pylint: disable=redefined-outer-name
+        mock_cpu_count.return_value = -3
+        yield
 
 
 @pytest.mark.record_http
@@ -104,7 +114,6 @@ def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -114,7 +123,6 @@ def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -124,7 +132,6 @@ def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Flaky and recording issue")
 @pytest.mark.record_http
 def test_intrinio_income_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
