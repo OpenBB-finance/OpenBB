@@ -26,7 +26,7 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     exchanges: Optional[List[str]] = Field(
         default=None,
         description=(
-            "If you would like to limit the query to a subset of exchanes, "
+            "If you would like to limit the query to a subset of exchanges, "
             "pass a comma-separated list of exchanges to select. E.g. 'POLONIEX, GDAX'"
         ),
     )
@@ -77,7 +77,7 @@ class TiingoCryptoHistoricalFetcher(
     def extract_data(
         query: TiingoCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any,
+        **kwargs: Optional[Any],
     ) -> List[Dict]:
         """Return the raw data from the Tiingo endpoint."""
         api_key = credentials.get("tiingo_token") if credentials else ""
@@ -90,7 +90,7 @@ class TiingoCryptoHistoricalFetcher(
             f"&token={api_key}"
         )
 
-        request = make_request(base_url)
+        request = make_request(base_url, **kwargs)
         request.raise_for_status()
         return request.json()
 
