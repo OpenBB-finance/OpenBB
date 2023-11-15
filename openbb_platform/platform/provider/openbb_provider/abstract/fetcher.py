@@ -29,6 +29,8 @@ class classproperty:
 class Fetcher(Generic[Q, R]):
     """Abstract class for the fetcher."""
 
+    require_credentials = True
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> Q:
         """Transform the params to the provider-specific query."""
@@ -55,12 +57,6 @@ class Fetcher(Generic[Q, R]):
         query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         return cls.transform_data(query=query, data=data, **kwargs)
-
-    @classproperty
-    def require_credentials(self) -> bool:
-        """Wether credentials are required to extract data, can be disabled by specific
-        Fetcher implementation, by default True"""
-        return True
 
     @classproperty
     def query_params_type(self) -> Q:
