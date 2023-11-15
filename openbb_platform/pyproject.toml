@@ -78,7 +78,6 @@ all = [
     "openbb-seeking-alpha",
     "openbb-stockgrid",
     "openbb-technical",
-    "openbb-ultima",
     "openbb-wsj",
     "openbb-yfinance",
 ]
