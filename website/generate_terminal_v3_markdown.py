@@ -22,7 +22,7 @@ set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
 
 reference_import = """
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 """
@@ -345,7 +345,7 @@ def main() -> bool:
 
     # Generate root "_category_.json" file
     with open(content_path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
-        f.write(json.dumps({"label": "Terminal Reference", "position": 4}, indent=2))
+        f.write(json.dumps({"label": "Reference", "position": 4}, indent=2))
 
     # Generate root "index.md" file
     with open(content_path / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore

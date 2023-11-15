@@ -27,7 +27,7 @@ When the core OpenBB Platform package is installed, familiar components might be
 There are two primary types of extensions for the OpenBB Platform:
 
 - [Data](/platform/extensions/data_extensions)
-- [Tookits](/platform/extensions/toolkit_extensions)
+- [Toolkits](/platform/extensions/toolkit_extensions)
 
 The OpenBB Core installation does not include any toolkit extensions.  Install the OpenBB Platform with all data and toolkit extensions from PyPI with:
 
