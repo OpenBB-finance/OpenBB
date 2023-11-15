@@ -10,7 +10,8 @@ from openbb_provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.utils.helpers import make_request
+from openbb_provider.utils.helpers import get_querystring
+from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field, PrivateAttr, model_validator
 
 
@@ -20,7 +21,11 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.tiingo.com/documentation/end-of-day
     """
 
-    symbol: str = Field(description="Symbol related to the asset")
+    __alias_dict__ = {
+        "start_date": "startDate",
+        "end_date": "endDate",
+    }
+
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
@@ -29,7 +34,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     ] = PrivateAttr(default=None)
 
     # pylint: disable=protected-access
-    @model_validator(mode="after")
+    @model_validator(mode="after")  # type: ignore[arg-type]
     @classmethod
     def set_time_params(cls, values: "TiingoEquityHistoricalQueryParams"):
         """Set the default start & end date and time params for Tiingo API."""
@@ -41,7 +46,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
             "1Y": "yearly",
         }
 
-        values._frequency = frequency_dict[values.interval]
+        values._frequency = frequency_dict[values.interval]  # type: ignore[assignment]
 
         return values
 
@@ -49,43 +54,40 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 class TiingoEquityHistoricalData(EquityHistoricalData):
     """Tiingo Equity end of day Data."""
 
-    __alias_dict__ = {
-        "adj_open": "adjOpen",
-        "adj_high": "adjHigh",
-        "adj_low": "adjLow",
-        "adj_close": "adjClose",
-        "adj_volume": "adjVolume",
-        "dividend": "divCash",
-        "split_ratio": "splitFactor",
-    }
-
     adj_open: Optional[float] = Field(
         default=None,
         description="Adjusted open price during the period.",
+        alias="adjOpen",
     )
     adj_high: Optional[float] = Field(
         default=None,
         description="Adjusted high price during the period.",
+        alias="adjHigh",
     )
     adj_low: Optional[float] = Field(
         default=None,
         description="Adjusted low price during the period.",
+        alias="adjLow",
     )
     adj_close: Optional[float] = Field(
         default=None,
         description="Adjusted closing price during the period.",
+        alias="adjClose",
     )
     adj_volume: Optional[float] = Field(
         default=None,
         description="Adjusted volume during the period.",
+        alias="adjVolume",
     )
     split_ratio: Optional[float] = Field(
         default=None,
         description="Ratio of the equity split, if a equity split occurred.",
+        alias="splitFactor",
     )
     dividend: Optional[float] = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
+        alias="divCash",
     )
 
 
@@ -121,17 +123,13 @@ class TiingoEquityHistoricalFetcher(
         """Return the raw data from the Tiingo endpoint."""
         api_key = credentials.get("tiingo_token") if credentials else ""
 
-        base_url = (
-            f"https://api.tiingo.com/tiingo/daily/{query.symbol}/prices"
-            f"?startDate={query.start_date}"
-            f"&endDate={query.end_date}"
-            f"&resampleFreq={query._frequency}"
-            f"&token={api_key}"
+        base_url = "https://api.tiingo.com/tiingo/daily"
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "interval"]
         )
+        url = f"{base_url}/{query.symbol}/prices?{query_str}&resampleFreq={query._frequency}&token={api_key}"
 
-        data = make_request(base_url).json()
-
-        return data
+        return get_data_many(url)
 
     # pylint: disable=unused-argument
     @staticmethod
