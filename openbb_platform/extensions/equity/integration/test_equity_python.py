@@ -1263,9 +1263,7 @@ def test_equity_market_snapshots(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [
-        ({'symbol': 'AAPL'})
-    ],
+    [({"symbol": "AAPL"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_trailing_dividend_yield(params, obb):
@@ -1275,4 +1273,3 @@ def test_equity_fundamental_trailing_dividend_yield(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
