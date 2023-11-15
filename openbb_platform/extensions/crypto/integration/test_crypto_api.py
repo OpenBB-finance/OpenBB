@@ -113,6 +113,16 @@ def test_crypto_search(params, headers):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "interval": "1d",
+                "period": "max",
+                "provider": "tiingo",
+                "symbol": "BTCUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

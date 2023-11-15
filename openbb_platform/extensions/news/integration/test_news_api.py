@@ -56,6 +56,12 @@ def headers():
                 "term": "MSFT",
             }
         ),
+        (
+            {
+                "provider": "tiingo",
+                "limit": 30,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
