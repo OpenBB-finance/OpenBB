@@ -19,6 +19,7 @@ def vcr_config():
         ],
     }
 
+
 @pytest.mark.skip(reason="openbb-ultima is not installed on the CI.")
 @pytest.mark.record_http
 def test_ultima_company_news_fetcher(credentials=test_credentials):
