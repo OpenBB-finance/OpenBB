@@ -39,5 +39,5 @@ class Provider:
             self.credentials: List = []
         else:
             self.credentials = []
-            for rq in credentials:
-                self.credentials.append(f"{self.name.lower()}_{rq}")
+            for c in credentials:
+                self.credentials.append(f"{self.name.lower()}_{c}")
