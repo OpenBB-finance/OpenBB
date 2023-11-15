@@ -60,6 +60,8 @@ class NasdaqDividendCalendarFetcher(
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqDividendCalendarQueryParams:
         """Transform the query params."""
