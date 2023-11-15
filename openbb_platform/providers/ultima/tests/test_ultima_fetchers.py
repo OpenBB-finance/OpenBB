@@ -1,6 +1,10 @@
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_ultima.models.company_news import UltimaCompanyNewsFetcher
+
+try:
+    from openbb_ultima.models.company_news import UltimaCompanyNewsFetcher
+except ImportError:
+    pytest.skip("openbb-ultima is not installed on the CI.", allow_module_level=True)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -21,6 +25,7 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+@pytest.mark.skip(reason="openbb-ultima is not installed on the CI.")
 def test_ultima_company_news_fetcher(credentials=test_credentials):
     params = {"symbols": "AAPL, MSFT"}
 
