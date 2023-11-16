@@ -1,15 +1,15 @@
-# Futures data extension for OpenBB Platform
+# OpenBB Derivatives Extension
 
-This extension provides a set of commands for futures data retrieval.
+This extension provides derivatives data for the OpenBB Platform.
 
 ## Installation
 
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install openbb-futures
+pip install openbb-derivatives
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/CONTRIBUTING.md).
 
-Documentation available [here](https://docs.openbb.co/platform).
+Documentation available [here](https://docs.openbb.co/sdk).
