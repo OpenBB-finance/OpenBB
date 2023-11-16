@@ -25,9 +25,6 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
     source: Optional[str] = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
-    tags: Optional[str] = Field(
-        default=None, description="A comma-separated list of the tags requested."
-    )
 
 
 class TiingoCompanyNewsData(CompanyNewsData):
