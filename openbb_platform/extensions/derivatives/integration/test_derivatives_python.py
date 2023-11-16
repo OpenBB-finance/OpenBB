@@ -37,7 +37,6 @@ def test_derivatives_options_chains(params, obb):
     [
         ({"symbol": "AAPL"}),
         ({"provider": "intrinio", "source": "delayed", "symbol": "AAPL"}),
-        # ({"provider": "intrinio", "symbol": None, "source": "delayed"}),
         ({"provider": "intrinio", "symbol": "PLTR", "source": "delayed"}),
     ],
 )
