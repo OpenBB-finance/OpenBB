@@ -20,9 +20,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data and Sources - Faqs | OpenBB SDK Docs" />
 
-
-## Data and Sources
-
 Please note that OpenBB does not provide any data, it is an aggregator which provides users access to data from a variety of sources. OpenBB does not maintain or have any control over the raw data supplied. If there is a specific problem with the output from a data provider, please consider contacting them first.
 
 <details><summary>Is there a list of all data providers?</summary>

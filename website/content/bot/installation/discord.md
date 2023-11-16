@@ -1,5 +1,5 @@
 ---
-title: Setting up Discord bot
+title: Discord bot
 sidebar_position: 2
 description: This page guides you on how to add a bot to your Discord server, through
   steps of login, bot authorization, and adjusting bot permissions.

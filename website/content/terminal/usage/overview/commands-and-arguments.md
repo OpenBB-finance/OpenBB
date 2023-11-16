@@ -89,7 +89,7 @@ The `about` command opens the browser to the OpenBB documentation pages for the 
 (🦋) / $ about stocks
 ```
 
-The command above will open a browser to [Introduction to the Stocks menu](/terminal/menus/stocks/introduction.md).
+The command above will open a browser to [Introduction to the Stocks menu](/terminal/menus/stocks).
 
 ### Support
 

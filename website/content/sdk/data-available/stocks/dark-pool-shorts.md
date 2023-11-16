@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Dark Pools and Short Data - Stocks - Intros - Usage | OpenBB SDK Docs" />
 
-The `DPS` sub-module contains the commands from the [Dark Pools and Short Data menu](/terminal/data-available/stocks/dark-pool-shorts) within the OpenBB Terminal. These functions are meant to supplement other research on technical trading factors, settlement schedules, market flow, and volume dynamics. Commands are specifically for US-listed equities, and the data is reported to [FINRA](https://www.finra.org/#/) on a lagging schedule. Some will also have a `_chart` companion.
+The `DPS` sub-module contains the commands from the [Dark Pools and Short Data menu](/terminal/menus/stocks/dark-pool-shorts) within the OpenBB Terminal. These functions are meant to supplement other research on technical trading factors, settlement schedules, market flow, and volume dynamics. Commands are specifically for US-listed equities, and the data is reported to [FINRA](https://www.finra.org/#/) on a lagging schedule. Some will also have a `_chart` companion.
 
 ## How to Use
 

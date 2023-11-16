@@ -42,7 +42,7 @@ The Forecast menu is entered from the Main menu, `forecast`, or with the absolut
 
 ![The Forecast Menu](https://user-images.githubusercontent.com/85772166/233540050-071524c6-f374-4241-aa31-cf33b7685e22.png)
 
-There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/menus/crypto/introduction.md) and [`/stocks` menu](/terminal/menus/stocks/introduction.md)
+There are also methods for entering the menu with a loaded ticker symbol from either of the [`/crypto` menu](/terminal/menus/crypto) and [`/stocks` menu](/terminal/menus/stock)
 
 The menu is divided into sections for:
 
