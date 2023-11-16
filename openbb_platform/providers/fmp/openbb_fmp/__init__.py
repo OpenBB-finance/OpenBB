@@ -22,7 +22,7 @@ from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
-from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
+from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
@@ -90,7 +90,7 @@ fmp_provider = Provider(
         "EquityOwnership": FMPEquityOwnershipFetcher,
         "EquityPeers": FMPEquityPeersFetcher,
         "EquityQuote": FMPEquityQuoteFetcher,
-        "EquitySearch": FMPEquitySearchFetcher,
+        "EquityScreener": FMPEquityScreenerFetcher,
         "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,

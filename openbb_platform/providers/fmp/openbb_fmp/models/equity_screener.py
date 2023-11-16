@@ -1,4 +1,4 @@
-"""FMP Equity Search fetcher."""
+"""FMP Equity Screener fetcher."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -6,15 +6,15 @@ import pandas as pd
 from openbb_fmp.utils.definitions import EXCHANGES, SECTORS
 from openbb_fmp.utils.helpers import create_url, get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_search import (
-    EquitySearchData,
-    EquitySearchQueryParams,
+from openbb_provider.standard_models.equity_screener import (
+    EquityScreenerData,
+    EquityScreenerQueryParams,
 )
 from pydantic import Field
 
 
-class FMPEquitySearchQueryParams(EquitySearchQueryParams):
-    """FMP Equity Search Query Params."""
+class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
+    """FMP Equity Screener Query Params."""
 
     __alias_dict__ = {
         "mktcap_min": "marketCapMoreThan",
@@ -91,8 +91,8 @@ class FMPEquitySearchQueryParams(EquitySearchQueryParams):
     )
 
 
-class FMPEquitySearchData(EquitySearchData):
-    """FMP Equity Search Data."""
+class FMPEquityScreenerData(EquityScreenerData):
+    """FMP Equity Screener Data."""
 
     __alias_dict__ = {
         "name": "companyName",
@@ -141,22 +141,22 @@ class FMPEquitySearchData(EquitySearchData):
     )
 
 
-class FMPEquitySearchFetcher(
+class FMPEquityScreenerFetcher(
     Fetcher[
-        FMPEquitySearchQueryParams,
-        List[FMPEquitySearchData],
+        FMPEquityScreenerQueryParams,
+        List[FMPEquityScreenerData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPEquitySearchQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPEquityScreenerQueryParams:
         """Transform the query."""
-        return FMPEquitySearchQueryParams(**params)
+        return FMPEquityScreenerQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPEquitySearchQueryParams,
+        query: FMPEquityScreenerQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -173,8 +173,8 @@ class FMPEquitySearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPEquitySearchQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPEquitySearchData]:
+        query: FMPEquityScreenerQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPEquityScreenerData]:
         """Return the transformed data."""
         results = pd.DataFrame(data)
         if len(results) == 0:
@@ -184,21 +184,12 @@ class FMPEquitySearchFetcher(
                 results["sector"].str.contains(query.industry, case=False)
                 | results["industry"].str.contains(query.industry, case=False)
             ]
-        if query.query:
-            results = results[
-                results["companyName"].str.contains(query.query, case=False)
-                | results["exchangeShortName"].str.contains(query.query, case=False)
-                | results["exchange"].str.contains(query.query, case=False)
-                | results["sector"].str.contains(query.query, case=False)
-                | results["industry"].str.contains(query.query, case=False)
-                | results["country"].str.contains(query.query, case=False)
-            ]
         results["companyName"] = results["companyName"].fillna("-").replace("-", "")
         for col in results:
             if results[col].dtype in ("int", "float"):
                 results[col] = results[col].fillna(0).replace(0, None)
         return [
-            FMPEquitySearchData.model_validate(d)
+            FMPEquityScreenerData.model_validate(d)
             for d in results.sort_values(by="marketCap", ascending=False).to_dict(
                 "records"
             )
