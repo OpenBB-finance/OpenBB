@@ -7,11 +7,17 @@ from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_attributes import (
+    IntrinioFinancialAttributesFetcher,
+)
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.search_financial_attributes import (
+    IntrinioSearchFinancialAttributesFetcher,
+)
 from openbb_provider.abstract.provider import Provider
 
 intrinio_provider = Provider(
@@ -28,10 +34,12 @@ intrinio_provider = Provider(
         "CurrencyPairs": IntrinioCurrencyPairsFetcher,
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
+        "FinancialAttributes": IntrinioFinancialAttributesFetcher,
         "FredIndices": IntrinioFredIndicesFetcher,
         "GlobalNews": IntrinioGlobalNewsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
+        "SearchFinancialAttributes": IntrinioSearchFinancialAttributesFetcher,
     },
 )

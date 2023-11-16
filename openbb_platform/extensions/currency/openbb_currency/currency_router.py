@@ -26,3 +26,14 @@ def search(
 ) -> OBBject[BaseModel]:
     """Currency Search. Search available currency pairs."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="CurrencyReferenceRates")
+def reference_rates(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Current, official, currency reference rates."""
+    return OBBject(results=Query(**locals()).execute())
