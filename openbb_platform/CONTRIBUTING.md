@@ -294,7 +294,7 @@ In this section, we'll be adding a new data point to the OpenBB Platform. We wil
 In this example, we'll be adding OHLC stock data that is used by the `obb.equity.price.historical` command.
 
 Note that, if no command exists for your data, we need to add one under the right router.
-Each router is categorized under different extensions (stocks, currency, crypto, etc.).
+Each router is categorized under different extensions (equity, currency, crypto, etc.).
 
 #### Check if the standard model exists
 
