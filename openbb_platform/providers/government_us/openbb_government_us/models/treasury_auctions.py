@@ -62,20 +62,16 @@ class GovernmentUSTreasuryAuctionsFetcher(
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
 
         if not query.start_date:
-            query.start_date = (datetime.now() - timedelta(days=90))
+            query.start_date = datetime.now() - timedelta(days=90)
         if not query.end_date:
             query.end_date = datetime.now()
 
         _query = query.model_dump()
         _query["startDate"] = (
-            _query["startDate"].strftime("%m/%d/%Y")
-            if query.start_date
-            else None
+            _query["startDate"].strftime("%m/%d/%Y") if query.start_date else None
         )
         _query["endDate"] = (
-            _query["endDate"].strftime("%m/%d/%Y")
-            if _query["endDate"]
-            else None
+            _query["endDate"].strftime("%m/%d/%Y") if _query["endDate"] else None
         )
         query_string = get_querystring(_query, [])
 
