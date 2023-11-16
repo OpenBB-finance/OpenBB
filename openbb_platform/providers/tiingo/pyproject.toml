@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "openbb-futures"
+name = "openbb-tiingo"
 version = "1.0.0b0"
-description = "Futures extension for OpenBB"
+description = "Tiingo extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb_futures" }]
+packages = [{ include = "openbb_tiingo" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -14,5 +14,5 @@ openbb-core = "^1.0.0b0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.plugins."openbb_core_extension"]
-futures = "openbb_futures.futures_router:router"
+[tool.poetry.plugins."openbb_provider_extension"]
+tiingo = "openbb_tiingo:tiingo_provider"

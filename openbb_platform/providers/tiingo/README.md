@@ -1,13 +1,13 @@
-# Futures data extension for OpenBB Platform
+# OpenBB Tiingo Provider
 
-This extension provides a set of commands for futures data retrieval.
+This extension integrates the [Tiingo](https://www.tiingo.com/) data provider into the OpenBB Platform.
 
 ## Installation
 
-To install the extension, run the following command in this folder:
+To install the extension:
 
 ```bash
-pip install openbb-futures
+pip install openbb-tiingo
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/feature/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).
