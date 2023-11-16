@@ -22,6 +22,10 @@ class USTreasuryAuctionsQueryParams(QueryParams):
         description="Used to only return securities of a particular type.",
         alias="type",
     )
+    cusip: Optional[str] = Field(
+        default=None,
+        description="Filter securities by CUSIP.",
+    )
     page_size: Optional[int] = Field(
         default=None,
         description="Maximum number of results to return; you must also include pagenum when using pagesize.",

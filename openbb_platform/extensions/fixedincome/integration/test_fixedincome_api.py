@@ -443,6 +443,7 @@ def test_fixedincome_government_eu_yield_curve(params, headers):
             {
                 "start_date": "2023-09-01",
                 "end_date": "2023-11-16",
+                "cusip": None,
                 "page_size": None,
                 "page_num": None,
                 "security_type": None,
@@ -453,6 +454,7 @@ def test_fixedincome_government_eu_yield_curve(params, headers):
             {
                 "start_date": "2023-09-01",
                 "end_date": "2023-11-16",
+                "cusip": None,
                 "page_size": None,
                 "page_num": None,
                 "security_type": "Bond",
