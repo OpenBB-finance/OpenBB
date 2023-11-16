@@ -255,3 +255,14 @@ def transcript(
 ) -> OBBject[BaseModel]:
     """Earnings Call Transcript. Earnings call transcript for a given company."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="TrailingDividendYield")
+def trailing_dividend_yield(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Trailing 1yr dividend yield."""
+    return OBBject(results=Query(**locals()).execute())

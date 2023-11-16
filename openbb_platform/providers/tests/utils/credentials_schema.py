@@ -10,4 +10,5 @@ test_credentials: Dict[str, Tuple[str, str]] = {
     "nasdaq": ("x-api-token", "MOCK_API_KEY"),
     "fred": ("api_key", "MOCK_API_KEY"),
     "intrinio": ("api_key", "MOCK_API_KEY"),
+    "tiingo": ("token", "MOCK_TOKEN"),
 }

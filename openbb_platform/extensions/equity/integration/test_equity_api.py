@@ -684,44 +684,6 @@ def test_equity_compare_peers(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"date": "2023-01-25", "provider": "intrinio", "symbol": "AAPL"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_options_chains(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/options/chains?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"symbol": "AAPL"}),
-        ({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"}),
-        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
-        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_options_unusual(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/options/unusual?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "symbol": "AAPL",
@@ -871,6 +833,24 @@ def test_equity_options_unusual(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
             }
         ),
     ],
@@ -1348,7 +1328,22 @@ def test_equity_fundamental_historical_eps(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamnetal/historical_eps?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/historical_eps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"provider": "tiingo", "symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_equity_fundamental_trailing_dividend_yield(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/trailing_dividend_yield?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
