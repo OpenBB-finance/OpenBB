@@ -37,17 +37,6 @@ router.include_router(shorts_router)
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 
 
-@router.command(model="CompanyNews")
-def news(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Company News. Get news for one or more companies."""
-    return OBBject(results=Query(**locals()).execute())
-
-
 @router.command(model="EquitySearch")
 def search(
     cc: CommandContext,
