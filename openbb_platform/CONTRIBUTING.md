@@ -145,7 +145,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 
 ```python
 class EquityHistoricalQueryParams(QueryParams):
-    """Stock end of day Query."""
+    """Equity Historical end of day Query."""
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[date] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -163,7 +163,7 @@ The OpenBB Platform dynamically knows where the standard models begin in the inh
 
 ```python
 class EquityHistoricalData(Data):
-    """Stock end of day price Data."""
+    """Equity Historical end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -329,7 +329,7 @@ class <ProviderName>EquityHistoricalQueryParams(EquityHistoricalQueryParams):
 ##### Create Data Output model
 
 The data output is the data that is returned by the API endpoint.
-For the `StockHistorical` example, this would look like the following:
+For the `EquityHistorical` example, this would look like the following:
 
 ```python
 
