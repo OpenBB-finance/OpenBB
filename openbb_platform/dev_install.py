@@ -30,6 +30,7 @@ openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = tru
 
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
+openbb-derivatives = { path = "./extensions/derivatives", develop = true }
 openbb-economy = { path = "./extensions/economy", develop = true }
 openbb-equity = { path = "./extensions/equity", develop = true }
 openbb-etf = { path = "./extensions/etf", develop = true }
@@ -52,7 +53,6 @@ openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = tr
 
 openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
-openbb-futures = { path = "./extensions/futures", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
 """
