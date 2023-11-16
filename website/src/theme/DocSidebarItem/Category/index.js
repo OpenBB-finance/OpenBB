@@ -42,7 +42,7 @@ function useCategoryHrefWithSSRFallback(item, href) {
   const isBrowser = useIsBrowser();
   return useMemo(() => {
     if (href) {
-      return href
+      return href;
     }
     // In these cases, it's not necessary to render a fallback
     // We skip the "findFirstCategoryLink" computation
@@ -83,7 +83,7 @@ export default function DocSidebarItemCategory({
     "OpenBB Terminal": "/terminal",
     "OpenBB Platform": "/platform",
     "OpenBB Bot": "/bot",
-    "OpenBB Terminal Pro": "/pro"
+    "OpenBB Terminal Pro": "/pro",
   };
   const newHref = labelToHrefMap[label] || href;
   const {
@@ -159,23 +159,23 @@ export default function DocSidebarItemCategory({
           onClick={
             collapsible
               ? (e) => {
-                if (dontShowLink) {
-                  e.preventDefault();
+                  if (dontShowLink) {
+                    e.preventDefault();
+                  }
+                  onItemClick?.(item);
+                  if (newHref) {
+                    updateCollapsed(false);
+                  } else {
+                    e.preventDefault();
+                    updateCollapsed();
+                  }
                 }
-                onItemClick?.(item);
-                if (newHref) {
-                  updateCollapsed(false);
-                } else {
-                  e.preventDefault();
-                  updateCollapsed();
-                }
-              }
               : () => {
-                if (dontShowLink) {
-                  e.preventDefault();
+                  if (dontShowLink) {
+                    e.preventDefault();
+                  }
+                  onItemClick?.(item);
                 }
-                onItemClick?.(item);
-              }
           }
           aria-current={isCurrentPage ? "page" : undefined}
           aria-expanded={collapsible ? !collapsed : undefined}
