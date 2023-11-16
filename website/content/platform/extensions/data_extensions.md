@@ -73,6 +73,7 @@ pip uninstall openbb-yfinance
 | openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector. | pip install openbb-sec | Core | None |
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector. | pip install openbb-seeking-alpha | Community | None |
 | openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector. | pip install openbb-stockgrid | Community | None |
+| openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector. | pip install openbb-tiingo | Core | Free |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector. | pip install openbb-tradingeconomics | Core | Paid |
 | openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector. | pip install openbb-ultima | Community | Paid |
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector. | pip install openbb-wsj | Community | None |

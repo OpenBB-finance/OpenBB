@@ -31,6 +31,7 @@ OpenBB Toolkit Extensions expand the Platform with functions for manipulating da
 | Extension Name | Description | Installation Command | Core/Community | Router Path |
 |:-----------------|:-----------:|:-------------------:|:------------------:|-------------:|
 | openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
+| openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
 | openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
 | openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
 
@@ -87,6 +88,35 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 - Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+## Econometrics
+
+The `openbb-econometrics` extension installs a new router path (`obb.econometrics`) and additional Python libraries:
+
+- scipy = "^1.10.1"
+- statsmodels = "^0.14.0"
+- arch = "^5.5.0"
+- linearmodels = "<=4.25"
+
+:::note
+This extension is not accessible via REST API because `statsmodels` is not serializable.
+:::
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-econometrics
+```
+
+To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/econometrics`, and enter:
+
+```console
+pip install -e .
+```
+
+After installation, the Python interface will automatically rebuild on initialization.
 
 ## Quantitative
 
