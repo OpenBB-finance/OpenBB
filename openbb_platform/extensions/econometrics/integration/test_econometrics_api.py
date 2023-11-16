@@ -1,4 +1,8 @@
+import json
+
 import pytest
+import requests
+from openbb_provider.utils.helpers import get_querystring
 
 
 @pytest.mark.skip(reason="econometrics is a python only extensions so far")
