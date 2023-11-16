@@ -33,7 +33,7 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     exchanges: Optional[List[str]] = Field(
         default=None,
         description=(
-            "To limit the query to a subset of exchanges e.g. ['POLONIEX, GDAX']"
+            "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']"
         ),
     )
     # pylint: disable=protected-access
