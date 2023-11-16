@@ -21,7 +21,7 @@ This set of features is for checking the operating status of markets globally.
 
 ## Usage
 
-Enter, `th`, from the [`/stocks/`](/terminal/menus/stocks/introduction.md) menu. Or, with the absolute path:
+Enter, `th`, from the [`/stocks/`](/terminal/menus/stocks) menu. Or, with the absolute path:
 
 ```console
 /stocks/th

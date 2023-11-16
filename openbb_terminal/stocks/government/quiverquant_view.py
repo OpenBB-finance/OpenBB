@@ -525,6 +525,7 @@ def display_qtr_contracts(
         max_amount = 0
         quarter_ticks = []
         df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
+        df_contracts["Amount"] = pd.to_numeric(df_contracts["Amount"])
         for symbol in symbols:
             amounts = (
                 df_contracts[df_contracts["Ticker"] == symbol]

@@ -1,5 +1,5 @@
 ---
-title: Setting up Telegram bot
+title: Telegram bot
 sidebar_position: 3
 description: Step-by-step guide to add the OpenBB Bot to a Telegram group. From starting
   a chat with the bot to verifying its permissions, follow these steps to have your

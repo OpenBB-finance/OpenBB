@@ -68,7 +68,7 @@ uvicorn openbb_core.api.rest_api:app
 
 ## Provider
 
-The `provider` parameter is the way to select the specific source of the data from the endpoint.  If a [preference for the default provider](/platform/usage/overview#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
+The `provider` parameter is the way to select the specific source of the data from the endpoint.  If a [preference for the default provider](/platform/usage#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
 
 ```python
 historical_prices = obb.equity.price.historical("aapl", provider="alpha_vantage")
@@ -80,7 +80,7 @@ Provider coverage can be ascertained with the command below:
 obb.coverage.providers
 ```
 
-Refer to, [Data Providers](/platform/usage/data_extensions), for instructions on installing data provider extensions.
+Refer to, [Data Providers](/platform/extensions/data_extensions), for instructions on installing data provider extensions.
 
 ## Symbol
 

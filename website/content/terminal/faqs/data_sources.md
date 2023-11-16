@@ -30,7 +30,7 @@ The complete list is found [here](/terminal/usage/data/api-keys)
 
 <details><summary>How do I find and load a ticker symbol from India, or any other country?</summary>
 
-Use the [`/stocks/search`](/terminal/data-available/stocks#search) command.
+Use the [`/stocks/search`](/terminal/menus/stocks/introduction#search) command.
 
 ```console
 search --country canada --industrygroup banks

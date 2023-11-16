@@ -24,7 +24,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Overview
 
-The Insiders module provides endpoints to the [Insiders Trading menu in the OpenBB Terminal](/terminal/data-available/stocks/ins).  The contents of the module are displayed on screen with:
+The Insiders module provides endpoints to the [Insiders Trading menu in the OpenBB Terminal](/terminal/menus/stocks/ins).  The contents of the module are displayed on screen with:
 
 ```python
 openbb.stocks.ins?
