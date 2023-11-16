@@ -46,6 +46,17 @@ def search(
     return OBBject(results=Query(**locals()).execute())
 
 
+@router.command(model="EquityScreener")
+def screener(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Equity Screen. Screen for companies meeting various criteria."""
+    return OBBject(results=Query(**locals()).execute())
+
+
 @router.command(model="EquityInfo")
 def profile(
     cc: CommandContext,

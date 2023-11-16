@@ -900,6 +900,41 @@ def test_equity_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "industry": "REIT",
+                "sector": "Real Estate",
+                "mktcap_min": None,
+                "mktcap_max": None,
+                "price_min": None,
+                "price_max": None,
+                "volume_min": None,
+                "volume_max": None,
+                "dividend_min": None,
+                "dividend_max": None,
+                "is_active": True,
+                "is_etf": False,
+                "beta_min": None,
+                "beta_max": None,
+                "country": "US",
+                "exchange": "nyse",
+                "limit": None,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_screener(params, obb):
+    result = obb.equity.screener(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
