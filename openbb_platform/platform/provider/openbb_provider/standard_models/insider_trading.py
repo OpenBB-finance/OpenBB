@@ -1,4 +1,4 @@
-"""Stock insider trading data model."""
+"""insider trading data model."""
 
 
 from datetime import date, datetime, time
@@ -33,8 +33,8 @@ TRANSACTION_TYPES = Literal[
 ]
 
 
-class StockInsiderTradingQueryParams(QueryParams):
-    """Stock Insider Trading Query."""
+class InsiderTradingQueryParams(QueryParams):
+    """Insider Trading Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     transaction_type: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
@@ -47,7 +47,7 @@ class StockInsiderTradingQueryParams(QueryParams):
 
     @model_validator(mode="after")
     @classmethod
-    def validate_transaction_type(cls, values: "StockInsiderTradingQueryParams"):
+    def validate_transaction_type(cls, values: "InsiderTradingQueryParams"):
         """Validate the transaction type."""
         if isinstance(values.transaction_type, list):
             values.transaction_type = ",".join(values.transaction_type)
@@ -62,48 +62,38 @@ class StockInsiderTradingQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class StockInsiderTradingData(Data):
-    """Stock Insider Trading Data."""
+class InsiderTradingData(Data):
+    """Insider Trading Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    filing_date: datetime = Field(
-        description="Filing date of the stock insider trading."
-    )
+    filing_date: datetime = Field(description="Filing date of the insider trading.")
     transaction_date: date = Field(
-        description="Transaction date of the stock insider trading."
+        description="Transaction date of the insider trading."
     )
-    reporting_cik: int = Field(
-        description="Reporting CIK of the stock insider trading."
-    )
+    reporting_cik: int = Field(description="Reporting CIK of the insider trading.")
     transaction_type: str = Field(
-        description="Transaction type of the stock insider trading."
+        description="Transaction type of the insider trading."
     )
     securities_owned: StrictInt = Field(
-        description="Securities owned of the stock insider trading."
+        description="Securities owned of the insider trading."
     )
-    company_cik: int = Field(description="Company CIK of the stock insider trading.")
-    reporting_name: str = Field(
-        description="Reporting name of the stock insider trading."
-    )
-    type_of_owner: str = Field(
-        description="Type of owner of the stock insider trading."
-    )
+    company_cik: int = Field(description="Company CIK of the insider trading.")
+    reporting_name: str = Field(description="Reporting name of the insider trading.")
+    type_of_owner: str = Field(description="Type of owner of the insider trading.")
     acquisition_or_disposition: Optional[str] = Field(
         default=None,
-        description="Acquisition or disposition of the stock insider trading.",
+        description="Acquisition or disposition of the insider trading.",
     )
-    form_type: str = Field(description="Form type of the stock insider trading.")
+    form_type: str = Field(description="Form type of the insider trading.")
     securities_transacted: float = Field(
-        description="Securities transacted of the stock insider trading."
+        description="Securities transacted of the insider trading."
     )
     price: Optional[float] = Field(
         default=None,
-        description="Price of the stock insider trading.",
+        description="Price of the insider trading.",
     )
-    security_name: str = Field(
-        description="Security name of the stock insider trading."
-    )
-    link: str = Field(description="Link of the stock insider trading.")
+    security_name: str = Field(description="Security name of the insider trading.")
+    link: str = Field(description="Link of the insider trading.")
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

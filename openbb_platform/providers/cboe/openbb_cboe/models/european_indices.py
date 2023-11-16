@@ -1,4 +1,4 @@
-"""European Indices End of Day fetcher for CBOE."""
+"""CBOE European Indices Fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +16,7 @@ from pydantic import Field, field_validator
 
 
 class CboeEuropeanIndicesQueryParams(EuropeanIndicesQueryParams):
-    """CBOE European Indices End of Day query.
+    """CBOE European Indices Query.
 
     Source: https://www.cboe.com/europe/indices/
     """
@@ -28,7 +28,7 @@ class CboeEuropeanIndicesQueryParams(EuropeanIndicesQueryParams):
 
 
 class CboeEuropeanIndicesData(EuropeanIndicesData):
-    """CBOE Stocks End of Day Data."""
+    """CBOE European Indices Data."""
 
     open: Optional[float] = Field(
         default=None,

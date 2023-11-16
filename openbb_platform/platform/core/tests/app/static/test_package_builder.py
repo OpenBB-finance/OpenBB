@@ -421,9 +421,9 @@ def test_get_child_path_list(path_handler, path_list):
 
 def test_clean_path(path_handler):
     """Test clean path."""
-    path = "/stocks/load"
+    path = "/equity/price/historical"
     result = path_handler.clean_path(path=path)
-    assert result == "stocks_load"
+    assert result == "equity_price_historical"
 
 
 def test_build_module_name(path_handler):
@@ -431,8 +431,8 @@ def test_build_module_name(path_handler):
     module_name = path_handler.build_module_name(path="")
     assert module_name == "__extensions__"
 
-    module_name = path_handler.build_module_name(path="/stocks/load")
-    assert module_name == "stocks_load"
+    module_name = path_handler.build_module_name(path="/equity/price/historical")
+    assert module_name == "equity_price_historical"
 
 
 def test_build_module_class(path_handler):
@@ -440,8 +440,8 @@ def test_build_module_class(path_handler):
     module_class = path_handler.build_module_class(path="")
     assert module_class == "Extensions"
 
-    module_class = path_handler.build_module_class(path="/stocks/load")
-    assert module_class == "ROUTER_stocks_load"
+    module_class = path_handler.build_module_class(path="/equity/price/historical")
+    assert module_class == "ROUTER_equity_price_historical"
 
 
 @pytest.fixture(scope="module")

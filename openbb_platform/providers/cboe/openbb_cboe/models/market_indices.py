@@ -1,4 +1,4 @@
-"""CBOE Market Indices end of Day fetcher."""
+"""CBOE Market Indices Fetcher."""
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
@@ -19,7 +19,7 @@ from pydantic import Field
 
 
 class CboeMarketIndicesQueryParams(MarketIndicesQueryParams):
-    """CBOE Stock end of day query.
+    """CBOE Market Indices Query.
 
     Source: https://www.cboe.com/
     """
@@ -31,7 +31,7 @@ class CboeMarketIndicesQueryParams(MarketIndicesQueryParams):
 
 
 class CboeMarketIndicesData(MarketIndicesData):
-    """CBOE Stocks End of Day Data."""
+    """CBOE Market Indices Data."""
 
     calls_volume: Optional[float] = Field(
         default=None,
