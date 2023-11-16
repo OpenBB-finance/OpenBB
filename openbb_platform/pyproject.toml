@@ -17,6 +17,7 @@ openbb-intrinio = "^1.0.0b0"
 openbb-oecd = "^1.0.0b0"
 openbb-polygon = "^1.0.0b0"
 openbb-sec = "^1.0.0b0"
+openbb-tiingo = "^1.0.0b0"
 openbb-tradingeconomics = "^1.0.0b0"
 
 openbb-crypto = "^1.0.0b0"
@@ -80,6 +81,7 @@ all = [
     "openbb-technical",
     "openbb-wsj",
     "openbb-yfinance",
+    "openbb-tiingo"
 ]
 
 [tool.poetry.group.dev.dependencies]
