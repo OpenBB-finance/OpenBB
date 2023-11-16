@@ -1,29 +1,18 @@
 ---
-title: Share your extension
+title: Sharing Your Extension
 sidebar_position: 4
-description: A guide on how to publish, release and install an extension on PyPI using
-  commands like poetry build and poetry publish. Part of the developer setup includes
-  generating an API token.
+description: This guide provides detailed instructions on how to share your custom OpenBB extension with the community by publishing it on PyPI.
 keywords:
-- extension
-- publish
-- PyPI
-- API token
-- poetry
-- pyproject.toml
-- pip install
-- release
-- .whl
-- tar.gz
-- poetry build
-- poetry publish
-- dist
-- openbb
+- OpenBB extensions
+- PyPI publishing
+- Extension sharing
+- Custom extension
+- OpenBB community
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Share your extension - Extension Development - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Sharing Your Extension - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
 
 We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
 

@@ -1,29 +1,20 @@
 ---
-title: Extension QA
-sidebar_position: 3
-description: This documentation page provides detailed instructions on creating and
-  executing automated unit and integration tests on the OpenBB Platform. It covers
-  the process for fetching data, testing the Python and API interfaces, and generating
-  these tests.
+title: Quality Assurance
+sidebar_position: 2
+description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
 keywords:
-- OpenBB Platform
-- unit tests
-- integration tests
-- python interface
-- API interface
-- test generator
-- QA process
-- quality assurance
-- testing tools
-- automated testing
-- tuna import time
+- OpenBB QA process
+- Unit and integration tests
+- QA tools
+- Extension testing
+- Import time optimization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Extension QA - Extension Development - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Quality Assurance - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
 
-We are strong believers in the QA process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
+We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 
 Primarily, we have tools that semi-automate the creation of unit and integration tests.
 
@@ -36,12 +27,19 @@ Each `Fetcher` comes equipped with a `test` method that will ensure that it is i
 To create unit tests for your Fetchers, you can run the following command:
 
 ```bash
-python openbb_platform/providers/tests/utils/unit_test_generator.py
+python openbb_platform/providers/tests/utils/unit_tests_generator.py
 ```
 
 > Note that you should be running this file from the root of the repository.
+> Note that the `tests` folder must exist in order to generate the tests.
 
 The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
+
+To record the unit tests, you can run the following command:
+
+```bash
+pytest <path_to_the_unit_test_file> --record=all
+```
 
 > Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 

@@ -1,31 +1,18 @@
 ---
-title: Add a custom data source
-sidebar_position: 2
-description: This page provides comprehensive guidance on using the OpenBB Platform
-  for data sourcing from a CSV file, local database or API endpoint. It details the
-  standardization framework, the use of Pydantic models for data extraction, and the
-  importance of the Fetcher class. It also includes steps to define FastAPI endpoints,
-  and utilize OpenBB commands for data querying and output.
+title: Add Custom Data Sources
+sidebar_position: 5
+description: This guide provides detailed instructions on how to add custom data sources to the OpenBB Platform. It covers the process of creating a custom extension, standardizing data, defining models, and creating a Fetcher class.
 keywords:
-- OpenBB Platform
-- standardization framework
-- data validation
-- type checking
-- data schema
-- query parameters
+- OpenBB custom data sources
+- Data standardization
+- Pydantic models
 - Fetcher class
-- OpenBB commands
-- FastAPI endpoints
-- data extraction
-- API endpoint
-- CSV file
-- local database
-- pydantic models
+- OpenBB extensions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Add a custom data source - Extension Development - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Add Custom Data Sources - Developer Guidelines - Contributing | OpenBB Platform Docs" />
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
@@ -35,8 +22,8 @@ Saying that, we highly recommend following the standardization framework, as it 
 
 When standardizing, all data is defined using two different pydantic models:
 
-1. Define the [query parameters](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) model.
-2. Define the resulting [data schema](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/abstract/data.py) model.
+1. Define the [query parameters](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/data.py) model.
 
 > The models can be entirely custom, or inherit from the OpenBB standardized models.
 > They enforce a safe and consistent data structure, validation and type checking.
@@ -49,15 +36,15 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 2. `extract_data` - makes the request to the API endpoint and returns the raw data.
 3. `transform_data` - transforms the raw data into the defined data model.
 
-> Note that the `Fetcher` should inherit from the [`Fetcher`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+> Note that the `Fetcher` should inherit from the [`Fetcher`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/feature/openbb-sdk-v4/openbb_platform/platform/provider/openbb_provider/abstract/provider.py).
+After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/provider.py).
 
 Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
 If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
 
-## OpenBB Platform commands
+## OpenBB Platform Commands
 
 The OpenBB Platform will enable you to query and output your data in a very simple way.
 

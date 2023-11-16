@@ -1,25 +1,20 @@
 ---
 title: Manage Extensions
-sidebar_position: 4
-description: This page provides detailed guidance on how to install locally developed
-  extensions and external extensions hosted on PyPI, including the use of pip install
-  commands, how to add an extension as a dependency, and instructions for using the
-  LOCAL_DEPS variable in the dev_install.py file and the pyproject.toml file.
+sidebar_position: 3
+description: This guide provides detailed instructions on how to manage extensions in the OpenBB Platform. It covers the installation of extensions hosted on PyPI and locally developed extensions, as well as adding an extension as a dependency.
 keywords:
-- pip install extension
-- pyproject.toml
-- LOCAL_DEPS
-- python dev_install.py
-- poetry.dependencies
-- openbb-extension
-- openbb-qa
+- OpenBB extensions
+- Extension management
+- PyPI extensions
+- Local extensions
+- Extension dependencies
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Manage Extensions - Platform Development - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Manage Extensions - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
 
-To install extensions hosted on PyPI, use the `pip install <extension>` command.
+To install an extension hosted on PyPI, use the `pip install <extension>` command.
 
 To install an extension that is developed locally, ensure that it contains a `pyproject.toml` file and then use the `pip install <extension>` command.
 
