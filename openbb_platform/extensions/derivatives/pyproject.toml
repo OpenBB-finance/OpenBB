@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "openbb-futures"
+name = "openbb-derivatives"
 version = "1.0.0b0"
-description = "Futures extension for OpenBB"
+description = "Derivatives extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
-packages = [{ include = "openbb_futures" }]
+packages = [{ include = "openbb_derivatives" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -15,4 +15,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-futures = "openbb_futures.futures_router:router"
+derivatives = "openbb_derivatives.derivatives_router:router"
