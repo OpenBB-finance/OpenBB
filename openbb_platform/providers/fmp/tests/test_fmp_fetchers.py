@@ -25,7 +25,7 @@ from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
-from openbb_fmp.models.equity_search import FMPEquitySearchFetcher
+from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
@@ -464,10 +464,10 @@ def test_fmp_equity_quote_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_equity_search_fetcher(credentials=test_credentials):
+def test_fmp_equity_screener_fetcher(credentials=test_credentials):
     params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
 
-    fetcher = FMPEquitySearchFetcher()
+    fetcher = FMPEquityScreenerFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
