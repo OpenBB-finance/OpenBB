@@ -1,0 +1,138 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":59591461,\"publishedDate\":\"2023-11-16T08:38:56Z\",\"title\":\"How
+        to navigate higher education finances for a transformative journey? MintGenie
+        explains\",\"url\":\"https://www.livemint.com/money/personal-finance/how-to-navigate-higher-education-finances-for-a-transformative-journey-mintgenie-explains-11699517017204.html\",\"description\":\"Navigating
+        higher education finances requires careful planning and a personal approach.
+        Prioritize, stay informed, budget effectively, seek scholarships, explore
+        investments, and manage loans wisely to establish a robust foundation for
+        a successful educational journey.\",\"source\":\"livemint.com\",\"tags\":[\"Budgeting\",\"Cost
+        Of Education\",\"Educational Goals\",\"Expert Speak\",\"Financial Goals\",\"Financial
+        Planning\",\"Financial Resources\",\"Higher Education\",\"Inflation\",\"Investing\",\"Loans\",\"Mutual
+        Funds\",\"Personal Finance\",\"Scholarships\",\"Stocks\",\"Tax Benefits\"],\"crawlDate\":\"2023-11-16T08:39:15.354554Z\",\"tickers\":[]},{\"id\":59591464,\"publishedDate\":\"2023-11-16T08:38:22Z\",\"title\":\"Broome
+        financial counsellor Sen Amaratunga recognised for service to community\",\"url\":\"https://thewest.com.au/news/broome-advertiser/broome-financial-counsellor-sen-amaratunga-recognised-for-service-to-community--c-12574080\",\"description\":\"A
+        Broome financial counsellor has been honoured with an award for his dedication
+        to servicing the community.\_\",\"source\":\"thewest.com.au\",\"tags\":[\"Broome-Advertiser\",\"Kimberley\"],\"crawlDate\":\"2023-11-16T08:39:32.545512Z\",\"tickers\":[]},{\"id\":59591466,\"publishedDate\":\"2023-11-16T08:38:00Z\",\"title\":\"NetEase
+        Announces Third Quarter 2023 Unaudited Financial Results\",\"url\":\"https://www.prnewswire.com/news-releases/netease-announces-third-quarter-2023-unaudited-financial-results-301990338.html\",\"description\":\"/PRNewswire/
+        -- NetEase, Inc. (NASDAQ: NTES and HKEX: 9999, \\\"NetEase\\\" or the \\\"Company\\\"),
+        a leading internet and game services provider, today announced its...\",\"source\":\"prnewswire.com\",\"tags\":[\"Banking
+        & Financial Services\",\"Computer & Electronics\",\"Computer Software\",\"Earnings\",\"Earnings
+        Forecasts & Projections\",\"Electronic Gaming\",\"Entertainment\",\"Internet
+        Technology\",\"Mobile Entertainment\",\"Multimedia & Internet\",\"Telecommunications
+        Industry\",\"Web Site\"],\"crawlDate\":\"2023-11-16T08:39:47.836668Z\",\"tickers\":[]},{\"id\":59591465,\"publishedDate\":\"2023-11-16T08:37:46Z\",\"title\":\"UK's
+        Cameron makes first official visit to Ukraine\",\"url\":\"https://thewest.com.au/news/conflict/uks-cameron-makes-first-official-visit-to-ukraine-c-12578128\",\"description\":\"David
+        Cameron has met President Volodymyr Zelenskiy to underscore Britain's support
+        for Ukraine on his first official trip as foreign secretary.\",\"source\":\"thewest.com.au\",\"tags\":[\"Conflict\",\"Ukraine\"],\"crawlDate\":\"2023-11-16T08:39:33.544746Z\",\"tickers\":[]},{\"id\":59591382,\"publishedDate\":\"2023-11-16T08:37:25.324087Z\",\"title\":\"Retail,
+        institutional investors to be subject to same rules for short selling for
+        fairness\",\"url\":\"https://koreatimes.co.kr/www/nation/2023/11/488_363360.html?utm_source=fl\",\"description\":\"The
+        ruling People Power Party and financial authorities have announced plans to
+        apply the same conditions for the local short selling system for both retail
+        and institutional investors. \",\"source\":\"koreatimes.co.kr\",\"tags\":[\"Fsc\",\"Fss\",\"Korea\",\"Korea
+        Times\",\"Korean In English\",\"Koreatimes\",\"Short Selling\",\"South Korea\",\"The
+        Korea Times\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-16T08:37:26.483241Z\",\"tickers\":[]},{\"id\":59591420,\"publishedDate\":\"2023-11-16T08:37:24Z\",\"title\":\"Bill
+        Director buys stock worth $1M (NYSE:BILL)\",\"url\":\"https://seekingalpha.com/news/4037421-bill-director-buys-stock-worth-1m\",\"description\":\"Bill
+        Holdings director David Hornik purchased $1M worth of shares at $56.49 each.
+        The stock price is up 1.9% to $60.75 pre-market.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:38:21.175265Z\",\"tickers\":[\"bill\"]},{\"id\":59591429,\"publishedDate\":\"2023-11-16T08:37:11.873000Z\",\"title\":\"New
+        Delhi smog grows more intense as farm fires rage\",\"url\":\"https://www.reuters.com/world/india/new-delhi-smog-grows-more-intense-farm-fires-rage-2023-11-16/\",\"description\":\"Toxic
+        smog gripping New Delhi grew more intense on Thursday as farm fires raged
+        in nearby fields despite a court-ordered ban, making India's capital the world's
+        most polluted city again.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0Iw\",\"2023:Ml_Kbn32B0Iw:1\",\"2023:Ml_L1N3Ch0Kv\",\"2023:Ml_L1N3Ch0Kv:1327319944\",\"2023:Ml_M1L1N3Ch0Kv\",\"2023:Ml_M1L1N3Ch0Kv:1327319944\",\"Guid:Tag:Reuters.Com\",\"India\",\"Usn:Kbn32B0Iw\",\"Usn:L1N3Ch0Kv\",\"Usn:M1L1N3Ch0Kv\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:28.349029Z\",\"tickers\":[]},{\"id\":59591435,\"publishedDate\":\"2023-11-16T08:37:09Z\",\"title\":\"Fans
+        to miss Coldplay after flight cancellation\",\"url\":\"https://www.smh.com.au/national/fans-to-miss-coldplay-after-flight-cancellation-20231116-p5eko8.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Coldplay
+        and Robbie Williams fans are devastated to miss their concerts after flights
+        were cancelled from Adelaide Airport.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:38:31.298558Z\",\"tickers\":[]},{\"id\":59591380,\"publishedDate\":\"2023-11-16T08:37:05Z\",\"title\":\"Bitcoin\u2019s
+        Price is Pumping in the Past 24 Hours: Here\u2019s Why\",\"url\":\"https://cryptopotato.com/bitcoins-price-is-pumping-in-the-past-24-hours-heres-why/\",\"description\":\"BTC
+        rose to almost $38K following the SEC's latest delay on crypto ETF applications.\",\"source\":\"cryptopotato.com\",\"tags\":[\"Bitcoin\",\"Bitcoin
+        (Btc) Price\",\"Crypto Bits\",\"Crypto News\",\"CryptoCurrency\",\"ETF\",\"Financial
+        Services\",\"Real Estate\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-16T08:37:20.616538Z\",\"tickers\":[\"bcf\",\"bgio\",\"blk\",\"ihit\",\"ivr\",\"ivz\"]},{\"id\":59591430,\"publishedDate\":\"2023-11-16T08:37:00Z\",\"title\":\"ATP
+        Finals LIVE: Novak Djokovic given stark warning as Nick Kyrgios makes X-rated
+        error\",\"url\":\"https://www.express.co.uk/sport/tennis/1835605/ATP-Finals-LIVE-Novak-Djokovic-Nick-Kyrgios-tennis-scores-results-highlights\",\"description\":\"Express
+        Sport is on hand to provide the latest news from the ATP Finals.\",\"source\":\"express.co.uk\",\"tags\":[\"Andrey
+        Rublev\",\"Atp Finals\",\"Atp Finals Highlights\",\"Atp Finals Results\",\"Atp
+        Finals Scores\",\"Nick Kyrgios\",\"Novak Djokovic\",\"Rafael Nadal\",\"Tennis\",\"Tennis
+        Scores\"],\"crawlDate\":\"2023-11-16T08:38:28.605087Z\",\"tickers\":[]},{\"id\":59591426,\"publishedDate\":\"2023-11-16T08:36:48Z\",\"title\":\"Royal
+        Mail blames strikes and slump in letter sending as losses deepen\",\"url\":\"https://www.telegraph.co.uk/business/2023/11/16/royal-mail-blames-strikes-slump-letter-sending-losses/\",\"description\":\"Postal
+        company suffers \xA3319m hit as boss reiterates calls to scrap Saturday letter
+        deliveries\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Business\",\"Ofcom\",\"Royal
+        Mail\",\"Royal Mail Strikes\",\"Standard\",\"Stock\",\"Tiingo Top\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:38:27.571781Z\",\"tickers\":[\"roymf\"]},{\"id\":59591434,\"publishedDate\":\"2023-11-16T08:36:05Z\",\"title\":\"Car
+        rams barricade near Israel embassy in Tokyo, driver detained\",\"url\":\"https://nypost.com/2023/11/16/news/car-rams-barricade-near-israel-embassy-in-tokyo-man-detained/\",\"description\":\"A
+        man crashed a car into a barricade near the entrance of the Israeli embassy
+        in Tokyo on Thursday, injuring a police officer.\",\"source\":\"nypost.com\",\"tags\":[\"Hamas\",\"Israel\",\"Israel
+        War 2023\",\"Tokyo\"],\"crawlDate\":\"2023-11-16T08:38:31.314583Z\",\"tickers\":[]},{\"id\":59591371,\"publishedDate\":\"2023-11-16T08:36:03Z\",\"title\":\"Monet
+        in Paris: The French Impressionists Alive multi-sensory experience arrives
+        at Crown Perth\",\"url\":\"https://thewest.com.au/genwest/arts/monet-in-paris-the-french-impressionists-alive-multi-sensory-experience-arrives-at-crown-perth-c-12566259\",\"description\":\"All
+        the charm of Parisian neighbourhood Montmartre has been transported to Perth
+        with multi-sensory experience, Monet in Paris \u2013 The French Impressionists
+        Alive.\",\"source\":\"thewest.com.au\",\"tags\":[\"Arts\"],\"crawlDate\":\"2023-11-16T08:36:41.491701Z\",\"tickers\":[]},{\"id\":59591356,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Synagogue
+        in Armenia set alight in latest attack on Jewish diaspora\",\"url\":\"https://www.jpost.com/diaspora/antisemitism/article-773485\",\"description\":\"A
+        similar attack occurred in October by ASALA, which targeted the World Jewish
+        Center in Yerevan.\",\"source\":\"jpost.com\",\"tags\":[\"Antisemitism\",\"Armenia\",\"Attack\",\"Azerbaijan\",\"Diaspora
+        Jews\"],\"crawlDate\":\"2023-11-16T08:36:14.626883Z\",\"tickers\":[]},{\"id\":59591377,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Nationwide
+        protests add to Panama woes\",\"url\":\"https://splash247.com/nationwide-protests-add-to-panama-woes/\",\"description\":\"It\u2019s
+        not just drought in Panama that is giving supply chain planners pause for
+        reflection, the Central American nation is also reeling from the largest protests
+        in the western hemisphere, action that has affected rail, roads and ports
+        over the past month. Protests that began over a mining contract with a Canadian
+        company have rocked \u2026\",\"source\":\"splash247.com\",\"tags\":[\"Central
+        America\",\"Panama\"],\"crawlDate\":\"2023-11-16T08:37:15.350030Z\",\"tickers\":[]},{\"id\":59591358,\"publishedDate\":\"2023-11-16T08:35:03Z\",\"title\":\"Police
+        investigate after woman\u2019s body found\",\"url\":\"https://www.smh.com.au/national/police-investigate-after-woman-s-body-found-20231116-p5eko7.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Detectives
+        are investigating after a woman's body was found in a block of units in Adelaide\u2019s
+        east.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:36:19.777723Z\",\"tickers\":[]},{\"id\":59591440,\"publishedDate\":\"2023-11-16T08:35:02.359000Z\",\"title\":\"Macquarie
+        invests $190 mln in green aviation fuel supplier SkyNRG\",\"url\":\"https://www.reuters.com/sustainability/climate-energy/macquarie-invests-190-mln-green-aviation-fuel-supplier-skynrg-2023-11-16/\",\"description\":\"Australia's
+        Macquarie Group Ltd said on Thursday its asset management arm will make an
+        initial investment of up to 175 million euros (about $190 million) in Netherlands-based
+        sustainable aviation fuel (SAF) supplier SkyNRG.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0In\",\"2023:Ml_Kbn32B0In:1\",\"2023:Ml_Kbn32B0Io\",\"2023:Ml_Kbn32B0Io:1\",\"2023:Ml_L4N3Ch1Um\",\"2023:Ml_L4N3Ch1Va\",\"2023:Ml_L4N3Ch1Va:722089037\",\"Australia\",\"Guid:Tag:Reuters.Com\",\"Netherlands\",\"Netherlands
+        Antilles\",\"Stock\",\"Unknown Sector\",\"Usn:Kbn32B0In\",\"Usn:Kbn32B0Io\",\"Usn:L4N3Ch1Um\",\"Usn:L4N3Ch1Va\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:39.691757Z\",\"tickers\":[\"mqg\"]},{\"id\":59591353,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"US-Cannabis
+        Market is to grow by USD 46.90 billion between 2022 - 2027 | Aurora Cannabis
+        Inc., Canopy Growth Corp., Charlottes Web Holdings Inc. and more among the
+        key companies\",\"url\":\"https://www.prnewswire.com/news-releases/us-cannabis-market-is-to-grow-by-usd-46-90-billion-between-2022---2027--aurora-cannabis-inc-canopy-growth-corp-charlottes-web-holdings-inc-and-more-among-the-key-companies-301989972.html\",\"description\":\"/PRNewswire/
+        -- The US-Cannabis Market is projected to witness a surge at a Compound Annual
+        Growth Rate (CAGR) of 24.03% with USD 46.90 b illion from 2022 to...\",\"source\":\"prnewswire.com\",\"tags\":[\"Cannabis\",\"CryptoCurrency\",\"ETF\",\"FX\",\"Health
+        Care & Hospitals\",\"Healthcare\",\"Market Research Reports\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:35:37.725202Z\",\"tickers\":[\"acb\",\"twmjf\",\"usd\"]},{\"id\":59591354,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"North
+        America - The Maintenance, Repair, and Overhaul (MRO) Distribution Market
+        size to grow at a CAGR of 2.43% from 2022 to 2027| A.R. Thomson Group, Applied
+        Industrial Technologies Inc., AWC Inc. and more among the key companies in
+        the market -Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/north-america---the-maintenance-repair-and-overhaul-mro-distribution-market-size-to-grow-at-a-cagr-of-2-43-from-2022-to-2027-ar-thomson-group-applied-industrial-technologies-inc-awc-inc-and-more-among-the-key-companies-301989958.html\",\"description\":\"/PRNewswire/
+        -- The MRO distribution market in North America is estimated to grow at a
+        CAGR of 2.43% between 2022 and 2027 and the size of the market is...\",\"source\":\"prnewswire.com\",\"tags\":[\"Energy\",\"Industrials\",\"Market
+        Research Reports\",\"North America\",\"Oil & Energy\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:35:38.520380Z\",\"tickers\":[\"ait\",\"awc\",\"cagr\",\"mro\"]},{\"id\":59591355,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"Smartphone
+        Screen Protector Market is driven by the growing awareness of the importance
+        of device protection - Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/smartphone-screen-protector-market-is-driven-by-the-growing-awareness-of-the-importance-of-device-protection---technavio-301990019.html\",\"description\":\"/PRNewswire/
+        -- In a recent analysis conducted by Technavio, titled \\\"Smartphone Screen
+        Protector Market Analysis - APAC, North America, Europe, South America,...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
+        & Electronics\",\"Consumer Electronics\",\"Market Research Reports\",\"Mobile
+        Entertainment\",\"North America\",\"South America\"],\"crawlDate\":\"2023-11-16T08:35:39.717934Z\",\"tickers\":[]}]"
+    headers:
+      allow:
+      - GET, HEAD, OPTIONS
+      content-length:
+      - '13244'
+      content-type:
+      - application/json
+      date:
+      - Thu, 16 Nov 2023 08:40:09 GMT
+      server:
+      - nginx/1.18.0 (Ubuntu)
+      vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1
