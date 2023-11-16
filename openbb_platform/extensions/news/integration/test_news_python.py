@@ -62,6 +62,13 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "term": "MSFT",
             }
         ),
+        (
+            {
+                "provider": "tiingo",
+                "limit": 30,
+                "source": "bloomberg.com",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -131,6 +138,14 @@ def test_news_world(params, obb):
             {
                 "provider": "ultima",
                 "symbols": "AAPL,MSFT",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbols": "AAPL,MSFT",
+                "limit": 20,
+                "source": "bloomberg.com",
             }
         ),
     ],
