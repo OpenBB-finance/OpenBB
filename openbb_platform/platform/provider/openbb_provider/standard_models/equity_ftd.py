@@ -1,4 +1,4 @@
-"""Stocks Fails to Deliver Data Model."""
+"""Equity Fails to Deliver Data Model."""
 
 from datetime import (
     date as dateType,

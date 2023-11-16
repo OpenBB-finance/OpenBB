@@ -1,4 +1,4 @@
-"""CBOE Equity Historical fetcher."""
+"""CBOE Equity Historical End of Day fetcher."""
 
 
 from datetime import datetime, timedelta
@@ -22,7 +22,7 @@ from pydantic import Field
 
 
 class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """CBOE Stock end of day query.
+    """CBOE Equity Historical End of Day query.
 
     Source: https://www.cboe.com/
     """
@@ -34,7 +34,7 @@ class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class CboeEquityHistoricalData(EquityHistoricalData):
-    """CBOE Stocks End of Day Data."""
+    """CBOE Equity Historical End of Day Data."""
 
     calls_volume: Optional[float] = Field(
         default=None,

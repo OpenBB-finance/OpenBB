@@ -34,7 +34,7 @@ def nbbo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Equity Quote. Load National Best Bid and Offer for a specific equity."""
+    """Equity NBBO. Load National Best Bid and Offer for a specific equity."""
     return OBBject(results=Query(**locals()).execute())
 
 

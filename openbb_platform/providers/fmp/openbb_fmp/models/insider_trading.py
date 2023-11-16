@@ -1,19 +1,19 @@
-"""FMP Stock Insider Trading fetcher."""
+"""FMP Insider Trading fetcher."""
 
 
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.stock_insider_trading import (
-    StockInsiderTradingData,
-    StockInsiderTradingQueryParams,
+from openbb_provider.standard_models.insider_trading import (
+    InsiderTradingData,
+    InsiderTradingQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 
 
-class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
-    """FMP Stock Insider Trading Query.
+class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
+    """FMP Insider Trading Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
@@ -23,8 +23,8 @@ class FMPStockInsiderTradingQueryParams(StockInsiderTradingQueryParams):
     }
 
 
-class FMPStockInsiderTradingData(StockInsiderTradingData):
-    """FMP Stock Insider Trading Data."""
+class FMPInsiderTradingData(InsiderTradingData):
+    """FMP Insider Trading Data."""
 
     __alias_dict__ = {
         "acquisition_or_disposition": "acquistionOrDisposition",
@@ -32,22 +32,22 @@ class FMPStockInsiderTradingData(StockInsiderTradingData):
     }
 
 
-class FMPStockInsiderTradingFetcher(
+class FMPInsiderTradingFetcher(
     Fetcher[
-        FMPStockInsiderTradingQueryParams,
-        List[FMPStockInsiderTradingData],
+        FMPInsiderTradingQueryParams,
+        List[FMPInsiderTradingData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPStockInsiderTradingQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPInsiderTradingQueryParams:
         """Transform the query params."""
-        return FMPStockInsiderTradingQueryParams(**params)
+        return FMPInsiderTradingQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPStockInsiderTradingQueryParams,
+        query: FMPInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -72,8 +72,8 @@ class FMPStockInsiderTradingFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPStockInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPStockInsiderTradingData]:
+        query: FMPInsiderTradingQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPInsiderTradingData]:
         """Return the transformed data."""
         data = sorted(data, key=lambda x: x["filingDate"], reverse=True)
-        return [FMPStockInsiderTradingData.model_validate(d) for d in data]
+        return [FMPInsiderTradingData.model_validate(d) for d in data]
