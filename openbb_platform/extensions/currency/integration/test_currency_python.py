@@ -128,6 +128,15 @@ def test_currency_search(params, obb):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "interval": "1day",
+                "provider": "tiingo",
+                "symbol": "EURUSD",
+                "start_date": "2023-05-21",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

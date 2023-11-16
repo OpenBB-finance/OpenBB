@@ -807,6 +807,24 @@ def test_equity_options_unusual(params, obb):
                 "interval": "1d",
             }
         ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1232,7 +1250,7 @@ def test_equity_market_snapshots(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"provider": "tiingo", "symbol": "AAPL"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_trailing_dividend_yield(params, obb):
