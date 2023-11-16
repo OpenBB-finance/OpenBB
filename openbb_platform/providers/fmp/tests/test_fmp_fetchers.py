@@ -41,7 +41,7 @@ from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
-from openbb_fmp.models.historical_splits import FMPHistoricalStockSplitsFetcher
+from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.index_constituents import (
@@ -341,7 +341,7 @@ def test_fmp_earnings_call_transcript_fetcher(credentials=test_credentials):
 def test_fmp_historical_splits_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPHistoricalStockSplitsFetcher()
+    fetcher = FMPHistoricalSplitsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
