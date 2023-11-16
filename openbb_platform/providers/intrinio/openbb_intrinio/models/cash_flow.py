@@ -101,24 +101,16 @@ class IntrinioCashFlowStatementFetcher(
 
         def get_financial_statement_data(period: str, data: List[Dict]) -> None:
             statement_data: Dict = {}
-            calculations_data: Dict = {}
 
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
             statement_data = get_data_one(statement_url, **kwargs)
 
-            intrinio_id = f"{query.symbol}-calculations-{period}"
-            calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            calculations_data = get_data_one(calculations_url, **kwargs)
-
             data.append(
                 {
                     "date": statement_data["fundamental"]["end_date"],
                     "period": statement_data["fundamental"]["fiscal_period"],
-                    "cik": statement_data["fundamental"]["company"]["cik"],
-                    "symbol": statement_data["fundamental"]["company"]["ticker"],
-                    "financials": statement_data["standardized_financials"]
-                    + calculations_data["standardized_financials"],
+                    "financials": statement_data["standardized_financials"],
                 }
             )
 
@@ -143,8 +135,6 @@ class IntrinioCashFlowStatementFetcher(
 
             sub_dict["date"] = item["date"]
             sub_dict["period"] = item["period"]
-            sub_dict["cik"] = item["cik"]
-            sub_dict["symbol"] = item["symbol"]
 
             # Intrinio does not return Q4 data but FY data instead
             if query.period == "quarter" and item["period"] == "FY":
