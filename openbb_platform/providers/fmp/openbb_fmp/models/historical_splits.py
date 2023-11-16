@@ -1,4 +1,4 @@
-"""FMP Historical Stock Splits fetcher."""
+"""FMP Historical Splits fetcher."""
 
 
 from datetime import datetime
@@ -14,14 +14,14 @@ from pydantic import field_validator
 
 
 class FMPHistoricalSplitsQueryParams(HistoricalSplitsQueryParams):
-    """FMP Historical Stock Splits Query.
+    """FMP Historical Splits Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-stock-splits-api/
     """
 
 
 class FMPHistoricalSplitsData(HistoricalSplitsData):
-    """FMP Historical Stock Splits Data."""
+    """FMP Historical Splits Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod

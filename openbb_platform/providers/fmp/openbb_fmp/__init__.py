@@ -44,6 +44,7 @@ from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFe
 from openbb_fmp.models.index_constituents import (
     FMPIndexConstituentsFetcher,
 )
+from openbb_fmp.models.insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
@@ -56,7 +57,6 @@ from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetche
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
-from openbb_fmp.models.stock_insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
 
