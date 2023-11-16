@@ -56,7 +56,7 @@ from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetche
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
-from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
+from openbb_fmp.models.stock_insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_provider.abstract.provider import Provider
 
@@ -120,7 +120,7 @@ fmp_provider = Provider(
         "RevenueGeographic": FMPRevenueGeographicFetcher,
         "RiskPremium": FMPRiskPremiumFetcher,
         "ShareStatistics": FMPShareStatisticsFetcher,
-        "StockInsiderTrading": FMPStockInsiderTradingFetcher,
+        "InsiderTrading": FMPInsiderTradingFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
     },
 )

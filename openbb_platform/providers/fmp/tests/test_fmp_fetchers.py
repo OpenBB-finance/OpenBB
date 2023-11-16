@@ -59,7 +59,7 @@ from openbb_fmp.models.revenue_business_line import FMPRevenueBusinessLineFetche
 from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
-from openbb_fmp.models.stock_insider_trading import FMPStockInsiderTradingFetcher
+from openbb_fmp.models.stock_insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -278,7 +278,7 @@ def test_fmp_company_overview_fetcher(credentials=test_credentials):
 def test_fmp_stock_insider_trading_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPStockInsiderTradingFetcher()
+    fetcher = FMPInsiderTradingFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
