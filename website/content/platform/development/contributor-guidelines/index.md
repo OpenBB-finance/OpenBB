@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Introduction - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](/platform/contributing/developer-guidelines/expecations_for_developers). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
 

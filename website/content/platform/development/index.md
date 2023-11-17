@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Introduction - Development | OpenBB Platform Docs" />
 
 ## Considerations
 

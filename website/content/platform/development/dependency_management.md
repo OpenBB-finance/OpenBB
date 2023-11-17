@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Dependency Management - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Dependency Management - Development | OpenBB Platform Docs" />
 
 ## High-Level Overview
 
