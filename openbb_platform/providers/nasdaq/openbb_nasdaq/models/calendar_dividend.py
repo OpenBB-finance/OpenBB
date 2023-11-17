@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 import requests
-from openbb_nasdaq.utils.helpers import HEADERS, date_range
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.calendar_dividend import (
     DividendCalendarData,
@@ -92,7 +92,7 @@ class NasdaqDividendCalendarFetcher(
         def get_calendar_data(date: str) -> None:
             response = []
             url = f"https://api.nasdaq.com/api/calendar/dividends?date={date}"
-            r = requests.get(url, headers=HEADERS, timeout=5)
+            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
             r_json = r.json()
             if (
                 "data" in r_json

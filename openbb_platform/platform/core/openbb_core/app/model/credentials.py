@@ -96,7 +96,7 @@ class Credentials(_Credentials):  # type: ignore
         return (
             self.__class__.__name__
             + "\n\n"
-            + "\n".join([f"{k}: {v}" for k, v in self.__dict__.items()])
+            + "\n".join([f"{k}: {v}" for k, v in sorted(self.__dict__.items())])
         )
 
     def show(self):
@@ -104,5 +104,7 @@ class Credentials(_Credentials):  # type: ignore
         print(  # noqa: T201
             self.__class__.__name__
             + "\n\n"
-            + "\n".join([f"{k}: {v}" for k, v in self.model_dump(mode="json").items()])
+            + "\n".join(
+                [f"{k}: {v}" for k, v in sorted(self.model_dump(mode="json").items())]
+            )
         )
