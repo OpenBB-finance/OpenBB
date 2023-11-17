@@ -1,12 +1,10 @@
 """FastAPI configuration settings model."""
 from typing import List
 
-from pydantic import ConfigDict, Field, model_validator
-
-from openbb_core.app.model.abstract.tagged import Tagged
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
-class Cors(Tagged):
+class Cors(BaseModel):
     """Cors model for FastAPI configuration."""
 
     model_config = ConfigDict(frozen=True)
@@ -16,7 +14,7 @@ class Cors(Tagged):
     allow_headers: List[str] = Field(default_factory=lambda: ["*"])
 
 
-class Servers(Tagged):
+class Servers(BaseModel):
     """Servers model for FastAPI configuration."""
 
     model_config = ConfigDict(frozen=True)
@@ -25,7 +23,7 @@ class Servers(Tagged):
     description: str = "Local OpenBB development server"
 
 
-class FastAPISettings(Tagged):
+class FastAPISettings(BaseModel):
     """Settings model for FastAPI configuration."""
 
     model_config = ConfigDict(frozen=True)
