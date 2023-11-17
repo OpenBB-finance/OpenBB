@@ -69,7 +69,8 @@ def atr(
         df_target.ta.atr(length=length, mamode=mamode, drift=drift, offset=offset)
     )
 
-    results = df_to_basemodel(df_target.join(df_atr, how="left"), index=True)
+    output = pd.concat([df, df_atr], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -174,7 +175,8 @@ def obv(
     df_target = get_target_columns(df, ["close", "volume"])
     df_obv = pd.DataFrame(df_target.ta.obv(offset=offset))
 
-    results = df_to_basemodel(df_target.join(df_obv, how="left"), index=True)
+    output = pd.concat([df, df_obv], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -220,7 +222,8 @@ def fisher(
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
 
-    results = df_to_basemodel(df_target.join(df_fisher, how="left"), index=True)
+    output = pd.concat([df, df_fisher], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -269,7 +272,8 @@ def adosc(
     df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
 
-    results = df_to_basemodel(df_target.join(df_adosc, how="left"), index=True)
+    output = pd.concat([df, df_adosc], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -342,7 +346,8 @@ def bbands(
         )
     )
 
-    results = df_to_basemodel(df_target.join(bbands_df, how="left"), index=True)
+    output = pd.concat([df, bbands_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -399,7 +404,8 @@ def zlma(
         )
     ).dropna()
 
-    results = df_to_basemodel(df_target.join(zlma_df, how="left"), index=True)
+    output = pd.concat([df, zlma_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -451,7 +457,8 @@ def aroon(
     df_target = get_target_columns(df, ["high", "low", "close"])
     aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
 
-    results = df_to_basemodel(df_target.join(aroon_df, how="left"), index=True)
+    output = pd.concat([df, aroon_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -509,7 +516,8 @@ def sma(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(sma_df, how="left"), index=True)
+    output = pd.concat([df, sma_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -602,7 +610,8 @@ def vwap(
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
 
-    results = df_to_basemodel(df_target.join(df_vwap, how="left"), index=True)
+    output = pd.concat([df, df_vwap], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -664,8 +673,8 @@ def macd(
             prefix=target,
         ).dropna()
     )
-
-    results = df_to_basemodel(df_target.join(macd_df, how="left"), index=True)
+    output = pd.concat([df, macd_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -720,7 +729,8 @@ def hma(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(hma_df, how="left"), index=True)
+    output = pd.concat([df, hma_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -773,7 +783,8 @@ def donchian(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(donchian_df, how="left"), index=True)
+    output = pd.concat([df, donchian_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -826,7 +837,8 @@ def ichimoku(
     df_result = df_target.join(df_span.add_prefix("span_"), how="left")
     df_result = df_result.join(df_ichimoku, how="left")
 
-    results = df_to_basemodel(df_result, index=True)
+    output = pd.concat([df, df_result], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -876,7 +888,8 @@ def clenow(
         orient="index",
     ).transpose()
 
-    results = df_to_basemodel(df_clenow)
+    output = pd.concat([df, df_clenow], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -921,7 +934,8 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     ad_df = pd.DataFrame(df_target.ta.ad(offset=offset).dropna())
 
-    results = df_to_basemodel(df_target.join(ad_df, how="left"), index=True)
+    output = pd.concat([df, ad_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -970,7 +984,8 @@ def adx(
         df_target.ta.adx(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(adx_df, how="left"), index=True)
+    output = pd.concat([df, adx_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1025,7 +1040,8 @@ def wma(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(wma_df, how="left"), index=True)
+    output = pd.concat([df, wma_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1065,7 +1081,8 @@ def cci(
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
 
-    results = df_to_basemodel(df_target.join(cci_df, how="left"), index=True)
+    output = pd.concat([df, cci_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1125,7 +1142,8 @@ def rsi(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(rsi_df, how="left"), index=True)
+    output = pd.concat([df, rsi_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1181,7 +1199,8 @@ def stoch(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(stoch_df, how="left"), index=True)
+    output = pd.concat([df, stoch_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1239,8 +1258,8 @@ def kc(
             offset=offset,
         ).dropna()
     )
-
-    results = df_to_basemodel(df_target.join(kc_df, how="left"), index=True)
+    output = pd.concat([df, kc_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1281,7 +1300,8 @@ def cg(
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
 
-    results = df_to_basemodel(df_target.join(cg_df, how="left"), index=True)
+    output = pd.concat([df, cg_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
@@ -1413,6 +1433,7 @@ def ema(
         ).dropna()
     )
 
-    results = df_to_basemodel(df_target.join(ema_df, how="left"), index=True)
+    output = pd.concat([df, ema_df], axis=1)
+    results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
