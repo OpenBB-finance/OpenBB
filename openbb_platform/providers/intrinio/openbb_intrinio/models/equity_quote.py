@@ -1,4 +1,4 @@
-"""Intrinio Equity Quote fetcher."""
+"""Intrinio Equity Quote Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime

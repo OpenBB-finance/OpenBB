@@ -1,4 +1,4 @@
-"""Intrinio Equity historical end of day fetcher."""
+"""Intrinio Equity Historical Price Model."""
 
 from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +16,7 @@ from pydantic import Field, PrivateAttr, model_validator
 
 
 class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """Intrinio Equity historical end of day Query.
+    """Intrinio Equity Historical Price Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_interval_prices_v2
     """
@@ -71,7 +71,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class IntrinioEquityHistoricalData(EquityHistoricalData):
-    """Intrinio Equity historical end of day Data."""
+    """Intrinio Equity Historical Price Data."""
 
     __alias_dict__ = {"date": "time"}
 

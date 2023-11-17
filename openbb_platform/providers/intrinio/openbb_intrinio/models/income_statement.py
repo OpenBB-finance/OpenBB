@@ -1,4 +1,4 @@
-"""Intrinio Income Statement Fetcher."""
+"""Intrinio Income Statement Model."""
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -15,7 +15,7 @@ from pydantic import alias_generators
 
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
-    """Intrinio Income Statement QueryParams.
+    """Intrinio Income Statement Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
