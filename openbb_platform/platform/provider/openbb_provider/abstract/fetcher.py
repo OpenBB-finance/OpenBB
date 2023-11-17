@@ -111,6 +111,9 @@ class Fetcher(Generic[Q, R]):
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
+        # Class Assertions
+        assert isinstance(cls.require_credentials, bool)
+
         # Query Assertions
         assert query
         assert issubclass(type(query), cls.query_params_type)
