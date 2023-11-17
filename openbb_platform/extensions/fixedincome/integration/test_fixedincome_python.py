@@ -23,8 +23,8 @@ def obb(pytestconfig):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_government_treasury(params, obb):
-    result = obb.fixedincome.government.treasury(**params)
+def test_fixedincome_government_treasury_rates(params, obb):
+    result = obb.fixedincome.government.treasury_rates(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -393,6 +393,43 @@ def test_fixedincome_government_eu_yield_curve(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.eu_yield_curve(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-09-01",
+                "end_date": "2023-11-16",
+                "cusip": None,
+                "page_size": None,
+                "page_num": None,
+                "security_type": None,
+                "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-09-01",
+                "end_date": "2023-11-16",
+                "cusip": None,
+                "page_size": None,
+                "page_num": None,
+                "security_type": "Bond",
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_treasury_auctions(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.government.treasury_auctions(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
