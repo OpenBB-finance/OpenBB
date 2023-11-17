@@ -29,6 +29,9 @@ class classproperty:
 class Fetcher(Generic[Q, R]):
     """Abstract class for the fetcher."""
 
+    # Tell query executor if credentials are required. Can be overridden by subclasses.
+    require_credentials = True
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> Q:
         """Transform the params to the provider-specific query."""
@@ -107,6 +110,9 @@ class Fetcher(Generic[Q, R]):
         query = cls.transform_query(params=params)
         data = cls.extract_data(query=query, credentials=credentials, **kwargs)
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
+
+        # Class Assertions
+        assert isinstance(cls.require_credentials, bool)
 
         # Query Assertions
         assert query
