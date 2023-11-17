@@ -41,7 +41,7 @@ A menu is a collection of commands (and sub-menus). A menu can be distinguished 
 
 Navigating through the Terminal menus is similar to traversing folders from any operating system's command line prompt. The `/home` screen is the main directory where everything begins, and the menus are paths branched from the main. Instead of `C:\Users\OpenBB\Documents`, you'll have something like `/stocks/options`. Instead of `cd ..`, you can do `..` to return the menu right above. To go back to the root menu you can do `/`.
 
-Absolute paths are also valid to-and-from any point. From the [`/stocks/options`](/terminal/menus/stocks/options) menu, you can go directly to [`crypto`](/terminal/menus/crypto/introduction.md) menu with: `/crypto`. Note the forward slash at the start to denote the "absolute" path.
+Absolute paths are also valid to-and-from any point. From the [`/stocks/options`](/terminal/menus/stocks/options) menu, you can go directly to [`crypto`](/terminal/menus/crypto) menu with: `/crypto`. Note the forward slash at the start to denote the "absolute" path.
 
 
 <TutorialVideo

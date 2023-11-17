@@ -123,7 +123,8 @@ def test_equity_calendar_split(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "nasdaq"}),
     ],
 )
 @pytest.mark.integration
@@ -900,6 +901,41 @@ def test_equity_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
+        (
+            {
+                "industry": "REIT",
+                "sector": "Real Estate",
+                "mktcap_min": None,
+                "mktcap_max": None,
+                "price_min": None,
+                "price_max": None,
+                "volume_min": None,
+                "volume_max": None,
+                "dividend_min": None,
+                "dividend_max": None,
+                "is_active": True,
+                "is_etf": False,
+                "beta_min": None,
+                "beta_max": None,
+                "country": "US",
+                "exchange": "nyse",
+                "limit": None,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_screener(params, obb):
+    result = obb.equity.screener(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
@@ -1210,6 +1246,22 @@ def test_equity_darkpool_otc(params, obb):
 @pytest.mark.integration
 def test_equity_market_snapshots(params, obb):
     result = obb.equity.market_snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_historical_eps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.fundamental.historical_eps(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

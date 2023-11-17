@@ -3,6 +3,7 @@ import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_nasdaq.models.calendar_dividend import NasdaqDividendCalendarFetcher
+from openbb_nasdaq.models.calendar_earnings import NasdaqCalendarEarningsFetcher
 from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
 from openbb_nasdaq.models.cot import NasdaqCotFetcher
 from openbb_nasdaq.models.cot_search import NasdaqCotSearchFetcher
@@ -91,5 +92,17 @@ def test_nasdaq_cot_search_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = NasdaqCotSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
+    params = {
+        "start_date": datetime.date(2023, 11, 1),
+        "end_date": datetime.date(2023, 11, 30),
+    }
+
+    fetcher = NasdaqCalendarEarningsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

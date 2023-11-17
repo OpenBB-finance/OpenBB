@@ -1,5 +1,4 @@
-"""FMP Stock Splits Calendar fetcher."""
-
+"""FMP Calendar Splits fetcher."""
 
 from datetime import date
 from typing import Any, Dict, List, Optional

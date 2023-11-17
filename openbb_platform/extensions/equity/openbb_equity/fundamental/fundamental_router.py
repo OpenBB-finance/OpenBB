@@ -81,14 +81,14 @@ def dividends(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="CalendarEarnings")
-def earnings(
+@router.command(model="HistoricalEps")
+def historical_eps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical Earnings for a given company."""
+    """Historical earnings-per-share for a given company."""
     return OBBject(results=Query(**locals()).execute())
 
 
@@ -235,14 +235,14 @@ def filings(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="HistoricalStockSplits")
+@router.command(model="HistoricalSplits")
 def historical_splits(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Historical Stock Splits. Historical stock splits data."""
+    """Historical Splits. Historical splits data."""
     return OBBject(results=Query(**locals()).execute())
 
 

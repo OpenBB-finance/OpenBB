@@ -174,3 +174,42 @@ def test_economy_gdp_real(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "report_type": "summary",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "direct_investment",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "main",
+                "frequency": "quarterly",
+                "country": "united_states",
+                "provider": "ecb",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_balance_of_payments(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.balance_of_payments(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

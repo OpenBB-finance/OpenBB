@@ -12,10 +12,10 @@ To configure the default providers for each route, edit the `.openbb_platform/us
 {
     "defaults": {
         "routes": {
-            "/stocks/load": {
+            "/equity/price/historical": {
                 "provider": "fmp"
             },
-            "/stocks/fa/balance": {
+            "/equity/fundamental/balance": {
                 "provider": "polygon"
             },
             ...

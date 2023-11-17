@@ -1,4 +1,4 @@
-"""Historical Stock Splits data model."""
+"""Historical Splits data model."""
 
 
 from datetime import date as dateType
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class HistoricalStockSplitsQueryParams(QueryParams):
-    """Historical Stock Splits Query."""
+class HistoricalSplitsQueryParams(QueryParams):
+    """Historical Splits Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -25,8 +25,8 @@ class HistoricalStockSplitsQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class HistoricalStockSplitsData(Data):
-    """Historical Stock Splits Data."""
+class HistoricalSplitsData(Data):
+    """Historical Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the historical stock splits.")
