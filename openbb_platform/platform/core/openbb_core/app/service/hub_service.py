@@ -218,7 +218,7 @@ class HubService:
     def hub2platform(cls, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
         # TODO: Hub is getting credentials from `all_api_keys.json`, which uses
-        # the terminal names convetions. We need to update it to use a file that
+        # the terminal names conventions. We need to update it to use a file that
         # lives here in the platform and maps the credential names between the two.
         credentials = Credentials(
             alpha_vantage_api_key=settings.features_keys.API_KEY_ALPHAVANTAGE,
