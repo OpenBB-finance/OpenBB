@@ -244,59 +244,34 @@ data_results[-1]
 
 #### Send a POST Request
 
-Next, pass the `data_results` to a function, using the `json` field in the POST headers.  For this example, Keltner Channels.
+Next, pass the `data_results` to a function, using the `json` field in the POST headers.  For this example, realized volatiliy cones, the default parameters  assume the time series data is daily and that volatility should be annualized over 252 trading days.
 
-The `index` parameter tells the function which field in the posted data to use as the index.
+The `index` parameter tells the function which field in the posted data to use as the date index.
 
 ```python
-post_url = "http://localhost:8000/api/v1/technical/kc?index=date&length=20&scalar=20&mamode=ema&offset=0"
+import pandas as pd
+
+post_url = "http://localhost:8000/api/v1/technical/cones"
 post_response = requests.post(post_url, json=data_results)
 ta_results = post_response.json()["results"]
 
-ta_results[-1]
+pd.DataFrame.from_records(ta_results)
 ```
 
-```json
-{'high': 14.19,
- 'low': 13.67,
- 'close': 13.79,
- 'KCLe_20_20.0': -8.6829001886,
- 'KCBe_20_20.0': 15.778316008,
- 'KCUe_20_20.0': 40.2395322047}
-```
-
-#### Combine the Results
-
-```python
-for i, dictionary in enumerate(ta_results):
-    dictionary["date"] = data_results[i]["date"]
-
-ta_results[-1]
-```
-
-```json
-{'high': 14.19,
- 'low': 13.67,
- 'close': 13.8,
- 'KCLe_20_20.0': -8.6819478077,
- 'KCBe_20_20.0': 15.779268389,
- 'KCUe_20_20.0': 40.2404845856,
- 'date': '2023-11-17T00:00:00'}
-```
-
-To confirm, validate that the data was correctly copied:
-
-```python
-(
-    ta_results[-1]["close"] == data_results[-1]["close"]
-    and ta_results[-1]["date"] == data_results[-1]["date"]
-    and len(data_results) == len(ta_results)
-)
-```
-
-```console
-True
-```
+|   window |   realized |        min |   lower_25% |   median |   upper_75% |     max |
+|---------:|-----------:|-----------:|------------:|---------:|------------:|--------:|
+|        3 |   0.396165 | 0.00701638 |    0.444709 | 0.72414  |     1.11563 | 8.47636 |
+|       10 |   0.623199 | 0.190188   |    0.665584 | 0.852915 |     1.15491 | 4.83264 |
+|       30 |   0.988435 | 0.332913   |    0.750007 | 0.921482 |     1.17072 | 2.98404 |
+|       60 |   0.932594 | 0.47639    |    0.792548 | 0.964617 |     1.20171 | 2.35563 |
+|       90 |   0.915137 | 0.551011   |    0.815229 | 0.965553 |     1.2128  | 2.04104 |
+|      120 |   0.858644 | 0.549233   |    0.836395 | 0.983437 |     1.21097 | 1.86416 |
+|      150 |   0.898628 | 0.557274   |    0.842359 | 0.991539 |     1.23165 | 1.73182 |
+|      180 |   0.902293 | 0.579575   |    0.84876  | 1.00421  |     1.23584 | 1.68786 |
+|      210 |   0.901717 | 0.580214   |    0.854655 | 0.996992 |     1.2271  | 1.65739 |
+|      240 |   0.884282 | 0.587564   |    0.857935 | 1.00491  |     1.22141 | 1.62973 |
+|      300 |   0.852533 | 0.622105   |    0.862097 | 1.00724  |     1.21705 | 1.51887 |
+|      360 |   0.847416 | 0.661648   |    0.869691 | 1.03923  |     1.20488 | 1.48571 |
 
 ## References
 
