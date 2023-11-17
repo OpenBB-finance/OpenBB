@@ -49,7 +49,14 @@ class GovernmentUSTreasuryAuctionsFetcher(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryAuctionsQueryParams:
         """Transform query params."""
-        return GovernmentUSTreasuryAuctionsQueryParams(**params)
+        transformed_params = params.copy()
+        if "start_date" not in transformed_params:
+            transformed_params["start_date"] = (
+                datetime.now() - timedelta(days=90)
+            ).strftime("%Y-%m-%d")
+        if "end_date" not in transformed_params:
+            transformed_params["end_date"] = datetime.now().strftime("%Y-%m-%d")
+        return GovernmentUSTreasuryAuctionsQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -60,11 +67,6 @@ class GovernmentUSTreasuryAuctionsFetcher(
         """Extract the raw data from Treasury Direct API."""
 
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
-
-        if not query.start_date:
-            query.start_date = datetime.now() - timedelta(days=90)
-        if not query.end_date:
-            query.end_date = datetime.now()
 
         _query = query.model_dump()
         _query["startDate"] = (
