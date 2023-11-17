@@ -12,7 +12,7 @@ tiingo_provider = Provider(
     name="tiingo",
     website="https://tiingo.com/",
     description="""""",
-    required_credentials=["token"],
+    credentials=["token"],
     fetcher_dict={
         "EquityHistorical": TiingoEquityHistoricalFetcher,
         "CompanyNews": TiingoCompanyNewsFetcher,

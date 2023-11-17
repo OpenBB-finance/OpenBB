@@ -40,6 +40,7 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -320,10 +321,10 @@ def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
+def test_fmp_historical_eps_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPCalendarEarningsFetcher()
+    fetcher = FMPHistoricalEpsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -591,5 +592,18 @@ def test_fmp_crypto_search_fetcher(credentials=test_credentials):
     params = {"query": "asd"}
 
     fetcher = FMPCryptoSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    params = {
+        "start_date": date(2023, 11, 6),
+        "end_date": date(2023, 1, 10),
+    }
+    fetcher = FMPCalendarEarningsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

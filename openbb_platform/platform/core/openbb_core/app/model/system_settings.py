@@ -16,6 +16,8 @@ from openbb_core.app.constants import (
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.version import VERSION
 
+from .rest_api_settings import FastAPISettings
+
 FrozenField = partial(Field, frozen=True)
 
 
@@ -46,6 +48,9 @@ class SystemSettings(Tagged):
     logging_suppress: bool = FrozenField(default=False)
     log_collect: bool = FrozenField(default=True)
 
+    # API section
+    api_settings: FastAPISettings = FrozenField(default_factory=FastAPISettings)
+
     # Others
     test_mode: bool = FrozenField(default=False)
     headless: bool = FrozenField(default=False)
@@ -63,7 +68,10 @@ class SystemSettings(Tagged):
         """Create an empty JSON file."""
         path.write_text(json.dumps({}), encoding="utf-8")
 
-    @model_validator(mode="after")
+    # TODO: Figure out why this works only opposite to what the docs say
+    # https://docs.pydantic.dev/latest/concepts/validators/#model-validators
+    # based on docs first argument should be self, but it works only with cls
+    @model_validator(mode="after")  # type: ignore
     @classmethod
     def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
         """Create the OpenBB directory if it doesn't exist."""
@@ -78,7 +86,7 @@ class SystemSettings(Tagged):
 
         return values
 
-    @model_validator(mode="after")
+    @model_validator(mode="after")  # type: ignore
     @classmethod
     def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
         """If the user has enabled log collection, then we need to add the Posthog."""

@@ -37,6 +37,7 @@ from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFet
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -63,7 +64,7 @@ fmp_provider = Provider(
     website="https://financialmodelingprep.com/",
     description="""Financial Modeling Prep is a new concept that informs you about
     stock market information (news, currencies, and stock prices).""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "AnalystEstimates": FMPAnalystEstimatesFetcher,
         "AvailableIndices": FMPAvailableIndicesFetcher,
@@ -101,6 +102,7 @@ fmp_provider = Provider(
         "FinancialRatios": FMPFinancialRatiosFetcher,
         "HistoricalDividends": FMPHistoricalDividendsFetcher,
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
+        "HistoricalEps": FMPHistoricalEpsFetcher,
         "HistoricalSplits": FMPHistoricalSplitsFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
         "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,

@@ -349,7 +349,7 @@ class <ProviderName>EquityHistoricalData(EquityHistoricalData):
 
 The `Fetcher` class is responsible for making the request to the API endpoint and providing the output.
 
-It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
+It will receive the query parameters, and it will return the output while leveraging the pydantic model schemas.
 
 For the `EquityHistorical` example, this would look like the following:
 
@@ -382,7 +382,9 @@ class <ProviderName>EquityHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: <ProviderName>EquityHistoricalQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[<ProviderName>EquityHistoricalData]:
         """Transform the data to the standard format."""
 
@@ -390,6 +392,22 @@ class <ProviderName>EquityHistoricalFetcher(
 ```
 
 > Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**. See more on this [here](#the-tet-pattern).
+
+By default the credentials declared on each `Provider` are required. This means that before a query is executed, we check that all the credentials are present and if not an exception is raised. If you want to make credentials optional on a given fetcher, even though they are declared on the `Provider`, you can add `require_credentials=False` to the `Fetcher` class. See the following example:
+
+```python
+class <ProviderName>EquityHistoricalFetcher(
+    Fetcher[
+        <ProviderName>EquityHistoricalQueryParams,
+        List[<ProviderName>EquityHistoricalData],
+    ]
+):
+    """Transform the query, extract and transform the data."""
+
+    require_credentials = False
+
+    ...
+```
 
 #### Make the provider visible
 
@@ -405,14 +423,14 @@ from openbb_<provider_name>.models.equity_historical import <ProviderName>Equity
     name="<provider_name>",
     website="<URL to the provider website>",
     description="Provider description goes here",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "EquityHistorical": <ProviderName>EquityHistoricalFetcher,
     },
 )
 ```
 
-If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `required_credentials` list.
+If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `credentials` list.
 
 After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
 

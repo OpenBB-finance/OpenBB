@@ -1,4 +1,4 @@
-"""FMP World News fetcher."""
+"""FMP World News Fetcher."""
 
 import math
 from datetime import datetime

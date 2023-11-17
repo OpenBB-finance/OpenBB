@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class WorldNewsQueryParams(QueryParams):
-    """Global news Query."""
+    """World News Query."""
 
     limit: NonNegativeInt = Field(
         default=20,
