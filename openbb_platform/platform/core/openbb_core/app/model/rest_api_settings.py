@@ -1,7 +1,7 @@
 """FastAPI configuration settings model."""
 from typing import List
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, model_validator
 
 from openbb_core.app.model.abstract.tagged import Tagged
 
@@ -31,7 +31,7 @@ class FastAPISettings(Tagged):
     model_config = ConfigDict(frozen=True)
 
     version: str = "1"
-    prefix: str = f"/api/v{version}"
+    prefix: str  # This is set in the model_validator
     title: str = "OpenBB Platform API"
     description: str = "This is the OpenBB Platform API."
     terms_of_service: str = "http://example.com/terms/"
@@ -44,3 +44,20 @@ class FastAPISettings(Tagged):
     )
     servers: List[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
+
+    def __repr__(self) -> str:
+        """Return a string representation of the model."""
+        return f"{self.__class__.__name__}\n\n" + "\n".join(
+            f"{k}: {v}" for k, v in self.model_dump().items()
+        )
+
+    @model_validator(mode="before")
+    @classmethod
+    def update_prefix(cls, values: dict) -> dict:
+        """Update prefix based on version."""
+        prefix = values.get("prefix")
+        if not prefix:
+            version = values.get("version", "1")
+            values["prefix"] = f"/api/v{version}"
+            return values
+        return values
