@@ -15,14 +15,14 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-@router.command(model="GlobalNews")
+@router.command(model="WorldNews")
 def world(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Global News. Global news data."""
+    """World News. Global news data."""
     return OBBject(results=Query(**locals()).execute())
 
 
