@@ -1,3 +1,5 @@
+# OpenBB Platform
+
 [![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
 [![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBBTerminal)
 
@@ -6,7 +8,7 @@
 | ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png) |
 | Check our website at [openbb.co](www.openbb.co) |
 
-## OpenBB Platform Overview
+## Overview
 
 The OpenBB Platform provides a convenient way to access raw financial data from multiple data providers. The package comes with a ready to use REST API - this allows developers from any language to easily create applications on top of OpenBB Platform.
 
@@ -29,7 +31,6 @@ pip install openbb[all] --pre
 ``````
 
 > The `--pre` flag is required to install the latest alpha version.
-
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
 ## Python
