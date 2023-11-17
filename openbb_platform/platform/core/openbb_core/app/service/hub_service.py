@@ -69,7 +69,7 @@ class HubService:
         """Push user settings to Hub."""
         if self._session:
             if user_settings.credentials:
-                hub_user_settings = self.sdk2hub(user_settings.credentials)
+                hub_user_settings = self.platform2hub(user_settings.credentials)
                 return self._put_user_settings(self._session, hub_user_settings)
             return False
         raise OpenBBError(
@@ -84,7 +84,7 @@ class HubService:
                 profile = Profile(
                     hub_session=self._session,
                 )
-                credentials = self.hub2sdk(hub_user_settings)
+                credentials = self.hub2platform(hub_user_settings)
                 return UserSettings(profile=profile, credentials=credentials)
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
@@ -215,20 +215,25 @@ class HubService:
         raise HTTPException(status_code, detail)
 
     @classmethod
-    def hub2sdk(cls, settings: HubUserSettings) -> Credentials:
+    def hub2platform(cls, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
+        # TODO: Hub is getting credentials from `all_api_keys.json`, which uses
+        # the terminal names conventions. We need to update it to use a file that
+        # lives here in the platform and maps the credential names between the two.
         credentials = Credentials(
             alpha_vantage_api_key=settings.features_keys.API_KEY_ALPHAVANTAGE,
+            biztoc_api_key=settings.features_keys.API_BIZTOC_TOKEN,
             fred_api_key=settings.features_keys.API_FRED_KEY,
             fmp_api_key=settings.features_keys.API_KEY_FINANCIALMODELINGPREP,
             intrinio_api_key=settings.features_keys.API_INTRINIO_KEY,
             polygon_api_key=settings.features_keys.API_POLYGON_KEY,
-            quandl_api_key=settings.features_keys.API_KEY_QUANDL,
+            nasdaq_api_key=settings.features_keys.API_KEY_QUANDL,
+            ultima_api_key=settings.features_keys.API_ULTIMA_KEY,
         )
         return credentials
 
     @classmethod
-    def sdk2hub(cls, credentials: Credentials) -> HubUserSettings:
+    def platform2hub(cls, credentials: Credentials) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
 
         def get_cred(cred: str) -> Optional[str]:
@@ -236,12 +241,14 @@ class HubService:
             return secret_str.get_secret_value() if secret_str else None
 
         features_keys = FeaturesKeys(
-            API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
+            API_BIZTOC_TOKEN=get_cred("biztoc_api_key"),
             API_FRED_KEY=get_cred("fred_api_key"),
-            API_KEY_FINANCIALMODELINGPREP=get_cred("fmp_api_key"),
             API_INTRINIO_KEY=get_cred("intrinio_api_key"),
+            API_KEY_ALPHAVANTAGE=get_cred("alpha_vantage_api_key"),
+            API_KEY_FINANCIALMODELINGPREP=get_cred("fmp_api_key"),
             API_POLYGON_KEY=get_cred("polygon_api_key"),
-            API_KEY_QUANDL=get_cred("quandl_api_key"),
+            API_KEY_QUANDL=get_cred("nasdaq_api_key"),
+            API_ULTIMA_KEY=get_cred("ultima_api_key"),
         )
         hub_user_settings = HubUserSettings(features_keys=features_keys)
         return hub_user_settings
