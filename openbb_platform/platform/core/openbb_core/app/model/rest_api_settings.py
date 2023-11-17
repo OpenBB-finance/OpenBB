@@ -42,14 +42,14 @@ class FastAPISettings(BaseModel):
     servers: List[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
 
-    def __repr__(self) -> str:
-        """Return a string representation of the model."""
-        return f"{self.__class__.__name__}\n\n" + "\n".join(
-            f"{k}: {v}" for k, v in self.model_dump().items()
-        )
-
     @computed_field  # type: ignore[misc]
     @property
     def prefix(self) -> str:
         """Return the API prefix."""
         return f"/api/v{self.version}"
+
+    def __repr__(self) -> str:
+        """Return a string representation of the model."""
+        return f"{self.__class__.__name__}\n\n" + "\n".join(
+            f"{k}: {v}" for k, v in self.model_dump().items()
+        )
