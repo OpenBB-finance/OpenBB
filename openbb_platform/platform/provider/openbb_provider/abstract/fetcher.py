@@ -2,12 +2,22 @@
 # ruff: noqa: S101
 # pylint: disable=E1101
 
-from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    Optional,
+    TypeVar,
+    get_args,
+    get_origin,
+    overload,
+)
 
 from pandas import DataFrame
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
+from openbb_provider.utils.helpers import maybe_coroutine, run_async
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D", bound=Data)
@@ -37,8 +47,17 @@ class Fetcher(Generic[Q, R]):
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
 
+    @overload
     @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
+        """Extract the data from the provider."""
+        raise NotImplementedError
+
+    @overload
+    @staticmethod
+    async def extract_data(
+        query: Q, credentials: Optional[Dict[str, str]]
+    ) -> Any:  # pragma: no cover
         """Extract the data from the provider."""
         raise NotImplementedError
 
@@ -48,7 +67,7 @@ class Fetcher(Generic[Q, R]):
         raise NotImplementedError
 
     @classmethod
-    def fetch_data(
+    async def fetch_data(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
@@ -56,7 +75,9 @@ class Fetcher(Generic[Q, R]):
     ) -> R:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
-        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        data = await maybe_coroutine(
+            cls.extract_data, query=query, credentials=credentials, **kwargs
+        )
         return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
@@ -108,7 +129,9 @@ class Fetcher(Generic[Q, R]):
             If any of the tests fail.
         """
         query = cls.transform_query(params=params)
-        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        data = run_async(
+            cls.extract_data, query=query, credentials=credentials, **kwargs
+        )
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions

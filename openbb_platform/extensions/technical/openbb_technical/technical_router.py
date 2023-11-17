@@ -25,7 +25,7 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-def atr(
+async def atr(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 14,
@@ -75,7 +75,7 @@ def atr(
 
 
 @router.command(methods=["POST"])
-def fib(
+async def fib(
     data: List[Data],
     index: str = "date",
     close_column: Literal["close", "adj_close"] = "close",
@@ -134,7 +134,7 @@ def fib(
 
 
 @router.command(methods=["POST"])
-def obv(
+async def obv(
     data: List[Data],
     index: str = "date",
     offset: int = 0,
@@ -180,7 +180,7 @@ def obv(
 
 
 @router.command(methods=["POST"])
-def fisher(
+async def fisher(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 14,
@@ -226,7 +226,7 @@ def fisher(
 
 
 @router.command(methods=["POST"])
-def adosc(
+async def adosc(
     data: List[Data],
     index: str = "date",
     fast: PositiveInt = 3,
@@ -275,7 +275,7 @@ def adosc(
 
 
 @router.command(methods=["POST"])
-def bbands(
+async def bbands(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -348,7 +348,7 @@ def bbands(
 
 
 @router.command(methods=["POST"])
-def zlma(
+async def zlma(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -405,7 +405,7 @@ def zlma(
 
 
 @router.command(methods=["POST"])
-def aroon(
+async def aroon(
     data: List[Data],
     index: str = "date",
     length: int = 25,
@@ -457,7 +457,7 @@ def aroon(
 
 
 @router.command(methods=["POST"])
-def sma(
+async def sma(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -515,7 +515,7 @@ def sma(
 
 
 @router.command(methods=["POST"])
-def demark(
+async def demark(
     data: List[Data],
     index: str = "date",
     target: str = "close",
@@ -563,7 +563,7 @@ def demark(
 
 
 @router.command(methods=["POST"])
-def vwap(
+async def vwap(
     data: List[Data],
     index: str = "date",
     anchor: str = "D",
@@ -608,7 +608,7 @@ def vwap(
 
 
 @router.command(methods=["POST"])
-def macd(
+async def macd(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -671,7 +671,7 @@ def macd(
 
 
 @router.command(methods=["POST"])
-def hma(
+async def hma(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -726,7 +726,7 @@ def hma(
 
 
 @router.command(methods=["POST"])
-def donchian(
+async def donchian(
     data: List[Data],
     index: str = "date",
     lower_length: PositiveInt = 20,
@@ -779,7 +779,7 @@ def donchian(
 
 
 @router.command(methods=["POST"])
-def ichimoku(
+async def ichimoku(
     data: List[Data],
     index: str = "date",
     conversion: PositiveInt = 9,
@@ -832,7 +832,7 @@ def ichimoku(
 
 
 @router.command(methods=["POST"])
-def clenow(
+async def clenow(
     data: List[Data],
     index: str = "date",
     target: str = "close",
@@ -882,7 +882,9 @@ def clenow(
 
 
 @router.command(methods=["POST"])
-def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
+async def ad(
+    data: List[Data], index: str = "date", offset: int = 0
+) -> OBBject[List[Data]]:
     """The Accumulation/Distribution Line.
 
     Similar to the On Balance Volume (OBV).
@@ -927,7 +929,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
 
 
 @router.command(methods=["POST"])
-def adx(
+async def adx(
     data: List[Data],
     index: str = "date",
     length: int = 50,
@@ -976,7 +978,7 @@ def adx(
 
 
 @router.command(methods=["POST"])
-def wma(
+async def wma(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -1031,7 +1033,7 @@ def wma(
 
 
 @router.command(methods=["POST"])
-def cci(
+async def cci(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 14,
@@ -1071,7 +1073,7 @@ def cci(
 
 
 @router.command(methods=["POST"])
-def rsi(
+async def rsi(
     data: List[Data],
     target: str = "close",
     index: str = "date",
@@ -1131,7 +1133,7 @@ def rsi(
 
 
 @router.command(methods=["POST"])
-def stoch(
+async def stoch(
     data: List[Data],
     index: str = "date",
     fast_k_period: NonNegativeInt = 14,
@@ -1187,7 +1189,7 @@ def stoch(
 
 
 @router.command(methods=["POST"])
-def kc(
+async def kc(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 20,
@@ -1246,7 +1248,7 @@ def kc(
 
 
 @router.command(methods=["POST"])
-def cg(
+async def cg(
     data: List[Data], index: str = "date", length: PositiveInt = 14
 ) -> OBBject[List[Data]]:
     """Center of Gravity.
@@ -1287,7 +1289,7 @@ def cg(
 
 
 @router.command(methods=["POST"])
-def cones(
+async def cones(
     data: List[Data],
     index: str = "date",
     lower_q: float = 0.25,
@@ -1366,7 +1368,7 @@ def cones(
 
 
 @router.command(methods=["POST"])
-def ema(
+async def ema(
     data: List[Data],
     target: str = "close",
     index: str = "date",

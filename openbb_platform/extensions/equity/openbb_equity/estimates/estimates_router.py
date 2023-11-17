@@ -16,33 +16,33 @@ router = Router(prefix="/estimates")
 
 
 @router.command(model="PriceTarget")
-def price_target(
+async def price_target(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Price Target. Price target data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="AnalystEstimates")
-def historical(
+async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Historical Analyst Estimates. Analyst stock recommendations."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="PriceTargetConsensus")
-def consensus(
+async def consensus(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Price Target Consensus. Price target consensus data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

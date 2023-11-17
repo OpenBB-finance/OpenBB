@@ -483,14 +483,14 @@ You can expect the following endpoint structure when using a `Fetcher` to serve 
 
 ```python
 @router.command(model="Example")
-def model_example(
+async def model_example(    # create an async endpoint
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Example Data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 ```
 
 Let's break it down:

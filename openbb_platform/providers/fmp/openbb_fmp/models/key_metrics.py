@@ -7,7 +7,7 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many, get_data_one
-from openbb_provider.abstract.data import StrictInt
+from openbb_provider.abstract.data import ForceInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.key_metrics import (
     KeyMetricsData,
@@ -37,7 +37,7 @@ class FMPKeyMetricsData(KeyMetricsData):
         "enterprise_value_over_ebitda": "enterpriseValueOverEBITDA",
     }
 
-    calendar_year: Optional[StrictInt] = Field(
+    calendar_year: Optional[ForceInt] = Field(
         default=None, description="Calendar year."
     )
 

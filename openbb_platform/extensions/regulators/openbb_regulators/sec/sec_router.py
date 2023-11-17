@@ -16,51 +16,51 @@ router = Router(prefix="/sec")
 
 
 @router.command(model="Filings")
-def filings(
+async def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Look up filings to the SEC by ticker symbol or CIK."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CikMap")
-def cik_map(
+async def cik_map(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get the CIK number corresponding to a ticker symbol."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="InstitutionsSearch")
-def institutions_search(
+async def institutions_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Look up institutions regulated by the SEC."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SchemaFiles")
-def schema_files(
+async def schema_files(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get lists of SEC XML schema files by year."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SymbolMap")
-def symbol_map(
+async def symbol_map(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -70,11 +70,11 @@ def symbol_map(
     Get the ticker symbol corresponding to a company's CIK. Enter the CIK as a string, e.g. '0001067983'.
     This function is not intended for funds.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="RssLitigation")
-def rss_litigation(
+async def rss_litigation(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -84,18 +84,18 @@ def rss_litigation(
     The RSS feed provides links to litigation releases concerning civil lawsuits brought
     by the Commission in federal court.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SicSearch")
-def sic_search(
+async def sic_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Fuzzy search for Industry Titles, Reporting Office, and SIC Codes."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 # @router.command(model="NPort")
@@ -106,4 +106,4 @@ def sic_search(
 #    extra_params: ExtraParams,
 # ) -> OBBject[BaseModel]:
 #    """NPORT-P Filings from funds reporting to the SEC.."""
-#    return OBBject(results=Query(**locals()).execute())
+#    return await OBBject.from_query(Query(**locals()))

@@ -6,7 +6,7 @@ from typing import Dict, List, Literal, Set, Union
 
 from pydantic import Field, field_validator
 
-from openbb_provider.abstract.data import Data
+from openbb_provider.abstract.data import Data, ForceInt
 from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
@@ -34,6 +34,6 @@ class RevenueBusinessLineData(Data):
     """Revenue by Business Line Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    business_line: Dict[str, int] = Field(
+    business_line: Dict[str, ForceInt] = Field(
         description="Day level data containing the revenue of the business line."
     )

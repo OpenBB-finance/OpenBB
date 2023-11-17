@@ -1,9 +1,23 @@
 """Provider helpers."""
 import random
 import re
-from typing import List
+from concurrent.futures import as_completed
+from functools import partial
+from inspect import iscoroutinefunction
+from typing import (
+    Awaitable,
+    Callable,
+    List,
+    ParamSpec,
+    TypeVar,
+    Union,
+)
 
 import requests
+from anyio import start_blocking_portal
+
+T = TypeVar("T")
+P = ParamSpec("P")
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
@@ -137,4 +151,33 @@ def to_camel_case(string: str):
     result = s_list[0] + "".join(i.capitalize() for i in s_list[1:])
     if result.islower():
         return result.title()
+    return result
+
+
+async def maybe_coroutine(
+    func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
+) -> T:
+    """Run a function that may or may not be a coroutine."""
+
+    if not iscoroutinefunction(func):
+        return func(*args, **kwargs)
+
+    return await func(*args, **kwargs)
+
+
+def run_async(
+    func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
+) -> T:
+    """Run a coroutine function in a blocking context."""
+
+    if not iscoroutinefunction(func):
+        return func(*args, **kwargs)
+
+    with start_blocking_portal() as portal:
+        func = partial(func, *args, **kwargs)
+        task = portal.start_task_soon(func)
+
+        for fut in as_completed([task]):
+            result = fut.result()
+
     return result

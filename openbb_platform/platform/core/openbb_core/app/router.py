@@ -1,7 +1,7 @@
 import traceback
 import warnings
 from functools import partial
-from inspect import Parameter, Signature, isclass, signature
+from inspect import Parameter, Signature, isclass, iscoroutinefunction, signature
 from typing import (
     Any,
     Callable,
@@ -161,6 +161,22 @@ class CommandValidator:
 
     @classmethod
     def check(cls, func: Callable):
+        if not iscoroutinefunction(func):
+            raise TypeError(
+                f"Invalid function: {func.__module__}.{func.__name__}\n"
+                "Route functions must be async."
+                "\n\n"
+                '\033[92m@router.command(model="WorldNews")\n'
+                "async def world(\n"
+                "    cc: CommandContext,\n"
+                "    provider_choices: ProviderChoices,\n"
+                "    standard_params: StandardParams,\n"
+                "    extra_params: ExtraParams,\n"
+                ") -> OBBject[BaseModel]:\n"
+                '    """World News. Global news data."""\n'
+                "    return await OBBject.from_query(Query(**locals()))\033[0m"
+            )
+
         cls.check_return(func=func)
         cls.check_parameters(func=func)
 
@@ -402,8 +418,8 @@ class SignatureInspector:
     def get_operation_id(func: Callable) -> str:
         """Get operation id"""
         operation_id = [
-            t.replace("_router", "")
-            for t in func.__module__.split(".")[1:] + [func.__name__]
+            t.replace("_router", "").replace("openbb_", "")
+            for t in func.__module__.split(".") + [func.__name__]
         ]
         cleaned_id = "_".join({c: "" for c in operation_id if c}.keys())
         return cleaned_id
@@ -548,6 +564,9 @@ class RouterLoader:
                     router.include_router(router=entry, prefix=f"/{entry_point.name}")
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
-                raise LoadingError(f"Invalid extension '{entry_point.name}'") from e
+                raise LoadingError(
+                    f"Error loading extension: {entry_point.name}\n"
+                    f"\033[91m{e}\033[0m"
+                )
 
         return router

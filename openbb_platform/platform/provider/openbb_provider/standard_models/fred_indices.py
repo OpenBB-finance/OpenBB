@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, PositiveFloat, field_validator
+from pydantic import Field, field_validator
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -39,6 +39,4 @@ class FredIndicesData(Data):
     """Fred end of day price Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    value: Optional[PositiveFloat] = Field(
-        default=None, description="Value of the index."
-    )
+    value: Optional[float] = Field(default=None, description="Value of the index.")

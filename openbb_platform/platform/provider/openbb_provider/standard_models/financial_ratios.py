@@ -173,6 +173,12 @@ class FinancialRatiosData(Data):
         default=None, description="Price sales ratio."
     )
     dividend_yield: Optional[float] = Field(default=None, description="Dividend yield.")
+    dividend_yield_percentage: Optional[float] = Field(
+        default=None, description="Dividend yield percentage."
+    )
+    dividend_per_share: Optional[float] = Field(
+        default=None, description="Dividend per share."
+    )
     enterprise_value_multiple: Optional[float] = Field(
         default=None, description="Enterprise value multiple."
     )

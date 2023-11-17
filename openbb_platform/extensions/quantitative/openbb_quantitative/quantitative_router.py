@@ -30,7 +30,7 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
+async def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
     - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
@@ -74,9 +74,9 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 
 
 @router.command(methods=["POST"])
-def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
+async def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model."""
-    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
 
@@ -108,7 +108,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
 
 @router.command(methods=["POST"])
-def omega_ratio(
+async def omega_ratio(
     data: List[Data],
     target: str,
     threshold_start: float = 0.0,
@@ -137,7 +137,7 @@ def omega_ratio(
 
     epsilon = 1e-6  # to avoid division by zero
 
-    def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
+    async def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
         """Get omega ratio."""
         daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
         excess = df_target - daily_threshold
@@ -156,7 +156,9 @@ def omega_ratio(
 
 
 @router.command(methods=["POST"])
-def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
+async def kurtosis(
+    data: List[Data], target: str, window: PositiveInt
+) -> OBBject[List[Data]]:
     """Get the Kurtosis.
 
     Parameters
@@ -173,7 +175,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Kurtosis.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -184,7 +186,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
 
 
 @router.command(methods=["POST"])
-def unitroot_test(
+async def unitroot_test(
     data: List[Data],
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
@@ -211,7 +213,8 @@ def unitroot_test(
     OBBject[UnitRootModel]
         Unit root tests summary.
     """
-    from statsmodels.tsa import stattools  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from statsmodels.tsa import stattools  # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -237,7 +240,7 @@ def unitroot_test(
 
 
 @router.command(methods=["POST"])
-def sharpe_ratio(
+async def sharpe_ratio(
     data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
 ) -> OBBject[List[Data]]:
     """Get Sharpe Ratio.
@@ -271,7 +274,7 @@ def sharpe_ratio(
 
 
 @router.command(methods=["POST"])
-def sortino_ratio(
+async def sortino_ratio(
     data: List[Data],
     target: str,
     target_return: float = 0.0,
@@ -319,7 +322,9 @@ def sortino_ratio(
 
 
 @router.command(methods=["POST"])
-def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
+async def skewness(
+    data: List[Data], target: str, window: PositiveInt
+) -> OBBject[List[Data]]:
     """Get Skewness.
 
     Parameters
@@ -336,7 +341,7 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Skewness.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -347,7 +352,7 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
 
 
 @router.command(methods=["POST"])
-def quantile(
+async def quantile(
     data: List[Data],
     target: str,
     window: PositiveInt,
@@ -364,14 +369,13 @@ def quantile(
     window : PositiveInt
         Window size.
     quantile_pct : NonNegativeFloat, optional
-        Quantile percentage, by default 0.5
 
     Returns
     -------
     OBBject[List[Data]]
         Quantile.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -386,7 +390,7 @@ def quantile(
 
 
 @router.command(methods=["POST"])
-def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
+async def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
 
     Parameters

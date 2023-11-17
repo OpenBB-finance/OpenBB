@@ -5,7 +5,7 @@ from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data
-from openbb_provider.abstract.data import StrictInt
+from openbb_provider.abstract.data import ForceInt
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.income_statement import (
     IncomeStatementData,
@@ -99,9 +99,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     benefits_costs_expenses: Optional[float] = Field(
         default=None, description="Benefits, costs and expenses"
     )
-    net_income_loss_attributable_to_noncontrolling_interest: Optional[
-        StrictInt
-    ] = Field(
+    net_income_loss_attributable_to_noncontrolling_interest: Optional[ForceInt] = Field(
         default=None,
         description="Net income (loss) attributable to noncontrolling interest",
     )

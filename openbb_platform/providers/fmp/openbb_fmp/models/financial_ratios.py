@@ -34,8 +34,10 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     __alias_dict__ = {
         "net_income_per_ebt": "netIncomePerEBT",
         "dividend_yield": "dividendYiel",
-        "dividend_yield_percentage": "dividendYielPercentage",
+        "dividend_yield_percentage": "dividendYieldPercentage",
         "dividend_per_share": "dividendPerShare",
+        "research_and_developement_to_revenue": "researchAndDevelopementToRevenue",
+        "debt_to_market_cap": "debtToMarketCap",
     }
 
 

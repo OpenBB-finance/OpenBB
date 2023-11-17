@@ -77,7 +77,7 @@ from openbb_core.app.router import Router
 router = Router(prefix="/router_name")
 
 @router.command
-def some_command(
+async def some_command(                # create an async function
     some_param: some_param_type,
 ) -> OBBject[Item]:
     pass
@@ -89,14 +89,14 @@ This is an example how we do it for `equity.price.historical` which only depends
 
 ```python
 @router.command(model="EquityHistorical")
-def historical(
+async def historical(                   # create an async function
     cc: CommandContext,                 # user settings inside
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
 ) -> OBBject[BaseModel]:
     """Load equity data for a specific ticker."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 ```
 
 ### Entrypoint
