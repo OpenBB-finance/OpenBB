@@ -93,10 +93,10 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 The `openbb-econometrics` extension installs a new router path (`obb.econometrics`) and additional Python libraries:
 
-- scipy = "^1.10.1"
-- statsmodels = "^0.14.0"
-- arch = "^5.5.0"
-- linearmodels = "<=4.25"
+- scipy
+- statsmodels
+- arch
+- linearmodels
 
 :::note
 This extension is not accessible via REST API because `statsmodels` is not serializable.
