@@ -1,4 +1,4 @@
-"""SEC Litigation RSS Feed Fetcher."""
+"""SEC Litigation RSS Feed Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -14,11 +14,14 @@ from pydantic import Field
 
 
 class SecRssLitigationQueryParams(QueryParams):
-    """SEC RSS Feed for Litigation Releases."""
+    """SEC Litigation RSS Feed Query.
+
+    Source: https://sec.gov/
+    """
 
 
 class SecRssLitigationData(Data):
-    """SEC RSS Feed for Litigation Releases."""
+    """SEC Litigation RSS Feed Data."""
 
     published: datetime = Field(description="The date of publication.", alias="date")
     title: str = Field(description="The title of the release.")
@@ -30,7 +33,7 @@ class SecRssLitigationData(Data):
 class SecRssLitigationFetcher(
     Fetcher[SecRssLitigationQueryParams, List[SecRssLitigationData]]
 ):
-    """SEC Litigations RSS Feed Fetcher."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecRssLitigationQueryParams:
@@ -44,7 +47,6 @@ class SecRssLitigationFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
-
         results = []
         url = "https://www.sec.gov/rss/litigation/litreleases.xml"
         r = requests.get(url, headers=SEC_HEADERS, timeout=5)
