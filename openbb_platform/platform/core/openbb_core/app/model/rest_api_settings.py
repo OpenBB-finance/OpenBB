@@ -1,7 +1,7 @@
 """FastAPI configuration settings model."""
 from typing import List
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
 class Cors(BaseModel):
@@ -29,7 +29,6 @@ class FastAPISettings(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     version: str = "1"
-    prefix: str  # This is set in the model_validator
     title: str = "OpenBB Platform API"
     description: str = "This is the OpenBB Platform API."
     terms_of_service: str = "http://example.com/terms/"
@@ -49,13 +48,8 @@ class FastAPISettings(BaseModel):
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
-    @model_validator(mode="before")
-    @classmethod
-    def update_prefix(cls, values: dict) -> dict:
-        """Update prefix based on version."""
-        prefix = values.get("prefix")
-        if not prefix:
-            version = values.get("version", "1")
-            values["prefix"] = f"/api/v{version}"
-            return values
-        return values
+    @computed_field  # type: ignore[misc]
+    @property
+    def prefix(self) -> str:
+        """Return the API prefix."""
+        return f"/api/v{self.version}"
