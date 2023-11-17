@@ -36,11 +36,11 @@ class CredentialsLoader:
 
     @staticmethod
     def prepare(
-        required_credentials: Dict[str, Set[str]],
+        credentials: Dict[str, Set[str]],
     ) -> Dict[str, Tuple[object, None]]:
         """Prepare credentials map to be used in the Credentials model"""
         formatted: Dict[str, Tuple[object, None]] = {}
-        for origin, creds in required_credentials.items():
+        for origin, creds in credentials.items():
             for c in creds:
                 # Not sure we should do this, if you require the same credential it breaks
                 # if c in formatted:
@@ -61,7 +61,7 @@ class CredentialsLoader:
             try:
                 entry = entry_point.load()
                 if isinstance(entry, Extension):
-                    for c in entry.required_credentials:
+                    for c in entry.credentials:
                         self.credentials["obbject"].add(c)
             except Exception as e:
                 traceback.print_exception(type(e), e, e.__traceback__)
@@ -70,7 +70,7 @@ class CredentialsLoader:
     def from_providers(self) -> None:
         """Load credentials from providers"""
         self.credentials["providers"] = set()
-        for c in ProviderInterface().required_credentials:
+        for c in ProviderInterface().credentials:
             self.credentials["providers"].add(c)
 
     def load(self) -> BaseModel:

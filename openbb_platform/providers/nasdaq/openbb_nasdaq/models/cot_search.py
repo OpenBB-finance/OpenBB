@@ -22,8 +22,12 @@ class NasdaqCotSearchData(CotSearchData):
     """Nasdaq CFTC Commitment of Traders Reports Search data."""
 
 
-class NasdaqCotSearchFetcher(Fetcher[CotSearchQueryParams, List[NasdaqCotSearchData]]):
+class NasdaqCotSearchFetcher(
+    Fetcher[NasdaqCotSearchQueryParams, List[NasdaqCotSearchData]]
+):
     """Nasdaq CFTC Commitment of Traders Reports Search Fetcher."""
+
+    require_credentials = False
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCotSearchQueryParams:

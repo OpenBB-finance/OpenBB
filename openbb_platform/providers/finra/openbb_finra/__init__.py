@@ -7,7 +7,7 @@ finra_provider = Provider(
     name="finra",
     website="https://finra.org",
     description="Financial Industry Regulatory Authority.",
-    required_credentials=None,
+    credentials=None,
     fetcher_dict={
         "OTCAggregate": FinraOTCAggregateFetcher,
         "EquityShortInterest": FinraShortInterestFetcher,

@@ -20,7 +20,7 @@ class RegistryMap:
     def __init__(self, registry: Optional[Registry] = None) -> None:
         """Initialize Registry Map."""
         self._registry = registry or RegistryLoader.from_extensions()
-        self._required_credentials = self._get_required_credentials(self._registry)
+        self._credentials = self._get_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
         self._map, self._return_map = self._get_map(self._registry)
         self._models = self._get_models(self._map)
@@ -36,9 +36,9 @@ class RegistryMap:
         return self._available_providers
 
     @property
-    def required_credentials(self) -> List[str]:
+    def credentials(self) -> List[str]:
         """Get list of required credentials."""
-        return self._required_credentials
+        return self._credentials
 
     @property
     def map(self) -> MapType:
@@ -55,11 +55,11 @@ class RegistryMap:
         """Get available models."""
         return self._models
 
-    def _get_required_credentials(self, registry: Registry) -> List[str]:
+    def _get_credentials(self, registry: Registry) -> List[str]:
         """Get list of required credentials."""
         cred_list = []
         for provider in registry.providers.values():
-            for c in provider.required_credentials:
+            for c in provider.credentials:
                 cred_list.append(c)
         return cred_list
 

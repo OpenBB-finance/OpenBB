@@ -12,7 +12,7 @@ alpha_vantage_provider = Provider(
     from fundamental data to technical indicators, Alpha Vantage
     is your one-stop-shop for enterprise-grade global market data delivered through
     cloud-based APIs, Excel, and Google Sheets. """,
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "EquityHistorical": AVEquityHistoricalFetcher,
     },

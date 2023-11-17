@@ -133,13 +133,13 @@ from openbb_<provider_name>.models.equity_historical import <ProviderName>Equity
     name="<provider_name>",
     website="<URL to the provider website>",
     description="Provider description goes here",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "EquityHistorical": <ProviderName>EquityHistoricalFetcher,
     },
 )
 ```
 
-If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `required_credentials` list.
+If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `credentials` list.
 
 After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
