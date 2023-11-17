@@ -31,6 +31,7 @@ OpenBB Toolkit Extensions expand the Platform with functions for manipulating da
 | Extension Name | Description | Installation Command | Core/Community | Router Path |
 |:-----------------|:-----------:|:-------------------:|:------------------:|-------------:|
 | openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
+| openbb-devtools | Aggregates dependencies that facilitate a nice development experience for OpenBB. | pip install openbb-devtools | N/A |
 | openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
 | openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
 | openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
@@ -88,6 +89,36 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 - Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+## Devtools
+
+This extension aggregates the dependencies that facilitate a nice development experience
+for OpenBB. It does not contain any code itself, but rather pulls in the following dependencies:
+
+- bandit
+- black
+- ipykernel
+- mypy
+- poetry
+- pre-commit
+- pydocstyle
+- pylint
+- pytest
+- pytest-cov
+- ruff
+- tox
+- types-python-dateutil
+- types-toml
+
+### Installation
+
+The extension is included in the dev_install.py script.
+
+Standalone installation:
+
+```console
+pip install openbb-devtools
+```
 
 ## Econometrics
 
