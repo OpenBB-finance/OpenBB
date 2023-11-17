@@ -248,7 +248,7 @@ Open presets in any simple text editor, add the desired parameters, save the fil
 
 ### CA
 
-The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](/terminal/data-available/stocks/comparison) to undergo further scrutiny.
+The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](/terminal/menus/stocks/comparison) to undergo further scrutiny.
 
 ![Screener Results](https://user-images.githubusercontent.com/85772166/229921889-3ce97436-a768-4a74-b312-e6070459e2a9.png)
 

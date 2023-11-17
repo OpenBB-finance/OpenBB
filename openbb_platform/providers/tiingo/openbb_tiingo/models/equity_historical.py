@@ -1,4 +1,4 @@
-"""Tiingo Equity end of day fetcher."""
+"""Tiingo Equity historical end of day fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +16,7 @@ from pydantic import Field, PrivateAttr, model_validator
 
 
 class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """Tiingo Equity end of day Query.
+    """Tiingo Equity historical end of day Query.
 
     Source: https://www.tiingo.com/documentation/end-of-day
     """
@@ -52,7 +52,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class TiingoEquityHistoricalData(EquityHistoricalData):
-    """Tiingo Equity end of day Data."""
+    """Tiingo Equity historical end of day Data."""
 
     adj_open: Optional[float] = Field(
         default=None,

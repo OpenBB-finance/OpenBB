@@ -21,8 +21,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Developer Issues - Faqs | OpenBB SDK Docs" />
 
-## Developer Issues
-
 <details><summary>How do I launch in debug mode?</summary>
 
 The PyWry window can be run in debug mode for identifying specific issues.  Use the code block below - with the `obb` Python environment active - to import the OpenBB SDK in debug mode.

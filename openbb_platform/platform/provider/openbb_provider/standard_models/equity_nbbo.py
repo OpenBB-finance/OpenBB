@@ -8,7 +8,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class EquityNBBOQueryParams(QueryParams):
-    """Stock National Best Bid and Offer query model."""
+    """Equity NBBO query model."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -22,7 +22,7 @@ class EquityNBBOQueryParams(QueryParams):
 
 
 class EquityNBBOData(Data):
-    """Stock National Best Bid and Offer data."""
+    """Equity NBBO data."""
 
     ask_exchange: str = Field(
         description="The exchange ID for the ask.",

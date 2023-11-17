@@ -1,4 +1,4 @@
-"""Alpha Vantage Stock End of Day fetcher."""
+"""Alpha Vantage Equity Historical End of Day fetcher."""
 
 
 from datetime import datetime
@@ -24,7 +24,7 @@ from pydantic import (
 
 
 class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """Alpha Vantage Stock End of Day Query.
+    """Alpha Vantage Equity Historical End of Day Query.
 
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
@@ -108,7 +108,7 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class AVEquityHistoricalData(EquityHistoricalData):
-    """Alpha Vantage Stock End of Day Data."""
+    """Alpha Vantage Equity Historical End of Day Data."""
 
     __alias_dict__ = {"date": "timestamp", "adj_close": "adjusted_close"}
 
