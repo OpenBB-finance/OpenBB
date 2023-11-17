@@ -10,9 +10,15 @@ PACKAGE = "openbb"
 
 def get_package_version(package: str):
     """Retrieve the version of a package from installed pip packages."""
-    version = pkg_resources.get_distribution(package).version
+    is_nightly = False
+    try:
+        version = pkg_resources.get_distribution(package).version
+    except pkg_resources.DistributionNotFound:
+        package += "-nightly"
+        is_nightly = True
+        version = pkg_resources.get_distribution(package).version
 
-    if is_git_repo(Path(__file__).parent.resolve()):
+    if is_git_repo(Path(__file__).parent.resolve()) and not is_nightly:
         version += "dev"
 
     return version
