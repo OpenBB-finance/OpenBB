@@ -16,14 +16,14 @@ from ..utils.helpers import yf_download
 
 
 class YFinanceEtfHistoricalQueryParams(EtfHistoricalQueryParams):
-    """YFinance ETF Historical End of Day Market Price Query.
+    """YFinance ETF Historical Price Query.
 
     Source: https://finance.yahoo.com/
     """
 
 
 class YFinanceEtfHistoricalData(EtfHistoricalData):
-    """YFinance Etf End of Day Data."""
+    """YFinance Etf Price Data."""
 
     __alias_dict__ = {
         "adj_close": "adj close",

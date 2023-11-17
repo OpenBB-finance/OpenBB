@@ -1,4 +1,4 @@
-"""yfinance Crypto End of Day fetcher."""
+"""yfinance Crypto Price fetcher."""
 # ruff: noqa: SIM105
 
 
@@ -20,7 +20,7 @@ from pydantic import Field, field_validator
 
 
 class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
-    """YFinance Crypto End of Day Query.
+    """YFinance Crypto Price Query.
 
     Source: https://finance.yahoo.com/crypto/
     """
@@ -32,11 +32,11 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
 
 
 class YFinanceCryptoHistoricalData(CryptoHistoricalData):
-    """YFinance Crypto End of Day Data."""
+    """YFinance Crypto Price Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return datetime object from string."""
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
@@ -67,7 +67,7 @@ class YFinanceCryptoHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceCryptoHistoricalQueryParams,
+        query: YFinanceCryptoHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:

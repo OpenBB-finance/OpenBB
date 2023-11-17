@@ -1,4 +1,4 @@
-"""yfinance Futures End of Day fetcher."""
+"""yfinance Futures Price."""
 # ruff: noqa: SIM105
 
 
@@ -21,7 +21,7 @@ from yfinance import Ticker
 
 
 class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
-    """YFinance Futures End of Day Query.
+    """YFinance Futures Price Query.
 
     Source: https://finance.yahoo.com/crypto/
     """
@@ -40,11 +40,11 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 
 
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
-    """YFinance Futures End of Day Data."""
+    """YFinance Futures Price Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return datetime object from string."""
         if isinstance(v, Timestamp):
             return v.to_pydatetime()
@@ -79,7 +79,7 @@ class YFinanceFuturesHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceFuturesHistoricalQueryParams,
+        query: YFinanceFuturesHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
@@ -148,7 +148,7 @@ class YFinanceFuturesHistoricalFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceFuturesHistoricalQueryParams,
+        query: YFinanceFuturesHistoricalQueryParams,  # pylint: disable=unused-argument
         data: dict,
         **kwargs: Any,
     ) -> List[YFinanceFuturesHistoricalData]:
