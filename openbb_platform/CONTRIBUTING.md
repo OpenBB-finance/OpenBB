@@ -349,7 +349,7 @@ class <ProviderName>EquityHistoricalData(EquityHistoricalData):
 
 The `Fetcher` class is responsible for making the request to the API endpoint and providing the output.
 
-It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
+It will receive the query parameters, and it will return the output while leveraging the pydantic model schemas.
 
 For the `EquityHistorical` example, this would look like the following:
 
@@ -382,7 +382,9 @@ class <ProviderName>EquityHistoricalFetcher(
 
     @staticmethod
     def transform_data(
+        query: <ProviderName>EquityHistoricalQueryParams,
         data: dict,
+        **kwargs: Any,
     ) -> List[<ProviderName>EquityHistoricalData]:
         """Transform the data to the standard format."""
 
@@ -390,6 +392,22 @@ class <ProviderName>EquityHistoricalFetcher(
 ```
 
 > Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**. See more on this [here](#the-tet-pattern).
+
+By default the credentials declared on each `Provider` are required. This means that before a query is executed, we check that all the credentials are present and if not an exception is raised. If you want to make credentials optional on a given fetcher, even though they are declared on the `Provider`, you can add `require_credentials=False` to the `Fetcher` class. See the following example:
+
+```python
+class <ProviderName>EquityHistoricalFetcher(
+    Fetcher[
+        <ProviderName>EquityHistoricalQueryParams,
+        List[<ProviderName>EquityHistoricalData],
+    ]
+):
+    """Transform the query, extract and transform the data."""
+
+    require_credentials = False
+
+    ...
+```
 
 #### Make the provider visible
 
