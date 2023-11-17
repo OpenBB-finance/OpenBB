@@ -11,7 +11,6 @@ from openbb_core.api.router.system import router as router_system
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
-from openbb_core.app.version import VERSION
 from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
@@ -21,7 +20,7 @@ system = SystemService().system_settings
 app = FastAPI(
     title=system.api_settings.title,
     description=system.api_settings.description,
-    version=VERSION,
+    version=system.version,
     terms_of_service=system.api_settings.terms_of_service,
     contact={
         "name": system.api_settings.contact_name,
@@ -62,7 +61,7 @@ async def startup():
     banner = rf"""
 
                    ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {VERSION}
+  █████████████████╔══█████████████████╗       OpenBB Platform {system.version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
   ╚═════════════███║  ███╔═════════════╝
