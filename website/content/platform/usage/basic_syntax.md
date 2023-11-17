@@ -204,6 +204,6 @@ data.warnings
 
 ## References
 
-All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference/fixedincome/ycrv).  The data models for each provider source are described within the [Data Models](/platform/data_models/StockHistorical) pages.
+All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference).  The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
 
 These pages are a quick way to cross-reference differences between providers.  The same information is provided in a function's signature and docstring.
