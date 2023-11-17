@@ -1,5 +1,6 @@
 """Intrinio Equity Quote fetcher."""
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -103,7 +104,7 @@ class IntrinioEquityQuoteData(EquityQuoteData):
 class IntrinioEquityQuoteFetcher(
     Fetcher[
         IntrinioEquityQuoteQueryParams,
-        IntrinioEquityQuoteData,
+        List[IntrinioEquityQuoteData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -118,18 +119,26 @@ class IntrinioEquityQuoteFetcher(
         query: IntrinioEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+        results: List[Dict] = []
 
-        base_url = "https://api-v2.intrinio.com"
-        url = f"{base_url}/securities/{query.symbol}/prices/realtime?source={query.source}&api_key={api_key}"
+        def get_data(symbol):
+            base_url = "https://api-v2.intrinio.com"
+            url = f"{base_url}/securities/{symbol}/prices/realtime?source={query.source}&api_key={api_key}"
+            data = get_data_one(url, **kwargs)
+            data["symbol"] = symbol
+            results.append(data)
 
-        return get_data_one(url, **kwargs)
+        with ThreadPoolExecutor() as executor:
+            executor.map(get_data, [s.strip() for s in query.symbol.split(",")])
+
+        return results
 
     @staticmethod
     def transform_data(
         query: IntrinioEquityQuoteQueryParams, data: dict, **kwargs: Any
     ) -> IntrinioEquityQuoteData:
         """Return the transformed data."""
-        return IntrinioEquityQuoteData.model_validate(data)
+        return [IntrinioEquityQuoteData(**d) for d in data]
