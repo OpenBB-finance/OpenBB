@@ -1,4 +1,4 @@
-"""ETF Search data model."""
+"""ETF Search Standard Model."""
 
 from typing import Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EtfSearchQueryParams(QueryParams):
-    """ETF Search Query Params."""
+    """ETF Search Query."""
 
     query: Optional[str] = Field(description="Search query.", default="")
 

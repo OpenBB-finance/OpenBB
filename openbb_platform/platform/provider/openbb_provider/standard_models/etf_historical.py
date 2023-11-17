@@ -1,4 +1,4 @@
-"""ETF Historical Price Market Price."""
+"""ETF Historical Price Standard Model."""
 
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EtfHistoricalQueryParams(QueryParams):
-    """ETF end of day Query."""
+    """ETF Historical Price Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
     start_date: Optional[dateType] = Field(
@@ -34,7 +34,7 @@ class EtfHistoricalQueryParams(QueryParams):
 
 
 class EtfHistoricalData(Data):
-    """ETF end of day price Data."""
+    """ETF Historical Price Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

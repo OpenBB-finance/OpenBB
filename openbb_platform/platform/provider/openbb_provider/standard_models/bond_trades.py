@@ -1,4 +1,4 @@
-"""Bond Trades data model."""
+"""Bond Trades Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class BondTradesQueryParams(QueryParams):
-    """Bond Trades Query Params."""
+    """Bond Trades Query."""
 
     country: Optional[str] = Field(
         default=None,

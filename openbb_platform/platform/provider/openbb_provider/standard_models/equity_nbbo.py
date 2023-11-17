@@ -1,4 +1,4 @@
-"""Equity NBBO data model."""
+"""Equity NBBO Standard Model."""
 
 from pydantic import Field, field_validator
 
@@ -8,7 +8,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class EquityNBBOQueryParams(QueryParams):
-    """Equity NBBO query model."""
+    """Equity NBBO Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -22,7 +22,7 @@ class EquityNBBOQueryParams(QueryParams):
 
 
 class EquityNBBOData(Data):
-    """Equity NBBO data."""
+    """Equity NBBO Data."""
 
     ask_exchange: str = Field(
         description="The exchange ID for the ask.",

@@ -1,4 +1,4 @@
-"""Bond Reference data model."""
+"""Bond Reference Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -12,7 +12,7 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class BondReferenceQueryParams(QueryParams):
-    """Bond Reference Query Params."""
+    """Bond Reference Query."""
 
     country: Optional[str] = Field(
         default=None,

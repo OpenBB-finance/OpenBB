@@ -1,4 +1,4 @@
-"""ETF Sectors data model."""
+"""ETF Sectors Standard Model."""
 
 from typing import List, Optional, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class EtfSectorsQueryParams(QueryParams):
-    """ETF Sectors Query Params."""
+    """ETF Sectors Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
@@ -24,7 +24,7 @@ class EtfSectorsQueryParams(QueryParams):
 
 
 class EtfSectorsData(Data):
-    """FMP ETF Sector Info."""
+    """ETF Sectors Data."""
 
     sector: str = Field(description="Sector of exposure.")
     weight: Optional[float] = Field(

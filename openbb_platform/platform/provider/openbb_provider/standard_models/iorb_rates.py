@@ -1,5 +1,4 @@
-"""IORB Data Model."""
-
+"""IORB Standard Model."""
 
 from datetime import date as dateType
 from typing import Optional
@@ -25,7 +24,7 @@ class IORBQueryParams(QueryParams):
 
 
 class IORBData(Data):
-    """Return Treasury Rates Data."""
+    """IORB Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="IORB rate.")

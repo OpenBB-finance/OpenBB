@@ -1,4 +1,4 @@
-"""Upcoming Release Days standard model."""
+"""Upcoming Release Days Standard Model."""
 
 from datetime import date as dateType
 
@@ -10,11 +10,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class UpcomingReleaseDaysQueryParams(QueryParams):
-    """Upcoming Release Days Search Query Params."""
+    """Upcoming Release Days Query."""
 
 
 class UpcomingReleaseDaysData(Data):
-    """Upcoming Release Days Search Data."""
+    """Upcoming Release Days Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="The full name of the asset.")

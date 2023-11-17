@@ -1,4 +1,4 @@
-"""High Quality Market Corporate Bond Model."""
+"""High Quality Market Corporate Bond Standard Model."""
 from datetime import (
     date as dateType,
 )
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
-class HighQualityMarketCorporateBondParams(QueryParams):
-    """HighQualityMarketCorporateBond Query."""
+class HighQualityMarketCorporateBondQueryParams(QueryParams):
+    """High Quality Market Corporate Bond Query."""
 
     date: Optional[dateType] = Field(
         default=None,
@@ -25,7 +25,7 @@ class HighQualityMarketCorporateBondParams(QueryParams):
 
 
 class HighQualityMarketCorporateBondData(Data):
-    """HighQualityMarketCorporateBond Data."""
+    """High Quality Market Corporate Bond Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="HighQualityMarketCorporateBond Rate.")

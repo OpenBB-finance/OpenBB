@@ -1,4 +1,4 @@
-"""Real GDP data model."""
+"""Real GDP Standard Model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class GdpRealQueryParams(QueryParams):
-    """Real GDP query."""
+    """Real GDP Query."""
 
     units: Literal["idx", "qoq", "yoy"] = Field(
         default="yoy",
@@ -28,7 +28,7 @@ class GdpRealQueryParams(QueryParams):
 
 
 class GdpRealData(Data):
-    """Real GDP data."""
+    """Real GDP Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")

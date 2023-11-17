@@ -1,4 +1,4 @@
-"""Revenue by Business Line data model."""
+"""Revenue by Business Line Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class RevenueBusinessLineQueryParams(QueryParams):
-    """Revenue Business Line Query."""
+    """Revenue by Business Line Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: Literal["quarter", "annual"] = Field(

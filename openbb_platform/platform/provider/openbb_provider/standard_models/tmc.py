@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class TreasuryConstantMaturityParams(QueryParams):
-    """TreasuryConstantMaturity Query."""
+class TreasuryConstantMaturityQueryParams(QueryParams):
+    """Treasury Constant Maturity Query."""
 
     start_date: Optional[dateType] = Field(
         default=None,
@@ -29,7 +29,7 @@ class TreasuryConstantMaturityParams(QueryParams):
 
 
 class TreasuryConstantMaturityData(Data):
-    """TreasuryConstantMaturity Data."""
+    """Treasury Constant Maturity Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="TreasuryConstantMaturity Rate.")

@@ -1,4 +1,5 @@
-"""Moody Corporate Bond Index Model."""
+"""Moody Corporate Bond Index Standard Model."""
+
 from datetime import (
     date as dateType,
 )
@@ -11,7 +12,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class MoodyCorporateBondIndexParams(QueryParams):
+class MoodyCorporateBondIndexQueryParams(QueryParams):
     """Moody Corporate Bond Index Query."""
 
     start_date: Optional[dateType] = Field(

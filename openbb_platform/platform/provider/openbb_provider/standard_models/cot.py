@@ -1,4 +1,4 @@
-"""Commitment of Traders Reports Data model."""
+"""Commitment of Traders Reports Standard Model."""
 
 from datetime import date as dateType
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class COTQueryParams(QueryParams):
-    """Commitment of Traders Reports Query Params."""
+    """Commitment of Traders Reports Query."""
 
     id: str = Field(
         description="The series ID string for the report."

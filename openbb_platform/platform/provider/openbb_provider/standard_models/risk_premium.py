@@ -1,4 +1,4 @@
-"""Risk Premium data model."""
+"""Risk Premium Standard Model."""
 
 
 from typing import Optional

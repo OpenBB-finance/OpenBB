@@ -1,4 +1,4 @@
-"""Equity Quote data model."""
+"""Equity Quote Standard Model."""
 
 from datetime import datetime
 from typing import List, Optional, Set, Union
@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EquityQuoteQueryParams(QueryParams):
-    """Equity Quote query model."""
+    """Equity Quote Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
@@ -28,7 +28,7 @@ class EquityQuoteQueryParams(QueryParams):
 
 
 class EquityQuoteData(Data):
-    """Equity Quote data."""
+    """Equity Quote Data."""
 
     day_low: Optional[float] = Field(
         default=None,

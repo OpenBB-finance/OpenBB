@@ -1,4 +1,4 @@
-"""ETF Holdings performance data model."""
+"""ETF Holdings Performance Standard Model."""
 from .recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,
@@ -6,8 +6,8 @@ from .recent_performance import (
 
 
 class ETFHoldingsPerformanceQueryParams(RecentPerformanceQueryParams):
-    """ETF Performance QueryParams."""
+    """ETF Holdings Performance Query."""
 
 
 class ETFHoldingsPerformanceData(RecentPerformanceData):
-    """ETF performance data."""
+    """ETF Holdings Performance Data."""

@@ -1,4 +1,4 @@
-"""Filings Data Model."""
+"""Filings Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class FilingsQueryParams(QueryParams):
-    """Filings query."""
+    """Filings Query."""
 
     start_date: Optional[dateType] = Field(
         default=None,
@@ -34,7 +34,7 @@ class FilingsQueryParams(QueryParams):
 
 
 class FilingsData(Data):
-    """Filings data."""
+    """Filings Data."""
 
     timestamp: datetime = Field(
         description="The timestamp from when the filing was accepted.",

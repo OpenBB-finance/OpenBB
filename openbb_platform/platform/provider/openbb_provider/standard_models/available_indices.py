@@ -1,4 +1,4 @@
-"""Available Indices data model."""
+"""Available Indices Standard Model."""
 
 
 from typing import Optional

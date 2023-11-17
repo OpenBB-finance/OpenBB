@@ -1,4 +1,4 @@
-"""Company News Data Model."""
+"""Company News Standard Model."""
 
 
 from datetime import datetime
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class CompanyNewsQueryParams(QueryParams):
-    """Company news query."""
+    """Company news Query."""
 
     symbols: str = Field(
         min_length=1,
@@ -31,7 +31,7 @@ class CompanyNewsQueryParams(QueryParams):
 
 
 class CompanyNewsData(Data):
-    """Company News data."""
+    """Company News Data."""
 
     date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")

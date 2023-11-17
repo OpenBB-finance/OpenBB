@@ -1,4 +1,4 @@
-"""Search Financial Attributes standard model."""
+"""Search Financial Attributes Standard Model."""
 
 from typing import Optional
 
