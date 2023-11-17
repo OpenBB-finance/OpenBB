@@ -1,4 +1,4 @@
-"""FMP Dividend Calendar fetcher."""
+"""FMP Dividend Calendar Model."""
 
 
 from datetime import datetime

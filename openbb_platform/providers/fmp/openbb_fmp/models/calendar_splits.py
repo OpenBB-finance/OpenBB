@@ -1,4 +1,4 @@
-"""FMP Calendar Splits fetcher."""
+"""FMP Calendar Splits Model."""
 
 from datetime import date
 from typing import Any, Dict, List, Optional
@@ -13,14 +13,14 @@ from openbb_provider.standard_models.calendar_splits import (
 
 
 class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
-    """FMP Calendar Splits query.
+    """FMP Calendar Splits Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
 
 class FMPCalendarSplitsData(CalendarSplitsData):
-    """FMP Calendar Splits data."""
+    """FMP Calendar Splits Data."""
 
 
 class FMPCalendarSplitsFetcher(

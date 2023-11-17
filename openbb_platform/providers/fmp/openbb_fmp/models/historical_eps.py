@@ -1,5 +1,4 @@
-"""FMP Historical EPS fetcher."""
-
+"""FMP Historical EPS Model."""
 
 from datetime import (
     date as dateType,

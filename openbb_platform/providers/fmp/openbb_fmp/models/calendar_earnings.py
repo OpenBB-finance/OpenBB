@@ -1,4 +1,4 @@
-"""FMP Earnings Calendar fetcher."""
+"""FMP Earnings Calendar Model."""
 
 
 from datetime import (
@@ -93,7 +93,6 @@ class FMPCalendarEarningsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPCalendarEarningsQueryParams:
         """Transform the query params."""
-
         now = datetime.today().date()
         transformed_params = params
 

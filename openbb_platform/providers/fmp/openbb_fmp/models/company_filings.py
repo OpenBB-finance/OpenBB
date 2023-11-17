@@ -1,4 +1,4 @@
-"""FMP Company Filings fetcher."""
+"""FMP Company Filings Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Union

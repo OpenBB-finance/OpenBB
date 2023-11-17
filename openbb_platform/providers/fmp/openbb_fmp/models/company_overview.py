@@ -1,5 +1,4 @@
-"""FMP Company Overview Fetcher."""
-
+"""FMP Company Overview Model."""
 
 from datetime import (
     date as dateType,
@@ -13,8 +12,6 @@ from openbb_provider.standard_models.company_overview import (
     CompanyOverviewQueryParams,
 )
 from pydantic import field_validator
-
-# This part is only provided by FMP and not by the other providers for now.
 
 
 class FMPCompanyOverviewQueryParams(CompanyOverviewQueryParams):

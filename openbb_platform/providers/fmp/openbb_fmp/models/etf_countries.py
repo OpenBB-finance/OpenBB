@@ -1,4 +1,4 @@
-"""FMP ETF Country Weighting fetcher."""
+"""FMP ETF Countries Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,11 +12,11 @@ from openbb_provider.standard_models.etf_countries import (
 
 
 class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
-    """FMP ETF Country Weighting Params."""
+    """FMP ETF Countries Query."""
 
 
 class FMPEtfCountriesData(EtfCountriesData):
-    """FMP ETF Country Weighting Data."""
+    """FMP ETF Countries Data."""
 
 
 class FMPEtfCountriesFetcher(
@@ -39,7 +39,6 @@ class FMPEtfCountriesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = (
             query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]

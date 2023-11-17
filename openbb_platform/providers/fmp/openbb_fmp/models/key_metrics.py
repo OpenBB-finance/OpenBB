@@ -1,5 +1,4 @@
-"""Key Metrics fetcher."""
-
+"""FMP Key Metrics Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime

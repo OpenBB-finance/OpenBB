@@ -1,5 +1,4 @@
-"""FMP Equity Ownership fetcher."""
-
+"""FMP Equity Ownership Model."""
 
 from datetime import (
     date as dateType,
@@ -17,7 +16,7 @@ from pydantic import field_validator
 
 
 class FMPEquityOwnershipQueryParams(EquityOwnershipQueryParams):
-    """FMP Equity Ownership query.
+    """FMP Equity Ownership Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """

@@ -1,5 +1,4 @@
-"""FMP Historical Splits fetcher."""
-
+"""FMP Historical Splits Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

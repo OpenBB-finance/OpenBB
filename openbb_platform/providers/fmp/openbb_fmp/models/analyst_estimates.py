@@ -1,4 +1,4 @@
-"""FMP Analyst Estimates fetcher."""
+"""FMP Analyst Estimates Model."""
 
 
 from typing import Any, Dict, List, Optional
@@ -12,7 +12,7 @@ from openbb_provider.standard_models.analyst_estimates import (
 
 
 class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
-    """FMP Analysts Estimates Query.
+    """FMP Analyst Estimates Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
