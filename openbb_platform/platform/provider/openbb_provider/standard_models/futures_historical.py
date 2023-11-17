@@ -30,6 +30,7 @@ class FuturesHistoricalQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -48,6 +49,7 @@ class FuturesHistoricalData(Data):
     volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
         return parser.isoparse(str(v))

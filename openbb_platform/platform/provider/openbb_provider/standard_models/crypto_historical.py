@@ -32,6 +32,7 @@ class CryptoHistoricalQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase and remove '-'."""
         if isinstance(v, str):
@@ -53,6 +54,7 @@ class CryptoHistoricalData(Data):
     )
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parser.isoparse(str(v))

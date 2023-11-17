@@ -1,4 +1,4 @@
-"""Seeking Alpha Stock End of Day fetcher."""
+"""Seeking Alpha Stock Price fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

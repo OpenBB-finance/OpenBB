@@ -1,4 +1,4 @@
-"""Alpha Vantage Equity Historical End of Day fetcher."""
+"""Alpha Vantage Equity Historical Price."""
 
 
 from datetime import datetime
@@ -24,7 +24,7 @@ from pydantic import (
 
 
 class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """Alpha Vantage Equity Historical End of Day Query.
+    """Alpha Vantage Equity Historical Price Query.
 
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
@@ -108,7 +108,7 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class AVEquityHistoricalData(EquityHistoricalData):
-    """Alpha Vantage Equity Historical End of Day Data."""
+    """Alpha Vantage Equity Historical Price Data."""
 
     __alias_dict__ = {"date": "timestamp", "adj_close": "adjusted_close"}
 
@@ -131,7 +131,7 @@ class AVEquityHistoricalFetcher(
         List[AVEquityHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Alpha Vantage endpoints."""
+    """Alpha Vantage Equity Historical Price Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> AVEquityHistoricalQueryParams:

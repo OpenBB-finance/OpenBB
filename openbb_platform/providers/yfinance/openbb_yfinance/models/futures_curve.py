@@ -1,4 +1,4 @@
-"""yfinance Futures End of Day fetcher."""
+"""yfinance Futures Price."""
 # ruff: noqa: SIM105
 
 from datetime import datetime
@@ -18,7 +18,7 @@ class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
 
 
 class YFinanceFuturesCurveData(FuturesCurveData):
-    """YFinance Futures End of Day Data."""
+    """YFinance Futures Price Data."""
 
     __alias_dict__ = {"price": "Last Price"}
 
@@ -44,7 +44,7 @@ class YFinanceFuturesCurveFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceFuturesCurveQueryParams,
+        query: YFinanceFuturesCurveQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
@@ -58,7 +58,7 @@ class YFinanceFuturesCurveFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceFuturesCurveQueryParams,
+        query: YFinanceFuturesCurveQueryParams,  # pylint: disable=unused-argument
         data: dict,
         **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
