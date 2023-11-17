@@ -1,4 +1,4 @@
-"""Nasdaq CFTC Commitment of Traders Reports fetcher."""
+"""Nasdaq CFTC Commitment of Traders Reports Model."""
 
 from datetime import (
     date as dateType,
@@ -90,7 +90,7 @@ class NasdaqCotQueryParams(COTQueryParams):
 
 
 class NasdaqCotData(COTData):
-    """Nasdaq CFTC Commitment of Traders Reports data."""
+    """Nasdaq CFTC Commitment of Traders Reports Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -100,7 +100,7 @@ class NasdaqCotData(COTData):
 
 
 class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
-    """Nasdaq CFTC Commitment of Traders Reports Fetcher."""
+    """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCotQueryParams:

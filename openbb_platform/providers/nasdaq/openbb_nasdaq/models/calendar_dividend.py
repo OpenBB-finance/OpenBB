@@ -1,4 +1,4 @@
-"""Nasdaq Dividend Calendar fetcher."""
+"""Nasdaq Dividend Calendar Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
