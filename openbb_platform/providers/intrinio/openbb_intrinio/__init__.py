@@ -11,13 +11,13 @@ from openbb_intrinio.models.financial_attributes import (
     IntrinioFinancialAttributesFetcher,
 )
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
-from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.search_financial_attributes import (
     IntrinioSearchFinancialAttributesFetcher,
 )
+from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 from openbb_provider.abstract.provider import Provider
 
 intrinio_provider = Provider(
@@ -25,7 +25,7 @@ intrinio_provider = Provider(
     website="https://intrinio.com/",
     description="""Intrinio is a financial data platform that provides real-time and
     historical financial market data to businesses and developers through an API.""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CalendarIpo": IntrinioCalendarIpoFetcher,
@@ -36,7 +36,7 @@ intrinio_provider = Provider(
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "FinancialAttributes": IntrinioFinancialAttributesFetcher,
         "FredIndices": IntrinioFredIndicesFetcher,
-        "GlobalNews": IntrinioGlobalNewsFetcher,
+        "WorldNews": IntrinioWorldNewsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,

@@ -64,8 +64,8 @@ class ProviderInterface(metaclass=SingletonMeta):
     ----------
     map : MapType
         Dictionary of provider information.
-    required_credentials: List[str]
-        List of required_credentials.
+    credentials: List[str]
+        List of credentials.
     model_providers : Dict[str, ProviderChoices]
         Dictionary of provider choices by model.
     params : Dict[str, Dict[str, Union[StandardParams, ExtraParams]]]
@@ -110,9 +110,9 @@ class ProviderInterface(metaclass=SingletonMeta):
         return self._map
 
     @property
-    def required_credentials(self) -> List[str]:
+    def credentials(self) -> List[str]:
         """Dictionary of required credentials by provider."""
-        return self._registry_map.required_credentials
+        return self._registry_map.credentials
 
     @property
     def model_providers(self) -> Dict[str, ProviderChoices]:

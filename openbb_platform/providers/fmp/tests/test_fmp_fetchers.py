@@ -38,9 +38,9 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
-from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -61,6 +61,7 @@ from openbb_fmp.models.revenue_geographic import FMPRevenueGeographicFetcher
 from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
+from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -194,10 +195,10 @@ def test_fmp_key_executives_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_global_news_fetcher(credentials=test_credentials):
+def test_fmp_world_news_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = FMPGlobalNewsFetcher()
+    fetcher = FMPWorldNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -320,10 +321,10 @@ def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
+def test_fmp_historical_eps_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FMPCalendarEarningsFetcher()
+    fetcher = FMPHistoricalEpsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -591,5 +592,18 @@ def test_fmp_crypto_search_fetcher(credentials=test_credentials):
     params = {"query": "asd"}
 
     fetcher = FMPCryptoSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    params = {
+        "start_date": date(2023, 11, 6),
+        "end_date": date(2023, 1, 10),
+    }
+    fetcher = FMPCalendarEarningsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

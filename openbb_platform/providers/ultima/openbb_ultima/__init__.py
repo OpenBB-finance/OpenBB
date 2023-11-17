@@ -6,7 +6,7 @@ ultima_provider = Provider(
     name="ultima",
     website="https://www.ultimainsights.ai/openbb",
     description="""Ultima harnesses the power of LLMs to deliver news before it hits the frontpage of Bloomberg.""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "CompanyNews": UltimaCompanyNewsFetcher,
     },

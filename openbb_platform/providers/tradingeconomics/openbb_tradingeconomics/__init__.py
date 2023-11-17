@@ -6,6 +6,6 @@ tradingeconomics_provider = Provider(
     name="tradingeconomics",
     website="https://tradingeconomics.com/",
     description="""Trading Economics""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={"EconomicCalendar": TEEconomicCalendarFetcher},
 )

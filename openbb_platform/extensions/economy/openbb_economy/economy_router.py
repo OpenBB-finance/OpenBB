@@ -49,3 +49,14 @@ def risk_premium(
 ) -> OBBject[BaseModel]:
     """Historical Market Risk Premium."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="BalanceOfPayments")
+def balance_of_payments(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Balance of Payments Reports."""
+    return OBBject(results=Query(**locals()).execute())

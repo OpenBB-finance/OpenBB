@@ -11,7 +11,7 @@ class Extension:
     def __init__(
         self,
         name: str,
-        required_credentials: Optional[List[str]] = None,
+        credentials: Optional[List[str]] = None,
     ) -> None:
         """Initialize the extension.
 
@@ -19,11 +19,11 @@ class Extension:
         ----------
         name : str
             Name of the extension.
-        required_credentials : Optional[List[str]], optional
+        credentials : Optional[List[str]], optional
             List of required credentials, by default None
         """
         self.name = name
-        self.required_credentials = required_credentials or []
+        self.credentials = credentials or []
 
     @property
     def obbject_accessor(self) -> Callable:

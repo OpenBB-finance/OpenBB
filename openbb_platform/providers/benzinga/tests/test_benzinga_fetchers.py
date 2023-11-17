@@ -1,6 +1,6 @@
 import pytest
 from openbb_benzinga.models.company_news import BenzingaCompanyNewsFetcher
-from openbb_benzinga.models.global_news import BenzingaGlobalNewsFetcher
+from openbb_benzinga.models.world_news import BenzingaWorldNewsFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -19,10 +19,10 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_benzinga_global_news_fetcher(credentials=test_credentials):
+def test_benzinga_world_news_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = BenzingaGlobalNewsFetcher()
+    fetcher = BenzingaWorldNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

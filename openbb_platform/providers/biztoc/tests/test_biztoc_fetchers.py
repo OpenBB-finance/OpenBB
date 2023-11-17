@@ -1,5 +1,5 @@
 import pytest
-from openbb_biztoc.models.global_news import BiztocGlobalNewsFetcher
+from openbb_biztoc.models.world_news import BiztocWorldNewsFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.dict()
@@ -16,9 +16,9 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_biztoc_global_news_fetcher(credentials=test_credentials):
+def test_biztoc_world_news_fetcher(credentials=test_credentials):
     params = {"term": "earnings"}
 
-    fetcher = BiztocGlobalNewsFetcher()
+    fetcher = BiztocWorldNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

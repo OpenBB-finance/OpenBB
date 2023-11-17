@@ -10,31 +10,41 @@ from openbb_core.api.router.coverage import router as router_coverage
 from openbb_core.api.router.system import router as router_system
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.auth_service import AuthService
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.version import VERSION
 from openbb_core.env import Env
 
 logger = logging.getLogger("uvicorn.error")
 
+system = SystemService().system_settings
+
 app = FastAPI(
-    title="OpenBB Platform API",
-    description="This is the OpenBB Platform API.",
-    version="0.0.1",
-    terms_of_service="http://example.com/terms/",
+    title=system.api_settings.title,
+    description=system.api_settings.description,
+    version=VERSION,
+    terms_of_service=system.api_settings.terms_of_service,
     contact={
-        "name": "OpenBB Team",
-        "url": "https://openbb.co",
-        "email": "hello@openbb.co",
+        "name": system.api_settings.contact_name,
+        "url": system.api_settings.contact_url,
+        "email": system.api_settings.contact_email,
     },
     license_info={
-        "name": "MIT",
-        "url": "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE",
+        "name": system.api_settings.license_name,
+        "url": system.api_settings.license_url,
     },
+    servers=[
+        {
+            "url": s.url,
+            "description": s.description,
+        }
+        for s in system.api_settings.servers
+    ],
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=system.api_settings.cors.allow_origins,
+    allow_methods=system.api_settings.cors.allow_methods,
+    allow_headers=system.api_settings.cors.allow_headers,
 )
 AppLoader.from_routers(
     app=app,
@@ -69,7 +79,7 @@ Investment research for everyone, anywhere.
 
 
 @app.exception_handler(Exception)
-async def api_exception_handler(request: Request, exc: Exception):
+async def api_exception_handler(_: Request, exc: Exception):
     """Exception handler for all other exceptions."""
     return JSONResponse(
         status_code=404,
@@ -81,7 +91,7 @@ async def api_exception_handler(request: Request, exc: Exception):
 
 
 @app.exception_handler(OpenBBError)
-async def openbb_exception_handler(request: Request, exc: OpenBBError):
+async def openbb_exception_handler(_: Request, exc: OpenBBError):
     """Exception handler for OpenBB errors."""
     openbb_error = exc.original
     status_code = 400 if "No results" in str(openbb_error) else 500
