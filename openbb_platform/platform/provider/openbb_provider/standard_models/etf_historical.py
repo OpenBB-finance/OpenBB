@@ -1,4 +1,4 @@
-"""ETF Historical End of Day Market Price."""
+"""ETF Historical Price Market Price."""
 
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
