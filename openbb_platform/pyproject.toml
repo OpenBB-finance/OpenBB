@@ -17,10 +17,12 @@ openbb-intrinio = "^1.0.0b0"
 openbb-oecd = "^1.0.0b0"
 openbb-polygon = "^1.0.0b0"
 openbb-sec = "^1.0.0b0"
+openbb-tiingo = "^1.0.0b0"
 openbb-tradingeconomics = "^1.0.0b0"
 
 openbb-crypto = "^1.0.0b0"
 openbb-currency = "^1.0.0b0"
+openbb-derivatives = "^1.0.0b0"
 openbb-economy = "^1.0.0b0"
 openbb-equity = "^1.0.0b0"
 openbb-etf = "^1.0.0b0"
@@ -43,7 +45,6 @@ openbb-yfinance = { version = "^1.0.0b0", optional = true }
 
 openbb-charting = { version = "^1.0.0b0", optional = true }
 openbb-econometrics = { version = "^1.0.0b0", optional = true }
-openbb-futures = { version = "^1.0.0b0", optional = true }
 openbb-quantitative = { version = "^1.0.0b0", optional = true }
 openbb-technical = { version = "^1.0.0b0", optional = true }
 
@@ -55,7 +56,6 @@ charting = ["openbb-charting"]
 ecb = ["openbb-ecb"]
 econometrics = ["openbb-econometrics"]
 finra = ["openbb-finra"]
-futures = ["openbb-futures"]
 nasdaq = ["openbb-nasdaq"]
 quantitative = ["openbb-quantitative"]
 seeking_alpha = ["openbb-seeking-alpha"]
@@ -72,7 +72,6 @@ all = [
     "openbb-ecb",
     "openbb-econometrics",
     "openbb-finra",
-    "openbb-futures",
     "openbb-nasdaq",
     "openbb-quantitative",
     "openbb-seeking-alpha",
@@ -80,6 +79,7 @@ all = [
     "openbb-technical",
     "openbb-wsj",
     "openbb-yfinance",
+    "openbb-tiingo"
 ]
 
 [tool.poetry.group.dev.dependencies]
@@ -87,7 +87,6 @@ pytest = "^7.0.0"
 pytest-subtests = "^0.11.0"
 pytest-recorder = "^0.2.3"
 toml = "^0.10.2"
-types-toml = "^0.10.8.7"
 
 [build-system]
 requires = ["poetry-core"]

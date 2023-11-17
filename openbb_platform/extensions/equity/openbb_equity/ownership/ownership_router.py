@@ -38,14 +38,14 @@ def institutional(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="StockInsiderTrading")
+@router.command(model="InsiderTrading")
 def insider_trading(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Stock Insider Trading. Information about insider trading."""
+    """Insider Trading. Information about insider trading."""
     return OBBject(results=Query(**locals()).execute())
 
 

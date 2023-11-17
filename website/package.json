@@ -24,6 +24,7 @@
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-popover": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.5",
+    "axios": "^1.6.2",
     "clsx": "^1.2.1",
     "fuse.js": "^6.6.2",
     "hast-util-is-element": "^1.1.0",

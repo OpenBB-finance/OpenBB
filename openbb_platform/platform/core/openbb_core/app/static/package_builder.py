@@ -172,7 +172,7 @@ class PackageBuilder:
     def run_linters(self):
         """Run the linters."""
         self.console.log("\nRunning linters...")
-        linters = Linters(self.directory, self.verbose)
+        linters = Linters(self.directory / "package", self.verbose)
         linters.ruff()
         linters.black()
 
@@ -1053,7 +1053,7 @@ class Linters:
             self.console.log(f"\n* {linter}")
             self.print_separator("^")
 
-            command = [linter, self.directory]
+            command = [linter] + list(self.directory.glob("*.py"))
             if flags:
                 command.extend(flags)  # type: ignore
             subprocess.run(command, check=False)  # noqa: S603

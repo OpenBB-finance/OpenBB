@@ -24,8 +24,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="FAQs | OpenBB Bot Docs" />
 
-## Generic
-
 <details><summary>How Do I Link My OpenBB Bot Account?</summary>
 
 After you signup for an OpenBB Bot plan you can link your accounts from <a href="https://my.openbb.co/app/bot" class="_hyper-link">here</a>

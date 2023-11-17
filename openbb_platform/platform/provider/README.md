@@ -35,8 +35,8 @@ Data normalization, a bigger way of organizing data.
 
 ## Key Elements
 
-- **QueryParams** : The input model for a particular query. To load stock market data, we would have `StockQueryParams`, which would have fields like `symbol`, `start_date`, and `end_date`. You can find the standard query params inside the `standard_models` directory.
-- **Data** : The output model of a particular query. Stock market data would be `StockPriceData` and have fields such as `Open`, `High`, `Low`, `Close`, and `Volume`. You can find the standard data models inside the `standard_models` directory.
+- **QueryParams** : The input model for a particular query. To load equity market data, we would have `EquityPriceQueryParams`, which would have fields like `symbol`, `start_date`, and `end_date`. You can find the standard query params inside the `standard_models` directory.
+- **Data** : The output model of a particular query. Equity market data would be `EquityPriceData` and have fields such as `Open`, `High`, `Low`, `Close`, and `Volume`. You can find the standard data models inside the `standard_models` directory.
 - **Fetcher** : Class containing a set of methods to receive query parameters, extract data and transform it. This class is responsible for implementing the standardization procedures.
 - **Provider** : Entry point class for each provider extension. Contains information about the provider, it's required credentials and available fetchers.
 - **RegistryLoader** : Loads the registry with the installed provider extensions.
