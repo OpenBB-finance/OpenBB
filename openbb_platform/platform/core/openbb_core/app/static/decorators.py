@@ -1,8 +1,21 @@
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, overload
 
-from pydantic.validate_call import validate_call
+from pkg_resources import parse_version
+from pydantic import VERSION
 from typing_extensions import ParamSpec
+
+
+def get_validate_call() -> Callable:
+    """Pydantic 2.5.0 changed location of validate_call, so we check and import"""
+    if parse_version(VERSION) < parse_version("2.5.0"):
+        from pydantic.validate_call import validate_call
+    else:
+        from pydantic import validate_call
+    return validate_call
+
+
+validate_call = get_validate_call()
 
 P = ParamSpec("P")
 R = TypeVar("R")
