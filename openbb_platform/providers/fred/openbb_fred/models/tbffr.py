@@ -1,5 +1,4 @@
-"""SelectedTreasuryBill Fetcher."""
-
+"""FRED Selected Treasury Bill Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -7,7 +6,7 @@ from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.tbffr import (
     SelectedTreasuryBillData,
-    SelectedTreasuryBillParams,
+    SelectedTreasuryBillQueryParams,
 )
 from pydantic import field_validator
 
@@ -17,12 +16,12 @@ TBFFR_PARAMETER_TO_FRED_ID = {
 }
 
 
-class FREDSelectedTreasuryBillParams(SelectedTreasuryBillParams):
-    """SelectedTreasuryBillParams Query."""
+class FREDSelectedTreasuryBillQueryParams(SelectedTreasuryBillQueryParams):
+    """FRED Selected Treasury Bill Query."""
 
 
 class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
-    """SelectedTreasuryBillParams Data."""
+    """FRED Selected Treasury Bill Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -38,22 +37,22 @@ class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
 
 class FREDSelectedTreasuryBillFetcher(
     Fetcher[
-        FREDSelectedTreasuryBillParams,
+        FREDSelectedTreasuryBillQueryParams,
         List[FREDSelectedTreasuryBillData],
     ]
 ):
-    """SelectedTreasuryBillParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDSelectedTreasuryBillData
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSelectedTreasuryBillParams:
+    def transform_query(params: Dict[str, Any]) -> FREDSelectedTreasuryBillQueryParams:
         """Transform query."""
-        return FREDSelectedTreasuryBillParams(**params)
+        return FREDSelectedTreasuryBillQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDSelectedTreasuryBillParams,
+        query: FREDSelectedTreasuryBillQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
@@ -72,7 +71,7 @@ class FREDSelectedTreasuryBillFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSelectedTreasuryBillParams, data: list, **kwargs: Any
+        query: FREDSelectedTreasuryBillQueryParams, data: list, **kwargs: Any
     ) -> List[FREDSelectedTreasuryBillData]:
         """Transform data."""
         return [FREDSelectedTreasuryBillData.model_validate(d) for d in data]

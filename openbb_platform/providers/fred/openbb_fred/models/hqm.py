@@ -1,4 +1,4 @@
-"""HighQualityMarketCorporateBond Fetcher."""
+"""FRED High Quality Market Corporate Bond Model."""
 
 
 from datetime import datetime, timedelta
@@ -12,17 +12,19 @@ from openbb_fred.utils.fred_helpers import (
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.hqm import (
     HighQualityMarketCorporateBondData,
-    HighQualityMarketCorporateBondParams,
+    HighQualityMarketCorporateBondQueryParams,
 )
 from pydantic import field_validator
 
 
-class FREDHighQualityMarketCorporateBondParams(HighQualityMarketCorporateBondParams):
-    """HighQualityMarketCorporateBondParams Query."""
+class FREDHighQualityMarketCorporateBondQueryParams(
+    HighQualityMarketCorporateBondQueryParams
+):
+    """FRED High Quality Market Corporate Bond Query."""
 
 
 class FREDHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData):
-    """HighQualityMarketCorporateBondParams Data."""
+    """FRED High Quality Market Corporate Bond Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -38,24 +40,24 @@ class FREDHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData)
 
 class FREDHighQualityMarketCorporateBondFetcher(
     Fetcher[
-        FREDHighQualityMarketCorporateBondParams,
+        FREDHighQualityMarketCorporateBondQueryParams,
         List[FREDHighQualityMarketCorporateBondData],
     ]
 ):
-    """HighQualityMarketCorporateBondParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDHighQualityMarketCorporateBondData
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
-    ) -> FREDHighQualityMarketCorporateBondParams:
+    ) -> FREDHighQualityMarketCorporateBondQueryParams:
         """Transform query."""
-        return FREDHighQualityMarketCorporateBondParams(**params)
+        return FREDHighQualityMarketCorporateBondQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDHighQualityMarketCorporateBondParams,
+        query: FREDHighQualityMarketCorporateBondQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
@@ -98,7 +100,7 @@ class FREDHighQualityMarketCorporateBondFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDHighQualityMarketCorporateBondParams, data: list, **kwargs: Any
+        query: FREDHighQualityMarketCorporateBondQueryParams, data: list, **kwargs: Any
     ) -> List[FREDHighQualityMarketCorporateBondData]:
         """Transform data."""
         return [FREDHighQualityMarketCorporateBondData.model_validate(d) for d in data]
