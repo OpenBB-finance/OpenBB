@@ -1,4 +1,4 @@
-"""Tiingo Trailing Dividend Yield fetcher."""
+"""Tiingo Trailing Dividend Yield Model."""
 
 from typing import Any, Dict, List, Optional
 
