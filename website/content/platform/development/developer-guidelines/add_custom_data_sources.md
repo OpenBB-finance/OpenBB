@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Add Custom Data Sources - Developer Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Add Custom Data Sources - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 You will get your data either from a CSV file, local database or from an API endpoint.
 
