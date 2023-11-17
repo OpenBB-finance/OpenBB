@@ -202,6 +202,102 @@ data.warnings
 [Warning_(category='OpenBBWarning', message="Parameter 'source' is not supported by fmp. Available for: intrinio.")]
 ```
 
+## REST API POST Requests
+
+Most endpoints are for data retrieval, but some [toolkit extensions](/platform/extensions/toolkit_extensions) require data to pass through the function.  In these instances, it must be a POST request, and JSON.
+
+### Example
+
+This example will use a GET request to fetch daily VIX data from the Cboe data extension, and then make a POST request which passes through the data to a technical analysis function.
+
+First, start a development server.
+
+```bash
+uvicorn openbb_core.api.rest_api:app --reload
+```
+
+This example will use Python and the Requests library, so the syntax will vary according to the preferred medium for interacting with the API.
+
+#### Fetch Some Data
+
+```python
+import requests
+
+get_url = "http://127.0.0.1:8000/api/v1/index/market?provider=cboe&symbol=vix&interval=1d"
+get_response = requests.get(get_url)
+data_results = get_response.json()["results"]
+
+data_results[-1]
+```
+
+```json
+{'date': '2023-11-17T00:00:00',
+ 'open': 14.18,
+ 'high': 14.19,
+ 'low': 13.67,
+ 'close': 13.79,
+ 'volume': 0,
+ 'calls_volume': None,
+ 'puts_volume': None,
+ 'total_options_volume': None}
+```
+
+#### Send a POST Request
+
+Next, pass the `data_results` to a function, using the `json` field in the POST headers.  For this example, Keltner Channels.
+
+The `index` parameter tells the function which field in the posted data to use as the index.
+
+```python
+post_url = "http://localhost:8000/api/v1/technical/kc?index=date&length=20&scalar=20&mamode=ema&offset=0"
+post_response = requests.post(post_url, json=data_results)
+ta_results = post_response.json()["results"]
+
+ta_results[-1]
+```
+
+```json
+{'high': 14.19,
+ 'low': 13.67,
+ 'close': 13.79,
+ 'KCLe_20_20.0': -8.6829001886,
+ 'KCBe_20_20.0': 15.778316008,
+ 'KCUe_20_20.0': 40.2395322047}
+```
+
+#### Combine the Results
+
+```python
+for i, dictionary in enumerate(ta_results):
+    dictionary["date"] = data_results[i]["date"]
+
+ta_results[-1]
+```
+
+```json
+{'high': 14.19,
+ 'low': 13.67,
+ 'close': 13.8,
+ 'KCLe_20_20.0': -8.6819478077,
+ 'KCBe_20_20.0': 15.779268389,
+ 'KCUe_20_20.0': 40.2404845856,
+ 'date': '2023-11-17T00:00:00'}
+```
+
+To confirm, validate that the data was correctly copied:
+
+```python
+(
+    ta_results[-1]["close"] == data_results[-1]["close"]
+    and ta_results[-1]["date"] == data_results[-1]["date"]
+    and len(data_results) == len(ta_results)
+)
+```
+
+```console
+True
+```
+
 ## References
 
 All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference).  The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
