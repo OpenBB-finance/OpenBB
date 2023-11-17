@@ -1,3 +1,4 @@
+"""Decorators for the OpenBB Platform static assets."""
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, overload
 
