@@ -77,7 +77,7 @@ def rss_litigation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""
+    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501
     return OBBject(results=Query(**locals()).execute())
 
 
