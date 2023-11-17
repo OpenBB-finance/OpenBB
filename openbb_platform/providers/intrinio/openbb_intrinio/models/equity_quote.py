@@ -139,6 +139,6 @@ class IntrinioEquityQuoteFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioEquityQuoteQueryParams, data: dict, **kwargs: Any
-    ) -> IntrinioEquityQuoteData:
+    ) -> List[IntrinioEquityQuoteData]:
         """Return the transformed data."""
-        return [IntrinioEquityQuoteData(**d) for d in data]
+        return [IntrinioEquityQuoteData.model_validate(d) for d in data]
