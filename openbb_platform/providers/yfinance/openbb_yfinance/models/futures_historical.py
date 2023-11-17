@@ -1,4 +1,4 @@
-"""yfinance Futures Price."""
+"""Yahoo Finance Futures Historical Price Model."""
 # ruff: noqa: SIM105
 
 
@@ -21,7 +21,7 @@ from yfinance import Ticker
 
 
 class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
-    """YFinance Futures Price Query.
+    """Yahoo Finance Futures historical Price Query.
 
     Source: https://finance.yahoo.com/crypto/
     """
@@ -40,7 +40,7 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 
 
 class YFinanceFuturesHistoricalData(FuturesHistoricalData):
-    """YFinance Futures Price Data."""
+    """Yahoo Finance Futures Historical Price Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
@@ -57,7 +57,7 @@ class YFinanceFuturesHistoricalFetcher(
         List[YFinanceFuturesHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesHistoricalQueryParams:
@@ -83,7 +83,7 @@ class YFinanceFuturesHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         symbol = ""
 
         if query.expiration:

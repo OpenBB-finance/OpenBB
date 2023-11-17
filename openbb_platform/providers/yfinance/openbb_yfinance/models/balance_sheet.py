@@ -1,4 +1,4 @@
-"""yfinance Balance Sheet Fetcher."""
+"""Yahoo Finance Balance Sheet Model."""
 
 
 import json
@@ -17,7 +17,7 @@ from yfinance import Ticker
 
 
 class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
-    """yfinance Balance Sheet QueryParams.
+    """Yahoo Finance Balance Sheet Query.
 
     Source: https://finance.yahoo.com/
     """
@@ -29,7 +29,7 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
 
 
 class YFinanceBalanceSheetData(BalanceSheetData):
-    """yfinance Balance Sheet Data."""
+    """Yahoo Finance Balance Sheet Data."""
 
     # TODO: Standardize the fields
 
@@ -48,6 +48,8 @@ class YFinanceBalanceSheetFetcher(
         List[YFinanceBalanceSheetData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceBalanceSheetQueryParams:
         return YFinanceBalanceSheetQueryParams(**params)

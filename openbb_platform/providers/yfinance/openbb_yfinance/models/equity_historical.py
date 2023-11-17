@@ -1,4 +1,4 @@
-"""yfinance Equity Historical Price Fetcher."""
+"""Yahoo Finance Equity Historical Price Model."""
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta
@@ -19,7 +19,7 @@ from pydantic import Field, PrivateAttr, field_validator
 
 
 class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """YFinance Equity Historical Price Query.
+    """Yahoo Finance Equity Historical Price Query.
 
     Source: https://finance.yahoo.com/
     """
@@ -70,7 +70,7 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class YFinanceEquityHistoricalData(EquityHistoricalData):
-    """YFinance Equity Historical Price Data."""
+    """Yahoo Finance Equity Historical Price Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -86,7 +86,7 @@ class YFinanceEquityHistoricalFetcher(
         List[YFinanceEquityHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
@@ -108,7 +108,7 @@ class YFinanceEquityHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         if query.interval == "1W":
             query.interval = "1wk"
         elif query.interval == "1M":
