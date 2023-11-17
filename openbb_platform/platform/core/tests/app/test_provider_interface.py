@@ -27,11 +27,11 @@ def test_map(provider_interface):
     assert "EquityHistorical" in provider_interface_map
 
 
-def test_required_credentials(provider_interface):
+def test_credentials(provider_interface):
     """Test required credentials."""
-    required_credentials = provider_interface.required_credentials
-    assert isinstance(required_credentials, list)
-    assert len(required_credentials) > 0
+    credentials = provider_interface.credentials
+    assert isinstance(credentials, list)
+    assert len(credentials) > 0
 
 
 def test_model_providers(provider_interface):

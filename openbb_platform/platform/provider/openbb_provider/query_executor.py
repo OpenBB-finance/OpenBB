@@ -36,19 +36,24 @@ class QueryExecutor:
 
     @staticmethod
     def filter_credentials(
-        provider: Provider, credentials: Optional[Dict[str, SecretStr]]
+        credentials: Optional[Dict[str, SecretStr]],
+        provider: Provider,
+        require_credentials: bool,
     ) -> Dict[str, str]:
         """Filter credentials and check if they match provider requirements."""
-        if provider.required_credentials is not None:
+        filtered_credentials = {}
+
+        if provider.credentials:
             if credentials is None:
                 credentials = {}
 
-            filtered_credentials = {}
-            for c in provider.required_credentials:
+            for c in provider.credentials:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
-                    raise ProviderError(f"Missing credential '{c}'.")
-                filtered_credentials[c] = credential_value.get_secret_value()
+                    if require_credentials:
+                        raise ProviderError(f"Missing credential '{c}'.")
+                else:
+                    filtered_credentials[c] = credential_value.get_secret_value()
 
         return filtered_credentials
 
@@ -80,8 +85,10 @@ class QueryExecutor:
             Query result.
         """
         provider = self.get_provider(provider_name)
-        filtered_credentials = self.filter_credentials(provider, credentials)
         fetcher = self.get_fetcher(provider, model_name)
+        filtered_credentials = self.filter_credentials(
+            credentials, provider, fetcher.require_credentials
+        )
 
         try:
             return fetcher.fetch_data(params, filtered_credentials, **kwargs)

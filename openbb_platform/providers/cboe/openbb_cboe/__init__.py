@@ -26,7 +26,7 @@ cboe_provider = Provider(
     description="""Cboe is the world's go-to derivatives and exchange network,
     delivering cutting-edge trading, clearing and investment solutions to people
     around the world.""",
-    required_credentials=None,
+    credentials=None,
     fetcher_dict={
         "EquitySearch": CboeEquitySearchFetcher,
         "OptionsChains": CboeOptionsChainsFetcher,

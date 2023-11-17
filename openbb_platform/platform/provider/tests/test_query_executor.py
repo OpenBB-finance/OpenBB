@@ -55,21 +55,40 @@ def test_get_fetcher_failure(mock_query_executor):
 def test_filter_credentials_success(mock_query_executor):
     """Test if credentials are properly filtered."""
     provider = mock_query_executor.get_provider("test_provider")
-    provider.required_credentials = ["api_key"]
-    credentials = {"api_key": SecretStr("12345")}
+    provider.credentials = ["test_provider_api_key"]
+    credentials = {
+        "test_provider_api_key": SecretStr("12345"),
+        "other_api_key": SecretStr("12345"),
+    }
 
-    filtered_credentials = mock_query_executor.filter_credentials(provider, credentials)
+    filtered_credentials = mock_query_executor.filter_credentials(
+        credentials, provider, True
+    )
 
-    assert filtered_credentials == {"api_key": "12345"}
+    assert filtered_credentials == {"test_provider_api_key": "12345"}
 
 
-def test_filter_credentials_missing(mock_query_executor):
+def test_filter_credentials_missing_require(mock_query_executor):
     """Test if the proper error is raised when a credential is missing."""
     provider = mock_query_executor.get_provider("test_provider")
-    provider.required_credentials = ["api_key"]
+    provider.credentials = ["test_provider_api_key"]
+    credentials = {"other_api_key": SecretStr("12345")}
 
     with pytest.raises(ProviderError, match="Missing credential"):
-        mock_query_executor.filter_credentials(provider, {})
+        mock_query_executor.filter_credentials(credentials, provider, True)
+
+
+def test_filter_credentials_missing_dont_require(mock_query_executor):
+    """Test if the proper error is raised when a credential is missing."""
+    provider = mock_query_executor.get_provider("test_provider")
+    provider.credentials = ["test_provider_api_key"]
+    credentials = {"other_api_key": SecretStr("12345")}
+
+    filtered_credentials = mock_query_executor.filter_credentials(
+        credentials, provider, False
+    )
+
+    assert filtered_credentials == {}
 
 
 def test_execute_success(mock_query_executor):

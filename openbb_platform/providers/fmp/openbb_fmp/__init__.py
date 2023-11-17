@@ -66,7 +66,7 @@ fmp_provider = Provider(
     website="https://financialmodelingprep.com/",
     description="""Financial Modeling Prep is a new concept that informs you about
     stock market information (news, currencies, and stock prices).""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "AnalystEstimates": FMPAnalystEstimatesFetcher,
         "AvailableIndices": FMPAvailableIndicesFetcher,
