@@ -1,22 +1,23 @@
-"""Benzinga Global News Fetcher."""
+"""Benzinga World News Fetcher."""
 
 
 import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_benzinga.utils.helpers import get_data
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.global_news import (
-    GlobalNewsData,
-    GlobalNewsQueryParams,
+from openbb_provider.standard_models.world_news import (
+    WorldNewsData,
+    WorldNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
+from ..utils.helpers import get_data
 
-class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
-    """Benzinga Global News query.
+
+class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
+    """Benzinga World News Query.
 
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
@@ -81,8 +82,8 @@ class BenzingaGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
 
 
-class BenzingaGlobalNewsData(GlobalNewsData):
-    """Benzinga Global News Data."""
+class BenzingaWorldNewsData(WorldNewsData):
+    """Benzinga World News Data."""
 
     __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
 
@@ -102,7 +103,7 @@ class BenzingaGlobalNewsData(GlobalNewsData):
         default=None,
     )
     updated: Optional[datetime] = Field(
-        default=None, escription="Updated date of the news."
+        default=None, description="Updated date of the news."
     )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
@@ -123,22 +124,26 @@ class BenzingaGlobalNewsData(GlobalNewsData):
         return str(v)
 
 
-class BenzingaGlobalNewsFetcher(
+class BenzingaWorldNewsFetcher(
     Fetcher[
-        BenzingaGlobalNewsQueryParams,
-        List[BenzingaGlobalNewsData],
+        BenzingaWorldNewsQueryParams,
+        List[BenzingaWorldNewsData],
     ]
 ):
+    """Benzinga World News Fetcher."""
+
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaGlobalNewsQueryParams:
-        return BenzingaGlobalNewsQueryParams(**params)
+    def transform_query(params: Dict[str, Any]) -> BenzingaWorldNewsQueryParams:
+        """Transform the query parameters."""
+        return BenzingaWorldNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: BenzingaGlobalNewsQueryParams,
+        query: BenzingaWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
+        """Extract the data."""
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
 
@@ -159,8 +164,9 @@ class BenzingaGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: BenzingaGlobalNewsQueryParams,
+        query: BenzingaWorldNewsQueryParams,
         data: List[dict],
         **kwargs: Any,
-    ) -> List[BenzingaGlobalNewsData]:
-        return [BenzingaGlobalNewsData.model_validate(item) for item in data]
+    ) -> List[BenzingaWorldNewsData]:
+        """Transform the data."""
+        return [BenzingaWorldNewsData.model_validate(item) for item in data]
