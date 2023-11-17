@@ -1,4 +1,4 @@
-"""FMP Global News fetcher."""
+"""FMP World News fetcher."""
 
 import math
 from datetime import datetime
@@ -6,22 +6,22 @@ from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.global_news import (
-    GlobalNewsData,
-    GlobalNewsQueryParams,
+from openbb_provider.standard_models.world_news import (
+    WorldNewsData,
+    WorldNewsQueryParams,
 )
 from pydantic import Field, field_validator
 
 
-class FMPGlobalNewsQueryParams(GlobalNewsQueryParams):
-    """FMP Global News query.
+class FMPWorldNewsQueryParams(WorldNewsQueryParams):
+    """FMP World News Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/general-news-api/
     """
 
 
-class FMPGlobalNewsData(GlobalNewsData):
-    """FMP Global News Data."""
+class FMPWorldNewsData(WorldNewsData):
+    """FMP World News Data."""
 
     __alias_dict__ = {"date": "publishedDate", "images": "image"}
 
@@ -33,22 +33,22 @@ class FMPGlobalNewsData(GlobalNewsData):
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")
 
 
-class FMPGlobalNewsFetcher(
+class FMPWorldNewsFetcher(
     Fetcher[
-        FMPGlobalNewsQueryParams,
-        List[FMPGlobalNewsData],
+        FMPWorldNewsQueryParams,
+        List[FMPWorldNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP World News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPGlobalNewsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPWorldNewsQueryParams:
         """Transform the query params."""
-        return FMPGlobalNewsQueryParams(**params)
+        return FMPWorldNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FMPGlobalNewsQueryParams,
+        query: FMPWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -72,11 +72,11 @@ class FMPGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPGlobalNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPGlobalNewsData]:
+        query: FMPWorldNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPWorldNewsData]:
         """Return the transformed data."""
         for d in data:
             if isinstance(d["image"], str):
                 d["image"] = [{"url": d["image"]}]
 
-        return [FMPGlobalNewsData.model_validate(d) for d in data]
+        return [FMPWorldNewsData.model_validate(d) for d in data]

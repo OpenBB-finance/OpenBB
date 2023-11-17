@@ -14,13 +14,13 @@ from openbb_intrinio.models.financial_attributes import (
     IntrinioFinancialAttributesFetcher,
 )
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
-from openbb_intrinio.models.global_news import IntrinioGlobalNewsFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.search_financial_attributes import (
     IntrinioSearchFinancialAttributesFetcher,
 )
+from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -79,10 +79,10 @@ def test_intrinio_company_news_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_global_news_fetcher(credentials=test_credentials):
+def test_intrinio_world_news_fetcher(credentials=test_credentials):
     params = {}
 
-    fetcher = IntrinioGlobalNewsFetcher()
+    fetcher = IntrinioWorldNewsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

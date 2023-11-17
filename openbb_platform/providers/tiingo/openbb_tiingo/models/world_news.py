@@ -1,21 +1,22 @@
-"""Tiingo Global News."""
+"""Tiingo World News."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil import parser
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.global_news import (
-    GlobalNewsData,
-    GlobalNewsQueryParams,
+from openbb_provider.standard_models.world_news import (
+    WorldNewsData,
+    WorldNewsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
+from ..utils.helpers import get_data_many
 
-class TiingoGlobalNewsQueryParams(GlobalNewsQueryParams):
-    """Tiingo Global News query.
+
+class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
+    """Tiingo World News Query.
 
     Source: https://www.tiingo.com/documentation/news
     """
@@ -25,8 +26,8 @@ class TiingoGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
 
 
-class TiingoGlobalNewsData(GlobalNewsData):
-    """Tiingo Global News data."""
+class TiingoWorldNewsData(WorldNewsData):
+    """Tiingo World News Data."""
 
     __alias_dict__ = {
         "date": "publishedDate",
@@ -60,22 +61,22 @@ class TiingoGlobalNewsData(GlobalNewsData):
         return v.upper()
 
 
-class TiingoGlobalNewsFetcher(
+class TiingoWorldNewsFetcher(
     Fetcher[
-        TiingoGlobalNewsQueryParams,
-        List[TiingoGlobalNewsData],
+        TiingoWorldNewsQueryParams,
+        List[TiingoWorldNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the tiingo endpoints."""
+    """Tiingo World News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TiingoGlobalNewsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> TiingoWorldNewsQueryParams:
         """Transform the query params."""
-        return TiingoGlobalNewsQueryParams(**params)
+        return TiingoWorldNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: TiingoGlobalNewsQueryParams,
+        query: TiingoWorldNewsQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -90,7 +91,7 @@ class TiingoGlobalNewsFetcher(
 
     @staticmethod
     def transform_data(
-        query: TiingoGlobalNewsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[TiingoGlobalNewsData]:
+        query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[TiingoWorldNewsData]:
         """Return the transformed data."""
-        return [TiingoGlobalNewsData.model_validate(d) for d in data]
+        return [TiingoWorldNewsData.model_validate(d) for d in data]

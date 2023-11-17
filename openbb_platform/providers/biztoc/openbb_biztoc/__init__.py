@@ -1,6 +1,6 @@
 """Biztoc provider module."""
 
-from openbb_biztoc.models.global_news import BiztocGlobalNewsFetcher
+from openbb_biztoc.models.world_news import BiztocWorldNewsFetcher
 from openbb_provider.abstract.provider import Provider
 
 biztoc_provider = Provider(
@@ -17,6 +17,6 @@ biztoc_provider = Provider(
     we've partnered with OpenBB, allowing you to pull in BizToc's news stream in their Terminal.""",
     required_credentials=["api_key"],
     fetcher_dict={
-        "GlobalNews": BiztocGlobalNewsFetcher,
+        "WorldNews": BiztocWorldNewsFetcher,
     },
 )

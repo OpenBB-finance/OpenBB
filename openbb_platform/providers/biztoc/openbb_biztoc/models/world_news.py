@@ -1,19 +1,19 @@
-"""Biztoc Globl News Fetcher."""
+"""Biztoc World News."""
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_biztoc.utils.helpers import get_news
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.global_news import (
-    GlobalNewsData,
-    GlobalNewsQueryParams,
+from openbb_provider.standard_models.world_news import (
+    WorldNewsData,
+    WorldNewsQueryParams,
 )
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
-class BiztocGlobalNewsQueryParams(GlobalNewsQueryParams):
-    """Biztoc Global News QueryParams."""
+class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
+    """Biztoc World News QueryParams."""
 
     filter: Literal[
         "crypto", "hot", "latest", "main", "media", "source", "tag"
@@ -32,8 +32,8 @@ class BiztocGlobalNewsQueryParams(GlobalNewsQueryParams):
     )
 
 
-class BiztocGlobalNewsData(GlobalNewsData):
-    """Biztoc Global News Data."""
+class BiztocWorldNewsData(WorldNewsData):
+    """Biztoc World News Data."""
 
     __alias_dict__ = {"date": "created", "text": "body", "site": "domain"}
 
@@ -50,27 +50,28 @@ class BiztocGlobalNewsData(GlobalNewsData):
     )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
         return to_datetime(v).strftime("%Y-%m-%d %H:%M:%S")
 
 
-class BiztocGlobalNewsFetcher(
+class BiztocWorldNewsFetcher(
     Fetcher[
-        BiztocGlobalNewsQueryParams,
-        List[BiztocGlobalNewsData],
+        BiztocWorldNewsQueryParams,
+        List[BiztocWorldNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Biztoc endpoints."""
+    """Biztoc World News Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BiztocGlobalNewsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> BiztocWorldNewsQueryParams:
         """Transform the query."""
-        return BiztocGlobalNewsQueryParams(**params)
+        return BiztocWorldNewsQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: BiztocGlobalNewsQueryParams,
+        query: BiztocWorldNewsQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -81,26 +82,23 @@ class BiztocGlobalNewsFetcher(
             api_key=api_key, filter=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
         )
         if query.filter == "hot":
-            _data = []
-            for i in range(0, len(data)):
-                _posts = data[i]["posts"]
-                _data.extend(_posts)
-            data = _data
+            data = [post for sublist in data for post in sublist["posts"]]
 
         times = {"2 Hours Ago": 2, "4 Hours Ago": 4}
         # Drop 'body_preview' because it is always nan, empty string, or empty string with space.
-        for i in range(0, len(data)):
-            if "body_preview" in data[i]:
-                data[i].pop("body_preview")
-            # Some items when filter is 'hot' don't have a proper timestamp, only a label.
-            if "created" in data[i] and data[i]["created"] in times:
-                data[i]["created"] = datetime.now() - timedelta(
-                    hours=times[data[i]["created"]]
+        for _, item in enumerate(data):
+            item.pop("body_preview", None)  # Removes 'body_preview' if it exists
+            # Adjust 'created' time if necessary
+            if item.get("created") in times:
+                item["created"] = datetime.now() - timedelta(
+                    hours=times[item["created"]]
                 )
 
         return data
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[BiztocGlobalNewsData]:
+    def transform_data(
+        query: BiztocWorldNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[BiztocWorldNewsData]:
         """Transform the data to the standard format."""
-        return [BiztocGlobalNewsData.model_validate(d) for d in data]
+        return [BiztocWorldNewsData.model_validate(d) for d in data]
