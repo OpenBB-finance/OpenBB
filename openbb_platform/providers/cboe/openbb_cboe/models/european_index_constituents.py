@@ -1,4 +1,4 @@
-"""CBOE European Index Constituents fetcher."""
+"""CBOE European Index Constituents Fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class CboeEuropeanIndexConstituentsQueryParams(EuropeanIndexConstituentsQueryParams):
-    """CBOE Stock end of day query.
+    """CBOE European Index Constituents Query.
 
     Source: https://www.cboe.com/
 
@@ -54,8 +54,7 @@ class CboeEuropeanIndexConstituentsData(EuropeanIndexConstituentsData):
 
     @field_validator("last_trade_timestamp", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-
+        """Return the datetime object from the date string."""
         return datetime.strftime(v, "%Y-%m-%d %H:%M:%S")
 
 
@@ -65,14 +64,13 @@ class CboeEuropeanIndexConstituentsFetcher(
         List[CboeEuropeanIndexConstituentsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> CboeEuropeanIndexConstituentsQueryParams:
         """Transform the query."""
-
         return CboeEuropeanIndexConstituentsQueryParams(**params)
 
     @staticmethod
@@ -81,8 +79,7 @@ class CboeEuropeanIndexConstituentsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the CBOE endpoint"""
-
+        """Return the raw data from the CBOE endpoint."""
         SYMBOLS = pd.DataFrame(Europe.list_indices())["symbol"].to_list()
         query.symbol = query.symbol.upper()
 
@@ -115,6 +112,5 @@ class CboeEuropeanIndexConstituentsFetcher(
     def transform_data(
         query: CboeEuropeanIndexConstituentsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeEuropeanIndexConstituentsData]:
-        """Transform the data to the standard format"""
-
+        """Transform the data to the standard format."""
         return [CboeEuropeanIndexConstituentsData.model_validate(d) for d in data]

@@ -30,10 +30,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Technical Analysis menu offers the user a suite of tools for analyzing the technical components of an asset's trading history. The menu can be found in most wings of the Terminal:
 
-- [Crypto](/terminal/data-available/crypto)
-- [Stocks](/terminal/data-available/stocks)
-- [ETF](/terminal/data-available/etf)
-- [Forex](/terminal/data-available/forex)
+- [Crypto](/terminal/menus/crypto/introduction)
+- [Stocks](/terminal/menus/stocks/introduction)
+- [ETF](/terminal/menus/etf)
+- [Forex](/terminal/menus/forex)
 
 The commands are divided by categories that define their purpose for general-use:
 

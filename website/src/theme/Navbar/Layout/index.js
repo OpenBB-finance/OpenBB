@@ -30,24 +30,46 @@ export default function NavbarLayout({ children }) {
 
   useEffect(() => {
     if (cleanedPath.startsWith("/terminal") ||
-      cleanedPath.startsWith("/pro")) {
-      document.documentElement.style.setProperty(
-        "--ifm-color-primary",
-        "#669DCB",
-      );
+        cleanedPath.startsWith("/pro")
+    ) {
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#669DCB",
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#004A87",
+        );
+      }
     } else if (
       cleanedPath.startsWith("/sdk") ||
       cleanedPath.startsWith("/platform")
     ) {
-      document.documentElement.style.setProperty(
-        "--ifm-color-primary",
-        "#F5B166",
-      );
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#F5B166",
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#511d11",
+        );
+      }
     } else if (cleanedPath.startsWith("/bot")) {
-      document.documentElement.style.setProperty(
-        "--ifm-color-primary",
-        "#b186bb",
-      );
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#b186bb",
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#3a204f",
+        );
+      }
     } else {
     }
   }, [pathname]);
