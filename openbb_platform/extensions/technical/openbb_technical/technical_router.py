@@ -834,11 +834,10 @@ def ichimoku(
         lookahead=lookahead,
     )
 
-    df_result = df_target.join(df_span.add_prefix("span_"), how="left")
+    df_result = df.join(df_span.add_prefix("span_"), how="left")
     df_result = df_result.join(df_ichimoku, how="left")
 
-    output = pd.concat([df, df_result], axis=1)
-    results = df_to_basemodel(output.reset_index())
+    results = df_to_basemodel(df_result.reset_index())
 
     return OBBject(results=results)
 
