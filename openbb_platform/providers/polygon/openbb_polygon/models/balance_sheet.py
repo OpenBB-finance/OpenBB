@@ -1,5 +1,4 @@
-"""Polygon Balance Sheet Statement Fetcher."""
-
+"""Polygon Balance Sheet Statement Model."""
 
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
@@ -15,7 +14,7 @@ from pydantic import Field, field_validator
 
 
 class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
-    """Polygon Fundamental QueryParams.
+    """Polygon Balance Sheet Statement Query.
 
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """
@@ -72,7 +71,7 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
 
 
 class PolygonBalanceSheetData(BalanceSheetData):
-    """Return Balance Sheet Data."""
+    """Polygon Balance Sheet Statement Data."""
 
     __alias_dict__ = {
         "date": "start_date",

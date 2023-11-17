@@ -1,5 +1,4 @@
-"""Polygon Income Statement Fetcher."""
-
+"""Polygon Income Statement Model."""
 
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
-    """Polygon Income Statement QueryParams.
+    """Polygon Income Statement Query.
 
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """

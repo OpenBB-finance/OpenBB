@@ -1,5 +1,4 @@
-"""Polygon Market Indices end of day fetcher."""
-
+"""Polygon Market Indices Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +15,7 @@ from pydantic import Field, PositiveInt
 
 
 class PolygonMarketIndicesQueryParams(MarketIndicesQueryParams):
-    """Polygon Market Indices end of day Query.
+    """Polygon Market Indices Query.
 
     Source: https://polygon.io/docs/indices/getting-started
     """
@@ -37,7 +36,7 @@ class PolygonMarketIndicesQueryParams(MarketIndicesQueryParams):
 
 
 class PolygonMarketIndicesData(MarketIndicesData):
-    """Polygon Market Indices end of day Data."""
+    """Polygon Market Indices Data."""
 
     __alias_dict__ = {
         "date": "t",
@@ -62,8 +61,11 @@ class PolygonMarketIndicesFetcher(
         List[PolygonMarketIndicesData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMarketIndicesQueryParams:
+        """Transform the query params."""
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -80,6 +82,7 @@ class PolygonMarketIndicesFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Extract raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -103,4 +106,5 @@ class PolygonMarketIndicesFetcher(
         data: dict,
         **kwargs: Any,
     ) -> List[PolygonMarketIndicesData]:
+        """Transform the data."""
         return [PolygonMarketIndicesData.model_validate(d) for d in data]
