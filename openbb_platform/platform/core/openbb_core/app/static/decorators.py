@@ -1,7 +1,8 @@
+"""Decorators for the OpenBB Platform static assets."""
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, overload
 
-from pydantic.validate_call import validate_call
+from pydantic import validate_call
 from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
