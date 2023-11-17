@@ -15,7 +15,7 @@ biztoc_provider = Provider(
 
     If you're not a developer but would still like to use Biztoc outside of the main website,
     we've partnered with OpenBB, allowing you to pull in BizToc's news stream in their Terminal.""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "GlobalNews": BiztocGlobalNewsFetcher,
     },

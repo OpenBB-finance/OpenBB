@@ -25,7 +25,7 @@ intrinio_provider = Provider(
     website="https://intrinio.com/",
     description="""Intrinio is a financial data platform that provides real-time and
     historical financial market data to businesses and developers through an API.""",
-    required_credentials=["api_key"],
+    credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
         "CalendarIpo": IntrinioCalendarIpoFetcher,
