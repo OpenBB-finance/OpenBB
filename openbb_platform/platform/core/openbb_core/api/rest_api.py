@@ -20,7 +20,7 @@ system = SystemService().system_settings
 app = FastAPI(
     title=system.api_settings.title,
     description=system.api_settings.description,
-    version=system.version,
+    version=system.api_settings.version,
     terms_of_service=system.api_settings.terms_of_service,
     contact={
         "name": system.api_settings.contact_name,
@@ -50,7 +50,7 @@ AppLoader.from_routers(
     routers=[AuthService().router, router_system, router_coverage, router_commands]
     if Env().DEV_MODE
     else [router_commands],
-    prefix="/api/v1",
+    prefix=system.api_settings.prefix,
 )
 
 
