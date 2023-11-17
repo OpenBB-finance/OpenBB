@@ -145,7 +145,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 
 ```python
 class EquityHistoricalQueryParams(QueryParams):
-    """Stock end of day Query."""
+    """Equity Historical end of day Query."""
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[date] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -163,7 +163,7 @@ The OpenBB Platform dynamically knows where the standard models begin in the inh
 
 ```python
 class EquityHistoricalData(Data):
-    """Stock end of day price Data."""
+    """Equity Historical end of day price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
@@ -294,7 +294,7 @@ In this section, we'll be adding a new data point to the OpenBB Platform. We wil
 In this example, we'll be adding OHLC stock data that is used by the `obb.equity.price.historical` command.
 
 Note that, if no command exists for your data, we need to add one under the right router.
-Each router is categorized under different extensions (stocks, currency, crypto, etc.).
+Each router is categorized under different extensions (equity, currency, crypto, etc.).
 
 #### Check if the standard model exists
 
@@ -329,7 +329,7 @@ class <ProviderName>EquityHistoricalQueryParams(EquityHistoricalQueryParams):
 ##### Create Data Output model
 
 The data output is the data that is returned by the API endpoint.
-For the `StockHistorical` example, this would look like the following:
+For the `EquityHistorical` example, this would look like the following:
 
 ```python
 

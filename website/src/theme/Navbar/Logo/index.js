@@ -12,15 +12,10 @@ export default function NavbarLogo() {
   const type = pathname.length > 1 ? pathname.split("/")[1] : "home";
 
   return (
-    <div className="flex items-center gap-x-[56px]">
-      <Link to={`/${type}`} className="mb-1 md:mb-0 md:ml-0">
+    <div className="flex items-center ml-2" style={{ display: window.innerWidth < 380 ? 'none' : 'flex' }}>
+      <Link to={`/${type}`}>
         {getLogo(type)}
       </Link>
-      {type === "sdk" && (
-        <div className="text-white text-xs pt-2">
-          OpenBB SDK has been deprecated in detriment of the Platform. More details here.
-        </div>
-      )}
     </div>
   );
 }

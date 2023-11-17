@@ -624,39 +624,6 @@ def test_equity_compare_peers(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"date": "2023-01-25", "provider": "intrinio", "symbol": "AAPL"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_options_chains(params, obb):
-    result = obb.equity.options.chains(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"symbol": "AAPL"}),
-        ({"source": "delayed", "provider": "intrinio", "symbol": "AAPL"}),
-        ({"symbol": None, "source": "delayed", "provider": "intrinio"}),
-        ({"symbol": "PLTR", "source": "delayed", "provider": "intrinio"}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_options_unusual(params, obb):
-    result = obb.equity.options.unusual(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         (
             {
                 "symbol": "AAPL",
@@ -807,6 +774,24 @@ def test_equity_options_unusual(params, obb):
                 "interval": "1d",
             }
         ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -818,77 +803,6 @@ def test_equity_price_historical(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        ({"symbols": "AAPL,MSFT", "limit": 20}),
-        (
-            {
-                "display": "full",
-                "date": "2023-01-01",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "updated_since": 1,
-                "published_since": 1,
-                "sort": "created",
-                "order": "desc",
-                "isin": "US0378331005",
-                "cusip": "037833100",
-                "channels": "General",
-                "topics": "AAPL",
-                "authors": "Benzinga Insights",
-                "content_types": "headline",
-                "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "published_utc": "2023-01-01",
-                "order": "desc",
-                "provider": "polygon",
-                "symbols": "AAPL",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
-                "symbols": "AAPL",
-                "limit": 20,
-                "page": 1,
-            }
-        ),
-        (
-            {
-                "provider": "yfinance",
-                "symbols": "AAPL",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "intrinio",
-                "symbols": "AAPL",
-                "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_equity_news(params, obb):
-    result = obb.equity.news(**params)
-    assert result
-    assert isinstance(result, OBBject)
 
 
 @pytest.mark.parametrize(
@@ -978,6 +892,41 @@ def test_equity_fundamental_financial_attributes(params, obb):
 @pytest.mark.integration
 def test_equity_search(params, obb):
     result = obb.equity.search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "industry": "REIT",
+                "sector": "Real Estate",
+                "mktcap_min": None,
+                "mktcap_max": None,
+                "price_min": None,
+                "price_max": None,
+                "volume_min": None,
+                "volume_max": None,
+                "dividend_min": None,
+                "dividend_max": None,
+                "is_active": True,
+                "is_etf": False,
+                "beta_min": None,
+                "beta_max": None,
+                "country": "US",
+                "exchange": "nyse",
+                "limit": None,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_screener(params, obb):
+    result = obb.equity.screener(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -1296,6 +1245,20 @@ def test_equity_darkpool_otc(params, obb):
 @pytest.mark.integration
 def test_equity_market_snapshots(params, obb):
     result = obb.equity.market_snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [({"provider": "tiingo", "symbol": "AAPL"})],
+)
+@pytest.mark.integration
+def test_equity_fundamental_trailing_dividend_yield(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.fundamental.trailing_dividend_yield(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

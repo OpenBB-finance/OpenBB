@@ -1,4 +1,4 @@
-"""FMP Stocks end of day fetcher."""
+"""FMP Equity Quote fetcher."""
 
 
 from datetime import datetime
@@ -15,14 +15,14 @@ from pydantic import Field, field_validator
 
 
 class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
-    """FMP Stock end of day Query.
+    """FMP Equity Quote Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
     """
 
 
 class FMPEquityQuoteData(EquityQuoteData):
-    """FMP Stock end of day Data."""
+    """FMP Equity Quote Data."""
 
     __alias_dict__ = {
         "price_avg50": "priceAvg50",
@@ -33,58 +33,58 @@ class FMPEquityQuoteData(EquityQuoteData):
     symbol: Optional[str] = Field(default=None, description="Symbol of the company.")
     name: Optional[str] = Field(default=None, description="Name of the company.")
     price: Optional[float] = Field(
-        default=None, description="Current trading price of the stock."
+        default=None, description="Current trading price of the equity."
     )
     changes_percentage: Optional[float] = Field(
-        default=None, description="Change percentage of the stock price."
+        default=None, description="Change percentage of the equity price."
     )
     change: Optional[float] = Field(
-        default=None, description="Change in the stock price."
+        default=None, description="Change in the equity price."
     )
     year_high: Optional[float] = Field(
-        default=None, description="Highest price of the stock in the last 52 weeks."
+        default=None, description="Highest price of the equity in the last 52 weeks."
     )
     year_low: Optional[float] = Field(
-        default=None, description="Lowest price of the stock in the last 52 weeks."
+        default=None, description="Lowest price of the equity in the last 52 weeks."
     )
     market_cap: Optional[float] = Field(
         default=None, description="Market cap of the company."
     )
     price_avg50: Optional[float] = Field(
-        default=None, description="50 days average price of the stock."
+        default=None, description="50 days average price of the equity."
     )
     price_avg200: Optional[StrictInt] = Field(
-        default=None, description="200 days average price of the stock."
+        default=None, description="200 days average price of the equity."
     )
     volume: Optional[StrictInt] = Field(
         default=None,
-        description="Volume of the stock in the current trading day.",
+        description="Volume of the equity in the current trading day.",
     )
     avg_volume: Optional[StrictInt] = Field(
         default=None,
-        description="Average volume of the stock in the last 10 trading days.",
+        description="Average volume of the equity in the last 10 trading days.",
     )
     exchange: Optional[str] = Field(
-        default=None, description="Exchange the stock is traded on."
+        default=None, description="Exchange the equity is traded on."
     )
     open: Optional[float] = Field(
         default=None,
-        description="Opening price of the stock in the current trading day.",
+        description="Opening price of the equity in the current trading day.",
     )
     previous_close: Optional[float] = Field(
-        default=None, description="Previous closing price of the stock."
+        default=None, description="Previous closing price of the equity."
     )
     eps: Optional[float] = Field(
-        default=None, description="Earnings per share of the stock."
+        default=None, description="Earnings per share of the equity."
     )
     pe: Optional[float] = Field(
-        default=None, description="Price earnings ratio of the stock."
+        default=None, description="Price earnings ratio of the equity."
     )
     earnings_announcement: Optional[str] = Field(
-        default=None, description="Earnings announcement date of the stock."
+        default=None, description="Earnings announcement date of the equity."
     )
     shares_outstanding: Optional[StrictInt] = Field(
-        default=None, description="Number of shares outstanding of the stock."
+        default=None, description="Number of shares outstanding of the equity."
     )
 
     @field_validator("timestamp", mode="before", check_fields=False)

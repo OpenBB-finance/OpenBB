@@ -315,7 +315,7 @@ data = openbb.stocks.load('VOO', start_date = "2022-05-15")
 data["SMA"] = openbb.ta.sma(data = data["Close"], length = 20)
 ```
 
-The code block below takes the top ten results from the `unusual_volume` [screener preset](/sdk/data-available/stocks/stocks-screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
+The code block below takes the top ten results from the `unusual_volume` [screener preset](/sdk/menus/stocks/screener), gets a single DataFrame with the daily returns for each ticker YTD, then identifies the date of the best performing day.  These operations will require importing the Pandas library to the session.
 
 ```python
 import pandas as pd

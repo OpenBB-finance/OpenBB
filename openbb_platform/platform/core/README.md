@@ -85,17 +85,17 @@ def some_command(
 
 If your command only makes use of a standard model defined inside `openbb_provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
 
-This is an example how we do it for `stocks.load` which only depends on `StockHistorical` model defined in `openbb-provider`:
+This is an example how we do it for `equity.price.historical` which only depends on `EquityHistorical` model defined in `openbb-provider`:
 
 ```python
-@router.command(model="StockHistorical")
-def load(
+@router.command(model="EquityHistorical")
+def historical(
     cc: CommandContext,                 # user settings inside
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
 ) -> OBBject[BaseModel]:
-    """Load stock data for a specific ticker."""
+    """Load equity data for a specific ticker."""
     return OBBject(results=Query(**locals()).execute())
 ```
 
@@ -133,13 +133,13 @@ Update your credentials and default providers by modifying the `.openbb_platform
     },
     "defaults": {
         "routes": {
-            "/stocks/fa/balance": {
+            "/equity/fundamental/balance": {
                 "provider": "polygon"
             },
-            "/stocks/load": {
+            "/equity/price/historical": {
                 "provider": "fmp"
             },
-            "/stocks/news": {
+            "/news/company": {
                 "provider": "benzinga"
             }
         }
@@ -163,7 +163,7 @@ Run your command:
 ```python
 from openbb import obb
 
-output = obb.stocks.load(
+output = obb.equity.price.historical(
     symbol="TSLA",
     start_date="2023-01-01",
     provider="fmp",
@@ -263,7 +263,7 @@ Steps to create an `OBBject` extension:
 
     ```shell
     >>> from openbb import obb
-    >>> obbject = obb.stocks.load("AAPL")
+    >>> obbject = obb.equity.price.historical("AAPL")
     >>> obbject.example.hello()
     Hello, this is my credential: None!
     ```
@@ -585,7 +585,7 @@ base64_bytes = base64.b64encode(msg_bytes)
 base64_msg = base64_bytes.decode('ascii')
 
 requests.get(
-    url="http://127.0.0.1:8000/api/v1/stocks/load?provider=fmp&symbol=AAPL",
+    url="http://127.0.0.1:8000/api/v1/equity/price/historical?provider=fmp&symbol=AAPL",
     headers={"Authorization": f"Basic {base64_msg}"}
 )
 ``````
