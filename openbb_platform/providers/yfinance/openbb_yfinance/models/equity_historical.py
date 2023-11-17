@@ -1,4 +1,4 @@
-"""yfinance Equity Historical End of Day Fetcher."""
+"""yfinance Equity Historical Price Fetcher."""
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta
@@ -19,7 +19,7 @@ from pydantic import Field, PrivateAttr, field_validator
 
 
 class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """YFinance Equity Historical End of Day Query.
+    """YFinance Equity Historical Price Query.
 
     Source: https://finance.yahoo.com/
     """
@@ -70,7 +70,7 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class YFinanceEquityHistoricalData(EquityHistoricalData):
-    """YFinance Equity Historical End of Day Data."""
+    """YFinance Equity Historical Price Data."""
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

@@ -1,4 +1,4 @@
-"""yfinance Currency End of Day fetcher."""
+"""yfinance Currency Price fetcher."""
 # ruff: noqa: SIM105
 
 
@@ -20,7 +20,7 @@ from pydantic import Field
 
 
 class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """YFinance Currency End of Day Query.
+    """YFinance Currency Price Query.
 
     Source: https://finance.yahoo.com/currencies/
     """
@@ -32,7 +32,7 @@ class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
 
 class YFinanceCurrencyHistoricalData(CurrencyHistoricalData):
-    """YFinance Currency End of Day Data."""
+    """YFinance Currency Price Data."""
 
 
 class YFinanceCurrencyHistoricalFetcher(

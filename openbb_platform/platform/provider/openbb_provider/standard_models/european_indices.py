@@ -1,4 +1,4 @@
-"""European Indices End of Day data model."""
+"""European Indices Price data model."""
 
 
 from datetime import (
@@ -26,6 +26,7 @@ class EuropeanIndicesQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
