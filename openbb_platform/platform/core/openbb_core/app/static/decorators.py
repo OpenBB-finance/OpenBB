@@ -8,6 +8,7 @@ from typing_extensions import ParamSpec
 
 def get_validate_call() -> Callable:
     """Pydantic 2.5.0 changed location of validate_call, so we check and import"""
+    # TODO: remove this once we drop support for pydantic < 2.5.0
     if parse_version(VERSION) < parse_version("2.5.0"):
         from pydantic.validate_call import validate_call
     else:
