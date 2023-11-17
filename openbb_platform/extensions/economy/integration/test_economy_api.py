@@ -209,3 +209,43 @@ def test_economy_gdp_real(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "report_type": "summary",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "direct_investment",
+                "frequency": "monthly",
+                "country": None,
+                "provider": "ecb",
+            }
+        ),
+        (
+            {
+                "report_type": "main",
+                "frequency": "quarterly",
+                "country": "united_states",
+                "provider": "ecb",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_balance_of_payments(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/balance_of_payments?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
