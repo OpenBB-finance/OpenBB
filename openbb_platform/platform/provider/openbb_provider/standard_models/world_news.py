@@ -1,4 +1,4 @@
-"""Global News Data Model."""
+"""World News Standard Model."""
 
 
 from datetime import datetime
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class GlobalNewsQueryParams(QueryParams):
-    """Global news Query."""
+class WorldNewsQueryParams(QueryParams):
+    """World News Query."""
 
     limit: NonNegativeInt = Field(
         default=20,
@@ -21,8 +21,8 @@ class GlobalNewsQueryParams(QueryParams):
     )
 
 
-class GlobalNewsData(Data):
-    """Global News Data."""
+class WorldNewsData(Data):
+    """World News Data."""
 
     date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")

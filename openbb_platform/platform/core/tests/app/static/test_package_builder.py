@@ -497,7 +497,7 @@ def test_get_OBBject_description(docstring_generator):
 def test_generate_model_docstring(docstring_generator):
     """Test generate model docstring."""
     docstring = ""
-    model_name = "GlobalNews"
+    model_name = "WorldNews"
     summary = "This is a summary."
 
     pi = docstring_generator.provider_interface
@@ -517,14 +517,14 @@ def test_generate_model_docstring(docstring_generator):
         explicit_params=explicit_dict,
         params=params,
         returns=returns,
-        results_type="List[GlobalNews]",
+        results_type="List[WorldNews]",
     )
 
     assert docstring
     assert summary in docstring
     assert "Parameters" in docstring
     assert "Returns" in docstring
-    assert "GlobalNews" in docstring
+    assert "WorldNews" in docstring
 
 
 def test_generate(docstring_generator):
@@ -539,7 +539,7 @@ def test_generate(docstring_generator):
     }
 
     f = docstring_generator.generate(
-        func=some_func, formatted_params=formatted_params, model_name="GlobalNews"
+        func=some_func, formatted_params=formatted_params, model_name="WorldNews"
     )
     assert f
     assert "Parameters" in f.__doc__

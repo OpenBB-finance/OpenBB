@@ -68,7 +68,7 @@ class TiingoCompanyNewsFetcher(
         List[TiingoCompanyNewsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the tiingo endpoints."""
+    """Tiingo Company News Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TiingoCompanyNewsQueryParams:
@@ -77,7 +77,7 @@ class TiingoCompanyNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: TiingoCompanyNewsQueryParams,
+        query: TiingoCompanyNewsQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
