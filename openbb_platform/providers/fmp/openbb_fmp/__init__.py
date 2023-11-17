@@ -38,6 +38,7 @@ from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
 from openbb_fmp.models.global_news import FMPGlobalNewsFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
+from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
 from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
@@ -104,6 +105,7 @@ fmp_provider = Provider(
         "GlobalNews": FMPGlobalNewsFetcher,
         "HistoricalDividends": FMPHistoricalDividendsFetcher,
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
+        "HistoricalEps": FMPHistoricalEpsFetcher,
         "HistoricalSplits": FMPHistoricalSplitsFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
         "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,

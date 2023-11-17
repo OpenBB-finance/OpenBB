@@ -57,11 +57,22 @@ def eu_yield_curve(
 
 
 @router.command(model="TreasuryRates")
-def treasury(
+def treasury_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Treasury Rates. Treasury rates data."""
+    """Government Treasury Rates."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="TreasuryAuctions")
+def treasury_auctions(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Government Treasury Auctions."""
     return OBBject(results=Query(**locals()).execute())

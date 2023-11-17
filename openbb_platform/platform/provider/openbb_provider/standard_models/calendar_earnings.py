@@ -1,10 +1,10 @@
-"""Earnings calendar data model."""
+"""Earnings Calendar data model."""
 
 
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_provider.abstract.data import Data
 from openbb_provider.abstract.query_params import QueryParams
@@ -12,51 +12,27 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class CalendarEarningsQueryParams(QueryParams):
-    """Earnings calendar rating Query."""
+    """Earnings Calendar Query."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
-        default=50, description=QUERY_DESCRIPTIONS.get("limit", "")
+    start_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    end_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+    )
 
 
 class CalendarEarningsData(Data):
-    """Earnings calendar Data."""
+    """Earnings Calendar Data."""
 
+    report_date: dateType = Field(description="The date of the earnings report.")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    eps: Optional[float] = Field(
-        default=None, description="EPS of the earnings calendar."
+    name: Optional[str] = Field(description="Name of the entity.", default=None)
+    eps_previous: Optional[float] = Field(
+        default=None,
+        description="The earnings-per-share from the same previously reported period.",
     )
-    eps_estimated: Optional[float] = Field(
-        default=None, description="Estimated EPS of the earnings calendar."
+    eps_consensus: Optional[float] = Field(
+        default=None,
+        description="The analyst conesus earnings-per-share estimate.",
     )
-    time: str = Field(description="Time of the earnings calendar.")
-    revenue: Optional[float] = Field(
-        default=None, description="Revenue of the earnings calendar."
-    )
-    revenue_estimated: Optional[float] = Field(
-        default=None, description="Estimated revenue of the earnings calendar."
-    )
-    updated_from_date: dateType = Field(
-        default=None, description="Updated from date of the earnings calendar."
-    )
-    fiscal_date_ending: dateType = Field(
-        description="Fiscal date ending of the earnings calendar."
-    )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
