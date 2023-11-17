@@ -1,4 +1,4 @@
-"""Intrinio World News fetcher."""
+"""Intrinio World News Fetcher."""
 
 
 from datetime import datetime

@@ -1,4 +1,4 @@
-"""Tiingo World News."""
+"""Tiingo World News Fetcher."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

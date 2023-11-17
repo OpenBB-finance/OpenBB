@@ -1,4 +1,4 @@
-"""Biztoc World News."""
+"""Biztoc World News Fetcher."""
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
