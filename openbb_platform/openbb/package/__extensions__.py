@@ -35,7 +35,8 @@ Extensions:
     - intrinio@1.0.0b0
     - oecd@1.0.0b0
     - polygon@1.0.0b0
-    - sec@1.0.0b0    """
+    - sec@1.0.0b0
+    - tradingeconomics@1.0.0b0    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
