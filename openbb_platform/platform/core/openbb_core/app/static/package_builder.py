@@ -882,6 +882,7 @@ class MethodDefinition:
         model_name: Optional[str] = None,
     ):
         """Build the command method docstring."""
+        doc = func.__doc__
         if model_name:
             doc = DocstringGenerator.generate(
                 func=func, formatted_params=formatted_params, model_name=model_name
