@@ -1,4 +1,4 @@
-"""Intrinio Options Chains fetcher."""
+"""Intrinio Options Chains Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import (
@@ -20,7 +20,7 @@ from pydantic import Field, field_validator
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """Get the complete options chains (Historical) for a ticker from Intrinio.
+    """Intrinio Options Chains Query.
 
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
@@ -52,7 +52,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
 class IntrinioOptionsChainsFetcher(
     Fetcher[IntrinioOptionsChainsQueryParams, List[IntrinioOptionsChainsData]]
 ):
-    """Perform TET for the Intrinio endpoints."""
+    """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:

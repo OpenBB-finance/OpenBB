@@ -1,5 +1,4 @@
-"""FMP Historical Employees fetcher."""
-
+"""FMP Historical Employees Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,7 +11,7 @@ from openbb_provider.standard_models.historical_employees import (
 
 
 class FMPHistoricalEmployeesQueryParams(HistoricalEmployeesQueryParams):
-    """FMP Historical Employees query.
+    """FMP Historical Employees Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/historical-numer-of-employees-api/
     """

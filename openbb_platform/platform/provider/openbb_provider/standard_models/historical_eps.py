@@ -1,4 +1,4 @@
-"""Historical EPS data model."""
+"""Historical EPS Standard Model."""
 
 
 from datetime import date as dateType
@@ -13,7 +13,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class HistoricalEpsQueryParams(QueryParams):
-    """Historical Earnings Per Share Query."""
+    """Historical EPS Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -27,7 +27,7 @@ class HistoricalEpsQueryParams(QueryParams):
 
 
 class HistoricalEpsData(Data):
-    """Historical Earnings Per Share Data."""
+    """Historical EPS Data."""
 
     date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

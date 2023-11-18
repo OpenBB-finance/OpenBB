@@ -1,4 +1,4 @@
-"""Commercial Paper Model."""
+"""Commercial Paper Standard Model."""
 from datetime import (
     date as dateType,
 )

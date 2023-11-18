@@ -1,5 +1,4 @@
-"""FRED FED Fetcher."""
-
+"""FRED FED Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -23,7 +22,7 @@ FED_PARAMETER_TO_FRED_ID = {
 
 
 class FREDFEDQueryParams(FEDQueryParams):
-    """FED query."""
+    """FRED FED Query."""
 
     parameter: Literal[
         "monthly",
@@ -37,7 +36,7 @@ class FREDFEDQueryParams(FEDQueryParams):
 
 
 class FREDFEDData(FEDData):
-    """FED data."""
+    """FRED FED Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -52,7 +51,7 @@ class FREDFEDData(FEDData):
 
 
 class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData]]]]):
-    """FRED FED Fetcher."""
+    """FRED FED Model."""
 
     data_type = FREDFEDData
 

@@ -1,4 +1,4 @@
-"""Selected Treasury Bill Model."""
+"""Selected Treasury Bill Standard Model."""
 from datetime import (
     date as dateType,
 )
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class SelectedTreasuryBillParams(QueryParams):
-    """SelectedTreasuryBill Query."""
+class SelectedTreasuryBillQueryParams(QueryParams):
+    """Selected Treasury Bill Query."""
 
     start_date: Optional[dateType] = Field(
         default=None,
@@ -29,7 +29,7 @@ class SelectedTreasuryBillParams(QueryParams):
 
 
 class SelectedTreasuryBillData(Data):
-    """SelectedTreasuryBill Data."""
+    """Selected Treasury Bill Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="SelectedTreasuryBill Rate.")

@@ -1,4 +1,4 @@
-"""Intrinio Cash Flow Statement Fetcher."""
+"""Intrinio Cash Flow Statement Model."""
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -15,7 +15,7 @@ from pydantic import alias_generators
 
 
 class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
-    """Intrinio Cash Flow Statement QueryParams.
+    """Intrinio Cash Flow Statement Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2

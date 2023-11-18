@@ -1,1 +1,1 @@
-"""yfinance utils directory."""
+"""Yahoo Finance utils directory."""

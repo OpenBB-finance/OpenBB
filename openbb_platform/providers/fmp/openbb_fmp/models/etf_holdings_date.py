@@ -1,4 +1,4 @@
-"""FMP ETF Holdings fetcher."""
+"""FMP ETF Holdings Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class FMPEtfHoldingsDateQueryParams(EtfHoldingsDateQueryParams):
-    """FMP ETF Holdings query.
+    """FMP ETF Holdings Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs#Historical-ETF-Holdings
     """

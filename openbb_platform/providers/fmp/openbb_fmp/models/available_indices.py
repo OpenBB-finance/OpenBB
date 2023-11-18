@@ -1,4 +1,4 @@
-"""FMP Available Indices fetcher."""
+"""FMP Available Indices Model."""
 
 
 from typing import Any, Dict, List, Optional

@@ -1,4 +1,4 @@
-"""Intrinio Financial Attributes model."""
+"""Intrinio Financial Attributes Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

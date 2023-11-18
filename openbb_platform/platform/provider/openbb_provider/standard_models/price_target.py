@@ -1,4 +1,4 @@
-"""Price Target data model."""
+"""Price Target Standard Model."""
 
 
 from datetime import datetime
@@ -25,7 +25,7 @@ class PriceTargetQueryParams(QueryParams):
 
 
 class PriceTargetData(Data):
-    """Price target Data."""
+    """Price Target Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     published_date: datetime = Field(description="Published date of the price target.")

@@ -1,5 +1,4 @@
-"""FRED Consumer Price Index Fetcher."""
-
+"""FRED Consumer Price Index Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -13,17 +12,17 @@ from openbb_provider.standard_models.cpi import (
 
 
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
-    """Consumer Price Index query."""
+    """FRED Consumer Price Index Query."""
 
 
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
-    """Consumer Price Index data."""
+    """FRED Consumer Price Index Data."""
 
 
 class FREDConsumerPriceIndexFetcher(
     Fetcher[FREDConsumerPriceIndexQueryParams, List[FREDConsumerPriceIndexData]]
 ):
-    """FRED Consumer Price Index Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FREDConsumerPriceIndexQueryParams:

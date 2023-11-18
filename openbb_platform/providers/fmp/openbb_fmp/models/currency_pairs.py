@@ -1,4 +1,4 @@
-"""FMP Currency available pairs fetcher."""
+"""FMP Currency Available Pairs Model."""
 
 
 from typing import Any, Dict, List, Optional
@@ -13,14 +13,14 @@ from pydantic import Field
 
 
 class FMPCurrencyPairsQueryParams(CurrencyPairsQueryParams):
-    """FMP Currency available pairs Query.
+    """FMP Currency Available Pairs Query.
 
     Source: http://site.financialmodelingprep.com/developer/docs/stock-ticker-symbol-lookup-api/?direct=true
     """
 
 
 class FMPCurrencyPairsData(CurrencyPairsData):
-    """FMP Currency available pairs Data."""
+    """FMP Currency Available Pairs Data."""
 
     symbol: str = Field(description="Symbol of the currency pair.")
     currency: str = Field(description="Base currency of the currency pair.")

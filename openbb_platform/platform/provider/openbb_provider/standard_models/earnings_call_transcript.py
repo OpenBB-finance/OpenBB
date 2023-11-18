@@ -1,4 +1,4 @@
-"""Earnings call transcript data model."""
+"""Earnings Call Transcript Standard Model."""
 
 
 from datetime import datetime
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EarningsCallTranscriptQueryParams(QueryParams):
-    """Earnings call transcript rating Query."""
+    """Earnings Call Transcript rating Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     year: int = Field(description="Year of the earnings call transcript.")
@@ -27,7 +27,7 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 
 
 class EarningsCallTranscriptData(Data):
-    """Earnings call transcript Data."""
+    """Earnings Call Transcript Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     quarter: int = Field(description="Quarter of the earnings call transcript.")

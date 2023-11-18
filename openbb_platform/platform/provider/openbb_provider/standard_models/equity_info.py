@@ -1,4 +1,4 @@
-"""Equity Info data model."""
+"""Equity Info Standard Model."""
 
 from typing import List, Optional, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EquityInfoQueryParams(QueryParams):
-    """Equity Info Query Params."""
+    """Equity Info Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 

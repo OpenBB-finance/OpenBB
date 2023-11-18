@@ -1,4 +1,4 @@
-"""Nasdaq SP500 Multiples Fetcher."""
+"""Nasdaq SP500 Multiples Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams):
-    """SP500 Multiples query."""
+    """Nasdaq SP500 Multiples Query."""
 
     collapse: Optional[
         Literal["daily", "weekly", "monthly", "quarterly", "annual"]
@@ -28,13 +28,13 @@ class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams):
 
 
 class NasdaqSP500MultiplesData(SP500MultiplesData):
-    """SP500 Multiples data."""
+    """Nasdaq SP500 Multiples Data."""
 
 
 class NasdaqSP500MultiplesFetcher(
     Fetcher[NasdaqSP500MultiplesQueryParams, List[NasdaqSP500MultiplesData]]
 ):
-    """Nasdaq SP500 Multiples Fetcher."""
+    """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqSP500MultiplesQueryParams:

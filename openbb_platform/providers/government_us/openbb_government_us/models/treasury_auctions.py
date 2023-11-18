@@ -1,4 +1,4 @@
-"""US Government Treasury Auctions."""
+"""US Government Treasury Auctions Model."""
 
 from datetime import (
     datetime,
@@ -17,8 +17,7 @@ from openbb_provider.utils.helpers import get_querystring
 
 
 class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
-    """
-    US Treasury Auctions Query Params
+    """US Government Treasury Auctions Query.
 
     Source: https://www.treasurydirect.gov/
     """
@@ -33,7 +32,7 @@ class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
 
 
 class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
-    """US Treasury Auctions Data."""
+    """US Government Treasury Auctions Data."""
 
 
 class GovernmentUSTreasuryAuctionsFetcher(
@@ -42,7 +41,7 @@ class GovernmentUSTreasuryAuctionsFetcher(
         List[GovernementUSTreasuryAuctionsData],
     ]
 ):
-    """US Treasury Auctions Fetcher."""
+    """Transform the query, extract and transform the data from the us treasury endpoints."""
 
     @staticmethod
     def transform_query(
@@ -65,7 +64,6 @@ class GovernmentUSTreasuryAuctionsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Treasury Direct API."""
-
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
 
         _query = query.model_dump()
@@ -92,5 +90,5 @@ class GovernmentUSTreasuryAuctionsFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[GovernementUSTreasuryAuctionsData]:
-        """Transform data into the model"""
+        """Transform the data."""
         return [GovernementUSTreasuryAuctionsData.model_validate(d) for d in data]

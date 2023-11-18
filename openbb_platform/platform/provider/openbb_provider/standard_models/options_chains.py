@@ -1,4 +1,4 @@
-"""Options Chains data model."""
+"""Options Chains Standard Model."""
 
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class OptionsChainsQueryParams(QueryParams):
-    """Options Chains Query Params"""
+    """Options Chains Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 

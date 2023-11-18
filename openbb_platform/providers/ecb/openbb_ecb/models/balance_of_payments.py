@@ -1,4 +1,4 @@
-"""ECB Balance of Payments Models."""
+"""ECB Balance of Payments Model."""
 
 import concurrent.futures
 from typing import Any, Dict, List, Optional
@@ -27,7 +27,7 @@ from pydantic import Field
 
 
 class ECBBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
-    """ECB Balance of Payments Query Params."""
+    """ECB Balance of Payments Query."""
 
     report_type: BPS_REPORT_TYPES = Field(
         default="main",
@@ -59,7 +59,7 @@ class ECBBalanceOfPaymentsData(
 class ECBBalanceOfPaymentsFetcher(
     Fetcher[ECBBalanceOfPaymentsQueryParams, List[ECBBalanceOfPaymentsData]]
 ):
-    """ECB Balance of Payments Fetcher."""
+    """Transform the query, extract and transform the data from the ECB endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> ECBBalanceOfPaymentsQueryParams:
@@ -73,7 +73,6 @@ class ECBBalanceOfPaymentsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
-
         results: List[Dict] = []
 
         _series_ids = generate_bps_series_ids(

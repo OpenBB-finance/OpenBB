@@ -1,4 +1,4 @@
-"""yfinance Currency Price fetcher."""
+"""Yahoo Finance Currency Price Model."""
 # ruff: noqa: SIM105
 
 
@@ -20,7 +20,7 @@ from pydantic import Field
 
 
 class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """YFinance Currency Price Query.
+    """Yahoo Finance Currency Price Query.
 
     Source: https://finance.yahoo.com/currencies/
     """
@@ -32,7 +32,7 @@ class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
 
 class YFinanceCurrencyHistoricalData(CurrencyHistoricalData):
-    """YFinance Currency Price Data."""
+    """Yahoo Finance Currency Price Data."""
 
 
 class YFinanceCurrencyHistoricalFetcher(
@@ -41,7 +41,7 @@ class YFinanceCurrencyHistoricalFetcher(
         List[YFinanceCurrencyHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(
@@ -70,7 +70,7 @@ class YFinanceCurrencyHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         data = yf_download(
             query.symbol,
             start=query.start_date,

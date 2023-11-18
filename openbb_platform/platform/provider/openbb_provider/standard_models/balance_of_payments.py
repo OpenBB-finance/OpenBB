@@ -1,4 +1,4 @@
-"""Balance of Payments Models"""
+"""Balance of Payments Model."""
 
 from datetime import (
     date as dateType,
@@ -12,7 +12,7 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class BalanceOfPaymentsQueryParams(QueryParams):
-    """Balance Of Payments Query Params."""
+    """Balance Of Payments Query."""
 
 
 class ECBMain(Data):

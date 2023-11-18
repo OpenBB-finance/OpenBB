@@ -1,4 +1,4 @@
-"""Earnings Calendar data model."""
+"""Earnings Calendar Standard Model."""
 
 
 from datetime import date as dateType

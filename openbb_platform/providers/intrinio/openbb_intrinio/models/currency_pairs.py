@@ -1,4 +1,4 @@
-"""Intrinio Currency available pairs fetcher."""
+"""Intrinio Currency Available Pairs Model."""
 
 
 from typing import Any, Dict, List, Optional
@@ -13,14 +13,14 @@ from pydantic import Field
 
 
 class IntrinioCurrencyPairsQueryParams(CurrencyPairsQueryParams):
-    """Intrinio Currency available pairs Query.
+    """Intrinio Currency Available Pairs Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_forex_pairs_v2
     """
 
 
 class IntrinioCurrencyPairsData(CurrencyPairsData):
-    """Intrinio Currency available pairs Data."""
+    """Intrinio Currency Available Pairs Data."""
 
     __alias_dict__ = {"name": "code"}
 

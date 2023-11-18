@@ -13,7 +13,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class CurrencyReferenceRatesQueryParams(QueryParams):
-    """Currency Reference Rates Query Params."""
+    """Currency Reference Rates Query."""
 
 
 class CurrencyReferenceRatesData(Data):

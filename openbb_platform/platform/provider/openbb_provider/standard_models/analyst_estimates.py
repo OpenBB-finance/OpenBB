@@ -1,4 +1,4 @@
-"""Analyst estimates data model."""
+"""Analyst Estimates Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class AnalystEstimatesQueryParams(QueryParams):
-    """Analyst Estimates query."""
+    """Analyst Estimates Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: Literal["quarter", "annual"] = Field(
@@ -29,7 +29,7 @@ class AnalystEstimatesQueryParams(QueryParams):
 
 
 class AnalystEstimatesData(Data):
-    """Analyst estimates data."""
+    """Analyst Estimates data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

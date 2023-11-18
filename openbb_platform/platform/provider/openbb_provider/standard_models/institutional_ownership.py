@@ -1,4 +1,4 @@
-"""Institutional Ownership Data Model."""
+"""Institutional Ownership Standard Model."""
 
 
 from datetime import date as dateType

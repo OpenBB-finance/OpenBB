@@ -1,4 +1,4 @@
-"""CBOE Equity Info."""
+"""CBOE Equity Info Model."""
 
 import concurrent.futures
 from datetime import datetime
@@ -20,14 +20,14 @@ from pydantic import Field
 
 
 class CboeEquityInfoQueryParams(EquityInfoQueryParams):
-    """CBOE Company Search Query.
+    """CBOE Equity Info Query.
 
     Source: https://www.cboe.com/
     """
 
 
 class CboeEquityInfoData(EquityInfoData):
-    """CBOE Company Search Data."""
+    """CBOE Equity Info Data."""
 
     type: Optional[str] = Field(default=None, description="Type of asset.")
     exchange_id: Optional[int] = Field(
@@ -90,7 +90,7 @@ class CboeEquityInfoFetcher(
         List[CboeEquityInfoData],
     ]
 ):
-    """CBOE Equity Info Fetcher."""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeEquityInfoQueryParams:

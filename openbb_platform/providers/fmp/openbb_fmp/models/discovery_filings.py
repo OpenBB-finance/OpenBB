@@ -1,4 +1,4 @@
-"""FMP SEC Filings fetcher."""
+"""FMP Filings Model."""
 
 import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -14,7 +14,7 @@ from pydantic import Field, field_validator
 
 
 class FMPFilingsQueryParams(FilingsQueryParams):
-    """FMP SEC Filings Params."""
+    """FMP Filings Query."""
 
     __alias_dict__ = {
         "form_type": "type",
@@ -30,7 +30,7 @@ class FMPFilingsQueryParams(FilingsQueryParams):
 
 
 class FMPFilingsData(FilingsData):
-    """FMP SEC Filings Data."""
+    """FMP Filings Data."""
 
     __alias_dict__ = {
         "timestamp": "date",

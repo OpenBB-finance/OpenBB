@@ -1,4 +1,4 @@
-"""Balance Sheet Data Model."""
+"""Balance Sheet Standard Model."""
 
 
 from datetime import (
@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class BalanceSheetQueryParams(QueryParams):
-    """Balance Sheet query."""
+    """Balance Sheet Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     period: Optional[Literal["annual", "quarter"]] = Field(

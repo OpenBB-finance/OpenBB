@@ -1,4 +1,4 @@
-"""FRED Indices data model."""
+"""FRED Indices Standard Model."""
 
 
 from datetime import date as dateType
@@ -36,7 +36,7 @@ class FredIndicesQueryParams(QueryParams):
 
 
 class FredIndicesData(Data):
-    """Fred end of day price Data."""
+    """FRED Indices Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     value: Optional[PositiveFloat] = Field(

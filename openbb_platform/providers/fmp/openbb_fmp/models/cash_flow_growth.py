@@ -1,4 +1,4 @@
-"""FMP Cash Flow Statement Growth Fetcher."""
+"""FMP Cash Flow Statement Growth Model."""
 
 
 from datetime import datetime
@@ -14,7 +14,7 @@ from pydantic import field_validator
 
 
 class FMPCashFlowStatementGrowthQueryParams(CashFlowStatementGrowthQueryParams):
-    """FMP Cash Flow Statement Growth QueryParams.
+    """FMP Cash Flow Statement Growth Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """

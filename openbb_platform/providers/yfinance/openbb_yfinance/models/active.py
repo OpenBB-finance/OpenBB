@@ -1,4 +1,5 @@
-"""Yahoo Finance active fetcher."""
+"""Yahoo Finance Asset Performance Active Model."""
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -13,14 +14,14 @@ from pydantic import Field
 
 
 class YFActiveQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance active QueryParams.
+    """Yahoo Finance Asset Performance Active Query.
 
     Source: https://finance.yahoo.com/screener/predefined/most_actives
     """
 
 
 class YFActiveData(EquityPerformanceData):
-    """YF asset performance active Data."""
+    """Yahoo Finance Asset Performance Active Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -47,7 +48,7 @@ class YFActiveData(EquityPerformanceData):
 
 
 class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
-    """YF asset performance active Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFActiveQueryParams:

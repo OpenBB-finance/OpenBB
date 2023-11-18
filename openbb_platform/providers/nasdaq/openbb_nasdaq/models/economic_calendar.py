@@ -1,4 +1,4 @@
-"""Nasdaq Economic Calendar fetcher."""
+"""Nasdaq Economic Calendar Model."""
 
 
 import html

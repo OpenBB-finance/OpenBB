@@ -1,4 +1,4 @@
-"""ICE BofA US Corporate Bond Indices Model."""
+"""ICE BofA US Corporate Bond Indices Standard Model."""
 from datetime import (
     date as dateType,
 )
@@ -11,7 +11,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class ICEBofAParams(QueryParams):
+class ICEBofAQueryParams(QueryParams):
     """ICE BofA US Corporate Bond Indices Query."""
 
     start_date: Optional[dateType] = Field(

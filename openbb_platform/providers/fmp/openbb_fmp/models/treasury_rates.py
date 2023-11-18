@@ -1,5 +1,4 @@
-"""FMP Treasury Rates."""
-
+"""FMP Treasury Rates Model."""
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional

@@ -1,4 +1,4 @@
-"""Index Sectors data model."""
+"""Index Sectors Standard Model."""
 
 from typing import List, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class IndexSectorsQueryParams(QueryParams):
-    """Index Info Query Params."""
+    """Index Sectors Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 

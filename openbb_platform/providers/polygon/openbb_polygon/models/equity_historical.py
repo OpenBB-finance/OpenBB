@@ -1,5 +1,4 @@
-"""Polygon Equity Historical Price fetcher."""
-
+"""Polygon Equity Historical Price Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -92,7 +91,7 @@ class PolygonEquityHistoricalFetcher(
         List[PolygonEquityHistoricalData],
     ]
 ):
-    """Equity Equity Historical Price Fetcher."""
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonEquityHistoricalQueryParams:

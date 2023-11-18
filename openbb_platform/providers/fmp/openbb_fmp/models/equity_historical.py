@@ -1,4 +1,4 @@
-"""FMP Equity Historical end of day fetcher."""
+"""FMP Equity Historical Price Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -15,7 +15,7 @@ from pydantic import Field, NonNegativeInt
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """FMP Equity Historical end of day Query.
+    """FMP Equity Historical Price Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
     """
@@ -33,7 +33,7 @@ class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 
 class FMPEquityHistoricalData(EquityHistoricalData):
-    """FMP Equity Historical end of day Data."""
+    """FMP Equity Historical Price Data."""
 
     label: Optional[str] = Field(
         default=None, description="Human readable format of the date."

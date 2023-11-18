@@ -1,4 +1,4 @@
-"""FMP Balance Sheet Growth Fetcher."""
+"""FMP Balance Sheet Growth Model."""
 
 
 from datetime import datetime
@@ -14,7 +14,7 @@ from pydantic import field_validator
 
 
 class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
-    """FMP Balance Sheet Growth QueryParams.
+    """FMP Balance Sheet Growth Query.
 
     Source:  https://site.financialmodelingprep.com/developer/docs/#Financial-Statements-Growth
     """

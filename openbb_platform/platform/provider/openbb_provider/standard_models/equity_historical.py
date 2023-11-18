@@ -1,4 +1,4 @@
-"""Equity Historical Price data model."""
+"""Equity Historical Price Standard Model."""
 
 
 from datetime import (
@@ -16,7 +16,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EquityHistoricalQueryParams(QueryParams):
-    """Equity Historical end of day Query."""
+    """Equity Historical Price Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     interval: Optional[str] = Field(
@@ -42,7 +42,7 @@ class EquityHistoricalQueryParams(QueryParams):
 
 
 class EquityHistoricalData(Data):
-    """Equity Historical end of day price Data."""
+    """Equity Historical Price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

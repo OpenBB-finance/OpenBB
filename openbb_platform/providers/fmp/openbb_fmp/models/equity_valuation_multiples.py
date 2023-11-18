@@ -1,4 +1,4 @@
-"""FMP Equity Valuation Multiples Fetcher."""
+"""FMP Equity Valuation Multiples Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat

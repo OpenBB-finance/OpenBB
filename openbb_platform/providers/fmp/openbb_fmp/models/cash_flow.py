@@ -1,4 +1,4 @@
-"""FMP Cash Flow Statement Fetcher."""
+"""FMP Cash Flow Statement Model."""
 
 
 from datetime import (

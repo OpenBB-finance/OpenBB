@@ -1,4 +1,4 @@
-"""CPI data and query params."""
+"""CPI Standard Model."""
 from datetime import date as dateType
 from typing import List, Literal, Optional
 
@@ -67,7 +67,7 @@ CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 
 
 class ConsumerPriceIndexQueryParams(QueryParams):
-    """CPI query."""
+    """CPI Query."""
 
     countries: List[CPI_COUNTRIES] = Field(
         description=QUERY_DESCRIPTIONS.get("countries")

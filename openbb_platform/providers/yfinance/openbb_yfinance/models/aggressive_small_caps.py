@@ -1,4 +1,5 @@
-"""Yahoo Finance aggressive small caps fetcher."""
+"""Yahoo Finance Aggressive Small Caps Model."""
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -13,14 +14,14 @@ from pydantic import Field
 
 
 class YFAggressiveSmallCapsQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance aggressive small caps QueryParams.
+    """Yahoo Finance Aggressive Small Caps Query.
 
     Source: https://finance.yahoo.com/screener/predefined/aggressive_small_caps
     """
 
 
 class YFAggressiveSmallCapsData(EquityPerformanceData):
-    """YF asset performance aggressive small caps Data."""
+    """Yahoo Finance Aggressive Small Caps Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -49,7 +50,7 @@ class YFAggressiveSmallCapsData(EquityPerformanceData):
 class YFAggressiveSmallCapsFetcher(
     Fetcher[YFAggressiveSmallCapsQueryParams, List[YFAggressiveSmallCapsData]]
 ):
-    """YF asset performance aggressive small caps Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFAggressiveSmallCapsQueryParams:

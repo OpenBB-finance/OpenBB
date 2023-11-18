@@ -1,4 +1,4 @@
-"""Index Constituents data model."""
+"""Index Constituents Standard Model."""
 
 
 from datetime import date
