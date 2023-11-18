@@ -10,7 +10,6 @@ class Extensions(Container):
 Routers:
     /crypto
     /currency
-    /derivatives
     /economy
     /equity
     /etf
@@ -22,7 +21,6 @@ Routers:
 Extensions:
     - crypto@1.0.0b0
     - currency@1.0.0b0
-    - derivatives@1.0.0b0
     - economy@1.0.0b0
     - equity@1.0.0b0
     - etf@1.0.0b0
@@ -32,17 +30,12 @@ Extensions:
     - regulators@1.0.0b0
 
     - benzinga@1.0.0b0
-    - finra@1.0.0b0
     - fmp@1.0.0b0
     - fred@1.0.0b0
-    - government_us@1.0.0b0
     - intrinio@1.0.0b0
     - oecd@1.0.0b0
     - polygon@1.0.0b0
-    - sec@1.0.0b0
-    - tiingo@1.0.0b0
-    - tradingeconomics@1.0.0b0
-    - wsj@1.0.0b0    """
+    - sec@1.0.0b0    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
@@ -58,12 +51,6 @@ Extensions:
         from . import currency
 
         return currency.ROUTER_currency(command_runner=self._command_runner)
-
-    @property
-    def derivatives(self):  # route = "/derivatives"
-        from . import derivatives
-
-        return derivatives.ROUTER_derivatives(command_runner=self._command_runner)
 
     @property
     def economy(self):  # route = "/economy"

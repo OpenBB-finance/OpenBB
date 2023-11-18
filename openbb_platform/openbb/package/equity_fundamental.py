@@ -36,7 +36,6 @@ class ROUTER_equity_fundamental(Container):
     revenue_per_geography
     revenue_per_segment
     search_financial_attributes
-    trailing_dividend_yield
     transcript
     """
 
@@ -2701,69 +2700,6 @@ class ROUTER_equity_fundamental(Container):
 
         return self._run(
             "/equity/fundamental/search_financial_attributes",
-            **inputs,
-        )
-
-    @validate
-    def trailing_dividend_yield(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ] = None,
-        provider: Optional[Literal["tiingo"]] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Trailing 1yr dividend yield.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['tiingo']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tiingo' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[TrailingDividendYield]
-                Serializable results.
-            provider : Optional[Literal['tiingo']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        TrailingDividendYield
-        ---------------------
-        date : date
-            The date of the data.
-        trailing_dividend_yield : float
-            Trailing dividend yield.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.equity.fundamental.trailing_dividend_yield()
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/equity/fundamental/trailing_dividend_yield",
             **inputs,
         )
 

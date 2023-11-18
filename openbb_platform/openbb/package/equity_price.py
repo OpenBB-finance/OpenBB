@@ -46,7 +46,7 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Equity Historical price. Load stock data for a specific ticker.
@@ -61,7 +61,7 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -85,7 +85,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -113,7 +113,7 @@ class ROUTER_equity_price(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp); Adjusted closing price during the period. (provider: intrinio); Adjusted closing price during the period. (provider: tiingo)
+            Adjusted Close Price of the symbol. (provider: fmp); Adjusted closing price during the period. (provider: intrinio)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -131,19 +131,19 @@ class ROUTER_equity_price(Container):
         intra_period : Optional[bool]
             If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
         adj_open : Optional[float]
-            Adjusted open price during the period. (provider: intrinio, tiingo)
+            Adjusted open price during the period. (provider: intrinio)
         adj_high : Optional[float]
-            Adjusted high price during the period. (provider: intrinio, tiingo)
+            Adjusted high price during the period. (provider: intrinio)
         adj_low : Optional[float]
-            Adjusted low price during the period. (provider: intrinio, tiingo)
+            Adjusted low price during the period. (provider: intrinio)
         adj_volume : Optional[float]
-            Adjusted volume during the period. (provider: intrinio, tiingo)
+            Adjusted volume during the period. (provider: intrinio)
         factor : Optional[float]
             factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
         split_ratio : Optional[float]
-            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo)
+            Ratio of the equity split, if a equity split occurred. (provider: intrinio)
         dividend : Optional[float]
-            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo)
+            Dividend amount, if a dividend was paid. (provider: intrinio)
         percent_change : Optional[float]
             Percent change in the price of the symbol from the previous day. (provider: intrinio)
         fifty_two_week_high : Optional[float]

@@ -14,7 +14,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
     holdings
     holdings_date
     holdings_performance
@@ -87,12 +86,6 @@ class ROUTER_etf(Container):
             "/etf/countries",
             **inputs,
         )
-
-    @property
-    def discovery(self):  # route = "/etf/discovery"
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def holdings(

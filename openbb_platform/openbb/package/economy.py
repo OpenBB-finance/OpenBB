@@ -38,7 +38,7 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Economic Calendar.
@@ -49,23 +49,17 @@ class ROUTER_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'tradingeconomics']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[str, List[str]]]
-            Country of the event (provider: tradingeconomics)
-        importance : Literal['Low', 'Medium', 'High']
-            Importance of the event. (provider: tradingeconomics)
-        group : Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
-            Grouping of events (provider: tradingeconomics)
 
         Returns
         -------
         OBBject
             results : List[EconomicCalendar]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tradingeconomics']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
