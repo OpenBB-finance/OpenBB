@@ -1,5 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
+import datetime
 from typing import List, Literal, Optional, Union
 
 from annotated_types import Ge
@@ -19,9 +20,10 @@ class ROUTER_equity_fundamental(Container):
     cash
     cash_growth
     dividends
-    earnings
     employee_count
     filings
+    financial_attributes
+    historical_eps
     historical_splits
     income
     income_growth
@@ -33,6 +35,7 @@ class ROUTER_equity_fundamental(Container):
     ratios
     revenue_per_geography
     revenue_per_segment
+    search_financial_attributes
     transcript
     """
 
@@ -805,90 +808,6 @@ class ROUTER_equity_fundamental(Container):
         )
 
     @validate
-    def earnings(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 50,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Historical Earnings for a given company.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        limit : Optional[int]
-            The number of data entries to return.
-        provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[CalendarEarnings]
-                Serializable results.
-            provider : Optional[Literal['fmp']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        CalendarEarnings
-        ----------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        date : date
-            The date of the data.
-        eps : Optional[float]
-            EPS of the earnings calendar.
-        eps_estimated : Optional[float]
-            Estimated EPS of the earnings calendar.
-        time : str
-            Time of the earnings calendar.
-        revenue : Optional[float]
-            Revenue of the earnings calendar.
-        revenue_estimated : Optional[float]
-            Estimated revenue of the earnings calendar.
-        updated_from_date : Optional[date]
-            Updated from date of the earnings calendar.
-        fiscal_date_ending : date
-            Fiscal date ending of the earnings calendar.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.equity.calendar.earnings(symbol="AAPL", limit=50)
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/equity/fundamental/earnings",
-            **inputs,
-        )
-
-    @validate
     def employee_count(
         self,
         symbol: Annotated[
@@ -1082,6 +1001,202 @@ class ROUTER_equity_fundamental(Container):
         )
 
     @validate
+    def financial_attributes(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        tag: Annotated[str, OpenBBCustomParameter(description=None)],
+        period: Annotated[
+            Optional[Literal["annual", "quarter"]],
+            OpenBBCustomParameter(description="Time period of the data to return."),
+        ] = "annual",
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 1000,
+        type: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Filter by type, when applicable."),
+        ] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        sort: Annotated[
+            Optional[Literal["asc", "desc"]],
+            OpenBBCustomParameter(description="Sort order."),
+        ] = "desc",
+        provider: Optional[Literal["intrinio"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Fetch the value of financial attributes for a selected company and fiscal period.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        tag : str
+            None
+        period : Optional[Literal['annual', 'quarter']]
+            Time period of the data to return.
+        limit : Optional[int]
+            The number of data entries to return.
+        type : Optional[str]
+            Filter by type, when applicable.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
+        sort : Optional[Literal['asc', 'desc']]
+            Sort order.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[FinancialAttributes]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        FinancialAttributes
+        -------------------
+        date : date
+            The date of the data.
+        value : Optional[float]
+            The value of the data.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.financial_attributes(symbol="AAPL", tag="TEST_STRING", period="annual", limit=1000, sort="desc")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "tag": tag,
+                "period": period,
+                "limit": limit,
+                "type": type,
+                "start_date": start_date,
+                "end_date": end_date,
+                "sort": sort,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/fundamental/financial_attributes",
+            **inputs,
+        )
+
+    @validate
+    def historical_eps(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Historical earnings-per-share for a given company.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        limit : Optional[int]
+            The number of data entries to return. (provider: fmp)
+
+        Returns
+        -------
+        OBBject
+            results : List[HistoricalEps]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        HistoricalEps
+        -------------
+        date : Optional[date]
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        announce_time : Optional[str]
+            Timing of the earnings announcement.
+        eps_actual : Optional[float]
+            Actual EPS from the earnings date.
+        eps_estimated : Optional[float]
+            Estimated EPS for the earnings date.
+        actual_eps : Optional[float]
+            The actual earnings per share announced. (provider: fmp)
+        revenue_estimated : Optional[float]
+            Estimated consensus revenue for the reporting period. (provider: fmp)
+        actual_revenue : Optional[float]
+            The actual reported revenue. (provider: fmp)
+        reporting_time : Optional[str]
+            The reporting time - e.g. after market close. (provider: fmp)
+        updated_at : Optional[date]
+            The date when the data was last updated. (provider: fmp)
+        period_ending : Optional[date]
+            The fiscal period end date. (provider: fmp)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.historical_eps(symbol="AAPL")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/fundamental/historical_eps",
+            **inputs,
+        )
+
+    @validate
     def historical_splits(
         self,
         symbol: Annotated[
@@ -1091,7 +1206,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Historical Stock Splits. Historical stock splits data.
+        """Historical Splits. Historical splits data.
 
         Parameters
         ----------
@@ -1105,7 +1220,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : List[HistoricalStockSplits]
+            results : List[HistoricalSplits]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1116,8 +1231,8 @@ class ROUTER_equity_fundamental(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        HistoricalStockSplits
-        ---------------------
+        HistoricalSplits
+        ----------------
         date : date
             The date of the data.
         label : str
@@ -1257,6 +1372,8 @@ class ROUTER_equity_fundamental(Container):
             Operating expenses.
         depreciation_and_amortization : Optional[Annotated[float, Strict(strict=True)]]
             Depreciation and amortization.
+        ebit : Optional[Annotated[float, Strict(strict=True)]]
+            Earnings before interest, and taxes.
         ebitda : Optional[Annotated[float, Strict(strict=True)]]
             Earnings before interest, taxes, depreciation and amortization.
         ebitda_ratio : Optional[float]
@@ -1355,7 +1472,7 @@ class ROUTER_equity_fundamental(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         period: Annotated[
-            Literal["annual", "quarter"],
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         provider: Optional[Literal["fmp"]] = None,
@@ -2154,7 +2271,7 @@ class ROUTER_equity_fundamental(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
+            Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
@@ -2496,6 +2613,93 @@ class ROUTER_equity_fundamental(Container):
 
         return self._run(
             "/equity/fundamental/revenue_per_segment",
+            **inputs,
+        )
+
+    @validate
+    def search_financial_attributes(
+        self,
+        query: Annotated[
+            str, OpenBBCustomParameter(description="Query to search for.")
+        ],
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 1000,
+        provider: Optional[Literal["intrinio"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Search financial attributes for financial statements.
+
+        Parameters
+        ----------
+        query : str
+            Query to search for.
+        limit : Optional[int]
+            The number of data entries to return.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SearchFinancialAttributes]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        SearchFinancialAttributes
+        -------------------------
+        id : str
+            ID of the financial attribute.
+        name : str
+            Name of the financial attribute.
+        tag : str
+            Tag of the financial attribute.
+        statement_code : str
+            Code of the financial statement.
+        statement_type : Optional[str]
+            Type of the financial statement.
+        parent_name : Optional[str]
+            Parent's name of the financial attribute.
+        sequence : Optional[int]
+            Sequence of the financial statement.
+        factor : Optional[str]
+            Unit of the financial attribute.
+        transaction : Optional[str]
+            Transaction type (credit/debit) of the financial attribute.
+        type : Optional[str]
+            Type of the financial attribute.
+        unit : Optional[str]
+            Unit of the financial attribute.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.search_financial_attributes(query="TEST_STRING", limit=1000)
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+                "limit": limit,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/fundamental/search_financial_attributes",
             **inputs,
         )
 
