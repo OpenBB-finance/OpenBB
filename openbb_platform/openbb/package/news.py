@@ -34,7 +34,9 @@ class ROUTER_news(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio", "polygon"]] = None,
+        provider: Optional[
+            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
+        ] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Company News. Get news for one or more companies.
@@ -45,7 +47,7 @@ class ROUTER_news(Container):
              Here it is a separated list of symbols.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiing...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -81,13 +83,15 @@ class ROUTER_news(Container):
             Page number of the results. Use in combination with limit. (provider: fmp)
         published_utc : Optional[str]
             Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
+        source : Optional[str]
+            A comma-separated list of the domains requested. (provider: tiingo)
 
         Returns
         -------
         OBBject
             results : List[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -121,13 +125,13 @@ class ROUTER_news(Container):
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
         tags : Optional[str]
-            Tags associated with the news. (provider: benzinga)
+            Tags associated with the news. (provider: benzinga, tiingo)
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
         symbol : Optional[str]
             Ticker of the fetched news. (provider: fmp)
         site : Optional[str]
-            Name of the news source. (provider: fmp)
+            Name of the news source. (provider: fmp, tiingo)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         image_url : Optional[str]
@@ -138,11 +142,17 @@ class ROUTER_news(Container):
             Publisher of the article. (provider: polygon)
         tickers : Optional[List[str]]
             Tickers covered in the article. (provider: polygon)
+        symbols : Optional[str]
+            Ticker tagged in the fetched news. (provider: tiingo)
+        article_id : Optional[int]
+            Unique ID of the news article. (provider: tiingo)
+        crawl_date : Optional[datetime]
+            Date the news article was crawled. (provider: tiingo)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.news(symbols="AAPL,MSFT", limit=20)
+        >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -170,16 +180,16 @@ class ROUTER_news(Container):
                 description="The number of data entries to return. Here its the no. of articles to return."
             ),
         ] = 20,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Global News. Global news data.
+        """World News. Global news data.
 
         Parameters
         ----------
         limit : int
             The number of data entries to return. Here its the no. of articles to return.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -211,13 +221,15 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        source : Optional[str]
+            A comma-separated list of the domains requested. (provider: tiingo)
 
         Returns
         -------
         OBBject
-            results : List[GlobalNews]
+            results : List[WorldNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -226,8 +238,8 @@ class ROUTER_news(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        GlobalNews
-        ----------
+        WorldNews
+        ---------
         date : datetime
             The date of the data. Here it is the published date of the news.
         title : str
@@ -249,13 +261,19 @@ class ROUTER_news(Container):
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
         tags : Optional[str]
-            Tags associated with the news. (provider: benzinga)
+            Tags associated with the news. (provider: benzinga, tiingo)
         updated : Optional[datetime]
-            None
+            Updated date of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp)
+            Site of the news. (provider: fmp); Name of the news source. (provider: tiingo)
         company : Optional[Dict[str, Any]]
             Company details related to the news article. (provider: intrinio)
+        symbols : Optional[str]
+            Ticker tagged in the fetched news. (provider: tiingo)
+        article_id : Optional[int]
+            Unique ID of the news article. (provider: tiingo)
+        crawl_date : Optional[datetime]
+            Date the news article was crawled. (provider: tiingo)
 
         Example
         -------
