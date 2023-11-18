@@ -1320,6 +1320,7 @@ def cones(
         "Yang-Zhang",
     ] = "STD",
     is_crypto: bool = False,
+    trading_periods: Optional[int] = None,
 ) -> OBBject[List[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 
@@ -1359,7 +1360,8 @@ def cones(
             It is a weighted average of the Rogers-Satchell volatility and the open-to-close volatility.
     is_crypto : bool, optional
         Whether the data is crypto or not. If True, volatility is calculated for 365 days instead of 252
-
+    trading_periods : Optional[int] [default: 252]
+        Number of trading periods in a year.
     Returns
     -------
     OBBject[List[Data]]
@@ -1376,7 +1378,12 @@ def cones(
 
     df = basemodel_to_df(data, index=index)
     df_cones = helpers.calculate_cones(
-        data=df, lower_q=lower_q, upper_q=upper_q, model=model, is_crypto=is_crypto
+        data=df,
+        lower_q=lower_q,
+        upper_q=upper_q,
+        model=model,
+        is_crypto=is_crypto,
+        trading_periods=trading_periods,
     )
 
     results = df_to_basemodel(df_cones)
