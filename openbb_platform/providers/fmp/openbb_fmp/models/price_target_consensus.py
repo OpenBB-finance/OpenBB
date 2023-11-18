@@ -1,5 +1,4 @@
-"""FMP Price Target Consensus fetcher."""
-
+"""FMP Price Target Consensus Model."""
 
 from typing import Any, Dict, Optional
 

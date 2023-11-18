@@ -1,4 +1,4 @@
-"""ESTR Data Model."""
+"""ESTR Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class ESTRQueryParams(QueryParams):
 
 
 class ESTRData(Data):
-    """Return Treasury Rates Data."""
+    """ESTR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="ESTR rate.")

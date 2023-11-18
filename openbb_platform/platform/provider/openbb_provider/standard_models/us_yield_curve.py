@@ -1,5 +1,4 @@
-"""Treasury Rates Data Model."""
-
+"""US Yield Curve Standard Model."""
 
 from datetime import date as dateType
 from typing import Optional
@@ -12,7 +11,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class USYieldCurveQueryParams(QueryParams):
-    """Treasury Rates Query."""
+    """US Yield Curve Query."""
 
     date: Optional[dateType] = Field(
         default=None,
@@ -25,7 +24,7 @@ class USYieldCurveQueryParams(QueryParams):
 
 
 class USYieldCurveData(Data):
-    """Return Treasury Rates Data."""
+    """US Yield Curve Data."""
 
     maturity: float = Field(description="Maturity of the treasury rate in years.")
     rate: float = Field(

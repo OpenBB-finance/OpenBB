@@ -1,4 +1,4 @@
-"""European Index Constituents data model."""
+"""European Index Constituents Standard Model."""
 
 
 from typing import List, Set, Union
@@ -24,7 +24,7 @@ class EuropeanIndexConstituentsQueryParams(QueryParams):
 
 
 class EuropeanIndexConstituentsData(Data):
-    """European Index Constituents data."""
+    """European Index Constituents Data."""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", "")

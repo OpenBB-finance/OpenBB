@@ -1,4 +1,4 @@
-"""Market Snapshots  data model."""
+"""Market Snapshots Standard Model."""
 
 from typing import Optional
 
@@ -10,11 +10,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class MarketSnapshotsQueryParams(QueryParams):
-    """Market Snapshots Query Params"""
+    """Market Snapshots Query."""
 
 
 class MarketSnapshotsData(Data):
-    """Market Snapshots Data"""
+    """Market Snapshots Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
 

@@ -1,4 +1,5 @@
-"""Yahoo Finance undervalued growth equities fetcher."""
+"""Yahoo Finance Asset Undervalued Growth Tech Equities Model."""
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -13,14 +14,14 @@ from pydantic import Field
 
 
 class YFUndervaluedGrowthEquitiesQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance undervalued growth equities QueryParams.
+    """Yahoo Finance Asset Undervalued Growth Tech Equities Query.
 
     Source: https://finance.yahoo.com/screener/predefined/undervalued_growth_stocks
     """
 
 
 class YFUndervaluedGrowthEquitiesData(EquityPerformanceData):
-    """YF asset performance undervalued growth equities Data."""
+    """Yahoo Finance Asset Undervalued Growth Tech Equities Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -51,7 +52,7 @@ class YFUndervaluedGrowthEquitiesFetcher(
         YFUndervaluedGrowthEquitiesQueryParams, List[YFUndervaluedGrowthEquitiesData]
     ]
 ):
-    """YF asset performance undervalued growth equities Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(

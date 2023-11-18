@@ -1,4 +1,4 @@
-"""FED Data Model."""
+"""FED Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class FEDQueryParams(QueryParams):
 
 
 class FEDData(Data):
-    """Return Treasury Rates Data."""
+    """FED Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="FED rate.")

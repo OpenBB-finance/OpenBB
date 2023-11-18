@@ -1,4 +1,4 @@
-"""CBOE Index Search fetcher."""
+"""CBOE Index Search Model."""
 
 from datetime import time
 from typing import Any, Dict, List, Optional
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class CboeIndexSearchQueryParams(IndexSearchQueryParams):
-    """CBOE Index Search query.  Search the CBOE company directory by name or ticker.
+    """CBOE Index Search Query.
 
     Source: https://www.cboe.com/
     """
@@ -25,7 +25,7 @@ class CboeIndexSearchQueryParams(IndexSearchQueryParams):
 
 
 class CboeIndexSearchData(IndexSearchData):
-    """CBOE Company Search Data."""
+    """CBOE Index Search Data."""
 
     isin: Optional[str] = Field(
         description="ISIN code for the index. Valid only for European indices.",

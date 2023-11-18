@@ -1,4 +1,4 @@
-"""ESG Risk Rating data model."""
+"""ESG Risk Rating Standard Model."""
 
 
 from typing import List, Literal, Set, Union
@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class ESGRiskRatingQueryParams(QueryParams):
-    """ESG risk rating query model."""
+    """ESG Risk Rating Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -24,7 +24,7 @@ class ESGRiskRatingQueryParams(QueryParams):
 
 
 class ESGRiskRatingData(Data):
-    """ESG Risk Rating data."""
+    """ESG Risk Rating Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description="CIK of the company.")

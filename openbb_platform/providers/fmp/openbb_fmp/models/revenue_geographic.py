@@ -1,5 +1,4 @@
-"""FMP Revenue Geographic Fetcher."""
-
+"""FMP Revenue Geographic Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -14,7 +13,7 @@ from pydantic import field_validator
 
 
 class FMPRevenueGeographicQueryParams(RevenueGeographicQueryParams):
-    """FMP Revenue Geographic QueryParams.
+    """FMP Revenue Geographic Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/revenue-geographic-by-segments-api/
     """

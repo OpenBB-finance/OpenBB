@@ -1,4 +1,4 @@
-"""Industry P/E Ratio data model."""
+"""Industry P/E Ratio Standard Model."""
 
 from datetime import date as dateType
 from typing import Optional
@@ -11,11 +11,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class IndustryPEQueryParams(QueryParams):
-    """Industry Price to Earnings Ratio Query."""
+    """Industry P/E Ratio Query."""
 
 
 class IndustryPEData(Data):
-    """Industry Price to Earnings Ratio Data."""
+    """Industry P/E Ratio Data."""
 
     date: Optional[dateType] = Field(
         description=DATA_DESCRIPTIONS.get("date", ""), default=None

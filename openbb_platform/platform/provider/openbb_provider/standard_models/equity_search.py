@@ -1,4 +1,4 @@
-"""Equity Search  data model."""
+"""Equity Search Standard Model."""
 
 from typing import List, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EquitySearchQueryParams(QueryParams):
-    """Company Search Query Params."""
+    """Equity Search Query."""
 
     query: str = Field(description="Search query.", default="")
     is_symbol: bool = Field(
@@ -19,7 +19,7 @@ class EquitySearchQueryParams(QueryParams):
 
 
 class EquitySearchData(Data):
-    """Company Search Data."""
+    """Equity Search Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name of the company.")

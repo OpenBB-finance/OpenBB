@@ -1,4 +1,4 @@
-"""FMP Market Snapshots fetcher."""
+"""FMP Market Snapshots Model."""
 
 from typing import Any, Dict, List, Optional, Union
 

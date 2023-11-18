@@ -1,4 +1,4 @@
-"""Equity Fails to Deliver Data Model."""
+"""Equity FTD Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EquityFtdQueryParams(QueryParams):
-    """Equity FTD Query Params."""
+    """Equity FTD Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 

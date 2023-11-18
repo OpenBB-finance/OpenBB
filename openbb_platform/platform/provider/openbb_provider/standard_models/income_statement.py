@@ -1,4 +1,4 @@
-"""Income Statement Data Model."""
+"""Income Statement Standard Model."""
 
 
 from datetime import date as dateType

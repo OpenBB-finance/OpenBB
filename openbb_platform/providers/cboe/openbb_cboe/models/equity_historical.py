@@ -1,4 +1,4 @@
-"""CBOE Equity Historical Price."""
+"""CBOE Equity Historical Price Model."""
 
 
 from datetime import datetime, timedelta
@@ -56,7 +56,7 @@ class CboeEquityHistoricalFetcher(
         List[CboeEquityHistoricalData],
     ]
 ):
-    """CBOE Historical Price Fetcher."""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeEquityHistoricalQueryParams:

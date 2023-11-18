@@ -1,4 +1,4 @@
-"""Calendar Splits data model."""
+"""Calendar Splits Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class CalendarSplitsQueryParams(QueryParams):
-    """Calendar Splits query model."""
+    """Calendar Splits Query."""
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", ""), default=None
@@ -23,7 +23,7 @@ class CalendarSplitsQueryParams(QueryParams):
 
 
 class CalendarSplitsData(Data):
-    """Calendar Splits data."""
+    """Calendar Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the stock splits.")

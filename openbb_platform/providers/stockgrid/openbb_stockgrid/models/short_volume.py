@@ -1,4 +1,5 @@
-"""Stockgrid Short Volume fetcher."""
+"""Stockgrid Short Volume Model."""
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -12,7 +13,10 @@ from pydantic import Field, field_validator
 
 
 class StockgridShortVolumeQueryParams(ShortVolumeQueryParams):
-    """Stockgrid Short Volume Query Params"""
+    """Stockgrid Short Volume Query.
+
+    Source: https://www.stockgrid.io/
+    """
 
 
 class StockgridShortVolumeData(ShortVolumeData):
@@ -37,7 +41,7 @@ class StockgridShortVolumeData(ShortVolumeData):
 class StockgridShortVolumeFetcher(
     Fetcher[StockgridShortVolumeQueryParams, List[StockgridShortVolumeData]]
 ):
-    """Stockgrid Short Volume Fetcher."""
+    """Transform the query, extract and transform the data from the Stockgrid endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> StockgridShortVolumeQueryParams:

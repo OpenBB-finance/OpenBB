@@ -1,4 +1,4 @@
-"""Intrinio IPO Calendar Fetcher."""
+"""Intrinio IPO Calendar Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
-    """Intrinio IPO Calendar QueryParams.
+    """Intrinio IPO Calendar Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_ipos_v2
     """
@@ -157,7 +157,7 @@ class IntrinioCalendarIpoData(CalendarIpoData):
 class IntrinioCalendarIpoFetcher(
     Fetcher[IntrinioCalendarIpoQueryParams, List[IntrinioCalendarIpoData]]
 ):
-    """Intrinio IPO Calendar Fetcher."""
+    """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioCalendarIpoQueryParams:

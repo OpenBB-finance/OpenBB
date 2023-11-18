@@ -1,4 +1,4 @@
-"""ETF performance data model."""
+"""ETF Performance Standard Model."""
 from datetime import date as dateType
 
 from pydantic import Field
@@ -9,7 +9,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class ETFPerformanceQueryParams(QueryParams):
-    """ETF Performance QueryParams."""
+    """ETF Performance Query."""
 
     sort: str = Field(
         default="desc",
@@ -22,7 +22,7 @@ class ETFPerformanceQueryParams(QueryParams):
 
 
 class ETFPerformanceData(Data):
-    """ETF performance data."""
+    """ETF Performance Data."""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),

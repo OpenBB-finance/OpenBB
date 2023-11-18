@@ -1,4 +1,4 @@
-"""Revenue by geographic segments data model."""
+"""Revenue by Geographic Segments Standard Model."""
 
 
 from datetime import date as dateType

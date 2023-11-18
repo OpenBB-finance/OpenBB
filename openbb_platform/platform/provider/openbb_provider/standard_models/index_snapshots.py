@@ -1,4 +1,4 @@
-"""Index Snapshots  data model."""
+"""Index Snapshots Standard Model."""
 
 from typing import Literal, Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class IndexSnapshotsQueryParams(QueryParams):
-    """Index Search Query Params."""
+    """Index Snapshots Query."""
 
     region: Optional[Literal["US", "EU"]] = Field(
         description="The region to return. Currently supports US and EU.", default="US"
@@ -18,7 +18,7 @@ class IndexSnapshotsQueryParams(QueryParams):
 
 
 class IndexSnapshotsData(Data):
-    """Index Snapshot Data."""
+    """Index Snapshots Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: Optional[str] = Field(default=None, description="Name of the index.")

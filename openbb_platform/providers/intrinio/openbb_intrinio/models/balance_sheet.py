@@ -1,4 +1,4 @@
-"""Intrinio Balance Sheet Fetcher."""
+"""Intrinio Balance Sheet Model."""
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -15,7 +15,7 @@ from pydantic import alias_generators
 
 
 class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
-    """Intrinio Balance Sheet QueryParams.
+    """Intrinio Balance Sheet Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2

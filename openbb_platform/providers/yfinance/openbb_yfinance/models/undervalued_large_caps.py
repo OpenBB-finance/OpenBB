@@ -1,4 +1,5 @@
-"""Yahoo Finance undervalued large caps fetcher."""
+"""Yahoo Finance Asset Undervalued Large Caps Model."""
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -14,14 +15,14 @@ from pydantic import Field
 
 
 class YFUndervaluedLargeCapsQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance undervalued large caps QueryParams.
+    """Yahoo Finance Asset Undervalued Large Caps Query.
 
     Source: https://finance.yahoo.com/screener/predefined/undervalued_large_caps
     """
 
 
 class YFUndervaluedLargeCapsData(EquityPerformanceData):
-    """YF asset performance undervalued large caps Data."""
+    """Yahoo Finance Asset Undervalued Large Caps Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -50,7 +51,7 @@ class YFUndervaluedLargeCapsData(EquityPerformanceData):
 class YFUndervaluedLargeCapsFetcher(
     Fetcher[YFUndervaluedLargeCapsQueryParams, List[YFUndervaluedLargeCapsData]]
 ):
-    """YF asset performance undervalued large caps Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFUndervaluedLargeCapsQueryParams:

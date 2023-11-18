@@ -1,1 +1,1 @@
-"""yfinance utils directory."""
+"""Intrinio utils directory."""

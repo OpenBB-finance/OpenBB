@@ -1,4 +1,4 @@
-"""Index Search  data model."""
+"""Index Search Standard Model."""
 
 from pydantic import Field
 
@@ -8,7 +8,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class IndexSearchQueryParams(QueryParams):
-    """Index Search Query Params."""
+    """Index Search Query."""
 
     query: str = Field(description="Search query.", default="")
     is_symbol: bool = Field(
@@ -17,7 +17,7 @@ class IndexSearchQueryParams(QueryParams):
 
 
 class IndexSearchData(Data):
-    """Company Search Data."""
+    """Index Search Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name of the index.")

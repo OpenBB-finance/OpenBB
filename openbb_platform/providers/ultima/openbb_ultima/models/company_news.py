@@ -1,4 +1,4 @@
-"""Ultima Company News Fetcher."""
+"""Ultima Company News Model."""
 
 
 from datetime import datetime
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class UltimaCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """Ultima Company News query.
+    """Ultima Company News Query.
 
     Source: https://api.ultimainsights.ai/v1/api-docs#/default/get_v1_getOpenBBProInsights__tickers_
     """
@@ -40,7 +40,7 @@ class UltimaCompanyNewsFetcher(
         List[UltimaCompanyNewsData],
     ]
 ):
-    """Ultima Company News Fetcher."""
+    """Transform the query, extract and transform the data from the Ultima endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> UltimaCompanyNewsQueryParams:

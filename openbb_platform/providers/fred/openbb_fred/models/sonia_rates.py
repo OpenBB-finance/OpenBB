@@ -1,5 +1,4 @@
-"""FRED SONIA Fetcher."""
-
+"""FRED SONIA Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -20,7 +19,7 @@ SONIA_PARAMETER_TO_FRED_ID = {
 
 
 class FREDSONIAQueryParams(SONIAQueryParams):
-    """SONIA query."""
+    """FRED SONIA Query."""
 
     parameter: Literal[
         "rate",
@@ -34,7 +33,7 @@ class FREDSONIAQueryParams(SONIAQueryParams):
 
 
 class FREDSONIAData(SONIAData):
-    """SONIA data."""
+    """FRED SONIA Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -51,7 +50,7 @@ class FREDSONIAData(SONIAData):
 class FREDSONIAFetcher(
     Fetcher[FREDSONIAQueryParams, List[Dict[str, List[FREDSONIAData]]]]
 ):
-    """FRED SONIA Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDSONIAData
 

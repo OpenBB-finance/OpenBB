@@ -1,4 +1,4 @@
-"""Intrinio Search Financial Attributes model."""
+"""Intrinio Search Financial Attributes Model."""
 
 from typing import Any, Dict, List, Optional
 

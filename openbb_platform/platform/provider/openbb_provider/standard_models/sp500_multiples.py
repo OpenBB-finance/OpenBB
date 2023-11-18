@@ -1,4 +1,4 @@
-"""SP500 Multiples  data model."""
+"""SP500 Multiples Standard Model."""
 
 from datetime import date as dateType
 from typing import Literal, Optional
@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class SP500MultiplesQueryParams(QueryParams):
-    """Gets historical S&P 500 levels, ratios, and multiples."""
+    """SP500 Multiples Query."""
 
     series_name: Literal[
         "Shiller PE Ratio by Month",

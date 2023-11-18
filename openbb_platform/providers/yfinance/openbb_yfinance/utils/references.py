@@ -1,4 +1,4 @@
-"""yfinance types helpers."""
+"""Yahoo Finance types helpers."""
 
 from typing import Literal
 

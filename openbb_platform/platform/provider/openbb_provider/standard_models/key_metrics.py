@@ -1,4 +1,4 @@
-"""Key Metrics Data Model."""
+"""Key Metrics Standard Model."""
 
 
 from datetime import date as dateType

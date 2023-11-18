@@ -1,4 +1,5 @@
-"""WSJ active fetcher."""
+"""WSJ Asset Performance Active Model."""
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -12,14 +13,14 @@ from pydantic import Field, field_validator
 
 
 class WSJActiveQueryParams(ETFPerformanceQueryParams):
-    """WSJ asset performance active QueryParams.
+    """WSJ Asset Performance Active Query.
 
     Source: https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers
     """
 
 
 class WSJActiveData(ETFPerformanceData):
-    """WSJ asset performance active Data."""
+    """WSJ Asset Performance Active Data."""
 
     __alias_dict__ = {
         "symbol": "ticker",
@@ -61,7 +62,7 @@ class WSJActiveData(ETFPerformanceData):
 
 
 class WSJActiveFetcher(Fetcher[WSJActiveQueryParams, List[WSJActiveData]]):
-    """WSJ asset performance active Fetcher."""
+    """Transform the query, extract and transform the data from the WSJ endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> WSJActiveQueryParams:

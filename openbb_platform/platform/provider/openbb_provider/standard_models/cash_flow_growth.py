@@ -1,4 +1,4 @@
-"""Cash Flow Statement Growth Data Model."""
+"""Cash Flow Statement Growth Standard Model."""
 
 
 from datetime import date as dateType
