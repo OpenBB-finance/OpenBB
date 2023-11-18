@@ -1,4 +1,4 @@
-"""Euro Area Yield Curve Data Model."""
+"""Euro Area Yield Curve Standard Model."""
 
 
 from datetime import date as dateType
@@ -26,7 +26,7 @@ class EUYieldCurveQueryParams(QueryParams):
 
 
 class EUYieldCurveData(Data):
-    """Euro Area Yield Curve  Data."""
+    """Euro Area Yield Curve Data."""
 
     maturity: str = Field(description="Yield curve rate maturity.")
     rate: Optional[float] = Field(description="Yield curve rate.", default=None)

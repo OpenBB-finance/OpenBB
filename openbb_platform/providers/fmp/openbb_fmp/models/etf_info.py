@@ -1,4 +1,4 @@
-"""FMP ETF Info fetcher."""
+"""FMP ETF Info Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -9,7 +9,7 @@ from pydantic import Field
 
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
-    """FMP ETF Info Query Params."""
+    """FMP ETF Info Query."""
 
 
 class FMPEtfInfoData(EtfInfoData):

@@ -1,4 +1,4 @@
-"""FED Data Model."""
+"""PROJECTION Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,11 +12,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class PROJECTIONQueryParams(QueryParams):
-    """FED Query."""
+    """PROJECTION Query."""
 
 
 class PROJECTIONData(Data):
-    """Return Treasury Rates Data."""
+    """PROJECTION Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     range_high: Optional[float] = Field(description="High projection of rates.")

@@ -1,4 +1,4 @@
-"""FMP Cryptos end of day fetcher."""
+"""FMP Cryptos Historical Price Model."""
 
 
 from datetime import datetime
@@ -17,7 +17,7 @@ from pydantic import Field, NonNegativeInt
 
 class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     # noqa: E501
-    """FMP Crypto end of day Query.
+    """FMP Crypto Historical Price Query.
 
     Source:
     https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api/#Historical-Daily-Prices
@@ -32,7 +32,7 @@ class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
 
 
 class FMPCryptoHistoricalData(CryptoHistoricalData):
-    """FMP Crypto end of day Data."""
+    """FMP Crypto Historical Price Data."""
 
     adj_close: Optional[float] = Field(
         default=None, description="Adjusted Close Price of the symbol."

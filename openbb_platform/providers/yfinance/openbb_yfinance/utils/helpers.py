@@ -1,4 +1,4 @@
-"""yfinance helpers module."""
+"""Yahoo Finance helpers module."""
 
 from datetime import (
     date as dateType,

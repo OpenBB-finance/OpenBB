@@ -1,4 +1,4 @@
-"""Price target consensus data model."""
+"""Price Target Consensus Standard Model."""
 
 
 from typing import List, Optional, Set, Union
@@ -24,7 +24,7 @@ class PriceTargetConsensusQueryParams(QueryParams):
 
 
 class PriceTargetConsensusData(Data):
-    """Price target consensus Data."""
+    """Price Target Consensus Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     target_high: Optional[float] = Field(

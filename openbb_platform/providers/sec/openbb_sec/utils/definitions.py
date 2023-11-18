@@ -1,4 +1,4 @@
-"""SEC Definitions and Models"""
+"""SEC Definitions and Models."""
 
 from typing import Dict, Literal
 

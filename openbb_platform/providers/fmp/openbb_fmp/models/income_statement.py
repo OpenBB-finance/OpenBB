@@ -1,5 +1,4 @@
-"""FMP Income Statement Fetcher."""
-
+"""FMP Income Statement Model."""
 
 from datetime import (
     date as dateType,
@@ -19,7 +18,7 @@ PeriodType = Literal["annual", "quarter"]
 
 
 class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
-    """FMP Income Statement QueryParams.
+    """FMP Income Statement Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """

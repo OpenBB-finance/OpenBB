@@ -1,4 +1,4 @@
-"""Nominal GDP data model."""
+"""Nominal GDP Standard Model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class GdpNominalQueryParams(QueryParams):
-    """Nominal GDP query."""
+    """Nominal GDP Query."""
 
     units: Literal["usd", "usd_cap"] = Field(
         default="usd",
@@ -26,7 +26,7 @@ class GdpNominalQueryParams(QueryParams):
 
 
 class GdpNominalData(Data):
-    """Nominal GDP data."""
+    """Nominal GDP Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")

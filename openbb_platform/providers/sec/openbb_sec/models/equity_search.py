@@ -1,5 +1,4 @@
-"""SEC Company Search fetcher."""
-
+"""SEC Equity Search Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -17,7 +16,7 @@ from pydantic import Field
 
 
 class SecEquitySearchQueryParams(EquitySearchQueryParams):
-    """SEC Company or Institution Search query.  This function assists with mapping the CIK number to a company.
+    """SEC Equity Search Query.
 
     Source: https://sec.gov/
     """
@@ -33,7 +32,7 @@ class SecEquitySearchQueryParams(EquitySearchQueryParams):
 
 
 class SecEquitySearchData(EquitySearchData):
-    """SEC Company Search Data."""
+    """SEC Equity Search Data."""
 
     name: Optional[str] = Field(default=None)
     cik: str = Field(description="Central Index Key")
@@ -45,7 +44,7 @@ class SecEquitySearchFetcher(
         List[SecEquitySearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEquitySearchQueryParams:

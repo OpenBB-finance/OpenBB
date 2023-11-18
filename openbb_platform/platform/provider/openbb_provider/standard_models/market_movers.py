@@ -1,4 +1,4 @@
-"""Market Movers data model.  Base model for market gainers/losers/most active."""
+"""Market Movers Standard Model."""
 
 from typing import Optional
 

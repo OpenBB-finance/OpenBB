@@ -1,4 +1,4 @@
-"""Available Indices fetcher for CBOE"""
+"""CBOE Available Indices Model."""
 
 from datetime import time
 from typing import Any, Dict, List, Optional
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
-    """CBOE Available Indices query.
+    """CBOE Available Indices Query.
 
     Source: https://www.cboe.com/europe/indices/
     """
@@ -24,7 +24,7 @@ class CboeAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 
 
 class CboeAvailableIndicesData(AvailableIndicesData):
-    """CBOE Available Indices data.
+    """CBOE Available Indices Data.
 
     Source: https://www.cboe.com/europe/indices/
     """

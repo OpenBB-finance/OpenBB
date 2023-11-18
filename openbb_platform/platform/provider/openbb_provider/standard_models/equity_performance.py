@@ -1,4 +1,4 @@
-"""Equity performance data model."""
+"""Equity Performance Standard Model."""
 
 from pydantic import Field
 
@@ -8,7 +8,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EquityPerformanceQueryParams(QueryParams):
-    """Equity Performance QueryParams."""
+    """Equity Performance Query."""
 
     sort: str = Field(
         default="desc",
@@ -17,7 +17,7 @@ class EquityPerformanceQueryParams(QueryParams):
 
 
 class EquityPerformanceData(Data):
-    """Equity performance data."""
+    """Equity Performance Data."""
 
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),

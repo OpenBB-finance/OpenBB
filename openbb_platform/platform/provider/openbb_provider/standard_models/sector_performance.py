@@ -1,4 +1,4 @@
-"""Sector Performance data model."""
+"""Sector Performance Standard Model."""
 
 from pydantic import Field
 

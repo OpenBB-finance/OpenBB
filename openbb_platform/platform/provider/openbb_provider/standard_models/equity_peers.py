@@ -1,4 +1,4 @@
-"""Equity Peers data model."""
+"""Equity Peers Standard Model."""
 
 from typing import List, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class EquityPeersQueryParams(QueryParams):
-    """Equity Peers query model."""
+    """Equity Peers Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -24,7 +24,7 @@ class EquityPeersQueryParams(QueryParams):
 
 
 class EquityPeersData(Data):
-    """Equity Peers data."""
+    """Equity Peers Data."""
 
     peers_list: List[str] = Field(
         default_factory=list,

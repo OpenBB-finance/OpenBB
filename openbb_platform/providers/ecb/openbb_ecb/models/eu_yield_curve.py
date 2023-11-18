@@ -1,4 +1,4 @@
-"""ECBEUYieldCurve Fetcher."""
+"""Euro Area Yield Curve Model."""
 
 
 from datetime import datetime, timedelta
@@ -14,7 +14,7 @@ from pydantic import Field, field_validator
 
 
 class ECBEUYieldCurveQueryParams(EUYieldCurveQueryParams):
-    """ECBEUYieldCurve Query."""
+    """Euro Area Yield Curve Query."""
 
     rating: Literal["A", "C"] = Field(
         default="A",
@@ -23,7 +23,7 @@ class ECBEUYieldCurveQueryParams(EUYieldCurveQueryParams):
 
 
 class ECBEUYieldCurveData(EUYieldCurveData):
-    """ECBEUYieldCurve Data."""
+    """Euro Area Yield Curve Data."""
 
     __alias_dict__ = {
         "rate": "OBS",
@@ -45,7 +45,7 @@ class ECBEUYieldCurveFetcher(
         List[ECBEUYieldCurveData],
     ]
 ):
-    """ECBEUYieldCurve Fetcher."""
+    """Transform the query, extract and transform the data from the ECB endpoints."""
 
     data_type = ECBEUYieldCurveData
 

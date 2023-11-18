@@ -13,7 +13,10 @@ from pydantic import Field
 
 
 class SecEquityFtdQueryParams(EquityFtdQueryParams):
-    """SEC Equity FTD Query Params."""
+    """SEC Equity FTD Query.
+
+    Source: https://sec.gov/
+    """
 
     limit: Optional[int] = Field(
         description="""
@@ -31,7 +34,7 @@ class SecEquityFtdQueryParams(EquityFtdQueryParams):
 
 
 class SecEquityFtdData(EquityFtdData):
-    """SEC FTD Data."""
+    """SEC Equity FTD Data."""
 
 
 class SecEquityFtdFetcher(
@@ -40,7 +43,7 @@ class SecEquityFtdFetcher(
         List[SecEquityFtdData],
     ]
 ):
-    """SEC FTD Fetcher."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecEquityFtdQueryParams:

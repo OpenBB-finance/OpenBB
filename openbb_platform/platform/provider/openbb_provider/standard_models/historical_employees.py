@@ -1,4 +1,4 @@
-"""Historical Employees data model."""
+"""Historical Employees Standard Model."""
 
 from datetime import date, datetime
 from typing import List, Set, Union

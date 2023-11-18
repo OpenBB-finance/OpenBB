@@ -1,5 +1,4 @@
-"""FMP Share Statistics Fetcher."""
-
+"""FMP Share Statistics Model."""
 
 from datetime import (
     date as dateType,
@@ -17,7 +16,7 @@ from pydantic import field_validator
 
 
 class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
-    """FMP Income Statement QueryParams.
+    """FMP Share Statistics Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/shares-float-api/
     """

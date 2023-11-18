@@ -1,4 +1,4 @@
-"""AMERIBOR Data Model."""
+"""AMERIBOR Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class AMERIBORQueryParams(QueryParams):
 
 
 class AMERIBORData(Data):
-    """Return Treasury Rates Data."""
+    """AMERIBOR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="AMERIBOR rate.")

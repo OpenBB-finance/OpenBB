@@ -1,5 +1,4 @@
-"""FRED SOFR Fetcher."""
-
+"""FRED SOFR Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -18,7 +17,7 @@ SOFR_PARAMETER_TO_FRED_ID = {
 
 
 class FREDSOFRQueryParams(SOFRQueryParams):
-    """SOFR query."""
+    """FRED SOFR Query."""
 
     period: Literal["overnight", "30_day", "90_day", "180_day", "index"] = Field(
         default="overnight", description="Period of SOFR rate."
@@ -26,7 +25,7 @@ class FREDSOFRQueryParams(SOFRQueryParams):
 
 
 class FREDSOFRData(SOFRData):
-    """SOFR data."""
+    """FRED SOFR Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -43,7 +42,7 @@ class FREDSOFRData(SOFRData):
 class FREDSOFRFetcher(
     Fetcher[FREDSOFRQueryParams, List[Dict[str, List[FREDSOFRData]]]]
 ):
-    """FRED SOFR Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDSOFRData
 

@@ -1,4 +1,4 @@
-"""Share Statistics Data Model."""
+"""Share Statistics Standard Model."""
 
 
 from datetime import date as dateType
@@ -26,7 +26,7 @@ class ShareStatisticsQueryParams(QueryParams):
 
 
 class ShareStatisticsData(Data):
-    """Return Share Statistics Data."""
+    """Share Statistics Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(

@@ -1,4 +1,4 @@
-"""European Indices Price data model."""
+"""European Indices Standard Model."""
 
 
 from datetime import (
@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EuropeanIndicesQueryParams(QueryParams):
-    """European Indices end of day Query."""
+    """European Indices Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[dateType] = Field(
@@ -35,7 +35,7 @@ class EuropeanIndicesQueryParams(QueryParams):
 
 
 class EuropeanIndicesData(Data):
-    """European Indices end of day price data."""
+    """European Indices Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))

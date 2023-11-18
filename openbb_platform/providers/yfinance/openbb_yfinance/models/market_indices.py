@@ -1,4 +1,4 @@
-"""yfinance Market Indices end of Day fetcher."""
+"""Yahoo Finance Market Indices Model."""
 # ruff: noqa: SIM105
 
 
@@ -21,7 +21,7 @@ from pydantic import Field
 
 
 class YFinanceMarketIndicesQueryParams(MarketIndicesQueryParams):
-    """YFinance Market Indices end of Day Query.
+    """YFinance Market Indices Query.
 
     Source: https://finance.yahoo.com/world-indices
     """
@@ -35,7 +35,7 @@ class YFinanceMarketIndicesQueryParams(MarketIndicesQueryParams):
 
 
 class YFinanceMarketIndicesData(MarketIndicesData):
-    """YFinance Market Indices end of Day Data."""
+    """YFinance Market Indices Data."""
 
 
 class YFinanceMarketIndicesFetcher(
@@ -44,7 +44,7 @@ class YFinanceMarketIndicesFetcher(
         List[YFinanceMarketIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceMarketIndicesQueryParams:
@@ -66,7 +66,7 @@ class YFinanceMarketIndicesFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         symbol = query.symbol.lower()
         indices = pd.DataFrame(INDICES).transpose().reset_index()
         indices.columns = ["code", "name", "symbol"]

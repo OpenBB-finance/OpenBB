@@ -1,4 +1,4 @@
-"""SEC Institutions Search"""
+"""SEC Institutions Search Model."""
 
 from typing import Any, Dict, List, Optional, Union
 
@@ -10,10 +10,9 @@ from pydantic import Field
 
 
 class SecInstitutionsSearchQueryParams(CotSearchQueryParams):
-    """
-    SEC Institutions query. This function assists with finding out the CIK number of a non-public company.
+    """SEC Institutions Search Query.
 
-    Fuzzy search can be applied to the name.
+    Source: https://sec.gov/
     """
 
     use_cache: bool = Field(
@@ -39,7 +38,7 @@ class SecInstitutionsSearchFetcher(
         List[SecInstitutionsSearchData],
     ]
 ):
-    """Transform the query, extract and transform the data from the SEC."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecInstitutionsSearchQueryParams:

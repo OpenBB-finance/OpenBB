@@ -1,4 +1,4 @@
-"""Equity Short Interest Data Model."""
+"""Equity Short Interest Standard Model."""
 
 
 from datetime import date as dateType
@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class ShortInterestQueryParams(QueryParams):
-    """Short Interest Query."""
+    """Equity Short Interest Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -20,7 +20,7 @@ class ShortInterestQueryParams(QueryParams):
 
 
 class ShortInterestData(Data):
-    """Return Short Interest Data."""
+    """Equity Short Interest Data."""
 
     settlement_date: dateType = Field(
         description=(

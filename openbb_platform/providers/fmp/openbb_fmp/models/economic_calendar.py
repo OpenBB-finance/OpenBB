@@ -1,4 +1,4 @@
-"""FMP Economics Earnings Calendar fetcher."""
+"""FMP Economic Calendar Model."""
 
 
 from datetime import datetime
@@ -86,7 +86,6 @@ class FMPEconomicCalendarFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the data from the FMP endpoint."""
-
         response = []
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

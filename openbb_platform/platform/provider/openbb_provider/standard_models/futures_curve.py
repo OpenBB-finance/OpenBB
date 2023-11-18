@@ -1,4 +1,4 @@
-"""Futures aggregate end of day price data model."""
+"""Futures Curve Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,7 +12,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class FuturesCurveQueryParams(QueryParams):
-    """Futures curve Query."""
+    """Futures Curve Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
@@ -29,7 +29,7 @@ class FuturesCurveQueryParams(QueryParams):
 
 
 class FuturesCurveData(Data):
-    """Futures curve Data."""
+    """Futures Curve Data."""
 
     expiration: str = Field(description="Futures expiration month.")
     price: Optional[float] = Field(

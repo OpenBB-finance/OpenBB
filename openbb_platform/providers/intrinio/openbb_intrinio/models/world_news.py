@@ -1,4 +1,4 @@
-"""Intrinio World News Fetcher."""
+"""Intrinio World News Model."""
 
 
 from datetime import datetime
@@ -42,7 +42,7 @@ class IntrinioWorldNewsFetcher(
         List[IntrinioWorldNewsData],
     ]
 ):
-    """Intrinio World News Fetcher."""
+    """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioWorldNewsQueryParams:

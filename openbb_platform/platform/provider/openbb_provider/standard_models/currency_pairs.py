@@ -1,4 +1,4 @@
-"""Currency available pairs data model."""
+"""Currency Available Pairs Standard Model."""
 
 
 from pydantic import Field
@@ -8,10 +8,10 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class CurrencyPairsQueryParams(QueryParams):
-    """Currency available pairs Query."""
+    """Currency Available Pairs Query."""
 
 
 class CurrencyPairsData(Data):
-    """Currency available pairs Data."""
+    """Currency Available Pairs Data."""
 
     name: str = Field(description="Name of the currency pair.")

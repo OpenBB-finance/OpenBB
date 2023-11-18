@@ -1,4 +1,4 @@
-"""FMP Earnings Call Transcript fetcher."""
+"""FMP Earnings Call Transcript Model."""
 
 
 from datetime import datetime
@@ -14,7 +14,7 @@ from pydantic import field_validator
 
 
 class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
-    """FMP Earnings Calendar Query.
+    """FMP Earnings Call Transcript Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """

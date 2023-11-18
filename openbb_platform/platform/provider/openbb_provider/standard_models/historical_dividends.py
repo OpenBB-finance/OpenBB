@@ -1,4 +1,4 @@
-"""Historical dividends data model."""
+"""Historical Dividends Standard Model."""
 
 
 from datetime import date as dateType
@@ -12,12 +12,12 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class HistoricalDividendsQueryParams(QueryParams):
-    """Historical dividends query."""
+    """Historical Dividends Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):  # pylint: disable=E0213
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()
@@ -25,7 +25,7 @@ class HistoricalDividendsQueryParams(QueryParams):
 
 
 class HistoricalDividendsData(Data):
-    """Historical dividends data."""
+    """Historical Dividends Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     label: str = Field(description="Label of the historical dividends.")

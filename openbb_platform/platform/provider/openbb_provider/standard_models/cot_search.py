@@ -1,4 +1,4 @@
-"""Commitment of Traders Reports Search  data model."""
+"""Commitment of Traders Reports Search Standard Model."""
 
 from typing import Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class CotSearchQueryParams(QueryParams):
-    """Commitment of Traders Reports Search Query Params."""
+    """Commitment of Traders Reports Search Query."""
 
     query: str = Field(description="Search query.", default="")
 

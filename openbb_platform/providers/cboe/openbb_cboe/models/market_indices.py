@@ -1,4 +1,4 @@
-"""CBOE Market Indices Fetcher."""
+"""CBOE Market Indices Model."""
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
