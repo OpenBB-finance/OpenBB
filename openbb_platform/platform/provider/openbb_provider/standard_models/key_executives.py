@@ -1,5 +1,4 @@
-"""Key Executives Data Model."""
-
+"""Key Executives Standard Model."""
 
 from typing import List, Optional, Set, Union
 

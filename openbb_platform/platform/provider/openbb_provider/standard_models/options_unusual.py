@@ -1,4 +1,4 @@
-"""Unusual Options data model."""
+"""Unusual Options Standard Model."""
 
 from typing import Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class OptionsUnusualQueryParams(QueryParams):
-    """Unusual Options Query Params"""
+    """Unusual Options Query."""
 
     symbol: Optional[str] = Field(
         default=None,

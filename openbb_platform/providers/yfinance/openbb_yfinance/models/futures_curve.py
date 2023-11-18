@@ -1,4 +1,4 @@
-"""yfinance Futures Price."""
+"""Yahoo Finance Futures Curve Model."""
 # ruff: noqa: SIM105
 
 from datetime import datetime
@@ -14,11 +14,14 @@ from openbb_yfinance.utils.helpers import get_futures_curve
 
 
 class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
-    """YFinance Futures Curve Query."""
+    """Yahoo Finance Futures Curve Query.
+
+    Source: https://finance.yahoo.com/crypto/
+    """
 
 
 class YFinanceFuturesCurveData(FuturesCurveData):
-    """YFinance Futures Price Data."""
+    """Yahoo Finance Futures Curve Data."""
 
     __alias_dict__ = {"price": "Last Price"}
 
@@ -29,7 +32,7 @@ class YFinanceFuturesCurveFetcher(
         List[YFinanceFuturesCurveData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesCurveQueryParams:
@@ -48,7 +51,7 @@ class YFinanceFuturesCurveFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
         if not data:

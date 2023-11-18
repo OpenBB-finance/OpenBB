@@ -1,4 +1,4 @@
-"""CBOE Futures Curve Fetcher."""
+"""CBOE Futures Curve Model."""
 
 # IMPORT STANDARD
 from typing import Any, Dict, List, Optional
@@ -31,6 +31,8 @@ class CboeFuturesCurveFetcher(
         List[CboeFuturesCurveData],
     ]
 ):
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeFuturesCurveQueryParams:
         return CboeFuturesCurveQueryParams(**params)

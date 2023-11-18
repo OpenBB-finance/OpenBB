@@ -1,5 +1,4 @@
-"""FMP Financial Ratios Fetcher."""
-
+"""FMP Financial Ratios Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -18,7 +17,7 @@ PeriodType = Literal["annual", "quarter"]
 
 
 class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
-    """FMP Financial Ratios QueryParams.
+    """FMP Financial Ratios Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
     """

@@ -1,4 +1,4 @@
-"""Short Volume data and query params."""
+"""Short Volume Standard Model."""
 from datetime import date as dateType
 from typing import Optional
 
@@ -10,13 +10,13 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class ShortVolumeQueryParams(QueryParams):
-    """Short Volume query."""
+    """Short Volume Query."""
 
     symbol: str = Field(default=None, description=QUERY_DESCRIPTIONS.get("symbol"))
 
 
 class ShortVolumeData(Data):
-    """Short Volume data."""
+    """Short Volume Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")

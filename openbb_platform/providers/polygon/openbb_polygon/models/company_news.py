@@ -1,4 +1,4 @@
-"""Polygon Company News."""
+"""Polygon Company News Model."""
 
 
 from typing import Any, Dict, List, Literal, Optional
@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """Polygon Company News query.
+    """Polygon Company News Query.
 
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
@@ -36,7 +36,7 @@ class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
 
 
 class PolygonPublisher(BaseModel):
-    """PolygonPublisher data model."""
+    """PolygonPublisher Data Model."""
 
     favicon_url: str = Field(description="Favicon URL.")
     homepage_url: str = Field(description="Homepage URL.")
@@ -45,7 +45,7 @@ class PolygonPublisher(BaseModel):
 
 
 class PolygonCompanyNewsData(CompanyNewsData):
-    """Source: https://polygon.io/docs/stocks/get_v2_reference_news."""
+    """Polygon Company News Data."""
 
     __alias_dict__ = {
         "url": "article_url",
@@ -70,7 +70,7 @@ class PolygonCompanyNewsFetcher(
         List[PolygonCompanyNewsData],
     ]
 ):
-    """Polygon Company News Fetcher."""
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCompanyNewsQueryParams:

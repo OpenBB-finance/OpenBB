@@ -1,4 +1,4 @@
-"""Top Retail standard model."""
+"""Top Retail Standard Model."""
 
 from datetime import date as DateType
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class TopRetailQueryParams(QueryParams):
-    """Top Retail Search Query Params."""
+    """Top Retail Search Query."""
 
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=5)
 

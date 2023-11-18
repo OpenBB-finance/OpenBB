@@ -1,5 +1,4 @@
-"""FRED PROJECTION Fetcher."""
-
+"""FRED PROJECTION Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -24,7 +23,7 @@ NAME_TO_ID_PROJECTION = {
 
 
 class FREDPROJECTIONQueryParams(PROJECTIONQueryParams):
-    """PROJECTION query."""
+    """FRED PROJECTION Query."""
 
     long_run: bool = Field(
         default=False, description="Flag to show long run projections"
@@ -32,13 +31,13 @@ class FREDPROJECTIONQueryParams(PROJECTIONQueryParams):
 
 
 class FREDPROJECTIONData(PROJECTIONData):
-    """PROJECTION data."""
+    """FRED PROJECTION Data."""
 
 
 class FREDPROJECTIONFetcher(
     Fetcher[FREDPROJECTIONQueryParams, List[Dict[str, List[FREDPROJECTIONData]]]]
 ):
-    """FRED PROJECTION Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDPROJECTIONData
 

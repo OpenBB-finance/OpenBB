@@ -1,4 +1,4 @@
-"""CBOE European Index Constituents Fetcher."""
+"""CBOE European Index Constituents Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

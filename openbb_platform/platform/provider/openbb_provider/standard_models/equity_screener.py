@@ -1,4 +1,4 @@
-"""Equity Screener  data model."""
+"""Equity Screener Standard Model."""
 
 from typing import List, Set, Union
 
@@ -10,11 +10,11 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class EquityScreenerQueryParams(QueryParams):
-    """Company Screener Query Params."""
+    """Equity Screener Query."""
 
 
 class EquityScreenerData(Data):
-    """Company Screener Data."""
+    """Equity Screener Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     name: str = Field(description="Name of the company.")

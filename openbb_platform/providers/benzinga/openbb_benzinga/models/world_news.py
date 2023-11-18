@@ -1,4 +1,4 @@
-"""Benzinga World News Fetcher."""
+"""Benzinga World News Model."""
 
 
 import math
@@ -126,7 +126,7 @@ class BenzingaWorldNewsFetcher(
         List[BenzingaWorldNewsData],
     ]
 ):
-    """Benzinga World News Fetcher."""
+    """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BenzingaWorldNewsQueryParams:

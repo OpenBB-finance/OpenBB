@@ -1,4 +1,4 @@
-"""ESG Score data model."""
+"""ESG Score Standard Model."""
 
 
 from datetime import (
@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class ESGScoreQueryParams(QueryParams):
-    """ESG score query model."""
+    """ESG Score Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -28,7 +28,7 @@ class ESGScoreQueryParams(QueryParams):
 
 
 class ESGScoreData(Data):
-    """ESG Score data."""
+    """ESG Score Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: str = Field(description="CIK of the company.")

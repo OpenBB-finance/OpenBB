@@ -1,4 +1,4 @@
-"""FMP Historical Dividends fetcher."""
+"""FMP Historical Dividends Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -11,14 +11,14 @@ from openbb_provider.standard_models.historical_dividends import (
 
 
 class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
-    """FMP Historical Dividends query.
+    """FMP Historical Dividends Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Dividends
     """
 
 
 class FMPHistoricalDividendsData(HistoricalDividendsData):
-    """FMP Historical Dividends data."""
+    """FMP Historical Dividends Data."""
 
 
 class FMPHistoricalDividendsFetcher(

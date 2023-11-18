@@ -1,4 +1,4 @@
-"""Recent Performance  data model."""
+"""Recent Performance Standard Model."""
 
 from typing import List, Optional, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class RecentPerformanceQueryParams(QueryParams):
-    """Recent Performance Query Params."""
+    """Recent Performance Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 

@@ -1,4 +1,4 @@
-"""OECD Real GDP Fetcher."""
+"""OECD Real GDP Model."""
 
 
 from datetime import date
@@ -14,7 +14,7 @@ RGDPCountriesLiteral = Literal[rgdp_countries]  # type: ignore
 
 
 class OECDGdpRealQueryParams(GdpRealQueryParams):
-    """OECD Real GDP query."""
+    """OECD Real GDP Query."""
 
     country: RGDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
@@ -22,7 +22,7 @@ class OECDGdpRealQueryParams(GdpRealQueryParams):
 
 
 class OECDGdpRealData(GdpRealData):
-    """OECD Real GDP data."""
+    """OECD Real GDP Data."""
 
     @field_validator("date", mode="before")
     @classmethod
@@ -43,7 +43,7 @@ class OECDGdpRealData(GdpRealData):
 
 
 class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]]):
-    """OECD Real GDP Fetcher."""
+    """Transform the query, extract and transform the data from the OECD endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> OECDGdpRealQueryParams:

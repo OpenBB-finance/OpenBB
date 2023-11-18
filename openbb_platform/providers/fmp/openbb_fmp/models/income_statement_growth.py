@@ -1,5 +1,4 @@
-"""FMP Income Statement Growth Fetcher."""
-
+"""FMP Income Statement Growth Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -14,7 +13,7 @@ from pydantic import field_validator
 
 
 class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
-    """FMP Income Statement Growth QueryParams.
+    """FMP Income Statement Growth Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """

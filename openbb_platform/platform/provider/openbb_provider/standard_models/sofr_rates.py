@@ -1,4 +1,4 @@
-"""SOFR Data Model."""
+"""SOFR Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class SOFRQueryParams(QueryParams):
 
 
 class SOFRData(Data):
-    """Return Treasury Rates Data."""
+    """SOFR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="SOFR rate.")

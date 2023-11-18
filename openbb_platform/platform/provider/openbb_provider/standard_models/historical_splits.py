@@ -1,4 +1,4 @@
-"""Historical Splits data model."""
+"""Historical Splits Standard Model."""
 
 
 from datetime import date as dateType

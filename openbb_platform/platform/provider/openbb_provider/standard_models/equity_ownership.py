@@ -1,4 +1,4 @@
-"""Equity Ownership data model."""
+"""Equity Ownership Standard Model."""
 
 
 from datetime import date as dateType

@@ -19,7 +19,7 @@ from pydantic import Field, field_validator
 
 
 class PolygonEquityNBBOQueryParams(EquityNBBOQueryParams):
-    """Polygon Equity NBBO query params.
+    """Polygon Equity NBBO Query.
 
     Source: https://polygon.io/docs/stocks/get_v3_quotes__stockticker
     """

@@ -1,4 +1,4 @@
-"""SEC Company Filings fetcher."""
+"""SEC Company Filings Model."""
 
 from datetime import (
     date as dateType,
@@ -26,7 +26,10 @@ sec_session_company_filings = requests_cache.CachedSession(
 
 
 class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
-    """SEC Company Filings Query Params."""
+    """SEC Company Filings Query.
+
+    Source: https://sec.gov/
+    """
 
     symbol: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -126,7 +129,7 @@ class SecCompanyFilingsData(CompanyFilingsData):
 class SecCompanyFilingsFetcher(
     Fetcher[SecCompanyFilingsQueryParams, List[SecCompanyFilingsData]]
 ):
-    """SEC Company Filings Fetcher."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> SecCompanyFilingsQueryParams:

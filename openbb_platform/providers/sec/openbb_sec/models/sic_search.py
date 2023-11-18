@@ -1,4 +1,5 @@
 """SEC Standard Industrial Classification Code (SIC) Model."""
+
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -11,11 +12,9 @@ from pydantic import Field
 
 
 class SecSicSearchQueryParams(CotSearchQueryParams):
-    """
-    Fuzzy search for Industry Titles, Reporting Office, and SIC Codes
+    """SEC Standard Industrial Classification Code (SIC) Query.
 
     Source: https://sec.gov/
-
     """
 
     use_cache: bool = Field(
@@ -25,9 +24,7 @@ class SecSicSearchQueryParams(CotSearchQueryParams):
 
 
 class SecSicSearchData(Data):
-    """
-    SEC Sector Industrial Code (SIC) Search Data.
-    """
+    """SEC Standard Industrial Classification Code (SIC) Data."""
 
     sic: int = Field(description="Sector Industrial Code (SIC)", alias="SIC Code")
     industry: str = Field(description="Industry title.", alias="Industry Title")
@@ -43,12 +40,13 @@ class SecSicSearchFetcher(
         List[SecSicSearchData],
     ]
 ):
-    """SEC Sector Industrial Code (SIC) Search Fetcher."""
+    """Transform the query, extract and transform the data from the SEC endpoints."""
 
     @staticmethod
     def transform_query(
         params: Dict[str, Any], **kwargs: Any
     ) -> SecSicSearchQueryParams:
+        """Transform the query."""
         return SecSicSearchQueryParams(**params)
 
     @staticmethod
@@ -58,7 +56,6 @@ class SecSicSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data from the SEC website table."""
-
         data = pd.DataFrame()
         results: List[Dict] = []
         url = (
@@ -88,4 +85,5 @@ class SecSicSearchFetcher(
 
     @staticmethod
     def transform_data(data: List[Dict], **kwargs: Any) -> List[SecSicSearchData]:
+        """Transform the data."""
         return [SecSicSearchData.model_validate(d) for d in data]

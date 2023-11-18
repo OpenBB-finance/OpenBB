@@ -1,4 +1,5 @@
-"""WSJ gainers fetcher."""
+"""WSJ Asset Performance Gainers Model."""
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -12,14 +13,14 @@ from pydantic import Field, field_validator
 
 
 class WSJGainersQueryParams(ETFPerformanceQueryParams):
-    """WSJ asset performance gainers QueryParams.
+    """WSJ Asset Performance Gainers Query.
 
     Source: https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers
     """
 
 
 class WSJGainersData(ETFPerformanceData):
-    """WSJ asset performance gainers Data."""
+    """WSJ Asset Performance Gainers Data."""
 
     __alias_dict__ = {
         "symbol": "ticker",
@@ -64,7 +65,7 @@ class WSJGainersData(ETFPerformanceData):
 
 
 class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
-    """WSJ asset performance gainers Fetcher."""
+    """Transform the query, extract and transform the data from the WSJ endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> WSJGainersQueryParams:

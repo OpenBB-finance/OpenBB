@@ -1,4 +1,4 @@
-"""ETF Countries data model."""
+"""ETF Countries Standard Model."""
 
 from typing import List, Set, Union
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
 class EtfCountriesQueryParams(QueryParams):
-    """ETF Countries Query Params."""
+    """ETF Countries Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 

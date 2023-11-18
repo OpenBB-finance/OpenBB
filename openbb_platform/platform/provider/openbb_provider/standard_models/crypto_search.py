@@ -1,4 +1,4 @@
-"""Crypto Search data model."""
+"""Crypto Search Standard Model."""
 
 from typing import Optional
 
@@ -10,7 +10,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS
 
 
 class CryptoSearchQueryParams(QueryParams):
-    """Crypto Search Query Params."""
+    """Crypto Search Query."""
 
     query: Optional[str] = Field(description="Search query.", default="")
 

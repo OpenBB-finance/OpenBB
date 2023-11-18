@@ -1,5 +1,4 @@
-"""Polygon currency end of day fetcher."""
-
+"""Polygon Currency Historical Price Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -16,7 +15,7 @@ from pydantic import Field, PositiveInt
 
 
 class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """Polygon currency end of day Query.
+    """Polygon Currency Historical Price Query.
 
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
     """
@@ -37,7 +36,7 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
 
 class PolygonCurrencyHistoricalData(CurrencyHistoricalData):
-    """Polygon currency end of day Data."""
+    """Polygon Currency Historical Price Data."""
 
     __alias_dict__ = {
         "date": "t",
@@ -62,7 +61,7 @@ class PolygonCurrencyHistoricalFetcher(
         List[PolygonCurrencyHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the polygon endpoints."""
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCurrencyHistoricalQueryParams:

@@ -1,4 +1,4 @@
-"""FMP Company News."""
+"""FMP Company News Model."""
 
 from typing import Any, Dict, List, Optional, Union
 
@@ -12,7 +12,7 @@ from pydantic import Field
 
 
 class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """FMP Company News query.
+    """FMP Company News Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
     """
@@ -25,7 +25,7 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
 
 
 class FMPCompanyNewsData(CompanyNewsData):
-    """FMP Company News data."""
+    """FMP Company News Data."""
 
     __alias_dict__ = {"date": "publishedDate"}
 

@@ -1,5 +1,4 @@
-"""FMP Executive Compensation Fetcher."""
-
+"""FMP Executive Compensation Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -11,8 +10,6 @@ from openbb_provider.standard_models.executive_compensation import (
     ExecutiveCompensationQueryParams,
 )
 from pydantic import field_validator
-
-# This endpoint is only provided by FMP and not by the other providers for now.
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):

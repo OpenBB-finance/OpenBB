@@ -1,5 +1,4 @@
-"""Market Indices aggregate end of day price data model."""
-
+"""Market Indices Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -16,7 +15,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class MarketIndicesQueryParams(QueryParams):
-    """Market Indices end of day Query."""
+    """Market Indices Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[dateType] = Field(
@@ -35,7 +34,7 @@ class MarketIndicesQueryParams(QueryParams):
 
 
 class MarketIndicesData(Data):
-    """Market Indices end of day price data."""
+    """Market Indices Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

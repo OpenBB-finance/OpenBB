@@ -1,5 +1,4 @@
-"""SpotRate Fetcher."""
-
+"""FRED Spot Rate Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -8,17 +7,17 @@ from openbb_fred.utils.fred_helpers import get_spot_series_id
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.spot import (
     SpotRateData,
-    SpotRateParams,
+    SpotRateQueryParams,
 )
 from pydantic import field_validator
 
 
-class FREDSpotRateParams(SpotRateParams):
-    """SpotRateParams Query."""
+class FREDSpotRateQueryParams(SpotRateQueryParams):
+    """FRED Spot Rate Query."""
 
 
 class FREDSpotRateData(SpotRateData):
-    """SpotRateParams Data."""
+    """FRED Spot Rate Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -34,22 +33,24 @@ class FREDSpotRateData(SpotRateData):
 
 class FREDSpotRateFetcher(
     Fetcher[
-        FREDSpotRateParams,
+        FREDSpotRateQueryParams,
         List[FREDSpotRateData],
     ]
 ):
-    """SpotRateParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDSpotRateData
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDSpotRateParams:
+    def transform_query(params: Dict[str, Any]) -> FREDSpotRateQueryParams:
         """Transform query."""
-        return FREDSpotRateParams(**params)
+        return FREDSpotRateQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDSpotRateParams, credentials: Optional[Dict[str, str]], **kwargs: Any
+        query: FREDSpotRateQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any
     ) -> list:
         """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
@@ -79,7 +80,7 @@ class FREDSpotRateFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDSpotRateParams, data: list, **kwargs: Any
+        query: FREDSpotRateQueryParams, data: list, **kwargs: Any
     ) -> List[FREDSpotRateData]:
         """Transform data."""
         return [FREDSpotRateData.model_validate(d) for d in data]

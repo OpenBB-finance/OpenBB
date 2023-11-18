@@ -1,5 +1,4 @@
-"""yfinance Company News."""
-
+"""Yahoo Finance Company News Model."""
 
 import json
 from datetime import datetime
@@ -59,7 +58,7 @@ class YFinanceCompanyNewsFetcher(
         List[YFinanceCompanyNewsData],
     ]
 ):
-    """YFinance Company News Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCompanyNewsQueryParams:

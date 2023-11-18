@@ -12,14 +12,14 @@ from pydantic import Field
 
 
 class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
-    """FMP Price Performance query.
+    """FMP Price Performance Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
 
 class FMPPricePerformanceData(RecentPerformanceData):
-    """FMP Price Performance data."""
+    """FMP Price Performance Data."""
 
     symbol: str = Field(description="The ticker symbol.")
 

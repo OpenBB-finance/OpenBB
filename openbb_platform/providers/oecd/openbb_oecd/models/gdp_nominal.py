@@ -1,4 +1,4 @@
-"""OECD Nominal GDP fetcher."""
+"""OECD Nominal GDP Model."""
 
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -16,7 +16,7 @@ GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
 class OECDGdpNominalQueryParams(GdpNominalQueryParams):
-    """OECD Nominal GDP query."""
+    """OECD Nominal GDP Query."""
 
     country: GDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
@@ -24,7 +24,7 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
 
 
 class OECDGdpNominalData(GdpNominalData):
-    """OECD Nominal GDP data."""
+    """OECD Nominal GDP Data."""
 
     @field_validator("date", mode="before")
     @classmethod
@@ -38,7 +38,7 @@ class OECDGdpNominalData(GdpNominalData):
 class OECDGdpNominalFetcher(
     Fetcher[OECDGdpNominalQueryParams, List[OECDGdpNominalData]]
 ):
-    """OECD Nominal GDP Fetcher."""
+    """Transform the query, extract and transform the data from the OECD endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> OECDGdpNominalQueryParams:

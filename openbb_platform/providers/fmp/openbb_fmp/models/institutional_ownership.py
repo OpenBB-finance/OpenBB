@@ -1,5 +1,4 @@
-"""FMP Institutional Ownership Fetcher."""
-
+"""FMP Institutional Ownership Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

@@ -1,4 +1,4 @@
-"""Intrinio FRED Indices data fetcher."""
+"""Intrinio FRED Indices Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional

@@ -66,10 +66,7 @@ async def symbol_map(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """
-    Get the ticker symbol corresponding to a company's CIK. Enter the CIK as a string, e.g. '0001067983'.
-    This function is not intended for funds.
-    """
+    """Get the ticker symbol corresponding to a company's CIK."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -80,10 +77,7 @@ async def rss_litigation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """
-    The RSS feed provides links to litigation releases concerning civil lawsuits brought
-    by the Commission in federal court.
-    """
+    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -96,14 +90,3 @@ async def sic_search(
 ) -> OBBject[BaseModel]:
     """Fuzzy search for Industry Titles, Reporting Office, and SIC Codes."""
     return await OBBject.from_query(Query(**locals()))
-
-
-# @router.command(model="NPort")
-# def peers(
-#    cc: CommandContext,
-#    provider_choices: ProviderChoices,
-#    standard_params: StandardParams,
-#    extra_params: ExtraParams,
-# ) -> OBBject[BaseModel]:
-#    """NPORT-P Filings from funds reporting to the SEC.."""
-#    return await OBBject.from_query(Query(**locals()))

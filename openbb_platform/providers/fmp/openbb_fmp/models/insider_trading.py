@@ -1,5 +1,4 @@
-"""FMP Insider Trading fetcher."""
-
+"""FMP Insider Trading Model."""
 
 from typing import Any, Dict, List, Optional
 

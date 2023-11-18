@@ -1,4 +1,4 @@
-"""Currency aggregate end of day price data model."""
+"""Currency Historical Price Standard Model."""
 
 
 from datetime import (
@@ -16,7 +16,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class CurrencyHistoricalQueryParams(QueryParams):
-    """Currency end of day Query."""
+    """Currency Historical Price Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
@@ -42,7 +42,7 @@ class CurrencyHistoricalQueryParams(QueryParams):
 
 
 class CurrencyHistoricalData(Data):
-    """Currency end of day price Data."""
+    """Currency Historical Price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))

@@ -1,4 +1,4 @@
-"""Executive Compensation Data Model."""
+"""Executive Compensation Standard Model."""
 
 
 from datetime import (
@@ -28,7 +28,7 @@ class ExecutiveCompensationQueryParams(QueryParams):
 
 
 class ExecutiveCompensationData(Data):
-    """Return Executive Compensation Data."""
+    """Executive Compensation Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(

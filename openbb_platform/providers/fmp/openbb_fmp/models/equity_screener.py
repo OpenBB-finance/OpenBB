@@ -1,4 +1,4 @@
-"""FMP Equity Screener fetcher."""
+"""FMP Equity Screener Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -14,7 +14,7 @@ from pydantic import Field
 
 
 class FMPEquityScreenerQueryParams(EquityScreenerQueryParams):
-    """FMP Equity Screener Query Params."""
+    """FMP Equity Screener Query."""
 
     __alias_dict__ = {
         "mktcap_min": "marketCapMoreThan",

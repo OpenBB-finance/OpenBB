@@ -260,10 +260,7 @@ class ROUTER_regulators_sec(Container):
     def rss_litigation(
         self, provider: Optional[Literal["sec"]] = None, **kwargs
     ) -> OBBject[List[Data]]:
-        """
-            The RSS feed provides links to litigation releases concerning civil lawsuits brought
-            by the Commission in federal court.
-
+        """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
         Parameters
         ----------
@@ -449,10 +446,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject[Data]:
-        """
-            Get the ticker symbol corresponding to a company's CIK. Enter the CIK as a string, e.g. '0001067983'.
-            This function is not intended for funds.
-
+        """Get the ticker symbol corresponding to a company's CIK.
 
         Parameters
         ----------

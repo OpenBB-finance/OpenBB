@@ -1,4 +1,4 @@
-"""Polygon crypto end of day fetcher."""
+"""Polygon Crypto Historical Price Model."""
 
 
 from datetime import datetime
@@ -16,7 +16,7 @@ from pydantic import Field, PositiveInt
 
 
 class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
-    """Polygon crypto end of day Query.
+    """Polygon Crypto Historical Price Query.
 
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
@@ -37,7 +37,7 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
 
 
 class PolygonCryptoHistoricalData(CryptoHistoricalData):
-    """Polygon crypto end of day Data."""
+    """Polygon Crypto Historical Price Data."""
 
     __alias_dict__ = {
         "date": "t",
@@ -62,8 +62,11 @@ class PolygonCryptoHistoricalFetcher(
         List[PolygonCryptoHistoricalData],
     ]
 ):
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
+        """Transform the query params."""
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -83,6 +86,7 @@ class PolygonCryptoHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> dict:
+        """Extract raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
@@ -104,4 +108,5 @@ class PolygonCryptoHistoricalFetcher(
     def transform_data(
         query: PolygonCryptoHistoricalQueryParams, data: dict, **kwargs: Any
     ) -> List[PolygonCryptoHistoricalData]:
+        """Transform the data."""
         return [PolygonCryptoHistoricalData.model_validate(d) for d in data]

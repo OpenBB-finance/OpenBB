@@ -1,5 +1,4 @@
-"""insider trading data model."""
-
+"""Insider Trading Standard Model."""
 
 from datetime import date, datetime, time
 from typing import List, Literal, Optional, Set, Union

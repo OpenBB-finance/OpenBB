@@ -1,4 +1,4 @@
-"""Alpha Vantage Equity Historical Price."""
+"""Alpha Vantage Equity Historical Price Model."""
 
 
 from datetime import datetime
@@ -131,7 +131,7 @@ class AVEquityHistoricalFetcher(
         List[AVEquityHistoricalData],
     ]
 ):
-    """Alpha Vantage Equity Historical Price Fetcher."""
+    """Transform the query, extract and transform the data from the AlphaVantage endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> AVEquityHistoricalQueryParams:

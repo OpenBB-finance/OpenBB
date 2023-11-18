@@ -1,41 +1,55 @@
 """FastAPI configuration settings model."""
-from functools import partial
 from typing import List
 
-from pydantic import Field
-
-from openbb_core.app.model.abstract.tagged import Tagged
-
-FrozenField = partial(Field, frozen=True)
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 
-class Cors(Tagged):
+class Cors(BaseModel):
     """Cors model for FastAPI configuration."""
 
-    allow_origins: List[str] = FrozenField(default_factory=lambda: ["*"])
-    allow_methods: List[str] = FrozenField(default_factory=lambda: ["*"])
-    allow_headers: List[str] = FrozenField(default_factory=lambda: ["*"])
+    model_config = ConfigDict(frozen=True)
+
+    allow_origins: List[str] = Field(default_factory=lambda: ["*"])
+    allow_methods: List[str] = Field(default_factory=lambda: ["*"])
+    allow_headers: List[str] = Field(default_factory=lambda: ["*"])
 
 
-class Servers(Tagged):
+class Servers(BaseModel):
     """Servers model for FastAPI configuration."""
 
-    url: str = FrozenField(default="http://localhost:8000")
-    description: str = FrozenField(default="Local OpenBB development server")
+    model_config = ConfigDict(frozen=True)
+
+    url: str = "http://localhost:8000"
+    description: str = "Local OpenBB development server"
 
 
-class FastAPISettings(Tagged):
+class FastAPISettings(BaseModel):
     """Settings model for FastAPI configuration."""
 
-    title: str = FrozenField(default="OpenBB Platform API")
-    description: str = FrozenField(default="This is the OpenBB Platform API.")
-    terms_of_service: str = FrozenField(default="http://example.com/terms/")
-    contact_name: str = FrozenField(default="OpenBB Team")
-    contact_url: str = FrozenField(default="https://openbb.co")
-    contact_email: str = FrozenField(default="hello@openbb.co")
-    license_name: str = FrozenField(default="MIT")
-    license_url: str = FrozenField(
-        default="https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE"
+    model_config = ConfigDict(frozen=True)
+
+    version: str = "1"
+    title: str = "OpenBB Platform API"
+    description: str = "This is the OpenBB Platform API."
+    terms_of_service: str = "http://example.com/terms/"
+    contact_name: str = "OpenBB Team"
+    contact_url: str = "https://openbb.co"
+    contact_email: str = "hello@openbb.co"
+    license_name: str = "MIT"
+    license_url: str = (
+        "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE"
     )
-    servers: List[Servers] = FrozenField(default_factory=lambda: [Servers()])
-    cors: Cors = FrozenField(default_factory=Cors)
+    servers: List[Servers] = Field(default_factory=lambda: [Servers()])
+    cors: Cors = Field(default_factory=Cors)
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def prefix(self) -> str:
+        """Return the API prefix."""
+        return f"/api/v{self.version}"
+
+    def __repr__(self) -> str:
+        """Return a string representation of the model."""
+        return f"{self.__class__.__name__}\n\n" + "\n".join(
+            f"{k}: {v}" for k, v in self.model_dump().items()
+        )

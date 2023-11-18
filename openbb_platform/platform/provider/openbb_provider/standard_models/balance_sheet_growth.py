@@ -1,4 +1,4 @@
-"""Balance Sheet Statement Growth Data Model."""
+"""Balance Sheet Statement Growth Standard Model."""
 
 
 from datetime import date as dateType

@@ -1,4 +1,4 @@
-"""ETF Holdings Date data model."""
+"""ETF Holdings Date Standard Model."""
 
 from datetime import date as dateType
 
@@ -10,12 +10,12 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EtfHoldingsDateQueryParams(QueryParams):
-    """ETF Holdings Query Params."""
+    """ETF Holdings Date Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
 
 
 class EtfHoldingsDateData(Data):
-    """ETF Holdings Data."""
+    """ETF Holdings Date Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))

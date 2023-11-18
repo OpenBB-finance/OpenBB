@@ -621,8 +621,9 @@ class DocstringGenerator:
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
-    ) -> Callable:
+    ) -> Optional[str]:
         """Generate the docstring for the function."""
+        doc = func.__doc__
         if model_name:
             params = cls.provider_interface.params.get(model_name, None)
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
@@ -635,7 +636,7 @@ class DocstringGenerator:
                 if hasattr(results_type, "results_type_repr"):
                     results_type = results_type.results_type_repr()
 
-                func.__doc__ = cls.generate_model_docstring(
+                return cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
@@ -643,8 +644,8 @@ class DocstringGenerator:
                     returns=returns,
                     results_type=results_type,
                 )
-
-        return func
+            return doc
+        return doc
 
 
 class MethodDefinition:
@@ -881,11 +882,12 @@ class MethodDefinition:
         model_name: Optional[str] = None,
     ):
         """Build the command method docstring."""
+        doc = func.__doc__
         if model_name:
-            func = DocstringGenerator.generate(
+            doc = DocstringGenerator.generate(
                 func=func, formatted_params=formatted_params, model_name=model_name
             )
-        code = f'        """{func.__doc__}"""  # noqa: E501\n\n' if func.__doc__ else ""
+        code = f'        """{doc}"""  # noqa: E501\n\n' if doc else ""
 
         return code
 

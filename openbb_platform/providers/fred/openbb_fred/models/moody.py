@@ -1,5 +1,4 @@
-"""Moody Corporate Bond Index Fetcher."""
-
+"""FRED Moody Corporate Bond Index Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -7,7 +6,7 @@ from openbb_fred.utils.fred_base import Fred
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.moody import (
     MoodyCorporateBondIndexData,
-    MoodyCorporateBondIndexParams,
+    MoodyCorporateBondIndexQueryParams,
 )
 from pydantic import Field, field_validator
 
@@ -45,8 +44,8 @@ MOODY_TO_OPTIONS = {
 }
 
 
-class FREDMoodyCorporateBondIndexParams(MoodyCorporateBondIndexParams):
-    """MoodyCorporateBondIndexParams Query."""
+class FREDMoodyCorporateBondIndexQueryParams(MoodyCorporateBondIndexQueryParams):
+    """FRED Moody Corporate Bond Index Query."""
 
     spread: Optional[Literal["treasury", "fed_funds"]] = Field(
         default=None, description="The type of spread."
@@ -54,7 +53,7 @@ class FREDMoodyCorporateBondIndexParams(MoodyCorporateBondIndexParams):
 
 
 class FREDMoodyCorporateBondIndexData(MoodyCorporateBondIndexData):
-    """MoodyCorporateBondIndexParams Data."""
+    """FRED Moody Corporate Bond Index Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -70,22 +69,24 @@ class FREDMoodyCorporateBondIndexData(MoodyCorporateBondIndexData):
 
 class FREDMoodyCorporateBondIndexFetcher(
     Fetcher[
-        FREDMoodyCorporateBondIndexParams,
+        FREDMoodyCorporateBondIndexQueryParams,
         List[FREDMoodyCorporateBondIndexData],
     ]
 ):
-    """MoodyCorporateBondIndexParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDMoodyCorporateBondIndexData
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FREDMoodyCorporateBondIndexParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> FREDMoodyCorporateBondIndexQueryParams:
         """Transform query."""
-        return FREDMoodyCorporateBondIndexParams(**params)
+        return FREDMoodyCorporateBondIndexQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: FREDMoodyCorporateBondIndexParams,
+        query: FREDMoodyCorporateBondIndexQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any
     ) -> list:
@@ -107,7 +108,7 @@ class FREDMoodyCorporateBondIndexFetcher(
 
     @staticmethod
     def transform_data(
-        query: FREDMoodyCorporateBondIndexParams, data: list, **kwargs: Any
+        query: FREDMoodyCorporateBondIndexQueryParams, data: list, **kwargs: Any
     ) -> List[FREDMoodyCorporateBondIndexData]:
         """Transform data."""
         return [FREDMoodyCorporateBondIndexData.model_validate(d) for d in data]

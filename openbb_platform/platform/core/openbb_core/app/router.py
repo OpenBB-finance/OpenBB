@@ -1,6 +1,6 @@
 import traceback
 import warnings
-from functools import partial
+from functools import lru_cache, partial
 from inspect import Parameter, Signature, isclass, iscoroutinefunction, signature
 from typing import (
     Any,
@@ -69,6 +69,7 @@ class CommandValidator:
                 return True
             except ValueError:
                 return False
+        return False
 
     @classmethod
     def is_serializable_value_type(cls, value_type: Type) -> bool:
@@ -554,6 +555,7 @@ class LoadingError(Exception):
 
 class RouterLoader:
     @staticmethod
+    @lru_cache
     def from_extensions() -> Router:
         router = Router()
 

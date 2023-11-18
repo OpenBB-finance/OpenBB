@@ -1,4 +1,4 @@
-"""Tiingo Company News."""
+"""Tiingo Company News Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """tiingo Company News query.
+    """Tiingo Company News Query.
 
     Source: https://www.tiingo.com/documentation/news
     """
@@ -68,7 +68,7 @@ class TiingoCompanyNewsFetcher(
         List[TiingoCompanyNewsData],
     ]
 ):
-    """Tiingo Company News Fetcher."""
+    """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TiingoCompanyNewsQueryParams:

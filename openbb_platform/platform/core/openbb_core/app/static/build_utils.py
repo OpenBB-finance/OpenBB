@@ -4,6 +4,7 @@ from typing import List, Optional, Set, Tuple, Union
 
 from importlib_metadata import entry_points
 
+from openbb_core.app.static.package_builder import PackageBuilder
 from openbb_core.env import Env
 
 
@@ -71,19 +72,7 @@ def build(
     verbose : bool, optional
         Enable/disable verbose mode
     """
-    # pylint: disable=import-outside-toplevel
-    from multiprocessing import Pool
-
-    from openbb_core.app.static.package_builder import PackageBuilder
-
-    # `build` is running in a separate process. This avoids consecutive calls to this
-    # function in the same interpreter to reuse objects already in memory. Not doing
-    # this was causing docstrings to have repeated sections, for example.
-    with Pool(processes=1) as pool:
-        pool.apply(
-            PackageBuilder(directory, lint, verbose).build,
-            args=(modules,),
-        )
+    PackageBuilder(directory, lint, verbose).build(modules)
 
 
 def auto_build(directory: Path):

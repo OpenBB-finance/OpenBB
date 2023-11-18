@@ -1,4 +1,4 @@
-"""SONIA Data Model."""
+"""SONIA Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class SONIAQueryParams(QueryParams):
 
 
 class SONIAData(Data):
-    """Return Treasury Rates Data."""
+    """SONIA Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(description="SONIA rate.")
