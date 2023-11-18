@@ -1,4 +1,4 @@
-"""Trading Economics Earnings Calendar fetcher."""
+"""Trading Economics Economic Calendar Model."""
 
 
 from datetime import datetime
@@ -35,7 +35,7 @@ GROUPS = Literal[
 
 
 class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
-    """TE Economic Calendar Query.
+    """Trading Economics Economic Calendar Query.
 
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
@@ -67,7 +67,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
 
 class TEEconomicCalendarData(EconomicCalendarData):
-    """TE Economic Calendar Data."""
+    """Trading Economics Economic Calendar Data."""
 
     __alias_dict__ = {
         "date": "Date",
@@ -102,7 +102,7 @@ class TEEconomicCalendarFetcher(
         List[TEEconomicCalendarData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TE endpoints."""
+    """Transform the query, extract and transform the data from the Trading Economics endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TEEconomicCalendarQueryParams:

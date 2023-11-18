@@ -1,4 +1,4 @@
-"""CFTC Commitment of Traders Reports Search fetcher."""
+"""Nasdaq CFTC Commitment of Traders Reports Search Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,20 +12,20 @@ from openbb_provider.standard_models.cot_search import (
 
 
 class NasdaqCotSearchQueryParams(CotSearchQueryParams):
-    """CFTC Commitment of Traders Reports Search query parameters.
+    """Nasdaq CFTC Commitment of Traders Reports Search Query.
 
     Source: https://data.nasdaq.com/data/CFTC-commodity-futures-trading-commission-reports/documentation
     """
 
 
 class NasdaqCotSearchData(CotSearchData):
-    """Nasdaq CFTC Commitment of Traders Reports Search data."""
+    """Nasdaq CFTC Commitment of Traders Reports Search Data."""
 
 
 class NasdaqCotSearchFetcher(
     Fetcher[NasdaqCotSearchQueryParams, List[NasdaqCotSearchData]]
 ):
-    """Nasdaq CFTC Commitment of Traders Reports Search Fetcher."""
+    """Transform the query, extract and transform the data from the Nasdaq endpoints."""
 
     require_credentials = False
 

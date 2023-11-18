@@ -1,4 +1,4 @@
-"""Bond Prices data model."""
+"""Bond Prices Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -12,7 +12,7 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class BondPricesQueryParams(QueryParams):
-    """Bond Prices Query Params."""
+    """Bond Prices Query."""
 
     country: Optional[str] = Field(
         default=None,

@@ -1,4 +1,4 @@
-"""FMP Currency end of day fetcher."""
+"""FMP Currency Historical Price Model."""
 
 
 from datetime import datetime
@@ -15,7 +15,7 @@ from pydantic import Field
 
 
 class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """FMP Currency end of day Query.
+    """FMP Currency Historical Price Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
@@ -26,7 +26,7 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
 
 class FMPCurrencyHistoricalData(CurrencyHistoricalData):
-    """FMP Currency end of day Data."""
+    """FMP Currency Historical Price Data."""
 
     adj_close: Optional[float] = Field(
         default=None, description="Adjusted Close Price of the symbol."

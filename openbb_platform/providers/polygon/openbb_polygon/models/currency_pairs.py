@@ -1,5 +1,4 @@
-"""Polygon available pairs fetcher."""
-
+"""Polygon Currency Available Pairs Model."""
 
 from datetime import (
     date as dateType,
@@ -18,7 +17,7 @@ from pydantic import Field, PositiveInt, field_validator
 
 
 class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
-    """Polygon available pairs Query.
+    """Polygon Currency Available Pairs Query.
 
     Source: https://polygon.io/docs/forex/get_v3_reference_tickers
     """
@@ -60,7 +59,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
 
 
 class PolygonCurrencyPairsData(CurrencyPairsData):
-    """Polygon available pairs Data."""
+    """Polygon Currency Available Pairs Data."""
 
     market: str = Field(description="Name of the trading market. Always 'fx'.")
     locale: str = Field(description="Locale of the currency pair.")
@@ -100,7 +99,7 @@ class PolygonCurrencyPairsFetcher(
         List[PolygonCurrencyPairsData],
     ]
 ):
-    """Polygon available pairs Fetcher."""
+    """Transform the query, extract and transform the data from the Polygon endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCurrencyPairsQueryParams:

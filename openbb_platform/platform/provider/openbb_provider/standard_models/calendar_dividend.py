@@ -1,4 +1,4 @@
-"""Dividend Calendar data model."""
+"""Dividend Calendar Standard Model."""
 
 
 from datetime import date as dateType

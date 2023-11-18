@@ -1,4 +1,4 @@
-"""Biztoc World News Fetcher."""
+"""Biztoc World News Model."""
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
@@ -13,7 +13,7 @@ from pydantic import Field, field_validator
 
 
 class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
-    """Biztoc World News QueryParams."""
+    """Biztoc World News Query."""
 
     filter: Literal[
         "crypto", "hot", "latest", "main", "media", "source", "tag"
@@ -62,7 +62,7 @@ class BiztocWorldNewsFetcher(
         List[BiztocWorldNewsData],
     ]
 ):
-    """Biztoc World News Fetcher."""
+    """Transform the query, extract and transform the data from the Biztoc endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BiztocWorldNewsQueryParams:

@@ -1,4 +1,4 @@
-"""Equity Short Interest Data Model."""
+"""OTC Aggregate Standard Model."""
 
 
 from datetime import date as dateType

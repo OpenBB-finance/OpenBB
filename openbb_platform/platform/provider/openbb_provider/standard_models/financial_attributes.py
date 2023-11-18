@@ -1,4 +1,4 @@
-"""Financial Attributes standard model."""
+"""Financial Attributes Standard Model."""
 
 from datetime import date as dateType
 from typing import Literal, Optional

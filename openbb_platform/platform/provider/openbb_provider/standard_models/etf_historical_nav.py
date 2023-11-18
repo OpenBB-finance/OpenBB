@@ -11,7 +11,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EtfHistoricalNavQueryParams(QueryParams):
-    """ETF Historical Net Asset Value Query Params."""
+    """ETF Historical NAV Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
@@ -25,7 +25,7 @@ class EtfHistoricalNavQueryParams(QueryParams):
 
 
 class EtfHistoricalNavData(Data):
-    """ETF Historical Net Asset Value Data."""
+    """ETF Historical NAV Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     nav: float = Field(description="The net asset value on the date.")

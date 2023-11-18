@@ -1,4 +1,4 @@
-"""Financial ratios data model."""
+"""Financial Ratios Standard Model."""
 
 
 from typing import List, Literal, Optional, Set, Union
@@ -30,7 +30,7 @@ class FinancialRatiosQueryParams(QueryParams):
 
 
 class FinancialRatiosData(Data):
-    """Financial ratios data model."""
+    """Financial Ratios Standard Model."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))

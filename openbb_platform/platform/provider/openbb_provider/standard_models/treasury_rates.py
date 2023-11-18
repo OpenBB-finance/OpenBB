@@ -1,4 +1,4 @@
-"""Treasury Rates Data Model."""
+"""Treasury Rates Standard Model."""
 
 
 from datetime import date as dateType
@@ -25,7 +25,7 @@ class TreasuryRatesQueryParams(QueryParams):
 
 
 class TreasuryRatesData(Data):
-    """Return Treasury Rates Data."""
+    """Treasury Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     month_1: float = Field(description="1 month treasury rate.")

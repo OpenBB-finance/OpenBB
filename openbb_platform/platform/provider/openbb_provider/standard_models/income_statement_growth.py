@@ -1,4 +1,4 @@
-"""Income Statement Growth Data Model."""
+"""Income Statement Growth Standard Model."""
 
 
 from datetime import date as dateType

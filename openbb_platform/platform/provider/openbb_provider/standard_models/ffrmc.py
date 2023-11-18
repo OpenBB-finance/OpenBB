@@ -1,4 +1,4 @@
-"""Selected Treasury Constant Maturity Model."""
+"""Selected Treasury Constant Maturity Standard Model."""
 from datetime import (
     date as dateType,
 )
@@ -11,8 +11,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class SelectedTreasuryConstantMaturityParams(QueryParams):
-    """SelectedTreasuryConstantMaturity Query."""
+class SelectedTreasuryConstantMaturityQueryParams(QueryParams):
+    """Selected Treasury Constant Maturity Query."""
 
     start_date: Optional[dateType] = Field(
         default=None,
@@ -29,7 +29,7 @@ class SelectedTreasuryConstantMaturityParams(QueryParams):
 
 
 class SelectedTreasuryConstantMaturityData(Data):
-    """SelectedTreasuryConstantMaturity Data."""
+    """Selected Treasury Constant Maturity Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(

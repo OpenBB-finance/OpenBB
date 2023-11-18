@@ -1,4 +1,4 @@
-"""Tiingo World News Fetcher."""
+"""Tiingo World News Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -67,7 +67,7 @@ class TiingoWorldNewsFetcher(
         List[TiingoWorldNewsData],
     ]
 ):
-    """Tiingo World News Fetcher."""
+    """Transform the query, extract and transform the data from the Tiingo endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TiingoWorldNewsQueryParams:

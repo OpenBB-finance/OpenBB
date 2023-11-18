@@ -1,5 +1,4 @@
-"""Discount Window Primary Credit Rate Fetcher."""
-
+"""FRED Discount Window Primary Credit Rate Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -21,7 +20,7 @@ DWPCR_PARAMETER_TO_FRED_ID = {
 
 
 class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateParams):
-    """DiscountWindowPrimaryCreditRateParams Query."""
+    """FRED Discount Window Primary Credit Rate Query."""
 
     parameter: Literal[
         "daily_excl_weekend", "monthly", "weekly", "daily", "annual"
@@ -29,7 +28,7 @@ class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateP
 
 
 class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateData):
-    """DiscountWindowPrimaryCreditRateParams Data."""
+    """FRED Discount Window Primary Credit Rate Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -49,7 +48,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
         List[FREDDiscountWindowPrimaryCreditRateData],
     ]
 ):
-    """DiscountWindowPrimaryCreditRateParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDDiscountWindowPrimaryCreditRateData
 

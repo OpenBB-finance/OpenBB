@@ -1,4 +1,4 @@
-"""FMP ETF Search fetcher."""
+"""FMP ETF Search Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class FMPEtfSearchQueryParams(EtfSearchQueryParams):
-    """FMP ETF Search Query Params."""
+    """FMP ETF Search Query."""
 
     exchange: Optional[
         Literal["AMEX", "NYSE", "NASDAQ", "ETF", "TSX", "EURONEXT"]

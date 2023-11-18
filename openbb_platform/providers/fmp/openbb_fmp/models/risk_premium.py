@@ -1,5 +1,4 @@
-"""FMP Risk Premium fetcher."""
-
+"""FMP Risk Premium Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,14 +11,14 @@ from openbb_provider.standard_models.risk_premium import (
 
 
 class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
-    """FMP Risk Premium query.
+    """FMP Risk Premium Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/market-risk-premium-api/
     """
 
 
 class FMPRiskPremiumData(RiskPremiumData):
-    """FMP Risk Premium data."""
+    """FMP Risk Premium Data."""
 
 
 class FMPRiskPremiumFetcher(

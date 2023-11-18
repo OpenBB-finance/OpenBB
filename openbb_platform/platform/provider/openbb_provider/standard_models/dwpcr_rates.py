@@ -1,4 +1,4 @@
-"""Discount Window Primary Credit Rate Data Model."""
+"""Discount Window Primary Credit Rate Standard Model."""
 from datetime import (
     date as dateType,
 )

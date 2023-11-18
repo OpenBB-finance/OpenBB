@@ -1,4 +1,4 @@
-"""Economic Calendar Standard Model"""
+"""Economic Calendar Standard Model."""
 
 
 from datetime import (
@@ -15,7 +15,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class EconomicCalendarQueryParams(QueryParams):
-    """Economic calendar Query."""
+    """Economic Calendar Query."""
 
     start_date: Optional[dateType] = Field(
         default=None,
@@ -28,7 +28,7 @@ class EconomicCalendarQueryParams(QueryParams):
 
 
 class EconomicCalendarData(Data):
-    """Economic calendar Data."""
+    """Economic Calendar Data."""
 
     date: Optional[datetime] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date", "")

@@ -1,4 +1,4 @@
-"""Equity Valuation Multiples Data Model."""
+"""Equity Valuation Multiples Standard Model."""
 
 from typing import List, Optional, Set, Union
 

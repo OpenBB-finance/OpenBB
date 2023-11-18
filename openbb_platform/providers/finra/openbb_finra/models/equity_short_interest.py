@@ -1,4 +1,4 @@
-"""FINRA Company Filings fetcher."""
+"""FINRA Equity Short Interest Model."""
 
 import sqlite3
 from typing import Any, Dict, List, Optional
@@ -12,11 +12,11 @@ from openbb_provider.standard_models.equity_short_interest import (
 
 
 class FinraShortInterestQueryParams(ShortInterestQueryParams):
-    """FINRA Company Filings Query Params."""
+    """FINRA Equity Short Interest Query."""
 
 
 class FinraShortInterestData(ShortInterestData):
-    """FINRA Short Interest Data."""
+    """FINRA Equity Short Interest Data."""
 
     __alias_dict__ = {
         "symbol": "symbolCode",
@@ -35,7 +35,7 @@ class FinraShortInterestData(ShortInterestData):
 class FinraShortInterestFetcher(
     Fetcher[FinraShortInterestQueryParams, List[FinraShortInterestData]]
 ):
-    """FINRA Short Interest Fetcher."""
+    """Transform the query, extract and transform the data from the FINRA endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FinraShortInterestQueryParams:

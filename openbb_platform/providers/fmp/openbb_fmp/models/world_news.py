@@ -1,4 +1,4 @@
-"""FMP World News Fetcher."""
+"""FMP World News Model."""
 
 import math
 from datetime import datetime
@@ -39,7 +39,7 @@ class FMPWorldNewsFetcher(
         List[FMPWorldNewsData],
     ]
 ):
-    """FMP World News Fetcher."""
+    """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPWorldNewsQueryParams:

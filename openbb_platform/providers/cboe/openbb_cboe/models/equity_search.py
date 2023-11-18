@@ -1,4 +1,4 @@
-"""CBOE Company Search fetcher."""
+"""CBOE Equity Search Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,14 +12,14 @@ from pydantic import Field
 
 
 class CboeEquitySearchQueryParams(EquitySearchQueryParams):
-    """CBOE Company Search query.
+    """CBOE Equity Search Query.
 
     Source: https://www.cboe.com/
     """
 
 
 class CboeEquitySearchData(EquitySearchData):
-    """CBOE Company Search Data."""
+    """CBOE Equity Search Data."""
 
     __alias_dict__ = {"name": "Company Name"}
 

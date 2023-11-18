@@ -1,5 +1,4 @@
-"""CBOE Options Chains fetcher."""
-
+"""CBOE Options Chains Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -20,7 +19,7 @@ from pydantic import Field, field_validator
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """Get the complete options chains for a ticker from CBOE.
+    """CBOE Options Chains Query.
 
     Source: https://www.cboe.com/
     """
@@ -68,11 +67,11 @@ class CboeOptionsChainsFetcher(
         List[CboeOptionsChainsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints"""
+    """Transform the query, extract and transform the data from the CBOE endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeOptionsChainsQueryParams:
-        """Transform the query"""
+        """Transform the query."""
         return CboeOptionsChainsQueryParams(**params)
 
     @staticmethod

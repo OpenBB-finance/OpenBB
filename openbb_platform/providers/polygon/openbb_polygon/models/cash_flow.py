@@ -1,5 +1,4 @@
-"""Polygon Cash Flow Statement Fetcher."""
-
+"""Polygon Cash Flow Statement Model."""
 
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
@@ -15,7 +14,7 @@ from pydantic import Field, field_validator
 
 
 class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
-    """Polygon Fundamental QueryParams.
+    """Polygon Cash Flow Statement Query.
 
     Source: https://polygon.io/docs/stocks#!/get_vx_reference_financials
     """

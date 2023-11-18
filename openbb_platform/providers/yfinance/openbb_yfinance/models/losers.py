@@ -1,4 +1,5 @@
-"""Yahoo Finance losers fetcher."""
+"""Yahoo Finance Asset Performance Losers Model."""
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -13,14 +14,14 @@ from pydantic import Field
 
 
 class YFLosersQueryParams(EquityPerformanceQueryParams):
-    """YF asset performance losers QueryParams.
+    """Yahoo Finance Asset Performance Losers Query.
 
     Source: https://finance.yahoo.com/screener/predefined/day_losers
     """
 
 
 class YFLosersData(EquityPerformanceData):
-    """YF asset performance losers Data."""
+    """Yahoo Finance Asset Performance Losers Data."""
 
     __alias_dict__ = {
         "symbol": "Symbol",
@@ -47,7 +48,7 @@ class YFLosersData(EquityPerformanceData):
 
 
 class YFLosersFetcher(Fetcher[YFLosersQueryParams, List[YFLosersData]]):
-    """YF asset performance losers Fetcher."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFLosersQueryParams:

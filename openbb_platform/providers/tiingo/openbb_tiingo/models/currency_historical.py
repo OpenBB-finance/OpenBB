@@ -1,4 +1,4 @@
-"""Tiingo Currency end of day fetcher."""
+"""Tiingo Currency Historical Price Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -15,7 +15,7 @@ from pydantic import Field
 
 
 class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
-    """Tiingo Currency end of day Query.
+    """Tiingo Currency Historical Price Query.
 
     Source: https://www.tiingo.com/documentation/end-of-day
     """
@@ -32,7 +32,7 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
 
 class TiingoCurrencyHistoricalData(CurrencyHistoricalData):
-    """Tiingo Currency end of day Data."""
+    """Tiingo Currency Historical Price Data."""
 
 
 class TiingoCurrencyHistoricalFetcher(

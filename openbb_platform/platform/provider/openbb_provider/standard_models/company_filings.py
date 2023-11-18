@@ -1,4 +1,4 @@
-"""Company Filings data model."""
+"""Company Filings Standard Model."""
 
 
 from datetime import date as dateType
@@ -115,7 +115,7 @@ SEC_FORM_TYPES = Literal[
 
 
 class CompanyFilingsQueryParams(QueryParams):
-    """Company Filings Query Params."""
+    """Company Filings Query."""
 
     symbol: Optional[str] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")

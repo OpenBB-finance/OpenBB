@@ -1,4 +1,4 @@
-"""Intrinio Company News."""
+"""Intrinio Company News Model."""
 
 
 from datetime import datetime
@@ -15,7 +15,7 @@ from pydantic import Field, field_validator
 
 
 class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """Intrinio Company News query.
+    """Intrinio Company News Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
@@ -28,7 +28,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
 
 
 class IntrinioCompanyNewsData(CompanyNewsData):
-    """Intrinio Company News data."""
+    """Intrinio Company News Data."""
 
     __alias_dict__ = {"date": "publication_date", "text": "summary"}
 

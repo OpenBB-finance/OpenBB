@@ -1,4 +1,4 @@
-"""FMP Crypto Search."""
+"""FMP Crypto Search Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -13,7 +13,7 @@ from pydantic import Field
 
 
 class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
-    """FMP Crypto Search Query Params."""
+    """FMP Crypto Search Query."""
 
 
 class FMPCryptoSearchData(CryptoSearchData):

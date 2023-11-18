@@ -1,4 +1,4 @@
-"""ESG Sector data model."""
+"""ESG Sector Standard Model."""
 
 
 from openbb_provider.abstract.data import Data
@@ -6,7 +6,7 @@ from openbb_provider.abstract.query_params import QueryParams
 
 
 class ESGSectorQueryParams(QueryParams):
-    """ESG sector query model.
+    """ESG Sector Query.
 
     Parameter
     ---------
@@ -18,7 +18,7 @@ class ESGSectorQueryParams(QueryParams):
 
 
 class ESGSectorData(Data):
-    """ESG Sector data.
+    """ESG Sector Data.
 
     Returns
     -------

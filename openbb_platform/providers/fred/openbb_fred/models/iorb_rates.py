@@ -1,4 +1,4 @@
-"""FRED FED Fetcher."""
+"""FRED IORB Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -12,11 +12,11 @@ from pydantic import field_validator
 
 
 class FREDIORBQueryParams(IORBQueryParams):
-    """IORB query."""
+    """FRED IORB Query."""
 
 
 class FREDIORBData(IORBData):
-    """IORB data."""
+    """FRED IORB Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -32,7 +32,7 @@ class FREDIORBData(IORBData):
 class FREDIORBFetcher(
     Fetcher[FREDIORBQueryParams, List[Dict[str, List[FREDIORBData]]]]
 ):
-    """FRED IORB Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDIORBData
 

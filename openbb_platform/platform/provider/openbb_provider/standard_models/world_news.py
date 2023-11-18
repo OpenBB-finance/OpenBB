@@ -1,4 +1,4 @@
-"""World News Data Model."""
+"""World News Standard Model."""
 
 
 from datetime import datetime

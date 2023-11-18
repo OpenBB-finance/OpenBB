@@ -1,4 +1,4 @@
-"""Treasury Auctions Data Model."""
+"""US Treasury Auctions Standard Model."""
 
 from datetime import (
     date as dateType,

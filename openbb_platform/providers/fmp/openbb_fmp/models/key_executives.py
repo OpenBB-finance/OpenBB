@@ -1,5 +1,4 @@
-"""FMP Key Executives Fetcher."""
-
+"""FMP Key Executives Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -14,7 +13,7 @@ from pydantic import field_validator
 
 
 class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
-    """FMP Key Executives QueryParams.
+    """FMP Key Executives Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Key-Executives
     """

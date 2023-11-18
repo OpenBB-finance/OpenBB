@@ -1,4 +1,4 @@
-"""FMP Balance Sheet Fetcher."""
+"""FMP Balance Sheet Model."""
 
 
 from typing import Any, Dict, List, Literal, Optional
@@ -15,7 +15,7 @@ from pydantic import Field, model_validator
 
 
 class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
-    """FMP Balance Sheet QueryParams.
+    """FMP Balance Sheet Query.
 
     Source: https://financialmodelingprep.com/developer/docs/#Balance-Sheet
     """

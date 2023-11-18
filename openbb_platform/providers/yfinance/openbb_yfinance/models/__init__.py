@@ -1,1 +1,1 @@
-"""yfinance models directory."""
+"""Yahoo Finance models directory."""

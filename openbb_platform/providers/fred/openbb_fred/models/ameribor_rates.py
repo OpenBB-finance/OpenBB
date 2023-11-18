@@ -1,5 +1,4 @@
-"""FRED AMERIBOR Fetcher."""
-
+"""FRED AMERIBOR Model."""
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -27,7 +26,7 @@ AMERIBOR_PARAMETER_TO_FRED_ID = {
 
 
 class FREDAMERIBORQueryParams(AMERIBORQueryParams):
-    """AMERIBOR query."""
+    """FRED AMERIBOR Query."""
 
     parameter: Literal[
         "overnight",
@@ -45,7 +44,7 @@ class FREDAMERIBORQueryParams(AMERIBORQueryParams):
 
 
 class FREDAMERIBORData(AMERIBORData):
-    """AMERIBOR data."""
+    """FRED AMERIBOR Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -62,7 +61,7 @@ class FREDAMERIBORData(AMERIBORData):
 class FREDAMERIBORFetcher(
     Fetcher[FREDAMERIBORQueryParams, List[Dict[str, List[FREDAMERIBORData]]]]
 ):
-    """FRED AMERIBOR Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDAMERIBORData
 

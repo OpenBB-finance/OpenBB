@@ -1,5 +1,4 @@
-"""Commercial Paper Fetcher."""
-
+"""FRED Commercial Paper Model."""
 
 from typing import Any, Dict, List, Optional
 
@@ -14,11 +13,11 @@ from pydantic import field_validator
 
 
 class FREDCommercialPaperParams(CommercialPaperParams):
-    """CommercialPaperParams Query."""
+    """FRED Commercial Paper Query."""
 
 
 class FREDCommercialPaperData(CommercialPaperData):
-    """CommercialPaperParams Data."""
+    """FRED Commercial Paper Data."""
 
     __alias_dict__ = {"rate": "value"}
 
@@ -38,7 +37,7 @@ class FREDCommercialPaperFetcher(
         List[FREDCommercialPaperData],
     ]
 ):
-    """CommercialPaperParams Fetcher."""
+    """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDCommercialPaperData
 

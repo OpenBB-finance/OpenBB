@@ -1,4 +1,4 @@
-"""IPO Calendar  data model."""
+"""IPO Calendar Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -14,7 +14,7 @@ from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPT
 
 
 class CalendarIpoQueryParams(QueryParams):
-    """IPO Calendar Query Params."""
+    """IPO Calendar Query."""
 
     symbol: Optional[str] = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""), default=None

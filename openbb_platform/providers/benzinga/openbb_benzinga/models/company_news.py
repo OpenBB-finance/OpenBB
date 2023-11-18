@@ -1,4 +1,4 @@
-"""Benzinga Company News."""
+"""Benzinga Company News Model."""
 
 
 import math
@@ -16,7 +16,7 @@ from pydantic import Field, field_validator
 
 
 class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
-    """Benzinga Company News query.
+    """Benzinga Company News Query.
 
     Source: https://docs.benzinga.io/benzinga/newsfeed-v2.html
     """
@@ -134,7 +134,7 @@ class BenzingaCompanyNewsFetcher(
         List[BenzingaCompanyNewsData],
     ]
 ):
-    """Benzinga Company News Fetcher."""
+    """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BenzingaCompanyNewsQueryParams:

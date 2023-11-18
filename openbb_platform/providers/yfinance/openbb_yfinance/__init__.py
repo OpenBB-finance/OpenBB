@@ -1,4 +1,4 @@
-"""yfinance (Yahoo!Finance) provider module."""
+"""Yahoo Finance provider module."""
 
 
 from openbb_provider.abstract.provider import Provider

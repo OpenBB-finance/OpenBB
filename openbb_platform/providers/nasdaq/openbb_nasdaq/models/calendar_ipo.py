@@ -1,4 +1,4 @@
-"""Nasdaq IPO Calendar fetcher."""
+"""Nasdaq IPO Calendar Model."""
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import (

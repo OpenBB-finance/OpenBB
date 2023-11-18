@@ -1,4 +1,5 @@
-"""YFinance ETF Historical Market Price."""
+"""Yahoo Finance ETF Historical Price Model."""
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -16,14 +17,14 @@ from ..utils.helpers import yf_download
 
 
 class YFinanceEtfHistoricalQueryParams(EtfHistoricalQueryParams):
-    """YFinance ETF Historical Price Query.
+    """Yahoo Finance ETF Historical Price Query.
 
     Source: https://finance.yahoo.com/
     """
 
 
 class YFinanceEtfHistoricalData(EtfHistoricalData):
-    """YFinance Etf Price Data."""
+    """Yahoo Finance ETF Historical Price Data."""
 
     __alias_dict__ = {
         "adj_close": "adj close",
@@ -47,7 +48,7 @@ class YFinanceEtfHistoricalFetcher(
         List[YFinanceEtfHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the yfinance endpoints."""
+    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEtfHistoricalQueryParams:
@@ -70,7 +71,7 @@ class YFinanceEtfHistoricalFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the yfinance endpoint."""
+        """Return the raw data from the Yahoo Finance endpoint."""
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,
