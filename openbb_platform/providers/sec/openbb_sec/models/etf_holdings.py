@@ -259,7 +259,7 @@ class SecEtfHoldingsFetcher(
         return response
 
     @staticmethod
-    def transform_data(
+    def transform_data(  # noqa: PLR0912
         query: SecEtfHoldingsQueryParams,
         data: Dict,
         **kwargs: Any,
