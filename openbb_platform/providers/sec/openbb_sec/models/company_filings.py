@@ -121,9 +121,6 @@ class SecCompanyFilingsData(CompanyFilingsData):
         default=None,
         alias="filingDetailUrl",
     )
-    xml: Optional[str] = Field(
-        description="The URL to the primary XML document.", default=None
-    )
 
     @field_validator("report_date", mode="before", check_fields=False)
     def validate_report_date(cls, v: Optional[Union[str, dateType]]):
@@ -232,12 +229,6 @@ class SecCompanyFilingsFetcher(
         )
         filings["filingDetailUrl"] = (
             base_url + filings["accessionNumber"] + "-index.htm"
-        )
-        filings["xml"] = (
-            filings["completeSubmissionUrl"]
-            .astype(str)
-            .str.replace("-", "")
-            .str.replace(".txt", "/primary_doc.xml")
         )
         if "type" in query.model_dump() and query.type is not None:
             filings = filings[filings["form"] == query.type]
