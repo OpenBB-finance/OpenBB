@@ -38,17 +38,17 @@ class RevenueGeographicData(Data):
         description="Day level data containing the revenue of the geographic segment."
     )
     americas: Optional[StrictInt] = Field(
-        default=None, description="Revenue from the the American segment."
+        default=None, description="Revenue from the American segment."
     )
     europe: Optional[StrictInt] = Field(
-        default=None, description="Revenue from the the European segment."
+        default=None, description="Revenue from the European segment."
     )
     greater_china: Optional[StrictInt] = Field(
-        default=None, description="Revenue from the the Greater China segment."
+        default=None, description="Revenue from the Greater China segment."
     )
     japan: Optional[StrictInt] = Field(
-        default=None, description="Revenue from the the Japan segment."
+        default=None, description="Revenue from the Japan segment."
     )
     rest_of_asia_pacific: Optional[StrictInt] = Field(
-        default=None, description="Revenue from the the Rest of Asia Pacific segment."
+        default=None, description="Revenue from the Rest of Asia Pacific segment."
     )
