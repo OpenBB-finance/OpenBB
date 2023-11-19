@@ -1,7 +1,6 @@
 """The OpenBB Platform System Settings."""
 import json
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
-from functools import partial
 from pathlib import Path
 from typing import List, Literal, Optional
 
@@ -14,48 +13,44 @@ from openbb_core.app.constants import (
     USER_SETTINGS_PATH,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
+from openbb_core.app.model.rest_api_settings import FastAPISettings
 from openbb_core.app.version import VERSION
-
-from .rest_api_settings import FastAPISettings
-
-FrozenField = partial(Field, frozen=True)
 
 
 class SystemSettings(Tagged):
     """System settings model."""
 
     # System section
-    os: str = FrozenField(default=str(pl.system()))
-    python_version: str = FrozenField(default=str(pl.python_version()))
-    platform: str = FrozenField(default=str(pl.platform()))
+    os: str = str(pl.system())
+    python_version: str = str(pl.python_version())
+    platform: str = str(pl.platform())
 
     # OpenBB section
-    # TODO: Get the version of the Platform from somewhere that's not pyproject.toml
-    version: str = FrozenField(default=VERSION)
-    home_directory: str = FrozenField(default=str(HOME_DIRECTORY))
-    openbb_directory: str = FrozenField(default=str(OPENBB_DIRECTORY))
-    user_settings_path: str = FrozenField(default=str(USER_SETTINGS_PATH))
-    system_settings_path: str = FrozenField(default=str(SYSTEM_SETTINGS_PATH))
+    version: str = VERSION
+    home_directory: str = str(HOME_DIRECTORY)
+    openbb_directory: str = str(OPENBB_DIRECTORY)
+    user_settings_path: str = str(USER_SETTINGS_PATH)
+    system_settings_path: str = str(SYSTEM_SETTINGS_PATH)
 
     # Logging section
-    logging_app_name: Literal["platform"] = FrozenField(default="platform")
-    logging_commit_hash: Optional[str] = FrozenField(default=None)
-    logging_frequency: Literal["D", "H", "M", "S"] = FrozenField(default="H")
-    logging_handlers: List[str] = FrozenField(default_factory=lambda: ["file"])
-    logging_rolling_clock: bool = FrozenField(default=False)
-    logging_verbosity: int = FrozenField(default=20)
-    logging_sub_app: Literal["python", "api", "pro"] = FrozenField(default="python")
-    logging_suppress: bool = FrozenField(default=False)
-    log_collect: bool = FrozenField(default=True)
+    logging_app_name: Literal["platform"] = "platform"
+    logging_commit_hash: Optional[str] = None
+    logging_frequency: Literal["D", "H", "M", "S"] = "H"
+    logging_handlers: List[str] = Field(default_factory=lambda: ["file"])
+    logging_rolling_clock: bool = False
+    logging_verbosity: int = 20
+    logging_sub_app: Literal["python", "api", "pro"] = "python"
+    logging_suppress: bool = False
+    log_collect: bool = True
 
     # API section
-    api_settings: FastAPISettings = FrozenField(default_factory=FastAPISettings)
+    api_settings: FastAPISettings = Field(default_factory=FastAPISettings)
 
     # Others
-    test_mode: bool = FrozenField(default=False)
-    headless: bool = FrozenField(default=False)
+    test_mode: bool = False
+    headless: bool = False
 
-    model_config = ConfigDict(validate_assignment=True)
+    model_config = ConfigDict(validate_assignment=True, frozen=True)
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""

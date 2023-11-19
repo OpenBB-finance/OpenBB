@@ -17,6 +17,7 @@ class SystemService(metaclass=SingletonMeta):
         "test_mode",
         "headless",
         "logging_sub_app",
+        "api_settings",
     }
 
     PRO_VALIDATION_HASH = (

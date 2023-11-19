@@ -538,9 +538,9 @@ def test_generate(docstring_generator):
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
     }
 
-    f = docstring_generator.generate(
+    doc = docstring_generator.generate(
         func=some_func, formatted_params=formatted_params, model_name="WorldNews"
     )
-    assert f
-    assert "Parameters" in f.__doc__
-    assert "Returns" in f.__doc__
+    assert doc
+    assert "Parameters" in doc
+    assert "Returns" in doc

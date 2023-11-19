@@ -114,14 +114,18 @@ class ROUTER_equity_calendar(Container):
     @validate
     def earnings(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 50,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -129,10 +133,10 @@ class ROUTER_equity_calendar(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        limit : Optional[int]
-            The number of data entries to return.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -154,29 +158,33 @@ class ROUTER_equity_calendar(Container):
 
         CalendarEarnings
         ----------------
+        report_date : date
+            The date of the earnings report.
         symbol : str
             Symbol representing the entity requested in the data.
-        date : date
-            The date of the data.
-        eps : Optional[float]
-            EPS of the earnings calendar.
-        eps_estimated : Optional[float]
-            Estimated EPS of the earnings calendar.
-        time : str
-            Time of the earnings calendar.
-        revenue : Optional[float]
-            Revenue of the earnings calendar.
-        revenue_estimated : Optional[float]
-            Estimated revenue of the earnings calendar.
-        updated_from_date : Optional[date]
-            Updated from date of the earnings calendar.
-        fiscal_date_ending : date
-            Fiscal date ending of the earnings calendar.
+        name : Optional[str]
+            Name of the entity.
+        eps_previous : Optional[float]
+            The earnings-per-share from the same previously reported period.
+        eps_consensus : Optional[float]
+            The analyst conesus earnings-per-share estimate.
+        actual_eps : Optional[float]
+            The actual earnings per share announced. (provider: fmp)
+        actual_revenue : Optional[float]
+            The actual reported revenue. (provider: fmp)
+        revenue_consensus : Optional[float]
+            The revenue forecast consensus. (provider: fmp)
+        period_ending : Optional[date]
+            The fiscal period end date. (provider: fmp)
+        reporting_time : Optional[str]
+            The reporting time - e.g. after market close. (provider: fmp)
+        updated_date : Optional[date]
+            The date the data was updated last. (provider: fmp)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.calendar.earnings(symbol="AAPL", limit=50)
+        >>> obb.equity.calendar.earnings()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -184,8 +192,8 @@ class ROUTER_equity_calendar(Container):
                 "provider": provider,
             },
             standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
+                "start_date": start_date,
+                "end_date": end_date,
             },
             extra_params=kwargs,
         )

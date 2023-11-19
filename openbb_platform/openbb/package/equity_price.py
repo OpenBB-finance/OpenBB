@@ -187,7 +187,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Equity Quote. Load National Best Bid and Offer for a specific equity.
+        """Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
         Parameters
         ----------
@@ -405,7 +405,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[Union[List[Data], Data]]:
+    ) -> OBBject[List[Data]]:
         """Equity Quote. Load stock data for a specific ticker.
 
         Parameters
@@ -422,7 +422,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : Union[List[EquityQuote], EquityQuote]
+            results : List[EquityQuote]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -446,39 +446,39 @@ class ROUTER_equity_price(Container):
         name : Optional[str]
             Name of the company. (provider: fmp)
         price : Optional[float]
-            Current trading price of the stock. (provider: fmp)
+            Current trading price of the equity. (provider: fmp)
         changes_percentage : Optional[float]
-            Change percentage of the stock price. (provider: fmp)
+            Change percentage of the equity price. (provider: fmp)
         change : Optional[float]
-            Change in the stock price. (provider: fmp)
+            Change in the equity price. (provider: fmp)
         year_high : Optional[float]
-            Highest price of the stock in the last 52 weeks. (provider: fmp)
+            Highest price of the equity in the last 52 weeks. (provider: fmp)
         year_low : Optional[float]
-            Lowest price of the stock in the last 52 weeks. (provider: fmp)
+            Lowest price of the equity in the last 52 weeks. (provider: fmp)
         market_cap : Optional[float]
             Market cap of the company. (provider: fmp)
         price_avg50 : Optional[float]
-            50 days average price of the stock. (provider: fmp)
+            50 days average price of the equity. (provider: fmp)
         price_avg200 : Optional[int]
-            200 days average price of the stock. (provider: fmp)
+            200 days average price of the equity. (provider: fmp)
         volume : Optional[int]
-            Volume of the stock in the current trading day. (provider: fmp)
+            Volume of the equity in the current trading day. (provider: fmp)
         avg_volume : Optional[int]
-            Average volume of the stock in the last 10 trading days. (provider: fmp)
+            Average volume of the equity in the last 10 trading days. (provider: fmp)
         exchange : Optional[str]
-            Exchange the stock is traded on. (provider: fmp)
+            Exchange the equity is traded on. (provider: fmp)
         open : Optional[float]
-            Opening price of the stock in the current trading day. (provider: fmp)
+            Opening price of the equity in the current trading day. (provider: fmp)
         previous_close : Optional[float]
-            Previous closing price of the stock. (provider: fmp)
+            Previous closing price of the equity. (provider: fmp)
         eps : Optional[float]
-            Earnings per share of the stock. (provider: fmp)
+            Earnings per share of the equity. (provider: fmp)
         pe : Optional[float]
-            Price earnings ratio of the stock. (provider: fmp)
+            Price earnings ratio of the equity. (provider: fmp)
         earnings_announcement : Optional[str]
-            Earnings announcement date of the stock. (provider: fmp)
+            Earnings announcement date of the equity. (provider: fmp)
         shares_outstanding : Optional[int]
-            Number of shares outstanding of the stock. (provider: fmp)
+            Number of shares outstanding of the equity. (provider: fmp)
         last_price : Optional[float]
             Price of the last trade. (provider: intrinio)
         last_time : Optional[datetime]
