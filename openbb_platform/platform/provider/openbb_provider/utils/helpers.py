@@ -1,18 +1,19 @@
-"""Provider helpers."""
+import asyncio
 import random
 import re
-from concurrent.futures import as_completed
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import (
     Awaitable,
     Callable,
     List,
+    Literal,
     ParamSpec,
     TypeVar,
     Union,
 )
 
+import aiohttp
 import requests
 from anyio import start_blocking_portal
 
@@ -67,6 +68,55 @@ def get_user_agent() -> str:
     ]
 
     return random.choice(user_agent_strings)  # nosec # noqa: S311
+
+
+async def async_make_request(
+    url: str,
+    method: Literal["GET", "POST"] = "GET",
+    timeout: int = 10,
+    response_callback: Callable[
+        [aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]
+    ] = None,
+    **kwargs,
+) -> Union[dict, List[dict]]:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]], optional
+        Callback to run on the response, by default None
+
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+    """
+
+    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
+    kwargs["headers"] = kwargs.get("headers", {})
+    raise_for_status = kwargs.pop("raise_for_status", False)
+    response_callback = response_callback or (lambda r: asyncio.ensure_future(r.json()))
+
+    if kwargs["headers"].get("User-Agent", None) is None:
+        kwargs["headers"]["User-Agent"] = get_user_agent()
+
+    if _session := kwargs.pop("session", None):
+        r = getattr(_session, method)(url, **kwargs)
+
+        return await response_callback(r)
+
+    async with aiohttp.ClientSession(
+        connector=aiohttp.TCPConnector(), raise_for_status=raise_for_status
+    ) as session, session.request(method, url, **kwargs) as response:
+        return await response_callback(response)
 
 
 def make_request(
@@ -157,7 +207,7 @@ def to_camel_case(string: str):
 async def maybe_coroutine(
     func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
-    """Run a function that may or may not be a coroutine."""
+    """Check if a function is a coroutine and run it accordingly."""
 
     if not iscoroutinefunction(func):
         return func(*args, **kwargs)
@@ -174,10 +224,4 @@ def run_async(
         return func(*args, **kwargs)
 
     with start_blocking_portal() as portal:
-        func = partial(func, *args, **kwargs)
-        task = portal.start_task_soon(func)
-
-        for fut in as_completed([task]):
-            result = fut.result()
-
-    return result
+        return portal.call(partial(func, *args, **kwargs))

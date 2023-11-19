@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_fmp.utils.helpers import get_data_many, get_interval
+from openbb_fmp.utils.helpers import async_get_data_many, get_interval
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -80,7 +80,7 @@ class FMPEquityHistoricalFetcher(
         return FMPEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -99,7 +99,7 @@ class FMPEquityHistoricalFetcher(
         if interval == "1day":
             url = f"{base_url}/historical-price-full/{url_params}"
 
-        return get_data_many(url, "historical", **kwargs)
+        return await async_get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(
