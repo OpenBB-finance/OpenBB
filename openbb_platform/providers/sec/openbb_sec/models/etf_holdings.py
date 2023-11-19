@@ -339,9 +339,28 @@ class SecEtfHoldingsFetcher(
                         df.loc[i, "counterparty"] = df.iloc[i]["derivativeInfo"][
                             "optionSwaptionWarrantDeriv"
                         ]["counterparties"].get("counterpartyName")
-                        df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ]["descRefInstrmnt"]["otherRefInst"].get("issueTitle")
+                        if (
+                            "otherRefInst"
+                            in df.iloc[i]["derivativeInfo"][
+                                "optionSwaptionWarrantDeriv"
+                            ]["descRefInstrmnt"]
+                        ):
+                            df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
+                                "optionSwaptionWarrantDeriv"
+                            ]["descRefInstrmnt"]["otherRefInst"].get("issueTitle")
+                        if (
+                            "nestedDerivInfo"
+                            in df.iloc[i]["derivativeInfo"][
+                                "optionSwaptionWarrantDeriv"
+                            ]["descRefInstrmnt"]
+                        ):
+                            df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
+                                "optionSwaptionWarrantDeriv"
+                            ]["descRefInstrmnt"]["nestedDerivInfo"]["fwdDeriv"][
+                                "derivAddlInfo"
+                            ].get(
+                                "title"
+                            )
                         df.loc[i, "option_type"] = df.iloc[i]["derivativeInfo"][
                             "optionSwaptionWarrantDeriv"
                         ].get("putOrCall")

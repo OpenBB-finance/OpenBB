@@ -388,7 +388,8 @@ def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
                 raise RuntimeError(
                     f"Request failed with status code {str(r.status_code)}"
                 )
-        raise RuntimeError(f"Request failed with status code {str(r.status_code)}")
+        if r.status_code not in (200, 500):
+            raise RuntimeError(f"Request failed with status code {str(r.status_code)}")
     r_json = r.json()
 
     if "hits" in r_json and len(r_json["hits"]["hits"]) > 0:
