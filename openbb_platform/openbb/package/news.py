@@ -142,7 +142,7 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.news(symbols="AAPL,MSFT", limit=20)
+        >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -173,7 +173,7 @@ class ROUTER_news(Container):
         provider: Optional[Literal["benzinga", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Global News. Global news data.
+        """World News. Global news data.
 
         Parameters
         ----------
@@ -215,7 +215,7 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : List[GlobalNews]
+            results : List[WorldNews]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp', 'intrinio']]
                 Provider name.
@@ -226,8 +226,8 @@ class ROUTER_news(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        GlobalNews
-        ----------
+        WorldNews
+        ---------
         date : datetime
             The date of the data. Here it is the published date of the news.
         title : str
@@ -251,7 +251,7 @@ class ROUTER_news(Container):
         tags : Optional[str]
             Tags associated with the news. (provider: benzinga)
         updated : Optional[datetime]
-            None
+            Updated date of the news. (provider: benzinga)
         site : Optional[str]
             Site of the news. (provider: fmp)
         company : Optional[Dict[str, Any]]

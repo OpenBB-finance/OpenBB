@@ -1,6 +1,7 @@
 """Provider Registry Module."""
 
 import traceback
+from functools import lru_cache
 from typing import Dict
 
 from importlib_metadata import entry_points
@@ -33,6 +34,7 @@ class RegistryLoader:
     """Load providers from entry points."""
 
     @staticmethod
+    @lru_cache
     def from_extensions() -> Registry:
         """Load providers from entry points."""
         registry = Registry()

@@ -97,7 +97,7 @@ class ROUTER_currency_price(Container):
             The low price.
         close : float
             The close price.
-        volume : float
+        volume : Optional[float]
             The trading volume.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
