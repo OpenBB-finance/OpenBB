@@ -4,7 +4,7 @@ from openbb_core.app.router import CommandMap
 
 
 class Coverage:
-    """/coverage endpoint.
+    """/coverage
 
     providers
     commands

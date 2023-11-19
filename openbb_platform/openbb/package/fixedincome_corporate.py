@@ -129,7 +129,7 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         date: Annotated[
             Optional[datetime.date],
-            OpenBBCustomParameter(description="The date of the data."),
+            OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         yield_curve: Annotated[
             List[Literal["spot", "par"]],
@@ -149,7 +149,7 @@ class ROUTER_fixedincome_corporate(Container):
         Parameters
         ----------
         date : Optional[datetime.date]
-            The date of the data.
+            A specific date to get data for.
         yield_curve : List[Literal['spot', 'par']]
             The yield curve type.
         provider : Optional[Literal['fred']]
