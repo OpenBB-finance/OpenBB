@@ -14,7 +14,7 @@ from typing_extensions import Annotated
 
 class ROUTER_fixedincome_government(Container):
     """/fixedincome/government
-    treasury
+    treasury_rates
     us_yield_curve
     """
 
@@ -22,7 +22,7 @@ class ROUTER_fixedincome_government(Container):
         return self.__doc__ or ""
 
     @validate
-    def treasury(
+    def treasury_rates(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -39,7 +39,7 @@ class ROUTER_fixedincome_government(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Treasury Rates. Treasury rates data.
+        """Government Treasury Rates.
 
         Parameters
         ----------
@@ -98,7 +98,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury()
+        >>> obb.fixedincome.government.treasury_rates()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -113,7 +113,7 @@ class ROUTER_fixedincome_government(Container):
         )
 
         return self._run(
-            "/fixedincome/government/treasury",
+            "/fixedincome/government/treasury_rates",
             **inputs,
         )
 

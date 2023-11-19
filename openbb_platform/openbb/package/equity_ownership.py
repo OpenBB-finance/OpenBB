@@ -66,7 +66,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
-        """Stock Insider Trading. Information about insider trading.
+        """Insider Trading. Information about insider trading.
 
         Parameters
         ----------
@@ -84,7 +84,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[StockInsiderTrading]
+            results : List[InsiderTrading]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -95,38 +95,38 @@ class ROUTER_equity_ownership(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-        StockInsiderTrading
-        -------------------
+        InsiderTrading
+        --------------
         symbol : str
             Symbol representing the entity requested in the data.
         filing_date : datetime
-            Filing date of the stock insider trading.
+            Filing date of the insider trading.
         transaction_date : date
-            Transaction date of the stock insider trading.
+            Transaction date of the insider trading.
         reporting_cik : int
-            Reporting CIK of the stock insider trading.
+            Reporting CIK of the insider trading.
         transaction_type : str
-            Transaction type of the stock insider trading.
+            Transaction type of the insider trading.
         securities_owned : int
-            Securities owned of the stock insider trading.
+            Securities owned of the insider trading.
         company_cik : int
-            Company CIK of the stock insider trading.
+            Company CIK of the insider trading.
         reporting_name : str
-            Reporting name of the stock insider trading.
+            Reporting name of the insider trading.
         type_of_owner : str
-            Type of owner of the stock insider trading.
+            Type of owner of the insider trading.
         acquisition_or_disposition : Optional[str]
-            Acquisition or disposition of the stock insider trading.
+            Acquisition or disposition of the insider trading.
         form_type : str
-            Form type of the stock insider trading.
+            Form type of the insider trading.
         securities_transacted : float
-            Securities transacted of the stock insider trading.
+            Securities transacted of the insider trading.
         price : Optional[float]
-            Price of the stock insider trading.
+            Price of the insider trading.
         security_name : str
-            Security name of the stock insider trading.
+            Security name of the insider trading.
         link : str
-            Link of the stock insider trading.
+            Link of the insider trading.
 
         Example
         -------
