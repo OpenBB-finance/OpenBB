@@ -18,7 +18,7 @@ from openbb_provider.standard_models.company_filings import (
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
 from openbb_sec.utils.helpers import symbol_map
-from pydantic import Field
+from pydantic import Field, field_validator
 
 sec_session_company_filings = requests_cache.CachedSession(
     "OpenBB_SEC_COMPANY_FILINGS", expire_after=timedelta(days=1), use_cache_dir=True
@@ -125,6 +125,18 @@ class SecCompanyFilingsData(CompanyFilingsData):
         description="The URL to the primary XML document.", default=None
     )
 
+    @field_validator("report_date", mode="before", check_fields=False)
+    def validate_report_date(cls, v: Optional[Union[str, dateType]]):
+        """Validate report_date."""
+        if isinstance(v, dateType):
+            return v
+        v = v if v != "" else None
+        return (
+            datetime.strptime(v, "%Y-%m-%d").date()
+            if v and isinstance(v, str)
+            else None
+        )
+
 
 class SecCompanyFilingsFetcher(
     Fetcher[SecCompanyFilingsQueryParams, List[SecCompanyFilingsData]]
@@ -220,6 +232,12 @@ class SecCompanyFilingsFetcher(
         )
         filings["filingDetailUrl"] = (
             base_url + filings["accessionNumber"] + "-index.htm"
+        )
+        filings["xml"] = (
+            filings["completeSubmissionUrl"]
+            .astype(str)
+            .str.replace("-", "")
+            .str.replace(".txt", "/primary_doc.xml")
         )
         if "type" in query.model_dump() and query.type is not None:
             filings = filings[filings["form"] == query.type]
