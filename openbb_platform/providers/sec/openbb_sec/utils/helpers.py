@@ -322,7 +322,9 @@ def get_ftd_urls() -> Dict:
     return results
 
 
-def get_series_id(symbol: Optional[str] = None, cik: Optional[str] = None):
+def get_series_id(
+    symbol: Optional[str] = None, cik: Optional[str] = None, use_cache: bool = True
+):
     """
     This function maps the fund to the series and class IDs for validating the correct filing.
     For an exact match, use a symbol.
@@ -336,7 +338,7 @@ def get_series_id(symbol: Optional[str] = None, cik: Optional[str] = None):
 
     target = symbol if symbol else cik
     choice = "cik" if not symbol else "symbol"
-    funds = get_mf_and_etf_map(use_cache=True).astype(str)
+    funds = get_mf_and_etf_map(use_cache=use_cache).astype(str)
 
     results = funds[
         funds["cik"].str.contains(target, case=False)
@@ -355,7 +357,7 @@ def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
     """Gets a list of all NPORT-P filings for a given fund's symbol."""
 
     results = []
-    _series_id = get_series_id(symbol)
+    _series_id = get_series_id(symbol, use_cache=use_cache)
     try:
         series_id = (
             symbol_map(symbol, use_cache)
