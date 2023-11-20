@@ -10,6 +10,6 @@ To install the extension, run the following command in this folder:
 pip install openbb-commodity
 ```
 
-For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb-sdk-v4/openbb_platform/CONTRIBUTING.md).
+For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/CONTRIBUTING.md).
 
 Documentation available [here](https://docs.openbb.co/platform).
