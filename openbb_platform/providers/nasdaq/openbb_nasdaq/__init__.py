@@ -5,6 +5,7 @@ from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
 from openbb_nasdaq.models.cot import NasdaqCotFetcher
 from openbb_nasdaq.models.cot_search import NasdaqCotSearchFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
+from openbb_nasdaq.models.lbma_fixing import NasdaqLbmaFixingFetcher
 from openbb_nasdaq.models.sp500_multiples import NasdaqSP500MultiplesFetcher
 from openbb_nasdaq.models.top_retail import NasdaqTopRetailFetcher
 from openbb_provider.abstract.provider import Provider
@@ -23,6 +24,7 @@ unmatched technology, insights and markets expertise.""",
         "COT": NasdaqCotFetcher,
         "COTSearch": NasdaqCotSearchFetcher,
         "EconomicCalendar": NasdaqEconomicCalendarFetcher,
+        "LbmaFixing": NasdaqLbmaFixingFetcher,
         "SP500Multiples": NasdaqSP500MultiplesFetcher,
         "TopRetail": NasdaqTopRetailFetcher,
     },
