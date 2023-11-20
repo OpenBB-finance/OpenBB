@@ -6,9 +6,11 @@ on:
       - main
       - release/*
   pull_request:
-    types: [closed]
-    branches:
-      - develop
+    pull_request:
+      types: [opened, synchronize, reopened]
+      branches:
+        - develop
+        - 'docs/*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
