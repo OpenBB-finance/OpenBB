@@ -18,7 +18,7 @@ class DataLinkQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
         default=None,
     )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize", None]] = Field(
+    transform: Literal["diff", "rdiff", "cumul", "normalize", None] = Field(
         description="Transform the data as w/w difference, percent change, cumulative, or normalize.",
         default=None,
     )
