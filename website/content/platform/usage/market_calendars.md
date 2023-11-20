@@ -44,7 +44,7 @@ Market calendars are an essential part of any analyst's daily rituals.  Economic
 Let's take a look at some use-cases.
 
 :::note
-Examples on this page will assume that the OpenBB Platform is insalled, the Python environment is active, and the Python interface has been imported into the active session.
+Examples on this page will assume that the OpenBB Platform is installed, the Python environment is active, and the Python interface has been imported into the active session.
 
 ```python
 from openbb import obb

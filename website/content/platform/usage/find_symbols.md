@@ -92,7 +92,7 @@ obb.regulators.sec.institutions_search("Berkshire Hathaway").to_df()
 |:-------------------------------------------------|-----------:|
 | BERKSHIRE HATHAWAY ENERGY CO                     | 0001081316 |
 | BERKSHIRE HATHAWAY FINANCE CORP                  | 0001274791 |
-| BERKSHIRE HATHAWAY HOMESTATE INSURANCE CO.       | 0000829771 |
+| BERKSHIRE HATHAWAY HOMESTATE INSURANCE CO.       | 0000829771 |  #  cspell:disable-line
 | BERKSHIRE HATHAWAY INC /DE/                      | 0000109694 |
 | BERKSHIRE HATHAWAY INC/DE                        | 0000109694 |
 | BERKSHIRE HATHAWAY INC                           | 0001067983 |
