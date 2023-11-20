@@ -23,6 +23,7 @@ openbb-tradingeconomics = "^1.0.0b0"
 
 openbb-crypto = "^1.0.0b0"
 openbb-currency = "^1.0.0b0"
+openbb-commodity = "^1.0.0b0"
 openbb-derivatives = "^1.0.0b0"
 openbb-economy = "^1.0.0b0"
 openbb-equity = "^1.0.0b0"
