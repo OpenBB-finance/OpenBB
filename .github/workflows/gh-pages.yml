@@ -65,6 +65,7 @@ jobs:
       - run: |
           source $VENV
           pip uninstall Brotli -y
+          pip install -U poetry
           python openbb_platform/dev_install.py -e all
           pytest tests/website --autodoc
           python website/generate_platform_v4_markdown.py && website/generate_sdk_v3_markdown.py && python website/generate_terminal_v3_markdown.py
