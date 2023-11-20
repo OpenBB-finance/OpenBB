@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Architectural Considerations - Developer Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Architectural Considerations - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 ## Important classes
 
