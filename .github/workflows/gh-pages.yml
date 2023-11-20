@@ -65,6 +65,7 @@ jobs:
       - run: |
           source $VENV
           pip uninstall Brotli -y
+          pip uninstall nbformat -y
           pip install -U poetry
           python openbb_platform/dev_install.py -e all
           pytest tests/website --autodoc
