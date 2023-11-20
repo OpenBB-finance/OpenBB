@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Write Code and Commit - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Write Code and Commit - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 ## How to create a PR?
 
