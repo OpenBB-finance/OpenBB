@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Manage Extensions - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Manage Extensions - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 To install an extension hosted on PyPI, use the `pip install <extension>` command.
 

@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Expectations for Developers - Developer Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Expectations for Developers - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 1. Use Cases:
    - Ensure that your extensions or features align with the broader goals of the application.

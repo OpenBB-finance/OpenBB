@@ -18,6 +18,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Copilot | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/HbKo74HwV-4?si=J6iqvjrPWcEH1I92"
+  videoLegend="Short introduction to Terminal Pro advanced search"
+/>
 
 OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 
