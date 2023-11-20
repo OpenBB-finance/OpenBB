@@ -29,7 +29,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets | OpenBB Terminal Pro Docs" />
 
-
 <img width="616" alt="275681758-87fda536-c62c-4b3b-a6c0-42b4b2a3a3cc" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/42b9321b-2912-4853-af1e-abb256573fec"/>
 
 ## Upper Tab

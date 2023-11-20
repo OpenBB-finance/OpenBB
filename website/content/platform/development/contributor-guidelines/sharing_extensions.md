@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Sharing Your Extension - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Sharing Your Extension - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 We encourage you to share your extension with the community. You can do that by publishing it to PyPI.
 

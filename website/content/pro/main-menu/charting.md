@@ -26,9 +26,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Charting | OpenBB Terminal Pro Docs" />
 
-<img width="1791" alt="273497041-34665daf-a145-44c5-ab1e-285c34d29bda" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0044f3c9-c6ce-4880-8022-84be12fec05f" />
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/EOgzGy3DlOQ?si=CCrvCxjTNvB2sxbk"
+  videoLegend="Short introduction to Terminal Pro Charting"
+/>
 
 Our charting feature is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: https://www.tradingview.com/charting-library-docs/latest/getting_started/
+
+<img width="1791" alt="273497041-34665daf-a145-44c5-ab1e-285c34d29bda" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0044f3c9-c6ce-4880-8022-84be12fec05f" />
 
 Here's a quick rundown of what you can do with our charting feature:
 

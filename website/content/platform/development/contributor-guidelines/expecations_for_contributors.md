@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Expectations For Contributors - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Expectations For Contributors - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 1. Use Cases:
    - Ensure that your contributions directly enhance the OpenBB Platform's functionality or extension ecosystem.
