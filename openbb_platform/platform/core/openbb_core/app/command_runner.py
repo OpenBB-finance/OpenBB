@@ -306,7 +306,6 @@ class StaticCommandRunner:
         # If we're on the api we need to remove "chart" here because the parameter is added on
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
-        e = None
 
         try:
             obbject = await cls._command(
@@ -335,7 +334,7 @@ class StaticCommandRunner:
                 route=route,
                 func=func,
                 kwargs=kwargs,
-                exec_info=exc_info() if e else None,
+                exec_info=exc_info(),
             )
 
         return obbject
