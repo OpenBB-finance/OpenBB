@@ -21,7 +21,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Getting Started | OpenBB Terminal Pro Docs" />
 
-Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment research. Let's get you started by understanding the layout of the Terminal Pro.
+Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment research.
+
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/o6nSIeDI0xk?si=07eb4igmC-AuzKWT"
+  videoLegend="Short introduction to Terminal Pro interface"
+/>
+
+
+Let's get you started by understanding the layout of the Terminal Pro.
 
 <img width="1467" alt="275680756-5738aae0-23cd-4cfa-8150-77150a1d5086" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c4a53275-5182-4e9a-a39f-ecb7604dd821"/>
 
