@@ -3,28 +3,17 @@
 from typing import Any, Dict, List, Literal, Optional
 
 import nasdaqdatalink
+from openbb_nasdaq.models.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
-from pydantic import Field
 
 
-class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams):
+class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams, DataLinkQueryParams):
     """Nasdaq SP500 Multiples Query."""
-
-    collapse: Optional[
-        Literal["daily", "weekly", "monthly", "quarterly", "annual"]
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default="monthly",
-    )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
-        description="The transformation of the time series.",
-        default=None,
-    )
 
 
 class NasdaqSP500MultiplesData(SP500MultiplesData):

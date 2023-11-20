@@ -36,7 +36,7 @@ class LbmaFixingQueryParams(QueryParams):
 
 class LbmaFixingData(Data):
     """
-    LBMA Fixing Data.  Historical AM/PM fixing prices for gold and silver in USD, GBP and EUR.
+    LBMA Fixing Data.  Historical fixing prices in USD, GBP and EUR.
     """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))

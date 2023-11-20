@@ -21,5 +21,5 @@ def lbma_fixing(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Daily LBMA Fixing Prices for Gold and Silver in USD/EUR/GBP, with AM/PM prices."""
+    """Daily LBMA Fixing Prices in USD/EUR/GBP."""
     return OBBject(results=Query(**locals()).execute())

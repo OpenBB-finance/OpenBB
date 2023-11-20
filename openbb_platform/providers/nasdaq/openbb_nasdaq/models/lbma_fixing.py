@@ -3,6 +3,7 @@
 from typing import Any, Dict, List, Literal, Optional
 
 import nasdaqdatalink
+from openbb_nasdaq.models.query_params import DataLinkQueryParams
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.lbma_fixing import (
     LbmaFixingData,
@@ -11,21 +12,11 @@ from openbb_provider.standard_models.lbma_fixing import (
 from pydantic import Field
 
 
-class NasdaqLbmaFixingQueryParams(LbmaFixingQueryParams):
+class NasdaqLbmaFixingQueryParams(LbmaFixingQueryParams, DataLinkQueryParams):
     """Get LBMA Fixing Data from Nasdaq Data Link."""
 
     asset: Literal["gold", "silver"] = Field(
         description="The LBMA fixing asset.",
-    )
-
-    collapse: Literal[
-        "daily", "weekly", "monthly", "quarterly", "annual", None
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default=None,
-    )
-    transform: Literal["diff", "rdiff", "cumul", "normalize", None] = Field(
-        description="The transformation of the time series.", default=None
     )
 
 

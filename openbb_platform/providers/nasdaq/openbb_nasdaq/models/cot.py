@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Literal, Optional
 
 import nasdaqdatalink
 import pandas as pd
+from openbb_nasdaq.models.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import CFTC
 from openbb_provider.abstract.fetcher import Fetcher
 from openbb_provider.standard_models.cot import COTData, COTQueryParams
@@ -15,7 +16,7 @@ from openbb_provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
 
 
-class NasdaqCotQueryParams(COTQueryParams):
+class NasdaqCotQueryParams(COTQueryParams, DataLinkQueryParams):
     """Get CFTC Commitment of Traders Report.
 
     Source: https://data.nasdaq.com/data/CFTC-commodity-futures-trading-commission-reports/documentation
@@ -74,17 +75,6 @@ class NasdaqCotQueryParams(COTQueryParams):
 
             CHG = Change in Positions. Only valid when data_type is "CITS".
             """,
-        default=None,
-    )
-    start_date: Optional[dateType] = Field(
-        description="The start date of the time series. Defaults to all.", default=None
-    )
-    end_date: Optional[dateType] = Field(
-        description="The end date of the time series. Defaults to the most recent data.",
-        default=None,
-    )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
-        description="Transform the data as w/w difference, percent change, cumulative, or normalize.",
         default=None,
     )
 
