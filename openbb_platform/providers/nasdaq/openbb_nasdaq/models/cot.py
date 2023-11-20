@@ -1,7 +1,6 @@
 """Nasdaq CFTC Commitment of Traders Reports Model."""
 
 from datetime import (
-    date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Literal, Optional

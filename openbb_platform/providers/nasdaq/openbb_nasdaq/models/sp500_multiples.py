@@ -1,6 +1,6 @@
 """Nasdaq SP500 Multiples Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 import nasdaqdatalink
 from openbb_nasdaq.models.query_params import DataLinkQueryParams
