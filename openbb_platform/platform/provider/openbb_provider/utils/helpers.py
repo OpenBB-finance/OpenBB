@@ -1,6 +1,7 @@
 import asyncio
 import random
 import re
+import zlib
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import (
@@ -103,9 +104,10 @@ async def async_make_request(
     kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
     kwargs["headers"] = kwargs.get(
         "headers",
+        # Default headers, makes sure we accept gzip
         {
             "Accept": "*/*",
-            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Encoding": "gzip, deflate",
             "Connection": "keep-alive",
         },
     )
@@ -122,8 +124,16 @@ async def async_make_request(
         return await response_callback(r)
 
     async with aiohttp.ClientSession(
-        connector=aiohttp.TCPConnector(), raise_for_status=raise_for_status
+        auto_decompress=False,
+        connector=aiohttp.TCPConnector(),
+        raise_for_status=raise_for_status,
     ) as session, session.request(method, url, **kwargs) as response:
+        # we need to decompress the response manually, so pytest-vcr records as bytes
+        if (encoding := response.headers["Content-Encoding"]) in ("gzip", "deflate"):
+            response_body = await response.read()
+            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
+            response._body = zlib.decompress(response_body, wbits)
+
         return await response_callback(response)
 
 
