@@ -101,7 +101,15 @@ async def async_make_request(
     """
 
     kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-    kwargs["headers"] = kwargs.get("headers", {})
+    kwargs["headers"] = kwargs.get(
+        "headers",
+        {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+        },
+    )
+
     raise_for_status = kwargs.pop("raise_for_status", False)
     response_callback = response_callback or (lambda r: asyncio.ensure_future(r.json()))
 
