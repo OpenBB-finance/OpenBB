@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quality Assurance - Contributor Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Quality Assurance - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
 

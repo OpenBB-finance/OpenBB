@@ -24,4 +24,4 @@ Developing and maintaining a full-blown investment research infrastructure from 
 
 ---
 
-Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/CONTRIBUTING.md).

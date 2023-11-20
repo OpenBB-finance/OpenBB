@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Build OpenBB Extensions - Developer Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Build OpenBB Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 We have a **Cookiecutter** template that will help you get started. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
 

@@ -13,7 +13,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Add a Data Point - Developer Guidelines - Contributing | OpenBB Platform Docs" />
+<HeadTitle title="Add a Data Point - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/platform/provider/openbb_provider/standard_models) model.
 

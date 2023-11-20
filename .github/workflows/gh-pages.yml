@@ -64,7 +64,7 @@ jobs:
           source $VENV
           pip uninstall Brotli -y
           pytest tests/website --autodoc
-          python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
+          python website/generate_platform_v4_markdown.py && website/generate_sdk_v3_markdown.py && python website/generate_terminal_v3_markdown.py
 
       - name: Setup Node
         uses: actions/setup-node@v3
