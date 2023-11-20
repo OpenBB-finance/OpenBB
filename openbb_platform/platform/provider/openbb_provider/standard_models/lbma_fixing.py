@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -20,7 +20,7 @@ class LbmaFixingQueryParams(QueryParams):
     Source: https://www.lbma.org.uk/prices-and-data/precious-metal-prices#/table
     """
 
-    asset: Literal["gold", "silver"] = Field(
+    asset: str = Field(
         description="The metal to get price fixing rates for.",
         default="gold",
     )

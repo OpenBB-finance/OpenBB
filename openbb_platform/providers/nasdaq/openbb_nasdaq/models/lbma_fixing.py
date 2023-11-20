@@ -14,6 +14,10 @@ from pydantic import Field
 class NasdaqLbmaFixingQueryParams(LbmaFixingQueryParams):
     """Get LBMA Fixing Data from Nasdaq Data Link."""
 
+    asset: Literal["gold", "silver"] = Field(
+        description="The LBMA fixing asset.",
+    )
+
     collapse: Literal[
         "daily", "weekly", "monthly", "quarterly", "annual", None
     ] = Field(
