@@ -72,6 +72,7 @@ jobs:
           python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
           python website/generate_platform_v4_markdown.py
+          python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3
