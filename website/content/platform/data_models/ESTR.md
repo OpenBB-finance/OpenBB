@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.estr_rates import (
+from openbb_core.provider.standard_models.estr_rates import (
 ESTRData,
 ESTRQueryParams,
 )
@@ -63,4 +63,3 @@ ESTRQueryParams,
 </TabItem>
 
 </Tabs>
-

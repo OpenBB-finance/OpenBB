@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.european_index_constituents import (
+from openbb_core.provider.standard_models.european_index_constituents import (
 EuropeanIndexConstituentsData,
 EuropeanIndexConstituentsQueryParams,
 )
@@ -78,4 +78,3 @@ EuropeanIndexConstituentsQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.hqm import (
+from openbb_core.provider.standard_models.hqm import (
 HighQualityMarketCorporateBondData,
 HighQualityMarketCorporateBondQueryParams,
 )
@@ -55,4 +55,3 @@ HighQualityMarketCorporateBondQueryParams,
 </TabItem>
 
 </Tabs>
-

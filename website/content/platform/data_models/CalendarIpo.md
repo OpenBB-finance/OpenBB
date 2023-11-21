@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.calendar_ipo import (
+from openbb_core.provider.standard_models.calendar_ipo import (
 CalendarIpoData,
 CalendarIpoQueryParams,
 )
@@ -87,55 +87,55 @@ CalendarIpoQueryParams,
 | ---- | ---- | ----------- |
 | symbol | str | Symbol representing the entity requested in the data. |
 | ipo_date | date | The date of the IPO, when the stock first trades on a major exchange. |
-| status | Literal['upcoming', 'priced', 'withdrawn'] | 
+| status | Literal['upcoming', 'priced', 'withdrawn'] |
             The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
             Priced IPOs have taken place.
             Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
          |
-| exchange | str | 
+| exchange | str |
             The acronym of the stock exchange that the company is going to trade publicly on.
             Typically NYSE or NASDAQ.
          |
 | offer_amount | float | The total dollar amount of shares offered in the IPO. Typically this is share price * share count |
 | share_price | float | The price per share at which the IPO was offered. |
-| share_price_lowest | float | 
+| share_price_lowest | float |
             The expected lowest price per share at which the IPO will be offered.
             Before an IPO is priced, companies typically provide a range of prices per share at which
             they expect to offer the IPO (typically available for upcoming IPOs).
          |
-| share_price_highest | float | 
+| share_price_highest | float |
             The expected highest price per share at which the IPO will be offered.
             Before an IPO is priced, companies typically provide a range of prices per share at which
             they expect to offer the IPO (typically available for upcoming IPOs).
          |
 | share_count | int | The number of shares offered in the IPO. |
-| share_count_lowest | int | 
+| share_count_lowest | int |
             The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced,
             companies typically provide a range of shares that they expect to offer in the IPO
             (typically available for upcoming IPOs).
          |
-| share_count_highest | int | 
+| share_count_highest | int |
             The expected highest number of shares that will be offered in the IPO. Before an IPO is priced,
             companies typically provide a range of shares that they expect to offer in the IPO
             (typically available for upcoming IPOs).
          |
 | announcement_url | str | The URL to the company's announcement of the IPO |
-| sec_report_url | str | 
+| sec_report_url | str |
             The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
             which is required to be filed before an IPO takes place.
          |
 | open_price | float | The opening price at the beginning of the first trading day (only available for priced IPOs). |
 | close_price | float | The closing price at the end of the first trading day (only available for priced IPOs). |
 | volume | int | The volume at the end of the first trading day (only available for priced IPOs). |
-| day_change | float | 
+| day_change | float |
             The percentage change between the open price and the close price on the first trading day
             (only available for priced IPOs).
          |
-| week_change | float | 
+| week_change | float |
             The percentage change between the open price on the first trading day and the close price approximately
             a week after the first trading day (only available for priced IPOs).
          |
-| month_change | float | 
+| month_change | float |
             The percentage change between the open price on the first trading day and the close price approximately
             a month after the first trading day (only available for priced IPOs).
          |
@@ -160,4 +160,3 @@ CalendarIpoQueryParams,
 </TabItem>
 
 </Tabs>
-
