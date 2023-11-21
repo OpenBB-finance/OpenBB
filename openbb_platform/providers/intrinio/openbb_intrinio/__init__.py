@@ -13,6 +13,7 @@ from openbb_intrinio.models.financial_attributes import (
 )
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
+from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.search_financial_attributes import (
@@ -38,10 +39,11 @@ intrinio_provider = Provider(
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "FinancialAttributes": IntrinioFinancialAttributesFetcher,
         "FredIndices": IntrinioFredIndicesFetcher,
-        "WorldNews": IntrinioWorldNewsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
+        "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "SearchFinancialAttributes": IntrinioSearchFinancialAttributesFetcher,
+        "WorldNews": IntrinioWorldNewsFetcher,
     },
 )
