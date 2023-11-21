@@ -48,6 +48,7 @@ openbb-charting = { version = "^1.0.0b1", optional = true }
 openbb-econometrics = { version = "^1.0.0b1", optional = true }
 openbb-quantitative = { version = "^1.0.0b1", optional = true }
 openbb-technical = { version = "^1.0.0b1", optional = true }
+pytest-recorder = "^0.2.4"
 
 [tool.poetry.extras]
 alpha_vantage = ["openbb-alpha-vantage"]
