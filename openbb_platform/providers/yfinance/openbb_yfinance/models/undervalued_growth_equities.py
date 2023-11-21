@@ -78,7 +78,8 @@ class YFUndervaluedGrowthEquitiesFetcher(
         df = (
             pd.read_html(html_clean, header=None)[0]
             .dropna(how="all", axis=1)
-            .replace(float("NaN"), "")
+            .fillna("-")
+            .replace("-", None)
         )
         return df
 
@@ -94,7 +95,6 @@ class YFUndervaluedGrowthEquitiesFetcher(
         data["Avg Vol (3 month)"] = (
             data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
         )
-        data = data.apply(pd.to_numeric, errors="ignore")
         data = data.to_dict(orient="records")
         data = sorted(data, key=lambda d: d["Volume"], reverse=query.sort == "desc")
         return [YFUndervaluedGrowthEquitiesData.model_validate(d) for d in data]
