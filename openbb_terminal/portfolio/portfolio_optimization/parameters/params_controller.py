@@ -35,7 +35,6 @@ class ParametersController(BaseController):
         "set",
         "load",
         "save",
-        "new",
         "clear",
         "arg",
     ]
