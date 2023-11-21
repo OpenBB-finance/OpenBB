@@ -59,7 +59,7 @@ Examples below assume that the Python interface has been imported in the current
 ```python
 from openbb import obb
 ```
-
+or
 ```python
 uvicorn openbb_core.api.rest_api:app
 ```
