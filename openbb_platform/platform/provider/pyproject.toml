@@ -15,7 +15,7 @@ importlib-metadata = "^6.8.0"
 python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest-recorder = "^0.2.3"
+pytest-recorder = "^0.2.4"
 
 [build-system]
 requires = ["poetry-core"]
