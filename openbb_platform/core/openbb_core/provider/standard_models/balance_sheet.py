@@ -65,7 +65,7 @@ class BalanceSheetData(Data):
     accepted_date: Optional[datetime] = Field(
         default=None, description="Accepted date."
     )
-    period: str = Field(default=None, description="Reporting period of the statement.")
+    period: Optional[str] = Field(default=None, description="Reporting period of the statement.")
 
     cash_and_cash_equivalents: Optional[StrictFloat] = Field(
         default=None, description="Cash and cash equivalents"
