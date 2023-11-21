@@ -12,7 +12,7 @@ export default function NavbarLogo() {
   const type = pathname.length > 1 ? pathname.split("/")[1] : "home";
 
   return (
-    <div className="flex items-center ml-2" style={{ display: window.innerWidth < 380 ? 'none' : 'flex' }}>
+    <div className="flex items-center ml-2" style={{ display: window?.innerWidth < 380 ? 'none' : 'flex' }}>
       <Link to={`/${type}`}>
         {getLogo(type)}
       </Link>
