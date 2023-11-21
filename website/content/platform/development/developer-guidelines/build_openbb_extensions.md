@@ -1,6 +1,6 @@
 ---
 title: Building Extensions for OpenBB Platform
-sidebar_position: 2
+sidebar_position: 3
 description: This guide provides a comprehensive walkthrough on how to create custom extensions for the OpenBB Platform. It covers the process from generating the extension structure to sharing it with the community.
 keywords:
 - OpenBB Platform

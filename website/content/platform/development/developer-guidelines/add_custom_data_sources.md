@@ -1,6 +1,6 @@
 ---
 title: Add Custom Data Sources
-sidebar_position: 5
+sidebar_position: 6
 description: This guide provides detailed instructions on how to add custom data sources to the OpenBB Platform. It covers the process of creating a custom extension, standardizing data, defining models, and creating a Fetcher class.
 keywords:
 - OpenBB custom data sources
