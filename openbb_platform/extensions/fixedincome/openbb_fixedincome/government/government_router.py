@@ -76,3 +76,14 @@ def treasury_auctions(
 ) -> OBBject[BaseModel]:
     """Government Treasury Auctions."""
     return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="TreasuryPrices")
+def treasury_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Government Treasury Prices by date."""
+    return OBBject(results=Query(**locals()).execute())
