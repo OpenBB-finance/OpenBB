@@ -26,69 +26,6 @@ logger = logging.getLogger(__name__)
 
 set_log_file('extism.out', level='debug')
 
-# def ema(data, params):
-#     #print(data)
-#     length = params['periods']
-#     print(length)
-#     ema = ta.ema(data, length)
-#     print(ema)
-#     return ema
-
-# def get_frame(req):
-#     df = pd.DataFrame({'prices': req['prices']})
-#     df.index = pd.to_datetime(pd.to_numeric(df.index), unit='ms')
-#     df['prices'] = pd.to_numeric(df['prices'], errors='coerce')
-#     return df
-
-# def make_response(ema_result):
-#     # format for returning response to the plugin
-#     ema_result.name = 'data'
-#     ema_frame = ema_result.to_frame()
-#     ema_frame.fillna(0, inplace=True)
-#     ema_frame.index = ema_frame.index.date
-#     json_response = ema_frame.to_json()
-#     return json_response
-
-# def handle_request(req):
-#     df = get_frame(req)
-#     print(df)
-
-#     params = json.loads(req['params'])
-#     print(params)
-
-#     if req['name'] == 'ema':
-#         ema_result = ema(df['prices'], params)
-#         #print(ema_result)
-#         json_response = make_response(ema_result)
-#         return json_response
-
-#     if req['name'] == 'rsi':
-#         rsi_result = rsi(df['prices'], params)
-#         json_response = make_response(rsi_result)
-#         return json_response
-
-    
-#     return nil
-
-# @host_fn
-# def get_ta(plugin, input_, output, a_string):
-#     print("Host Function called: get_ta")
-#     req = json.loads(plugin.input_string(input_[0]))
-#     print(req)
-#     rep = handle_request(req)
-#     print(rep)
-#     plugin.return_string(output[0], rep)
-
-# hostfuncs = [
-#     Function(
-#         "get_ta",
-#         [ValType.I64],
-#         [ValType.I64],
-#         get_ta,
-#         None
-#     ),
-# ]
-
 @log_start_end(log=logger)
 def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
     """Function to replace bt.get, gets Adjusted close of symbol using yfinance.
@@ -200,8 +137,6 @@ def run_strategy(plugin, name: str, symbol: str, data: pd.DataFrame, **kwargs) -
     #console.print(req)
 
     console.print("Calling Extism plugin")
-    # manifest = {"wasm": [{"url": "https://modsurfer.dylibso.workers.dev/api/v1/module/4738fbe83e5a1d2ce3842759722165d79870886e01a9371715807002cb711446.wasm"}]}
-    # plugin = Plugin(manifest, functions=hostfuncs)
     rep = plugin.call("call", req)
     #console.print(response)
 
