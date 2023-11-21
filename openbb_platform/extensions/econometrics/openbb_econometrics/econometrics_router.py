@@ -29,7 +29,7 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-async def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
+def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
     Parameters
@@ -59,7 +59,7 @@ async def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def ols_regression(
+def ols_regression(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -88,7 +88,7 @@ async def ols_regression(
 
 
 @router.command(methods=["POST"])
-async def ols_regression_summary(
+def ols_regression_summary(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -153,7 +153,7 @@ async def ols_regression_summary(
 
 
 @router.command(methods=["POST"])
-async def autocorrelation(
+def autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -181,7 +181,7 @@ async def autocorrelation(
 
 
 @router.command(methods=["POST"])
-async def residual_autocorrelation(
+def residual_autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -222,7 +222,7 @@ async def residual_autocorrelation(
 
 
 @router.command(methods=["POST"])
-async def cointegration(
+def cointegration(
     data: List[Data],
     columns: List[str],
 ) -> OBBject[Data]:
@@ -266,7 +266,7 @@ async def cointegration(
 
 
 @router.command(methods=["POST"])
-async def causality(
+def causality(
     data: List[Data],
     y_column: str,
     x_column: str,
@@ -309,7 +309,7 @@ async def causality(
 
 
 @router.command(methods=["POST"])
-async def unit_root(
+def unit_root(
     data: List[Data],
     column: str,
     regression: Literal["c", "ct", "ctt"] = "c",
@@ -344,7 +344,7 @@ async def unit_root(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_random_effects(
+def panel_random_effects(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -373,7 +373,7 @@ async def panel_random_effects(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_between(
+def panel_between(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -402,7 +402,7 @@ async def panel_between(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_pooled(
+def panel_pooled(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -431,7 +431,7 @@ async def panel_pooled(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_fixed(
+def panel_fixed(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -460,7 +460,7 @@ async def panel_fixed(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_first_difference(
+def panel_first_difference(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
@@ -489,7 +489,7 @@ async def panel_first_difference(
 
 
 @router.command(methods=["POST"], include_in_schema=False)
-async def panel_fmac(
+def panel_fmac(
     data: List[Data],
     y_column: str,
     x_columns: List[str],

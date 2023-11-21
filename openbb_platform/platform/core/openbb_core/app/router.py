@@ -161,11 +161,11 @@ class CommandValidator:
             )
 
     @classmethod
-    def check(cls, func: Callable):
-        if not iscoroutinefunction(func):
+    def check(cls, func: Callable, model: str = ""):
+        if model and not iscoroutinefunction(func):
             raise TypeError(
                 f"Invalid function: {func.__module__}.{func.__name__}\n"
-                "Route functions must be async."
+                "Model is specified but function is not async.\n"
                 "\n\n"
                 '\033[92m@router.command(model="WorldNews")\n'
                 "async def world(\n"
@@ -222,7 +222,7 @@ class Router:
         func = SignatureInspector.complete_signature(func, model)
 
         if func:
-            CommandValidator.check(func=func)
+            CommandValidator.check(func=func, model=model)
 
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)

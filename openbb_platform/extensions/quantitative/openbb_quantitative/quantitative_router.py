@@ -30,7 +30,7 @@ router = Router(prefix="")
 
 
 @router.command(methods=["POST"])
-async def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
+def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
     - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
@@ -74,7 +74,7 @@ async def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 
 
 @router.command(methods=["POST"])
-async def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
+def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model."""
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
@@ -108,7 +108,7 @@ async def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
 
 @router.command(methods=["POST"])
-async def omega_ratio(
+def omega_ratio(
     data: List[Data],
     target: str,
     threshold_start: float = 0.0,
@@ -137,7 +137,7 @@ async def omega_ratio(
 
     epsilon = 1e-6  # to avoid division by zero
 
-    async def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
+    def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
         """Get omega ratio."""
         daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
         excess = df_target - daily_threshold
@@ -156,9 +156,7 @@ async def omega_ratio(
 
 
 @router.command(methods=["POST"])
-async def kurtosis(
-    data: List[Data], target: str, window: PositiveInt
-) -> OBBject[List[Data]]:
+def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
     """Get the Kurtosis.
 
     Parameters
@@ -186,7 +184,7 @@ async def kurtosis(
 
 
 @router.command(methods=["POST"])
-async def unitroot_test(
+def unitroot_test(
     data: List[Data],
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
@@ -240,7 +238,7 @@ async def unitroot_test(
 
 
 @router.command(methods=["POST"])
-async def sharpe_ratio(
+def sharpe_ratio(
     data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
 ) -> OBBject[List[Data]]:
     """Get Sharpe Ratio.
@@ -274,7 +272,7 @@ async def sharpe_ratio(
 
 
 @router.command(methods=["POST"])
-async def sortino_ratio(
+def sortino_ratio(
     data: List[Data],
     target: str,
     target_return: float = 0.0,
@@ -322,9 +320,7 @@ async def sortino_ratio(
 
 
 @router.command(methods=["POST"])
-async def skewness(
-    data: List[Data], target: str, window: PositiveInt
-) -> OBBject[List[Data]]:
+def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
     """Get Skewness.
 
     Parameters
@@ -352,7 +348,7 @@ async def skewness(
 
 
 @router.command(methods=["POST"])
-async def quantile(
+def quantile(
     data: List[Data],
     target: str,
     window: PositiveInt,
@@ -390,7 +386,7 @@ async def quantile(
 
 
 @router.command(methods=["POST"])
-async def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
+def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
 
     Parameters
