@@ -12,7 +12,7 @@ EXTENSION_PACKAGES = ["extensions", "providers"]
 CMD = [sys.executable, "-m", "poetry"]
 CORE_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-provider=latest"]
 EXTENSION_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-core=latest"]
-VERSION_BUMP_CMD = ["version", "prerelease", "--next-phase"]
+VERSION_BUMP_CMD = ["version", "prerelease"]
 PUBLISH_CMD = ["publish", "--build"]
 
 
