@@ -4,8 +4,9 @@ from typing import Any, Dict
 
 import numpy as np
 import pandas as pd
-from openbb_core.provider.abstract.data import Data
 from pydantic import BaseModel, Field, field_validator
+
+from openbb_core.provider.abstract.data import Data
 
 
 class Metadata(BaseModel):

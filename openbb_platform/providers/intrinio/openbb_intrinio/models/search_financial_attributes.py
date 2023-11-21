@@ -2,13 +2,13 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_intrinio.utils.helpers import get_data_one
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.search_financial_attributes import (
     SearchFinancialAttributesData,
     SearchFinancialAttributesQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_intrinio.utils.helpers import get_data_one
 
 
 class IntrinioSearchFinancialAttributesQueryParams(

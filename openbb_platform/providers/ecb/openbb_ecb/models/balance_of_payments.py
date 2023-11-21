@@ -4,13 +4,6 @@ import concurrent.futures
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from openbb_ecb.utils.bps_series import (
-    BPS_COUNTRIES,
-    BPS_FREQUENCIES,
-    BPS_REPORT_TYPES,
-    generate_bps_series_ids,
-)
-from openbb_ecb.utils.ecb_helpers import get_series_data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_of_payments import (
     BalanceOfPaymentsQueryParams,
@@ -23,6 +16,13 @@ from openbb_core.provider.standard_models.balance_of_payments import (
     ECBServices,
     ECBSummary,
 )
+from openbb_ecb.utils.bps_series import (
+    BPS_COUNTRIES,
+    BPS_FREQUENCIES,
+    BPS_REPORT_TYPES,
+    generate_bps_series_ids,
+)
+from openbb_ecb.utils.ecb_helpers import get_series_data
 from pydantic import Field
 
 

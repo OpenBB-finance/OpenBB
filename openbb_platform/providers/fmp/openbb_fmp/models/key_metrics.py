@@ -5,13 +5,13 @@ from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from openbb_core.provider.abstract.data import StrictInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from pydantic import Field
 
 

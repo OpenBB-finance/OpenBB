@@ -1,4 +1,5 @@
 """FMP Provider module."""
+from openbb_core.provider.abstract.provider import Provider
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
@@ -57,7 +58,6 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
-from openbb_core.provider.abstract.provider import Provider
 
 fmp_provider = Provider(
     name="fmp",

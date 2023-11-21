@@ -3,7 +3,6 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_polygon.utils.helpers import get_data
 from openbb_core.provider.abstract.data import StrictInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -11,6 +10,7 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_polygon.utils.helpers import get_data
 from pydantic import Field, field_validator
 
 

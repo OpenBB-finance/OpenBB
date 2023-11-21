@@ -1,5 +1,6 @@
 """Intrinio provider module."""
 
+from openbb_core.provider.abstract.provider import Provider
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
@@ -18,7 +19,6 @@ from openbb_intrinio.models.search_financial_attributes import (
     IntrinioSearchFinancialAttributesFetcher,
 )
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
-from openbb_core.provider.abstract.provider import Provider
 
 intrinio_provider = Provider(
     name="intrinio",

@@ -4,9 +4,6 @@ from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
-from openbb_core.provider.query_executor import QueryExecutor
-from openbb_core.provider.registry_map import MapType, RegistryMap
-from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import (
     AliasChoices,
     BaseModel,
@@ -17,6 +14,9 @@ from pydantic import (
 from pydantic.fields import FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.provider.query_executor import QueryExecutor
+from openbb_core.provider.registry_map import MapType, RegistryMap
+from openbb_core.provider.utils.helpers import to_snake_case
 
 TupleFieldType = Tuple[str, type, Any]
 
