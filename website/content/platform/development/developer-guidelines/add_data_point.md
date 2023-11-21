@@ -17,16 +17,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/platform/provider/openbb_provider/standard_models) model.
 
-## Identify which type of data you want to add
+## Identify your data
 
-In this example, we'll be adding OHLC stock data that is used by the `obb.equity.price.historical` command.
+In this example, we'll be adding historical, end-of-day OHLC (open, high, low, close) equity data that is used by the `obb.equity.price.historical` command.
 
-Note that, if no command exists for your data, we need to add one under the right router.
-Each router is categorized under different extensions (stocks, currency, crypto, etc.).
+Note that if no command exists for your data, we need to add one under the right router.
+
+Each router is categorized under the relevant extension (equity, currency, crypto, etc.).
 
 ## Check if the standard model exists
 
-Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
+Given the fact that there's already an endpoint for historical equity data, we can check for the existing standard model.
 
 In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/equity_historical`.
 
@@ -56,7 +57,8 @@ class <ProviderName>EquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
 ### Create Data Output model
 
-The data output is the data that is returned by the API endpoint.
+The data output model is a data class containing Fields mapping the response of the API.
+
 For the `StockHistorical` example, this would look like the following:
 
 ```python
@@ -75,9 +77,13 @@ class <ProviderName>EquityHistoricalData(EquityHistoricalData):
 
 ### Build the Fetcher
 
-The `Fetcher` class is responsible for making the request to the API endpoint and providing the output.
-
-It will receive the Query Parameters, and it will return the output while leveraging the pydantic model schemas.
+The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the Data model.  Each fetcher contains three methods that are implemented by the core (see below for a link to the contributing guidelines):
+- `transform_query`
+  - Convert a standard query into a provider-specific query
+- `extract_data`
+  - Get the data from the API endpoint
+- `transform_data`
+  - Convert the API response data into a list of standard data models.
 
 For the `EquityHistorical` example, this would look like the following:
 
@@ -121,7 +127,7 @@ class <ProviderName>EquityHistoricalFetcher(
 
 ## Make the provider visible
 
-In order to make the new provider visible to the OpenBB Platform, you'll need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
+In order to make the new provider visible to the OpenBB Platform, you need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
 
 ```python
 """<Provider Name> Provider module."""
