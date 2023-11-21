@@ -20,10 +20,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Advanced Search | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<img width="1455" alt="275681118-b5ed496a-5822-49c9-bc56-958dab886f59" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b10a013f-ad07-4ea6-ac55-17236b249bb2"/>
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/_O2MPRlr1-g?si=OUemTjczHFgxZheS"
+  videoLegend="Short introduction to Terminal Pro advanced search"
+/>
 
 OpenBB Terminal Pro's advanced search is a powerful tool that enables you to perform a wide range of tasks swiftly and efficiently.
+
+<img width="1455" alt="275681118-b5ed496a-5822-49c9-bc56-958dab886f59" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b10a013f-ad07-4ea6-ac55-17236b249bb2"/>
 
 The search is divided into six main categories:
 

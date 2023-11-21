@@ -1,9 +1,9 @@
 ---
 title: wk
-description: "This page provides the documentation of 'flowsum wk' command. It explains\
-  \ how to retrieve the top flow per week for Calls and Puts by stock for understanding\
-  \ the market\u2019s sentiment towards a certain stock. Parameters and usage are\
-  \ clearly detailed."
+description: This page provides the documentation of `flowsum wk` command. It explains
+  how to retrieve the top flow per week for Calls and Puts by stock for understanding
+  the market's sentiment towards a certain stock. Parameters and usage are
+  clearly detailed.
 keywords:
 - flowsum wk
 - stock market sentiment

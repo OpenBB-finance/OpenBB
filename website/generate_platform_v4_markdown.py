@@ -490,15 +490,17 @@ def generate_platform_markdown() -> None:
         filepath = content_path / folder / f"{func_name}.md"
 
         markdown = generate_markdown(meta_command=meta_command)
+
         if data_model := meta_command.get("model", None):
+            ## title is the desc here - clean this later
             (
                 data_model_card_title,
                 data_model_card_description,
             ) = generate_data_model_card_info(meta_command)
 
             data_markdown = (
-                f"---\ntitle: {data_model_card_title}\n"
-                "description: OpenBB Platform Data Model\n---\n\n"
+                f"---\ntitle: {data_model}\n"
+                f"description: {data_model_card_title}\n---\n\n"
                 "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
                 "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
             )
@@ -519,8 +521,8 @@ def generate_platform_markdown() -> None:
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
-                    title=data_model_card_title,
-                    description=data_model_card_description or "",
+                    title=data_model,
+                    description=data_model_card_title or "",
                     url=data_models_path.relative_to(data_models_path) / data_model,
                 )
             )
