@@ -31,7 +31,6 @@ def headers():
                 "authors": None,
                 "content_types": "headline",
                 "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
                 "limit": 20,
             }
         ),
