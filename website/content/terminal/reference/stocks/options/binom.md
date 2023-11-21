@@ -1,6 +1,6 @@
 ---
 title: binom
-description: "This page is an in-depth guide to using the binom function for binomial"
+description: This page is an in-depth guide to using the binom function for binomial
   option valuation. It details the usage, parameters, and provides examples to assist
   users.
 keywords:

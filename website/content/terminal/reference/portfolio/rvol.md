@@ -1,6 +1,6 @@
 ---
 title: rvol
-description: "Rvol page shows the rolling volatility portfolio versus benchmark. It"
+description: Rvol page shows the rolling volatility portfolio versus benchmark. It
   is primarily used to analyse the market's volatility over different periods.
 keywords:
 - rvol

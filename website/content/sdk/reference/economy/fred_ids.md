@@ -1,6 +1,6 @@
 ---
 title: fred_ids
-description: "This page helps to understand the 'openbb.economy.fred_ids' function,"
+description: This page helps to understand the 'openbb.economy.fred_ids' function,
   which is a text query method for getting series IDs on FRED via OpenBB-finance.
   Includes parameters, return information and link to the source code.
 keywords:

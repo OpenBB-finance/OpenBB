@@ -1,6 +1,6 @@
 ---
 title: ef
-description: "The page highlights the use and functioning of the efficient frontier"
+description: The page highlights the use and functioning of the efficient frontier
   model in portfolio optimization. It includes explanations about parameters used,
   type of returns, and examples. Furthermore, it details the process for displaying
   the efficient frontier chart.

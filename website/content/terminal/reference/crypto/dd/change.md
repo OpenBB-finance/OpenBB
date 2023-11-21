@@ -1,6 +1,6 @@
 ---
 title: change
-description: "A detailed guide on how to use the 'change' command for tracking active"
+description: A detailed guide on how to use the 'change' command for tracking active
   blockchain addresses over time in various exchanges. It also provides instructions
   on setting input parameters and explains their usage for more precise data.
 keywords:

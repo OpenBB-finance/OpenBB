@@ -1,6 +1,6 @@
 ---
 title: fisher
-description: "This page provides information about the Fisher Transform, a technical"
+description: This page provides information about the Fisher Transform, a technical
   indicator that converts prices into a Gaussian normal distribution. The tool helps
   with identifying potential turning points in the price of an asset, and enables
   users to visualize trends and price waves.

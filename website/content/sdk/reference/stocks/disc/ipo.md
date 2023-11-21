@@ -1,6 +1,6 @@
 ---
 title: ipo
-description: "Navigate through the IPO calendar using OpenBB's Python toolkit. The"
+description: Navigate through the IPO calendar using OpenBB's Python toolkit. The
   page provides source code and parameters for IPO through start and end dates, returning
   all events in a convenient pd.DataFrame format.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This documentation provides a comprehensive guide on the overview function"
+description: This documentation provides a comprehensive guide on the overview function
   which displays a brief data of companies based on predefined filters. It can limit
   the stocks to print, reverse the sorting order, and sort table elements.
 keywords:

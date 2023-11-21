@@ -1,6 +1,6 @@
 ---
 title: rename
-description: "The page provides detailed information on the 'rename' function from"
+description: The page provides detailed information on the 'rename' function from
   a Python-based toolset, used for renaming columns in a dataset. It includes how
   to use the function, its parameters, and relevant examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: stables
-description: "This page offers detailed information about stablecoins ranked by market"
+description: This page offers detailed information about stablecoins ranked by market
   capitalization. It explains the usage and parameters of the 'stables' command to
   sort and display relevant data about different stablecoins.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: "This documentation page provides information on how to get the kurtosis"
+description: This documentation page provides information on how to get the kurtosis
   for portfolio and benchmark selected using the OpenBB finance portfolio engine.
   The page contains source code, parameters, return types and examples.
 keywords:

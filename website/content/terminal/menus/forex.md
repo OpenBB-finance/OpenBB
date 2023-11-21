@@ -1,6 +1,6 @@
 ---
 title: Forex
-description: "This guide introduces the Forex (FX) menu, in the OpenBB Terminal, and provides examples for use.  Features in this menu include historical prices and forward rates.  It also provides entry points to the QA, TA, and Forecast menus."
+description: This guide introduces the Forex (FX) menu, in the OpenBB Terminal, and provides examples for use.  Features in this menu include historical prices and forward rates.  It also provides entry points to the QA, TA, and Forecast menus.
 keywords:
 - Forex
 - currency trading

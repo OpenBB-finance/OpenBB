@@ -1,6 +1,6 @@
 ---
 title: historical
-description: "The page outlines the use of the historical function, allowing users"
+description: The page outlines the use of the historical function, allowing users
   to compare stock prices of companies historically. It provides details on usage
   and parameters such as limits, date formats, types of candles, and more. The data
   comes from sources like Yahoo Finance.

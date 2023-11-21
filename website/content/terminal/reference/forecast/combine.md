@@ -1,6 +1,6 @@
 ---
 title: combine
-description: "The page provides detailed instruction on how to use the 'combine' function"
+description: The page provides detailed instruction on how to use the 'combine' function
   which is used to combine datasets or add specific columns to a dataset. This function
   is used to streamline data analysis.
 keywords:

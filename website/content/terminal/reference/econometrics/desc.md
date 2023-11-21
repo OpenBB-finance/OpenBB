@@ -1,6 +1,6 @@
 ---
 title: desc
-description: "Easily analyze data with the desc command in Python. Generate comprehensive"
+description: Easily analyze data with the desc command in Python. Generate comprehensive
   descriptive statistics for each column in your dataset; such as count, mean, standard
   deviation, min, max, etc. Ideal for econometric analysis and other forms of statistical
   insights.

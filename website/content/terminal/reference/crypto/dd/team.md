@@ -1,6 +1,6 @@
 ---
 title: team
-description: "'Information about functions related to displaying an asset''s team,"
+description: 'Information about functions related to displaying an asset''s team,
   with usage instructions and noting that there are no parameters required. Source:
   Messari.io'
 keywords:

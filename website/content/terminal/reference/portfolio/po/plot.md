@@ -1,6 +1,6 @@
 ---
 title: plot
-description: "The plot page allows users to select and plot charts for various portfolios,"
+description: The plot page allows users to select and plot charts for various portfolios,
   using a range of parameters and offering several optional features. It includes
   different types of charts such as pie, histogram, drawdown, and risk contribution
   charts. Different risk measures can be optimized, and users can control various

@@ -1,6 +1,6 @@
 ---
 title: rm
-description: "The page consists of two main components or features. Initially, it details"
+description: The page consists of two main components or features. Initially, it details
   a function designed to return the roadmap for each individual cryptocurrency, explaining
   how data can be sorted and what the output will look like. Later, it describes a
   function aimed at plotting the roadmap for each cryptocurrency, including details

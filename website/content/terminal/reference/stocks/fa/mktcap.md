@@ -1,6 +1,6 @@
 ---
 title: mktcap
-description: "The mktcap page describes the usage and parameters of the market cap"
+description: The mktcap page describes the usage and parameters of the market cap
   estimate over time. The source for this data is Yahoo Finance. A Python line command
   is used to fetch and display this information.
 keywords:

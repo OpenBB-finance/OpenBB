@@ -1,6 +1,6 @@
 ---
 title: ycrv
-description: "This documentation page explains how the user is able to use ycrv command to generate country yield curve, which shows the bond rates at different maturities."
+description: This documentation page explains how the user is able to use ycrv command to generate country yield curve, which shows the bond rates at different maturities.
 keywords:
 - bond rates
 - yield curve

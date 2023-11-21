@@ -1,6 +1,6 @@
 ---
 title: enterprise
-description: "This page provides detailed information about the financial modeling"
+description: This page provides detailed information about the financial modeling
   prep ticker enterprise, including python code, parameter descriptions, and returns.
 keywords:
 - Financial Modeling Prep Ticker Enterprise

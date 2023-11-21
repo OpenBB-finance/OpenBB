@@ -1,7 +1,7 @@
 ---
 title: Bugs, Support, and Feedback
 sidebar_position: 5
-description: "Familiarize yourself with common issues and bug reports within our OpenBB"
+description: Familiarize yourself with common issues and bug reports within our OpenBB
   Terminal, explore our patch release process and learn how to report issues or get
   support for OpenBB Terminal. You'll also learn how to provide feedback and request
   specific features within the platform.

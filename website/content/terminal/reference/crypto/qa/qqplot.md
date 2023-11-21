@@ -1,6 +1,6 @@
 ---
 title: qqplot
-description: "A docusaurus page dedicated to explaining how to utilize the 'qqplot'"
+description: A docusaurus page dedicated to explaining how to utilize the 'qqplot'
   Python function to display data in a QQ plot versus normal quantiles. Provides a
   succinct guide on usage and parameters available.
 keywords:

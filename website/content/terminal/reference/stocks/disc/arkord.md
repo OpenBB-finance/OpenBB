@@ -1,6 +1,6 @@
 ---
 title: arkord
-description: "Arkord is a tool for displaying orders by ARK Investment Management LLC."
+description: Arkord is a tool for displaying orders by ARK Investment Management LLC.
   The software allows users to filter and sort stocks based on various parameters,
   including volume, opening and closing values, highs and lows, and the weight of
   shares.

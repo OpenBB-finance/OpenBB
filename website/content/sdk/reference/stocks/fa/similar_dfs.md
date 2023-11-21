@@ -1,6 +1,6 @@
 ---
 title: similar_dfs
-description: "The similar_dfs function in OpenBB is documented on this page. This function"
+description: The similar_dfs function in OpenBB is documented on this page. This function
   is used for generating dataframes for similar companies by taking inputs such as
   a ticker symbol, the output from the yfinance.info function and the number of similar
   companies to produce. The option of filtering based on market cap is also provided.

@@ -1,6 +1,6 @@
 ---
 title: industries
-description: "The documentation page provides information and source code on how to"
+description: The documentation page provides information and source code on how to
   get all industries in Yahoo Finance data based on country or sector. This is part
   of the OpenBBTerminal project.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: quote
-description: "Documentation for 'Ticker quote', a function of OpenBB's Stock Model."
+description: Documentation for 'Ticker quote', a function of OpenBB's Stock Model.
   It retrieves information about a specific ticker from YahooFinance. This tool doesn't
   return any values, it solely utilizes inputted symbols.
 keywords:

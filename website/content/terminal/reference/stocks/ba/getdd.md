@@ -1,6 +1,6 @@
 ---
 title: getdd
-description: "Getdd function retrieves top stocks' due diligence from Reddit with the"
+description: Getdd function retrieves top stocks' due diligence from Reddit with the
   functionality of choosing a limit on the posts, number of prior days to search,
   and the choice of searching through all flairs or focusing on specific flairs including
   DD, technical analysis, Catalyst, News, Advice, and Chart.

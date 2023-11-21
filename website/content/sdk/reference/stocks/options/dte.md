@@ -1,6 +1,6 @@
 ---
 title: dte
-description: "This documentation page provides detailed information on the 'dte' function."
+description: This documentation page provides detailed information on the 'dte' function.
   Learn about the computation of days to expiration from yfinance option date using
   the 'openbb.stocks.options' methods in Python.
 keywords:

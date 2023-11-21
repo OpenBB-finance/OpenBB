@@ -1,6 +1,6 @@
 ---
 title: active
-description: "This page provides an insight into the 'active' command used to display"
+description: This page provides an insight into the 'active' command used to display
   up to 25 top actively traded intraday tickers in the stock market using Python.
   The page explains the usage conditions, parameters and ends with a clear example
   showcasing its functionality.

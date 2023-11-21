@@ -1,6 +1,6 @@
 ---
 title: dt
-description: "This page provides info on how to get daily transactions for certain"
+description: This page provides info on how to get daily transactions for certain
   symbols in ethereum blockchain using the 'dt' command.
 keywords:
 - dt

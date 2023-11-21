@@ -1,6 +1,6 @@
 ---
 title: mktcap
-description: "The mktcap page provides comprehensive usage, parameters and examples"
+description: The mktcap page provides comprehensive usage, parameters and examples
   for creating a market cap weighted portfolio. The page is very useful for investors
   and financial analysts looking for systematic ways to allocate their investments
   based on market cap measurements.

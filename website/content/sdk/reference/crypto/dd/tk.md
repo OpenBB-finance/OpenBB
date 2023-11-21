@@ -1,6 +1,6 @@
 ---
 title: tk
-description: "This page provides documentation for the tk model and chart functions"
+description: This page provides documentation for the tk model and chart functions
   from the openbb.crypto.dd library. The model function returns coin tokenomics for
   a specific cryptocurrency while the chart function plots the same.
 keywords:

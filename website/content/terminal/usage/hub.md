@@ -1,7 +1,7 @@
 ---
 title: Hub Synchronization
 sidebar_position: 6
-description: "This is a documentation page for OpenBB focusing on the integration of"
+description: This is a documentation page for OpenBB focusing on the integration of
   OpenBB Terminal with OpenBB Hub. Topics covered include registration, login, managing
   API keys, default data sources, theme styles, script routines, and personal access
   tokens.

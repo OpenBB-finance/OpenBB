@@ -1,6 +1,6 @@
 ---
 title: dret
-description: "The dret page is about getting daily returns for specific periods. Users"
+description: The dret page is about getting daily returns for specific periods. Users
   can modify periods as 3y, 5y, 10y, or select all for the entire duration. It also
   clarifies the usage and parameters in detail.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: customer
-description: "Documentation for the 'customer' function in the OpenBB Terminal. This"
+description: Documentation for the 'customer' function in the OpenBB Terminal. This
   function allows you to print customers from a ticker, helping in stock analysis
   and due diligence. Here, you'll find details about parameters, return values, and
   the source code.

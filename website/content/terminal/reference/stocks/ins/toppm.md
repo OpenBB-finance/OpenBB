@@ -1,6 +1,6 @@
 ---
 title: toppm
-description: "The toppm command returns a comprehensive list of top officer purchases"
+description: The toppm command returns a comprehensive list of top officer purchases
   of the month. It includes insider details such as filing date, trade date, ticker,
   company name, insider name and more. You are able to limit the number of rows displayed
   through the -l LIMIT parameter.

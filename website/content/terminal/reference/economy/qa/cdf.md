@@ -1,6 +1,6 @@
 ---
 title: cdf
-description: "This page provides documentation about the 'cdf' command in Python, which"
+description: This page provides documentation about the 'cdf' command in Python, which
   is a cumulative distribution function without any parameters. Examples of usage
   and export of dataframe data to csv, json, or xlsx file are given.
 keywords:

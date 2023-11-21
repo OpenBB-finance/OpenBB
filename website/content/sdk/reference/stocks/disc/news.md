@@ -1,6 +1,6 @@
 ---
 title: news
-description: "This page provides information on the documentation for the 'news' functionality"
+description: This page provides information on the documentation for the 'news' functionality
   in OpenBBTerminal. It enables users to customize their news type and limit the number
   of news to be displayed.
 keywords:

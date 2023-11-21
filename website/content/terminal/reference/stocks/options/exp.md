@@ -1,6 +1,6 @@
 ---
 title: exp
-description: "The 'exp' page provides comprehensive details on setting expiration dates"
+description: The 'exp' page provides comprehensive details on setting expiration dates
   using the 'exp' command in Python. It includes information on usage, parameters,
   and examples to assist users in understanding and effectively managing dates.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: Options
-description: "This documentation page explains how to use the Options module in the"
+description: This documentation page explains how to use the Options module in the
   OpenBB SDK that allows programmatic access to trading data. It covers a range of
   functions that correspond to many aspects of stock option data, from Unusual Options
   Activity to Put-Call Ratios.

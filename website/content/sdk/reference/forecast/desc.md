@@ -1,6 +1,6 @@
 ---
 title: desc
-description: "Detailed information on how to use the 'desc' function of the OpenBB"
+description: Detailed information on how to use the 'desc' function of the OpenBB
   finance package in Python. The function returns statistics for a specified data
   frame.
 keywords:

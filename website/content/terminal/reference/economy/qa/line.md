@@ -1,6 +1,6 @@
 ---
 title: line
-description: "The page provides a detailed overview on how to use the 'line' function"
+description: The page provides a detailed overview on how to use the 'line' function
   in Python to visualize data on a line plot. It provides parameters for customizing
   the plot such as scale, markers and highlighting specific events.
 keywords:

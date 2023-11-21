@@ -1,6 +1,6 @@
 ---
 title: wma
-description: "A comprehensive guide about Weighted Moving Average (WMA), its special"
+description: A comprehensive guide about Weighted Moving Average (WMA), its special
   features, usage, inclusion of parameters like window lengths and offset. Also, providing
   an illustrative diagram about WMA.
 keywords:

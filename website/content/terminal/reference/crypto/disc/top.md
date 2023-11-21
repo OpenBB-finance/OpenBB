@@ -1,6 +1,6 @@
 ---
 title: top
-description: "The page provides detailed usage patterns and instructions for the 'top'"
+description: The page provides detailed usage patterns and instructions for the 'top'
   function that displays N coins from data sources like CoinGecko, allowing users
   to sort and filter the displayed data. The page includes details about various parameters,
   their description, usage, and examples.

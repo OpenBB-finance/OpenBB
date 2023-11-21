@@ -1,6 +1,6 @@
 ---
 title: ema
-description: "A guide to understanding and using the Exponential Moving Average, a"
+description: A guide to understanding and using the Exponential Moving Average, a
   fundamental tool in technical analysis with a focus on its application.
 keywords:
 - Exponential Moving Average

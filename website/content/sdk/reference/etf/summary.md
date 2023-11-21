@@ -1,6 +1,6 @@
 ---
 title: summary
-description: "An in-depth overview of ETF summaries using the OpenBB ETF module. This"
+description: An in-depth overview of ETF summaries using the OpenBB ETF module. This
   tool fetches ETF data from Yahoo Finance, providing a comprehensive summary based
   on specified ETF name.
 keywords:

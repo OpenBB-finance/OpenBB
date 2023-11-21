@@ -1,6 +1,6 @@
 ---
 title: rolling
-description: "A documentation page explaining the functionality of the OpenBB rolling"
+description: A documentation page explaining the functionality of the OpenBB rolling
   model and rolling chart. These tools deal with computing and plotting rolling means
   and standard deviations in financial data, mapped by stock symbols or tickers. The
   methods are implemented in Python and operate on dataframes.

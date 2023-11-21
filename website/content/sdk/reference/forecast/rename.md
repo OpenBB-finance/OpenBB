@@ -1,6 +1,6 @@
 ---
 title: rename
-description: "The rename function in openbb.forecast allows the renaming of a column"
+description: The rename function in openbb.forecast allows the renaming of a column
   in a dataframe. Contains details on parameters, returns and a link to the source
   code.
 keywords:

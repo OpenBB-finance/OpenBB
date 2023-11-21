@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "Learn how to interpret and use the Relative Strength Index (RSI), an"
+description: Learn how to interpret and use the Relative Strength Index (RSI), an
   overbought/oversold indicator that calculates a ratio of recent upward price movements
   to the absolute price movement and helps indicate potential price reversals.
 keywords:

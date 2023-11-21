@@ -1,7 +1,7 @@
 ---
 title: Commands and arguments
 sidebar_position: 2
-description: "This documentation page includes a tutorial video that provides a short"
+description: This documentation page includes a tutorial video that provides a short
   introduction on commands and arguments for the OpenBB Terminal. It further explains
   the help dialogue for functions, the auto-completion feature, and global commands
   such as help, about, support, cls, quit, exit, and reset. Also, tips for submitting

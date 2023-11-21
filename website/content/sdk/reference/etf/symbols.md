@@ -1,6 +1,6 @@
 ---
 title: symbols
-description: "This documentation page provides a detailed guide on how to get all ETF"
+description: This documentation page provides a detailed guide on how to get all ETF
   names and symbols using the openbb.etf.symbols() function. It also includes a link
   to the source code.
 keywords:

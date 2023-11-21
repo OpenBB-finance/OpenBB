@@ -1,6 +1,6 @@
 ---
 title: maxdiv
-description: "The maxdiv page is a comprehensive guide for maximizing portfolio diversification"
+description: The maxdiv page is a comprehensive guide for maximizing portfolio diversification
   with parameters like covariance matrix estimation method, smoothing factor for ewma
   estimators, allocations, return methods, tolerances for nan values, and more. It
   also includes examples of use.

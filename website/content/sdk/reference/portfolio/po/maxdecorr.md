@@ -1,6 +1,6 @@
 ---
 title: maxdecorr
-description: "The page details the function openbb.portfolio.po.maxdecorr(), an optimization"
+description: The page details the function openbb.portfolio.po.maxdecorr(), an optimization
   tool for decorrelation weights in a portfolio. Explains parameters, returns, and
   provides examples.
 keywords:

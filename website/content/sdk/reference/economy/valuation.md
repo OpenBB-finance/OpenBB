@@ -1,6 +1,6 @@
 ---
 title: valuation
-description: "This is a documentation page about the openbb.economy.valuation function"
+description: This is a documentation page about the openbb.economy.valuation function
   from OpenBB that uses Finviz data to get group valuation data. It allows for sorting
   by column and in ascending order, returning these results in a dataframe.
 keywords:

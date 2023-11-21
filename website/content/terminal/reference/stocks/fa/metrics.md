@@ -1,6 +1,6 @@
 ---
 title: metrics
-description: "This documentation page provides information on how to pull key metrics"
+description: This documentation page provides information on how to pull key metrics
   of a company over time using metrics command. Included data are Return on Equity
   (ROE), Working Capital, Current Ratio and Debt to Assets, among others.
 keywords:

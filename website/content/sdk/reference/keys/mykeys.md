@@ -1,6 +1,6 @@
 ---
 title: mykeys
-description: "This documentation page offers detailed instructions on how to get currently"
+description: This documentation page offers detailed instructions on how to get currently
   set API keys using the OpenBB finance mykeys function. Includes parameter descriptions,
   return types, and usage examples.
 keywords:

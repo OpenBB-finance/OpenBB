@@ -1,6 +1,6 @@
 ---
 title: losers
-description: "This page explains the usage of the 'losers' command in stocks software/tool."
+description: This page explains the usage of the 'losers' command in stocks software/tool.
   It allows the user to display up to 25 top market losers data from Yahoo Finance
   with specific parameters and examples.
 keywords:

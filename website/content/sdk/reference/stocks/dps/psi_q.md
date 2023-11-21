@@ -1,6 +1,6 @@
 ---
 title: psi_q
-description: "The psi_q documentation page explains the usage of the psi_q function,"
+description: The psi_q documentation page explains the usage of the psi_q function,
   which plots the short interest of a stock. It contains the source code, code snippets,
   parameters, and return types of the function.
 keywords:

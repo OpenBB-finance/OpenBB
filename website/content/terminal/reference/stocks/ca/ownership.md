@@ -1,6 +1,6 @@
 ---
 title: ownership
-description: "The 'ownership' documentation provides a guide on how to print stock"
+description: The 'ownership' documentation provides a guide on how to print stock
   screener data of similar companies. It explains the usage, parameters, and provides
   examples.
 keywords:

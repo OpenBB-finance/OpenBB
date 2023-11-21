@@ -1,6 +1,6 @@
 ---
 title: show_available_pairs_for_given_symbol
-description: "Documentation on the function of showing available pairs for a given"
+description: Documentation on the function of showing available pairs for a given
   symbol in the OpenBB crypto framework at Coinbase. Default symbol is 'ETH'. Other
   symbols include BTC, UNI, LUNA, DOT and more.
 keywords:

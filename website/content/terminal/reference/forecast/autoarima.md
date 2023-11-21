@@ -1,6 +1,6 @@
 ---
 title: autoarima
-description: "The AutoARIMA documentation page provides an extensive guide on how the"
+description: The AutoARIMA documentation page provides an extensive guide on how the
   Automatic ARIMA forecast works. Details include command usage, various parameters,
   and examples demonstrating how the forecast performs. This page is ideal for those
   seeking to understand predictive modeling, time-series analysis, and the application

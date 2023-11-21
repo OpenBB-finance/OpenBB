@@ -1,6 +1,6 @@
 ---
 title: bw
-description: "This page details the usage of the Box and Whisker (bw) plot with its"
+description: This page details the usage of the Box and Whisker (bw) plot with its
   parameters. It also includes a guide on how to display a yearly bw plot.
 keywords:
 - Box and Whisker plot

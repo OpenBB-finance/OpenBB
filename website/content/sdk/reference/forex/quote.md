@@ -1,6 +1,6 @@
 ---
 title: quote
-description: "Documentation on how to get forex quotes using the OpenBB Terminal. It"
+description: Documentation on how to get forex quotes using the OpenBB Terminal. It
   covers the different parameters that can be used, return types and also gives example
   usage.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: infer
-description: "This page is a detailed guide for using OpenBB's terminal to access and"
+description: This page is a detailed guide for using OpenBB's terminal to access and
   analyze Twitter data, providing tips for inferring market sentiment from tweets
   and visualizing data.
 keywords:

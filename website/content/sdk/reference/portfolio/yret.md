@@ -1,6 +1,6 @@
 ---
 title: yret
-description: "Website page provides in-depth guide on using yret, a module that delivers"
+description: Website page provides in-depth guide on using yret, a module that delivers
   yearly returns in quantitative finance. It includes complete procedures from loading
   portfolio to displaying returns in graph.
 keywords:

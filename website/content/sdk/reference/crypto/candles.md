@@ -1,6 +1,6 @@
 ---
 title: candles
-description: "The page provides documentation for the 'candles' function in the OpenBB"
+description: The page provides documentation for the 'candles' function in the OpenBB
   crypto module. It describes how a candle chart can be plotted from a provided DataFrame,
   and the various parameters that can be adjusted.
 keywords:

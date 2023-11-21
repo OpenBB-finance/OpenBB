@@ -1,6 +1,6 @@
 ---
 title: pipo
-description: "This documentation page provides details on how to use the 'pipo' function"
+description: This documentation page provides details on how to use the 'pipo' function
   to retrieve past IPOs dates; instructions for its usage, parameters and clear examples
   are provided.
 keywords:

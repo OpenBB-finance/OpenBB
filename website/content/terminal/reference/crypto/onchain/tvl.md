@@ -1,6 +1,6 @@
 ---
 title: tvl
-description: "This page discusses the Total Value Locked (TVL) metric, a key concept"
+description: This page discusses the Total Value Locked (TVL) metric, a key concept
   in cryptocurrency. Learn how to utilize this metric through different parameters
   and understand its significance in evaluating Ethereum ERC20 contract balances.
 keywords:

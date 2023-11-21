@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This overview provides a snapshot of similar companies using the 'overview'"
+description: This overview provides a snapshot of similar companies using the 'overview'
   command, including critical data such as stock price, market cap, P/E ratio, and
   more. Data sourced from Finviz.
 keywords:

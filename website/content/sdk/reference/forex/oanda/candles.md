@@ -1,6 +1,6 @@
 ---
 title: candles
-description: "The page provides detailed info on 'candles' functions within the OpenBB"
+description: The page provides detailed info on 'candles' functions within the OpenBB
   forex category for Oanda. It covers methods to request candle chart data and display
   the candle chart, along with their respective parameters and return types. Source
   links for Python code are included.

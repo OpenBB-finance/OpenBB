@@ -1,6 +1,6 @@
 ---
 title: ldapps
-description: "This page provides documentation for ldapps functions used in the OpenBB"
+description: This page provides documentation for ldapps functions used in the OpenBB
   finance terminal. These functions retrieve and display information about listed
   DeFi protocols, their current Total Valued Locked (TVL), and changes to it.
 keywords:
@@ -27,7 +27,7 @@ Returns information about listed DeFi protocols, their current TVL and changes t
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L35)]
 
 ```python
-openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = False, description: "bool = False, drop_chain: bool = True)"
+openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = False, description: bool = False, drop_chain: bool = True)
 ```
 
 ---
@@ -60,7 +60,7 @@ Prints table showing information about listed DeFi protocols, their current TVL 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L94)]
 
 ```python
-openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = False, description: "bool = False, export: str = "")"
+openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = False, description: bool = False, export: str = "")
 ```
 
 ---

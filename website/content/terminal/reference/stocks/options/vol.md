@@ -1,6 +1,6 @@
 ---
 title: vol
-description: "The 'vol' page provides command-line instructions for plotting volumes."
+description: The 'vol' page provides command-line instructions for plotting volumes.
   It deals with parameters like minimal and maximal strikes, calls, and puts. The
   page is mainly focused on contracts traded today and the plotting of call or put
   options only.

@@ -1,6 +1,6 @@
 ---
 title: cdf
-description: "The 'cdf' page outlines the usage and parameters of the cumulative distribution"
+description: The 'cdf' page outlines the usage and parameters of the cumulative distribution
   function within python coding. It also includes examples and an illustrative visual
   aid.
 keywords:

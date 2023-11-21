@@ -1,6 +1,6 @@
 ---
 title: bbands
-description: "This page provides detailed information about the Bollinger Bands (bbands),"
+description: This page provides detailed information about the Bollinger Bands (bbands),
   a volatility indicator in technical analysis, including usage, parameters, visual
   representation, data interpretation, and their importance in buy or sell signals
   generation.

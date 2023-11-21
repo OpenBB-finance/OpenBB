@@ -1,6 +1,6 @@
 ---
 title: normality
-description: "The page provides usage details for the command 'normality' which executes"
+description: The page provides usage details for the command 'normality' which executes
   normality tests in python, includes parameters and examples showcasing normality
   statistics like Kurtosis, Skewness, Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov.
 keywords:

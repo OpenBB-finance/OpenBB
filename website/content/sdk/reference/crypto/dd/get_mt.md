@@ -1,6 +1,6 @@
 ---
 title: get_mt
-description: "This page covers the get_mt function, its usage, parameters and return"
+description: This page covers the get_mt function, its usage, parameters and return
   types. It defines the method to retrieve available messari timeseries in two different
   views; Model and Chart.
 keywords:

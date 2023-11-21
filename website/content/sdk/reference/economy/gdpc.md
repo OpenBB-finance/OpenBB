@@ -1,6 +1,6 @@
 ---
 title: gdpc
-description: "The page provides details on using the 'gdpc' function of OpenBBTerminal."
+description: The page provides details on using the 'gdpc' function of OpenBBTerminal.
   It allows plotting and exporting United States' GDP per Capita data. The page also
   gives link to the source code and gives examples of how to use the functions with
   Python.

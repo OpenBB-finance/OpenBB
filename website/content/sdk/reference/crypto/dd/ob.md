@@ -1,6 +1,6 @@
 ---
 title: ob
-description: "This documentation page provides detailed information about operation"
+description: This documentation page provides detailed information about operation
   of generating and viewing order book for a coin in a given exchange using OpenBB
   library. Learn about the parameters required and the response for each function
   call.

@@ -1,6 +1,6 @@
 ---
 title: equity
-description: "This is a documentation page for the 'equity' command, which displays"
+description: This is a documentation page for the 'equity' command, which displays
   fund equity holdings. The page also explains how to use the command and mentions
   that it has no parameters.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: search
-description: "A detailed guide on how to use the search feature in YahooFinance for"
+description: A detailed guide on how to use the search feature in YahooFinance for
   futures. Learn how to choose different parameters like exchange, category and description
   for a more specific search.
 keywords:

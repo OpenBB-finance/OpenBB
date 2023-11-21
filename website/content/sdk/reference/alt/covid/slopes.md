@@ -1,6 +1,6 @@
 ---
 title: slopes
-description: "Our site offers extensive information on how to use slopes models to"
+description: Our site offers extensive information on how to use slopes models to
   analyze COVID-19 data. The models provide detailed data frames based on historical
   data to help with the analysis and prediction. Learn how to manipulate these models
   to suit your specific needs.

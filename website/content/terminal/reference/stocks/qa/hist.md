@@ -1,6 +1,6 @@
 ---
 title: hist
-description: "This page provides a guide on how to use 'hist' function in Python which"
+description: This page provides a guide on how to use 'hist' function in Python which
   plots a histogram with density and rug. It also includes parameters related information
   and usage syntax.
 keywords:

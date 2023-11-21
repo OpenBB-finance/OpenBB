@@ -1,6 +1,6 @@
 ---
 title: stvl
-description: "The page provides detailed information about the stvl function. This"
+description: The page provides detailed information about the stvl function. This
   includes its usage, parameters like 'limit' and how to display TVLs for listed dApps
   using llama.fi API.
 keywords:

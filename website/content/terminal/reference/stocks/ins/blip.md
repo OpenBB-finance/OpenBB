@@ -1,6 +1,6 @@
 ---
 title: blip
-description: "This page enables usage of the 'blip' command, a tool for printing the"
+description: This page enables usage of the 'blip' command, a tool for printing the
   latest insider purchases 25k, sourced from OpenInsider. The usage, parameters, and
   examples are provided to give an understanding on how to use this command effectively
   to access insider trade data such as company name, insider name, trade type, price,

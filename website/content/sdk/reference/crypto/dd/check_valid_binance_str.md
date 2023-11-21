@@ -1,6 +1,6 @@
 ---
 title: check_valid_binance_str
-description: "Learn about the check_valid_binance_str Python function from OpenBB."
+description: Learn about the check_valid_binance_str Python function from OpenBB.
   This function checks if symbols are defined in binance. Source code provided.
 keywords:
 - binance

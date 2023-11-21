@@ -1,6 +1,6 @@
 ---
 title: sortino
-description: "This page includes a comprehensive coverage of how to determine the Sortino"
+description: This page includes a comprehensive coverage of how to determine the Sortino
   ratio of a portfolio with reference to a selected benchmark using OpenBB. The page
   contains the source code and specific examples to better illustrate the process.
 keywords:

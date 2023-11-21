@@ -1,6 +1,6 @@
 ---
 title: volatility
-description: "The volatility documentation page covers the important use of volatility"
+description: The volatility documentation page covers the important use of volatility
   method for portfolio and benchmark selected using the Python module openbb. Key
   concepts include usage of PortfolioEngine, DataFrame and function calls.
 keywords:

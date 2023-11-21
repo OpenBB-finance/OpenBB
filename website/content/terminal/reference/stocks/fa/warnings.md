@@ -1,6 +1,6 @@
 ---
 title: warnings
-description: "This page provides warnings by Sean Seah regarding stock market values,"
+description: This page provides warnings by Sean Seah regarding stock market values,
   including consistent historical earnings per share, return on equity, return on
   assets, and net income to long-term debt ratio. Insightful examples and customizable
   parameters are available for financial analysis.

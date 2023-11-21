@@ -1,6 +1,6 @@
 ---
 title: show
-description: "This documentation page describes the 'show' command, which presents"
+description: This documentation page describes the 'show' command, which presents
   a table of transactions with no parameters required. It includes usage, parameters,
   and examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: vwap
-description: "This documentation page provides detailed information about the volume"
+description: This documentation page provides detailed information about the volume
   weighted average price, or VWAP, a popular technical analysis indicator. It includes
   Python code examples for calculating VWAP on a pandas DataFrame of stocks prices,
   and creating a visual chart of VWAP data using matplotlib.

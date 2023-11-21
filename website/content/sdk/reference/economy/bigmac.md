@@ -1,6 +1,6 @@
 ---
 title: bigmac
-description: "This page provides documentation for the Big Mac Index functionality"
+description: This page provides documentation for the Big Mac Index functionality
   in OpenBB. It includes details on how to use the 'bigmac' function and its parameters,
   along with source code links and return information. This information is useful
   for individuals looking to utilize the OpenBB economic dataset for data analysis.

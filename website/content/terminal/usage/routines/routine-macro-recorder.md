@@ -1,7 +1,7 @@
 ---
 title: Routine Macro Recorder
 sidebar_position: 4
-description: "Learn how to use the macro recorder in OpenBB to start saving commands"
+description: Learn how to use the macro recorder in OpenBB to start saving commands
   and automate common tasks with scripts. This page guides you through the process
   of recording, saving, and accessing your recorded routines.
 keywords:

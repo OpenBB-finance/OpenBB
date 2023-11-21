@@ -1,6 +1,6 @@
 ---
 title: bbands
-description: "A comprehensive guide to understanding and using Bollinger Bands for"
+description: A comprehensive guide to understanding and using Bollinger Bands for
   optimizing trading strategies. Learn about overbought and oversold conditions, price
   targets, and the intuitive 'bbands' command for Python.
 keywords:

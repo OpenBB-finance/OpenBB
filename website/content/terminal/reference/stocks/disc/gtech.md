@@ -1,6 +1,6 @@
 ---
 title: gtech
-description: "Display top tech stocks with significant revenue and earnings growth."
+description: Display top tech stocks with significant revenue and earnings growth.
   Limit the number of displayed stocks as desired. Source data from Yahoo Finance.
 keywords:
 - stocks

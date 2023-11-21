@@ -1,6 +1,6 @@
 ---
 title: cases
-description: "A detailed guide on how to use the 'cases' command to show historical"
+description: A detailed guide on how to use the 'cases' command to show historical
   cases for any country. This command is simple to use as it doesn't need any parameters,
   offering a straightforward solution for data visualization.
 keywords:

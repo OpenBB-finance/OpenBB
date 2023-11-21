@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page provides information on how to load portfolio risk parameters"
+description: This page provides information on how to load portfolio risk parameters
   using either ini or xlsx files. It demonstrates the command usage and details about
   the 'file' parameter.
 keywords:

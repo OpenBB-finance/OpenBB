@@ -1,6 +1,6 @@
 ---
 title: es
-description: "Learn how to use the openbb.portfolio.es function to calculate the portfolio"
+description: Learn how to use the openbb.portfolio.es function to calculate the portfolio
   expected shortfall. It allows the use of different distributions and custom percentiles.
 keywords:
 - openbb.portfolio.es

@@ -1,6 +1,6 @@
 ---
 title: stables
-description: "Documentation for the stable coins API provided by OpenBB, including"
+description: Documentation for the stable coins API provided by OpenBB, including
   how to use the model endpoints for data extraction and the chart endpoints for data
   visualization.
 keywords:

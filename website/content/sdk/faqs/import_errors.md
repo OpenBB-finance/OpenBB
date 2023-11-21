@@ -1,7 +1,7 @@
 ---
 title: Import Errors
 sidebar_position: 2
-description: "This page provides solutions for common import errors when installing"
+description: This page provides solutions for common import errors when installing
   the OpenBB SDK, including guidance on managing virtual environments, handling ModuleNotFoundError,
   dealing with SSL certificate authorization, and configuring proxy connections.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: nft
-description: "Page covers usage and parameters of an NFT command for Dappradar. Allows"
+description: Page covers usage and parameters of an NFT command for Dappradar. Allows
   sorting NFTs by name, protocols, floor price, average price, market cap, and volume.
 keywords:
 - NFT

@@ -1,6 +1,6 @@
 ---
 title: norm
-description: "This page provides guidelines on using the 'norm' function to test whether"
+description: This page provides guidelines on using the 'norm' function to test whether
   particular data is normally distributed. It covers functionality and parameter description,
   and also includes histogram examples for a clear understanding.
 keywords:

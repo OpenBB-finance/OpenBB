@@ -1,6 +1,6 @@
 ---
 title: line
-description: "The 'line' documentation page provides information on how to create a"
+description: The 'line' documentation page provides information on how to create a
   line plot of selected data or highlight specific datetimes. It also details the
   usage, parameters, and provides a visual representation.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: tcn
-description: "This page explains the usage, parameters, and examples of the TCN forecast"
+description: This page explains the usage, parameters, and examples of the TCN forecast
   function used for time series forecasting. The function includes various adjustable
   parameters for fine-tuning the model's performance and supports the option to save
   the output data.

@@ -1,6 +1,6 @@
 ---
 title: scorr
-description: "This page provides information on the 'scorr' function, a tool used to"
+description: This page provides information on the 'scorr' function, a tool used to
   get correlation sentiments across similar companies. It also displays information
   on how to utilize the 'scorr_chart' function, designed to plot correlation sentiments
   heatmap for a set of similar companies.

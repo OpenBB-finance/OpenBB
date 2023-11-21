@@ -1,6 +1,6 @@
 ---
 title: funot
-description: "This page covers the 'funot' function, which displays fundamental metrics"
+description: This page covers the 'funot' function, which displays fundamental metrics
   such as market cap, revenue, and TVL (Total Value Locked) for a wide array of digital
   asset projects, as sourced from Token Terminal.
 keywords:

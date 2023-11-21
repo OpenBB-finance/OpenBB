@@ -1,6 +1,6 @@
 ---
 title: lobbying
-description: "This lobbying documentation page provides lobbying details for Tesla"
+description: This lobbying documentation page provides lobbying details for Tesla
   Inc. The content includes content related to the Electric Vehicle Tax Credit, Driving
   America Forward Act, Energy Storage Tax Incentive and Deployment Act, and more.
   The data is provided by Quiver Quant and represented in Python syntax.

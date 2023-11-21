@@ -1,6 +1,6 @@
 ---
 title: mkt
-description: "The 'mkt' page allows for viewing of market data for a given coin based"
+description: The 'mkt' page allows for viewing of market data for a given coin based
   on different parameters such as trust_score, volume, and price. The page accepts
   different parameters to further sort, limit, and display the data effectively.
 keywords:

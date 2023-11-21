@@ -1,6 +1,6 @@
 ---
 title: metric
-description: "An informational page detailing the usage and parameters of the 'metric'"
+description: An informational page detailing the usage and parameters of the 'metric'
   function. This function allows you to visualize various business and economic metrics
   such as return on assets (roa), return on equity (roe), current ratio (cr), and
   more. Understanding these metrics can aid in making informed financial and business

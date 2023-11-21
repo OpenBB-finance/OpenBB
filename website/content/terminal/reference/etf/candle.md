@@ -1,6 +1,6 @@
 ---
 title: candle
-description: "This documentation is for the 'candle' function that shows historical"
+description: This documentation is for the 'candle' function that shows historical
   data for an ETF. It explains how to use the function with key parameters to sort
   data, display raw information, setup moving average in days, etc.
 keywords:

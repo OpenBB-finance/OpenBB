@@ -1,6 +1,6 @@
 ---
 title: autoces
-description: "This site explores Autoces, a tool for Automatic Complex Exponential"
+description: This site explores Autoces, a tool for Automatic Complex Exponential
   Smoothing forecast, its usage, parameters, and examples.
 keywords:
 - Autoces

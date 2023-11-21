@@ -1,6 +1,6 @@
 ---
 title: dupont
-description: "This page provides source code for the function openbb.stocks.fa.dupont"
+description: This page provides source code for the function openbb.stocks.fa.dupont
   that returns the dupont ratio breakdown for a given stock ticker symbol.
 keywords:
 - dupont ratios

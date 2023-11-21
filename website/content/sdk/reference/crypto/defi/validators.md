@@ -1,6 +1,6 @@
 ---
 title: validators
-description: "The page details the usage and parameters of two functions that work"
+description: The page details the usage and parameters of two functions that work
   with 'validators' in the terra system. The 'validators' function provides terra
   validators details while the 'validators_chart' function sorts data and provides
   the option to export dataframe data.

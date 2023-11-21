@@ -1,6 +1,6 @@
 ---
 title: closetrade
-description: "Documentation for the command 'closetrade', which allows for closing"
+description: Documentation for the command 'closetrade', which allows for closing
   trades by ID. It enables specification of the number of units to close, with relevant
   parameters detailed.
 keywords:

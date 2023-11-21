@@ -1,6 +1,6 @@
 ---
 title: nhits
-description: "'The nhits page provide detailed parameters for forecasting using the"
+description: 'The nhits page provide detailed parameters for forecasting using the
   Temporal Fusion Transformer model for predicting time-series. A step by step guide
   to use nhits in a command-line along with additional key performance indicators
   are provided. This is an effective resource for financial market predictions and

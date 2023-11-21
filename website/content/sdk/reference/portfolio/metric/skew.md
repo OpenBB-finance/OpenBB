@@ -1,6 +1,6 @@
 ---
 title: skew
-description: "Understand how to calculate portfolio and benchmark skewness with the"
+description: Understand how to calculate portfolio and benchmark skewness with the
   OpenBBTerminal. Explore source code examples demonstrating how to harness Python
   for financial metric calculations.
 keywords:

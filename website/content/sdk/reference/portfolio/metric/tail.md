@@ -1,6 +1,6 @@
 ---
 title: tail
-description: "Documentation about the OpenBB terminal's 'tail' function. The function"
+description: Documentation about the OpenBB terminal's 'tail' function. The function
   retrieves the tail ratio of portfolios, handling transactions and performing calculations.
   Also gives details about its parameters, return types, and example usage.
 keywords:

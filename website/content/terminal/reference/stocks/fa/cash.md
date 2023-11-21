@@ -1,6 +1,6 @@
 ---
 title: cash
-description: "This documentation describes the 'cash' script which prints a complete"
+description: This documentation describes the 'cash' script which prints a complete
   cash flow statement over time. It covers features including options for quarterly
   or annual views, detailed financial factors such as accounts payable and net income,
   and usage of the command-line interface. The data source is mentioned as Alpha Vantage.

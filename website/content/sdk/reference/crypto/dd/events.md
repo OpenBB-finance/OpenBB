@@ -1,6 +1,6 @@
 ---
 title: events
-description: "The page provides detailed documentation on how to get all events related"
+description: The page provides detailed documentation on how to get all events related
   to a given cryptocurrency like conferences, start date of futures trading. It also
   provides insights into how to sort, limit and export these events using the OpenBBTerminal
   methods.

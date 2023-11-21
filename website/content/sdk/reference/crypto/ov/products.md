@@ -1,6 +1,6 @@
 ---
 title: products
-description: "Documentation for the functions related to the retrieval and visualization"
+description: Documentation for the functions related to the retrieval and visualization
   of financial products using the OpenBBTerminal and CoinGecko API. Covers aspects
   such as sorting of data, ascending and descending configuration, product charts
   and exporting data.

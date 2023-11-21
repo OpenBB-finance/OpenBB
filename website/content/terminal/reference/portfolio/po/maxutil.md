@@ -1,6 +1,6 @@
 ---
 title: maxutil
-description: "Maxutil is a powerful Python tool used for portfolio optimization. The"
+description: Maxutil is a powerful Python tool used for portfolio optimization. The
   page provides extensive information about the usage, parameters, and examples of
   maximizing a risk-averse utility function. Navigate through the specifics, from
   expected return methods to defining your risk measures and risk aversion parameters.

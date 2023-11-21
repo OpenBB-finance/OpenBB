@@ -1,6 +1,6 @@
 ---
 title: query_graph
-description: "This page provides a detailed explanation of the query_graph helper methods"
+description: This page provides a detailed explanation of the query_graph helper methods
   for querying a graphql api, including the Python source code and parameters required,
   from openbb.crypto.onchain.query_graph. The response data is a dictionary.
 keywords:

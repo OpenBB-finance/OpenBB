@@ -1,6 +1,6 @@
 ---
 title: btc_transac
-description: "This documentation page provides code and information about retrieving"
+description: This documentation page provides code and information about retrieving
   and visualizing BTC confirmed transactions using OpenBB. It includes python code
   and detailed parameters' description for the functions.
 keywords:

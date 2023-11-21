@@ -1,6 +1,6 @@
 ---
 title: global_cases
-description: "The 'global_cases' page provides code and instructions for getting historical"
+description: The 'global_cases' page provides code and instructions for getting historical
   Covid-19 case data for any country. Utilize the provided Python function to retrieve
   a DataFrame of historical data.
 keywords:

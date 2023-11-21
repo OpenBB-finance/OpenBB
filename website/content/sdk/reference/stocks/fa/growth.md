@@ -1,6 +1,6 @@
 ---
 title: growth
-description: "This page provides information on how to get financial statement growth"
+description: This page provides information on how to get financial statement growth
   using OpenBB's financial analysis function. Included are parameters required, return
   types and the link to the source code.
 keywords:

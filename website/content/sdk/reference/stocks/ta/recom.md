@@ -1,6 +1,6 @@
 ---
 title: recom
-description: "This page offers details on tradingview recommendations based on technical"
+description: This page offers details on tradingview recommendations based on technical
   indicators with an emphasis on Model and Chart tabs. This includes information on
   parameters, returns, and source code.
 keywords:

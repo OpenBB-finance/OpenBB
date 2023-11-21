@@ -1,6 +1,6 @@
 ---
 title: calendar
-description: "This is a documentation page for the calendar function. It details the"
+description: This is a documentation page for the calendar function. It details the
   parameters and the usage of this function to manipulate and view calendar data.
 keywords:
 - Calendar Data

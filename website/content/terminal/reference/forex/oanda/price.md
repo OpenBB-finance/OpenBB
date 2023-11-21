@@ -1,6 +1,6 @@
 ---
 title: price
-description: "Learn how to get the price for a selected instrument using the 'price'"
+description: Learn how to get the price for a selected instrument using the 'price'
   command. Know more about its usage and parameters.
 keywords:
 - price

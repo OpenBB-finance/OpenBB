@@ -1,6 +1,6 @@
 ---
 title: performance
-description: "Documentation for the Performance function that helps to view group data,"
+description: Documentation for the Performance function that helps to view group data,
   including sectors, industries, and countries. It details usage, parameters, and
   provides examples of Performance function use.
 keywords:

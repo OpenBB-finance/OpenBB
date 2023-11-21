@@ -1,6 +1,6 @@
 ---
 title: brnn
-description: "This documentation page provides in-depth details on how to effectively"
+description: This documentation page provides in-depth details on how to effectively
   perform BRNN forecasting using machine learning techniques such as LSTM and GRU
   with Datusaurus models. It contains all the necessary parameters with their description,
   default values, and optionality. The page also offers a clear working example demonstrating

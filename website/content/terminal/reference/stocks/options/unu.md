@@ -1,6 +1,6 @@
 ---
 title: unu
-description: "The documentation covers the essential parameters and usage of unu command"
+description: The documentation covers the essential parameters and usage of unu command
   in fdscanner.com. Unu command is a powerful tool for displaying, sorting, and filtering
   unusual options in market data. The user can set the limit of options to show, sort
   data by default and optional variables, reverse the data order, and flag to show

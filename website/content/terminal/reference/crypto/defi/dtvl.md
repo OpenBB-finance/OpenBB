@@ -1,6 +1,6 @@
 ---
 title: dtvl
-description: "dtvl is a tool designed for tracking the historical Total Value Locked"
+description: dtvl is a tool designed for tracking the historical Total Value Locked
   (TVL) of different decentralized applications (dApps). It offers users commands
   to search and display historical TVL data for specific crypto dApps, providing valuable
   insights for crypto investors and enthusiasts.

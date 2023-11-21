@@ -1,6 +1,6 @@
 ---
 title: fe
-description: "This page presents the fe function of the OpenBB Econometrics Module,"
+description: This page presents the fe function of the OpenBB Econometrics Module,
   explaining its parameters and their functionality. Here, users can find about entity
   effects, time effects, and regressors.
 keywords:

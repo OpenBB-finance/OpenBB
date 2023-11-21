@@ -1,6 +1,6 @@
 ---
 title: topt
-description: "This page provides instructions on how to use the 'topt' function which"
+description: This page provides instructions on how to use the 'topt' function which
   prints the top officer purchases of the day. It includes parameters for usage and
   an understanding of the output.
 keywords:

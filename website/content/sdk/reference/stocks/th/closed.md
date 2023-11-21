@@ -1,6 +1,6 @@
 ---
 title: closed
-description: "The page provides information on the two functions `openbb.stocks.th.closed()`"
+description: The page provides information on the two functions `openbb.stocks.th.closed()`
   and `openbb.stocks.th.closed_chart()`. The first function is for getting currently
   closed exchanges which returns a pd.DataFrame. The second function is for displaying
   closed exchanges but does not return anything.

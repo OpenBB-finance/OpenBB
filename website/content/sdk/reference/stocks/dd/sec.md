@@ -1,6 +1,6 @@
 ---
 title: sec
-description: "This page provides the source code and related information for using"
+description: This page provides the source code and related information for using
   OpenBB's SEC filings feature. Retrieve stock ticker information from platforms like
   Market Watch. Written in Python, the feature returns SEC filings data in a pd.DataFrame
   format.

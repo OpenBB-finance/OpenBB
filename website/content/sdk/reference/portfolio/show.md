@@ -1,6 +1,6 @@
 ---
 title: show
-description: "The OpenBB Terminal's documentation page for the 'show' function, which"
+description: The OpenBB Terminal's documentation page for the 'show' function, which
   provides details on retrieving portfolio transactions using the 'PortfolioEngine'
   class instance. It includes parameters, return types and example usage.
 keywords:

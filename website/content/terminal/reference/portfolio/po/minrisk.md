@@ -1,6 +1,6 @@
 ---
 title: minrisk
-description: "The minrisk page offers detailed instructions and examples on minimizing"
+description: The minrisk page offers detailed instructions and examples on minimizing
   a financial portfolio's risk using various estimators, risk measures and allocation
   strategies. It provides comprehensive guidelines for portfolio management and analytics.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: erc20_tokens
-description: "This page provides a helper method that loads the most traded erc20 tokens."
+description: This page provides a helper method that loads the most traded erc20 tokens.
   It contains source code, parameters and returns for the OpenBBTerminal project's
   cryptocurrency bitquery model.
 keywords:

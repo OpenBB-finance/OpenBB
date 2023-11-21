@@ -1,6 +1,6 @@
 ---
 title: hm
-description: "The page provides detailed documentation for OpenBB crypto functions"
+description: The page provides detailed documentation for OpenBB crypto functions
   that interact with CoinGecko to retrieve and visualise cryptocurrency data. It includes
   code examples, a list of parameters and their descriptions for each function, and
   source code links.

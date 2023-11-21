@@ -1,6 +1,6 @@
 ---
 title: countries
-description: "This documentation page discusses how to retrieve all countries in Yahoo"
+description: This documentation page discusses how to retrieve all countries in Yahoo
   Finance data based on sector or industry. It provides an analysis method using the
   OpenBB stocks sia function with Python.
 keywords:

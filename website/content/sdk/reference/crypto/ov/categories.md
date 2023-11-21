@@ -1,6 +1,6 @@
 ---
 title: categories
-description: "'This page provides information about top crypto categories from the"
+description: 'This page provides information about top crypto categories from the
   CoinGecko source. Detailed explanations of the two main functions are provided:
   the ''categories'' function, which returns top crypto categories based on various
   filters, and the ''categories_chart'' function, which displays the top cryptocurrency

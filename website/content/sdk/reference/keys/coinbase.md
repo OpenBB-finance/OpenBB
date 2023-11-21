@@ -1,6 +1,6 @@
 ---
 title: coinbase
-description: "This page provides a detailed guide on setting up a Coinbase key using"
+description: This page provides a detailed guide on setting up a Coinbase key using
   the OpenBBTerminal. Learn how to input your API key, secret, and passphrase. Understand
   the functionality of persist and show_output parameters in the context of your Jupyter
   notebook session and terminal environment variables.

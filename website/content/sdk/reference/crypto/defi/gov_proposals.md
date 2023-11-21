@@ -1,6 +1,6 @@
 ---
 title: gov_proposals
-description: "Docusaurus page about Terra blockchain governance proposals, detailing"
+description: Docusaurus page about Terra blockchain governance proposals, detailing
   parameters and functionalities such as sorting, ascending/descending and exporting
   data. Includes links to original source and GitHub source.
 keywords:

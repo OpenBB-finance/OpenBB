@@ -1,6 +1,6 @@
 ---
 title: tob
-description: "This page provides insights on how to use the 'tob' function to get the"
+description: This page provides insights on how to use the 'tob' function to get the
   top of a book for a loaded ticker from a selected exchange, explaining its parameters
   and usage.
 keywords:

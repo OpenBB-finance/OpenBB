@@ -1,6 +1,6 @@
 ---
 title: blcs
-description: "This page is about 'blcs', a tool that is used to print the latest CEO/CFO"
+description: This page is about 'blcs', a tool that is used to print the latest CEO/CFO
   sales 100k using data from OpenInsider. It displays insider data in a tabular format,
   with options to limit data rows.
 keywords:

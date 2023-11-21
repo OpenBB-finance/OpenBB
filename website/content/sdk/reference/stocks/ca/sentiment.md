@@ -1,6 +1,6 @@
 ---
 title: sentiment
-description: "The page provides detailed information about Sentiment Analysis functions"
+description: The page provides detailed information about Sentiment Analysis functions
   provided by the OpenBB Finance Terminal. It guides users on how to retrieve sentiment
   analysis for several symbols using FinBrain's API and how to display the sentiment
   for all ticker.

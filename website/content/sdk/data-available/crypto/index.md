@@ -1,7 +1,7 @@
 ---
 title: Crypto
 sidebar_position: 0
-description: "This Docusaurus page is dedicated to providing a detailed guide on how"
+description: This Docusaurus page is dedicated to providing a detailed guide on how
   Cryptocurrency applications and dashboards can be built quickly using the OpenBB
   Terminal's Crypto Module. It provides an outline on how to use SDK functions at
   the 'openbb.crypto' level, rundown of functions and modules, along with sample Python

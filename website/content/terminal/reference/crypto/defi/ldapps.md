@@ -1,6 +1,6 @@
 ---
 title: ldapps
-description: "This documentation page provides detailed information on how to display"
+description: This documentation page provides detailed information on how to display
   and interpret data on Decentralized Applications (dApps) listed on DeFi Llama including
   parameters, usage and examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: validators
-description: "The 'validators' documentation page provides detailed insights into Terra"
+description: The 'validators' documentation page provides detailed insights into Terra
   validators, including how to sort and display data related to each validator. The
   information includes Validator Name, Tokens Amount, Voting Power, Commission Rate,
   Status, and Uptime.

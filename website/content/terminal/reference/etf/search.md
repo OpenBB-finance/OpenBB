@@ -1,6 +1,6 @@
 ---
 title: search
-description: "Learn how to search for ETFs by name using the FinanceDatabase or StockAnalysis.com."
+description: Learn how to search for ETFs by name using the FinanceDatabase or StockAnalysis.com.
   Understand the usage, parameters, and how to incorporate them in Python.
 keywords:
 - ETF

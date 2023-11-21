@@ -1,6 +1,6 @@
 ---
 title: holdp
-description: "A guide on how to use the holdp function to display holdings of assets"
+description: A guide on how to use the holdp function to display holdings of assets
   in percentage. Includes usage, parameters and additional options.
 keywords:
 - display holdings

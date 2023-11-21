@@ -1,6 +1,6 @@
 ---
 title: load
-description: "Learn how to load and analyze crypto currency data using our command-line"
+description: Learn how to load and analyze crypto currency data using our command-line
   utility. This page provides full usage details, including parameters, exchange choice,
   interval selection and more. The tool supports Yahoo finance, ccxt among other data
   sources.

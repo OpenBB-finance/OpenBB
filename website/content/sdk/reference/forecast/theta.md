@@ -1,6 +1,6 @@
 ---
 title: theta
-description: "This page provides detailed information on how to use the 'Theta' model"
+description: This page provides detailed information on how to use the 'Theta' model
   and 'Theta' chart for financial forecasting with OpenBB. It explains various parameters
   for accurate prediction and chart display, alongside respective source code examples.
 keywords:

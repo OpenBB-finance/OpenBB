@@ -1,6 +1,6 @@
 ---
 title: perfmap
-description: "This is the documentation page of perfmap, a tool that opens Finviz performance"
+description: This is the documentation page of perfmap, a tool that opens Finviz performance
   map in the browser. It supports various performance periods and map filters.
 keywords:
 - Finviz

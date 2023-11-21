@@ -1,6 +1,6 @@
 ---
 title: Quantitative Analysis
-description: "The page provides a comprehensive guide on how to use the 'qa' module"
+description: The page provides a comprehensive guide on how to use the 'qa' module
   of the Terminal's Quantitative Analysis menu for SDK environment. It contains detailed
   information about the grouping of functions into categories, examples on their usage,
   and how they provide users more ways to interact with the function library.

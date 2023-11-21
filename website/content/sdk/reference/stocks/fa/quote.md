@@ -1,6 +1,6 @@
 ---
 title: quote
-description: "The documentation page provides a brief explanation on how to use the"
+description: The documentation page provides a brief explanation on how to use the
   OpenBBTerminal to fetch stock ticker quotes from FMP. It also includes the source
   code and instructions on its parameters and return type.
 keywords:

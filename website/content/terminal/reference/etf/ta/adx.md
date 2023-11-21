@@ -1,6 +1,6 @@
 ---
 title: adx
-description: "The page provides detailed information about the ADX or Average Directional"
+description: The page provides detailed information about the ADX or Average Directional
   Movement Index, a Welles Wilder style moving average of the Directional Movement
   Index (DX). It features guidelines on its usage, elaboration of its parameters,
   and aids readers in interpreting it for identifying strong and weak trends.

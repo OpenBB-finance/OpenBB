@@ -1,6 +1,6 @@
 ---
 title: voi
-description: "The voi page provides a guide on how to plot Volume + Open Interest of"
+description: The voi page provides a guide on how to plot Volume + Open Interest of
   calls vs puts with parameters like minimum volume, minimum strike price and maximum
   strike price. It's an integral part of a python-based toolkit.
 keywords:

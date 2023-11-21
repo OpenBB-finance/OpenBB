@@ -1,6 +1,6 @@
 ---
 title: show
-description: "This documentation page provides a detailed overview of the 'show' function"
+description: This documentation page provides a detailed overview of the 'show' function
   in Python, used for data representation and manipulation in DataFrames. It presents
   the usage, parameters, and examples demonstrating how the function can be employed
   for different econometrics datasets by sorting and displaying datasets in an organized

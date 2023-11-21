@@ -1,6 +1,6 @@
 ---
 title: dex
-description: "The dex page displays information about top decentralized exchanges."
+description: The dex page displays information about top decentralized exchanges.
   It provides usage, parameters, and examples of how to fetch and sort the data.
 keywords:
 - Decentralized Exchanges

@@ -1,6 +1,6 @@
 ---
 title: curve
-description: "The documentation page provides detailed instructions on how to retrieve"
+description: The documentation page provides detailed instructions on how to retrieve
   and display curve futures using the OpenBB Python library, with source code provided.
   The API functions interact with data from Yahoo Finance and include customization
   options for data representation and export format.

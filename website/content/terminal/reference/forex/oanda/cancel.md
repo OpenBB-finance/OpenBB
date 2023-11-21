@@ -1,6 +1,6 @@
 ---
 title: cancel
-description: "Webpage detailing how to cancel a pending order with usage, parameters"
+description: Webpage detailing how to cancel a pending order with usage, parameters
   and special considerations.
 keywords:
 - Cancel Pending Order

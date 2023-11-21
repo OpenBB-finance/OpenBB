@@ -1,6 +1,6 @@
 ---
 title: theta
-description: "This page provides a detailed guide on how to perform a Theta forecast"
+description: This page provides a detailed guide on how to perform a Theta forecast
   using Python. Parameters with their descriptions and the process of exporting predictions
   to a CSV file are covered as well.
 keywords:

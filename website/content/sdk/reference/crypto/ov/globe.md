@@ -1,6 +1,6 @@
 ---
 title: globe
-description: "This docusaurus page represents the 'globe' function of OpenBBTerminal"
+description: This docusaurus page represents the 'globe' function of OpenBBTerminal
   which retrieves a DataFrame with global cryptocurrency market data from a specified
   source; default is CoinGecko.
 keywords:

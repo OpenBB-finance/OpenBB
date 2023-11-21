@@ -1,6 +1,6 @@
 ---
 title: _retry_session
-description: "The _retry_session function in OpenBBTerminal is a Python helper method"
+description: The _retry_session function in OpenBBTerminal is a Python helper method
   that attempts to mount a session given a URL, implementing a retry scheme with parameters
   for number of retries and a backoff factor. It returns a session object from the
   requests library.

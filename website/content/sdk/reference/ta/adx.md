@@ -1,6 +1,6 @@
 ---
 title: adx
-description: "This page provides extensive information about the ADX technical indicator,"
+description: This page provides extensive information about the ADX technical indicator,
   including parameters, returns, and usage. It shares Python source codes for implementing
   and visualising the ADX technical indicator on OHLC price data using OpenBBTerminal.
 keywords:

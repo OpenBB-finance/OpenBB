@@ -1,6 +1,6 @@
 ---
 title: cpanic
-description: "This page contains detailed information regarding the cpanic function"
+description: This page contains detailed information regarding the cpanic function
   of OpenBB Terminal. It explains how to set the Cpanic key including parameters,
   results, and examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: dwat
-description: "The 'dwat' documentation page provides comprehensive information about"
+description: The 'dwat' documentation page provides comprehensive information about
   Durbin-Watson autocorrelation test, its usage with Ordinary Least Squares (OLS)
   regression, and potential issues and solutions with multi-collinearity and numerical
   problems. The page features examples with a Python command, its parameters, and

@@ -1,6 +1,6 @@
 ---
 title: income
-description: "This page provides detailed information on how to get income data from"
+description: This page provides detailed information on how to get income data from
   different peer companies using OpenBB's financial functions. This includes the source
   code and the parameters needed for these operations.
 keywords:

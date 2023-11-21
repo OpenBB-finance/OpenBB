@@ -1,6 +1,6 @@
 ---
 title: hma
-description: "This page provides documentation on the hma function from OpenBB. This"
+description: This page provides documentation on the hma function from OpenBB. This
   function calculates the hull moving average (HMA) of stock prices, using a pandas
   dataframe as input and returning a dataframe with the prices and the HMA.
 keywords:

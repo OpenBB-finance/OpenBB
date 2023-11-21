@@ -1,6 +1,6 @@
 ---
 title: cci
-description: "This page provides an in-depth analysis of the CCI - a tool designed"
+description: This page provides an in-depth analysis of the CCI - a tool designed
   to spot initiating and concluding market trends. It clearly explains how to utilize
   this tool, covering everything from normal trading range to identifying oversold
   conditions and anticipating price correction.

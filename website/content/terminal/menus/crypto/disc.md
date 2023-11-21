@@ -1,6 +1,6 @@
 ---
 title: Discovery
-description: "This doc provides an introduction to the discovery sub-menu within the Crypto menu of the OpenBB Terminal."
+description: This doc provides an introduction to the discovery sub-menu within the Crypto menu of the OpenBB Terminal.
 keywords:
 - Cryptocurrency Discovery
 - crypto

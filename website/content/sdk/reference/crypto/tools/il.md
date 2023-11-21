@@ -1,6 +1,6 @@
 ---
 title: il
-description: "'This page provides technical documentation for two imperative features"
+description: 'This page provides technical documentation for two imperative features
   in OpenBB''s cryptocurrency tool suite: the Impermanent Loss calculation model and
   its corresponding chart display. Learn about their parameters, return types, and
   source code.'

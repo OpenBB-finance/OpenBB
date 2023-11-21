@@ -1,6 +1,6 @@
 ---
 title: Government
-description: "This documentation pages describes the government trading menu hwere users can access the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department."
+description: This documentation pages describes the government trading menu hwere users can access the reported trades of elected officials, lobbyist activity, awarded contracts, and general spending of the United States Treasury Department.
 keywords:
 - government
 - government trading

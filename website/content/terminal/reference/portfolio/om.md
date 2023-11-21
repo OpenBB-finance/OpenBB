@@ -1,6 +1,6 @@
 ---
 title: om
-description: "A documentation page providing information about the om function that"
+description: A documentation page providing information about the om function that
   calculates the omega ratio of a selected portfolio with customizable start and end
   parameters.
 keywords:

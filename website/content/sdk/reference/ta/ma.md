@@ -1,6 +1,6 @@
 ---
 title: ma
-description: "Comprehensive guide to the ma and ma_chart functions as part of the OpenBB"
+description: Comprehensive guide to the ma and ma_chart functions as part of the OpenBB
   technical analysis python package. These functions focus on plotting the moving
   average (MA) technical indicator of various types like EMA, ZLMA and SMA for a given
   time-series data.

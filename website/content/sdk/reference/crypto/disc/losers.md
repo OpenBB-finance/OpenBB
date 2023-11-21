@@ -1,6 +1,6 @@
 ---
 title: losers
-description: "The 'Losers' page on OpenBBTerminal provides functions that allow users"
+description: The 'Losers' page on OpenBBTerminal provides functions that allow users
   to find out which cryptocurrencies suffered the largest losses during a given time
   period. Documentation includes information on parameters, return types, and source
   code.

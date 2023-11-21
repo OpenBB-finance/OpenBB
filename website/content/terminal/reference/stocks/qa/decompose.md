@@ -1,6 +1,6 @@
 ---
 title: decompose
-description: "'Decompose time series guide and examples: additive and multiplicative"
+description: 'Decompose time series guide and examples: additive and multiplicative
   models. Includes usage, parameters, and example output for time series decomposition.'
 keywords:
 - Decompose

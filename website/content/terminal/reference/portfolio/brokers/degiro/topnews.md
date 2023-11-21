@@ -1,6 +1,6 @@
 ---
 title: topnews
-description: "The topnews function provides users with the most current and breaking"
+description: The topnews function provides users with the most current and breaking
   news. It's simple to use and doesn't require any parameters, keeping you informed
   about the world's events with minimal effort.
 keywords:

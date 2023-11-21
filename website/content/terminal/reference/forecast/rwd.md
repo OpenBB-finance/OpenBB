@@ -1,6 +1,6 @@
 ---
 title: rwd
-description: "This page details the procedure for performing a Random Walk with Drift"
+description: This page details the procedure for performing a Random Walk with Drift
   (RWD) forecast using the statsforecast tool in Python. Complete with parameter listings,
   usage instructions, and examples, the guidance facilitates accurate and efficient
   data analysis.

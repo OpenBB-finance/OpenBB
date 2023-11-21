@@ -1,6 +1,6 @@
 ---
 title: ex
-description: "An in-depth guide to using the 'ex' command to retrieve and manipulate"
+description: An in-depth guide to using the 'ex' command to retrieve and manipulate
   data from various crypto exchanges. Learn how to limit query results, sort data
   by important parameters such as id and volume, and switch between ascending and
   descending order.

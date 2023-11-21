@@ -1,6 +1,6 @@
 ---
 title: sidtc
-description: "The sidtc page provides a command line interface to print short interest"
+description: The sidtc page provides a command line interface to print short interest
   and days to cover for stocks. Provides options to limit the number of tickers displayed
   and sorting by specific fields.
 keywords:

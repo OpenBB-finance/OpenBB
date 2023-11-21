@@ -1,6 +1,6 @@
 ---
 title: ewf
-description: "Detailed documentation on the usage of 'ewf', a command that displays"
+description: Detailed documentation on the usage of 'ewf', a command that displays
   exchange withdrawal fees for various cryptocurrencies. The list includes a wide
   range of exchanges from Binance to OKEx, providing an important resource for those
   dealing with crypto trading.

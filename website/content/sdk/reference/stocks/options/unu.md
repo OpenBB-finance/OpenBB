@@ -1,6 +1,6 @@
 ---
 title: unu
-description: "The documentation page provides details about the 'unu' command from"
+description: The documentation page provides details about the 'unu' command from
   openbb.stocks.options. It includes information on how to get unusual option activity
   data from fdscanner.com and display the unusual options table. It lists parameters,
   returns, and gives examples of usage.

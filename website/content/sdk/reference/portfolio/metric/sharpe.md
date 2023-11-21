@@ -1,6 +1,6 @@
 ---
 title: sharpe
-description: "Get sharpe ratio for a portfolio and benchmark using the OpenBB Terminal."
+description: Get sharpe ratio for a portfolio and benchmark using the OpenBB Terminal.
   This page provides a detailed description of how to use the Sharpe ratio function
   with code examples in Python.
 keywords:

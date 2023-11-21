@@ -1,6 +1,6 @@
 ---
 title: stats
-description: "This page consists of detailed guidelines on how to utilise stats and"
+description: This page consists of detailed guidelines on how to utilise stats and
   stats_chart functions. It shows how one can leverage these functions to get NFT
   collection stats and print tables showcasing these stats, respectively sourced from
   opensea.io.

@@ -1,6 +1,6 @@
 ---
 title: cusum
-description: "Documentation page for the Cumulative Sum Algorithm (CUSUM) used in the"
+description: Documentation page for the Cumulative Sum Algorithm (CUSUM) used in the
   OpenBB Terminal for quantitative analysis. Contains a snippet of the source code,
   parameters descriptions, and an example of usage.
 keywords:

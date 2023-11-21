@@ -1,6 +1,6 @@
 ---
 title: profile
-description: "This page provides information on retrieving the ticker profile from"
+description: This page provides information on retrieving the ticker profile from
   FMP using the 'openbb.stocks.fa.profile' function in OpenBBTerminal. Python's pd.DataFrame
   is utilized to organize the stock ticker data.
 keywords:

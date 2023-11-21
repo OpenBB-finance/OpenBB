@@ -1,6 +1,6 @@
 ---
 title: fraud
-description: "This is an informational page about Fetching fraud ratios based on fundamentals"
+description: This is an informational page about Fetching fraud ratios based on fundamentals
   using OpenBB's stocks.fa.fraud function in Python. This function accepts a stock
   ticker symbol and returns fraud ratios in a pandas DataFrame format.
 keywords:

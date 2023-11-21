@@ -1,6 +1,6 @@
 ---
 title: headlines
-description: "The website page provides detailed documentation on how to use sentiment"
+description: The website page provides detailed documentation on how to use sentiment
   analysis with FinBrain's API on a company's stock. It offers instructions on extracting
   sentiment from headlines and visualizing sentiment trends through charts.
 keywords:

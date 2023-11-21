@@ -1,6 +1,6 @@
 ---
 title: pairs
-description: "This page provides a detailed guide on how to use recently added pairs"
+description: This page provides a detailed guide on how to use recently added pairs
   on Uniswap DEX using a command line tool. It includes instructions on usage, parameters,
   and examples, providing a comprehensive understanding of sorting and filtering commands
   related to trading volume and transaction counts.

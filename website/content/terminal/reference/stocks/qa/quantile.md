@@ -1,6 +1,6 @@
 ---
 title: quantile
-description: "This page provides insights into the concept of 'Quantile' and how it's"
+description: This page provides insights into the concept of 'Quantile' and how it's
   used for dividing a distribution. It includes parameter details such as n_window
   and f_quantile and usage information with Python.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: tft
-description: "This page provides detailed instructions on how to perform temporal forecasting"
+description: This page provides detailed instructions on how to perform temporal forecasting
   using the Temporal Fusion Transformer (TFT). It includes usage examples, parameter
   explanations, and result predictions. It's an exceptional resource if you're looking
   to understand or implement the TFT for data analysis and machine learning purposes.

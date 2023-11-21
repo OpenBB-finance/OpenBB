@@ -1,6 +1,6 @@
 ---
 title: bw
-description: "The documentation page depicts the usage and configuration options for"
+description: The documentation page depicts the usage and configuration options for
   the 'bw' function in OpenBB Terminal. The function plots box and whisker graphs
   for quantitative data analysis based on provided DataFrame and target. An example
   using stock data for 'AAPL' is provided for a clearer understanding.

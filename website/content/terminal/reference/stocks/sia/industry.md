@@ -1,6 +1,6 @@
 ---
 title: industry
-description: "This page provides information on how to view existing industries or"
+description: This page provides information on how to view existing industries or
   setting an industry using parameters. It includes usage, choices, and optional settings
   for the 'industry' function.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: exchanges
-description: "This page provides information about how to show top crypto exchanges"
+description: This page provides information about how to show top crypto exchanges
   through OpenBB's API with detailed parameters, return types and examples.
 keywords:
 - crypto exchanges

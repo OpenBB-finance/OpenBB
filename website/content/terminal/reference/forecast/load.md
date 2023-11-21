@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page details how to use the 'load' command to bring custom datasets"
+description: This page details how to use the 'load' command to bring custom datasets
   into your forecasting tool. It gives usage instructions, parameter descriptions,
   and examples.
 keywords:

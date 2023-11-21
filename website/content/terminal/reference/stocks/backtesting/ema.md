@@ -1,6 +1,6 @@
 ---
 title: ema
-description: "Learn how to use the EMA strategy, where stock is bought when the price"
+description: Learn how to use the EMA strategy, where stock is bought when the price
   is equivalent to EMA(l). Parameters such as EMA period, spy hold comparison, and
   buy and hold comparison are covered extensively.
 keywords:

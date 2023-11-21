@@ -1,6 +1,6 @@
 ---
 title: stats
-description: "A documentation page detailing the usage and parameters of the 'stats'"
+description: A documentation page detailing the usage and parameters of the 'stats'
   function within the OpenInside software - used for filtering data using a selected
   ticker.
 keywords:

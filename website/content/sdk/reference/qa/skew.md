@@ -1,6 +1,6 @@
 ---
 title: skew
-description: "This documentation page provides details on the function openbb.qa.skew,"
+description: This documentation page provides details on the function openbb.qa.skew,
   used for rolling skewness indicator calculations and plotting. It includes parameters
   description and links to the source code.
 keywords:

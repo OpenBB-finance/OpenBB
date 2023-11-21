@@ -1,6 +1,6 @@
 ---
 title: gh
-description: "This is a documentation for GH development activity tool by OpenBB which"
+description: This is a documentation for GH development activity tool by OpenBB which
   includes detailed functionality on how to return lists of Github activity for a
   given cryptocurrency with adjustable time intervals. Source codes for model and
   chart representations are included.

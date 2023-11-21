@@ -1,6 +1,6 @@
 ---
 title: gacc
-description: "A detailed insight into the gacc function of Terra Blockchain. This documentation"
+description: A detailed insight into the gacc function of Terra Blockchain. This documentation
   shows how to effectively fetch Terra blockchain account growth history and how to
   plot the related charts using openbb.crypto.defi.
 keywords:

@@ -1,7 +1,7 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: "This page provides detailed instructions for the installation and updating"
+description: This page provides detailed instructions for the installation and updating
   processes for software, addressing frequently encountered installation issues. These
   instructions include resolving Microsoft Visual C++ 14.0 dependencies, benefits
   of using Miniconda for package management, methods to update installations, and

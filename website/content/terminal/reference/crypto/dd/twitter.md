@@ -1,6 +1,6 @@
 ---
 title: twitter
-description: "This page provides information on how to use the twitter function to"
+description: This page provides information on how to use the twitter function to
   display the last 10 tweets for a given coin. The function includes parameters such
   as limit and sortby which can be used to customize the output. The tweets are displayed
   with their date, user_name, status, retweet_count, and like_count.

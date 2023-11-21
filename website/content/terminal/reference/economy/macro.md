@@ -1,6 +1,6 @@
 ---
 title: macro
-description: "Learn how to retrieve and manipulate a variety of macro data from numerous"
+description: Learn how to retrieve and manipulate a variety of macro data from numerous
   countries using various parameters and transformations. The page provides examples
   and details of the functionalities.
 keywords:

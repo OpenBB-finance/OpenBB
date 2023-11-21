@@ -1,6 +1,6 @@
 ---
 title: hr
-description: "The hr Tab provides functionalities to return a dataframe with the mean"
+description: The hr Tab provides functionalities to return a dataframe with the mean
   hashrate of either btc or eth blockchain along with the symbol's price, over a specified
   interval. Additionally, the hr_chart function provides the ability to plot this
   data as a chart.

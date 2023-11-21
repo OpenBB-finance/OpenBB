@@ -1,6 +1,6 @@
 ---
 title: gov
-description: "This page provides functions for retrieving and viewing data on cryptocurrency"
+description: This page provides functions for retrieving and viewing data on cryptocurrency
   governance using OpenBB's Gov and Gov Chart functions. Check a crypto symbol's governance
   and view it in a table or chart format. Also includes option to export data.
 keywords:

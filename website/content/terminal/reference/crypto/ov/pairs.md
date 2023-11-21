@@ -1,6 +1,6 @@
 ---
 title: pairs
-description: "The page gives a detailed overview on how to use the 'pairs' function"
+description: The page gives a detailed overview on how to use the 'pairs' function
   for showing available trading pairs on Coinbase. It includes usage code, parameters
   description, and some examples.
 keywords:

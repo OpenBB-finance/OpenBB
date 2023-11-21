@@ -1,6 +1,6 @@
 ---
 title: mgmt
-description: "This page provides details on how to print management team details using"
+description: This page provides details on how to print management team details using
   the 'mgmt' command. It also includes potential insider activity page sourced from
   Business Insider.
 keywords:

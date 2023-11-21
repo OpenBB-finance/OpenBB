@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This page provides commands to retrieve basic information about any loaded"
+description: This page provides commands to retrieve basic information about any loaded
   cryptocurrency like Bitcoin. It shows data like Name, Symbol, Description, Market
   Cap, Public Interest, Supply, and Price related metrics. This feature can be very
   useful for those tracking specific cryptocurrencies and their performance.

@@ -1,7 +1,7 @@
 ---
 title: Overlay Financial Data
 sidebar_position: 3
-description: "Guide to improve financial data comparison and visualization using the"
+description: Guide to improve financial data comparison and visualization using the
   'hold on' command in OpenBBTerminal. Covers overlaying data on the same axes, customizing
   chart legends and titles, analyzing FAANG companies and GDP/CPI data, and more.
 keywords:

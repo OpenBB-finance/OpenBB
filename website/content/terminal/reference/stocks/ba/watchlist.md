@@ -1,6 +1,6 @@
 ---
 title: watchlist
-description: "This page documents the 'watchlist' function which allows users to fetch"
+description: This page documents the 'watchlist' function which allows users to fetch
   and print other user's watchlist of stock posts from Reddit. It demonstrates usage,
   explains different parameters including limit for posts, and provides examples of
   its execution.

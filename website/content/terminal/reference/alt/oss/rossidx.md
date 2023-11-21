@@ -1,6 +1,6 @@
 ---
 title: rossidx
-description: "This page provides detailed instructions on how to use the rossidx command"
+description: This page provides detailed instructions on how to use the rossidx command
   in Python to sort and display information about startups from the Ross Index. Users
   can sort by various criteria (e.g. GitHub Stars, Company, Country), display charts,
   and set the chart type to 'stars' or 'forks'.

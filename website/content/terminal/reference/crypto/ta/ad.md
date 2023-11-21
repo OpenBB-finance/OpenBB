@@ -1,6 +1,6 @@
 ---
 title: ad
-description: "This documentation explains how to use the Accumulation/Distribution"
+description: This documentation explains how to use the Accumulation/Distribution
   Line, an indicator similar to the On Balance Volume to project trends in the price
   direction of a stock, and how to use specific parameters with the ad function to
   get the open value of a stock.

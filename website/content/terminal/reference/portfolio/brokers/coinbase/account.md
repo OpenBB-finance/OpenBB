@@ -1,6 +1,6 @@
 ---
 title: account
-description: "Manage and display information about your trading accounts on Coinbase"
+description: Manage and display information about your trading accounts on Coinbase
   with options to specify currency and access all account data.
 keywords:
 - Coinbase

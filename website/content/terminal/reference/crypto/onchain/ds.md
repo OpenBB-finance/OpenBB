@@ -1,6 +1,6 @@
 ---
 title: ds
-description: "DS provides daily transactions of certain symbols in Ethereum blockchain,"
+description: DS provides daily transactions of certain symbols in Ethereum blockchain,
   it supports platforms such as uniswap-v3, uniswap-v2, sushiswap, and curve. It primarily
   helps in checking fees and the number of users over time.
 keywords:

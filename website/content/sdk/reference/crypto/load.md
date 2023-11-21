@@ -1,6 +1,6 @@
 ---
 title: load
-description: "The documentation page describes the crypto currency load function in"
+description: The documentation page describes the crypto currency load function in
   OpenBB's Terminal. It helps to get data for any crypto currency by specifying parameters
   such as symbol, start date, interval, exchange, vs_currency, end_date and the source
   of the data. It then returns a PD DataFrame with price and volume data.

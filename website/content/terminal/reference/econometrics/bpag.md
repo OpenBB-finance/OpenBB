@@ -1,6 +1,6 @@
 ---
 title: bpag
-description: "The page provides information on how to use the 'bpag' command to conduct"
+description: The page provides information on how to use the 'bpag' command to conduct
   the Breusch-Pagan heteroscedasticity test in econometrics. It requires running OLS
   with dependent and independent variables and shows whether there is heteroscedasticity
   in the data.

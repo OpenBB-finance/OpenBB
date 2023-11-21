@@ -1,6 +1,6 @@
 ---
 title: sma
-description: "This page explains the Simple Moving Average (sma), a method used to"
+description: This page explains the Simple Moving Average (sma), a method used to
   filter noise and identify trends in data by averaging the previous set of values
   within a given time period. It includes the usage and parameter details.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This page provides documentation for the OpenBBTerminal's economy overview"
+description: This page provides documentation for the OpenBBTerminal's economy overview
   feature. The function scrapes market data, returning a DataFrame with the name,
   price, net change, and percentage change. No parameters needed.
 keywords:

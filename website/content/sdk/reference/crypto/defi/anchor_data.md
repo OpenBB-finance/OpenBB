@@ -1,6 +1,6 @@
 ---
 title: anchor_data
-description: "Improve your understanding of the Anchor protocol with the help of our"
+description: Improve your understanding of the Anchor protocol with the help of our
   documentation providing detailed instructions on how to retrieve and plot earnings
   data for a specific Terra address. Skim through the parameters, the types, the given
   descriptions, and the functionality.

@@ -1,6 +1,6 @@
 ---
 title: vsurf
-description: "A documentation page that guides how to use vsurf method which gets the"
+description: A documentation page that guides how to use vsurf method which gets the
   IV surface for calls and puts for stock ticker symbol and how to utilize vsurf_chart
   to display the vol surface. Includes source code, data types and defaults.
 keywords:

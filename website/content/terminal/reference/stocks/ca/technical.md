@@ -1,6 +1,6 @@
 ---
 title: technical
-description: "This page provides usage information, examples and parameters details"
+description: This page provides usage information, examples and parameters details
   for the 'technical' function that prints screener data of similar companies.
 keywords:
 - technical function

@@ -1,7 +1,7 @@
 ---
 title: Introduction to Routines
 sidebar_position: 2
-description: "The page provides a detailed introduction to OpenBB Routines, which allow"
+description: The page provides a detailed introduction to OpenBB Routines, which allow
   users to automate processes and repetitive tasks in financial analysis and data
   collection. It explains basic scripts, routine execution, and guides users on getting
   started with an example.

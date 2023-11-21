@@ -1,7 +1,7 @@
 ---
 title: Interactive Tables
 sidebar_position: 1
-description: "Learn how to navigate and utilize OpenBB's interactive tables using our"
+description: Learn how to navigate and utilize OpenBB's interactive tables using our
   open source PyWry technology. Understand how to sort and filter columns, hide or
   remove columns, select number of rows per page, freeze index and column headers,
   and export the data.

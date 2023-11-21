@@ -1,6 +1,6 @@
 ---
 title: raw
-description: "Documentation page for raw function, which is used to output raw data"
+description: Documentation page for raw function, which is used to output raw data
   to the console. Explains its usage, parameters, along with examples.
 keywords:
 - Documentation

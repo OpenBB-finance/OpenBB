@@ -1,6 +1,6 @@
 ---
 title: enterprise
-description: "The enterprise page provides insights into stock price, market capitalization,"
+description: The enterprise page provides insights into stock price, market capitalization,
   enterprise value, total debt, and other financial indicators over time. This information
   is crucial for investment decisions and financial modeling.
 keywords:

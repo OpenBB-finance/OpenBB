@@ -1,6 +1,6 @@
 ---
 title: ln
-description: "An OpenBBTerminal documentation page describing how to use the openbb.etf.ln"
+description: An OpenBBTerminal documentation page describing how to use the openbb.etf.ln
   Python function, which filters and retrieves ETFs from the Finance Database based
   on names.
 keywords:

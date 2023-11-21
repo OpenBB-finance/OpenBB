@@ -1,6 +1,6 @@
 ---
 title: set
-description: "This page provides detailed information about the 'set' command used"
+description: This page provides detailed information about the 'set' command used
   in Python, its usage, parameters, and the role of 'etf_config.ini' as a preset filter.
 keywords:
 - set command

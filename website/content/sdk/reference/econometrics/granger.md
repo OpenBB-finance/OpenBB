@@ -1,6 +1,6 @@
 ---
 title: granger
-description: "Documentation about Granger test functions to calculate and visualize"
+description: Documentation about Granger test functions to calculate and visualize
   Econometrics models in OpenBB terminal. Covers usage, parameters and return types.
 keywords:
 - Granger test

@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: "OpenBB is a data aggregator that provides access to data from various"
+description: OpenBB is a data aggregator that provides access to data from various
   sources. It is important to understand how to load ticker symbols, end-of-day daily
   data, and handle certain limitations like accessing the Binance API. Feature request
   options are available for specific data source endpoints.

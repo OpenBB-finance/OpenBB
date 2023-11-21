@@ -1,6 +1,6 @@
 ---
 title: ulc
-description: "The 'ulc' page provides a useful tool for displaying potentially undervalued"
+description: The 'ulc' page provides a useful tool for displaying potentially undervalued
   large cap stocks. The utility allows you to specify the limit of stocks to display,
   making it a versatile tool for investment research. Source data is retrieved from
   Yahoo Finance.

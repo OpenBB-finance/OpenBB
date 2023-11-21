@@ -1,6 +1,6 @@
 ---
 title: get
-description: "A document page explaining the usage of the 'get' command in python."
+description: A document page explaining the usage of the 'get' command in python.
   It allows users to fetch similar companies from a data source for comparison. Instructions
   and parameters for limiting the stocks and filtering by U.S. stock exchanges, Industry
   and Sector are also included.

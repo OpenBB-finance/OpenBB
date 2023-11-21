@@ -1,6 +1,6 @@
 ---
 title: Economy
-description: "This page offers detailed instructions and examples on how to use the"
+description: This page offers detailed instructions and examples on how to use the
   Economy module of the OpenBB terminal. This module provides user-friendly control
   over various financial and economic functionalities and metrics, enabling users
   to streamline their workflows in areas such as the management of API keys, data

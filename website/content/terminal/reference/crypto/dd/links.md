@@ -1,6 +1,6 @@
 ---
 title: links
-description: "The 'links' command is utilized to display an asset's links. This command"
+description: The 'links' command is utilized to display an asset's links. This command
   doesn't require any parameters and is beneficial for those handling asset information.
 keywords:
 - links

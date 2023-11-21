@@ -1,6 +1,6 @@
 ---
 title: cusum
-description: "The page provides detailed information on using cusum (Cumulative sum"
+description: The page provides detailed information on using cusum (Cumulative sum
   algorithm) tool. It covers areas such as algorithm usage with Python, parameters
   like threshold and drift, and graphical data representation.
 keywords:

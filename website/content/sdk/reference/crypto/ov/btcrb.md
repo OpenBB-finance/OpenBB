@@ -1,6 +1,6 @@
 ---
 title: btcrb
-description: "btcrb is a feature of the OpenBB Terminal that allows users to access"
+description: btcrb is a feature of the OpenBB Terminal that allows users to access
   historical bitcoin price data and view it in a rainbow chart. At its core, btcrb
   provides Python methods for retrieving this data over a specified date range and
   visualizing it using Matplotlib.

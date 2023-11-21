@@ -1,6 +1,6 @@
 ---
 title: stoch
-description: "This page presents an understanding of the Stochastic Oscillator, a technical"
+description: This page presents an understanding of the Stochastic Oscillator, a technical
   analysis indicator, and its parameters. It illustrates the buy and sell signals,
   moving averages, overbought and oversold conditions, and usage in Python. Particularly,
   it explains the commands n_fastkperiod, n_slowdperiod, and n_slowkperiod.

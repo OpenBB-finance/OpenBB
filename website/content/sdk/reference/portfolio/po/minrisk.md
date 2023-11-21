@@ -1,6 +1,6 @@
 ---
 title: minrisk
-description: "This page provides a detailed explanation of the 'minrisk' function provided"
+description: This page provides a detailed explanation of the 'minrisk' function provided
   by OpenBB, used in portfolio optimization to decrease risk. It includes information
   about the function's parameters, return structure, and usage examples.
 keywords:

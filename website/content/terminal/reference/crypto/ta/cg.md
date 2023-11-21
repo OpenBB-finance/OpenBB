@@ -1,6 +1,6 @@
 ---
 title: cg
-description: "This page explains the use of the Center of Gravity (COG) indicator to"
+description: This page explains the use of the Center of Gravity (COG) indicator to
   anticipate future price movements and trade on price reversals. It also includes
   parameters and usage guide for COG indicator.
 keywords:

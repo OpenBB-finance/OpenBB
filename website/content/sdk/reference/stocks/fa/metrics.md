@@ -1,6 +1,6 @@
 ---
 title: metrics
-description: "This page details the process of getting key metrics in stock market"
+description: This page details the process of getting key metrics in stock market
   by using the metrics function with parameters symbol, limit, and quarterly. It includes
   the Python code for this function.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: screen
-description: "'This page of the documentation is dedicated to the OpenBB''s etf screener;"
+description: 'This page of the documentation is dedicated to the OpenBB''s etf screener;
   it provides an overview of the functionality, parameters, and return types for two
   core methods: the ETF ''screen'' and ''screen_chart'' functions. The website guides
   the users through the use of these functions as well as their source code, helping

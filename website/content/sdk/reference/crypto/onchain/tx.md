@@ -1,6 +1,6 @@
 ---
 title: tx
-description: "This is an intricate page pertaining to transaction information sourcing"
+description: This is an intricate page pertaining to transaction information sourcing
   from Ethplorer. It lays out comprehensive details about model and chart transactions,
   offering Python source codes and linked GitHub resource. It elucidates transaction
   hash parameters and the formats to export data frames, among others.

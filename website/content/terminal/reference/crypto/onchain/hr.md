@@ -1,6 +1,6 @@
 ---
 title: hr
-description: "Documentation on the 'hr' function to view the mean hashrate of BTC or"
+description: Documentation on the 'hr' function to view the mean hashrate of BTC or
   ETH over a specific frequency interval. Contains information on command usage and
   the parameters involved.
 keywords:

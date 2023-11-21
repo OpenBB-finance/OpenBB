@@ -1,6 +1,6 @@
 ---
 title: Due Diligence
-description: "Guide to the Cryptocurrency Due Diligence menu command in the crypto"
+description: Guide to the Cryptocurrency Due Diligence menu command in the crypto
   terminal. It offers information about the loaded coin, project details, the token
   balance, fundraising details and social media activity. Examples of usage, price
   movements and sentiment scores are provided. The guide provides detailed step-by-step

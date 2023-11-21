@@ -1,6 +1,6 @@
 ---
 title: scr
-description: "The page describes the usage, parameters and functions of the scr command."
+description: The page describes the usage, parameters and functions of the scr command.
   It includes details about various presets like high_IV, TSLA_Poots, SPY_ATM_Calls
   among others and key concepts like Implied Volatility and Price-to-book.
 keywords:

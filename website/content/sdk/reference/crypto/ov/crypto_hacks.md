@@ -1,6 +1,6 @@
 ---
 title: crypto_hacks
-description: "Deep dive into major cryptocurrency-related hacks with OpenBB's crypto"
+description: Deep dive into major cryptocurrency-related hacks with OpenBB's crypto
   hacks models. Evaluate, sort by key parameters and view intricate details about
   each crypto hack.
 keywords:

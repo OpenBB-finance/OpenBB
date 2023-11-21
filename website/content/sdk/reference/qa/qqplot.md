@@ -1,6 +1,6 @@
 ---
 title: qqplot
-description: "The 'qqplot' page provides information on how to use the 'qqplot' function"
+description: The 'qqplot' page provides information on how to use the 'qqplot' function
   in the OpenBB library for quantitative data analysis. It explains the procedure,
   the parameters required, and provides a practical example using the stock ticker
   from Apple.

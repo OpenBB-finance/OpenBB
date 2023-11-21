@@ -1,6 +1,6 @@
 ---
 title: spread
-description: "'The page provides information about two central functions of the OpenBBTerminal:"
+description: 'The page provides information about two central functions of the OpenBBTerminal:
   ''spread'' and ''spread_chart''. These Python functions are part of the quantitative
   analysis, analyzing standard deviation, variance and create spread charts. The descriptions
   include source code, parameters, and return values.'

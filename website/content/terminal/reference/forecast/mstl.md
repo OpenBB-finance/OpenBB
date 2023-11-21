@@ -1,6 +1,6 @@
 ---
 title: mstl
-description: "A comprehensive guide for MSTL - Multiple Seasonalities and Trend using"
+description: A comprehensive guide for MSTL - Multiple Seasonalities and Trend using
   Loess forecast analysis in Python. This page includes technical details to understand
   the parameters for a more accurate prediction, including details on seasonalities
   and trends. A practical example is provided for clarity.

@@ -1,6 +1,6 @@
 ---
 title: plot
-description: "The 'plot' function is central to mapping out option payoff diagrams"
+description: The 'plot' function is central to mapping out option payoff diagrams
   with no required parameters. Ideal for financial strategies visualization.
 keywords:
 - plot function

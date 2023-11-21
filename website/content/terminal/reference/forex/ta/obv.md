@@ -1,6 +1,6 @@
 ---
 title: obv
-description: "On Balance Volume (OBV) is a technical analysis indicator that uses volume"
+description: On Balance Volume (OBV) is a technical analysis indicator that uses volume
   flow to predict changes in stock price. The OBV measures buying and selling pressure
   and is often used to confirm price trends or warn of potential price reversals.
 keywords:

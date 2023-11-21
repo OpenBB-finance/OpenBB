@@ -1,6 +1,6 @@
 ---
 title: equal
-description: "The page provides information about an equally weighted portfolio optimization"
+description: The page provides information about an equally weighted portfolio optimization
   command 'equal'. It lists and explains the parameters for usage like risk measure,
   nan fill method, return frequency, and more. The page is useful for individuals
   looking for information about portfolio optimization and the usage of specific financial

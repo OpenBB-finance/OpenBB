@@ -1,7 +1,7 @@
 ---
 title: Discovery
 sidebar_position: 2
-description: "This page provides detailed instructions on how to use the Discovery"
+description: This page provides detailed instructions on how to use the Discovery
   sub-module within the 'openbb.crypto.disc' to find new trends in Crypto markets.
   The module enables users to search coins on CoinGecko by category, access a list
   of coins available on CoinGecko, search CoinPaprika, view top coins, DeFi applications,

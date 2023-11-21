@@ -1,6 +1,6 @@
 ---
 title: bgod
-description: "This page provides the usage, parameters, and examples of the Breusch-Godfrey"
+description: This page provides the usage, parameters, and examples of the Breusch-Godfrey
   autocorrelation test in Python. It's useful for individuals working with OLS Regression
   Results and other econometrics. The BGOD page increases understanding of this functionality
   within Python.

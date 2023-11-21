@@ -1,6 +1,6 @@
 ---
 title: get_properties
-description: "The get_properties function in OpenBB's portfolio optimization module"
+description: The get_properties function in OpenBB's portfolio optimization module
   provides a list of available properties for property optimization purposes. No parameters
   are required for this function.
 keywords:

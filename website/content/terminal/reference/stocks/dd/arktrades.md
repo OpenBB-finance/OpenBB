@@ -1,6 +1,6 @@
 ---
 title: arktrades
-description: "The page documents the ArkTrades tool. This tool provides trade details"
+description: The page documents the ArkTrades tool. This tool provides trade details
   for any given ticker in ARK funds. It has optional parameters to limit rows shown
   or include the ticker symbol in the table.
 keywords:

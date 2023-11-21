@@ -1,7 +1,7 @@
 ---
 title: Launching
 sidebar_position: 2
-description: "Comprehensive troubleshooting guide for various software and system compatibility"
+description: Comprehensive troubleshooting guide for various software and system compatibility
   issues encountered while using the OpenBB Terminal. Covers topics such as Mac M1/M2
   Rosetta installation, Terminal, and SDK launch issues, ModuleNotFoundError solutions,
   SSL certificates authorization failures, proxy connection issues, and Linux Ubuntu

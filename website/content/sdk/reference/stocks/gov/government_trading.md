@@ -1,6 +1,6 @@
 ---
 title: government_trading
-description: "This page documents the government_trading function, which returns the"
+description: This page documents the government_trading function, which returns the
   most recent transactions by members of government like congress, senate, house,
   and others. The source code and parameters are provided for reference.
 keywords:

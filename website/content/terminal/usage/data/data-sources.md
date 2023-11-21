@@ -1,7 +1,7 @@
 ---
 title: Data sources
 sidebar_position: 1
-description: "This page provides useful information on dealing with different data"
+description: This page provides useful information on dealing with different data
   vendors when using OpenBB's Terminal. It outlines how to select a default data source,
   acquire API keys, and switch the data vendor using specific commands, all in an
   effort to streamline and improve the user's experience.

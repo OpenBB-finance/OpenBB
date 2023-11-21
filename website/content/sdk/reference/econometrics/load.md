@@ -1,6 +1,6 @@
 ---
 title: load
-description: "The page provides information on loading custom files into a dataframe"
+description: The page provides information on loading custom files into a dataframe
   in OpenBB. It offers the function definition, parameters, and returns
 keywords:
 - dataframe

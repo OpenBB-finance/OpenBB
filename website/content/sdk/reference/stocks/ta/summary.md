@@ -1,6 +1,6 @@
 ---
 title: summary
-description: "The page contains two essential open-source tools, FinBrain's model for"
+description: The page contains two essential open-source tools, FinBrain's model for
   technical summary reports and a viewer for those reports. Learn how to populate
   a technical summary and how to view a summary chart.
 keywords:

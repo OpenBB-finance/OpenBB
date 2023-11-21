@@ -1,6 +1,6 @@
 ---
 title: fisher
-description: "Documentation page about Fisher Transform, a technical analysis indicator"
+description: Documentation page about Fisher Transform, a technical analysis indicator
   used in finance. Detailed explanation on how to implement and use the Fisher Transform
   indicator using the OpenBB library, with guides on parameters and returns for function
   calls.

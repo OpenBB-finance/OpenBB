@@ -1,6 +1,6 @@
 ---
 title: cpi
-description: "This page provides documentation on the cpi command within the OpenBBTerminal."
+description: This page provides documentation on the cpi command within the OpenBBTerminal.
   It explains how to use the command to fetch Consumer Price Index data from Alpha
   Vantage and to display the US Consumer Price Index as a chart. It lists all parameters
   and returns for this command.

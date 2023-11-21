@@ -1,6 +1,6 @@
 ---
 title: maxret
-description: "The 'maxret' function is designed to maximize the return of a portfolio."
+description: The 'maxret' function is designed to maximize the return of a portfolio.
   It allows users to set multiple parameters and constraints like target return and
   risk, portfolio allocation, risk measure, and more. It supports various calculation
   methods and can handle various types of data.

@@ -1,6 +1,6 @@
 ---
 title: blacklitterman
-description: "This article provides an overview of how to optimize your portfolio using"
+description: This article provides an overview of how to optimize your portfolio using
   Black Litterman estimates. It includes a detailed guide on parameter usage, command
   line options, and examples to get you up to speed with the utility.
 keywords:

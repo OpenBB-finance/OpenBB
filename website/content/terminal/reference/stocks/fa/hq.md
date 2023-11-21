@@ -1,6 +1,6 @@
 ---
 title: hq
-description: "The hq tool opens the company's headquarters location in Google Maps."
+description: The hq tool opens the company's headquarters location in Google Maps.
   Sourced from Yahoo Finance, this command requires no parameters for usage.
 keywords:
 - hq

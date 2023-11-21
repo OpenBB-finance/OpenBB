@@ -1,6 +1,6 @@
 ---
 title: donchian
-description: "This page provides information on Donchian Channels, an indicator comprising"
+description: This page provides information on Donchian Channels, an indicator comprising
   upper and lower bands around a midrange or median band. It includes details of the
   parameters for its usage.
 keywords:

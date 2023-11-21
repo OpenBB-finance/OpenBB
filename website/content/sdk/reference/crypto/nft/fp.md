@@ -1,6 +1,6 @@
 ---
 title: fp
-description: "The page provides detailed documentation on the functionality of nftpricefloor"
+description: The page provides detailed documentation on the functionality of nftpricefloor
   model and view. The model helps to fetch NFT collections and the view function displays
   the collection's floor price overtime.
 keywords:

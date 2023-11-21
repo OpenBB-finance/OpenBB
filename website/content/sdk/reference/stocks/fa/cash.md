@@ -1,6 +1,6 @@
 ---
 title: cash
-description: "Improve financial analysis with OpenBB's Cash Flow feature. Retrieve"
+description: Improve financial analysis with OpenBB's Cash Flow feature. Retrieve
   historical cash flow data for any stock symbol using various sources like YahooFinance
   with options to get quarterly data and data as a percentage change.
 keywords:

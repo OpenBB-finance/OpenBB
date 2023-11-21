@@ -1,6 +1,6 @@
 ---
 title: login
-description: "This page provides instructions on how to login using one-time-password"
+description: This page provides instructions on how to login using one-time-password
   for 2FA. It includes parameters' description and usage.
 keywords:
 - login

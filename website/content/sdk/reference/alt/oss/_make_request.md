@@ -1,6 +1,6 @@
 ---
 title: _make_request
-description: "This is a documentation page for the '_make_request' helper method used"
+description: This is a documentation page for the '_make_request' helper method used
   for scraping in Python. The method takes a URL as parameter and returns a BeautifulSoup
   object or None.
 keywords:

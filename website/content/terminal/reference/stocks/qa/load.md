@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page provides information on loading stock tickers for analysis"
+description: This page provides information on loading stock tickers for analysis
   and includes usage examples and parameters details. It also explains how to handle
   Indian tickers and find available markets.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: fraud
-description: "An in-depth look at various statistical models for detecting fraud in"
+description: An in-depth look at various statistical models for detecting fraud in
   a company's reported earnings. Includes discussions on the Beneish model, Zmijewski
   Score, and McKee Score; and use of different indices like Days Sales in Receivables
   Index, Gross Margin Index, Asset Quality Index, and more.

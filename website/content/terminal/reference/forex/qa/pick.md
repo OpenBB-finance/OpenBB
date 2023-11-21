@@ -1,6 +1,6 @@
 ---
 title: pick
-description: "This page provides detailed information on how to use the 'pick' function"
+description: This page provides detailed information on how to use the 'pick' function
   for changing the target variable for analysis. It includes usage instructions, the
   various parameters used, and specific examples dealing primarily with stock analysis.
 keywords:

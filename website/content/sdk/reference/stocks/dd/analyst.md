@@ -1,6 +1,6 @@
 ---
 title: analyst
-description: "This documentation page provides details on retrieving analyst data from"
+description: This documentation page provides details on retrieving analyst data from
   the OpenBB terminal. Get valuable information regarding stock ticker symbols and
   analyst price targets for your due diligence.
 keywords:

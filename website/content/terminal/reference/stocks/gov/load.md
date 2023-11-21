@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page provides comprehensive instructions and details on how to load"
+description: This page provides comprehensive instructions and details on how to load
   stock ticker for market analysis, using various parameters. Details on how to choose
   the starting and ending date, intraday stock minutes, pre and post market hours
   are provided. There are also instructions on how to load custom files and specific

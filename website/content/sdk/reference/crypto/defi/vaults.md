@@ -1,6 +1,6 @@
 ---
 title: vaults
-description: "This page provides detailed information on DeFi Vaults including functions"
+description: This page provides detailed information on DeFi Vaults including functions
   to get data and tools to visualize this data. The provided functions allow querying
   various blockchains and DeFi protocols, and sorting by key metrics such as APY.
 keywords:

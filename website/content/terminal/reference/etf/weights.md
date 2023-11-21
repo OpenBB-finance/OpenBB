@@ -1,6 +1,6 @@
 ---
 title: weights
-description: "The page details the usage of the 'weights' parameter in viewing ETF"
+description: The page details the usage of the 'weights' parameter in viewing ETF
   sector holdings. It also provides information about the parameters such as the minimum
   positive float to display the sector and an option for raw data output.
 keywords:

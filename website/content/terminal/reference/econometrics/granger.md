@@ -1,6 +1,6 @@
 ---
 title: granger
-description: "This is a documentation page for Granger causality command in econometrics."
+description: This is a documentation page for Granger causality command in econometrics.
   The command is used for analyzing the cause between two-time series. The page also
   provides usage examples and parameters detail.
 keywords:

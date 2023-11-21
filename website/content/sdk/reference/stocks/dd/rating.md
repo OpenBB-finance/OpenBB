@@ -1,6 +1,6 @@
 ---
 title: rating
-description: "The page provides detailed information about the OpenBBTerminal's functionality"
+description: The page provides detailed information about the OpenBBTerminal's functionality
   to fetch ratings for a given stock ticker using the Financial Modeling Prep source.
   The code is written in Python and returns data in pd.DataFrame format.
 keywords:

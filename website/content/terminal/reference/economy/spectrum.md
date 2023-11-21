@@ -1,6 +1,6 @@
 ---
 title: spectrum
-description: "Learn how to view group spectrum data in various sectors, industries"
+description: Learn how to view group spectrum data in various sectors, industries
   or countries. Understand usage and parameters involved.
 keywords:
 - Spectrum data

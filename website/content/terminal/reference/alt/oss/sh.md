@@ -1,6 +1,6 @@
 ---
 title: sh
-description: "The page provides instructions on using the 'sh' command to view a repository's"
+description: The page provides instructions on using the 'sh' command to view a repository's
   star history on GitHub. The usage and parameters are clearly detailed.
 keywords:
 - repo star history

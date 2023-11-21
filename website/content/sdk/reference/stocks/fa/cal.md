@@ -1,6 +1,6 @@
 ---
 title: cal
-description: "This page provides a python function for fetching calendar earnings of"
+description: This page provides a python function for fetching calendar earnings of
   a specific stock ticker symbol using the OpenBB Terminal library. The function returns
   a pandas dataframe with the earnings data.
 keywords:

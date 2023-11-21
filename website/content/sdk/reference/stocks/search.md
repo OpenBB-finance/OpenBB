@@ -1,6 +1,6 @@
 ---
 title: search
-description: "The documentation page details the 'search' function of the OpenBB python"
+description: The documentation page details the 'search' function of the OpenBB python
   library used for querying stocks information. The function allows queries based
   on parameters like country, sector, industry and exchange country. The search results
   are returned as a pandas DataFrame.

@@ -1,6 +1,6 @@
 ---
 title: Fundamental Analysis
-description: "The Fundamental Analysis menu is a set of tools for analyzing the overall health of a company and estimating its intrinsic value. Functions within this menu provide company profiles, financial statements, historical distributions, financial ratios, and analyst estimates."
+description: The Fundamental Analysis menu is a set of tools for analyzing the overall health of a company and estimating its intrinsic value. Functions within this menu provide company profiles, financial statements, historical distributions, financial ratios, and analyst estimates.
 keywords:
 - fundamental analysis
 - financials

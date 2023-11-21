@@ -1,6 +1,6 @@
 ---
 title: inv
-description: "Our inv function provides an overview of coin investors. It provides"
+description: Our inv function provides an overview of coin investors. It provides
   a comprehensive list of individual and organizational investors for a specific cryptocurrency.
   Additionally, our inv chart function prints a table of these coin investors and
   offers the option of exporting this data to various file formats.

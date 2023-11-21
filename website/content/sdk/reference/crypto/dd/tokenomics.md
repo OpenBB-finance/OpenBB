@@ -1,6 +1,6 @@
 ---
 title: tokenomics
-description: "Documentation page for the tokenomics function in OpenBBTerminal's cryptocurrency"
+description: Documentation page for the tokenomics function in OpenBBTerminal's cryptocurrency
   due diligence module. This Python method takes a coin symbol and gives back the
   tokenomics for that coin.
 keywords:

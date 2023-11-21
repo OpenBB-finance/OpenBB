@@ -1,6 +1,6 @@
 ---
 title: balance
-description: "This page provides information on how to use OpenBB's onchain tools for"
+description: This page provides information on how to use OpenBB's onchain tools for
   interacting with the Ethereum blockchain. It includes instructions on how to get
   information about token balances and displaying this information in a chart format.
   Relevant Python code is also provided.

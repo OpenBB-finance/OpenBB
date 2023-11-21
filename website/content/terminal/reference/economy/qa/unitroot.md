@@ -1,6 +1,6 @@
 ---
 title: unitroot
-description: "Understand the usage, implementation parameters and examples of the unitroot"
+description: Understand the usage, implementation parameters and examples of the unitroot
   function which is used to perform unit root test, stationarity tests like ADF and
   KPSS. Learn about regression types and the calculation of values like Test Statistic,
   P-Value, NLags, Nobs and ICBest.

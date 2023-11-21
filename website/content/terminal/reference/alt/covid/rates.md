@@ -1,6 +1,6 @@
 ---
 title: rates
-description: "The 'rates' page in our documentation provides insights on how to access"
+description: The 'rates' page in our documentation provides insights on how to access
   historical death and case rates for a given country using our data visualization
   tool. No parameters are required.
 keywords:

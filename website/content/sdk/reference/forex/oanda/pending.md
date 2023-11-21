@@ -1,6 +1,6 @@
 ---
 title: pending
-description: "This page explains how to get information on pending orders using the"
+description: This page explains how to get information on pending orders using the
   OpenBB Terminal. The documentation includes specific source code for the Forex market
   with OANDA, detailing parameters and returns including the AccountID. The page also
   provides a link to the relevant source code on GitHub.

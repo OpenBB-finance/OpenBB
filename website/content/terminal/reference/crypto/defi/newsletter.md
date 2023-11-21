@@ -1,6 +1,6 @@
 ---
 title: newsletter
-description: "This page outlines the usage, parameters, choices, and examples of the"
+description: This page outlines the usage, parameters, choices, and examples of the
   newsletter command, which displays DeFi related substack newsletters. It is part
   of a larger toolkit aimed at simplifying tasks within the crypto and DeFi space.
 keywords:

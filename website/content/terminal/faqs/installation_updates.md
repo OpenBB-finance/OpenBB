@@ -1,7 +1,7 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: "This page provides comprehensive insights about installing and updating"
+description: This page provides comprehensive insights about installing and updating
   the OpenBB Terminal. It discusses system requirements, installation process, common
   errors and their solutions. Information about updating the OpenBB Terminal through
   different methods is also covered.

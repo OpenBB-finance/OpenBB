@@ -1,6 +1,6 @@
 ---
 title: defi
-description: "This documents discusses useful functionalities for understanding global"
+description: This documents discusses useful functionalities for understanding global
   Decentralized Finances. The content includes source code, parameters, and the returns.
 keywords:
 - Decentralized Finances

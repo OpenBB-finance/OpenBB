@@ -1,6 +1,6 @@
 ---
 title: gh
-description: ""Learn how to utilize the GH command line tool to track GitHub activity\"
+description: "Learn how to utilize the GH command line tool to track GitHub activity\
   \ for a given crypto coin. Discover how to filter by development activity, set frequency\
   \ intervals, and define start and end dates\u2014all with this powerful Python-based\
   \ tool."

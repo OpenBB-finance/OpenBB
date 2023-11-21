@@ -1,6 +1,6 @@
 ---
 title: ps
-description: "This page includes an overview of the OpenBB Terminal cryptocurrency"
+description: This page includes an overview of the OpenBB Terminal cryptocurrency
   functions ps and ps_chart. The ps function obtains ticker-related information for
   a given cryptocurrency and the ps_chart function visualizes trading data for a particular
   cryptocurrency. The documentation is inclusive of source code, input parameters,

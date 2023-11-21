@@ -1,6 +1,6 @@
 ---
 title: vis
-description: "Use our platform to visualize important financial metrics like Balance"
+description: Use our platform to visualize important financial metrics like Balance
   Sheet, Income, and Cash Flow Statements. Our tool provides an efficient metric visualization
   facility and supports currency conversion for easy-use. Ideal for financial reporting
   and analysis.

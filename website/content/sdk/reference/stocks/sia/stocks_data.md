@@ -1,6 +1,6 @@
 ---
 title: stocks_data
-description: "This page offers in-depth documentation on how to use the 'stocks_data'"
+description: This page offers in-depth documentation on how to use the 'stocks_data'
   function in the OpenBBTerminal's stock analysis tool, detailing parameters, returns
   and source code.
 keywords:

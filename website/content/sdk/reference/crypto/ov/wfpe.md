@@ -1,6 +1,6 @@
 ---
 title: wfpe
-description: "This page explains how to use OpenBB's wfpe function, which scrapes coin"
+description: This page explains how to use OpenBB's wfpe function, which scrapes coin
   withdrawal fees per exchange and presents them visually or in data format. It provides
   detailed parameters and returns information for both the model and view aspects
   of the function.

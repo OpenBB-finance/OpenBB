@@ -1,6 +1,6 @@
 ---
 title: hist
-description: "This page provides detailed information on how to retrieve and display"
+description: This page provides detailed information on how to retrieve and display
   information about balance historical transactions using OpenBB's crypto.onchain
   functionality. Learn how to use On-chain model's parameters to sort and limit transactions
   as required for Ethplorer, including the export of data.

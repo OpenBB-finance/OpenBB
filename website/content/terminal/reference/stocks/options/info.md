@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This page provides information about a command 'info' that displays option"
+description: This page provides information about a command 'info' that displays option
   data. It includes details about usage, parameters, and examples of how to use the
   command in a Python environment. The page is particularly useful for individuals
   interested in stock options data.

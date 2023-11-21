@@ -1,6 +1,6 @@
 ---
 title: list
-description: "The 'list' page details available calls and puts commands that have no"
+description: The 'list' page details available calls and puts commands that have no
   parameters. It presents a step-by-step guide on using the 'list' command along with
   examples.
 keywords:

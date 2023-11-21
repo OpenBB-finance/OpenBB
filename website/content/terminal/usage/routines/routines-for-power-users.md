@@ -1,7 +1,7 @@
 ---
 title: Routines for Power Users
 sidebar_position: 5
-description: "This documentation guides on running automated workflows in OpenBB by"
+description: This documentation guides on running automated workflows in OpenBB by
   introducing variables and arguments for routines. Explains about input variables,
   relative time keyword variables, internal script variables and creating loops for
   batch execution.

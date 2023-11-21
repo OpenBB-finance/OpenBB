@@ -1,6 +1,6 @@
 ---
 title: ftd
-description: "Documentation and usage guide for the 'ftd' function that prints the"
+description: Documentation and usage guide for the 'ftd' function that prints the
   latest fails-to-deliver data sourced from SEC. It allows users to specify date range,
   volume of data and offers raw data print.
 keywords:

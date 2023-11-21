@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page provides detailed documentation for the 'load' function of"
+description: This page provides detailed documentation for the 'load' function of
   the OpenBB portfolio optimization engine. It includes source code, parameters detail,
   return type, and coding examples.
 keywords:

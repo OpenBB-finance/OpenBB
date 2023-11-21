@@ -1,6 +1,6 @@
 ---
 title: treasury
-description: "The page provides comprehensive documentation and source code for fetching"
+description: The page provides comprehensive documentation and source code for fetching
   and visualizing U.S. treasury rates data with different options for type of treasuries,
   maturities, and data frequencies.
 keywords:

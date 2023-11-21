@@ -1,6 +1,6 @@
 ---
 title: period
-description: "This page provides details on how to set the period parameter to define"
+description: This page provides details on how to set the period parameter to define
   the time frame as annual, quarterly, or trailing. Essential for marketing and SEO
   strategies requiring data analysis within specific periods.
 keywords:

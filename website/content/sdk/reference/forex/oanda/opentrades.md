@@ -1,6 +1,6 @@
 ---
 title: opentrades
-description: "This page provides information on the 'opentrades' function in the OpenBB"
+description: This page provides information on the 'opentrades' function in the OpenBB
   Python library. It provides sections on how to request open trades data and view
   open trades using the forex Oanda module, complete with source code for reference.
 keywords:

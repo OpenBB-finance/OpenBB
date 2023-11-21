@@ -1,6 +1,6 @@
 ---
 title: mom
-description: "This page provides information about the momentum oscillator 'mom' function"
+description: This page provides information about the momentum oscillator 'mom' function
   in the OpenBB forecast module. It explains the parameters and returns a DataFrame
   with an added MOM column.
 keywords:

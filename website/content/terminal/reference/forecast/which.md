@@ -1,6 +1,6 @@
 ---
 title: which
-description: "This page provides instructions on how to show library versions of required"
+description: This page provides instructions on how to show library versions of required
   packages using the function 'which'.
 keywords:
 - docusaurus

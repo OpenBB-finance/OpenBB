@@ -1,7 +1,7 @@
 ---
 title: Structure and Navigation
 sidebar_position: 1
-description: "Learn about the OpenBB Terminal, an interactive Command Line Interface"
+description: Learn about the OpenBB Terminal, an interactive Command Line Interface
   application. Understand the structure and navigation of the terminal, functions
   or commands input via a keyboard, and the presentation of results in the form of
   interactive charts, tables, or text. Get introduced to terminal commands, terminal

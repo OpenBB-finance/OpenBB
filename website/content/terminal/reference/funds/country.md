@@ -1,6 +1,6 @@
 ---
 title: country
-description: "This page provides information on how to set a country for funds. It"
+description: This page provides information on how to set a country for funds. It
   explains the usage and parameters needed for this process, primarily focusing on
   the country selection parameter.
 keywords:

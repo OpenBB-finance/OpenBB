@@ -1,6 +1,6 @@
 ---
 title: Behavioral Analysis
-description: "This page provides insightful information on how to use the BA module"
+description: This page provides insightful information on how to use the BA module
   within the OpenBB Terminal. It gives detailed examples of utilizing various functions
   in Python for stock sentiment analysis, region-based popularity, trending queries,
   and more.

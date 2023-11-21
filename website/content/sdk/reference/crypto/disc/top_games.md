@@ -1,6 +1,6 @@
 ---
 title: top_games
-description: "This page is about the 'top_games' function that fetches the top blockchain"
+description: This page is about the 'top_games' function that fetches the top blockchain
   games based on daily volume and users. It provides information about the parameters
   needed for the function, its source code and what the function will return.
 keywords:

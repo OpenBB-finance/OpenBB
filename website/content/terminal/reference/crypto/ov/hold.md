@@ -1,6 +1,6 @@
 ---
 title: hold
-description: "An overview of public companies holding Bitcoin or Ethereum, presenting"
+description: An overview of public companies holding Bitcoin or Ethereum, presenting
   key metrics like total holdings and value.
 keywords:
 - Bitcoin

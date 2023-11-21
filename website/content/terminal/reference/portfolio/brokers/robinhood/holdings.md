@@ -1,6 +1,6 @@
 ---
 title: holdings
-description: "This Docusaurus page provides information on how to use the 'holdings'"
+description: This Docusaurus page provides information on how to use the 'holdings'
   function to display information about your trading accounts on Robinhood. It also
   covers usage and details about parameters.
 keywords:

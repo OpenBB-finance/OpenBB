@@ -1,6 +1,6 @@
 ---
 title: cci
-description: "Learn about the Commodity Channel Index (CCI), a tool designed to detect"
+description: Learn about the Commodity Channel Index (CCI), a tool designed to detect
   beginning and ending market trends. Find out how to use it and what its parameters
   mean.
 keywords:

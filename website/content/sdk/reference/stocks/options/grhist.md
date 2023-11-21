@@ -1,6 +1,6 @@
 ---
 title: grhist
-description: "Learn about using the functions grhist, syncretism model, and syncretism"
+description: Learn about using the functions grhist, syncretism model, and syncretism
   view in OpenBBTerminal to get historical greeks for options on stocks. These Python
   functions are clearly explained and the source code is provided for in-depth understanding.
   The page also delineates parameters and return values.

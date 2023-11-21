@@ -1,6 +1,6 @@
 ---
 title: all_binance_trading_pairs
-description: "This page provides the function to get all available trading pairs on"
+description: This page provides the function to get all available trading pairs on
   Binance in DataFrame format with columns including symbol, baseAsset, and quoteAsset.
   This function does not require any parameters.
 keywords:

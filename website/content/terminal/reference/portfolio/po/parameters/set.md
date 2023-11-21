@@ -1,6 +1,6 @@
 ---
 title: set
-description: "This documentation page provides an understanding of the different portfolio"
+description: This documentation page provides an understanding of the different portfolio
   optimization models available. It explains how to use the set command in Python
   to select a model from a list, including maxsharpe, minrisk, maxutil, and others.
 keywords:

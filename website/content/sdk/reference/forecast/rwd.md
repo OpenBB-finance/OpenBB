@@ -1,6 +1,6 @@
 ---
 title: rwd
-description: "This page represents the functions for Random Walk with Drift (RWD) forecasting"
+description: This page represents the functions for Random Walk with Drift (RWD) forecasting
   including the model and chart view. It provides parameters, their types, descriptions,
   and default settings, and explains the purpose and results of each function.
 keywords:

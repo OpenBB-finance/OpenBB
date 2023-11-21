@@ -1,6 +1,6 @@
 ---
 title: shorted
-description: "This page provides information on the 'shorted' functionality which allows"
+description: This page provides information on the 'shorted' functionality which allows
   users to retrieve up to 25 top ticker most shorted stocks from Yahoo Finance. The
   page explains how the feature can be used, and lists the parameters available for
   customization.

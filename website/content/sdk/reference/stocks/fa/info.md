@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This page provides information on retrieving ticker symbol information"
+description: This page provides information on retrieving ticker symbol information
   using OpenBB.fa.info method, leveraging yfinance data.
 keywords:
 - fa.info method

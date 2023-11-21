@@ -1,6 +1,6 @@
 ---
 title: holdp
-description: "This page provides comprehensive details on 'holdp', a function of the"
+description: This page provides comprehensive details on 'holdp', a function of the
   OpenBBTerminal. It includes information on how to get holdings of assets in percentage,
   parameters for the function, and examples of its use.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: ross
-description: "This documentation page provides detailed information about the 'ross'"
+description: This documentation page provides detailed information about the 'ross'
   functions of the OpenBB Terminal. These functions help to retrieve and visualize
   data about startups from the ROSS index.
 keywords:

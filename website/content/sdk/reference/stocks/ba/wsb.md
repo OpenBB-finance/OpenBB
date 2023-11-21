@@ -1,6 +1,6 @@
 ---
 title: wsb
-description: "This page provides documentation for the OpenBB 'wsb' function, which"
+description: This page provides documentation for the OpenBB 'wsb' function, which
   retrieves reddit posts from wsb. The page includes details about parameters and
   returned data in the form of a pandas Dataframe.
 keywords:

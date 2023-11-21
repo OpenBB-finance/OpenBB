@@ -1,6 +1,6 @@
 ---
 title: qqplot
-description: "Discover the usage of QQ plot in Python to help with data visualization"
+description: Discover the usage of QQ plot in Python to help with data visualization
   of normal quantiles. This page provides information with no parameters required
   to use it.
 keywords:

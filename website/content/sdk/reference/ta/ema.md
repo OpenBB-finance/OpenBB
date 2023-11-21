@@ -1,6 +1,6 @@
 ---
 title: ema
-description: "This page provides information on OpenBB's EMA (Exponential Moving Average)"
+description: This page provides information on OpenBB's EMA (Exponential Moving Average)
   functionality, a method often used in technical analysis of stocks. The mathematical
   model's source code, parameters, and returns are clearly outlined.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: balance
-description: ""This page provides a detailed view on the balance data obtained through\"
+description: "This page provides a detailed view on the balance data obtained through\
   \ OpenBB Terminal\u2019s stocks comparison analysis. Python source code, parameters\
   \ for the function and return type are conventionally presented."
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This page provides detailed documentation on retrieving and visualizing"
+description: This page provides detailed documentation on retrieving and visualizing
   cryptocurrency data from the CoinPaprika API using methods from the OpenBB crypto
   module. The page includes parameters and return values, data sorting, and export
   options. Source codes are also linked for better understanding.

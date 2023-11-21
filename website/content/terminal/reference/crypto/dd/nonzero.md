@@ -1,6 +1,6 @@
 ---
 title: nonzero
-description: "The 'nonzero' page provides documentation on how to display addresses"
+description: The 'nonzero' page provides documentation on how to display addresses
   with nonzero assets in a specific blockchain using the Glassnode API. The page details
   the usage of the command and parameters, along with providing a visual representation.
 keywords:

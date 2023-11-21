@@ -1,6 +1,6 @@
 ---
 title: lit
-description: "This Docusaurus page provides access to the latest insider trading information."
+description: This Docusaurus page provides access to the latest insider trading information.
   With the lit function, users can limit the number of data rows to display and view
   pertinent details like trade date, ticker, company name, insider name, title, trade
   type, price, qty, owned, diff own and value.

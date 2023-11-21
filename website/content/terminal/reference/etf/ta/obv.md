@@ -1,6 +1,6 @@
 ---
 title: obv
-description: "On Balance Volume (OBV) is a crucial aspect in volume analysis and technical"
+description: On Balance Volume (OBV) is a crucial aspect in volume analysis and technical
   trading. This page gives an in-depth explanation on OBV describing its impact, its
   interpretation, and usage in predicting price moves and market trends.
 keywords:

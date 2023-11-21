@@ -1,6 +1,6 @@
 ---
 title: candle
-description: "This documentation is for the 'candle' function used to show loaded fx"
+description: This documentation is for the 'candle' function used to show loaded fx
   data. It provides usage details, parameters explanations and choices, including
   plotly, sort, reverse, raw, trendlines, moving averages, and more, along with a
   graphical presentation.

@@ -1,7 +1,7 @@
 ---
 title: Community Routines
 sidebar_position: 6
-description: "Page provides a detailed overview on the usage of OpenBB's Community"
+description: Page provides a detailed overview on the usage of OpenBB's Community
   Routines. It explains how users can share, access, upvote, and search for investment
   research scripts. Additionally, it presents the feature of using the new TimeGPT-1
   model from Nixtla, and the options to save, download, and share scripts.

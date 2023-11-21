@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "This page provides detailed information about the Relative Strength Index"
+description: This page provides detailed information about the Relative Strength Index
   (RSI), including its calculations, interpretation and usage. It also explains the
   various parameters involved and how to modify them.
 keywords:

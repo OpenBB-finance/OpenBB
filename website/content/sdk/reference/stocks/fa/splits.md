@@ -1,6 +1,6 @@
 ---
 title: splits
-description: "This page pertains to the splits and reverse splits events details of"
+description: This page pertains to the splits and reverse splits events details of
   stocks, showcasing how to fetch them using the openbb.stocks.fa.splits() function
   and display them with openbb.stocks.fa.splits_chart() function.
 keywords:

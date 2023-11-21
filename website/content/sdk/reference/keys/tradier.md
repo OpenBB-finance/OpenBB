@@ -1,6 +1,6 @@
 ---
 title: tradier
-description: "Learn how to set a Tradier API key in the OpenBB terminal using the 'openbb.keys.tradier'"
+description: Learn how to set a Tradier API key in the OpenBB terminal using the 'openbb.keys.tradier'
   Python function. This documentation provides parameter info, function usage, and
   examples.
 keywords:

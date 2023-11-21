@@ -1,6 +1,6 @@
 ---
 title: collections
-description: "Understand how to use Python code for tracking NFT collections. The guide"
+description: Understand how to use Python code for tracking NFT collections. The guide
   includes scripts and examples showcasing how to display the floor price and sales
   over time for top collections including CryptoPunks, Bored Ape Yacht Club, and others.
 keywords:

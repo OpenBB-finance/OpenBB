@@ -1,6 +1,6 @@
 ---
 title: positionbook
-description: "This page provides information on how to plot a position book for an"
+description: This page provides information on how to plot a position book for an
   instrument using Oanda. It is particularly helpful in implementing commands in python
   and understanding its parameters.
 keywords:

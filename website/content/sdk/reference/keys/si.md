@@ -1,6 +1,6 @@
 ---
 title: si
-description: "This page provides a guide on how to set the Sentimentinvestor key using"
+description: This page provides a guide on how to set the Sentimentinvestor key using
   OpenBB terminal. It explains the parameters and returns of the function, including
   examples demonstrating its use.
 keywords:

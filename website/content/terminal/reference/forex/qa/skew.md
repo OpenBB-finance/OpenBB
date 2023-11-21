@@ -1,6 +1,6 @@
 ---
 title: skew
-description: "Learn about the concept of skewness as a measure of asymmetry, its relevance"
+description: Learn about the concept of skewness as a measure of asymmetry, its relevance
   in symmetric distribution and normal distribution, and the 'skew' command along
   with its parameters and usage.
 keywords:

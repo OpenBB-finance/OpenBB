@@ -1,6 +1,6 @@
 ---
 title: stocksera
-description: "'The OpenBB project: how to set your Stocksera API key using Python."
+description: 'The OpenBB project: how to set your Stocksera API key using Python.
   Documentation provides information about parameters, return types, and examples
   for the stocksera method.'
 keywords:

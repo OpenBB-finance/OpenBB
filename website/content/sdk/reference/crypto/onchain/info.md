@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This documentation page provides information and source code regarding"
+description: This documentation page provides information and source code regarding
   getting info about ERC20 tokens, and displaying it. Covered aspects include related
   parameters and returns.
 keywords:

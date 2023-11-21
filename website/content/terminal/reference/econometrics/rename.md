@@ -1,6 +1,6 @@
 ---
 title: rename
-description: "The 'rename' page in our documentation explains how to change the name"
+description: The 'rename' page in our documentation explains how to change the name
   of columns in a dataset using a specific command. This includes detailed parameter
   explanations and usage examples.
 keywords:

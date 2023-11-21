@@ -1,6 +1,6 @@
 ---
 title: es
-description: "This is a comprehensive guide on how to use OpenBB's quantitative analysis"
+description: This is a comprehensive guide on how to use OpenBB's quantitative analysis
   for Expected Shortfall (ES). The document explains how to get the Expected Shortfall
   for a specific stock dataframe and how to print a table showing expected shortfall
   using the ES chart. Both the Model and Chart have been clearly explained in the

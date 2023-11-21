@@ -1,6 +1,6 @@
 ---
 title: queries
-description: "This page provides documentation on how to use the 'queries' function"
+description: This page provides documentation on how to use the 'queries' function
   to print the top related queries associated with a stock's query. Learn how to set
   a limit on the number of queries and view examples of the output.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This page provides an overview of how to get ETF data using OpenBB's"
+description: This page provides an overview of how to get ETF data using OpenBB's
   Python library. It includes detailed explanations on parameters and returns, and
   even a link to the source code.
 keywords:

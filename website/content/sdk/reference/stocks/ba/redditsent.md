@@ -1,6 +1,6 @@
 ---
 title: redditsent
-description: "A documentation on redditsent function. It is used to find posts related"
+description: A documentation on redditsent function. It is used to find posts related
   to a specific search term from Reddit. The function provides comprehensive search
   and categorization of results based on user-preferences.
 keywords:

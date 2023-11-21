@@ -1,6 +1,6 @@
 ---
 title: decompose
-description: "Learn how to decompose time series using the additive or multiplicative"
+description: Learn how to decompose time series using the additive or multiplicative
   model. Understand the usage, parameters, and get examples to simplify your analysis.
 keywords:
 - time series decomposition

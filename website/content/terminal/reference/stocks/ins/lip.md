@@ -1,6 +1,6 @@
 ---
 title: lip
-description: "Documentation for 'lip' command offers detailed instruction on its use"
+description: Documentation for 'lip' command offers detailed instruction on its use
   to track latest insider purchases in the stock market. It includes a demonstration
   of its usage, parameter details, and real-life examples for user guidance.
 keywords:

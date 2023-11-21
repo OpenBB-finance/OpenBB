@@ -1,6 +1,6 @@
 ---
 title: Futures
-description: "This documentation helps users understand how to use the Futures menu,"
+description: This documentation helps users understand how to use the Futures menu,
   including capabilities like accessing historical prices, understanding the current
   term structure of an asset, and using the search, curve and historical functions.
   It also explains how to view categories, use ticker symbols, and export data.

@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 7
-description: "A comprehensive troubleshooting guide for developers regarding common"
+description: A comprehensive troubleshooting guide for developers regarding common
   issues such as launching in debug mode, dealing with GitHub pull requests, git pull
   errors, missing 'wheel', non-existent .whl files, handling JSONDecodeError, correcting
   CRLF errors, running OpenBB via VS Code integrated terminal, and more.

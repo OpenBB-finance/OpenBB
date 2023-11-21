@@ -1,6 +1,6 @@
 ---
 title: sop
-description: "The sop command in this documentation demonstrates how to view selected"
+description: The sop command in this documentation demonstrates how to view selected
   options in a stock hedge. It provides usage, parameter details, and practical examples.
 keywords:
 - sop

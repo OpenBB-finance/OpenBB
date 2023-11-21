@@ -1,6 +1,6 @@
 ---
 title: contracts
-description: "This documentation contains the details of two functions, 'contracts'"
+description: This documentation contains the details of two functions, 'contracts'
   and 'contracts_chart', that are used to retrieve trading data of U.S. government
   contracts for specific ticker from 'quiverquant.com'. It explains the parameters
   and return type of the functions, and provides links to the source code.

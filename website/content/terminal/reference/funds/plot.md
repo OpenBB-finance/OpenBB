@@ -1,6 +1,6 @@
 ---
 title: plot
-description: "This page provides guidance on how to plot historical data. It includes"
+description: This page provides guidance on how to plot historical data. It includes
   information on the usage of the plot command and explains that there are no parameters
   required.
 keywords:

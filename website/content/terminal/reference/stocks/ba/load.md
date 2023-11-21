@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This documentation page provides useful information on how to load stock"
+description: This documentation page provides useful information on how to load stock
   tickers for market analysis, including specifications for intraday stocks, market
   hours, and options for custom, weekly, and monthly data loading.
 keywords:

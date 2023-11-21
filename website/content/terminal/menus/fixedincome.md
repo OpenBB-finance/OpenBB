@@ -1,6 +1,6 @@
 ---
 title: Fixed Income
-description: "This guide introduces the Fixed Income menu, in the OpenBB Terminal, and provides examples for use. Features in this menu cover reference rates and government bonds, as well as corporate bond indices."
+description: This guide introduces the Fixed Income menu, in the OpenBB Terminal, and provides examples for use. Features in this menu cover reference rates and government bonds, as well as corporate bond indices.
 keywords:
 - Fixed Income
 - Financial Terminal

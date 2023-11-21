@@ -1,6 +1,6 @@
 ---
 title: market
-description: "This page provides a command to fetch market data for a loaded coin,"
+description: This page provides a command to fetch market data for a loaded coin,
   offering detailed metrics like Market Cap, Supply, Circulating Supply, Price, Volume,
   Price Change Percentage and more. Examples are provided for a better understanding.
 keywords:

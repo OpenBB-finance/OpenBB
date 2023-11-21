@@ -1,6 +1,6 @@
 ---
 title: quote
-description: "This page provides the information about the quote for a specific stock"
+description: This page provides the information about the quote for a specific stock
   ticker. It explains how to use the quote function in Python and provides the details
   of the parameters that are used in this function. The primary parameter is the stock
   ticker, also referred to as 's_ticker'.

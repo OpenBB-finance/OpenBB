@@ -1,6 +1,6 @@
 ---
 title: sinfo
-description: "Learn how to use sinfo tool to display staking info of a Terra address."
+description: Learn how to use sinfo tool to display staking info of a Terra address.
   Provides usage information and parameter details.
 keywords:
 - sinfo tool

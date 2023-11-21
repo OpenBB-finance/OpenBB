@@ -1,6 +1,6 @@
 ---
 title: seasonalnaive
-description: "The Seasonal Naive forecasting page provides thorough documentation for"
+description: The Seasonal Naive forecasting page provides thorough documentation for
   using and interpreting the results of the Seasonal Naive model and the Seasonal
   Naive chart. It includes details on parameters, returns, and source code locations.
   The page is enriched with appropriate examples aiding in easy understanding and

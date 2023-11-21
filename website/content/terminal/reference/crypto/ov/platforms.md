@@ -1,6 +1,6 @@
 ---
 title: platforms
-description: "This page lists out the platforms for smart contract including Ethereum,"
+description: This page lists out the platforms for smart contract including Ethereum,
   Solana, Cosmos, Polkadot, Kusama. It helps users understand the command-line interfaces
   to engage with these diverse smart contract platforms.
 keywords:

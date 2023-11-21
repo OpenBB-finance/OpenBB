@@ -1,6 +1,6 @@
 ---
 title: comparison
-description: "This page provides a comparison function for Panel Data regression results"
+description: This page provides a comparison function for Panel Data regression results
   in the openbb terminal. It allows exporting the comparison data and returns an overview
   of the different regression results as a PanelModelComparison.
 keywords:

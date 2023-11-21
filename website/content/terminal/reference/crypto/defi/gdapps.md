@@ -1,6 +1,6 @@
 ---
 title: gdapps
-description: "This is a detailed guide on using the gdapps function. It helps to display"
+description: This is a detailed guide on using the gdapps function. It helps to display
   top dApps based on TVL grouped by chain, including usage and parameters information.
 keywords:
 - gdapps

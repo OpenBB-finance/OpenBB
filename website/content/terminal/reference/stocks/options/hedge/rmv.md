@@ -1,6 +1,6 @@
 ---
 title: rmv
-description: "This documentation page outlines the usage, parameters and examples for"
+description: This documentation page outlines the usage, parameters and examples for
   the rmv command in the hedge. With rmv, you can efficiently remove one of the options
   shown in the hedge or all of them.
 keywords:

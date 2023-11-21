@@ -1,7 +1,7 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: "Learn how to overcome system-related issues by enabling the 'developer"
+description: Learn how to overcome system-related issues by enabling the 'developer
   mode' on Windows and MacOS. Get answers for queries and potential issues. Here,
   you'll also get to know how to run applications that do not meet the system's security
   policy, allow apps through firewall and get tips on portfolio management.

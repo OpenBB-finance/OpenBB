@@ -1,6 +1,6 @@
 ---
 title: ftd
-description: "Documentation related to 'ftd'- a feature that provides fails-to-deliver"
+description: Documentation related to 'ftd'- a feature that provides fails-to-deliver
   data for a given ticker. Offers a model and chart view
 keywords:
 - ftd

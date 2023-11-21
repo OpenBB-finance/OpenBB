@@ -1,6 +1,6 @@
 ---
 title: quantile
-description: "The page explores the concept of 'quantile' in statistical analysis,"
+description: The page explores the concept of 'quantile' in statistical analysis,
   focusing especially on its calculations, usage, parameters, and relation to 'median'
   and distribution. A valuable resource for those interested in understanding and
   applying observational data for better decision making.

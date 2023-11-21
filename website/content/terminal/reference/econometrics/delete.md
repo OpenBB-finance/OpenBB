@@ -1,6 +1,6 @@
 ---
 title: delete
-description: "This documentation page provides a detailed overview of how to use the"
+description: This documentation page provides a detailed overview of how to use the
   'delete' command to remove specified columns from a dataset. It includes usage examples
   and explanations of command parameters to help users leverage this tool more effectively
   in their data manipulation tasks.

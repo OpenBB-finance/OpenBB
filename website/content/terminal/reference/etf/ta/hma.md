@@ -1,6 +1,6 @@
 ---
 title: hma
-description: "Learn how to use the Hull Moving Average (HMA), a method that improves"
+description: Learn how to use the Hull Moving Average (HMA), a method that improves
   responsiveness to price activity and maintains curve smoothness. Understand how
   to use parameters like n_length and n_offset with the HMA.
 keywords:

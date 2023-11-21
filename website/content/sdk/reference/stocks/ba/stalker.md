@@ -1,6 +1,6 @@
 ---
 title: stalker
-description: "This documentation page provides information on how to use the 'stalker'"
+description: This documentation page provides information on how to use the 'stalker'
   function from the OpenBB platform, which gathers messages from a specified user
   on Stocktwits. The source code is also available for referencing.
 keywords:

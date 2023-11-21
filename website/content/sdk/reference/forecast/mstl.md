@@ -1,6 +1,6 @@
 ---
 title: mstl
-description: "MSTL model forecasting and charting documentation, including code and"
+description: MSTL model forecasting and charting documentation, including code and
   parameter documentation. Details the use of OpenBB.forecast.mstl function in processing
   time-series data for predictive analysis.
 keywords:

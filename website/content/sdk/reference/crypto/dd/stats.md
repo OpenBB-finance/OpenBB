@@ -1,6 +1,6 @@
 ---
 title: stats
-description: "Discover the statistics module of openbb.crypto.dd using symbol trading"
+description: Discover the statistics module of openbb.crypto.dd using symbol trading
   pair and explore the possibility of exporting data to desired file format. Find
   detailed parameters and return values to improve your experience.
 keywords:

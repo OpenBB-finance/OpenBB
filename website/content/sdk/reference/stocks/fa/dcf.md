@@ -1,6 +1,6 @@
 ---
 title: dcf
-description: "This page covers how to use the 'dcf' function from FMP for stocks analysis"
+description: This page covers how to use the 'dcf' function from FMP for stocks analysis
   with the OpenBB tool. It indicates the parameters required and returns a dataframe
   of dcf data.
 keywords:

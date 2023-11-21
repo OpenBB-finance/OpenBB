@@ -1,6 +1,6 @@
 ---
 title: sratio
-description: "This page provides a detailed guide on how to use OpenBB finance's sratio"
+description: This page provides a detailed guide on how to use OpenBB finance's sratio
   and sratio_chart functions. These functions retrieve and plot staking ratio history
   from terra blockchain which can be useful for DeFi applications.
 keywords:

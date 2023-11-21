@@ -1,6 +1,6 @@
 ---
 title: paexport
-description: "Detailed usage guide and parameters of the 'paexport' Python command."
+description: Detailed usage guide and parameters of the 'paexport' Python command.
   This includes instructions on setting the start and end date, along with the usage
   of different currencies.
 keywords:

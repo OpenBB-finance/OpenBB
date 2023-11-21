@@ -1,6 +1,6 @@
 ---
 title: fred_notes
-description: "Learn about OpenBB's FRED model and how it makes searching the series"
+description: Learn about OpenBB's FRED model and how it makes searching the series
   notes database easier. This page also talks about the search and limit parameters
   involved when querying the FRED database, and the DataFrame of matched series it
   returns.

@@ -1,6 +1,6 @@
 ---
 title: tob
-description: "Get top of book bid and ask for any ticker on the CBOE exchange using"
+description: Get top of book bid and ask for any ticker on the CBOE exchange using
   the OpenBB Terminal. Default exchange is BZX, but can be changed to EDGX, BYX, or
   EDGA. Returns a Dataframe of Bids.
 keywords:

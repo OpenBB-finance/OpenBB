@@ -1,6 +1,6 @@
 ---
 title: tispm
-description: "Metadata for the 'tispm' page on a stock marketing website. This page"
+description: Metadata for the 'tispm' page on a stock marketing website. This page
   provides information about the top insider sales of the month, including trade date,
   ticker, company name, insider name, title, trade type, price, quantity, owned, diff
   own, and value. The data can be customized and limited, sourced from OpenInsider.

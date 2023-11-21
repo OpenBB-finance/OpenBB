@@ -1,6 +1,6 @@
 ---
 title: fipo
-description: "This documentation page provides information and examples on using the"
+description: This documentation page provides information and examples on using the
   'fipo' function, a tool for retrieving future IPO date estimates from financial
   data source Finnhub.io. This aids users in planning for upcoming IPOs by providing
   essential details such as exchange name, company name, number of shares, expected

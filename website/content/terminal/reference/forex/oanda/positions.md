@@ -1,6 +1,6 @@
 ---
 title: positions
-description: "This documentation page provides information about the available positions,"
+description: This documentation page provides information about the available positions,
   along with usage instructions. The 'positions' command has no parameters.
 keywords:
 - Positions

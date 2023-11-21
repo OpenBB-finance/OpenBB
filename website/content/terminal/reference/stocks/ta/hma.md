@@ -1,6 +1,6 @@
 ---
 title: hma
-description: "Hull Moving Average (HMA) is a moving average methodology that reduces"
+description: Hull Moving Average (HMA) is a moving average methodology that reduces
   lag and increases curve smoothness. This page provides detailed usage information,
   relevant parameters, and imagery references.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: hold
-description: "Comprehensive guides to holding Bitcoin and Ethereum by public companies."
+description: Comprehensive guides to holding Bitcoin and Ethereum by public companies.
   Details on visualizing the hold data and exporting it to your preferred data format
   (csv, json, xlsx). Source references to CoinGecko. Includes links to source codes.
 keywords:

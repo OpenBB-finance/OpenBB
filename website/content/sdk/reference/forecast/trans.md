@@ -1,6 +1,6 @@
 ---
 title: trans
-description: "This section emphasizes on Transformer forecasting method implementation"
+description: This section emphasizes on Transformer forecasting method implementation
   and visualization used in OpenBB Terminal. It explains functions like how to apply
   the approach on data, various parameters to adjust for better forecasting and display
   the results in chart.

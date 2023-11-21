@@ -1,6 +1,6 @@
 ---
 title: sentiment
-description: "This page details the sentiment comparison feature in FinBrain's system."
+description: This page details the sentiment comparison feature in FinBrain's system.
   It offers an understanding of sentiment across similar tickers, with the possibility
   to view raw sentiment data.
 keywords:

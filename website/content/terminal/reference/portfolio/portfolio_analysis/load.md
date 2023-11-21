@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This documentation page provides information on the 'load' function used"
+description: This documentation page provides information on the 'load' function used
   to get portfolio from predefined csv/json/xlsx files. It includes usage instructions
   as well as details on parameters like 'sector', 'country', 'last_price', 'show_nan'
   and 'path'.

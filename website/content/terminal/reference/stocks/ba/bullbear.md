@@ -1,6 +1,6 @@
 ---
 title: bullbear
-description: "This page provides information on the bullbear command, which prints"
+description: This page provides information on the bullbear command, which prints
   the bullbear sentiment based on the last 30 Stocktwits messages, as well as the
   watchlist count. No parameters needed.
 keywords:

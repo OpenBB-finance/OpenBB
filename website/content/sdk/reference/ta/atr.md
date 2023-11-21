@@ -1,6 +1,6 @@
 ---
 title: atr
-description: "This page provides detailed documentation on the Average True Range (ATR)"
+description: This page provides detailed documentation on the Average True Range (ATR)
   feature in the OpenBB terminal. It includes descriptions and code examples for both
   the volatility model and view, with an emphasis on working with OHLC price dataframes.
   The page also hosts links to the source code on GitHub.

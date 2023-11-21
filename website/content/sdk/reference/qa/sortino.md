@@ -1,6 +1,6 @@
 ---
 title: sortino
-description: "Documentation on the use of the Sortino Ratio function within the OpenBB"
+description: Documentation on the use of the Sortino Ratio function within the OpenBB
   Quantitative Analysis Code. It includes the Python source code along with details
   of parameters for calculating and plotting the Sortino ratio.
 keywords:

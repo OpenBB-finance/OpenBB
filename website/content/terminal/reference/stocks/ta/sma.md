@@ -1,6 +1,6 @@
 ---
 title: sma
-description: "The page explains the simple moving average (SMA) command, used for data"
+description: The page explains the simple moving average (SMA) command, used for data
   smoothing and trend identification. It includes SMA's usage, parameters, and a graphical
   representation, making it easier to understand how to use SMA to filter data.
 keywords:

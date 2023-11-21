@@ -1,6 +1,6 @@
 ---
 title: decompose
-description: "This documentation page provides details on the 'decompose' function"
+description: This documentation page provides details on the 'decompose' function
   in OpenBB's quantitative analysis module. The function executes seasonal decomposition
   on a specified DataFrame, returning decomposed results and filtered dataframes for
   cycle and trend.

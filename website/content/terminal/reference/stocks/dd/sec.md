@@ -1,6 +1,6 @@
 ---
 title: sec
-description: "This page provides information on how to print and analyze SEC filings"
+description: This page provides information on how to print and analyze SEC filings
   of a company using Market Watch. The SEC data includes Filing Date, Document Date,
   Type, Category, whether the filing is Amended, and a Link to the filing.
 keywords:

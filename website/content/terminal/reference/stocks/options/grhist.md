@@ -1,6 +1,6 @@
 ---
 title: grhist
-description: "The grhist page is dedicated to illustrating how to plot historical option"
+description: The grhist page is dedicated to illustrating how to plot historical option
   greeks using Python. It includes various parameters like strike price, put option,
   greek column, OCC option symbol, raw data, among others. It also demonstrates the
   use of a certain data visualization for better understanding.

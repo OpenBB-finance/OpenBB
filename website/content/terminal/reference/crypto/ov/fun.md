@@ -1,6 +1,6 @@
 ---
 title: fun
-description: "This page provides a comprehensive guide on how to use the python script"
+description: This page provides a comprehensive guide on how to use the python script
   'fun' to display various fundamental metrics from the Token Terminal. The metrics
   include market cap, timeline, category, etc. It also comes with specific command-line
   examples and parameter descriptions for better understanding.

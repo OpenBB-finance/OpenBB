@@ -1,6 +1,6 @@
 ---
 title: metric
-description: "This page provides detailed instructions on how to display a chosen metric"
+description: This page provides detailed instructions on how to display a chosen metric
   for different periods. It discusses parameters such as volatility, sharpe, sortino,
   etc. and how to set the risk-free rate for calculations.
 keywords:

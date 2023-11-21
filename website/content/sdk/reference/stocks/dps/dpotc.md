@@ -1,6 +1,6 @@
 ---
 title: dpotc
-description: "Documentation for dpotc and dpotc_chart, functions in the OpenBB Finance"
+description: Documentation for dpotc and dpotc_chart, functions in the OpenBB Finance
   library for retrieving and visualizing Dark Pools (ATS) and OTC (Non-ATS) data from
   FINRA. Includes parameters and source code.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: price
-description: "This marketing page provides information on how to request and view forex"
+description: This marketing page provides information on how to request and view forex
   prices with the modules in OpenBB-finance. It outlines parameters and returns for
   each featured function.
 keywords:

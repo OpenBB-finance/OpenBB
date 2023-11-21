@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "This page provides comprehensive information about the Relative Strength"
+description: This page provides comprehensive information about the Relative Strength
   Index (RSI), a tool used to calculate the ratio of recent upward price movements.
   It details how to interpret RSI as an overbought or oversold indicator, highlights
   how to use it, and breaks down various parameters associated with it.

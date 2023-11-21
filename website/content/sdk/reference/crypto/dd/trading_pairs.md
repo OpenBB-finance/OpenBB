@@ -1,6 +1,6 @@
 ---
 title: trading_pairs
-description: "Information and code snippet on how to get all trading pairs on binance"
+description: Information and code snippet on how to get all trading pairs on binance
   using openbb.crypto.dd.trading_pairs(). Details parameters and returns.
 keywords:
 - trading pairs

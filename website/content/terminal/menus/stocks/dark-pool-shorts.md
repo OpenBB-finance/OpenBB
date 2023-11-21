@@ -1,6 +1,6 @@
 ---
 title: Dark Pools & Short Data
-description: "This documentation page introduces the dark pool and short data menu, which provides the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in NMS securities."
+description: This documentation page introduces the dark pool and short data menu, which provides the user with tools for gauging the level of short interest, FTD rate, and off-exchange volume in NMS securities.
 keywords:
 - dark pool
 - short data

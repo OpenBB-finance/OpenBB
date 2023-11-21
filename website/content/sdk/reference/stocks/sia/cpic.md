@@ -1,6 +1,6 @@
 ---
 title: cpic
-description: "The documentation page on cpic used in openbb_terminal provides detailed"
+description: The documentation page on cpic used in openbb_terminal provides detailed
   information on how to use the 'cpic' and 'cpic_chart' to analyze and visualize the
   number of companies per industry in a specific country, considering optional parameters
   like market cap, excluding international exchanges, maximum industries to display

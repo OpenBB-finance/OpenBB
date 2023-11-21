@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This documentation page provides information about the info and chart"
+description: This documentation page provides information about the info and chart
   models for options in OpenBB Terminal, explaining how to get ticker info and scrape
   Barchart.com for options info.
 keywords:

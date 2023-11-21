@@ -1,6 +1,6 @@
 ---
 title: clenow
-description: "This page provides detailed information on the Clenow Volatility Adjusted"
+description: This page provides detailed information on the Clenow Volatility Adjusted
   Momentum, including its usage, parameters, and Python code examples. Learn how to
   adjust the lookback period for regression.
 keywords:

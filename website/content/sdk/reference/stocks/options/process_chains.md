@@ -1,6 +1,6 @@
 ---
 title: process_chains
-description: "A details documentation page about how to use process_chains function"
+description: A details documentation page about how to use process_chains function
   of openbb.stocks.options in Python. This function takes API response from Tradier
   and returns a DataFrame with available options.
 keywords:

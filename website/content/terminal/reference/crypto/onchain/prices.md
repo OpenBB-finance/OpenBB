@@ -1,6 +1,6 @@
 ---
 title: prices
-description: "This page provides information about displaying historical token prices."
+description: This page provides information about displaying historical token prices.
   It includes parameters to sort data by date, cap, volumeConverted, open, high, close,
   and low values. The source of data is Ethplorer.
 keywords:

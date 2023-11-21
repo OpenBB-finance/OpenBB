@@ -1,6 +1,6 @@
 ---
 title: rot
-description: "This page provides information about the 'rot' - Rating Over Time (monthly),"
+description: This page provides information about the 'rot' - Rating Over Time (monthly),
   including its usage, parameters, and a visual example. The info is sourced from
   Finnhub.
 keywords:

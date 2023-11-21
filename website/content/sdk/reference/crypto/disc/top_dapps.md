@@ -1,6 +1,6 @@
 ---
 title: top_dapps
-description: "This documentation page provides detailed instructions on how to get"
+description: This documentation page provides detailed instructions on how to get
   top decentralized applications by daily volume and users. Also includes code for
   creating and displaying a chart of such applications.
 keywords:

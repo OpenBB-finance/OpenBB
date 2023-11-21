@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This documentation page includes detailed instructions on how to load"
+description: This documentation page includes detailed instructions on how to load
   a stock ticker into the option menu using a specific command. It outlines each step
   and provides multiple examples for better understanding.
 keywords:

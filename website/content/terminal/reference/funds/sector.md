@@ -1,6 +1,6 @@
 ---
 title: sector
-description: "This page explains how to show fund sector weighting using a command-line"
+description: This page explains how to show fund sector weighting using a command-line
   tool, providing usage instructions and parameter details.
 keywords:
 - fund sector weighting

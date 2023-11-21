@@ -1,6 +1,6 @@
 ---
 title: lcsc
-description: "This is a documentation page for the 'lcsc' function which displays Luna"
+description: This is a documentation page for the 'lcsc' function which displays Luna
   circulating supply changes. The function sources its data from Smartstake.io. Instructions
   are provided on obtaining the required key token from Smartstake.io alongside usage
   and parameters information.

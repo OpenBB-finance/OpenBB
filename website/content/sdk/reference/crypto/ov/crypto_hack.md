@@ -1,6 +1,6 @@
 ---
 title: crypto_hack
-description: "Documentation page that describes the crypto hack function of the OpenBBTerminal,"
+description: Documentation page that describes the crypto hack function of the OpenBBTerminal,
   its parameters and return values. Ideal for those who interact with OpenBB-finance's
   cryptocurrency scripts.
 keywords:

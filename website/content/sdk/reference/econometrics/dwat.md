@@ -1,6 +1,6 @@
 ---
 title: dwat
-description: "Detailed explanation of Durbin Watson autocorrelation test calculations"
+description: Detailed explanation of Durbin Watson autocorrelation test calculations
   and chart visualisation using OpenBBTerminal's econometrics functions.
 keywords:
 - Docusaurus

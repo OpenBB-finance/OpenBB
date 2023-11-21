@@ -1,6 +1,6 @@
 ---
 title: cpci
-description: "This page provides information on the usage and parameters of 'cpci',"
+description: This page provides information on the usage and parameters of 'cpci',
   a tool for analyzing Companies per Country based on Industry and Market Cap. It
   helps users understand how to input parameters and what effect each one has on the
   output.

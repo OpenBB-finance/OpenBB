@@ -1,6 +1,6 @@
 ---
 title: fipo
-description: "The 'fipo' page provides information on the future IPOs dates using the"
+description: The 'fipo' page provides information on the future IPOs dates using the
   Finnhub source. It includes an OpenBB python method to retrieve upcoming IPO dates
   within a specified number of days. The result is displayed as a DataFrame.
 keywords:

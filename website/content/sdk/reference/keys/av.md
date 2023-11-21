@@ -1,6 +1,6 @@
 ---
 title: av
-description: "This documentation page provides detailed instructions on how to set"
+description: This documentation page provides detailed instructions on how to set
   the Alpha Vantage key using OpenBB Terminal. It includes descriptions for parameters,
   information on returns, and usage examples.
 keywords:

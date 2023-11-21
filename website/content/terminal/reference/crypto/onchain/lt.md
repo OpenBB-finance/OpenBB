@@ -1,6 +1,6 @@
 ---
 title: lt
-description: "Description and usage guide for the lt command, that displays trades"
+description: Description and usage guide for the lt command, that displays trades
   on decentralized exchanges including the ability to aggregate trades by DEX or time,
   display trade amount in different currencies, and sort data. The command uses Python
   language.

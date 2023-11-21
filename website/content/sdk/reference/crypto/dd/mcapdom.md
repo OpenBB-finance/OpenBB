@@ -1,6 +1,6 @@
 ---
 title: mcapdom
-description: "Documentation for mcapdom function in OpenBBTerminal Python package,"
+description: Documentation for mcapdom function in OpenBBTerminal Python package,
   providing the tools to retrieve and visualize market dominance data for any given
   cryptocurrency over time. The page describes parameters, return values and provides
   direct links to the source code.

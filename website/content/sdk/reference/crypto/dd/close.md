@@ -1,6 +1,6 @@
 ---
 title: close
-description: "This page details the use of the 'close' function in the OpenBB crypto"
+description: This page details the use of the 'close' function in the OpenBB crypto
   library which provides the closing price of a cryptocurrency within a specified
   time range.
 keywords:

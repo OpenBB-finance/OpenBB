@@ -1,6 +1,6 @@
 ---
 title: rnn
-description: "Learn about our Recurrent Neural Networks (RNN) forecasting models in"
+description: Learn about our Recurrent Neural Networks (RNN) forecasting models in
   OpenBB Terminal's documentation. This includes instructions on how to perform RNN
   forecasting, parameters used, returns and how to display an RNN forecast chart.
 keywords:

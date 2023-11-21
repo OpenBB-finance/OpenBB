@@ -1,6 +1,6 @@
 ---
 title: news
-description: "The News page presents the latest news from the company. Users can customize"
+description: The News page presents the latest news from the company. Users can customize
   news updates using specific parameters such as starting date, order, and news sources.
 keywords:
 - company news

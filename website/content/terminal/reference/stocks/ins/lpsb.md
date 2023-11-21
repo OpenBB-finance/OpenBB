@@ -1,6 +1,6 @@
 ---
 title: lpsb
-description: "The lpsb page provides a user guide on how to use the lpsb command to"
+description: The lpsb page provides a user guide on how to use the lpsb command to
   print the latest penny stock buys. It shows parameters and usage examples, making
   it easier for users to understand and use this function in their stock market analysis.
 keywords:

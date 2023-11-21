@@ -1,6 +1,6 @@
 ---
 title: show
-description: "This page provides detailed information and examples about how to show"
+description: This page provides detailed information and examples about how to show
   a portion of a DataFrame using predefined parameters. Gain an improved understanding
   on DataFrame display, database sorting, data ordering and setting column limits.
 keywords:

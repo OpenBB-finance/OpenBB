@@ -1,6 +1,6 @@
 ---
 title: autoets
-description: "The page provides information on how to use the autoets function for"
+description: The page provides information on how to use the autoets function for
   automatic Error, Trend, Seasonality (ETS) forecasting. It includes details on the
   usage of this function, its parameters, and an example to illustrate its application.
 keywords:

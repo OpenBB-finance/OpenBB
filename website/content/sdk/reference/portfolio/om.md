@@ -1,6 +1,6 @@
 ---
 title: om
-description: "Learn how to use the omega ratio function to guide your portfolio management."
+description: Learn how to use the omega ratio function to guide your portfolio management.
   This page provides details about parameters, returns, and examples on how to apply
   the omega ratio method in your transaction calculations using both model and chart
   views.

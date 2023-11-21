@@ -1,6 +1,6 @@
 ---
 title: rating
-description: "A page detailing the rating system for evaluating companies based on"
+description: A page detailing the rating system for evaluating companies based on
   specific financial ratios. It prints information on whether a company is a buy,
   neutral or sell. This page provides usage details and parameters for obtaining ratings.
 keywords:

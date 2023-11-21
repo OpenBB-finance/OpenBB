@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: "This page provides an introduction to the Overview sub-menu, within the Crypto menu, of the OpenBB Terminal. The menu provides general insights and current statistics for the digital asset universe."
+description: This page provides an introduction to the Overview sub-menu, within the Crypto menu, of the OpenBB Terminal. The menu provides general insights and current statistics for the digital asset universe.
 keywords:
 - crypto
 - coingecko

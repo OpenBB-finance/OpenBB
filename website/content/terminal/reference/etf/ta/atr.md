@@ -1,6 +1,6 @@
 ---
 title: atr
-description: "This page provides comprehensive information about the Average True Range"
+description: This page provides comprehensive information about the Average True Range
   (ATR) including its usage, implementation, and parameters. It serves as a key resource
   for understanding ATR, a widely used tool for measuring volatility in market prices.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: top_coins
-description: "This OpenBBTerminal page provides insights on how to get top crypto coins"
+description: This OpenBBTerminal page provides insights on how to get top crypto coins
   from sources like CoinGecko and CoinMarketCap using the 'openbb.crypto.disc.top_coins'
   function. Parameters, return types, and usage examples are clearly illustrated.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: news
-description: "The News Page aggregates the latest crypto news from the CryptoPanic"
+description: The News Page aggregates the latest crypto news from the CryptoPanic
   platform, allowing extensive filter and sort options to customize your feed. The
   page is interactive and easy-to-use for those who want to stay updated with the
   cryptocurrency market news.

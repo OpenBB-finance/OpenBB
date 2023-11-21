@@ -1,6 +1,6 @@
 ---
 title: linregr
-description: "Perform or display linear regression forecasting with OpenBB. The page"
+description: Perform or display linear regression forecasting with OpenBB. The page
   provides the function parameters and their explanations, as well as the return values.
 keywords:
 - linear regression

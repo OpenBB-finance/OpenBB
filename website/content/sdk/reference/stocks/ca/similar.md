@@ -1,6 +1,6 @@
 ---
 title: similar
-description: "Documentation for the 'similar' functionality in the OpenBB-finance package."
+description: Documentation for the 'similar' functionality in the OpenBB-finance package.
   Includes details about the function, parameters and returns, and examples.
 keywords:
 - OpenBB-finance

@@ -1,6 +1,6 @@
 ---
 title: wma
-description: "Learn how to use the Weighted Moving Average (WMA) in data analysis with"
+description: Learn how to use the Weighted Moving Average (WMA) in data analysis with
   this comprehensive guide. The WMA accentuates recent prices over past figures, thus
   providing close follow-up of market trends.
 keywords:

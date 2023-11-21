@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 1
-description: "Documentation page detailing how to use the Cryptocurrency menu providing"
+description: Documentation page detailing how to use the Cryptocurrency menu providing
   trending cryptocurrency insights, researching specific coins, as well as providing access to onchain information.
   Includes sub-menus for in-depth discovery, overview, onchain analysis, Defi, NFTs
   and due diligence. Examples provided for navigating through features.

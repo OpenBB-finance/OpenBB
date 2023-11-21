@@ -1,6 +1,6 @@
 ---
 title: hma
-description: "The page covers the Hull Moving Average (HMA) - a moving average that"
+description: The page covers the Hull Moving Average (HMA) - a moving average that
   is more responsive to current price activity while maintaining smoothness. It explains
   the usage, parameters (such as n_length and n_offset) and gives a visual representation.
 keywords:

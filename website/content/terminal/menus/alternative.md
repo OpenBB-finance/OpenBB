@@ -1,6 +1,6 @@
 ---
 title: Alternative
-description: "This page discusses how investors use alternative data for in-depth company"
+description: This page discusses how investors use alternative data for in-depth company
   analysis and how this method can lead to better decision-making. It also covers
   trends in data production and introduces related businesses.
 keywords:

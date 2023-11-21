@@ -1,6 +1,6 @@
 ---
 title: dev
-description: "This page provides a comprehensive guide to our dev command, which gives"
+description: This page provides a comprehensive guide to our dev command, which gives
   insights into the development data of a specific loaded coin. The command includes
   useful statistics like the number of forks, stars, subscribers, pull requests, merges,
   etc. on Github.

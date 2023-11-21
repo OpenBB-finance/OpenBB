@@ -1,6 +1,6 @@
 ---
 title: cancel
-description: "This page provides detailed guidance on how to cancel an order using"
+description: This page provides detailed guidance on how to cancel an order using
   id as the parameter. It explains the usage, parameters, and possible choices.
 keywords:
 - cancel

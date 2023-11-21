@@ -1,6 +1,6 @@
 ---
 title: data
-description: "Detailed instruction on how to get fundamental data from finviz using"
+description: Detailed instruction on how to get fundamental data from finviz using
   'openbb' Python package. It explains the usage of 'stocks.fa.data' function, its
   parameters and return type along with an example.
 keywords:

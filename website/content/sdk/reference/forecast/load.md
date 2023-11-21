@@ -1,6 +1,6 @@
 ---
 title: load
-description: "Documentation for the 'load' function from the OpenBB forecast library."
+description: Documentation for the 'load' function from the OpenBB forecast library.
   This function permits to load a custom file into a DataFrame within Python. It covers
   instructions, source code, parameters, and returns.
 keywords:

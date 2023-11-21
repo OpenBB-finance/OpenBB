@@ -1,6 +1,6 @@
 ---
 title: cpsearch
-description: "Documentation for 'cpsearch', a cryptocurrency discovery function in"
+description: Documentation for 'cpsearch', a cryptocurrency discovery function in
   OpenBBTerminal using the CoinPaprika API. This page provides details about parameters,
   source code links and data return types.
 keywords:

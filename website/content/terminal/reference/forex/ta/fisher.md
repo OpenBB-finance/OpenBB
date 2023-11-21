@@ -1,6 +1,6 @@
 ---
 title: fisher
-description: "Documentation on the Fisher Transform, a technical indicator used to"
+description: Documentation on the Fisher Transform, a technical indicator used to
   highlight trends and potential turning points in asset prices.
 keywords:
 - Fisher Transform

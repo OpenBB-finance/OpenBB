@@ -1,6 +1,6 @@
 ---
 title: macro_countries
-description: "Get a digest of the macro_countries function in OpenBB's economy module"
+description: Get a digest of the macro_countries function in OpenBB's economy module
   that provides a dictionary of available countries with their respective currencies.
   Includes details on function parameters and returns.
 keywords:

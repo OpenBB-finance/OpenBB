@@ -1,7 +1,7 @@
 ---
 title: Custom Data
 sidebar_position: 3
-description: "Documentation detailing usage of the OpenBB Terminal for financial data"
+description: Documentation detailing usage of the OpenBB Terminal for financial data
   aggregation, standardization, and user data import. It explains the OpenBBUserData
   folder functions, how to modify settings, and how to import or export user data.
 keywords:

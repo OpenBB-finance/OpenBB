@@ -1,6 +1,6 @@
 ---
 title: type
-description: "Learn how to show the type of the columns of your dataset or change the"
+description: Learn how to show the type of the columns of your dataset or change the
   type of a specific column using Docusaurus. This guide also provides usage, parameters
   and examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: rtat
-description: "The rtat tool provides daily insights into the retail trading activity"
+description: The rtat tool provides daily insights into the retail trading activity
   and sentiment for over 9,500 US traded stocks, ADRs, and ETPs. Learn how to use
   it, understand its parameters, and see examples of results with our detailed documentation.
 keywords:

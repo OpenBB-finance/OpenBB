@@ -1,6 +1,6 @@
 ---
 title: bench
-description: "This page discusses the 'bench' function, part of the OpenBB Terminal,"
+description: This page discusses the 'bench' function, part of the OpenBB Terminal,
   which allows users to load benchmarks into their portfolio. It provides details
   on the parameters, method of application, and examples utilizing Python for portfolio
   management.

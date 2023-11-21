@@ -1,6 +1,6 @@
 ---
 title: contracts
-description: "This documentation page provides information about contracts associated"
+description: This documentation page provides information about contracts associated
   with a ticker as sourced from QuiverQuant. Details include usage, parameters like
   past transaction days and raw data. Also added is a snapshot of the contracts interface.
 keywords:

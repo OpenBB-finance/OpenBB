@@ -1,6 +1,6 @@
 ---
 title: view
-description: "Understand how to view available portfolios in various formats using"
+description: Understand how to view available portfolios in various formats using
   the 'view' command. This page provides a comprehensive guide on the parameters used.
 keywords:
 - portfolio view

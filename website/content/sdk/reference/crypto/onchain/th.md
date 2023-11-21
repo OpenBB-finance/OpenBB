@@ -1,6 +1,6 @@
 ---
 title: th
-description: "This page provides a detailed description and source code for two main"
+description: This page provides a detailed description and source code for two main
   features provided by OpenBB-finance. These are the functionalities to acquire token
   historical transactions data and display information about token history. The page
   further provides detailed explanations for parameters required for both functions

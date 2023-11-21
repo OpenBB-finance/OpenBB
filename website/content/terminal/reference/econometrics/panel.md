@@ -1,6 +1,6 @@
 ---
 title: panel
-description: "The documentation page provides a comprehensive guide to performing regression"
+description: The documentation page provides a comprehensive guide to performing regression
   analysis on Panel Data using the 'panel' command in Python. It includes information
   about the usage, command parameters and the type of regression analysis you can
   perform.

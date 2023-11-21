@@ -1,6 +1,6 @@
 ---
 title: run
-description: "Learn how to effectively run a notebook from a specific location using"
+description: Learn how to effectively run a notebook from a specific location using
   various parameters. This page also provides details about certain parameters such
   as report parameters and the file to be loaded.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: balance
-description: "This page provides detailed information for retrieving balance sheet"
+description: This page provides detailed information for retrieving balance sheet
   data via the OpenBBTerminal's Python function. This includes the parameters and
   return type of the function, as well as examples of its use for different data sources
   specifically for the stock symbol 'AAPL'.

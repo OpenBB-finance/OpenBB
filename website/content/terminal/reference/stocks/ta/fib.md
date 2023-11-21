@@ -1,6 +1,6 @@
 ---
 title: fib
-description: "The page delivers documentation for the Python program 'fib', used to"
+description: The page delivers documentation for the Python program 'fib', used to
   calculate fibonacci retracement levels. It includes usage instructions, parameters
   definition, and visual outputs.
 keywords:

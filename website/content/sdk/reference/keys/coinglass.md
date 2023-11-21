@@ -1,6 +1,6 @@
 ---
 title: coinglass
-description: "The page provides instructions on how to set the Coinglass key using"
+description: The page provides instructions on how to set the Coinglass key using
   the openbb module of the OpenBBTerminal. It gives details on the parameters used
   and their functionality, return types, and examples.
 keywords:

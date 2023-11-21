@@ -1,6 +1,6 @@
 ---
 title: prom
-description: "Display dark pool (ATS) data of tickers with growing trades activity"
+description: Display dark pool (ATS) data of tickers with growing trades activity
   using linear regression. Filter and process data from different tiers.
 keywords:
 - prom

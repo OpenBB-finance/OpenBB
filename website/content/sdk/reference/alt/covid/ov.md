@@ -1,6 +1,6 @@
 ---
 title: ov
-description: "This documentation page provides detailed information on the 'ov' models"
+description: This documentation page provides detailed information on the 'ov' models
   used for retrieving historical cases and deaths-by-country data. It also explains
   the parameters required to run these models, and returns in the form of a DataFrame.
 keywords:

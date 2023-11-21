@@ -1,6 +1,6 @@
 ---
 title: trending
-description: "The Trending page provides a list of trending articles from OpenBB, it"
+description: The Trending page provides a list of trending articles from OpenBB, it
   allows customization of the quantity of articles displayed with a default value
   set at 5.
 keywords:

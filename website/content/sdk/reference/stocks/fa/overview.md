@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This page provides an API for getting an Alpha Vantage's company overview"
+description: This page provides an API for getting an Alpha Vantage's company overview
   with OpenBB Terminal. It is implemented with Python for stock fundamental analysis.
   A stock's ticker symbol is used as the parameter, and it returns the fundamentals
   in a pd.DataFrame.

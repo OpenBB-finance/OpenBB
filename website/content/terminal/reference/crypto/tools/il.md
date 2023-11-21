@@ -1,6 +1,6 @@
 ---
 title: il
-description: "The Document page provides details on the 'il' tool designed to calculate"
+description: The Document page provides details on the 'il' tool designed to calculate
   Impermanent Loss in custom liquidity pools. Including its usage, and parameters
   such as token price change and pool proportion, the tool allows users to estimate
   potential impermanent losses.

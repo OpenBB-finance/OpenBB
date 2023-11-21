@@ -1,6 +1,6 @@
 ---
 title: pi
-description: "Details about the PI function used in OpenBB crypto due diligence. It"
+description: Details about the PI function used in OpenBB crypto due diligence. It
   covers aspects like fetching coin product info and presenting it as tables and charts.
   Also, includes links to the source code.
 keywords:

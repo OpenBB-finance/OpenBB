@@ -1,6 +1,6 @@
 ---
 title: load
-description: "Documentation on how to load and analyze crypto currency data using Python."
+description: Documentation on how to load and analyze crypto currency data using Python.
   The page explains how to use different data sources such as Yahoo Finance, ccxt,
   or cg, select exchanges and intervals, and query data by cryptocurrency symbols,
   start and end dates.

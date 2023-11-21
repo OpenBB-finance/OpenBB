@@ -1,6 +1,6 @@
 ---
 title: lcb
-description: "This page documents the usage of the lcb function, which is a Python"
+description: This page documents the usage of the lcb function, which is a Python
   command to print the latest cluster buys in the stock market. It includes details
   about the parameters used and provides examples of how to use it effectively. The
   information is sourced from OpenInsider.

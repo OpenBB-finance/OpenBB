@@ -1,6 +1,6 @@
 ---
 title: psi_sg
-description: "The psi_sg page provides Python code snippets for retrieving short interest"
+description: The psi_sg page provides Python code snippets for retrieving short interest
   volume data and stock prices. Also available is the functionality to plot this data
   or export it in various file formats. The data is sourced from Stockgrid.
 keywords:

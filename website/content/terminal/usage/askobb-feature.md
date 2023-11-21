@@ -1,7 +1,7 @@
 ---
 title: AskOBB Feature
 sidebar_position: 5
-description: "This documentation page presents the innovative use of language learning"
+description: This documentation page presents the innovative use of language learning
   machines (LLMs), in particular, the LlamaIndex in transforming natural language
   queries into commands in OpenBB Terminal.
 keywords:

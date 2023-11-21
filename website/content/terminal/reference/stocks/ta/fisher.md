@@ -1,6 +1,6 @@
 ---
 title: fisher
-description: "The page provides a comprehensive guide to the Fisher Transform, a technical"
+description: The page provides a comprehensive guide to the Fisher Transform, a technical
   indicator by John F. Ehlers. It helps in highlighting extreme prices based on recent
   values, identifying turning points, showing the trend and isolating price waves.
   The functions, usage and parameters of the Fisher Transform are elaborately discussed.

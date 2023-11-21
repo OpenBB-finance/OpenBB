@@ -1,6 +1,6 @@
 ---
 title: cal
-description: "This page provides a guide to using the 'cal' command for accessing company"
+description: This page provides a guide to using the 'cal' command for accessing company
   earning calendars and revenue estimates using python.
 keywords:
 - Company Earnings

@@ -1,6 +1,6 @@
 ---
 title: news
-description: "The page provides documentation on how to get and display news for a"
+description: The page provides documentation on how to get and display news for a
   given term using OpenBB's Python functions. It also describes parameters used in
   these functions and links to the related source codes.
 keywords:

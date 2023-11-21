@@ -1,6 +1,6 @@
 ---
 title: map
-description: "The documentation outlines the usage and parameters of a performance"
+description: The documentation outlines the usage and parameters of a performance
   index stocks map placed according to sectors and industries. The Web-Based map tool,
   sourced by Finviz, adjusts based on selected performance periods and map filter
   types, such as SP500, world, full or ETF.

@@ -1,6 +1,6 @@
 ---
 title: decliners
-description: "The decliners documentation page provides information on how to use the"
+description: The decliners documentation page provides information on how to use the
   'decliners' command to display the top ETF/Mutual fund decliners from wsj.com/market-data.
   The command doesn't require any parameters and includes examples of usage.
 keywords:

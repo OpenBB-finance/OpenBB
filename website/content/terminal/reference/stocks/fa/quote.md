@@ -1,6 +1,6 @@
 ---
 title: quote
-description: "This page provides a detailed explanation on the 'quote' function, a"
+description: This page provides a detailed explanation on the 'quote' function, a
   tool that delivers comprehensive financial data of a company including volume, price-to-equity
   ratio, market cap, and more. Source of this information typically comes from Financial
   Modeling Prep.

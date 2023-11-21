@@ -1,6 +1,6 @@
 ---
 title: om
-description: "This page provides detailed guidance on how to use the omega ratio function"
+description: This page provides detailed guidance on how to use the omega ratio function
   (om) for stock analysis with Python, including usage instructions and parameters.
 keywords:
 - omega ratio

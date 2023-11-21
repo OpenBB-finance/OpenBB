@@ -1,6 +1,6 @@
 ---
 title: openpositions
-description: "This documentation page provides details about the OpenBB 'open positions'"
+description: This documentation page provides details about the OpenBB 'open positions'
   function in forex trading with Oanda. Learn about the parameters including account
   ID and review the source code in Python.
 keywords:

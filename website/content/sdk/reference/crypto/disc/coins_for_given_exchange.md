@@ -1,6 +1,6 @@
 ---
 title: coins_for_given_exchange
-description: "The documentation page for the helper method openbb.crypto.disc.coins_for_given_exchange()"
+description: The documentation page for the helper method openbb.crypto.disc.coins_for_given_exchange()
   for getting all coins available on binance exchange sourced from CoinGecko. Information
   includes parameters, returns and source code.
 keywords:

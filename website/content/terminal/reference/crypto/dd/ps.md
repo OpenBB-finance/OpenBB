@@ -1,6 +1,6 @@
 ---
 title: ps
-description: "Detailed documentation on ps metric, a tool used to fetch price and supply"
+description: Detailed documentation on ps metric, a tool used to fetch price and supply
   related metrics for a given coin. Includes usage, parameters, examples, and more
   for crypto analysis and data aggregation.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: hist
-description: "The page provides a method to get historical quotes for the provided"
+description: The page provides a method to get historical quotes for the provided
   option chain using Python. It details the usage and parameters required, including
   the strike price, put option flag, and OCC option symbol. Example code and output
   are provided.

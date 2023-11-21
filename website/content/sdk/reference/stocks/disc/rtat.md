@@ -1,6 +1,6 @@
 ---
 title: rtat
-description: "The rtat function provides the top 10 retail stocks per day functionality."
+description: The rtat function provides the top 10 retail stocks per day functionality.
   It does not take any parameters and returns a DataFrame with tickers.
 keywords:
 - Retail Stocks

@@ -1,6 +1,6 @@
 ---
 title: maketcap
-description: "Detailed documentation on the 'maketcap' function in the OpenBB finance"
+description: Detailed documentation on the 'maketcap' function in the OpenBB finance
   database model. The page provides information on the function, including its source
   code, parameters (if any), and the values it returns.
 keywords:

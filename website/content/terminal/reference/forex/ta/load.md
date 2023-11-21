@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This documentation page supports users in stock analysis by guiding them"
+description: This documentation page supports users in stock analysis by guiding them
   on how to load a stock ticker. It explains various parameters such as market source,
   date ranges, pre/after market hours, and periodicity of data. It also includes guidance
   for loading custom files and managing data at different frequencies.

@@ -1,6 +1,6 @@
 ---
 title: glassnode
-description: "This documentation page provides a detailed guide on how to set the Glassnode"
+description: This documentation page provides a detailed guide on how to set the Glassnode
   API key using the openbb.keys.glassnode method in the OpenBB Python library. It
   includes a breakdown of parameters, return values, and a code example for easy comprehension.
 keywords:

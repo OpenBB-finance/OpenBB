@@ -1,6 +1,6 @@
 ---
 title: add
-description: "This page provides the details on how to add and compare similar tickers"
+description: This page provides the details on how to add and compare similar tickers
   as well as the usage of 'add' command and a comprehensive description of its parameters.
 keywords:
 - Add operation

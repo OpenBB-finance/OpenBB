@@ -1,6 +1,6 @@
 ---
 title: popular
-description: "This page contains a python function to get popular tickers from a list"
+description: This page contains a python function to get popular tickers from a list
   of subreddits. The function leverages the OpenBB.Finance Terminal to analyze the
   behavioral analysis of posts from Reddit.
 keywords:

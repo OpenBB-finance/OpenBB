@@ -1,6 +1,6 @@
 ---
 title: plot
-description: "Plot documentation page provides information on how to show a plot for"
+description: Plot documentation page provides information on how to show a plot for
   the given x and y variables, with variables being last trade date, strike, last
   price, bid, ask, percentage change, volume, open interest, implied volatility and
   more. It also shows usage examples and available customizations.

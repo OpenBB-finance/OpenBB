@@ -1,6 +1,6 @@
 ---
 title: capm
-description: "The capm page offers detailed information on analysing a stock's risk"
+description: The capm page offers detailed information on analysing a stock's risk
   in comparison to the market risk. Learn to use the 'capm' command and understand
   Beta, Systematic Risk, and Unsystematic Risk in stock analysis.
 keywords:

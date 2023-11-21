@@ -1,6 +1,6 @@
 ---
 title: obv
-description: "This page provides information on how to use the On Balance Volume (OBV)"
+description: This page provides information on how to use the On Balance Volume (OBV)
   technical indicator source code. It covers how to plot the OBV chart and list the
   parameters and returns. This information is useful for stock market analysis.
 keywords:

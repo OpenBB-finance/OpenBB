@@ -1,6 +1,6 @@
 ---
 title: cdf
-description: "The page provides details about the 'cdf' function in the OpenBB SDK,"
+description: The page provides details about the 'cdf' function in the OpenBB SDK,
   which plots the Cumulative Distribution Function. It lists the function parameters,
   return values, and provides a working example.
 keywords:

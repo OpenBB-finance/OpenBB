@@ -1,6 +1,6 @@
 ---
 title: tist
-description: "This page contains detailed instructions on how to use 'tist', a tool"
+description: This page contains detailed instructions on how to use 'tist', a tool
   to print top insider sales data of the day. Information on usage, parameters, and
   options are provided.
 keywords:

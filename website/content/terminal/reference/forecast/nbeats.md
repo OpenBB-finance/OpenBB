@@ -1,6 +1,6 @@
 ---
 title: nbeats
-description: "Explore how to use NBEATS, Neural Bayesian Estimation of Time Series,"
+description: Explore how to use NBEATS, Neural Bayesian Estimation of Time Series,
   a powerful tool for forecasting. It includes details of parameters, usage, and examples.
 keywords:
 - nbeats

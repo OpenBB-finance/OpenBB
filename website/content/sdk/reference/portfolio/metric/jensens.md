@@ -1,6 +1,6 @@
 ---
 title: jensens
-description: "The jensen's alpha function allows evaluation of portfolio performance,"
+description: The jensen's alpha function allows evaluation of portfolio performance,
   taking into account a risk-free rate and an interval for rolling values. Supported
   by OpenBB portfolio, a source for open source finance tools.
 keywords:

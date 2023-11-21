@@ -1,6 +1,6 @@
 ---
 title: season
-description: "The page provides details on the 'openbb.forecast.season_chart' function."
+description: The page provides details on the 'openbb.forecast.season_chart' function.
   This function is used to plot seasonality from a dataset. It includes information
   about the parameters, the return value, and a link to the source code.
 keywords:

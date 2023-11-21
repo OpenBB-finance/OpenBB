@@ -1,6 +1,6 @@
 ---
 title: fred
-description: "This page provides thorough instructions for setting up a FRED key in"
+description: This page provides thorough instructions for setting up a FRED key in
   the OpenBB Terminal Python environment, including guidelines for its use within
   a Jupyter notebook session or as a global terminal environment variable. Examples
   of correct usage and behaviors are also provided.

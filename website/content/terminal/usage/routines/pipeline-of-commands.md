@@ -1,7 +1,7 @@
 ---
 title: The Pipeline of Commands
 sidebar_position: 1
-description: "This page provides a detailed explanation of the OpenBB Terminal command pipeline."
+description: This page provides a detailed explanation of the OpenBB Terminal command pipeline.
   The tutorial video and walkthrough guides users in automating their investment
   research process by using single commands, and sequences of commands,
   to manipulate and study data.

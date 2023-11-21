@@ -1,6 +1,6 @@
 ---
 title: jctr
-description: "The jctr command in Python shows the cramer recommendation for the loaded"
+description: The jctr command in Python shows the cramer recommendation for the loaded
   ticker. This command requires no parameters.
 keywords:
 - jctr

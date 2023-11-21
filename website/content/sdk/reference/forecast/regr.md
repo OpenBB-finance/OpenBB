@@ -1,6 +1,6 @@
 ---
 title: regr
-description: "'The page covers two main aspects of the OpenBB finance platform: Regression"
+description: 'The page covers two main aspects of the OpenBB finance platform: Regression
   Forecasting and Displaying Regression Forecasting. It provides source codes, defines
   parameters and returns related to the regression model and data. Users can find
   additional features like forecasting horizon, historical forecasting, and prediction

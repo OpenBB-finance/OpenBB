@@ -1,6 +1,6 @@
 ---
 title: expo
-description: "This page provides a comprehensive guide to the expo usage for executing"
+description: This page provides a comprehensive guide to the expo usage for executing
   a Probabilistic Exponential Smoothing forecast. Parameters and their usage are laid
   out, along with examples for reference.
 keywords:

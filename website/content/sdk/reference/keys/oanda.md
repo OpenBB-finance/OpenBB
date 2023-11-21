@@ -1,6 +1,6 @@
 ---
 title: oanda
-description: "This page explains how to set the Oanda key using the OpenBB Terminal."
+description: This page explains how to set the Oanda key using the OpenBB Terminal.
   It includes parameters and examples.
 keywords:
 - oanda

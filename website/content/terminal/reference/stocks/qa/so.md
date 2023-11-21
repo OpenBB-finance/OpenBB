@@ -1,6 +1,6 @@
 ---
 title: so
-description: "This page provides information on how to calculate the Sortino ratio"
+description: This page provides information on how to calculate the Sortino ratio
   of a selected stock, including parameters for target return, adjusting the Sortino
   ratio for comparison with the Sharpe ratio, and setting the rolling window length.
 keywords:

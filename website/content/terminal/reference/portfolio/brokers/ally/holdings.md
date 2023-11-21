@@ -1,6 +1,6 @@
 ---
 title: holdings
-description: "This documentation page provides information on how to view your trading"
+description: This documentation page provides information on how to view your trading
   accounts on Ally using a command 'holdings'.
 keywords:
 - Trading Accounts

@@ -1,6 +1,6 @@
 ---
 title: pick
-description: "This page explains the usage of the load command for loading a FRED series"
+description: This page explains the usage of the load command for loading a FRED series
   to the current selection. This is useful for analyzing stock market data with various
   parameters such as Open, High, Low, Close, Adj Close, Volume, etc.
 keywords:

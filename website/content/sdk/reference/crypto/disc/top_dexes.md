@@ -1,6 +1,6 @@
 ---
 title: top_dexes
-description: "The 'top_dexes' page contains information and source code for obtaining"
+description: The 'top_dexes' page contains information and source code for obtaining
   and viewing decentralized exchange data, including daily volume and users. The first
   tab shows a model for getting top dexes by specified parameters, while the second
   tab displays a function that prints this data in tabular format.

@@ -1,6 +1,6 @@
 ---
 title: divs
-description: "Improve your knowledge of OpenBB's fundamental analysis tools for stocks"
+description: Improve your knowledge of OpenBB's fundamental analysis tools for stocks
   with this comprehensive guide on retrieving and charting historical dividend data.
   This page contains examples and source code in python focused on the use of the
   'divs' and 'divs_chart' functions for tickers like 'AAPL'.

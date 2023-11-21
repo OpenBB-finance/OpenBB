@@ -1,6 +1,6 @@
 ---
 title: polygon
-description: "This documentation is about the 'polygon' function in the OpenBB Terminal"
+description: This documentation is about the 'polygon' function in the OpenBB Terminal
   Python SDK. It details how the function accepts a polygon API key, and settings
   to persist or show output.
 keywords:

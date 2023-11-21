@@ -1,6 +1,6 @@
 ---
 title: github
-description: "The page guides users on how to set a GitHub API key using the OpenBBTerminal."
+description: The page guides users on how to set a GitHub API key using the OpenBBTerminal.
   It provides explanations about the parameters involved and gives a brief glimpse
   into the possible return values. The page also includes code examples as useful
   guidance.

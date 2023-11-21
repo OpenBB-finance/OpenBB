@@ -1,6 +1,6 @@
 ---
 title: income
-description: "This page provides in-depth information on how to generate a comprehensive"
+description: This page provides in-depth information on how to generate a comprehensive
   income statement over a specific period, either quarterly or annually. It covers
   critical financial terms such as gross profit, operating expenses, income before
   tax, net income, and EPS among others. These metrics can be derived using Alpha

@@ -1,6 +1,6 @@
 ---
 title: pols
-description: "The page provides detailed information on using PooledOLS in OpenBB,"
+description: The page provides detailed information on using PooledOLS in OpenBB,
   a plain OLS that can comprehend various panel data structures. It includes parameters
   and return types for the 'openbb.econometrics.pols' function.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: candle
-description: "This documentation page contains information about the 'candle' function"
+description: This documentation page contains information about the 'candle' function
   of OpenBB's SDK which plots the candlestick chart for a specific stock ticker. It
   offers various parameters for data customization providing an interactive way to
   visualize stock market data.

@@ -1,6 +1,6 @@
 ---
 title: tipt
-description: "The page provides an overview and usage of the 'tipt' function, a tool"
+description: The page provides an overview and usage of the 'tipt' function, a tool
   that prints the top insider purchases of the day from OpenInsider. With parameter
   customization and examples, become more adept at monitoring insider stock purchases.
 keywords:

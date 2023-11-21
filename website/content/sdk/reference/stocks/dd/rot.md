@@ -1,6 +1,6 @@
 ---
 title: rot
-description: "This webpage contains detailed methods and code snippets to retrieve"
+description: This webpage contains detailed methods and code snippets to retrieve
   and visualize rating over time data for any stock ticker. It includes functioning
   code in Python, and links to the source code in GitHub.
 keywords:

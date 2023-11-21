@@ -1,6 +1,6 @@
 ---
 title: fama_coe
-description: "Learn how to use Fama and French to determine the cost of equity for"
+description: Learn how to use Fama and French to determine the cost of equity for
   a company with our Fama_Coe tool. Find the Python source code and understand its
   parameters and returns.
 keywords:

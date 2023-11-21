@@ -1,6 +1,6 @@
 ---
 title: screen
-description: "Documentation for the ETF screen tool, a command-line Python application"
+description: Documentation for the ETF screen tool, a command-line Python application
   that scrapes and sorts data from stockanalysis.com. The tool offers various sorting
   options, including by assets, expense, and volume, among others.
 keywords:

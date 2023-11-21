@@ -1,6 +1,6 @@
 ---
 title: lins
-description: "'The webpage is a technical documentation section related to the usage"
+description: 'The webpage is a technical documentation section related to the usage
   of the functions ''lins'' and ''lins_chart''. It involves extracting and displaying
   last insider activity for a particular stock ticker from source: Finviz.'
 keywords:

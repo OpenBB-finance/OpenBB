@@ -1,6 +1,6 @@
 ---
 title: kc
-description: "This documentation page provides details on the Keltner Channels functionality"
+description: This documentation page provides details on the Keltner Channels functionality
   implemented in the OpenBB Terminal. It includes a guide for using the Keltner Channels
   analytical model and the chart plotting function.
 keywords:

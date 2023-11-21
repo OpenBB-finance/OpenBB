@@ -1,6 +1,6 @@
 ---
 title: hotpenny
-description: "'The page provides documentation on how to use the hotpenny function"
+description: 'The page provides documentation on how to use the hotpenny function
   provided by OpenBB, which returns a DataFrame of today''s hot penny stocks with
   different columns such as Ticker, Price, Change, $ Volume, Volume, # Trades.'
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: lins
-description: "'The lins page provides detailed insight into insider trading activity."
+description: 'The lins page provides detailed insight into insider trading activity.
   It includes fields like Date, Relationship, Transaction, #Shares, Cost, Value ($),
   #Shares Total, Insider Trading, SEC Form 4. This tool functions as a vital resource
   for tracking insider trading data.'

@@ -1,6 +1,6 @@
 ---
 title: vwap
-description: "Learn how to use the Volume Weighted Average Price, a tool that measures"
+description: Learn how to use the Volume Weighted Average Price, a tool that measures
   the average typical price by volume. It is used with intraday charts to identify
   the general direction of the market.
 keywords:

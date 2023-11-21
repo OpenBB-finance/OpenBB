@@ -1,6 +1,6 @@
 ---
 title: screener_output
-description: "This documentation page cover the usage of screener output for OpenBB"
+description: This documentation page cover the usage of screener output for OpenBB
   Terminal. It includes explanations for using preset filters, printing the output,
   and parameters for sorting and export formatting. There are also links to the source
   code and Python command line instructions.

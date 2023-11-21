@@ -1,6 +1,6 @@
 ---
 title: headlines
-description: "This page provides comprehensive details on how to use 'headlines' to"
+description: This page provides comprehensive details on how to use 'headlines' to
   display sentiment analysis from FinBrain for specific cryptocurrencies. It includes
   the usage commands, parameters, and several examples for better understanding.
 keywords:

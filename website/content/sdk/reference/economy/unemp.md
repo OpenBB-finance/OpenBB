@@ -1,6 +1,6 @@
 ---
 title: unemp
-description: "This page provides full documentation on using unemp functions in OpenBB"
+description: This page provides full documentation on using unemp functions in OpenBB
   to get US unemployment historical data and visualize it using charts. Includes information
   on function parameters and return types.
 keywords:

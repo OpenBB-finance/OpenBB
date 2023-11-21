@@ -1,6 +1,6 @@
 ---
 title: sh
-description: "A comprehensive documentation page provides information about the Sharpe"
+description: A comprehensive documentation page provides information about the Sharpe
   ratio of a selected stock. It includes parameters such as risk-free return and rolling
   window length, along with their usage presented in Python code.
 keywords:

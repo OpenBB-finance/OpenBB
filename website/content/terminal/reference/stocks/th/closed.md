@@ -1,6 +1,6 @@
 ---
 title: closed
-description: "Closed exchanges documentation page provides instructions on how to use"
+description: Closed exchanges documentation page provides instructions on how to use
   the 'exchange' command that has no parameters to show currently closed exchanges.
 keywords:
 - closed exchanges

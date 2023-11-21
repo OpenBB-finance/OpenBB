@@ -1,6 +1,6 @@
 ---
 title: cpci
-description: "This docusaurus page provides comprehensive information on the 'cpci'"
+description: This docusaurus page provides comprehensive information on the 'cpci'
   function of the OpenBB Terminal. It explains how to use the function to get the
   number of companies per country in a specific industry based on market cap and whether
   to exclude international exchanges. Detailed parameters and return values are provided,

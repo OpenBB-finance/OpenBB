@@ -1,6 +1,6 @@
 ---
 title: derivatives
-description: "This page provides a comprehensive list and details on crypto derivatives."
+description: This page provides a comprehensive list and details on crypto derivatives.
   Understand and sort crypto financial tools such as futures, options, and perpetual
   contracts based on different parameters including Rank, Market, Symbol, Price, and
   more.

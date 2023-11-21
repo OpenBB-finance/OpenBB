@@ -1,6 +1,6 @@
 ---
 title: search
-description: "This documentation page provides details on the 'search' function related"
+description: This documentation page provides details on the 'search' function related
   to future investments as available on OpenBB-finance. It covers information on various
   parameters like 'category', 'exchange', and 'description' to refine search.
 keywords:
@@ -20,7 +20,7 @@ Get search futures [Source: Yahoo Finance]
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L50)]
 
 ```python
-openbb.futures.search(category: str = "", exchange: str = "", description: "str = "")"
+openbb.futures.search(category: str = "", exchange: str = "", description: str = "")
 ```
 
 ---

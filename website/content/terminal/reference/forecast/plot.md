@@ -1,6 +1,6 @@
 ---
 title: plot
-description: "This page provides an elaborative guide to users on how to plot data"
+description: This page provides an elaborative guide to users on how to plot data
   based on their index with interactive examples.
 keywords:
 - Data Plotting

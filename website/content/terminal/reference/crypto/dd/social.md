@@ -1,6 +1,6 @@
 ---
 title: social
-description: "This Docusaurus page provides guidelines on using the 'social' command"
+description: This Docusaurus page provides guidelines on using the 'social' command
   to fetch relevant social media information for any loaded cryptocurrency.
 keywords:
 - social media for cryptocurrencies

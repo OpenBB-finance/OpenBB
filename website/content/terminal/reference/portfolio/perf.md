@@ -1,6 +1,6 @@
 ---
 title: perf
-description: "The 'perf' function displays the performance metrics of both individual"
+description: The 'perf' function displays the performance metrics of both individual
   trades and the total portfolio against a given benchmark. This data is crucial for
   investors and traders to understand how their portfolio is performing compared to
   a standard benchmark.

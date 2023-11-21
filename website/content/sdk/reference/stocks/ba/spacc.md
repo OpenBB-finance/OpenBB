@@ -1,6 +1,6 @@
 ---
 title: spacc
-description: "Detailed documentation of the function openbb.stocks.ba.spacc, providing"
+description: Detailed documentation of the function openbb.stocks.ba.spacc, providing
   insights into top trending SPACs on Reddit. The page includes the source code, parameters,
   and returns for implementing the function.
 keywords:

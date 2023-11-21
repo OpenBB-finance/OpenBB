@@ -1,6 +1,6 @@
 ---
 title: getdd
-description: "This page explains the 'getdd' function. This function fetches due diligence"
+description: This page explains the 'getdd' function. This function fetches due diligence
   posts from a list of subreddits. The source code link, parameters including the
   stock ticker, number of posts to fetch, and number of days back to fetch the posts,
   along with the return type are described.

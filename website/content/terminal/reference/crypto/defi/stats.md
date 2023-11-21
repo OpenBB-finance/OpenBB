@@ -1,6 +1,6 @@
 ---
 title: stats
-description: "Documentation for 'stats' query, providing base statistics about Uniswap,"
+description: Documentation for 'stats' query, providing base statistics about Uniswap,
   a decentralized exchange (DEX). The page includes usage instructions and examples
   of results including metrics like totalVolumeUSD, totalLiquidityUSD, pairCount,
   txCount, and totalLiquidityETH.

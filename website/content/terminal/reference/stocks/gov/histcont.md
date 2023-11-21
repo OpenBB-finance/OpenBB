@@ -1,6 +1,6 @@
 ---
 title: histcont
-description: "The histcont page is part of Quiver Quant's website and deals with quarterly-contracts"
+description: The histcont page is part of Quiver Quant's website and deals with quarterly-contracts
   historical data. Here you'll find information about parameters, usages, and data
   visualizations.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: markets
-description: "Explore market-related coin information such as price, supply, and volume"
+description: Explore market-related coin information such as price, supply, and volume
   for all digital currencies on CoinPaprika. Customize the number of coins to be displayed
   and sort data by various parameters such as rank, price, and volume. Ideal for cryptocurrency
   analysis and comparison.

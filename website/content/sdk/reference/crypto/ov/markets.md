@@ -1,6 +1,6 @@
 ---
 title: markets
-description: "The markets page provides detailed information on how to use the OpenBB"
+description: The markets page provides detailed information on how to use the OpenBB
   crypto market API functions. The high-level cryptocurrency data from CoinPaprika
   API allows the user to import and view detailed coin information, with the functionality
   of sorting the data based on different parameters.

@@ -1,6 +1,6 @@
 ---
 title: from
-description: "This page provides instructions on how to select the 'from' currency"
+description: This page provides instructions on how to select the 'from' currency
   symbol in a forex pair, including usage information and a comprehensive list of
   available currencies.
 keywords:

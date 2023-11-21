@@ -1,6 +1,6 @@
 ---
 title: hcp
-description: "The page provides details on hierarchical clustering based portfolios"
+description: The page provides details on hierarchical clustering based portfolios
   (HCP) in the OpenBBTerminal, a python tool for advanced investment strategies. It
   describes parameters for portfolio optimization including risk measures, covariance
   estimations, and clustering techniques. The return outcomes include portfolio weights

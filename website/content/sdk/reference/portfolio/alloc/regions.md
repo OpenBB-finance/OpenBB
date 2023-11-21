@@ -1,6 +1,6 @@
 ---
 title: regions
-description: "This page provides details about the 'regions' function of the OpenBB"
+description: This page provides details about the 'regions' function of the OpenBB
   finance platform. The said function displays the portfolio region allocation in
   comparison to the benchmark. It includes a brief overview, parameters, return values,
   and an example usage.

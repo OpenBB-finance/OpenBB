@@ -1,6 +1,6 @@
 ---
 title: address
-description: "This page provides a guide to loading and analyzing account addresses,"
+description: This page provides a guide to loading and analyzing account addresses,
   token addresses and transaction hashes on Ethplorer with Python. Learn how to use
   parameters for efficient analysis.
 keywords:

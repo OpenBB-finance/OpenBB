@@ -1,7 +1,7 @@
 ---
 title: MacOS
 sidebar_position: 2
-description: "Step-by-step instructions for installing the OpenBB Terminal on MacOS."
+description: Step-by-step instructions for installing the OpenBB Terminal on MacOS.
   This guide covers installation for both Intel-based computers and Apple Silicon
   (M1) devices, and includes instructions for preliminaries like installing Rosetta
   for M1 users.

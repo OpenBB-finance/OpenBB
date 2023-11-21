@@ -1,6 +1,6 @@
 ---
 title: tk
-description: "Learn about usage and parameters of the tk command which displays asset's"
+description: Learn about usage and parameters of the tk command which displays asset's
   tokenomics. Access source and detailed guidance here.
 keywords:
 - tk

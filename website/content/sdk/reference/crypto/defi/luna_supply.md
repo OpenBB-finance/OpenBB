@@ -1,6 +1,6 @@
 ---
 title: luna_supply
-description: "'Luna Supply documentation: Features two functions that offer supply"
+description: 'Luna Supply documentation: Features two functions that offer supply
   history data of the Terra ecosystem, in both numerical (DataFrame) and visual (Chart)
   formats. Each function has customisable parameters providing flexibility to users.'
 keywords:

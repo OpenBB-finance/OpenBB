@@ -1,6 +1,6 @@
 ---
 title: load
-description: "The 'load' function allows users to load their portfolio transactions"
+description: The 'load' function allows users to load their portfolio transactions
   from a given file, optionally assigning a name and setting a risk-free rate. The
   loaded portfolio details will be presented in a detailed table showcasing each transaction.
 keywords:

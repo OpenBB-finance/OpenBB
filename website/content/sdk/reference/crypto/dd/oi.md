@@ -1,6 +1,6 @@
 ---
 title: oi
-description: "This page deals with open interest (OI) in cryptocurrency using OpenBB"
+description: This page deals with open interest (OI) in cryptocurrency using OpenBB
   terminal. The models and charts displaying open interest by exchange, frequency
   and crypto symbol (BTC for instance) are available. You can also review the source
   code and instructions on how to use related Python functions.

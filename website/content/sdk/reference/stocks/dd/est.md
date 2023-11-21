@@ -1,6 +1,6 @@
 ---
 title: est
-description: "Access analysts' estimates for given ticker symbols utilizing OpenBB."
+description: Access analysts' estimates for given ticker symbols utilizing OpenBB.
   Understand the method in Python with accompanying source code and expected return
   data types.
 keywords:

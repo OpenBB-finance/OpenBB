@@ -1,6 +1,6 @@
 ---
 title: nco
-description: "This page is about the Non-Convex Optimization (NCO) model used for portfolio"
+description: This page is about the Non-Convex Optimization (NCO) model used for portfolio
   optimization. It includes a detailed explanation of the function parameters, return
   values, and examples of usage using the OpenBB financial software.
 keywords:

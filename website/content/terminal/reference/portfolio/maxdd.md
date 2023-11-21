@@ -1,6 +1,6 @@
 ---
 title: maxdd
-description: "This page provides a detailed guideline on how to use 'maxdd' command"
+description: This page provides a detailed guideline on how to use 'maxdd' command
   in Python for managing portfolio. It allows users to show maximum portfolio drawdown
   and it operates without parameters.
 keywords:

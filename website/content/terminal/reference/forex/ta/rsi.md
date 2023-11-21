@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "Detailed documentation on how to use the Relative Strength Index (RSI),"
+description: Detailed documentation on how to use the Relative Strength Index (RSI),
   a key trading indicator. The page includes information on parameters such as n_length,
   n_scalar, and n_drift, as well as how to interpret the RSI.
 keywords:

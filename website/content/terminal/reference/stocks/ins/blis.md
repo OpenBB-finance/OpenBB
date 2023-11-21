@@ -1,6 +1,6 @@
 ---
 title: blis
-description: "This page describes how to use the blis command to print out the latest"
+description: This page describes how to use the blis command to print out the latest
   insider sales 100k from the OpenInsider source. It includes instructions on how
   to limit the number of results and gives examples of use cases.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: coin
-description: "This page details how to fetch specific coin data by ID using the CoinPaprika"
+description: This page details how to fetch specific coin data by ID using the CoinPaprika
   API in the OpenBBTerminal. Use this information to explore the specific parameters
   and returns.
 keywords:

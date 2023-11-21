@@ -1,6 +1,6 @@
 ---
 title: herc
-description: "The page contains details about using HERC (Hierarchical Equal Risk Contribution)"
+description: The page contains details about using HERC (Hierarchical Equal Risk Contribution)
   for building a portfolio. It covers its usage, parameters, and a clear step-by-step
   example.
 keywords:

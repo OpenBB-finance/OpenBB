@@ -1,6 +1,6 @@
 ---
 title: bbands
-description: "Understand Bollinger Bands - an indicator of overbought or oversold conditions"
+description: Understand Bollinger Bands - an indicator of overbought or oversold conditions
   in trading with parameters such as n_length, n_std, and s_mamode. The document includes
   information on usage, parameters, and graphical representation.
 keywords:

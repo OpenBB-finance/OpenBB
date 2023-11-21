@@ -1,6 +1,6 @@
 ---
 title: screener
-description: "This documentation page provides an overview of the Screener feature"
+description: This documentation page provides an overview of the Screener feature
   in the OpenBB Terminal, demonstrating how to use it to compare similar companies.
 keywords:
 - Stock Screener

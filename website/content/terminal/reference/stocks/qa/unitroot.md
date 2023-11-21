@@ -1,6 +1,6 @@
 ---
 title: unitroot
-description: "This documentation page provides a detailed guide on how to use 'unitroot',"
+description: This documentation page provides a detailed guide on how to use 'unitroot',
   a python function for executing unit root tests including ADF and KPSS. It includes
   parameters details, their choices, and usage examples.
 keywords:

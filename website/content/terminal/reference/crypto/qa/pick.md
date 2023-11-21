@@ -1,6 +1,6 @@
 ---
 title: pick
-description: "The page provides detailed information about the 'pick' command which"
+description: The page provides detailed information about the 'pick' command which
   is used to change target variables for stock market analysis, using Python. It lists
   the usage, parameters, and examples for easier understanding.
 keywords:

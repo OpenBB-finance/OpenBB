@@ -1,6 +1,6 @@
 ---
 title: vaults
-description: "This page provides a detailed description on how to use and interact"
+description: This page provides a detailed description on how to use and interact
   with DeFi Vaults using various blockchains and DeFi protocols. It provides useful
   commands, parameters, and examples.
 keywords:

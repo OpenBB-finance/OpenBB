@@ -1,6 +1,6 @@
 ---
 title: cnews
-description: "This page provides details about the 'cnews' function of the OpenBB Terminal,"
+description: This page provides details about the 'cnews' function of the OpenBB Terminal,
   capable of fetching company news. The function uses the company ticker and optional
   dates of search as parameters.
 keywords:

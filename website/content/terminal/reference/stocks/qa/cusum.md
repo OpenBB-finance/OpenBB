@@ -1,6 +1,6 @@
 ---
 title: cusum
-description: "Learn to use the Cumulative Sum Algorithm (CUSUM) to effortlessly detect"
+description: Learn to use the Cumulative Sum Algorithm (CUSUM) to effortlessly detect
   abrupt changes in your data. Understand parameters like threshold and drift to improve
   your data analysis.
 keywords:

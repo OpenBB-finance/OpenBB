@@ -1,6 +1,6 @@
 ---
 title: balance
-description: "This page provides documentation on the 'balance' functions, enabling"
+description: This page provides documentation on the 'balance' functions, enabling
   users to view account holdings for particular assets. It dives into the specifics
   of how to use these functions to retrieve data from Binance and display it efficiently.
 keywords:

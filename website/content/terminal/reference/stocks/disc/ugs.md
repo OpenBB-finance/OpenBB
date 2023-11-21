@@ -1,6 +1,6 @@
 ---
 title: ugs
-description: "The 'ugs' documentation page provides instructions on how to print up"
+description: The 'ugs' documentation page provides instructions on how to print up
   to 25 undervalued stocks with revenue and earnings growth exceeding 25%. It includes
   details on usage, parameters, and examples demonstrating expected outcomes.
 keywords:

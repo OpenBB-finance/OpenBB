@@ -1,6 +1,6 @@
 ---
 title: hist_ce
-description: "'This page describes two main functionalities of the OpenBBFinance documentation:"
+description: 'This page describes two main functionalities of the OpenBBFinance documentation:
   ''hist_ce'' function for getting historical prices for a specific stock option and
   ''hist_ce_chart'' function for displaying the same historical stock data in charts.
   Both functions come with detailed explanations of their parameters and expected

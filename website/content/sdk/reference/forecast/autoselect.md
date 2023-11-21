@@ -1,6 +1,6 @@
 ---
 title: autoselect
-description: "This page provides detailed information about autoselect feature in OpenBB"
+description: This page provides detailed information about autoselect feature in OpenBB
   Terminal with its source code. It outlines parameters and returns of statistical
   forecasting model and autoselect chart module in python.
 keywords:

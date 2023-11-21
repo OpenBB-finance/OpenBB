@@ -1,6 +1,6 @@
 ---
 title: dvcp
-description: "dvcp helps you to analyze the daily trading volume for any given cryptocurrency"
+description: dvcp helps you to analyze the daily trading volume for any given cryptocurrency
   pair. It includes features for sorting and displaying the data based on different
   parameters including coin type, quote currency, and range of days.
 keywords:

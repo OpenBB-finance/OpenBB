@@ -1,6 +1,6 @@
 ---
 title: Onchain
-description: "This page provides insight into the Cryptocurrency Onchain menu. It discusses"
+description: This page provides insight into the Cryptocurrency Onchain menu. It discusses
   how to use the menu for leveraging blockchain ledger data and scrutinizing transaction
   data and crypto wallet balances. These features are crucial in deciding whether
   to invest in a specific cryptocurrency. The page also provides examples of how to

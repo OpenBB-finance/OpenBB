@@ -1,6 +1,6 @@
 ---
 title: cancel
-description: "This page describes two methods to cancel a pending order in OpenBB's"
+description: This page describes two methods to cancel a pending order in OpenBB's
   forex trading system using Oanda. It includes Python functions to cancel an order
   by ID from either the model or chart view.
 keywords:

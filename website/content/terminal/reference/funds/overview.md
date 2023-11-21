@@ -1,6 +1,6 @@
 ---
 title: overview
-description: "This page provides an overview of her selected country's funds. You'll"
+description: This page provides an overview of her selected country's funds. You'll
   learn how to limit the number of search results shown.
 keywords:
 - funds

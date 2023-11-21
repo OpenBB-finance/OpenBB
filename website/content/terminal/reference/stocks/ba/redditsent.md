@@ -1,6 +1,6 @@
 ---
 title: redditsent
-description: "Discover how to use the redditsent function to perform sentiment analysis"
+description: Discover how to use the redditsent function to perform sentiment analysis
   on Reddit about a specific ticker or company. Learn to adjust search parameters
   like sorting type, subreddits, post limit, time period, and more for a comprehensive
   Reddit search.

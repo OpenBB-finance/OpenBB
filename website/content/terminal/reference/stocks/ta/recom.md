@@ -1,6 +1,6 @@
 ---
 title: recom
-description: "This documentation page outlines the use of a Python command-line tool"
+description: This documentation page outlines the use of a Python command-line tool
   that prints Tradingview recommendations for various stock exchanges based on selected
   technical indicators. It also covers the usage, parameters, and provides examples
   of applicable scripts with their outputs.

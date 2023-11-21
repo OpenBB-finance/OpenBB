@@ -1,6 +1,6 @@
 ---
 title: price
-description: "Get the price and confidence interval from the Pyth live feed for any"
+description: Get the price and confidence interval from the Pyth live feed for any
   given crypto asset. It also provides the previous price of the asset for comparison.
 keywords:
 - price

@@ -1,6 +1,6 @@
 ---
 title: fdols
-description: "This documentation page provides information on First Differencing (fdols)"
+description: This documentation page provides information on First Differencing (fdols)
   - an alternative to using fixed effects when there is possible correlation. It contains
   the source code link, explanation of parameters and return details.
 keywords:

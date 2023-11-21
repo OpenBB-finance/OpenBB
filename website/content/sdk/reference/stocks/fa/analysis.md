@@ -1,6 +1,6 @@
 ---
 title: analysis
-description: "Documentation on OpenBB Terminal's feature for SEC filings analysis using"
+description: Documentation on OpenBB Terminal's feature for SEC filings analysis using
   machine learning. The page contains information on how to perform the analysis,
   parameters required, and default values.
 keywords:

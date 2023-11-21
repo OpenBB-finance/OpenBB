@@ -1,6 +1,6 @@
 ---
 title: donchian
-description: "This page provides in-depth details on Donchian Channels - an indicator"
+description: This page provides in-depth details on Donchian Channels - an indicator
   formed by upper and lower bands around a midrange or median band, and how to use
   it with parameters in python.
 keywords:

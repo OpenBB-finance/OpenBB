@@ -1,6 +1,6 @@
 ---
 title: linregr
-description: "This documentation page details how to use and implement the 'linregr'"
+description: This documentation page details how to use and implement the 'linregr'
   function for performing linear regression forecasts. It includes descriptive parameters,
   usage examples, and result interpretations.
 keywords:

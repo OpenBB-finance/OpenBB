@@ -1,6 +1,6 @@
 ---
 title: candles
-description: "This page is a comprehensive guide on how to display candle data for"
+description: This page is a comprehensive guide on how to display candle data for
   different technical analysis indicators like Bollinger Bands, Accumulation/Distribution
   Indicator, Commodity Channel Index, Exponential Moving Average, On Balance Volume,
   Relative Strength Index, Simple Moving Average, and Volume Weighted Average Price.

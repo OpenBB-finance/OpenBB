@@ -1,6 +1,6 @@
 ---
 title: messages
-description: "This page provides information regarding the 'get last messages for a"
+description: This page provides information regarding the 'get last messages for a
   given ticker' function in the OpenBB Terminal. It explains the usage and parameters
   of the function.
 keywords:

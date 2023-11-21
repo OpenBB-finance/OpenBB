@@ -1,6 +1,6 @@
 ---
 title: ef
-description: "Detailed instructions on using the 'ef' function in portfolio optimization."
+description: Detailed instructions on using the 'ef' function in portfolio optimization.
   This function plots random portfolios based on their risk and returns, providing
   visualization of the efficient frontier. It includes parameters for risk measures,
   nan filling methods, financial dataset periods, return calculations, and outlier

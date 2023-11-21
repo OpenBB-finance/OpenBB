@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "This page provides a thorough explanation of how to add an RSI (Relative"
+description: This page provides a thorough explanation of how to add an RSI (Relative
   Strength Index) to a specific dataset based on a chosen column. It provides useful
   examples of seamless operation using Python. RSI is typically used by forecasters
   and analysts to help identify market trends and overbought or oversold conditions.

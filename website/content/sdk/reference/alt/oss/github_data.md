@@ -1,6 +1,6 @@
 ---
 title: github_data
-description: "This page provides the function 'openbb.alt.oss.github_data' to retrieve"
+description: This page provides the function 'openbb.alt.oss.github_data' to retrieve
   repository stats from a specified GitHub API endpoint using Python. It includes
   a list of parameters for this function and explains what data you will retrieve.
 keywords:

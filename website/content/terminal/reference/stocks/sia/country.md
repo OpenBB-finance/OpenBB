@@ -1,6 +1,6 @@
 ---
 title: country
-description: "This page provides documentation about using the 'country' command. Explore"
+description: This page provides documentation about using the 'country' command. Explore
   country details or set a specific country using the proper command syntax.
 keywords:
 - country command

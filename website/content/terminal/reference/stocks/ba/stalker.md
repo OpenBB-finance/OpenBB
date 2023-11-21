@@ -1,6 +1,6 @@
 ---
 title: stalker
-description: "'Stalker: A tool for tracking and printing the last messages of a Stocktwits"
+description: 'Stalker: A tool for tracking and printing the last messages of a Stocktwits
   user. Allows specification of the username and limit of messages to be shown. Helps
   users quickly retrieve and review the recent activity of a specific user.'
 keywords:

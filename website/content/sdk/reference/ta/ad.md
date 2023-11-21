@@ -1,6 +1,6 @@
 ---
 title: ad
-description: "This page provides information about how to implement and plot the AD"
+description: This page provides information about how to implement and plot the AD
   (Accumulation/Distribution Line) technical indicator using OpenBB's Python module.
   It includes the source code, required parameters, and the outputs from these functions.
 keywords:

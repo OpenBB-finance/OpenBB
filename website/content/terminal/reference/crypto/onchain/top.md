@@ -1,6 +1,6 @@
 ---
 title: top
-description: "This documentation page provides information on how to display the top"
+description: This documentation page provides information on how to display the top
   ERC20 tokens. It explains command usage, command parameters and provides examples.
 keywords:
 - ERC20 tokens

@@ -1,6 +1,6 @@
 ---
 title: property
-description: "This documentation defines the usage, parameters, and examples for the"
+description: This documentation defines the usage, parameters, and examples for the
   'property' function. This function helps in creating a portfolio that is weighted
   based on a selected property. It includes risk measure options, nan fill methods,
   risk-free rates, significance levels, and more to optimize the portfolio. The description

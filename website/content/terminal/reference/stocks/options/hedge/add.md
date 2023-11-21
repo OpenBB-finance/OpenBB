@@ -1,6 +1,6 @@
 ---
 title: add
-description: "This page guides on the usage of the 'add' command to add options to"
+description: This page guides on the usage of the 'add' command to add options to
   the trading diagram. The command has parameters allowing the user to buy a put instead
   of a call, short an option, and specify an option's identifier.
 keywords:

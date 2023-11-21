@@ -1,6 +1,6 @@
 ---
 title: info
-description: "This page documents the usage of the CoinPaprika API, showing basic coin"
+description: This page documents the usage of the CoinPaprika API, showing basic coin
   information, stating its parameters, and demonstrating how to sort and display information.
   It is a comprehensive guide for those seeking knowledge about crypto and financial
   data.

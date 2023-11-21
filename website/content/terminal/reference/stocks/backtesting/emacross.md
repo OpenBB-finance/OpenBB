@@ -1,6 +1,6 @@
 ---
 title: emacross
-description: "The emacross page provides documentation for a python script that crosses"
+description: The emacross page provides documentation for a python script that crosses
   between a long and a short Exponential Moving Average (EMA). It also includes information
   on the parameters of the script including lengths of the long and short EMA periods,
   spy hold comparison, buy hold comparison, and short selling operations.

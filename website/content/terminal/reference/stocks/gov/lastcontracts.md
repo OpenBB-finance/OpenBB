@@ -1,6 +1,6 @@
 ---
 title: lastcontracts
-description: "This is a page for 'lastcontracts', a tool that displays the most recent"
+description: This is a page for 'lastcontracts', a tool that displays the most recent
   government contracts. It can customize the display based on the user's preferences
   for the limit of contracts to display, the past transaction days to cover, and to
   show or not the total amount of contracts.

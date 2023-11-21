@@ -1,6 +1,6 @@
 ---
 title: fr
-description: "This documentation page explains how to use the 'fr' command to display"
+description: This documentation page explains how to use the 'fr' command to display
   an asset's fundraising details on Messari.io. The command requires no parameters.
 keywords:
 - fundraising

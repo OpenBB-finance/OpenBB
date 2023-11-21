@@ -1,6 +1,6 @@
 ---
 title: text_sent
-description: "Learn how to use the Text Sentiment Analysis function of OpenBB's Reddit"
+description: Learn how to use the Text Sentiment Analysis function of OpenBB's Reddit
   Model. Understand the sentiment of a post and related comments, providing valuable
   insights into stock market trends.
 keywords:

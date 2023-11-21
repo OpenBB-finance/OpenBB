@@ -1,6 +1,6 @@
 ---
 title: pos
-description: "This documentation page is about getting dark pool short positions using"
+description: This documentation page is about getting dark pool short positions using
   the 'pos' function in the openbb.stocks.dps python package. Details about parameters
   such as 'sortby' and 'ascend', and the data returned, i.e., pd.DataFrame, are provided.
 keywords:

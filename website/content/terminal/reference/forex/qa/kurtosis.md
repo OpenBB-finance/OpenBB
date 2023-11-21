@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: "This page discusses the concept of kurtosis. It provides detailed insights"
+description: This page discusses the concept of kurtosis. It provides detailed insights
   on its functioning, importance, and usage with the help of Python code.
 keywords:
 - kurtosis

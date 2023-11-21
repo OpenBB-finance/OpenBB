@@ -1,6 +1,6 @@
 ---
 title: binance_available_quotes_for_each_coin
-description: "This page provides a detailed guide to the helper methods in OpenBB Terminal"
+description: This page provides a detailed guide to the helper methods in OpenBB Terminal
   that, for every coin available on Binance, add all quote assets. It includes how
   to use the function and what it will return.
 keywords:

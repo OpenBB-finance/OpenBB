@@ -1,6 +1,6 @@
 ---
 title: property
-description: "This documentation discusses the use of 'property' function in OpenBB"
+description: This documentation discusses the use of 'property' function in OpenBB
   Terminal's portfolio optimization module. It elaborates on how to call this function
   with different parameters, its returns, and provides usage examples.
 keywords:

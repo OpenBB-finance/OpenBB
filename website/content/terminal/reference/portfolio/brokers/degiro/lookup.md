@@ -1,6 +1,6 @@
 ---
 title: lookup
-description: "A detailed guide on how to use the lookup command in python, showing"
+description: A detailed guide on how to use the lookup command in python, showing
   parameters such as search_text, limit, and offset and their usage.
 keywords:
 - lookup command

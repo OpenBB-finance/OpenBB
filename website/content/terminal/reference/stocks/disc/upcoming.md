@@ -1,6 +1,6 @@
 ---
 title: upcoming
-description: "This documentation page provides information about the 'upcoming' command"
+description: This documentation page provides information about the 'upcoming' command
   which displays upcoming earnings release dates. It fetches data from Seeking Alpha
   and presents it in an easy-to-read format, showcasing the upcoming earnings releases
   of various companies. Ideal tool for investors seeking recent financial data.

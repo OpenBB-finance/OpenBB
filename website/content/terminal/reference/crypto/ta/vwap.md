@@ -1,6 +1,6 @@
 ---
 title: vwap
-description: "The page describes Volume Weighted Average Price (VWAP) used to measure"
+description: The page describes Volume Weighted Average Price (VWAP) used to measure
   the average typical price by volume with intraday charts. It details its usage,
   parameters, and provides examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: calendar
-description: "Provides a comprehensive guide on the Oanda calendar functionality in"
+description: Provides a comprehensive guide on the Oanda calendar functionality in
   the OpenBB finance package. Details include how to request data of significant events,
   parameters for currency pair and days, model and view interfaces, and corresponding
   source code.

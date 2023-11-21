@@ -1,6 +1,6 @@
 ---
 title: companynews
-description: "This page contains a guide on how to use the 'companynews' tool and set"
+description: This page contains a guide on how to use the 'companynews' tool and set
   its parameters such as SYMBOL, which represents the company's ISIN code; LIMIT for
   the number of news to display; OFFSET to adjust the displayed news; and LANGUAGES
   to define the languages in which the news appears.

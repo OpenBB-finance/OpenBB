@@ -1,6 +1,6 @@
 ---
 title: history
-description: "This page displays details on how to fetch account history using python"
+description: This page displays details on how to fetch account history using python
   command. It includes a list of parameters like coin symbol, account ID, and limit
   parameter with their optional values and defaults.
 keywords:

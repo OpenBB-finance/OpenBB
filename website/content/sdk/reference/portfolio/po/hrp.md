@@ -1,6 +1,6 @@
 ---
 title: hrp
-description: "This page provides information about the Hierarchical Risk Parity (HRP)"
+description: This page provides information about the Hierarchical Risk Parity (HRP)
   function in the openbb.portfolio.po module. This function allows for portfolio optimization
   using HRP. Detailed parameter explanations, return values, and usage examples are
   provided.

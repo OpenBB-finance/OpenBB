@@ -1,6 +1,6 @@
 ---
 title: cg
-description: "Documentation for Center of Gravity Indicator function 'cg' and its graphical"
+description: Documentation for Center of Gravity Indicator function 'cg' and its graphical
   representation 'cg_chart' in the OpenBB Terminal. Explanation of their source code,
   parameters, and returns are covered.
 keywords:

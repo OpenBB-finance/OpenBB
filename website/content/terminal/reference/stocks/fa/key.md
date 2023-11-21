@@ -1,6 +1,6 @@
 ---
 title: key
-description: "This documentation provides users with key metrics data about a company"
+description: This documentation provides users with key metrics data about a company
   using Alpha Vantage API. It presents data fields like Market capitalization, EBITDA,
   EPS, PE ratio, and more.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: ETF
-description: "This documentation page provides a comprehensive guide on how to use"
+description: This documentation page provides a comprehensive guide on how to use
   the ETF module of the OpenBB Terminal SDK for programmatic access. It covers a list
   of functions within the ETF module, how to import the SDK, how to print contents
   of the SDK, how to use the ETF module in various situations such as getting list

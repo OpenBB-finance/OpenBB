@@ -1,6 +1,6 @@
 ---
 title: gtech
-description: "Gtech is a function used to get technology stocks with revenue and earnings"
+description: Gtech is a function used to get technology stocks with revenue and earnings
   growth exceeding 25%. The page provides source code and details about parameters
   and returns.
 keywords:

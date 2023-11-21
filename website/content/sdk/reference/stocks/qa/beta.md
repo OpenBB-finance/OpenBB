@@ -1,6 +1,6 @@
 ---
 title: beta
-description: "Learn how to calculate beta for a ticker and a reference ticker, and"
+description: Learn how to calculate beta for a ticker and a reference ticker, and
   display it with a scatterplot and linear regression, using OpenBB - an open source
   finance tool. The page includes source code and parameters to correctly perform
   and visualize these actions.

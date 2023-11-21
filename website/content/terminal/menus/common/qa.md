@@ -1,6 +1,6 @@
 ---
 title: Quantitative Analysis
-description: "The page provides an overview of Quantitative Analysis in finance and"
+description: The page provides an overview of Quantitative Analysis in finance and
   its application in different asset classes like Crypto, Forex, and Stocks. It also
   highlights its usage in making profitable investment decisions, the use of terminal
   commands for analyzing data, and the export of data for further analysis.

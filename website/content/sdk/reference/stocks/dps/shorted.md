@@ -1,6 +1,6 @@
 ---
 title: shorted
-description: "The page provides details about the 'shorted' function of OpenBBTerminal"
+description: The page provides details about the 'shorted' function of OpenBBTerminal
   which shows the most shorted stocks according to Yahoo Finance. Details include
   the source code and parameters, if any.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: Behavioural Analysis
-description: "The page introduces the Behavioural Analysis sub-menu, within the Stocks menu, of the OpenBB Terminal."
+description: The page introduces the Behavioural Analysis sub-menu, within the Stocks menu, of the OpenBB Terminal.
 keywords:
 - Behavioural Analysis
 - public sentiment

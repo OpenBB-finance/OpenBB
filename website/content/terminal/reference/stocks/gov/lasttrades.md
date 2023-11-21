@@ -1,6 +1,6 @@
 ---
 title: lasttrades
-description: "This page presents 'lasttrades', a comprehensive tool providing details"
+description: This page presents 'lasttrades', a comprehensive tool providing details
   on the last government trades. It provides usage, parameters, and examples on how
   to retrieve and understand transaction data.
 keywords:

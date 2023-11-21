@@ -1,6 +1,6 @@
 ---
 title: baas
-description: "This documentation is related to the 'baas' function which displays the"
+description: This documentation is related to the 'baas' function which displays the
   average bid, ask prices, and spread for a chosen crypto pair over a specified time
   period. The function can work with various cryptocurrencies and ERC 20 tokens.
 keywords:

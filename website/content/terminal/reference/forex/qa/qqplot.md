@@ -1,6 +1,6 @@
 ---
 title: qqplot
-description: "The page provides detailed information on the usage of qqplot, which"
+description: The page provides detailed information on the usage of qqplot, which
   displays a QQ plot vs normal quantiles in Python with no parameters required.
 keywords:
 - qqplot

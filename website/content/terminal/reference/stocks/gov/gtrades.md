@@ -1,6 +1,6 @@
 ---
 title: gtrades
-description: "This page provides documentation on how to use the gtrades governmental"
+description: This page provides documentation on how to use the gtrades governmental
   trading tool, offering information on command usage, parameters, and possible settings.
 keywords:
 - gtrades

@@ -1,6 +1,6 @@
 ---
 title: qtrcontracts
-description: "Documentation on the use of qtrcontracts function in Python for analyzing"
+description: Documentation on the use of qtrcontracts function in Python for analyzing
   quarterly contracts by ticker. Posts include parameter details for the model and
   chart functions.
 keywords:

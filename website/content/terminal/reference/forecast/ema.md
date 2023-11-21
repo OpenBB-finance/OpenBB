@@ -1,6 +1,6 @@
 ---
 title: ema
-description: "Documentation for the 'ema' tool that allows the addition of an exponential"
+description: Documentation for the 'ema' tool that allows the addition of an exponential
   moving average to a dataset based on a specific column. Explains usage, parameters,
   and gives practical examples.
 keywords:

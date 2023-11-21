@@ -1,6 +1,6 @@
 ---
 title: qtrcontracts
-description: "The qtrcontracts page provides a comprehensive guide on how to view and"
+description: The qtrcontracts page provides a comprehensive guide on how to view and
   analyze government contracts data using Quiver Quantitative. The guide includes
   usage parameters, examples, and options for analysis such as total contracts, highest
   sloped contracts, and highest decreasing slopes.

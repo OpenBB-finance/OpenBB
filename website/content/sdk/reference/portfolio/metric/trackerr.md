@@ -1,6 +1,6 @@
 ---
 title: trackerr
-description: "The 'trackerr' method in openbb.portfolio.metric provides tracking errors"
+description: The 'trackerr' method in openbb.portfolio.metric provides tracking errors
   over different time windows for a given portfolio. It uses the PortfolioEngine instance
   and has an optional window parameter for rolling values. You need to call portfolio.load
   to create a PortfolioEngine instance.

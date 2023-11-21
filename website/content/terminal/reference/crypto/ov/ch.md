@@ -1,6 +1,6 @@
 ---
 title: ch
-description: "This documentation outlines the usage of the 'ch' command to display"
+description: This documentation outlines the usage of the 'ch' command to display
   a list of major crypto-related hacks. It details the different parameters available
   to sort and display the data. Included are specific examples, and the expected output.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: pt
-description: "This documentation pertains to OpenBB's APIs for retrieving and visualizing"
+description: This documentation pertains to OpenBB's APIs for retrieving and visualizing
   analysts' price targets for stocks. Two key functions are discussed, one to retrieve
   the data and the other to generate charts.
 keywords:

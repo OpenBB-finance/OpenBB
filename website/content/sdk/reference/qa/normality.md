@@ -1,6 +1,6 @@
 ---
 title: normality
-description: "This page provides detailed information on OpenBB's qa.normality and"
+description: This page provides detailed information on OpenBB's qa.normality and
   qa.normality_chart functions used for quantitative analysis. These functions are
   used to generate statistics on the relation to the normal curve, targeting specific
   data in a dataframe.

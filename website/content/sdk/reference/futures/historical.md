@@ -1,6 +1,6 @@
 ---
 title: historical
-description: "The documentation provides comprehensive details on sourcing historical"
+description: The documentation provides comprehensive details on sourcing historical
   data from Yahoo Finance using the OpenBB Python library. It covers the use of future
   timeseries symbols and the ways to display, format and export the data.
 keywords:

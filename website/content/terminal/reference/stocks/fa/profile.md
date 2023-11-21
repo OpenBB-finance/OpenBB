@@ -1,6 +1,6 @@
 ---
 title: profile
-description: "This documentation page provides comprehensive information about financial"
+description: This documentation page provides comprehensive information about financial
   profile command in Python. The command prints various aspects such as company description,
   industry, sector, exchange and more.
 keywords:

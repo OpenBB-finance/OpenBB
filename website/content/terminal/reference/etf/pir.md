@@ -1,6 +1,6 @@
 ---
 title: pir
-description: "Create comprehensive ETF excel reports using the passive investor ETF"
+description: Create comprehensive ETF excel reports using the passive investor ETF
   tool 'pir'. This tool generates a detailed report containing significant metrics
   about any ETFs obtained from Yahoo Finance. Modifiable parameters include the ETF
   symbols, report filename, and save location.

@@ -1,6 +1,6 @@
 ---
 title: nhits
-description: "This is a Docusaurus page that displays in-depth information on forecasting"
+description: This is a Docusaurus page that displays in-depth information on forecasting
   using the OpenBB's NhitsModel. It provides details on parameters, returns and also
   provides source code links to the OpenBB finance's Github repository.
 keywords:

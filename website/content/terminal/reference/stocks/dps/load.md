@@ -1,6 +1,6 @@
 ---
 title: load
-description: "Understanding how to load a stock ticker for analysis. This page provides"
+description: Understanding how to load a stock ticker for analysis. This page provides
   description and usage of parameters such as stock ticker, start date, end date,
   interval, filepath and more. Indian tickers and Yahoo Finance markets are also referenced.
 keywords:

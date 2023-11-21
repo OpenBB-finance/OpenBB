@@ -1,6 +1,6 @@
 ---
 title: bbands
-description: "Documentation for Bollinger Bands (bbands), an indicator of overbought"
+description: Documentation for Bollinger Bands (bbands), an indicator of overbought
   or oversold conditions in market prices. Includes details on how to use and interpret
   bbands, as well as information on bbands' parameters (such as n_length, n_std, and
   s_mamode).

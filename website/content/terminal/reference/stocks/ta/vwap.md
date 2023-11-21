@@ -1,6 +1,6 @@
 ---
 title: vwap
-description: "This page provides documentation on Volume Weighted Average Price (vwap)"
+description: This page provides documentation on Volume Weighted Average Price (vwap)
   which measures the average typical price by volume. It shows usage, parameters,
   and examples specific to the analysis of stock data, with an example featuring the
   GOOGL stock.

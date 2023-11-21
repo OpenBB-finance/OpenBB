@@ -1,6 +1,6 @@
 ---
 title: orderbook
-description: "This documentation page hosts information on 'Orderbook' operations in"
+description: This documentation page hosts information on 'Orderbook' operations in
   forex trading using the 'Oanda' platform, powered by 'OpenBB'. It includes Python
   source code, various parameters, and return types. Also addressed is plotting an
   'Orderbook' chart with 'matplotlib'.

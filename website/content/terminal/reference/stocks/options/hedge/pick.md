@@ -1,6 +1,6 @@
 ---
 title: pick
-description: "Learn how to use the 'pick' function to plot option hedge diagrams. Discover"
+description: Learn how to use the 'pick' function to plot option hedge diagrams. Discover
   parameters like amount investment and what options to pick.
 keywords:
 - Option hedge diagrams

@@ -1,6 +1,6 @@
 ---
 title: ueat
-description: "Learn how to monitor unique ethereum address transactions using OpenBB's"
+description: Learn how to monitor unique ethereum address transactions using OpenBB's
   ueat. Explore how to use the ueat function and chart for effective insights.
 keywords:
 - ueat

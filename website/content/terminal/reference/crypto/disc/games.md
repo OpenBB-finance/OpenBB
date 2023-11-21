@@ -1,6 +1,6 @@
 ---
 title: games
-description: "This page provides a list of top blockchain games with sorting options"
+description: This page provides a list of top blockchain games with sorting options
   by Name, Daily Users, and Daily Volume. Use this command to discover the most popular
   and lucrative blockchain games.
 keywords:

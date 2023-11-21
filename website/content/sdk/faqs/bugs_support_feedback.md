@@ -1,7 +1,7 @@
 ---
 title: Bugs, Support, and Feedback
 sidebar_position: 6
-description: "This page provides information on how to deal with bugs, get support,"
+description: This page provides information on how to deal with bugs, get support,
   and provide feedback for the OpenBB Terminal. It includes details on the release
   process for patches, how to report a bug, and ways to request new features or provide
   suggestions for improvements.

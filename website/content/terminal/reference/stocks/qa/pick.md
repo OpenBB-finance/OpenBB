@@ -1,6 +1,6 @@
 ---
 title: pick
-description: "This page provides information on how to select different parameters"
+description: This page provides information on how to select different parameters
   (like high, low, close etc.) for daily stock analysis, especially for TSLA stocks.
   It explains the usage of the 'pick' command within the Python environment for stock
   parameter selection.

@@ -1,6 +1,6 @@
 ---
 title: blos
-description: "This Blos command page provides information on how to display the latest"
+description: This Blos command page provides information on how to display the latest
   officer sales 100k. It gives a detailed explanation of parameters, default values
   and choices. It also provides clear examples, describing the output format and each
   field's meaning.

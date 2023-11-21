@@ -1,6 +1,6 @@
 ---
 title: capm
-description: "This page offers an in-depth look at the CAPM model, providing information"
+description: This page offers an in-depth look at the CAPM model, providing information
   about its parameters, returns, and the concept of systematic risk.
 keywords:
 - CAPM model

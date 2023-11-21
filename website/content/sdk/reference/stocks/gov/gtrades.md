@@ -1,6 +1,6 @@
 ---
 title: gtrades
-description: "This page provides the documentation for the 'gtrades' function in OpenBB's"
+description: This page provides the documentation for the 'gtrades' function in OpenBB's
   terminal for stock traders. It contains two tabs - the 'model' tab explains how
   to get the government trading data for a specific ticker, while the 'view' tab provides
   instructions for displaying this data as a chart.

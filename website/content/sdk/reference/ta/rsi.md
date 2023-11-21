@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: "Implements relative strength index"
+description: Implements relative strength index
 keywords:
 - relative strength index
 - technical analysis

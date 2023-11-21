@@ -1,6 +1,6 @@
 ---
 title: options
-description: "This page details two main functionalities of OpenBB-finance's model"
+description: This page details two main functionalities of OpenBB-finance's model
   and chart components - obtaining columns-dataset combinations from datasets for
   use in commands and plotting custom data. Code snippets, links to source code, parameters
   involved, and return types are provided.

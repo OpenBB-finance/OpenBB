@@ -1,6 +1,6 @@
 ---
 title: Options Chains
-description: "A technical guide detailing how to load options chains data from six"
+description: A technical guide detailing how to load options chains data from six
   different sources into memory using openbb. Reviews how to properly filter, sort,
   and analyze this kind of data, and outlines the process for implementing various
   options strategies. This document is heavily focused on technical processes within

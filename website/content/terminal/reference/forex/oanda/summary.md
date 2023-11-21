@@ -1,6 +1,6 @@
 ---
 title: summary
-description: "Documentation for the 'summary' command to print account information,"
+description: Documentation for the 'summary' command to print account information,
   its usage, and parameters. Ideal for users seeking to understand how to retrieve
   account details.
 keywords:

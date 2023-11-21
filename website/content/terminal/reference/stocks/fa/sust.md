@@ -1,6 +1,6 @@
 ---
 title: sust
-description: "This documentation page covers the usage of 'sust' command in fetching"
+description: This documentation page covers the usage of 'sust' command in fetching
   sustainability values of a company, useful for responsible investment decisions.
   All values are sourced from Yahoo Finance.
 keywords:

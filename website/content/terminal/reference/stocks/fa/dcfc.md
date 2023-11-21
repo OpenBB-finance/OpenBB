@@ -1,6 +1,6 @@
 ---
 title: dcfc
-description: "This page provides instructions on how to use the 'dcfc' function to"
+description: This page provides instructions on how to use the 'dcfc' function to
   extract a company's discounted cash flow (DCF), stock price, and date information.
   It further provides details on usage and parameters.
 keywords:

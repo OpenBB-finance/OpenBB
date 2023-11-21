@@ -1,6 +1,6 @@
 ---
 title: load
-description: "This page documents how to load historical exchange rate data from Alpha"
+description: This page documents how to load historical exchange rate data from Alpha
   Advantage and YahooFinance. It provides code usage standards in Python and explains
   the parameters for the source, the resolution, the interval, and the start date
   of data.

@@ -1,6 +1,6 @@
 ---
 title: maxsharpe
-description: "The maxsharpe page provides extensive information on maximizing the portfolio's"
+description: The maxsharpe page provides extensive information on maximizing the portfolio's
   return/risk ratio. It provides usage and examples of parameters used in calculations
   such as target_return, target_risk, expected_return, covariance, smoothing_factor_ewma,
   short_allocation, and risk_measure.

@@ -1,6 +1,6 @@
 ---
 title: gainers
-description: "This page provides information on how to use OpenBB Terminal Python source"
+description: This page provides information on how to use OpenBB Terminal Python source
   code to get the top stock gainers from Yahoo Finance. It returns the data in a Pandas
   DataFrame.
 keywords:

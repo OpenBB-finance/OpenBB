@@ -1,6 +1,6 @@
 ---
 title: lt
-description: "Docusaurus page containing OpenBBTerminal's onchain lt model and view"
+description: Docusaurus page containing OpenBBTerminal's onchain lt model and view
   that depict trades happening on Decentralized Exchanges - aggregated per DEX or
   time. Also includes code snippets, parameter details, and return values.
 keywords:

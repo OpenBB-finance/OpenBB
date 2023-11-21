@@ -1,6 +1,6 @@
 ---
 title: lastnews
-description: "Documentation on the 'lastnews' function in Python. Features include"
+description: Documentation on the 'lastnews' function in Python. Features include
   the option to limit the number of displayed news.
 keywords:
 - lastnews

@@ -1,6 +1,6 @@
 ---
 title: cr
-description: "Documentation for two functions providing cryptocurrency interest rates"
+description: Documentation for two functions providing cryptocurrency interest rates
   for both borrowing and supplying.You can use the functions to export data or generate
   charts. Several platforms are covered including BlockFi, Ledn, SwissBorg, and Youhodler.
 keywords:

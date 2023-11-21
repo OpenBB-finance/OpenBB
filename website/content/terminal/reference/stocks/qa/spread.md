@@ -1,6 +1,6 @@
 ---
 title: spread
-description: "The 'spread' page shows the rolling spread measurement. Users can learn"
+description: The 'spread' page shows the rolling spread measurement. Users can learn
   how to use the 'spread' command, including its parameters such as 'n_window' which
   defines the window length.
 keywords:

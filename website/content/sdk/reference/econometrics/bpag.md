@@ -1,6 +1,6 @@
 ---
 title: bpag
-description: "The 'bpag' page provides comprehensive information about the Breusch-Pagan"
+description: The 'bpag' page provides comprehensive information about the Breusch-Pagan
   test calculation in econometrics. The page contains source code and models for heteroscedasticity
   and regression, including parameters, return types, and export format for data.
 keywords:
