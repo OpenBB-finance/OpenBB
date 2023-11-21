@@ -1,7 +1,7 @@
 ---
 title: Expectations For Contributors
 sidebar_position: 1
-description: This guide outlines the expectations for contributors to the OpenBB Platform. It covers aspects such as use cases, documentation, code quality, testing, performance, and collaboration. Whether you're enhancing functionality, building extensions, or contributing code.
+description: "This guide outlines the expectations for contributors to the OpenBB Platform. It covers aspects such as use cases, documentation, code quality, testing, performance, and collaboration. Whether you're enhancing functionality, building extensions, or contributing code."
 keywords:
 - OpenBB Platform
 - Open source

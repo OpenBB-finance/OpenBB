@@ -1,9 +1,9 @@
 ---
 title: income_growth
-description: Explore the growth of a company's income statement with the Python function
+description: "Explore the growth of a company's income statement with the Python function
   obb.equity.fundamental.income_growth. Retrieve data for symbols, specify the limit,
   period, and provider, and get detailed information on various aspects of the income
-  statement growth.
+  statement growth."
 keywords:
 - income statement growth
 - company income statement
@@ -136,4 +136,3 @@ OBBject
 </TabItem>
 
 </Tabs>
-

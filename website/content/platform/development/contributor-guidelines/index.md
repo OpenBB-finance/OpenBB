@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 1
-description: This introduction to the Contributor Guidelines provides an overview of how to enhance the OpenBB Platform's codebase. It highlights the various ways to contribute, from adding new data points and commands to creating new extensions and improving documentation.
+description: "This introduction to the Contributor Guidelines provides an overview of how to enhance the OpenBB Platform's codebase. It highlights the various ways to contribute, from adding new data points and commands to creating new extensions and improving documentation."
 keywords:
 - OpenBB Contributor Guidelines
 - Codebase enhancement
