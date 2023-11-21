@@ -63,13 +63,16 @@ With the container created, and activated, begin the installation process.
 
 Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
 
-:::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment.
-:::
-
 ```console
 pip install poetry toml
 ```
+:::note
+Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first.
+
+```conda create -n openbb python=3.11```
+
+```conda activate openbb```
+:::
 
 ### PyPI
 
@@ -78,6 +81,7 @@ Install from PyPI with:
 ```console
 pip install openbb --pre
 ```
+This will install the core OpenBB Platform, along with officially supported extensions and providers
 
 To install all of the extensions and providers:
 
@@ -99,11 +103,25 @@ pip install openbb[charting] --pre
 pip install openbb[ta] --pre
 ```
 
-Import the package with:
+Or import a single provider:
 
+```console
+pip install openbb-yfinance --pre
+```
+
+From your python interpreter, import the OpenBB Platform:
 ```console
 from openbb import obb
 ```
+On import, any installed extensions will be loaded and available for use.
+
+:::note
+Currently if you wish to have the barebones openbb package with no extensions or providers, you can install with:
+
+```console
+pip install openbb --pre --no-deps
+```
+:::
 
 ### Docker
 
