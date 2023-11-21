@@ -57,7 +57,9 @@ class IncomeStatementData(Data):
         description=DATA_DESCRIPTIONS.get("date", "")
         + " In this case, the date of the income statement."
     )
-    period: Optional[str] = Field(default=None, description="Period of the income statement.")
+    period: Optional[str] = Field(
+        default=None, description="Period of the income statement."
+    )
     cik: Optional[str] = Field(default=None, description="Central Index Key.")
 
     revenue: Optional[StrictFloat] = Field(default=None, description="Revenue.")
