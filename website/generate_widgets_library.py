@@ -1,11 +1,12 @@
-import requests
 from pathlib import Path
+
+import requests
 
 
 def main() -> bool:
     widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
 
-    response = requests.get(widgets_json_url)
+    response = requests.get(widgets_json_url, timeout=10)
     widgets_data = response.json()
 
     # Process the data into the desired format
