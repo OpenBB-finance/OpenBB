@@ -36,20 +36,16 @@ class FilingsQueryParams(QueryParams):
 class FilingsData(Data):
     """Filings Data."""
 
-    timestamp: datetime = Field(
-        description="The timestamp from when the filing was accepted.",
-    )
     symbol: Optional[str] = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    cik: str = Field(
-        description="The CIK of the filing",
-    )
-    title: str = Field(
-        description="The title of the filing",
+    accepted_date: datetime = Field(
+        description="The timestamp from when the filing was accepted.",
     )
     form_type: str = Field(
         description="The form type of the filing",
     )
-    url: Optional[str] = Field(description="The URL of the filing", default=None)
+    url: Optional[str] = Field(
+        default=None, description="URL to the filing page on the SEC site."
+    )
