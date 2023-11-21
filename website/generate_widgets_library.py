@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def main() -> bool:
-    widgets_json_url = 'https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json'
+    widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
 
     response = requests.get(widgets_json_url)
     widgets_data = response.json()
@@ -11,20 +11,22 @@ def main() -> bool:
     # Process the data into the desired format
     all_widgets = {}
     for widget_id, widget_info in widgets_data.items():
-        if widget_info.get('disabled', False):
+        if widget_info.get("disabled", False):
             continue
-        category = widget_info.get('category')
+        category = widget_info.get("category")
         if category:
             if category not in all_widgets:
                 all_widgets[category] = []
-            all_widgets[category].append({
-                'name': widget_info.get('name'),
-                'description': widget_info.get('description'),
-                'source': widget_info.get('source'),
-                'widgetId': widget_info.get('widgetId'),
-            })
+            all_widgets[category].append(
+                {
+                    "name": widget_info.get("name"),
+                    "description": widget_info.get("description"),
+                    "source": widget_info.get("source"),
+                    "widgetId": widget_info.get("widgetId"),
+                }
+            )
 
-    base_path = Path('content/pro/widgets-library')
+    base_path = Path("content/pro/widgets-library")
 
     for category, widgets in all_widgets.items():
         category_path = base_path / category
@@ -58,7 +60,7 @@ def main() -> bool:
 
     {'Source: ' + ','.join(widget['source']) if widget['source'] else ''}
     """
-            with widget_path.open('w') as widget_file:
+            with widget_path.open("w") as widget_file:
                 widget_file.write(f"{text}\n")
 
     return True
