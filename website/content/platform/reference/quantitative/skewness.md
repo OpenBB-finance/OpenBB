@@ -1,9 +1,9 @@
 ---
 title: skewness
-description: "Learn how to calculate skewness using the 'Get Skewness' function. This
+description: Learn how to calculate skewness using the 'Get Skewness' function. This
   Python function is used to calculate the skewness of time series data. Understand
   the parameters such as data, target column, and window size, and the return type
-  of the function. Perform data analysis with this powerful function."
+  of the function. Perform data analysis with this powerful function.
 keywords:
 - skewness
 - get skewness

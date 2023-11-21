@@ -1,8 +1,8 @@
 ---
 title: moody
-description: "Explore and analyze the Moody Corporate Bond Index and Moody's Aaa and
+description: Explore and analyze the Moody Corporate Bond Index and Moody's Aaa and
   Baa investment bonds. Find the performance, rating, and interest rate information.
-  Use the `moody()` function in Python to retrieve the data with customizable parameters."
+  Use the ``moody()`` function in Python to retrieve the data with customizable parameters.
 keywords:
 - Moody Corporate Bond Index
 - Moody's Aaa

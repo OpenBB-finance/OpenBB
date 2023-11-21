@@ -1,9 +1,9 @@
 ---
 title: chains
-description: "This docusaurus page explores the 'chains' command which allows users\
-  \ to view Options Chains by Expiry for a specific stock. It also explains several\
-  \ parameters such as Stock Ticker, Expiration Date, type of options \u2013 Calls\
-  \ or Puts, and Strike Prices."
+description: This docusaurus page explores the `chains` command which allows users
+  to view Options Chains by Expiry for a specific stock. It also explains several
+  parameters such as Stock Ticker, Expiration Date, type of options Calls
+  or Puts, and Strike Prices.
 keywords:
 - Options Chains by Expiry
 - Stock Ticker
