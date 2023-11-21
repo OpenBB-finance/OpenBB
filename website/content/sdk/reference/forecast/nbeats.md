@@ -1,6 +1,6 @@
 ---
 title: nbeats
-description: Learn how to perform NBEATS Forecasting with OpenBB Finance. Explore
+description: "Learn how to perform NBEATS Forecasting with OpenBB Finance. Explore"
   the parameters, their descriptions, and learn how to properly tune them for optimal
   forecasting results.
 keywords:

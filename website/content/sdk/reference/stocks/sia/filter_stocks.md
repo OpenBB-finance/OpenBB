@@ -1,6 +1,6 @@
 ---
 title: filter_stocks
-description: This page provides an in-depth look into the function 'filter_stocks'
+description: "This page provides an in-depth look into the function 'filter_stocks'"
   used for filtering stocks based on various parameters like country, sector, industry,
   and market cap, and excluding specific exchanges. Understand the usage and benefits
   of this functionality in stock filtering.

@@ -1,6 +1,6 @@
 ---
 title: maxsharpe
-description: This page provides comprehensive details about the openbb.portfolio.po.maxsharpe
+description: "This page provides comprehensive details about the openbb.portfolio.po.maxsharpe"
   function. It's a key part of OpenBB's portfolio optimization module, designed to
   optimize the Sharpe ratio of portfolio weights. You'll also find information about
   the parameters used by the function and examples of how to use it in portfolio management.

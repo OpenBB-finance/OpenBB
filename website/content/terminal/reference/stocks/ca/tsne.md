@@ -1,6 +1,6 @@
 ---
 title: tsne
-description: Documentation page about TSNE method for comparing similar companies,
+description: "Documentation page about TSNE method for comparing similar companies,"
   detailing usage, parameters, and examples. It describes how to implement TSNE method
   using sklearn in Python.
 keywords:

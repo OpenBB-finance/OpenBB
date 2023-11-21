@@ -1,6 +1,6 @@
 ---
 title: vsurf
-description: Learn the usage of vsurf, a Python tool for plotting a 3D volatility
+description: "Learn the usage of vsurf, a Python tool for plotting a 3D volatility"
   surface. Understand the parameters and see a sample representation.
 keywords:
 - vsurf

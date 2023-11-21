@@ -1,6 +1,6 @@
 ---
 title: get_groups
-description: This page provides content about the openbb.economy.get_groups() function,
+description: "This page provides content about the openbb.economy.get_groups() function,"
   sourced from OpenBB-Finance. The function doesn't take any parameters nor returns
   any output.
 keywords:

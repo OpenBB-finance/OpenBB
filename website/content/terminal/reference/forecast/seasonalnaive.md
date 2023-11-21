@@ -1,6 +1,6 @@
 ---
 title: seasonalnaive
-description: This page provides detailed usage of the SeasonalNaive forecasting model
+description: "This page provides detailed usage of the SeasonalNaive forecasting model"
   including parameters definitions, examples, and results interpretation. It is meant
   as a guide for using SeasonalNaive to make economic predictions.
 keywords:

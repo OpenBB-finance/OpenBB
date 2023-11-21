@@ -1,6 +1,6 @@
 ---
 title: desc
-description: A page detailing how to use the 'desc' function to show descriptive statistics
+description: "A page detailing how to use the 'desc' function to show descriptive statistics"
   of a dataset, including parameters and usage examples.
 keywords:
 - dataset

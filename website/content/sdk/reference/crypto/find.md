@@ -1,6 +1,6 @@
 ---
 title: find
-description: 'The page provides the information about a function that can find similar
+description: "'The page provides the information about a function that can find similar"
   coins by coin name, symbol or id. The tool supports multiple data sources including:
   CoinGecko, CoinPaprika, Binance, and Coinbase and can return the data in a Pandas
   DataFrame format.'

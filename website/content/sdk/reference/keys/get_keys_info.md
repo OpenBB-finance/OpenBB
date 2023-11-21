@@ -1,6 +1,6 @@
 ---
 title: get_keys_info
-description: Understand more about the get_keys_info function in OpenBBTerminal, which
+description: "Understand more about the get_keys_info function in OpenBBTerminal, which"
   provides info on available APIs usable in set_keys. Find the source code link, how
   to use the function, the parameter it takes, and what it returns.
 keywords:

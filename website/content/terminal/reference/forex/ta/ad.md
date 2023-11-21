@@ -1,6 +1,6 @@
 ---
 title: ad
-description: The page delves into the Accumulation/Distribution Line, a valuable tool
+description: "The page delves into the Accumulation/Distribution Line, a valuable tool"
   in trading analysis, explaining its comparison to other indicators and its usage
   in predicting price movements.
 keywords:

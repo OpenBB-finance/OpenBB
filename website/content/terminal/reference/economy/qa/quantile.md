@@ -1,6 +1,6 @@
 ---
 title: quantile
-description: This documentation page provides detailed information on the concept
+description: "This documentation page provides detailed information on the concept"
   of quantile, a statistical term which refers to the values that divide a set of
   observations into specified proportions. The page also includes parameters for customizing
   the quantile function.

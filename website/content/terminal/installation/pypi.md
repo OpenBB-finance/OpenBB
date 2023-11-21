@@ -1,7 +1,7 @@
 ---
 title: PyPI
 sidebar_position: 4
-description: This page provides a comprehensive guide on how to install OpenBB Terminal
+description: "This page provides a comprehensive guide on how to install OpenBB Terminal"
   and SDK from PyPI across multiple operating system platforms. It lists all required
   software and provides how-to steps to prepare the virtual environment, install the
   main package and its toolkits, verify the installation, and upgrade to the latest

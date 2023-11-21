@@ -1,6 +1,6 @@
 ---
 title: losers
-description: The 'losers' documentation page provides a Python based solution for
+description: "The 'losers' documentation page provides a Python based solution for"
   identifying cryptocurrencies with the largest drop in value over a given time period.
   Control the analysis with options for the time interval, record limits, and sorting.
   This tool is essential for in-depth market analysis and monitoring market trends.

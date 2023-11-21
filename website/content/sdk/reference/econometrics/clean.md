@@ -1,6 +1,6 @@
 ---
 title: clean
-description: This documentation details how to use OpenBBTerminal's 'clean' function
+description: "This documentation details how to use OpenBBTerminal's 'clean' function"
   to clean up NaNs in a pandas DataFrame. It outlines the parameters, return values,
   and available methods for filling and dropping NaN values.
 keywords:

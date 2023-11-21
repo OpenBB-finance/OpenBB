@@ -1,6 +1,6 @@
 ---
 title: select
-description: The page provides detailed information on how to select a stock ticker
+description: "The page provides detailed information on how to select a stock ticker"
   and customize industry, sector, country and market cap aligned with it. This includes
   the usage guide and parameters to ensure smooth operations.
 keywords:

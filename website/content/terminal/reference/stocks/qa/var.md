@@ -1,6 +1,6 @@
 ---
 title: var
-description: The page provides a comprehensive guide on the usage of 'var' command
+description: "The page provides a comprehensive guide on the usage of 'var' command"
   for calculating Value at Risk (VaR) of selected stocks. It includes details on parameters,
   usage, and examples.
 keywords:

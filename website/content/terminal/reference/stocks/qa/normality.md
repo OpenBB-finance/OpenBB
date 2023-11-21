@@ -1,6 +1,6 @@
 ---
 title: normality
-description: This page provides information on normality tests, including usage, parameters,
+description: "This page provides information on normality tests, including usage, parameters,"
   and examples. It includes different statistical tests such as Kurtosis, Skewness,
   Jarque-Bera, Shapiro-Wilk, and Kolmogorov-Smirnov.
 keywords:

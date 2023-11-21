@@ -1,6 +1,6 @@
 ---
 title: Trading Hours
-description: The Trading Hours sub-module provides functions for checking the status
+description: "The Trading Hours sub-module provides functions for checking the status"
   and hours of operation for markets globally. It allows users to understand which
   exchanges are currently open, all exchanges and their status, details for individual
   exchanges, and a list of closed exchanges.

@@ -1,6 +1,6 @@
 ---
 title: Stocks Screener
-description: This documentation page describes the stock screener module which allows the user to utilize presets (.ini files) to scan for stocks meeting the defined criteria.
+description: "This documentation page describes the stock screener module which allows the user to utilize presets (.ini files) to scan for stocks meeting the defined criteria."
 keywords:
 - screener
 - stocks screener

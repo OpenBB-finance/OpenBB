@@ -1,6 +1,6 @@
 ---
 title: watchlist
-description: This page provides the syntax and details of the 'watchlist' function
+description: "This page provides the syntax and details of the 'watchlist' function"
   which fetches reddit users watchlists. It includes source code details, usage, parameters
   and return values.
 keywords:

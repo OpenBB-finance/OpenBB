@@ -1,6 +1,6 @@
 ---
 title: walert
-description: This documentation page describes how to set the Walert key in OpenBB
+description: "This documentation page describes how to set the Walert key in OpenBB"
   finance's Terminal. It details the parameters, return types and provides examples
   for setting the API key.
 keywords:

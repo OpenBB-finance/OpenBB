@@ -1,6 +1,6 @@
 ---
 title: bbands
-description: This documentation is about the 'bbands' function in the OpenBB finance
+description: "This documentation is about the 'bbands' function in the OpenBB finance"
   library. It allows users to calculate and plot Bollinger Bands for financial data,
   providing multiple parameters for customization.
 keywords:

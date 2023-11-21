@@ -1,6 +1,6 @@
 ---
 title: sbc
-description: This documentation page describes how to use the sbc or 'search by category'
+description: "This documentation page describes how to use the sbc or 'search by category'"
   feature on FinanceDatabase/StockAnalysis.com. It provides detailed information about
   parameters for category and limit. It specifically caters to ETFs data lookup.
 keywords:

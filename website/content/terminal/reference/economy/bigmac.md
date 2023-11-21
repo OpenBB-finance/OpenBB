@@ -1,6 +1,6 @@
 ---
 title: bigmac
-description: This page provides information on how to get historical Big Mac Index
+description: "This page provides information on how to get historical Big Mac Index"
   data using specific commands and parameters. It also gives details about usage and
   provided country codes.
 keywords:

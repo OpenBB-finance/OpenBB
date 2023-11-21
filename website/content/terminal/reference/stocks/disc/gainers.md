@@ -1,6 +1,6 @@
 ---
 title: gainers
-description: This page provides a method to print the top 25 stock gainers using Python.
+description: "This page provides a method to print the top 25 stock gainers using Python."
   You can customize the limit of stocks you want to display. This information is sourced
   from Yahoo Finance.
 keywords:

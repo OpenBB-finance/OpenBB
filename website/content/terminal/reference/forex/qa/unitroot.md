@@ -1,6 +1,6 @@
 ---
 title: unitroot
-description: This page offers a detailed guide on the use of the unit root function
+description: "This page offers a detailed guide on the use of the unit root function"
   in testing stationarity, parameters included, and usage examples.
 keywords:
 - unit root

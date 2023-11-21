@@ -1,7 +1,7 @@
 ---
 title: Docker
 sidebar_position: 5
-description: Instructions for installing OpenBB Terminal via Docker on different operating
+description: "Instructions for installing OpenBB Terminal via Docker on different operating"
   systems (Windows, MacOS, Linux). The page includes specific guidelines for Docker
   Desktop installation, displaying charts in Docker, and how to pull and run OpenBB
   Terminal Docker image.

@@ -1,6 +1,6 @@
 ---
 title: ulc
-description: This page provides information on the 'ulc' function which is used to
+description: "This page provides information on the 'ulc' function which is used to"
   retrieve potentially undervalued large cap stocks from Yahoo Finance through the
   OpenBB platform. No parameters are needed for this function. It returns the most
   undervalued large cap stocks in a pd.DataFrame format.

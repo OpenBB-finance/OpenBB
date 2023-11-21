@@ -1,6 +1,6 @@
 ---
 title: sto
-description: Details on the usage, parameters, and examples of the 'sto' command in
+description: "Details on the usage, parameters, and examples of the 'sto' command in"
   adding the Stochastic Oscillator %K and %D. 'sto' can help users understand and
   interpret the predictive model through stochastic oscillation analysis.
 keywords:

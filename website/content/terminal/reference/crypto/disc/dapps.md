@@ -1,6 +1,6 @@
 ---
 title: dapps
-description: A comprehensive guide to understanding and using 'dapps' command for
+description: "A comprehensive guide to understanding and using 'dapps' command for"
   listing and sorting the top Decentralized Applications (DApps) from various categories
   and protocols as per users' choice.
 keywords:

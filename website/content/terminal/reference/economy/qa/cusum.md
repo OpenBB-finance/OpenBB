@@ -1,6 +1,6 @@
 ---
 title: cusum
-description: This page provides a detailed explanation on the usage, parameters and
+description: "This page provides a detailed explanation on the usage, parameters and"
   functionality of the Cumulative Sum Algorithm (CUSUM) used for detecting abrupt
   changes in data.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: summary
-description: This page provides a guide on how to use the 'summary' command for getting
+description: "This page provides a guide on how to use the 'summary' command for getting"
   summary statistics in Python. The command requires no parameters and provides a
   detailed statistical insights on data points such as open, high, low, close, volume
   and more.

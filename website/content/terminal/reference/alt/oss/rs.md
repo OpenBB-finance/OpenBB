@@ -1,6 +1,6 @@
 ---
 title: rs
-description: Learn how to display a repository summary by using the rs command. A
+description: "Learn how to display a repository summary by using the rs command. A"
   simple guide to understanding the rs usage and its parameters. Source code is available
   on Github.
 keywords:

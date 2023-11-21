@@ -1,6 +1,6 @@
 ---
 title: ema
-description: The page provides details on 'Exponential Moving Average' (EMA) under
+description: "The page provides details on 'Exponential Moving Average' (EMA) under"
   technical analysis. It explains how EMA outperforms the Simple Moving Average by
   giving more weight to recent data for increased responsiveness. The page includes
   a guide for using the 'ema' function and its parameters - 'n_length' and 'n_offset'.

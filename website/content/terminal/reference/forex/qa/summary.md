@@ -1,6 +1,6 @@
 ---
 title: summary
-description: This page provides a detailed guide on how to use the 'summary' function.
+description: "This page provides a detailed guide on how to use the 'summary' function."
   This powerful command provides key summary statistics without requiring any additional
   parameters. Users can leverage such data insights for data analysis and stock market
   research.

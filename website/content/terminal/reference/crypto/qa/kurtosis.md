@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: This is a documentation page about Kurtosis, a measure of the 'tailedness'
+description: "This is a documentation page about Kurtosis, a measure of the 'tailedness'"
   of a probability distribution of a real-valued random variable.
 keywords:
 - Kurtosis

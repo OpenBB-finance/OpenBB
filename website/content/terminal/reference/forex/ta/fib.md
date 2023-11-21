@@ -1,6 +1,6 @@
 ---
 title: fib
-description: Discover how to calculate fibonacci retracement levels with our flexible
+description: "Discover how to calculate fibonacci retracement levels with our flexible"
   parameters. Perfect for financial analysts and traders.
 keywords:
 - fib

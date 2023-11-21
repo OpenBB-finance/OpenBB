@@ -1,6 +1,6 @@
 ---
 title: news
-description: This page provides usage details for a news aggregation code from CryptoPanic,
+description: "This page provides usage details for a news aggregation code from CryptoPanic,"
   involving handy functions such as data filtering, sorting, region based displaying
   and more. Learn how to get the crypto news you need quickly and efficiently.
 keywords:

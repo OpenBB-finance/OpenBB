@@ -1,6 +1,6 @@
 ---
 title: search_index
-description: This Docusaurus page provides information about how to use the 'search_index'
+description: "This Docusaurus page provides information about how to use the 'search_index'"
   function from the OpenBB finance package. It explains the parameters and returns
   of this function, which helps to search indices by keyword in the finance database.
   Source code is also provided.

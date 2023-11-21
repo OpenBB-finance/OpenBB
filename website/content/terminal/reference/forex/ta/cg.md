@@ -1,6 +1,6 @@
 ---
 title: cg
-description: This page details the Center of Gravity (COG) indicator that aids in
+description: "This page details the Center of Gravity (COG) indicator that aids in"
   predicting future price movements. Instructions regarding its usage and parameters
   are also outlined, particularly suitable for range-bound markets.
 keywords:

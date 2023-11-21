@@ -1,6 +1,6 @@
 ---
 title: indexes
-description: Our 'indexes' page offers data on crypto indexes coming from CoinGecko.
+description: "Our 'indexes' page offers data on crypto indexes coming from CoinGecko."
   It allows users to see details of each crypto index and offers several parameters
   for sorting and limiting the data displayed. Utilize cryptocurrency market data
   to make informed decisions regarding your crypto investments.

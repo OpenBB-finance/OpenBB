@@ -1,6 +1,6 @@
 ---
 title: commonsense
-description: This documentation page includes details on how to get the commonsense
+description: "This documentation page includes details on how to get the commonsense"
   ratio for a portfolio within the OpenBB-framework using Python. It explains the
   use of the PortfolioEngine class and provides examples using the openbb.portfolio.load
   and openbb.portfolio.metric.commonsense functions.

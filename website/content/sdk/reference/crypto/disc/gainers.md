@@ -1,6 +1,6 @@
 ---
 title: gainers
-description: The page provides functionalities regarding Largest Gainers in cryptocurrency,
+description: "The page provides functionalities regarding Largest Gainers in cryptocurrency,"
   powered by CoinGecko's API. It contains Python models and charts to display the
   coins which gain the most in a given period. Additionally, it provides details on
   how to sort and display data, and export data to different file formats.

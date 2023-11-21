@@ -1,6 +1,6 @@
 ---
 title: panel
-description: Tutorial on how to use OpenBB Terminal's econometric functions with focus
+description: "Tutorial on how to use OpenBB Terminal's econometric functions with focus"
   on running panel regression models. This includes choosing the type of regression,
   setting entity and time effects, and interacting with the Python SDK. Provides examples
   using the 'openbb.econometrics.panel' function, which allows selection of OLS or

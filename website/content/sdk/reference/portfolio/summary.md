@@ -1,6 +1,6 @@
 ---
 title: summary
-description: OpenBB finance page detailing the functionality to gather portfolio and
+description: "OpenBB finance page detailing the functionality to gather portfolio and"
   benchmark return summaries. Documentation includes function parameters, return types
   and examples. The core function openbb.portfolio.summary can perform complex calculations
   and return a data frame of portfolio and benchmark returns summary.

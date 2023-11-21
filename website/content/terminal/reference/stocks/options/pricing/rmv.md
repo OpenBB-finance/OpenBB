@@ -1,6 +1,6 @@
 ---
 title: rmv
-description: The rmv command allows users to remove a price from the list in the stock
+description: "The rmv command allows users to remove a price from the list in the stock"
   options pricing tool. It is a vital feature in the command line interface market
   tool, which provides flexibility in managing price lists.
 keywords:

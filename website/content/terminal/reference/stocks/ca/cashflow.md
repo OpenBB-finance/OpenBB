@@ -1,6 +1,6 @@
 ---
 title: cashflow
-description: The documentation explains usage of the cashflow tool, which provides
+description: "The documentation explains usage of the cashflow tool, which provides"
   yearly or quarterly cashflow statements for companies and allows for comparison
   against similar companies.
 keywords:

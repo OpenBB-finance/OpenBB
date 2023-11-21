@@ -1,6 +1,6 @@
 ---
 title: volume
-description: Documentation page outlining the usage, parameters, and results from
+description: "Documentation page outlining the usage, parameters, and results from"
   the volume function, which provides historical volume comparison between similar
   companies.
 keywords:

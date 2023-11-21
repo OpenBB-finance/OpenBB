@@ -1,6 +1,6 @@
 ---
 title: cci
-description: A detailed guide on the CCI or Commodity Channel Index, its usage, parameters
+description: "A detailed guide on the CCI or Commodity Channel Index, its usage, parameters"
   and its role in detecting market trends and facilitating price correction.
 keywords:
 - CCI

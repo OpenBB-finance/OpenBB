@@ -1,6 +1,6 @@
 ---
 title: macro
-description: This Docusaurus page offers detailed resources related to the 'macro'
+description: "This Docusaurus page offers detailed resources related to the 'macro'"
   function within the OpenBBTerminal Python package. It presents function parameters,
   provides source code links, and offers examples of two functions that handle querying
   macroeconomic data from the EconDB database and visualizing the received macro data.

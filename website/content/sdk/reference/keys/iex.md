@@ -1,6 +1,6 @@
 ---
 title: iex
-description: This documentation provides information about the 'iex' function for
+description: "This documentation provides information about the 'iex' function for"
   setting the IEX Cloud key using the OpenBB terminal. The function helps users to
   set their API key with optional parameters such as persist and show_output for additional
   functionality. Use this function to easily integrate your application with the IEX

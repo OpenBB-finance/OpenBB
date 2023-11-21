@@ -1,6 +1,6 @@
 ---
 title: deaths
-description: This page provides access to historical deaths data per country. It explains
+description: "This page provides access to historical deaths data per country. It explains"
   the usage of the 'deaths' command, which requires no parameters and presents the
   data in a visual format.
 keywords:

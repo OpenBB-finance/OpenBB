@@ -1,6 +1,6 @@
 ---
 title: overview
-description: The page provides a detailed overview of selected ETFs including information
+description: "The page provides a detailed overview of selected ETFs including information"
   on assets, NAV, expense ratio, PE ratio, outstanding shares, dividends, yield, trading
   volume, opening and closing prices, 52-week highs and lows, beta coefficient and
   the number of holdings.

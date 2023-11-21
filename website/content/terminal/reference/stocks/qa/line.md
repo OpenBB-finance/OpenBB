@@ -1,6 +1,6 @@
 ---
 title: line
-description: Learn how to create a line plot of selected data with the option to highlight
+description: "Learn how to create a line plot of selected data with the option to highlight"
   specific datetimes using vertical line markers and scatter markers. You can also
   plot with y on the log scale.
 keywords:

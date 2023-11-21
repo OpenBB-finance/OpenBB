@@ -1,6 +1,6 @@
 ---
 title: baas
-description: The 'baas' page details how to get average bid and ask prices, as well
+description: "The 'baas' page details how to get average bid and ask prices, as well"
   as the average spread for a given crypto pair over a chosen time period in OpenBBTerminal.
   It explains how to use various parameters for sorting and exporting data.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: gainers
-description: This documentation page is about the 'gainers' command, which displays
+description: "This documentation page is about the 'gainers' command, which displays"
   the top ETF/Mutual fund gainers from wsj.com/market-data. It includes no parameters
   and examples of its use.
 keywords:

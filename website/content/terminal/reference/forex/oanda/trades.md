@@ -1,6 +1,6 @@
 ---
 title: trades
-description: This page provides information on how to retrieve open trades using a
+description: "This page provides information on how to retrieve open trades using a"
   simple command, along with usage details and explains that the command has no parameters.
 keywords:
 - trades

@@ -1,6 +1,6 @@
 ---
 title: ethplorer
-description: This page provides documentation on how to set the Ethplorer key in the
+description: "This page provides documentation on how to set the Ethplorer key in the"
   OpenBB finance terminal. It includes explanations of the parameters and gives examples
   of how to use this function.
 keywords:

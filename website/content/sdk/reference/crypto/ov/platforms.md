@@ -1,6 +1,6 @@
 ---
 title: platforms
-description: "This page contains a directory of all smart contract platforms such\
+description: ""This page contains a directory of all smart contract platforms such\"
   \ as Ethereum, Solana, Cosmos, Polkadot, and Kusama. The page provides source codes\
   \ and instructs the use of functionalities in two formats \u2014 model and chart."
 keywords:

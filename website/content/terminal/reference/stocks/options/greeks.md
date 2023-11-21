@@ -1,6 +1,6 @@
 ---
 title: greeks
-description: This documentation page describes the greeks command, which retrieves greeks for a given option.
+description: "This documentation page describes the greeks command, which retrieves greeks for a given option."
 keywords:
 - greeks
 - delta

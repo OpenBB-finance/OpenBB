@@ -1,7 +1,7 @@
 ---
 title: Basics
 sidebar_position: 1
-description: This page provides a detailed overview of using the OpenBB SDK - a tool
+description: "This page provides a detailed overview of using the OpenBB SDK - a tool"
   that brings programmatic access to nearly all Terminal commands. Topics covered
   include installation, essential terminal command usage, working with Python environments,
   using Jupyter and various code editors, managing API keys, functionality, and navigation

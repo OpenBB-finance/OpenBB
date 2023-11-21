@@ -1,6 +1,6 @@
 ---
 title: fib
-description: This page offers a comprehensive guide on how to calculate Fibonacci
+description: "This page offers a comprehensive guide on how to calculate Fibonacci"
   retracement levels, detailing its usage and the parameters required.
 keywords:
 - Fibonacci retracement levels

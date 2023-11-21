@@ -1,6 +1,6 @@
 ---
 title: ema
-description: This is an explanation and usage guideline for the Exponential Moving
+description: "This is an explanation and usage guideline for the Exponential Moving"
   Average (EMA), a core tool in technical analysis. Learn about its distinction from
   the Simple Moving Average and understand how it places greater contribution on recent
   values, making it more responsive to changes in data.

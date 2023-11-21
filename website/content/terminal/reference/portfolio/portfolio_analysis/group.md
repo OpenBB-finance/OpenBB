@@ -1,6 +1,6 @@
 ---
 title: group
-description: This page documents the 'group' function in python for displaying a portfolio
+description: "This page documents the 'group' function in python for displaying a portfolio"
   group by a given column. This includes an optional allocation column addition to
   the dataframe, with usage and parameter details provided.
 keywords:

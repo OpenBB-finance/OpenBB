@@ -1,6 +1,6 @@
 ---
 title: calc
-description: Learn about 'calc', a tool to calculate profit or loss for given option
+description: "Learn about 'calc', a tool to calculate profit or loss for given option"
   settings for strikes, premium, and selling contracts with default and optional preferences.
   Include examples and a profit chart for better understanding.
 keywords:

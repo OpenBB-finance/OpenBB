@@ -1,6 +1,6 @@
 ---
 title: show
-description: The page provides command usage and parameters for the 'show' feature
+description: "The page provides command usage and parameters for the 'show' feature"
   which helps to display selected saved portfolios and its associated categories like
   asset class, country, sector, industry with an option to allocate amount for long
   term investments.

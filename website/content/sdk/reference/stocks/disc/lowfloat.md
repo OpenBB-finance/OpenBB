@@ -1,6 +1,6 @@
 ---
 title: lowfloat
-description: This page explains the lowfloat function from the openbb.stocks.disc
+description: "This page explains the lowfloat function from the openbb.stocks.disc"
   Python library that returns a low float DataFrame. It provides details of the input
   parameters and return types.
 keywords:

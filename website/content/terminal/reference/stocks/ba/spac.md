@@ -1,6 +1,6 @@
 ---
 title: spac
-description: This page provides a tool letting users pull SPAC announcements from
+description: "This page provides a tool letting users pull SPAC announcements from"
   Reddit. It shows usage, parameters, examples, and notable references to companies
   such as eToro and Citadel Advisors.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: gwei
-description: This documentation page details the 'gwei' functionality of OpenBB's
+description: "This documentation page details the 'gwei' functionality of OpenBB's"
   crypto onchain operations. It contains code snippets and function descriptions for
   retrieving Ethereum gas fees data, along with export methods for the same.
 keywords:

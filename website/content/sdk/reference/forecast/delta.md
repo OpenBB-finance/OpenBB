@@ -1,6 +1,6 @@
 ---
 title: delta
-description: The page is a detailed guide on how to calculate the percent change of
+description: "The page is a detailed guide on how to calculate the percent change of"
   a variable using the 'delta' function in the OpenBBTerminal's forecast model. It
   demonstrates how to use the 'openbb.forecast.delta' function through Python code.
 keywords:

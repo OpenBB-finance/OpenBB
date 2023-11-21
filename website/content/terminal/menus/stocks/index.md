@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 1
-description: This is a documentation page for the Stocks menu used in public equity.
+description: "This is a documentation page for the Stocks menu used in public equity."
   It contains functions for searching and loading company market data, displaying
   candle charts, and providing quotes and company specifics. The menu also offers
   a wide range of sub-menus that segment functions based on the type of data they

@@ -1,6 +1,6 @@
 ---
 title: Econometrics
-description: This documentation page introduces the Econometrics menu, in the OpenBB Terminal.  The menu has features for performing statistical analysis on custom datasets.
+description: "This documentation page introduces the Econometrics menu, in the OpenBB Terminal.  The menu has features for performing statistical analysis on custom datasets."
 keywords:
 - econometrics
 - statistics

@@ -1,6 +1,6 @@
 ---
 title: defi
-description: The 'defi' page provides global decentralized finance (DeFi) statistics
+description: "The 'defi' page provides global decentralized finance (DeFi) statistics"
   such as market cap, trading volume, DeFi dominance, and top coins. It plainly outlines
   how to use the function, its lack of parameters and showcases an example of the
   function being used.

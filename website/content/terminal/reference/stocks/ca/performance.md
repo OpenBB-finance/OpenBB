@@ -1,6 +1,6 @@
 ---
 title: performance
-description: This page provides information on the 'performance' command in the Python
+description: "This page provides information on the 'performance' command in the Python"
   programming language. It displays screener data from Finviz for similar companies,
   giving a comprehensive performance overview including parameters such as Perf Week,
   Perf Month, Perf Quart, Perf Half, Perf Year, and more. The command is shown in

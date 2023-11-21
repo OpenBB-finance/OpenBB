@@ -1,6 +1,6 @@
 ---
 title: mom
-description: For the 'mom' function in a forecasting tool, this page discusses its
+description: "For the 'mom' function in a forecasting tool, this page discusses its"
   usage in Python, along with parameters and their values. Various examples of its
   application on a TSLA dataset are illustrated to demonstrate the addition and cleaning
   of a 'Momentum_10' column.

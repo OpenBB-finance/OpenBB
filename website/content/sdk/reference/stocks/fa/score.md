@@ -1,6 +1,6 @@
 ---
 title: score
-description: Documentation of 'score' function in fmp, part of the fundamental analysis
+description: "Documentation of 'score' function in fmp, part of the fundamental analysis"
   of stocks, which retrieves the value score for a specified ticker symbol. Returns
   a np.number type value score.
 keywords:

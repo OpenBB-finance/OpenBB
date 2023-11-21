@@ -1,6 +1,6 @@
 ---
 title: sinfo
-description: Learn how to get staking info for a given Terra account using OpenBB's
+description: "Learn how to get staking info for a given Terra account using OpenBB's"
   API. Explore functionality like viewing luna delegations and summary reports for
   the chosen address, displaying staking info for the provided Terra account address,
   and exporting dataframe data to csv, json, or xlsx file.

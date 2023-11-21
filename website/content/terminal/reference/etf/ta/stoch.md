@@ -1,6 +1,6 @@
 ---
 title: stoch
-description: Learn how to use the Stochastic Oscillator, a tool for measuring where
+description: "Learn how to use the Stochastic Oscillator, a tool for measuring where"
   the close is in relation to the recent trading range. Input values range from zero
   to 100, and interpret the output for buy and sell signals
 keywords:

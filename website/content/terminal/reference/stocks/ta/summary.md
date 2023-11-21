@@ -1,6 +1,6 @@
 ---
 title: summary
-description: Detailed guide on using the technical summary report provided by FinBrain's
+description: "Detailed guide on using the technical summary report provided by FinBrain's"
   API, a leading provider of deep learning algorithms for financial analysis and prediction.
   Learn how to track market trends and indicators such as RSI, MACD, SMA, and Bollinger
   Bands.

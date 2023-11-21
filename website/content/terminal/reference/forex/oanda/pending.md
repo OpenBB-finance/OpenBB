@@ -1,6 +1,6 @@
 ---
 title: pending
-description: Learn how to retrieve information about pending orders using the 'pending'
+description: "Learn how to retrieve information about pending orders using the 'pending'"
   command in Python. Note that this command does not require any parameters.
 keywords:
 - pending orders

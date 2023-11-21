@@ -1,6 +1,6 @@
 ---
 title: cps
-description: A comprehensive guide on how to use the CPS tool for displaying Companies
+description: "A comprehensive guide on how to use the CPS tool for displaying Companies"
   per Sectors based on Country and Market Cap. It provides detailed explanation about
   the command-line parameters, their options and usage.
 keywords:

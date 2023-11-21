@@ -1,6 +1,6 @@
 ---
 title: all
-description: Documentation detail of OpenBB's all exchanges and chart display functions.
+description: "Documentation detail of OpenBB's all exchanges and chart display functions."
   OpenBB provides functionalities to fetch all available exchanges and display them
   in a chart format.
 keywords:

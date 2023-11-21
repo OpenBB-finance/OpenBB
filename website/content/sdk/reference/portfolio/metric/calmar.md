@@ -1,6 +1,6 @@
 ---
 title: calmar
-description: Documentation for the Calmar Ratio function in OpenBB Terminal, a Python
+description: "Documentation for the Calmar Ratio function in OpenBB Terminal, a Python"
   library. It includes parameters, type of return, and examples of use. This function
   is a key tool for risk measurement in portfolio management, calculating the ratio
   of the portfolio's performance to its downside risk.

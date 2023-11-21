@@ -1,6 +1,6 @@
 ---
 title: etf_by_category
-description: This page provides information on how to retrieve a selection of ETFs
+description: "This page provides information on how to retrieve a selection of ETFs"
   based on category filtered by total assets, using the OpenBB finance platform.
 keywords:
 - OpenBB finance

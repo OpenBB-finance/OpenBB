@@ -1,6 +1,6 @@
 ---
 title: clenow
-description: This page offers thorough knowledge of Clenow Volatility Adjusted Momentum
+description: "This page offers thorough knowledge of Clenow Volatility Adjusted Momentum"
   model in OpenBB. It describes the function, parameters, returns and provides examples
   of the feature in python code for aspiring users.
 keywords:

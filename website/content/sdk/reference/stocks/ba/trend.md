@@ -1,6 +1,6 @@
 ---
 title: trend
-description: The page details functions related to behavioural analysis with OpenBB
+description: "The page details functions related to behavioural analysis with OpenBB"
   Terminal, specifically focusing on trend analysis. The page explains how to generate
   sentiment data on the most talked about stock tickers. Explained in detail with
   source code and parameters.

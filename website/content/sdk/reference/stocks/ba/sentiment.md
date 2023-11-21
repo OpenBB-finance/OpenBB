@@ -1,6 +1,6 @@
 ---
 title: sentiment
-description: This page provides documentation on extracting sentiment from a stock
+description: "This page provides documentation on extracting sentiment from a stock"
   ticker symbol, which includes the parameters for the number of tweets per hour,
   number of days to extract tweets for, an optional comparison to the corresponding
   change in stock price, and an optional export format. Plots sentiments can also

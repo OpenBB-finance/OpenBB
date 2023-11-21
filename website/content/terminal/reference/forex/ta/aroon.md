@@ -1,6 +1,6 @@
 ---
 title: aroon
-description: Learn about the Aroon Indicator, a tool that shows when a new trend is
+description: "Learn about the Aroon Indicator, a tool that shows when a new trend is"
   dawning in market analysis. Understand its parameters, usage and visual representation.
 keywords:
 - Aroon Indicator

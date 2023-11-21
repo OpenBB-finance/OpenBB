@@ -1,6 +1,6 @@
 ---
 title: var
-description: This documentation page describes the portfolio variance function in
+description: "This documentation page describes the portfolio variance function in"
   OpenBB finance. It provides information on parameters, return values and usage examples
   of the function.
 keywords:

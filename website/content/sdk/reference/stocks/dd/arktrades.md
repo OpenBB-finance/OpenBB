@@ -1,6 +1,6 @@
 ---
 title: arktrades
-description: Arktrades is a feature provided by OpenBB Stocks, a function in Python
+description: "Arktrades is a feature provided by OpenBB Stocks, a function in Python"
   facilitating due diligence for stock trading. This page contains the guide to access
   ARK trades for a particular stock ticker, returning a dataframe of trades. Source
   code included, hosted on GitHub.

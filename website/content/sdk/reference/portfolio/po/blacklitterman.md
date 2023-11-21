@@ -1,6 +1,6 @@
 ---
 title: blacklitterman
-description: The page describes the Python method for the Black Litterman model implemented
+description: "The page describes the Python method for the Black Litterman model implemented"
   in the OpenBB library for optimizing portfolio weights. This method provides an
   advanced approach in risk management and return estimation by taking into account
   various parameters like risk-free rate, risk aversion factor, and objectives like

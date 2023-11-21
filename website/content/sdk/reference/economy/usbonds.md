@@ -1,6 +1,6 @@
 ---
 title: usbonds
-description: This page provides a comprehensive guide on how to use OpenBB-finance's
+description: "This page provides a comprehensive guide on how to use OpenBB-finance's"
   us bonds data scraping function from OpenBBTerminal's wsj_model python script. The
   function returns a dataframe containing bond's name, its coupon rate, yield and
   change in yield.

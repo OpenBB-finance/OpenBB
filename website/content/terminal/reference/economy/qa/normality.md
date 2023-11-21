@@ -1,6 +1,6 @@
 ---
 title: normality
-description: This page on the marketing website provides details on the 'normality'
+description: "This page on the marketing website provides details on the 'normality'"
   function including its usage, parameters, and examples. It is particularly centered
   around running normality tests in Python.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: get_currency_list
-description: Documentation page for the get_currency_list function which loads currency
+description: "Documentation page for the get_currency_list function which loads currency"
   codes from a local file in the OpenBB finance platform.
 keywords:
 - get_currency_list function

@@ -1,6 +1,6 @@
 ---
 title: Fundamental Analysis
-description: Documentation for the FA module in the OpenBB Terminal - providing programmatic
+description: "Documentation for the FA module in the OpenBB Terminal - providing programmatic"
   access to financial analysis commands. Includes a comprehensive list of functionalities,
   such as analysis of SEC disclosure statements, company balance sheet information,
   earnings data, key metrics over time, estimate market cap and more. Detailed information

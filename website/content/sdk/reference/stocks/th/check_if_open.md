@@ -1,6 +1,6 @@
 ---
 title: check_if_open
-description: SEO metadata for a Python function 'check_if_open' within OpenBB-finance's
+description: "SEO metadata for a Python function 'check_if_open' within OpenBB-finance's"
   OpenBBTerminal. This function checks if a particular market (Bursa) is open for
   trading.
 keywords:

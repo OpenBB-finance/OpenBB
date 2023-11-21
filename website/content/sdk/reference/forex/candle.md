@@ -1,6 +1,6 @@
 ---
 title: candle
-description: Discover how to implement candle plotting for forex data using the OpenBB
+description: "Discover how to implement candle plotting for forex data using the OpenBB"
   platform. The page includes necessary parameters for creating a candle plot and
   source code for reference.
 keywords:

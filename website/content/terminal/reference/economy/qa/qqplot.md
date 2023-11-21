@@ -1,6 +1,6 @@
 ---
 title: qqplot
-description: The qqplot page focuses on providing information on how to display a
+description: "The qqplot page focuses on providing information on how to display a"
   QQ plot vs normal quantiles using Python. The command has no parameters and includes
   a practical example.
 keywords:

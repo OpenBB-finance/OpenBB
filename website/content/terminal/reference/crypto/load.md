@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides instructions on how to load and analyze cryptocurrency
+description: "This page provides instructions on how to load and analyze cryptocurrency"
   data from various sources with custom intervals using Python. Ideal for Bitcoin,
   Ethereum, and other cryptocurrency investors and analysts.
 keywords:

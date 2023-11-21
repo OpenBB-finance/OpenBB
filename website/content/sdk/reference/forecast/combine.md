@@ -1,6 +1,6 @@
 ---
 title: combine
-description: Learn how to use the combine function in OpenBB programming library to
+description: "Learn how to use the combine function in OpenBB programming library to"
   add columns to dataframes. This page provides details on parameters, returns, and
   even source code.
 keywords:

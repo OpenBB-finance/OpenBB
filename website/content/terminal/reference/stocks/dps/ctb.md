@@ -1,6 +1,6 @@
 ---
 title: ctb
-description: This page provides a detailed overview on how to show the cost to borrow
+description: "This page provides a detailed overview on how to show the cost to borrow"
   of stocks using the ctb function. It includes usage, parameters, and examples, helping
   users to effectively retrieve and manage data.
 keywords:

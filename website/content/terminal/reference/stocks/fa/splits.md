@@ -1,6 +1,6 @@
 ---
 title: splits
-description: This page provides relevant information on stock splits and reverse split
+description: "This page provides relevant information on stock splits and reverse split"
   events since a company's IPO, referencing Yahoo Finance. Example parameters for
   use in Python are illustrated.
 keywords:

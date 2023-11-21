@@ -1,6 +1,6 @@
 ---
 title: hist
-description: Python code examples using OpenBB Terminal to retrieve, visualize and
+description: "Python code examples using OpenBB Terminal to retrieve, visualize and"
   manipulate historical stock prices from Yahoo Finance for a list of comparison stocks.
   The code covers data acquisition, charting of historical prices, and export functionalities.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: hcorr
-description: The page presents a correlation heatmap 'hcorr' based on historical price
+description: "The page presents a correlation heatmap 'hcorr' based on historical price"
   comparison between similar companies. This tool assists in understanding and visualizing
   stock market trends.
 keywords:

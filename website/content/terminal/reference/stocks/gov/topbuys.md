@@ -1,6 +1,6 @@
 ---
 title: topbuys
-description: Explore top buys for government trading. Discover how to use the 'topbuys'
+description: "Explore top buys for government trading. Discover how to use the 'topbuys'"
   feature, including parameter selection for congress, senate and house, past transactions,
   and more for optimized use. Enhance your trading strategies today with quiverquant.
 keywords:

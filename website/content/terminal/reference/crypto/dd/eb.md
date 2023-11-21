@@ -1,6 +1,6 @@
 ---
 title: eb
-description: The eb page provides information on how to display active blockchain
+description: "The eb page provides information on how to display active blockchain"
   addresses over time using different exchanges. It also includes details on parameters
   such as the initial and final dates for fetching data.
 keywords:

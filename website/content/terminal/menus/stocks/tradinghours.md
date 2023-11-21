@@ -1,6 +1,6 @@
 ---
 title: Trading Hours
-description: This introduces the Trading Hours sub-menu, within the Stocks menu of the OpenBB Terminal.  Use these commands to check the operating status of markets globally.
+description: "This introduces the Trading Hours sub-menu, within the Stocks menu of the OpenBB Terminal.  Use these commands to check the operating status of markets globally."
 keywords:
 - trading hours
 - trading

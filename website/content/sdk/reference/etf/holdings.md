@@ -1,6 +1,6 @@
 ---
 title: holdings
-description: The page provides functions to fetch ETF holdings with Python using a
+description: "The page provides functions to fetch ETF holdings with Python using a"
   specific symbol. It includes source code, parameter information, and return values
   represented in a dataframe.
 keywords:

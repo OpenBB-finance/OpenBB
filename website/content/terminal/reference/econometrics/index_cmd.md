@@ -1,6 +1,6 @@
 ---
 title: index
-description: This page of the documentation describes how to set a (multi)index for
+description: "This page of the documentation describes how to set a (multi)index for"
   a dataset. It includes parameters for selecting the dataset, the default index,
   data adjustments for regressions, and dropping the column that the index is set
   for. Examples using Python are provided.

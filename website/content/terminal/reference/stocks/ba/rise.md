@@ -1,6 +1,6 @@
 ---
 title: rise
-description: The 'rise' is a command for printing top rising related queries of a
+description: "The 'rise' is a command for printing top rising related queries of a"
   specific stock. It sources its data from Google and is customizable based on user
   inputs, creating an efficient way of keeping track of specific stock metrics.
 keywords:

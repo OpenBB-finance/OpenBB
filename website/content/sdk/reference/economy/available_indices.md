@@ -1,6 +1,6 @@
 ---
 title: available_indices
-description: A documentation page for the available_indices function in the OpenBBTerminal
+description: "A documentation page for the available_indices function in the OpenBBTerminal"
   module. This function returns the available indices without requiring parameters.
 keywords:
 - available_indices

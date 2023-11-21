@@ -1,6 +1,6 @@
 ---
 title: load
-description: Experienced in loading crypto currency data for analysis from Yahoo Finance
+description: "Experienced in loading crypto currency data for analysis from Yahoo Finance"
   by default or other sources such as 'ccxt' or 'cg'. Ability to select specific interval,
   start and end dates, and exchange currencies
 keywords:

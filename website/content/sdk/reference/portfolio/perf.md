@@ -1,6 +1,6 @@
 ---
 title: perf
-description: This page is a guide on how to get a portfolio's performance vs the benchmark
+description: "This page is a guide on how to get a portfolio's performance vs the benchmark"
   with the OpenBB Terminal's perf function. It includes function usage, parameters
   explanation, return values, and examples.
 keywords:

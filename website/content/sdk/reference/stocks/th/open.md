@@ -1,6 +1,6 @@
 ---
 title: open
-description: Documentation page offering extensive details on how 'open' feature functions
+description: "Documentation page offering extensive details on how 'open' feature functions"
   in OpenBB finance and their source code. This feature showcases open exchanges and
   how to display them.
 keywords:

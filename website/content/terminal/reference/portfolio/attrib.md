@@ -1,6 +1,6 @@
 ---
 title: attrib
-description: The page provides detailed information on how to use the 'attrib' command
+description: "The page provides detailed information on how to use the 'attrib' command"
   in order to display portfolio attribution compared to the S&P 500. It invites to
   choose between relative or absolute attribution values and to view raw attribution
   values in a table. The users can select the period for which they want to calculate

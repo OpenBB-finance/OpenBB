@@ -1,6 +1,6 @@
 ---
 title: delete
-description: Learn how to delete a column from your dataset with straightforward commands,
+description: "Learn how to delete a column from your dataset with straightforward commands,"
   enhancing your data management and analysis in Python.
 keywords:
 - delete column

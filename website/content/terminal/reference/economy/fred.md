@@ -1,6 +1,6 @@
 ---
 title: fred
-description: This documentation page provides information on using the fred command
+description: "This documentation page provides information on using the fred command"
   to query the FRED database, plot data, and handle Macro Economic data. It includes
   details on parameters, usage, and examples including Python code snippets.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: oi
-description: The documentation page 'oi' provides information about open interest
+description: "The documentation page 'oi' provides information about open interest"
   by exchange for certain assets. It includes parameters, usage and an illustrative
   image.
 keywords:

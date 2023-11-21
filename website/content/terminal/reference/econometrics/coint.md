@@ -1,6 +1,6 @@
 ---
 title: coint
-description: The Coint page provides users with an explanation and guideline on how
+description: "The Coint page provides users with an explanation and guideline on how"
   to show co-integration between two timeseries. It includes parameter descriptions,
   usage, and examples.
 keywords:

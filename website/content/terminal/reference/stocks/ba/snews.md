@@ -1,6 +1,6 @@
 ---
 title: snews
-description: 'snews - Display stock price and headlines sentiment using VADER model.
+description: "'snews - Display stock price and headlines sentiment using VADER model."
   No parameters. Source: Finnhub.'
 keywords:
 - snews

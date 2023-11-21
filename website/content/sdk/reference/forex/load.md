@@ -1,6 +1,6 @@
 ---
 title: load
-description: The page provides an explanation of the 'load' feature that is used to
+description: "The page provides an explanation of the 'load' feature that is used to"
   load forex data for two given symbols. It includes the source code link and details
   about the parameters including to_symbol, from_symbol, resolution, interval, start_date,
   source, and verbose.

@@ -1,6 +1,6 @@
 ---
 title: toplobbying
-description: This page provides details on the 'toplobbying' functionality of the
+description: "This page provides details on the 'toplobbying' functionality of the"
   OpenBBTerminal software, including the Quiverquant model and view. The page offers
   a guide on how to present top lobbying tickers based on total money spent and guides
   on retrieving corporate lobbying details using Python.

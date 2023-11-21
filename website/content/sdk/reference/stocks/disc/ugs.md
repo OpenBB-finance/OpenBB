@@ -1,6 +1,6 @@
 ---
 title: ugs
-description: This page details the UGS function, which identifies stocks with excellent
+description: "This page details the UGS function, which identifies stocks with excellent"
   earnings growth rates and relatively low PE and PEG ratios, thus helping to discover
   undervalued stocks. Source code is also provided.
 keywords:

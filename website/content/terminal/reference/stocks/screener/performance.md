@@ -1,6 +1,6 @@
 ---
 title: performance
-description: This page outlines the parameters and usage for retrieving performance
+description: "This page outlines the parameters and usage for retrieving performance"
   data of various stocks, using predefined filter presets. It provides different ways
   of sorting and limiting the data output.
 keywords:

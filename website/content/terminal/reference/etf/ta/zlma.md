@@ -1,6 +1,6 @@
 ---
 title: zlma
-description: Zero lag exponential moving average (ZLEMA) indicator documentation.
+description: "Zero lag exponential moving average (ZLEMA) indicator documentation."
   Learn how to use and implement the ZLEMA in your data studies with its parameters
   and usage. Devised by John Ehlers and Ric Way, ZLEMA aids in providing a de-lagged
   calculation of data.

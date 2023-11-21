@@ -1,6 +1,6 @@
 ---
 title: mt
-description: This page provides detailed information about how to display Messari
+description: "This page provides detailed information about how to display Messari"
   timeseries data, explaining the use of key parameters, available data frequency
   intervals, and how to query the timeseries. It is a resource for understanding and
   extracting meaningful insights from Messari data.

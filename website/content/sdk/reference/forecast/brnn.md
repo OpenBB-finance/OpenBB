@@ -1,6 +1,6 @@
 ---
 title: brnn
-description: This page provides comprehensive information about the BRNN function
+description: "This page provides comprehensive information about the BRNN function"
   in the OpenBB finance library. It details how to perform Block RNN forecasting and
   display the forecast with parameters and examples. The page is highly specific to
   Python developers working in finance and forecasting.

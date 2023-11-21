@@ -1,6 +1,6 @@
 ---
 title: regions
-description: This page provides detailed instructions on how to utilize the regions
+description: "This page provides detailed instructions on how to utilize the regions"
   functions from OpenBB finance terminal to retrieve and visualize stock interests
   by region using Google API. The documentation covers the parameters, return types,
   and source code for the functionalities.

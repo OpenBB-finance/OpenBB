@@ -1,6 +1,6 @@
 ---
 title: fib
-description: This page serves as documentation for the Fibonacci levels calculation
+description: "This page serves as documentation for the Fibonacci levels calculation"
   model and its plotting function. Learn how to set parameters, define retracement
   periods, and generate charts.
 keywords:

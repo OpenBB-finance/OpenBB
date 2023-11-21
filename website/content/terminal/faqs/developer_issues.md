@@ -1,7 +1,7 @@
 ---
 title: Developer Issues
 sidebar_position: 6
-description: This page helps with frequently asked questions regarding debugging,
+description: "This page helps with frequently asked questions regarding debugging,"
   GitHub pull requests, and common error resolutions. The guide includes steps on
   how to launch in debug mode, switching branches, handling missing dependencies like
   wheel, dealing with .whl files, understanding JSONDecodeError, correcting line break

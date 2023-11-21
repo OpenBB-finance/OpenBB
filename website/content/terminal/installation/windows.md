@@ -1,7 +1,7 @@
 ---
 title: Windows
 sidebar_position: 1
-description: Learn how to install the OpenBB Terminal on Windows, understand its minimum
+description: "Learn how to install the OpenBB Terminal on Windows, understand its minimum"
   requirements, and follow the step-by-step instructions to ensure successful installation.
 keywords:
 - OpenBB Terminal installation

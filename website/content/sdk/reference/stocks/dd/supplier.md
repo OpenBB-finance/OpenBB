@@ -1,6 +1,6 @@
 ---
 title: supplier
-description: Detailed documentation on the supplier function of OpenBBTerminal. It
+description: "Detailed documentation on the supplier function of OpenBBTerminal. It"
   describes how to use the function to get suppliers using a certain ticker from CSIMarket,
   the source code path, and the parameters involved.
 keywords:

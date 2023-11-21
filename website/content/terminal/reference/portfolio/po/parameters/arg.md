@@ -1,6 +1,6 @@
 ---
 title: arg
-description: This page explains how to set different values for available arguments
+description: "This page explains how to set different values for available arguments"
   using the 'arg' command in Python. It covers usage, parameters and available choices.
 keywords:
 - arg command

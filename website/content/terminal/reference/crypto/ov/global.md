@@ -1,6 +1,6 @@
 ---
 title: global
-description: An overview of global statistics on the Crypto Market, providing essential
+description: "An overview of global statistics on the Crypto Market, providing essential"
   information such as active cryptocurrencies, ICOs data, and market cap changes.
   Features a pie chart option for visualizing market cap distribution. Powered by
   CoinGecko.

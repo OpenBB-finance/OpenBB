@@ -1,6 +1,6 @@
 ---
 title: weights
-description: This page provides the function to return the sector weightings allocation
+description: "This page provides the function to return the sector weightings allocation"
   of any ETF using the OpenBB's yfinance model. It includes a link to the source code
   on GitHub.
 keywords:

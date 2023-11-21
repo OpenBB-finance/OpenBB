@@ -1,6 +1,6 @@
 ---
 title: crypto_hack_slugs
-description: This page provides details on the crypto_hack_slugs function of the OpenBB
+description: "This page provides details on the crypto_hack_slugs function of the OpenBB"
   finance platform. The function retrieves a list of cryptocurrency hack slugs.
 keywords:
 - crypto hack slugs

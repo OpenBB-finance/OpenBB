@@ -1,6 +1,6 @@
 ---
 title: tv
-description: Page provides details on 'tv' command for leveraging TradingView for
+description: "Page provides details on 'tv' command for leveraging TradingView for"
   technical analysis. It includes usage and information that the command has no parameters.
 keywords:
 - TradingView

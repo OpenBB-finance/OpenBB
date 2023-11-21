@@ -1,6 +1,6 @@
 ---
 title: headlines
-description: Provides information about how FinBrain Technologies collects financial
+description: "Provides information about how FinBrain Technologies collects financial"
   news headlines from numerous major sources to generate sentiment scores for over
   4500 US stocks. It explores how they use deep learning algorithms for financial
   analysis and prediction.

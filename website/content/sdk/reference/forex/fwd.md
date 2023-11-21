@@ -1,6 +1,6 @@
 ---
 title: fwd
-description: This documentation page provides the syntax and details for extracting
+description: "This documentation page provides the syntax and details for extracting"
   forward rates from fxempire using the OpenBB.finance OpenBBTerminal, including the
   parameters required and the return type. The page is of significant utility to users
   seeking to navigate the forex section of the OpenBBTerminal.

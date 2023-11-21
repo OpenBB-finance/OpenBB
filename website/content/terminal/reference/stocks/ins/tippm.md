@@ -1,6 +1,6 @@
 ---
 title: tippm
-description: This page provides information on the 'tippm' Python function which prints
+description: "This page provides information on the 'tippm' Python function which prints"
   data on the top insider purchases of the month. It includes usage details, parameters,
   and examples of data rows from various companies such as Asana, Inc.
 keywords:

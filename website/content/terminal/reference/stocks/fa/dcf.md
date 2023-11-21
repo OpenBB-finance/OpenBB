@@ -1,6 +1,6 @@
 ---
 title: dcf
-description: Discover the dcf command, a powerful and flexible tool that allows users
+description: "Discover the dcf command, a powerful and flexible tool that allows users"
   to predict and analyze the value of a company based on future cash flows and the
   present value. This tool allows for customizable parameters, includes linear regression
   estimates, discount factors, and multiple prediction models.

@@ -1,6 +1,6 @@
 ---
 title: index
-description: This page provides documentation for the OpenBB Terminal SDK functions
+description: "This page provides documentation for the OpenBB Terminal SDK functions"
   for fetching and visualizing economic indices data from Yahoo Finance. It provides
   Python code examples and explains parameters and returns in detail.
 keywords:

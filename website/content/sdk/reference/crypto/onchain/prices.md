@@ -1,6 +1,6 @@
 ---
 title: prices
-description: The 'prices' page shows how to use our API to obtain and display information
+description: "The 'prices' page shows how to use our API to obtain and display information"
   about historic prices of different cryptocurrencies. This includes parameters and
   return types.
 keywords:

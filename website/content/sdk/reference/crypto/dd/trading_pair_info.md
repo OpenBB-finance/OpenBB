@@ -1,6 +1,6 @@
 ---
 title: trading_pair_info
-description: The trading_pair_info page provides a detailed guide on how to get essential
+description: "The trading_pair_info page provides a detailed guide on how to get essential"
   trading pair information from Coinbase using the OpenBB API. The tool supports all
   significant trading pairs such as ETH-USDT and UNI-ETH. Retrieve the needed data
   in a convenient DataFrame format. Check out the source code to learn more.

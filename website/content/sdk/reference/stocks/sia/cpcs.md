@@ -1,6 +1,6 @@
 ---
 title: cpcs
-description: This documentation page provides information on how to use cpcs, a feature
+description: "This documentation page provides information on how to use cpcs, a feature"
   of OpenBB's finance software, to get and display the number of companies per country
   in a specific sector. Multiple parameters are available to allow customised queries.
   Source code links are also provided.

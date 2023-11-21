@@ -1,6 +1,6 @@
 ---
 title: cg
-description: This document details the Center of Gravity indicator used to anticipate
+description: "This document details the Center of Gravity indicator used to anticipate"
   future price movements and to speculate the next price change of an asset, providing
   parameter descriptions, usage, and a demonstrative chart.
 keywords:

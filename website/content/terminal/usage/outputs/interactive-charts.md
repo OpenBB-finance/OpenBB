@@ -1,7 +1,7 @@
 ---
 title: Interactive Charts
 sidebar_position: 2
-description: Explore how to effectively utilize OpenBB's interactive charts backed
+description: "Explore how to effectively utilize OpenBB's interactive charts backed"
   by open source PyWry technology. Understand various capabilities including annotation,
   color modification, drawing tools, data export, and supplementary data overlay.
 keywords:

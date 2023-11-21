@@ -1,6 +1,6 @@
 ---
 title: interest
-description: This page serves as a user guide for the 'interest' feature which plots
+description: "This page serves as a user guide for the 'interest' feature which plots"
   keywords or phrases over time versus stock price. It provides details on its usage,
   parameters, and provides illustrative execution results. Notable keywords that you
   could use to influence the plotted interest include topical phrases like 'COVID',

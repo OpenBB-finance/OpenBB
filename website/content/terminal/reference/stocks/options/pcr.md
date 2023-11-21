@@ -1,6 +1,6 @@
 ---
 title: pcr
-description: This marketing webpage demonstrates the usage of the 'pcr' function that
+description: "This marketing webpage demonstrates the usage of the 'pcr' function that"
   displays put to call ratio for a particular ticker. It includes a detailed parameters'
   list and a plot for visualization.
 keywords:

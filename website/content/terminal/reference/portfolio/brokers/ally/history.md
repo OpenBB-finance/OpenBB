@@ -1,6 +1,6 @@
 ---
 title: history
-description: This page provides information on the account transaction history feature.
+description: "This page provides information on the account transaction history feature."
   It shows users how to set a limit on the number of recent transactions to display.
 keywords:
 - Account transaction history

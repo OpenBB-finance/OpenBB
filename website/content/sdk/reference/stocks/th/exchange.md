@@ -1,6 +1,6 @@
 ---
 title: exchange
-description: This documentation page provides details on the 'exchange' function of
+description: "This documentation page provides details on the 'exchange' function of"
   the OpenBB platform. This includes the model function for acquiring current exchange
   open hours, and the view function for displaying these hours. The page provides
   information on source codes, parameters and return values.

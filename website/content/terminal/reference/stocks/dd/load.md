@@ -1,6 +1,6 @@
 ---
 title: load
-description: This docusaurus page provides detailed information on how to load a stock
+description: "This docusaurus page provides detailed information on how to load a stock"
   ticker to perform analysis, providing instructions on usage and descriptions of
   various parameters.
 keywords:

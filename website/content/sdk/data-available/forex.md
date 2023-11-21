@@ -1,6 +1,6 @@
 ---
 title: Forex
-description: This page describes the Forex module provided by OpenBB SDK, demonstrating
+description: "This page describes the Forex module provided by OpenBB SDK, demonstrating"
   its functionalities such as getting currency pair data, loading historical OHLC
   data, executing broker integration for Oanda account holders, etc. It explains how
   to use and showcases relevant examples of these functions for improved understanding.

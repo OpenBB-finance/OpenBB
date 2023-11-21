@@ -1,6 +1,6 @@
 ---
 title: cdf
-description: This page provides exhaustive details about the 'cdf' (Cumulative Distribution
+description: "This page provides exhaustive details about the 'cdf' (Cumulative Distribution"
   Function) command in Python including its usage, parameters, example arguments,
   and the export options. An illustrative grok of the cdf function is also included.
 keywords:

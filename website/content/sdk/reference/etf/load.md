@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page presents the 'load' function, used to perform analysis on a
+description: "This page presents the 'load' function, used to perform analysis on a"
   symbol. The function details with parameters and returns are described in a comprehensive
   manner.
 keywords:

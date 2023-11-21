@@ -1,6 +1,6 @@
 ---
 title: remove
-description: Learn how to remove a dataset from a loaded list efficiently using our
+description: "Learn how to remove a dataset from a loaded list efficiently using our"
   step-by-step guide, which includes usage, parameters setup, and examples.
 keywords:
 - remove dataset

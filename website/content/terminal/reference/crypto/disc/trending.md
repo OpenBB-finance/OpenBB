@@ -1,6 +1,6 @@
 ---
 title: trending
-description: Discover top trending coins on CoinGecko in the last 24 hours. Our expert
+description: "Discover top trending coins on CoinGecko in the last 24 hours. Our expert"
   tool provides market rankings based on the latest data for efficient crypto tracking.
 keywords:
 - trending coins

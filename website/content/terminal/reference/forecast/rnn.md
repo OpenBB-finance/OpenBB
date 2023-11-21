@@ -1,6 +1,6 @@
 ---
 title: rnn
-description: Explore the use of Recurrent Neural Networks (RNNs) for time series forecasting.
+description: "Explore the use of Recurrent Neural Networks (RNNs) for time series forecasting."
   It explains how to perform RNN forecasts using different architectures like Vanilla
   RNN, LSTM, and GRU, using the Darts models forecasting library. The document covers
   usage examples, parameters description and features of the model.

@@ -1,6 +1,6 @@
 ---
 title: ema
-description: Documentation on how to use the EMA (Exponential Moving Average) function
+description: "Documentation on how to use the EMA (Exponential Moving Average) function"
   with OpenBB Terminal. The function receives a dataset and returns a DataFrame with
   an added EMA column, providing an indication of price trend movement.
 keywords:

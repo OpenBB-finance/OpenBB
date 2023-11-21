@@ -1,6 +1,6 @@
 ---
 title: find
-description: 'Use our coin search tool to find similar coins by name, symbol, or id
+description: "'Use our coin search tool to find similar coins by name, symbol, or id"
   across different platforms like CoinGecko, Binance, Coinbase and CoinPaprika. If
   you don''t remember the exact name or id of a crypto coin, you can use this tool
   for your search. Provide your search query and choose the searching key: symbol,

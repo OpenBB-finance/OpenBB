@@ -1,6 +1,6 @@
 ---
 title: omega
-description: Learn about the omega series and ratio in the OpenBB quantitative analysis
+description: "Learn about the omega series and ratio in the OpenBB quantitative analysis"
   toolkit. The documentation provides information on how to generate the omega series
   and plot the omega ratio from stock dataframes.
 keywords:

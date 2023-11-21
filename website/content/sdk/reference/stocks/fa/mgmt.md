@@ -1,6 +1,6 @@
 ---
 title: mgmt
-description: This page provides a guide on getting company managers' details from
+description: "This page provides a guide on getting company managers' details from"
   Business Insider using the OpenBB library. Code snippet in Python is provided.
 keywords:
 - company managers

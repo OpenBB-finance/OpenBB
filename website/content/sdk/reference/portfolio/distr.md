@@ -1,6 +1,6 @@
 ---
 title: distr
-description: This page provides documentation on using the 'distr' and 'distr_chart'
+description: "This page provides documentation on using the 'distr' and 'distr_chart'"
   functions in OpenBB Terminal's Portfolio module. Learn how to display daily returns
   and configure parameters like the PortfolioEngine instance and return intervals.
 keywords:

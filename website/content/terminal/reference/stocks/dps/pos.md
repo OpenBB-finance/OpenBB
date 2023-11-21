@@ -1,6 +1,6 @@
 ---
 title: pos
-description: The 'pos' page holds the explanation and tutorial for retrieving dark
+description: "The 'pos' page holds the explanation and tutorial for retrieving dark"
   pool short positions. The content includes usage, parameters with their detailed
   description, and an example in form of a table.
 keywords:

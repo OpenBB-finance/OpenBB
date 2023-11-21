@@ -1,6 +1,6 @@
 ---
 title: historical
-description: A guide for understanding and using the 'historical' feature for price
+description: "A guide for understanding and using the 'historical' feature for price"
   comparison between similar companies, includes usage, parameters details and graphical
   representation.
 keywords:

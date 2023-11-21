@@ -1,6 +1,6 @@
 ---
 title: cpcs
-description: CPCS is a powerful tool that allows users to view company distribution
+description: "CPCS is a powerful tool that allows users to view company distribution"
   based on various parameters like sector, market cap and more. It offers customizable
   options to control the data display.
 keywords:

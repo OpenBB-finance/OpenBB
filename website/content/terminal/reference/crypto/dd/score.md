@@ -1,6 +1,6 @@
 ---
 title: score
-description: This page provides access to cryptocurrency scores including CoinGecko,
+description: "This page provides access to cryptocurrency scores including CoinGecko,"
   Developer, Community and Sentiment scores. Learn how to access these scores for
   any loaded coin.
 keywords:

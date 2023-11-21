@@ -1,6 +1,6 @@
 ---
 title: Economy
-description: This documentation page provides detailed information about OpenBB Terminal's
+description: "This documentation page provides detailed information about OpenBB Terminal's"
   Economy Menu. This includes overviews of broad market and country-specific data,
   querying from databases such as FRED and OECD, and insightful comparisons using
   stored datasets. A must-read for those to get the most out of macroeconomic data

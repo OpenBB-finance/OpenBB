@@ -1,6 +1,6 @@
 ---
 title: tr
-description: Documentation on how to display top repositories using the GitHub API.
+description: "Documentation on how to display top repositories using the GitHub API."
   Instructions include usage, parameters details, and examples. The user can sort
   the repos by stars or forks, and can filter by repo categories.
 keywords:

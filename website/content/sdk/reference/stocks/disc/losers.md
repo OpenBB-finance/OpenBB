@@ -1,6 +1,6 @@
 ---
 title: losers
-description: This page provides information on how to get the top stock market losers
+description: "This page provides information on how to get the top stock market losers"
   using the 'losers' function with OpenBB and Yahoo Finance. This function does not
   require parameters and returns a pandas dataframe of stock losers.
 keywords:

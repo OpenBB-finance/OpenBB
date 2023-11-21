@@ -1,6 +1,6 @@
 ---
 title: gaintopain
-description: On this page, learn how to use the gaintopain function from the openbb.portfolio.metric
+description: "On this page, learn how to use the gaintopain function from the openbb.portfolio.metric"
   package to compute a portfolio's gain-to-pain ratio based on historical data. Examples
   and source code are provided.
 keywords:

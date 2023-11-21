@@ -1,6 +1,6 @@
 ---
 title: historical
-description: This documentation page provides the user with instructions on how to
+description: "This documentation page provides the user with instructions on how to"
   display futures historical data. Certain parameters like ticker data, start date,
   and expiry date can be specified to customize the output according to individual
   needs.

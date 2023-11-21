@@ -1,6 +1,6 @@
 ---
 title: distr
-description: This page provides information on how to compute the distribution of
+description: "This page provides information on how to compute the distribution of"
   daily returns with 'distr'. It includes details on its usage, parameters and choices
   for the period.
 keywords:

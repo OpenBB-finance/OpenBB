@@ -1,6 +1,6 @@
 ---
 title: web
-description: 'This page provides detailed information on how to open the company''s
+description: "'This page provides detailed information on how to open the company''s"
   website using the ''web'' command. It includes usage instructions and specification
   of the lack of parameters for the command. Source: Yahoo Finance.'
 keywords:

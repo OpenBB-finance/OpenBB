@@ -1,6 +1,6 @@
 ---
 title: rbeta
-description: 'The page provides a comprehensive guide to using the PortfolioEngine
+description: "'The page provides a comprehensive guide to using the PortfolioEngine"
   for analyzing rolling beta. It discusses two key methods: calculating the rolling
   beta using ''rbeta'' function and visualizing it using ''rbeta_chart'' function.
   The page also provides detailed information about parameters for both methods, and

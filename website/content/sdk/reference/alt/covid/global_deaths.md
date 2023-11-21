@@ -1,6 +1,6 @@
 ---
 title: global_deaths
-description: This page provides understanding about the function 'global_deaths' from
+description: "This page provides understanding about the function 'global_deaths' from"
   OpenBB.terminals used to fetch historical death statistics for a specified country
   due to covid.
 keywords:

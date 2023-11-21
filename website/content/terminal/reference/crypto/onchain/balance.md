@@ -1,6 +1,6 @@
 ---
 title: balance
-description: Metadata for the page discussing about the 'balance' function to display
+description: "Metadata for the page discussing about the 'balance' function to display"
   information about tokens on given Ethereum blockchain balance. The page outlines
   how to use this function, its parameters, and their possible values.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: technical
-description: This page provides a comprehensive guide to the 'technical' functionality
+description: "This page provides a comprehensive guide to the 'technical' functionality"
   of our platform. It explains how to use presets to filter and print technical data
   of companies, and describes the functions of different parameters.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: fred
-description: The page includes detailed information on the 'fred' function in the
+description: "The page includes detailed information on the 'fred' function in the"
   OpenBBTerminal software. With this function, users can acquire and visualize economic
   series data from the Federal Reserve Economic Data (FRED) database. It also lists
   out function parameters and return type.

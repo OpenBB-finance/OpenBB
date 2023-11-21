@@ -1,6 +1,6 @@
 ---
 title: set_keys
-description: Guide on how to set API keys in bundle with OpenBB finance terminal,
+description: "Guide on how to set API keys in bundle with OpenBB finance terminal,"
   including parameters, return values and examples. Contains source code link
 keywords:
 - OpenBB terminal

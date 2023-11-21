@@ -1,6 +1,6 @@
 ---
 title: jcdr
-description: The 'jcdr' page provides information about daily Cramer recommendations
+description: "The 'jcdr' page provides information about daily Cramer recommendations"
   and the parameters for using them, including adjustments for inverse recommendations.
 keywords:
 - jcdr

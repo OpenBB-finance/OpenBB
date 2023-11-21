@@ -1,6 +1,6 @@
 ---
 title: derivatives
-description: This page provides instructions on how to extract crypto derivatives
+description: "This page provides instructions on how to extract crypto derivatives"
   data from CoinGecko API using Python. It provides detailed information on the parameters
   used in the extraction code for both 'Model' and 'Chart' categories, along with
   the return data format.

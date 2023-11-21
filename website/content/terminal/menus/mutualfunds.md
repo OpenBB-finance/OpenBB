@@ -1,6 +1,6 @@
 ---
 title: Mutual Funds
-description: The documentation presents various commands and functions available within
+description: "The documentation presents various commands and functions available within"
   the Mutual Funds menu, enabling users to analyze and get detailed insights about
   different mutual funds. It covers features like searching funds, loading fund data,
   analyzing sector weightings, and viewing current fund holdings, among others.

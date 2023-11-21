@@ -1,6 +1,6 @@
 ---
 title: mktcap
-description: This is an documentation page for 'mktcap', a tool that sets market cap
+description: "This is an documentation page for 'mktcap', a tool that sets market cap"
   size to anything from Nano to Mega. Find usage instructions, parameters, and more.
 keywords:
 - mktcap

@@ -1,6 +1,6 @@
 ---
 title: spos
-description: An informative page that demonstrates the usage of the 'spos' command,
+description: "An informative page that demonstrates the usage of the 'spos' command,"
   exhibiting Net Short Vol. vs Position. It includes instructions on how to use the
   command, its parameters, and an illustrative image.
 keywords:

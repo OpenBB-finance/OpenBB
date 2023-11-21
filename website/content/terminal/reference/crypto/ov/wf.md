@@ -1,6 +1,6 @@
 ---
 title: wf
-description: The documentation page contains information regarding the withdrawal
+description: "The documentation page contains information regarding the withdrawal"
   fees for top coins in cryptocurrency. It provides a detailed insight into the average,
   median and highest withdrawal fees for coins such as Bitcoin, Ethereum and Tether
   among others. The tool also allows to limit the number of coins while displaying

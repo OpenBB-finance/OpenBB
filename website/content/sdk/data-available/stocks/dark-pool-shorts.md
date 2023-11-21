@@ -1,6 +1,6 @@
 ---
 title: Dark Pools and Short Data
-description: This is SEO data for a documentation page for the DPS sub-module within
+description: "This is SEO data for a documentation page for the DPS sub-module within"
   the OpenBB Terminal. The page provides details on using commands for US-listed equities
   with data reported to FINRA. It covers various areas of technical trading such as
   settlement schedules, market flow, and volume dynamics, and specifically emphasizes

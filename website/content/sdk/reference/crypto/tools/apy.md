@@ -1,6 +1,6 @@
 ---
 title: apy
-description: This documentation page provides information about the apy and apr functions
+description: "This documentation page provides information about the apy and apr functions"
   in openbb.crypto.tools. It features source code links, parameter descriptions, return
   values, and the option to view the chart or export data.
 keywords:

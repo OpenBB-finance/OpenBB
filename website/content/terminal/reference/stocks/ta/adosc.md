@@ -1,6 +1,6 @@
 ---
 title: adosc
-description: The Accumulation/Distribution Oscillator, also known as adosc or the
+description: "The Accumulation/Distribution Oscillator, also known as adosc or the"
   Chaikin Oscillator, is a momentum indicator that considers both the strength of
   price moves and the underlying buying and selling pressure during a certain period.
   Readings above zero signify net buying pressure, while those below zero signal net

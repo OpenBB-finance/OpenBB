@@ -1,6 +1,6 @@
 ---
 title: performance
-description: This page provides detailed information on retrieving group performance
+description: "This page provides detailed information on retrieving group performance"
   data using OpenBB's economy module. It provides explanations on parameters and return
   types along with a link to the source code.
 keywords:

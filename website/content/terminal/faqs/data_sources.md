@@ -1,7 +1,7 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: The page discusses the data sources and functionalities of OpenBB, an
+description: "The page discusses the data sources and functionalities of OpenBB, an"
   aggregator of data from various sources. It guides on troubleshooting, locating
   data, and requesting features.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: messages
-description: This page provides an overview of how to use the 'messages' function
+description: "This page provides an overview of how to use the 'messages' function"
   to print the last messages on the Stocktwits message board. It includes detailed
   instructions on parameter usage too.
 keywords:

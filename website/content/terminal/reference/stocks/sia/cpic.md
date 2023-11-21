@@ -1,6 +1,6 @@
 ---
 title: cpic
-description: This is a documentation page for CPIC, a tool that displays companies
+description: "This is a documentation page for CPIC, a tool that displays companies"
   per industry based on country and market cap. It allows users to adjust parameters
   such as the maximum number of industries to display and the minimum percentage to
   display an industry.

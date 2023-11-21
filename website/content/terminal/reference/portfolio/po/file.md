@@ -1,6 +1,6 @@
 ---
 title: file
-description: This documentation page provides details about the 'file' parameter usage
+description: "This documentation page provides details about the 'file' parameter usage"
   in Python code. The page also includes default files and optional choices.
 keywords:
 - file parameter

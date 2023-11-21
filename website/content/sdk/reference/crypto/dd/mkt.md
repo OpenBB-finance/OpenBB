@@ -1,6 +1,6 @@
 ---
 title: mkt
-description: An extensive guide and source code for working with cryptocurrency market
+description: "An extensive guide and source code for working with cryptocurrency market"
   data from the CoinPaprika API using Python with OpenBB finance. It includes sections
   on how to fetch all markets for a given cryptocurrency and print tables that display
   market information.

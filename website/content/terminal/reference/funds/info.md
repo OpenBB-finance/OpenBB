@@ -1,6 +1,6 @@
 ---
 title: info
-description: The page provides a detailed guide on how to get fund information using
+description: "The page provides a detailed guide on how to get fund information using"
   a specific Python command. It also discusses the usage of the command and its parameters.
 keywords:
 - Fund Information

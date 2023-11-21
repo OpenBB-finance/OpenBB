@@ -1,6 +1,6 @@
 ---
 title: news
-description: The page provides information on how to print the latest news about ETF
+description: "The page provides information on how to print the latest news about ETF"
   using parameters such as limit, starting date, order of articles, and news sources.
   This information is sourced from the News API.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: donchian
-description: This page provides comprehensive documentation on how to calculate and
+description: "This page provides comprehensive documentation on how to calculate and"
   plot Donchian Channels using OpenBB's technical analysis tools. Learn about the
   parameters and return types to leverage this method in your financial modelling
   work.

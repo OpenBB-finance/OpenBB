@@ -1,6 +1,6 @@
 ---
 title: coin_market_chart
-description: The page provides details about the 'coin_market_chart' function in the
+description: "The page provides details about the 'coin_market_chart' function in the"
   OpenBB crypto module. This function fetches and displays coin prices based on specified
   parameters.
 keywords:

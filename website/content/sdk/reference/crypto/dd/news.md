@@ -1,6 +1,6 @@
 ---
 title: news
-description: Detailed information on how to fetch recent cryptocurrency posts from
+description: "Detailed information on how to fetch recent cryptocurrency posts from"
   CryptoPanic news aggregator using OpenBB in Python. Also, understand about the news
   filtering parameters available and how to display the news content.
 keywords:

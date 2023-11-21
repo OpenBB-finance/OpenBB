@@ -1,6 +1,6 @@
 ---
 title: ols
-description: Perform OLS regression on timeseries data using the 'ols' function from
+description: "Perform OLS regression on timeseries data using the 'ols' function from"
   OpenBB's econometrics module. The page includes parameters description, return type,
   and a practical example with code.
 keywords:

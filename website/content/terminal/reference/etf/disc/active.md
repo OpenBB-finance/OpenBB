@@ -1,6 +1,6 @@
 ---
 title: active
-description: The active function provides an overview of most active ETFs/mutual funds
+description: "The active function provides an overview of most active ETFs/mutual funds"
   according to WSJ market data. The function details include price, volume, change,
   and percent change.
 keywords:

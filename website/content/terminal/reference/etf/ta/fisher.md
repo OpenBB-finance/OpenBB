@@ -1,6 +1,6 @@
 ---
 title: fisher
-description: A technical documentation page highlighting the Fisher Transform, a technical
+description: "A technical documentation page highlighting the Fisher Transform, a technical"
   indicator, its usage, parameters, and purpose in identifying price turning points
   and trends.
 keywords:

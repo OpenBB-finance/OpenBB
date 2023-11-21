@@ -1,6 +1,6 @@
 ---
 title: fama_raw
-description: The doc page provides details on the fama_raw function for getting Fama
+description: "The doc page provides details on the fama_raw function for getting Fama"
   French data to calculate risk. It explains its usage in the OpenBB finance's quantitative
   analysis and factors model.
 keywords:

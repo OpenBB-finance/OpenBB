@@ -1,6 +1,6 @@
 ---
 title: gwei
-description: This page provides in-depth information on gwei, ETH gas fees, and their
+description: "This page provides in-depth information on gwei, ETH gas fees, and their"
   usage with the onchain command. It's a valuable resource for those involved in the
   crypto transaction process on the Ethereum platform.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: sma
-description: This page provides a comprehensive guide on how to use the sma function
+description: "This page provides a comprehensive guide on how to use the sma function"
   in OpenBB to get the Simple Moving Average (SMA) for stock. It also includes source
   code, parameters, and returns descriptions.
 keywords:

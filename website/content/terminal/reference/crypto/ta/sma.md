@@ -1,6 +1,6 @@
 ---
 title: sma
-description: A documentation page elaborating on Simple Moving Averages (sma), their
+description: "A documentation page elaborating on Simple Moving Averages (sma), their"
   application in data smoothing and trend identification. It outlines usage, parameters
   and provides visualized data.
 keywords:

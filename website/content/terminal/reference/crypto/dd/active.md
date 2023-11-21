@@ -1,6 +1,6 @@
 ---
 title: active
-description: This page provides information on how to display active blockchain addresses
+description: "This page provides information on how to display active blockchain addresses"
   over time including usage, parameters and visualization. The data source is Glassnode.
 keywords:
 - Blockchain

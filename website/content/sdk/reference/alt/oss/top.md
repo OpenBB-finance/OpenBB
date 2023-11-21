@@ -1,6 +1,6 @@
 ---
 title: top
-description: 'This content describes two features: ''Model'' and ''Chart''. ''Model''
+description: "'This content describes two features: ''Model'' and ''Chart''. ''Model''"
   gets repositories sorted by stars or forks with possible category filtering. ''Chart''
   plots a repo summary. Both procedures involve parameters like ''sortby'', ''categories'',
   ''limit'', ''export'', and ''external_axes''.'

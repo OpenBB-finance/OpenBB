@@ -1,6 +1,6 @@
 ---
 title: screener_data
-description: This documentation outlines the functionality of the screener_data and
+description: "This documentation outlines the functionality of the screener_data and"
   screener_data_chart modules in the OpenBB Terminal, a Python library for loading
   and handling preset stock filters. It provides parameter descriptions and return
   values, with links to the source code.

@@ -1,6 +1,6 @@
 ---
 title: wma
-description: This page provides a comprehensive guide on how to get the Weighted Moving
+description: "This page provides a comprehensive guide on how to get the Weighted Moving"
   Average (WMA) for stock using OpenBB's wma function. This includes relevant parameters
   and return values.
 keywords:

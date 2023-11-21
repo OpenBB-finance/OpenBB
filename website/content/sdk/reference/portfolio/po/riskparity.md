@@ -1,6 +1,6 @@
 ---
 title: riskparity
-description: Documentation page on how to optimize portfolio with Risk Parity using
+description: "Documentation page on how to optimize portfolio with Risk Parity using"
   the risk budgeting approach in the OpenBB Terminal Python package. It includes parameters
   specifications, return values, and usage examples.
 keywords:

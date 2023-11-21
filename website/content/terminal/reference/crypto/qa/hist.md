@@ -1,6 +1,6 @@
 ---
 title: hist
-description: The page provides usage instructions for 'hist' command in Python that
+description: "The page provides usage instructions for 'hist' command in Python that"
   creates histograms with density and rug. It also includes details about parameters
   and the default value.
 keywords:

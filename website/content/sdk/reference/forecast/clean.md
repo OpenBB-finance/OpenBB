@@ -1,6 +1,6 @@
 ---
 title: clean
-description: The clean function in OpenBB's forecasting toolkit fills or drops NaN
+description: "The clean function in OpenBB's forecasting toolkit fills or drops NaN"
   values on a given dataset, improving data quality.
 keywords:
 - clean function OpenBB

@@ -1,6 +1,6 @@
 ---
 title: gdp
-description: This page provides in-depth documentation about the 'gdp' function in
+description: "This page provides in-depth documentation about the 'gdp' function in"
   the openbb economy package. It details how to retrieve real GDP data for the U.S.
   on a yearly or quarterly basis, and how to produce a chart visualizing this data.
 keywords:

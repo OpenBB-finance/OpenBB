@@ -1,6 +1,6 @@
 ---
 title: ratios
-description: This page provides important details about the 'ratios' function in 'OpenBB
+description: "This page provides important details about the 'ratios' function in 'OpenBB"
   Stocks' module which is used for fundamental analysis. Users can extract key ratios
   by providing a stock's ticker symbol and specifying other optional parameters. The
   function returns a DataFrame of key ratios.

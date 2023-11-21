@@ -1,6 +1,6 @@
 ---
 title: nonzero
-description: Documentation page for OpenBB's nonzero function and nonzero_chart function.
+description: "Documentation page for OpenBB's nonzero function and nonzero_chart function."
   These functions are used to retrieve addresses with a non-zero balance of a certain
   symbol and plot them respectively.
 keywords:

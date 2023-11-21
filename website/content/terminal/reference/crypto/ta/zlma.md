@@ -1,6 +1,6 @@
 ---
 title: zlma
-description: The ZLEMA (Zero Lag Exponential Moving Average) is a technical indicator
+description: "The ZLEMA (Zero Lag Exponential Moving Average) is a technical indicator"
   developed by John Ehlers and Ric Way. This documentation page explains how to use
   it, focusing on implementation with Python and specifying its parameters including
   window lengths (N_LENGTH) and offset (N_OFFSET).

@@ -1,6 +1,6 @@
 ---
 title: curve
-description: Documentation page for the 'curve' command in Python, used to display
+description: "Documentation page for the 'curve' command in Python, used to display"
   futures curve sourced from YahooFinance. Provides usage example and a comprehensive
   list of financial ticker parameters.
 keywords:

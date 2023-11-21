@@ -1,6 +1,6 @@
 ---
 title: news
-description: This documentation is for a news aggregator platform on the OpenBB Terminal
+description: "This documentation is for a news aggregator platform on the OpenBB Terminal"
   which fetches recent posts from CryptoPanic. It details available functions, parameters,
   returns and the source code link.
 keywords:

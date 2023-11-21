@@ -1,6 +1,6 @@
 ---
 title: autoces
-description: An in-depth look into OpenBB's autoces module that performs Automatic
+description: "An in-depth look into OpenBB's autoces module that performs Automatic"
   Complex Exponential Smoothing on time series, particularly useful for stock market
   prediction. It provides functionality for data forecasting and visualization.
 keywords:

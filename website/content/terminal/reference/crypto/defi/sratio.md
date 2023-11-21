@@ -1,6 +1,6 @@
 ---
 title: sratio
-description: This page provides a guide on how to use sratio tool for displaying terra
+description: "This page provides a guide on how to use sratio tool for displaying terra"
   blockchain staking ratio history. It includes parameters, usage and source link.
 keywords:
 - sratio

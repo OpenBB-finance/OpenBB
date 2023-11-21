@@ -1,6 +1,6 @@
 ---
 title: financial
-description: This page provides an explanation of the 'financial' command in Python,
+description: "This page provides an explanation of the 'financial' command in Python,"
   including its usage, parameters, and examples. The 'financial' command prints screener
   data of similar companies, aiding in financial analysis and investment decisions.
 keywords:

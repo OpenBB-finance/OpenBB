@@ -1,6 +1,6 @@
 ---
 title: finnhub
-description: This page provides information on setting up the Finnhub API key in the
+description: "This page provides information on setting up the Finnhub API key in the"
   OpenBB terminal environment, with code implementation examples.
 keywords:
 - Finnhub

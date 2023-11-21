@@ -1,6 +1,6 @@
 ---
 title: info
-description: This page provides information about ERC20 tokens using Ethplorer as
+description: "This page provides information about ERC20 tokens using Ethplorer as"
   a source. Learn how to use our tool to display info about ERC20 tokens, including
   how to show social media links.
 keywords:

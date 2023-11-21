@@ -1,6 +1,6 @@
 ---
 title: team
-description: This page provides documentation on functions used to retrieve and visualize
+description: "This page provides documentation on functions used to retrieve and visualize"
   information about the team behind a specific cryptocurrency. These functions provide
   details on individuals and organizations involved in the coin selected, with options
   for exporting the data.

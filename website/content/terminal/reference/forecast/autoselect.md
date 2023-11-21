@@ -1,6 +1,6 @@
 ---
 title: autoselect
-description: The autoselect page provides information on how to utilize specific parameters
+description: "The autoselect page provides information on how to utilize specific parameters"
   for advanced statistical forecasting using models such as AutoARIMA, AutoETS, AutoCES,
   MSTL, and more. It also includes examples of how to use this forecasting tool.
 keywords:

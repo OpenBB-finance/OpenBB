@@ -1,6 +1,6 @@
 ---
 title: season
-description: Meta description for the 'season' function in Docusaurus. This function
+description: "Meta description for the 'season' function in Docusaurus. This function"
   helps to display and understand the seasonality for a given column in a dataset,
   providing options for customization such as time lag, maximal lag order, and confidence
   interval.

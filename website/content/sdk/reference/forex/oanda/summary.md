@@ -1,6 +1,6 @@
 ---
 title: summary
-description: This is a comprehensive documentation on the functionality of creating
+description: "This is a comprehensive documentation on the functionality of creating"
   an Oanda account summary using OpenBB-Finance. Covers Python source codes, parameters
   and returns on model and chart tabs for summary creation.
 keywords:

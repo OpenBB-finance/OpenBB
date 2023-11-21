@@ -1,6 +1,6 @@
 ---
 title: scorr
-description: The page provides reference to FinBrain's sentiment correlation tool,
+description: "The page provides reference to FinBrain's sentiment correlation tool,"
   demonstrating usage, parameters, and a screenshot for better interpretation. It
   aids with extracting and comparing sentiment data across similar tickers.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: quantile
-description: Understand how to use the 'quantile' function, a key statistical tool
+description: "Understand how to use the 'quantile' function, a key statistical tool"
   used to divide distributions. Learn about parameters including 'n_window' for window
   length and 'f_quantile' for specifying quantile values.
 keywords:

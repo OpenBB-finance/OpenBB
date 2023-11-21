@@ -1,6 +1,6 @@
 ---
 title: load
-description: This documentation page covers the function 'load', which is utilized
+description: "This documentation page covers the function 'load', which is utilized"
   to load datasets from various sources. It provides in-depth details of its usage,
   parameters and examples to guide users.
 keywords:

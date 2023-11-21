@@ -1,6 +1,6 @@
 ---
 title: stoch
-description: Learn about the Stochastic Oscillator, a measurement tool in trading
+description: "Learn about the Stochastic Oscillator, a measurement tool in trading"
   ranges. Discover the meaning of overbought and oversold conditions and how to interpret
   the signals from Fast %D and Slow %D. Understand how to use parameters like n_fastkperiod,
   n_slowdperiod, and n_slowkperiod for moving averages.

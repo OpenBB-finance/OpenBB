@@ -1,6 +1,6 @@
 ---
 title: bc
-description: Documentation for the 'bc' command in a blockchain context - provides
+description: "Documentation for the 'bc' command in a blockchain context - provides"
   URLs for loaded coins on various blockchain explorer sites like etherscan.io or
   polkascan.io for analysing blockchain data.
 keywords:

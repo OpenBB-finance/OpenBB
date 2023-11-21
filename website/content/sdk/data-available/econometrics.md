@@ -1,6 +1,6 @@
 ---
 title: Econometrics
-description: This documentation page guides users in the usage of the openbb Terminal's
+description: "This documentation page guides users in the usage of the openbb Terminal's"
   Econometrics menu that allows users to load, modify, and perform statistical tests
   on their datasets via a powerful SDK. The article explains the process of running
   various regression models, performing tests on residuals, and how to overcome potential

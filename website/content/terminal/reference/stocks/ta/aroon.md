@@ -1,6 +1,6 @@
 ---
 title: aroon
-description: The page provides comprehensive details about the 'aroon' indicator,
+description: "The page provides comprehensive details about the 'aroon' indicator,"
   a tool used in analytics to identify new trends. The explanation covers the significance
   of the terms 'Aroon Up' and 'Aroon Down', as well as their impact on indicating
   the occurrence and strength of upward and downward trends.

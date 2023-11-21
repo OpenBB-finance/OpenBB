@@ -1,6 +1,6 @@
 ---
 title: profitfactor
-description: This page provides detailed information regarding the 'profitfactor'
+description: "This page provides detailed information regarding the 'profitfactor'"
   function in the openbb.portfolio.metric package. It includes a brief description,
   parameters details, returns types, and some examples of usage.
 keywords:

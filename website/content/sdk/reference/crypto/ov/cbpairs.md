@@ -1,6 +1,6 @@
 ---
 title: cbpairs
-description: This page provides in-depth information on how to use different functions
+description: "This page provides in-depth information on how to use different functions"
   to get a list of available trading pairs or visualize it in a chart form with source
   code supplied from OpenBB-finance/OpenBBTerminal project on GitHub.
 keywords:

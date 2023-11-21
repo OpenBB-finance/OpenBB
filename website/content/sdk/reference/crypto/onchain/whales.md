@@ -1,6 +1,6 @@
 ---
 title: whales
-description: Learn how to utilise Whale Alert's API with OpenBB Terminal for tracking
+description: "Learn how to utilise Whale Alert's API with OpenBB Terminal for tracking"
   high value transactions on major blockchains. This page contains detailed information
   on how to implement and use this feature to retrieve both live and historical onchain
   data from various cryptocurrencies.

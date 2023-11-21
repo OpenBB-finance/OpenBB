@@ -1,6 +1,6 @@
 ---
 title: hist
-description: Learn how to us the 'hist' function to display history for any given
+description: "Learn how to us the 'hist' function to display history for any given"
   Ethereum Blockchain balance using Ethplorer. Understand the usage, parameters and
   their defaults, for an optimized user experience.
 keywords:

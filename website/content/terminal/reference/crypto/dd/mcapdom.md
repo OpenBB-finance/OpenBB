@@ -1,6 +1,6 @@
 ---
 title: mcapdom
-description: The mcapdom documentation page presents an outline of how to display
+description: "The mcapdom documentation page presents an outline of how to display"
   an asset's percentage share of the total crypto circulating market cap. It includes
   usage and parameters specifically for frequency interval, initial date, and end
   date.

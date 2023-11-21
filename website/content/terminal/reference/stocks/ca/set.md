@@ -1,6 +1,6 @@
 ---
 title: set
-description: This page provides instructions on how to use the 'set' command to select
+description: "This page provides instructions on how to use the 'set' command to select"
   similar companies for comparison, including usage and parameter details.
 keywords:
 - similar companies

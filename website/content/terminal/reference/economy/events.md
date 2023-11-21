@@ -1,6 +1,6 @@
 ---
 title: events
-description: This page of the documentation provides comprehensive instructions on
+description: "This page of the documentation provides comprehensive instructions on"
   how to use the 'events' feature of our API. It allows users to fetch economic events
   from various countries within a specified date range. Important options include
   setting the importance and category of events.

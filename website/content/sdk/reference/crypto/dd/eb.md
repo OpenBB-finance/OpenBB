@@ -1,6 +1,6 @@
 ---
 title: eb
-description: This page provides documentation on how to use the OpenBBTerminal's 'eb'
+description: "This page provides documentation on how to use the OpenBBTerminal's 'eb'"
   function in cryptocurrency due diligence. Users can return and plot the total amount
   of coins held on exchange addresses in Python - an essential tool for data analysis
   in the crypto market.

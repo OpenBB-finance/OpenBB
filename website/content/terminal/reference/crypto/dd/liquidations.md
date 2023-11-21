@@ -1,6 +1,6 @@
 ---
 title: liquidations
-description: The Liquidations page provides detailed data about crypto asset liquidations.
+description: "The Liquidations page provides detailed data about crypto asset liquidations."
   It's an easy-to-use feature of the Coinglass API with no parameters required. Enhance
   your understanding of cryptocurrency liquidations.
 keywords:

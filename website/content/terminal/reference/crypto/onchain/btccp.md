@@ -1,6 +1,6 @@
 ---
 title: btccp
-description: btccp displays the Bitcoin (BTC) circulating supply with ranging parameters.
+description: "btccp displays the Bitcoin (BTC) circulating supply with ranging parameters."
   It uses data sourced from blockchain's API while offering a customizable date range.
 keywords:
 - Bitcoin

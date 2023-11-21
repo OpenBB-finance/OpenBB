@@ -1,6 +1,6 @@
 ---
 title: kc
-description: The documentation provides insights on Keltner Channels (kc), a volatility-based
+description: "The documentation provides insights on Keltner Channels (kc), a volatility-based"
   band indicating a trend direction. The page explains its usage in Python, various
   parameters like N_LENGTH, N_SCALAR, mamode types (ema, sma, wma, hma, zlma) and
   the N_OFFSET.

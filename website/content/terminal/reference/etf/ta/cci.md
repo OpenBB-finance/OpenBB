@@ -1,6 +1,6 @@
 ---
 title: cci
-description: The page describes the usage and parameters of CCI (Commodity Channel
+description: "The page describes the usage and parameters of CCI (Commodity Channel"
   Index), a tool designed to detect beginning and ending market trends. It suggests
   how CCI values can indicate overbought or oversold conditions and potential price
   corrections.

@@ -1,6 +1,6 @@
 ---
 title: swaps
-description: This webpage displays the latest swaps done on Uniswap DEX. It allows
+description: "This webpage displays the latest swaps done on Uniswap DEX. It allows"
   users to sort crypto transactions in different ways as per their needs. It's useful
   for observing and analyzing recent cryptocurrency transactions.
 keywords:

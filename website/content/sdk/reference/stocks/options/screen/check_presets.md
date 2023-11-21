@@ -1,6 +1,6 @@
 ---
 title: check_presets
-description: This page explains the check_presets function used in option screener
+description: "This page explains the check_presets function used in option screener"
   to check the preset values. The function takes a dictionary with presets from configparser
   as argument and returns a string of accumulated errors.
 keywords:

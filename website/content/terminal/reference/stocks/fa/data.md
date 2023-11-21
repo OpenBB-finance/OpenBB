@@ -1,6 +1,6 @@
 ---
 title: data
-description: This documentation page provides information on data metrics related
+description: "This documentation page provides information on data metrics related"
   to the company. It includes various financial and non-financial fields such as Company,
   Sector, Industry, Index, Sales, Profit Margin, and many more.
 keywords:

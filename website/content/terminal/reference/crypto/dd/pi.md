@@ -1,6 +1,6 @@
 ---
 title: pi
-description: This page provides a command that displays detailed project information
+description: "This page provides a command that displays detailed project information"
   of crypto assets. The command showcases project details, technology details, public
   repositories and disclosed vulnerabilities with examples in Python.
 keywords:

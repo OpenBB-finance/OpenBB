@@ -1,6 +1,6 @@
 ---
 title: cr
-description: A content focused on the 'cr' command line tool usage and its parameters,
+description: "A content focused on the 'cr' command line tool usage and its parameters,"
   which provides crypto interest rates from numerous platforms, for various cryptocurrencies.
   Core parameters include selection of interest rate type, specific cryptocurrencies,
   and platforms.

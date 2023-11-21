@@ -1,6 +1,6 @@
 ---
 title: macd
-description: This page explains the Moving Average Convergence Divergence (MACD),
+description: "This page explains the Moving Average Convergence Divergence (MACD),"
   a tool used in technical analysis to signal trend changes. By explaining the behaviour
   of MACD under various conditions, understanding its usage, and highlighting its
   parameters, it assists in generating buy and sell signals.

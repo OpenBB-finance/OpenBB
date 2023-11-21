@@ -1,6 +1,6 @@
 ---
 title: asc
-description: This documentation page provides information on 'asc', a command line
+description: "This documentation page provides information on 'asc', a command line"
   tool that fetches and displays small cap stocks with high earnings growth rates.
   With customizable limit options, users can view top performing small cap stocks
   with ease. Ideal for stock market enthusiasts and financial professionals looking

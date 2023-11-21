@@ -1,6 +1,6 @@
 ---
 title: gainers
-description: This page provides details on the 'gainers' functionality, including
+description: "This page provides details on the 'gainers' functionality, including"
   descriptions, parameters, usage, and examples. The gainers functionality displays
   the coins that have gained the most in a selected time period.
 keywords:

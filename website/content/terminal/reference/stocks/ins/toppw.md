@@ -1,6 +1,6 @@
 ---
 title: toppw
-description: The documentation page for 'toppw' which stands for 'top officer purchases
+description: "The documentation page for 'toppw' which stands for 'top officer purchases"
   of the week', sourced from OpenInsider. Displays insider trading data including
   filing date, trade date, ticker, company name, and related details.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: exchanges
-description: This page provides the guide on how to use the helper method, which gets
+description: "This page provides the guide on how to use the helper method, which gets"
   all the exchanges supported by CCXT.
 keywords:
 - helper method

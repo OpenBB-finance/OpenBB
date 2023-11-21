@@ -1,6 +1,6 @@
 ---
 title: ath
-description: This documentation is about the All Time High (ATH) function for a crypto
+description: "This documentation is about the All Time High (ATH) function for a crypto"
   coin or token. A user can load coin data and see the highest price (in USD or BTC)
   that coin has ever reached.
 keywords:

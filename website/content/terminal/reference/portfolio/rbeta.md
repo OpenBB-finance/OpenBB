@@ -1,6 +1,6 @@
 ---
 title: rbeta
-description: This page provides a detailed guide on the use of the 'rbeta' function
+description: "This page provides a detailed guide on the use of the 'rbeta' function"
   to show rolling beta of a portfolio versus a benchmark over different time periods.
   It covers the available periods and how to use them.
 keywords:

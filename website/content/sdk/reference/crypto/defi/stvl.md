@@ -1,6 +1,6 @@
 ---
 title: stvl
-description: 'The documentation explores the stvl functionality: a tool for returning
+description: "'The documentation explores the stvl functionality: a tool for returning"
   and plotting historical values of the total sum of Total Value Locked (TVL) from
   all listed protocols. Source code links are included.'
 keywords:

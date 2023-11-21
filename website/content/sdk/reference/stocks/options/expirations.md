@@ -1,6 +1,6 @@
 ---
 title: expirations
-description: Find option chain expirations using the OpenBBTerminal. It allows to
+description: "Find option chain expirations using the OpenBBTerminal. It allows to"
   fetch data from different sources like Nasdaq and Tradier. The result is a comprehensive
   dataframe.
 keywords:

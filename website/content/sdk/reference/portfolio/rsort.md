@@ -1,6 +1,6 @@
 ---
 title: rsort
-description: This documentation page provides details about the rsort functions in
+description: "This documentation page provides details about the rsort functions in"
   the OpenBB portfolio application. The rsort function calculates the rolling sortino
   ratio for a portfolio and rsort_chart function displays this data graphically.
 keywords:

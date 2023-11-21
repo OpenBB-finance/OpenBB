@@ -1,6 +1,6 @@
 ---
 title: shrs
-description: This page provides information about a utility that fetches shareholder
+description: "This page provides information about a utility that fetches shareholder"
   data from Yahoo for a given stock. It includes a source code link and explains parameters
   of the utility module. Uses Python language for coding.
 keywords:

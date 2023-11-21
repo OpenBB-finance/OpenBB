@@ -1,6 +1,6 @@
 ---
 title: holdv
-description: Detailed documentation of the holdv function in portfolio module of OpenBB
+description: "Detailed documentation of the holdv function in portfolio module of OpenBB"
   finance dealing with getting and displaying holdings of assets. Learn how to use
   and understand the parameters, source code and examples included.
 keywords:

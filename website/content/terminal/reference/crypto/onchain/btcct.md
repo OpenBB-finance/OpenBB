@@ -1,6 +1,6 @@
 ---
 title: btcct
-description: The btcct page provides details on how to monitor Bitcoin confirmed transactions
+description: "The btcct page provides details on how to monitor Bitcoin confirmed transactions"
   using the Blockchain API with adjustable date parameters.
 keywords:
 - btcct

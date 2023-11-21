@@ -1,6 +1,6 @@
 ---
 title: raw
-description: This documentation page explains the usage of the 'raw' command in Python
+description: "This documentation page explains the usage of the 'raw' command in Python"
   which prints raw data to console. It outlines parameters and usage, and provides
   an example of output sorted by a specific column in either ascending or descending
   order.

@@ -1,6 +1,6 @@
 ---
 title: combine
-description: This page provides comprehensive documentation on the 'combine' function,
+description: "This page provides comprehensive documentation on the 'combine' function,"
   including its usage with Python, parameters, and clear, practical examples. Combine
   is essential when dealing with datasets, particularly when you need to add specific
   columns.

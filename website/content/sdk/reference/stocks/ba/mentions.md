@@ -1,6 +1,6 @@
 ---
 title: mentions
-description: Documentation page for OpenBB Terminal's modules 'mentions' and 'mentions_chart.'
+description: "Documentation page for OpenBB Terminal's modules 'mentions' and 'mentions_chart.'"
   These modules analyze and visualize the interest over time for a particular stock's
   symbol using Google's API.
 keywords:

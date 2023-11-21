@@ -1,6 +1,6 @@
 ---
 title: information
-description: Documentation for the 'information' function of the OpenBB financial
+description: "Documentation for the 'information' function of the OpenBB financial"
   library. It calculates the information ratio for different time periods based on
   portfolio transactions.
 keywords:

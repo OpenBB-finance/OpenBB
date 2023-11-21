@@ -1,6 +1,6 @@
 ---
 title: aroon
-description: This documentation page provides an in-depth overview of the Aroon technical
+description: "This documentation page provides an in-depth overview of the Aroon technical"
   indicator within the OpenBBTerminal. It covers the model and chart view of the Aroon
   indicator, with detailed parameters and source code. It also provides the functionality
   to plot the Aroon indicator and export data.

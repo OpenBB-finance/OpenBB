@@ -1,6 +1,6 @@
 ---
 title: decompose
-description: This product documentation page discusses the decompose function in time
+description: "This product documentation page discusses the decompose function in time"
   series analysis. It explains additive and multiplicative time series and provides
   specific usage examples and parameter details.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: mt
-description: The page includes details about different functions used in cryptocurrency
+description: "The page includes details about different functions used in cryptocurrency"
   due diligence, specifically handling and plotting Messari timeseries data. This
   includes parameters and return values for each function, including the crypto symbol,
   timeseries_id, interval frequency, start and end date. Also discusses exporting

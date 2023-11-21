@@ -1,6 +1,6 @@
 ---
 title: roc
-description: This documentation page provides information and implementation details
+description: "This documentation page provides information and implementation details"
   about the 'roc' (Rate of Change) function in OpenBB, used to calculate momentum
   oscillations in a given dataset.
 keywords:

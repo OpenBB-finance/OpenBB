@@ -1,6 +1,6 @@
 ---
 title: top_nfts
-description: Learn how to get and sort top NFT collections data by using OpenBB crypto
+description: "Learn how to get and sort top NFT collections data by using OpenBB crypto"
   discovery tools. Source code, and parameters for customization are provided.
 keywords:
 - nfts

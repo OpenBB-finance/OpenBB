@@ -1,6 +1,6 @@
 ---
 title: roc
-description: The documentation shows how to use the ROC function which is used to
+description: "The documentation shows how to use the ROC function which is used to"
   add a Rate of Change to a selected dataset based on a specific column. It includes
   usage examples and details on setting parameters like 'target_dataset', 'target_column',
   and 'period'.

@@ -1,6 +1,6 @@
 ---
 title: aterra
-description: This document provides information about how to fetch historical data
+description: "This document provides information about how to fetch historical data"
   for a specific Terra asset, plot the 30-day history of that asset and explains the
   usage of each function. Also includes source code links.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: dividend
-description: The 'dividend' page offers detailed explanations on how to utilize dividend-related
+description: "The 'dividend' page offers detailed explanations on how to utilize dividend-related"
   functionalities for portfolio optimization, showcasing parameters such as risk measure,
   nan-fill-method, historic period, and others. Each parameter is explained in detail
   and comes with default settings, optional values, and choices to customize as per

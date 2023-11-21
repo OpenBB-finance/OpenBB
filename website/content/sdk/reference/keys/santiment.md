@@ -1,6 +1,6 @@
 ---
 title: santiment
-description: Detailed documentation on how to set the Santiment API key using the
+description: "Detailed documentation on how to set the Santiment API key using the"
   OpenBB-Terminal SDK. Instructions and examples are provided, including parameters
   for optional persistence and output display.
 keywords:

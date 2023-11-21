@@ -1,6 +1,6 @@
 ---
 title: dividend
-description: The 'dividend' feature of the OpenBB library allows optimized weight
+description: "The 'dividend' feature of the OpenBB library allows optimized weight"
   allocation in portfolio based on dividend yield. The document offers detailed examples
   and parameters of the implementation.
 keywords:

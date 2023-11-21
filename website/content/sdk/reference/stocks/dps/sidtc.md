@@ -1,6 +1,6 @@
 ---
 title: sidtc
-description: Documentation for sidtc, a tool command that retrieves and sorts short
+description: "Documentation for sidtc, a tool command that retrieves and sorts short"
   interest and days-to-cover data.
 keywords:
 - sidtc

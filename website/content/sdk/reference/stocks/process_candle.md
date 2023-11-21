@@ -1,6 +1,6 @@
 ---
 title: process_candle
-description: Learn how to use OpenBB's process_candle function to manipulate stock
+description: "Learn how to use OpenBB's process_candle function to manipulate stock"
   data into a candle style plot. Particularly useful tool for financial analysis.
 keywords:
 - OpenBB stocks

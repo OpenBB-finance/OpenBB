@@ -1,6 +1,6 @@
 ---
 title: growth
-description: This documentation page discusses the various parameters and functionalities
+description: "This documentation page discusses the various parameters and functionalities"
   of a financial growth model. It covers the growth of statement items and financial
   ratios, including revenue, operating cash flow, assets, debt, EBIT, EPS, gross profit,
   inventory, net income, operating income, and more. It provides usage examples and

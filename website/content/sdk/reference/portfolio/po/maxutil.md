@@ -1,6 +1,6 @@
 ---
 title: maxutil
-description: Documentation page of the maxutil module in the OpenBB Terminal's portfolio
+description: "Documentation page of the maxutil module in the OpenBB Terminal's portfolio"
   optimization tool. It includes the module's function signature with its parameters,
   default values, and optional indicators. Specializations like risk measures and
   return calculations are also detailed. Examples of use are provided for better understanding.

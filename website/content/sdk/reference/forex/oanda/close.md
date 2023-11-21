@@ -1,6 +1,6 @@
 ---
 title: close
-description: Documentation for methods used in closing trades and viewing charts in
+description: "Documentation for methods used in closing trades and viewing charts in"
   the OpenBB fin-tech software. The page gives a detailed explanation about their
   use, parameters, and return values.
 keywords:

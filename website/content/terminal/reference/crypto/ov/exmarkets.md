@@ -1,6 +1,6 @@
 ---
 title: exmarkets
-description: The page explains the usage of exmarkets command that generates a table
+description: "The page explains the usage of exmarkets command that generates a table"
   with exchange markets data with various parameters. It provides information on how
   to limit, sort, and view this data in a user-friendly format.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides documentation on how to load a file of stocks tickers
+description: "This page provides documentation on how to load a file of stocks tickers"
   with optional categories using Python. It contains information on the parameters
   and file options that are available.
 keywords:

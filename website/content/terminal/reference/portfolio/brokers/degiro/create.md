@@ -1,6 +1,6 @@
 ---
 title: create
-description: This is a technical page with detailed instructions on how to create
+description: "This is a technical page with detailed instructions on how to create"
   and use parameters including action, product, symbol, price, size, up_to, duration,
   type, and their respective choices in programming. This covers various market operations
   including buy, sell, GTD, GTC, limit, market, stop-limit, and stop-loss.

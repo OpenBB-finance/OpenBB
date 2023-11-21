@@ -1,6 +1,6 @@
 ---
 title: binance
-description: This documentation page provides information on how to set Binance keys
+description: "This documentation page provides information on how to set Binance keys"
   using the openbb_terminal sdk, including a detailed overlook of the parameters and
   returns.
 keywords:

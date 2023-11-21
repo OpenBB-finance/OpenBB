@@ -1,6 +1,6 @@
 ---
 title: load_bl_views
-description: This page documents the 'load_bl_views' function, part of the OpenBB's
+description: "This page documents the 'load_bl_views' function, part of the OpenBB's"
   portfolio optimization toolset which allows users to load an Excel file with views
   for the Black Litterman model. Learn about inputs, outputs and usage.
 keywords:

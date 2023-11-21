@@ -1,6 +1,6 @@
 ---
 title: Comparison Analysis
-description: This page provides an introduction to the Comparison Analysis (CA) sub-menu, within the Stocks menu, of the OpenBB Terminal.
+description: "This page provides an introduction to the Comparison Analysis (CA) sub-menu, within the Stocks menu, of the OpenBB Terminal."
 keywords:
 - comparison
 - analysis

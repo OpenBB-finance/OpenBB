@@ -1,6 +1,6 @@
 ---
 title: compare
-description: Detailed documentation on the 'compare' function, a python command for
+description: "Detailed documentation on the 'compare' function, a python command for"
   comparing results between all activated Panel regression models. This function doesn't
   require any parameters.
 keywords:

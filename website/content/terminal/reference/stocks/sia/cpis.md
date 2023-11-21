@@ -1,6 +1,6 @@
 ---
 title: cpis
-description: This documentation pages describes the cpis command which allows users to visualize companies per industry based on sector and market cap
+description: "This documentation pages describes the cpis command which allows users to visualize companies per industry based on sector and market cap"
 keywords:
 - sector
 - industry

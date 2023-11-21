@@ -1,6 +1,6 @@
 ---
 title: Alternative
-description: This documentation page explains the functionalities provided by the
+description: "This documentation page explains the functionalities provided by the"
   Alternative module of the OpenBB SDK, offering programmatic access to commands within
   the OpenBB Terminal. It covers functions related to open source software (OSS) and
   Covid data, and provides examples of usage using the Python language.

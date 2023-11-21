@@ -1,6 +1,6 @@
 ---
 title: dupont
-description: This page provides information about the Dupont tool, which deconstructs
+description: "This page provides information about the Dupont tool, which deconstructs"
   return on equity to help investors understand it better. This tool can toggle between
   presenting raw data and processed data.
 keywords:

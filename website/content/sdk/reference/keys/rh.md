@@ -1,6 +1,6 @@
 ---
 title: rh
-description: This page provides detailed information on setting the Robinhood key
+description: "This page provides detailed information on setting the Robinhood key"
   using the openbb keys function. It includes source code, parameters description,
   return types, and usage examples. This Python SDK function allows users to handle
   their Robinhood key in different environments including Jupyter notebook sessions

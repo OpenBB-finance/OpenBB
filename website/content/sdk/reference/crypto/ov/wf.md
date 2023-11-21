@@ -1,6 +1,6 @@
 ---
 title: wf
-description: This documentation page discusses two features of the software, focusing
+description: "This documentation page discusses two features of the software, focusing"
   on top coins withdrawal fees. The first tab details the 'Model' feature, which scrapes
   data for top coins' withdrawal fees by employing specific python code. The code
   parameters and return objects are clearly defined. The second tab is about 'Chart',

@@ -1,6 +1,6 @@
 ---
 title: payoff
-description: Documentation for openbb.portfolio.metric.payoff function. This function
+description: "Documentation for openbb.portfolio.metric.payoff function. This function"
   allows to get the payoff ratio of a portfolio during different time periods. The
   function does not take any parameters and returns a DataFrame with values.
 keywords:

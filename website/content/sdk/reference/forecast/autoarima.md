@@ -1,6 +1,6 @@
 ---
 title: autoarima
-description: This documentation page discusses the use of the automatic ARIMA (AutoARIMA)
+description: "This documentation page discusses the use of the automatic ARIMA (AutoARIMA)"
   model for forecasting. It provides a detailed insight into the parameters involved,
   the return types, model structures, and links to the source code. This page is specifically
   valuable for individuals seeking understanding of OpenBB's financial forecasting

@@ -1,6 +1,6 @@
 ---
 title: demark
-description: This page provides insights into the calculation of the Demark sequential
+description: "This page provides insights into the calculation of the Demark sequential"
   indicator, its usage, and parameters. Ideal for those interested in Python programming,
   data visualization, financial analysis, and trading indicators.
 keywords:

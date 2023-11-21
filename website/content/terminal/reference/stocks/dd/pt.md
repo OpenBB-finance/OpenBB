@@ -1,6 +1,6 @@
 ---
 title: pt
-description: The pt command can print the latest price targets from analysts as provided
+description: "The pt command can print the latest price targets from analysts as provided"
   by Business Insider. The command has parameters such as raw for displaying only
   raw data, and limit for controlling the number of price targets shown.
 keywords:

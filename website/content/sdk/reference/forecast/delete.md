@@ -1,6 +1,6 @@
 ---
 title: delete
-description: OpenBB's delete function page. The function takes the data and column
+description: "OpenBB's delete function page. The function takes the data and column"
   parameters. There are no return values.
 keywords:
 - openbb.forecast.delete

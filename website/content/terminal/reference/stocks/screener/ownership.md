@@ -1,6 +1,6 @@
 ---
 title: ownership
-description: This documentation page includes detailed information about the 'ownership'
+description: "This documentation page includes detailed information about the 'ownership'"
   feature. Users can learn about the usage, available parameters, and filtering presets
   to extract specific ownership data of companies.
 keywords:

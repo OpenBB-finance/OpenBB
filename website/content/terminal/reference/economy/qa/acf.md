@@ -1,6 +1,6 @@
 ---
 title: acf
-description: Documentation page about the ACF python function, an auto-correlation
+description: "Documentation page about the ACF python function, an auto-correlation"
   and partial auto-correlation function for diff and diff diff stock data. It includes
   code usage, parameters and a visual example.
 keywords:

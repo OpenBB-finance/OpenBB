@@ -1,6 +1,6 @@
 ---
 title: demark
-description: This page provides comprehensive documentation on the demark sequential
+description: "This page provides comprehensive documentation on the demark sequential"
   indicator feature offered. It includes detailed source codes, parameters, returns,
   and examples for users to understand how to get integer values for demark sequential
   indicators, and also how to plot these indicators.

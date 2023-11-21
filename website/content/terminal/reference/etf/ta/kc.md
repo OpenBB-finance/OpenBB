@@ -1,6 +1,6 @@
 ---
 title: kc
-description: This documentation page provides detailed information about Keltner Channels,
+description: "This documentation page provides detailed information about Keltner Channels,"
   a volatility-based band applied onto an asset's price. These channels aid in trend
   determination by employing average true range (ATR) or volatility. The page also
   provides comprehensive instructions about how to use and parameterize the 'kc' tool.

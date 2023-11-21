@@ -1,6 +1,6 @@
 ---
 title: plot
-description: This page provides documentation for the 'plot' command used in Python
+description: "This page provides documentation for the 'plot' command used in Python"
   scripting. The command is intended for plotting data based on a specified column
   from a dataset with usage examples and parameter explanations.
 keywords:

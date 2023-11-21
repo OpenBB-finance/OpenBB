@@ -1,6 +1,6 @@
 ---
 title: beta
-description: This page displays a scatter plot demonstrating the beta of two stocks
+description: "This page displays a scatter plot demonstrating the beta of two stocks"
   or ETFs, provides usage and parameters, including the reference ticker used for
   beta calculation with a default of 'SPY'.
 keywords:

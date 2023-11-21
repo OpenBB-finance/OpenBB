@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: This document provides detailed information about the RSI (Relative Strength
+description: "This document provides detailed information about the RSI (Relative Strength"
   Index) function in OpenBB.finance, including how to use this momentum indicator
   to measure recent price changes. The function uses a Pandas DataFrame to calculate
   the RSI and add it back to your dataset. The page also links to the function's source

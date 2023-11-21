@@ -1,6 +1,6 @@
 ---
 title: cps
-description: A docusaurus documentation page detailing the usage of the 'cps' and
+description: "A docusaurus documentation page detailing the usage of the 'cps' and"
   'cps_chart' functions within the OpenBB marketing terminal. The functions pertain
   to the analysis of companies per sector in a specific country and market cap
 keywords:

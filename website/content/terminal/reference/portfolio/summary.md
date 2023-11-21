@@ -1,6 +1,6 @@
 ---
 title: summary
-description: The page provides a detailed guide on how to display a summary of portfolio
+description: "The page provides a detailed guide on how to display a summary of portfolio"
   vs benchmark. It explains the usage, parameters, and choices available.
 keywords:
 - summary

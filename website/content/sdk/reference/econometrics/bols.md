@@ -1,6 +1,6 @@
 ---
 title: bols
-description: The page provides detailed instructions on how to use the 'Between estimator',
+description: "The page provides detailed instructions on how to use the 'Between estimator',"
   which is part of the openbb.econometrics.bols Python function. It covers parameters,
   return values, and the code to be used.
 keywords:

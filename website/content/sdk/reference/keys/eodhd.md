@@ -1,6 +1,6 @@
 ---
 title: eodhd
-description: This is a documentation page for the 'set Eodhd key' functionality of
+description: "This is a documentation page for the 'set Eodhd key' functionality of"
   the OpenBB software. It provides the Python code, parameters and their descriptions,
   return values, and an example on how to use the function.
 keywords:

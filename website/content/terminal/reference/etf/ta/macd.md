@@ -1,6 +1,6 @@
 ---
 title: macd
-description: Describes the Moving Average Convergence Divergence (MACD), a metric
+description: "Describes the Moving Average Convergence Divergence (MACD), a metric"
   used to indicate trend changes and potential buy/sell signals in markets. The page
   includes usage, parameters, and a visual example.
 keywords:

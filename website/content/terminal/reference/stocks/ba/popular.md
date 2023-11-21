@@ -1,6 +1,6 @@
 ---
 title: popular
-description: This segment teaches you how to obtain a list of the latest popular stock
+description: "This segment teaches you how to obtain a list of the latest popular stock"
   tickers from various subreddits using command line parameters. This tutorial contains
   usage, a parameters guide, and an example command.
 keywords:

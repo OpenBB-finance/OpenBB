@@ -1,6 +1,6 @@
 ---
 title: twitter
-description: This page explains how to set a Twitter API key in OpenBB Terminal, including
+description: "This page explains how to set a Twitter API key in OpenBB Terminal, including"
   a detailed explanation of parameters and example code. Learn how to use OpenBB to
   interact with Twitter's API.
 keywords:

@@ -1,9 +1,9 @@
 ---
 title: slopes
-description: This page offers information on the 'slopes' Python function, which displays
+description: ""This page offers information on the 'slopes' Python function, which displays"
   the countries with the highest slope values. You can customize the data displayed
   with parameters such as 'days back', 'reverse' for sorting options, and 'threshold'
-  for total cases.
+  for total cases."
 keywords:
 - slope
 - data sorting

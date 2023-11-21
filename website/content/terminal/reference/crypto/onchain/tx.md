@@ -1,6 +1,6 @@
 ---
 title: tx
-description: The page provides a detailed guide on displaying information about ERC20
+description: "The page provides a detailed guide on displaying information about ERC20"
   token transactions on the Ethereum blockchain using tx command.
 keywords:
 - ERC20 token

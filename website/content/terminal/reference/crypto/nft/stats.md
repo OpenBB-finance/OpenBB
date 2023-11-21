@@ -1,6 +1,6 @@
 ---
 title: stats
-description: A guide to displaying statistics of an OpenSea NFT collection such as
+description: "A guide to displaying statistics of an OpenSea NFT collection such as"
   market cap, floor price, volume, and sales using a slug parameter. This includes
   an example using the Mutant Ape Yacht Club collection.
 keywords:

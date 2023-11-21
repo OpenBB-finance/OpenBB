@@ -1,6 +1,6 @@
 ---
 title: sreturn
-description: The sreturn page provides information about the terra blockchain staking
+description: "The sreturn page provides information about the terra blockchain staking"
   returns history. It contains usage details, parameters, and illustrative diagrams.
 keywords:
 - sreturn

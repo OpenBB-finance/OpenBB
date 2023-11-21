@@ -1,6 +1,6 @@
 ---
 title: smartstake
-description: The page provides detailed documentation on 'smartstake' function of
+description: "The page provides detailed documentation on 'smartstake' function of"
   the OpenBB Python SDK. This function is used to set the SmartStake API key for the
   current session or globally in terminal environment. Includes examples of usage
   and link to source code.

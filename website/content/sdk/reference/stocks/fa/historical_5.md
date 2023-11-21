@@ -1,6 +1,6 @@
 ---
 title: historical_5
-description: Find how to get a 5 year monthly historical performance for a given ticker
+description: "Find how to get a 5 year monthly historical performance for a given ticker"
   with dividends filtered using OpenBB's Python library. By analyzing ticker symbols
   with this method, get a detailed data analysis.
 keywords:

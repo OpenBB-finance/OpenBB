@@ -1,6 +1,6 @@
 ---
 title: Technical Analysis
-description: This documentation page provides a comprehensive guide on using the Technical
+description: "This documentation page provides a comprehensive guide on using the Technical"
   Analysis Module in Openbb, which is used for analyzing time-series data. It provides
   detailed usage of functions within the ta module, demonstrating features such as
   Momentum, Overlap, Trend, Volatility and Volume analysis plus many more techniques.

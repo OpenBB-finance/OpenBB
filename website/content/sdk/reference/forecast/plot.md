@@ -1,6 +1,6 @@
 ---
 title: plot
-description: Learn how to harness the power of OpenBB's financial forecasting functions
+description: "Learn how to harness the power of OpenBB's financial forecasting functions"
   such as the plot and plot_chart to visualize data. These Python functions extract
   dataframes and accept options for export format and external plot axes.
 keywords:

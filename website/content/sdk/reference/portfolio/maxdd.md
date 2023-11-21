@@ -1,6 +1,6 @@
 ---
 title: maxdd
-description: Documentation page providing details about the maximum drawdown calculation
+description: "Documentation page providing details about the maximum drawdown calculation"
   in historical series and how to display the drawdown curve. Contains examples, parameters,
   returns, and source code links.
 keywords:

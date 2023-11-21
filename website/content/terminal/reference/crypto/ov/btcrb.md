@@ -1,6 +1,6 @@
 ---
 title: btcrb
-description: btcrb is a Python-based tool offering visualization of Bitcoin Rainbow
+description: "btcrb is a Python-based tool offering visualization of Bitcoin Rainbow"
   chart over time which includes halvings. Its primary data source is Glassnode and
   it's inspired by Blockchaincenter.net.
 keywords:

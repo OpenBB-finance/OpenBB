@@ -1,6 +1,6 @@
 ---
 title: acf
-description: This page provides a detailed description and source code of acf - an
+description: "This page provides a detailed description and source code of acf - an"
   OpenBB function used to plot Auto and Partial Auto Correlation of returns and change
   in returns. One can understand how to use the function, its parameters, and view
   examples of its use.

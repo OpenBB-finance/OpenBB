@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: OpenBB Platform is a comprehensive solution built with the contribution
+description: "OpenBB Platform is a comprehensive solution built with the contribution"
   of numerous community members, facilitating the development of stable integrations
   with third-party data providers for a robust investment research infrastructure.
 keywords:

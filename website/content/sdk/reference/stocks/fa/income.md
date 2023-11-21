@@ -1,6 +1,6 @@
 ---
 title: income
-description: This page is a detailed guide on how to use the 'income' function provided
+description: "This page is a detailed guide on how to use the 'income' function provided"
   by OpenBBTerminal. This function fetches income statements for a given stock symbol
   from selected data sources like YahooFinance or AlphaVantage.
 keywords:

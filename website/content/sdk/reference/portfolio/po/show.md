@@ -1,6 +1,6 @@
 ---
 title: show
-description: This documentation page talks about the 'show' function from OpenBB's
+description: "This documentation page talks about the 'show' function from OpenBB's"
   portfolio optimization module. It details how to display portfolio optimization
   results using categories and portfolio engines.
 keywords:

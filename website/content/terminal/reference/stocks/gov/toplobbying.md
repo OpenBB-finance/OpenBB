@@ -1,6 +1,6 @@
 ---
 title: toplobbying
-description: Toplobbying is an efficient tool to monitor lobbying activities. It allows
+description: "Toplobbying is an efficient tool to monitor lobbying activities. It allows"
   users to specify a limit for the number of stocks to display and choose to print
   raw data.
 keywords:

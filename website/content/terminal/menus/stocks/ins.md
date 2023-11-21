@@ -1,6 +1,6 @@
 ---
 title: Insider Trading
-description: This documentation page features the insider trading menu which gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions
+description: "This documentation page features the insider trading menu which gives stock screener for SEC Form 4 filings and researching individual companies for executive and director transactions"
 keywords:
 - SEC form 4 filings
 - insider

@@ -1,6 +1,6 @@
 ---
 title: events
-description: Implement our economic calendar for selected countries and specific dates
+description: "Implement our economic calendar for selected countries and specific dates"
   functionality in your application using OpenBB. Use it to analyze global economic
   trends or forecast market movements.
 keywords:

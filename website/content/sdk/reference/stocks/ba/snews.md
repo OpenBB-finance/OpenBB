@@ -1,6 +1,6 @@
 ---
 title: snews
-description: snews is an impactful tool from OpenBB's finance package employing VADER
+description: "snews is an impactful tool from OpenBB's finance package employing VADER"
   sentiment model to analyze stock headline sentiments over time, leveraged from Finnhub
   data. It also provides features to visualize these sentiments against the stock
   price using Python's matplotlib library.

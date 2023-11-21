@@ -1,6 +1,6 @@
 ---
 title: hsi
-description: This page provides detailed instructions on how to use the 'hsi' tool,
+description: "This page provides detailed instructions on how to use the 'hsi' tool,"
   which is designed to pull data on the top stocks that are being heavily shorted
   according to HighShortInterest.com. It provides details on parameters, usage, and
   examples on how to use the command line tool.

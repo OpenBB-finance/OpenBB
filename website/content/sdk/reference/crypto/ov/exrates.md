@@ -1,6 +1,6 @@
 ---
 title: exrates
-description: Explanation and source code of 'exrates', a feature from OpenBB-finance
+description: "Explanation and source code of 'exrates', a feature from OpenBB-finance"
   which fetches a list of cryptocurrency, fiat, and commodity exchange rates from
   the CoinGecko API. This page includes how to use the function, its parameters, and
   its returns.

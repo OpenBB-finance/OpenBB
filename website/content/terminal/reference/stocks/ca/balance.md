@@ -1,6 +1,6 @@
 ---
 title: balance
-description: Generates and prints either a yearly or quarterly balance statement of
+description: "Generates and prints either a yearly or quarterly balance statement of"
   a company, and compares its financial data with similar companies. The balance command
   also provides a way to specify a preferred timeframe.
 keywords:

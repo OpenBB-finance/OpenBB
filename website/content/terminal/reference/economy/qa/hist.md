@@ -1,6 +1,6 @@
 ---
 title: hist
-description: A detailed guide on using 'hist', a histogram with density and rug. This
+description: "A detailed guide on using 'hist', a histogram with density and rug. This"
   page includes usage examples, parameters, and a demonstrative image.
 keywords:
 - Histogram

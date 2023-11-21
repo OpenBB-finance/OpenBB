@@ -1,6 +1,6 @@
 ---
 title: pipo
-description: This page provides information about the 'pipo' open source code which
+description: "This page provides information about the 'pipo' open source code which"
   is used to find Past IPO dates. It includes details about the parameters used and
   the output provided by the code.
 keywords:

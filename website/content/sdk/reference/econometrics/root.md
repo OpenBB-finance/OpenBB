@@ -1,6 +1,6 @@
 ---
 title: root
-description: Detailed explanation of OpenBB's econometrics Python library focusing
+description: "Detailed explanation of OpenBB's econometrics Python library focusing"
   on the functionality of unit root tests including ADF and KPSS tests. The page features
   instructions on how to conduct these tests with Python, making it beneficial for
   data analysts and those interested in data series analysis.

@@ -1,6 +1,6 @@
 ---
 title: candles
-description: This page provides documentation on how to get or chart candles for a
+description: "This page provides documentation on how to get or chart candles for a"
   chosen trading pair and time interval on Coinbase using the OpenBB crypto library.
   It includes the Python code for these functions and the parameters to use.
 keywords:

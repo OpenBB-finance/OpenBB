@@ -1,6 +1,6 @@
 ---
 title: calculate_adjusted_var
-description: This docusaurus page explains the calculation of adjusted VaR, which
+description: "This docusaurus page explains the calculation of adjusted VaR, which"
   takes into account skew and kurtosis. It includes the explanation of the source
   code, parameters used, and what the function returns.
 keywords:

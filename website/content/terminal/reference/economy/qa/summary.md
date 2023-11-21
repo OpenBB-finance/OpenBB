@@ -1,6 +1,6 @@
 ---
 title: summary
-description: This page pertains to the summary statistics command used in Python for
+description: "This page pertains to the summary statistics command used in Python for"
   data analysis. The command provides a comprehensive summary of various statistical
   parameters for a given dataset, offering insight into data distribution and patterns.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: yret
-description: This page provides a guide on how to use the command 'yret' for determining
+description: "This page provides a guide on how to use the command 'yret' for determining"
   the end of year returns. It offers details on the permissible period selections
   and their usage.
 keywords:

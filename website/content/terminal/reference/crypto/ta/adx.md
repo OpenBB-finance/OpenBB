@@ -1,6 +1,6 @@
 ---
 title: adx
-description: This page provides detailed instructions on using the ADX, a Welles Wilder
+description: "This page provides detailed instructions on using the ADX, a Welles Wilder"
   style moving average of the Directional Movement Index. It includes usage examples
   and parameter specifications.
 keywords:

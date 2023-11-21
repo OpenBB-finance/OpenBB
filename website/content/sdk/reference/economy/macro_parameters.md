@@ -1,6 +1,6 @@
 ---
 title: macro_parameters
-description: The macro_parameters function in openbb economy section. It does not
+description: "The macro_parameters function in openbb economy section. It does not"
   take any parameters and returns a dictionary with the available macro parameters.
   Find the source code here.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: stoch
-description: The page provides detailed information about the Stochastic Oscillator
+description: "The page provides detailed information about the Stochastic Oscillator"
   trading tool. It describes the principles of operation, situations of overbought
   and oversold conditions, and offers instructions for its usage. It also specifies
   parameters and their functionality, including time periods of fastk, slowd, and

@@ -1,6 +1,6 @@
 ---
 title: ad
-description: An in-depth explanation of Accumulation/Distribution Line (AD), its interpretation,
+description: "An in-depth explanation of Accumulation/Distribution Line (AD), its interpretation,"
   and usage. The page also provides a Python script for the indicator and describes
   its parameters.
 keywords:

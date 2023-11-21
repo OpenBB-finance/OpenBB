@@ -1,6 +1,6 @@
 ---
 title: var
-description: Learn how to calculate the Value at Risk (VaR) of your portfolio using
+description: "Learn how to calculate the Value at Risk (VaR) of your portfolio using"
   different parameters and statistical methods. This guide provides examples and an
   explanation of all the options.
 keywords:

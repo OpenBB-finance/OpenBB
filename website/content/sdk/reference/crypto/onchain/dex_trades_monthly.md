@@ -1,6 +1,6 @@
 ---
 title: dex_trades_monthly
-description: Provides access to aggregated data of trades executed on Decentralized
+description: "Provides access to aggregated data of trades executed on Decentralized"
   Exchanges. You can set the currency of trade amount, limit the number of days and
   even sort the data as required.
 keywords:

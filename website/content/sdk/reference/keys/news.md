@@ -1,6 +1,6 @@
 ---
 title: news
-description: This page provides information about the 'Set News key' feature in the
+description: "This page provides information about the 'Set News key' feature in the"
   OpenBB Terminal. Learn how to use the function, understand the parameters and returns,
   and see use-cases in Python code examples.
 keywords:

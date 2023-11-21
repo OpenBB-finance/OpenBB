@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: A deeper look into Kurtosis, a measure of probability distribution of
+description: "A deeper look into Kurtosis, a measure of probability distribution of"
   a real-valued random variable. The page also demonstrates how to use it with python,
   especially setting the window length (n_window).
 keywords:

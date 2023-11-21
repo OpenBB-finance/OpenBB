@@ -1,6 +1,6 @@
 ---
 title: rolling
-description: The document displays a brief overview about rolling mean and standard
+description: "The document displays a brief overview about rolling mean and standard"
   deviation. It includes usage explanation, parameters description with special emphasis
   on window length and an illustrative diagram.
 keywords:

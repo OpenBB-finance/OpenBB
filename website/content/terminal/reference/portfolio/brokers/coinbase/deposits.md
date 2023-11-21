@@ -1,6 +1,6 @@
 ---
 title: deposits
-description: The deposits page is a comprehensive guide on displaying a list of deposits
+description: "The deposits page is a comprehensive guide on displaying a list of deposits"
   for your account. It provides details on usage, parameters like deposit type, limit,
   sortby, reverse, and their defaults.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides detailed instructions on how to load a stock ticker
+description: "This page provides detailed instructions on how to load a stock ticker"
   to perform analysis, complete with usage examples and parameters. It also provides
   information on loading Indian tickers and references to data sources.
 keywords:

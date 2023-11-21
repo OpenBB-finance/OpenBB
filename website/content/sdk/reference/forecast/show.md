@@ -1,6 +1,6 @@
 ---
 title: show
-description: Detailed documentation of OpenBB finance's 'show' and 'show_chart' functions.
+description: "Detailed documentation of OpenBB finance's 'show' and 'show_chart' functions."
   Learn how to effectively use these functions in your data analysis with clear instructions
   and direct source code links.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: rsharpe
-description: The page provides comprehensive instructions on how to use the 'rsharpe'
+description: "The page provides comprehensive instructions on how to use the 'rsharpe'"
   function, which is a tool for comparing a portfolio against a benchmark. The function
   allows for customization based on the desired period and risk free rate.
 keywords:

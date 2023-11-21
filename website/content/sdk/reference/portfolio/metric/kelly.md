@@ -1,6 +1,6 @@
 ---
 title: kelly
-description: This page provides information on how to use the 'kelly' function from
+description: "This page provides information on how to use the 'kelly' function from"
   the OpenBB portfolio management library. With detailed parameter explanations to
   calculate the kelly criterion and examples of usage, it is a valuable reference
   for portfolio management within the OpenBB environment.

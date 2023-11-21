@@ -1,6 +1,6 @@
 ---
 title: norm
-description: This page provides a detailed guide for testing normality in data series
+description: "This page provides a detailed guide for testing normality in data series"
   using Python with a graphical representation of normal distribution. It also explains
   how to export data and use external axes for plotting.
 keywords:

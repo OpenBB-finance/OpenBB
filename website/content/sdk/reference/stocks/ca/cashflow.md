@@ -1,6 +1,6 @@
 ---
 title: cashflow
-description: This page discusses the cashflow data from Marketwatch. It explains how
+description: "This page discusses the cashflow data from Marketwatch. It explains how"
   to use the openbb.stocks.ca.cashflow function, its parameters, and outputs, emphasizing
   on a dataframe of cashflow comparisons.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: rise
-description: Discover top rising related queries for a stock's symbol with the OpenBB
+description: "Discover top rising related queries for a stock's symbol with the OpenBB"
   rise tool. Analyze market behavior and spot trends.
 keywords:
 - stock analysis

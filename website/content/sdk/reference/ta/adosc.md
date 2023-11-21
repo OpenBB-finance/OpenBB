@@ -1,6 +1,6 @@
 ---
 title: adosc
-description: Technical page discussing the calculation and plotting of the AD Oscillator
+description: "Technical page discussing the calculation and plotting of the AD Oscillator"
   technical indicator. The page also includes links to source code and parameter descriptions.
 keywords:
 - AD Oscillator

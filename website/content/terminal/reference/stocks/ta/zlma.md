@@ -1,6 +1,6 @@
 ---
 title: zlma
-description: The zlma page provides an in-depth understanding of the zero lag exponential
+description: "The zlma page provides an in-depth understanding of the zero lag exponential"
   moving average (ZLEMA), with insight into its usage, parameters such as 'n_length'
   and 'n_offset', and a usage example. This indicator was created by John Ehlers and
   Ric Way and the page neatly explains the concept with visual aids.

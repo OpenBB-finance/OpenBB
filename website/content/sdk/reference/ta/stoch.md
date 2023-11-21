@@ -1,6 +1,6 @@
 ---
 title: stoch
-description: This page provides information on the Stochastic oscillator method used
+description: "This page provides information on the Stochastic oscillator method used"
   in the OpenBB Terminal. Here, you can find details about the parameters and function
   implementation for both the model and chart view. It presents a tutorial on how
   to plot the Stochastic oscillator signal with various parameters.

@@ -1,6 +1,6 @@
 ---
 title: rmv
-description: The 'rmv' documentation page explains how to use the Python command line
+description: "The 'rmv' documentation page explains how to use the Python command line"
   tool for removing similar tickers. It provides a detailed description of parameters,
   including optional choices and default values.
 keywords:

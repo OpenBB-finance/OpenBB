@@ -1,6 +1,6 @@
 ---
 title: add
-description: This page provides documentation for the 'add' function in an Econometrics
+description: "This page provides documentation for the 'add' function in an Econometrics"
   software. This function allows you to add a new column to your dataset using various
   computations on existing columns.
 keywords:

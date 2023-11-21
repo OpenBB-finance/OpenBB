@@ -1,6 +1,6 @@
 ---
 title: acf
-description: Explore Auto-Correlation and Partial Auto-Correlation Functions for diff
+description: "Explore Auto-Correlation and Partial Auto-Correlation Functions for diff"
   and diff diff stock data using the acf Python script command. Understand maximum
   lags to display in plots.
 keywords:

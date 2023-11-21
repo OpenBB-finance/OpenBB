@@ -1,6 +1,6 @@
 ---
 title: set
-description: This page provides instructions on how to set presets from the presets
+description: "This page provides instructions on how to set presets from the presets"
   folder. Various industry filter presets are available to tailor your usage.
 keywords:
 - set preset

@@ -1,6 +1,6 @@
 ---
 title: to
-description: The page provides details on how to select the 'to' currency symbol in
+description: "The page provides details on how to select the 'to' currency symbol in"
   a forex pair. It covers usage, parameters including a comprehensive list of currency
   codes.
 keywords:

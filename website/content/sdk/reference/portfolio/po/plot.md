@@ -1,6 +1,6 @@
 ---
 title: plot
-description: This documentation page outlines the functions related to plotting and
+description: "This documentation page outlines the functions related to plotting and"
   charting an investment portfolio using the OpenBB's po module. The page provides
   examples of different chart types such as pie, hist, dd, and rc. It includes necessary
   parameters for the functions and discusses the usage of a portfolio engine.

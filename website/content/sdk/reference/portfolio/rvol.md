@@ -1,6 +1,6 @@
 ---
 title: rvol
-description: This page provides documentation for rvol, a feature of the OpenBB Terminal.
+description: "This page provides documentation for rvol, a feature of the OpenBB Terminal."
   It includes details about how to get rolling volatility and display a chart of it,
   including the use of the PortfolioEngine class and various window sizes.
 keywords:

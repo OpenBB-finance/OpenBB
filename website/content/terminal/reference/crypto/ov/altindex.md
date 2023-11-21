@@ -1,6 +1,6 @@
 ---
 title: altindex
-description: The altindex documentation page provides information on how to display
+description: "The altindex documentation page provides information on how to display"
   altcoin index over time, compare altcoins performance to Bitcoin, and interpret
   if it's an Altcoin Season.
 keywords:

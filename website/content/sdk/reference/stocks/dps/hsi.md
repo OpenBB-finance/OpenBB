@@ -1,6 +1,6 @@
 ---
 title: hsi
-description: 'The hsi function returns a high short interest DataFrame. This OpenBB
+description: "'The hsi function returns a high short interest DataFrame. This OpenBB"
   finance function doesn''t require any parameters and provides key financial data
   including: Ticker, Company, Exchange, ShortInt, Float, Outstd, and Industry. Ideal
   for those interested in dark pool shorts and stock market data.'

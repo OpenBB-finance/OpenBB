@@ -1,6 +1,6 @@
 ---
 title: sentiment
-description: The page provides a sentiment analysis tool that predicts in-depth sentiment
+description: "The page provides a sentiment analysis tool that predicts in-depth sentiment"
   from recent tweets containing pre-specified stock tickers. It offers customizable
   parameters including the limit of tweets to extract per hour and the number of past
   days to extract tweets. Additionally, users can choose to show a corresponding change

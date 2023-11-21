@@ -1,6 +1,6 @@
 ---
 title: candle
-description: This page provides a comprehensive guide on how to use the 'candle' function
+description: "This page provides a comprehensive guide on how to use the 'candle' function"
   in OpenBB Terminal. This function, primarily meant for stock evaluations, provides
   a detailed candle plot of any given ticker. Features include adjustable parameters
   for added customizability.

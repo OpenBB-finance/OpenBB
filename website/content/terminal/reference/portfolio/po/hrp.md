@@ -1,6 +1,6 @@
 ---
 title: hrp
-description: This technical documentation page provides comprehensive instructions
+description: "This technical documentation page provides comprehensive instructions"
   for using 'hrp', a Python command for creating a hierarchical risk parity portfolio.
   It includes detailed information on usage, parameters, and examples for building
   custom portfolios optimized for specific risk parameters. Tools like codependence

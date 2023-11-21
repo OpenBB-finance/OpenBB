@@ -1,6 +1,6 @@
 ---
 title: rolling
-description: This page contains information about the 'Rolling Mean' and 'Standard
+description: "This page contains information about the 'Rolling Mean' and 'Standard"
   Deviation' in Python data analysis. It covers usage, parameters, and provides visual
   representations.
 keywords:

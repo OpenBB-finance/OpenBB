@@ -1,6 +1,6 @@
 ---
 title: expo
-description: The page explores the functionalities and parameters of the 'expo' model
+description: "The page explores the functionalities and parameters of the 'expo' model"
   and 'chart' functions used in Probabilistic Exponential Smoothing forecasting. These
   functions take data as input and perform operations like backtesting, retraining
   historical and prediction. Source code links are also shared.

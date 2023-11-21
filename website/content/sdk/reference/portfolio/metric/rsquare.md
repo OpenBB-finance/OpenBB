@@ -1,6 +1,6 @@
 ---
 title: rsquare
-description: Detailed information about using the 'rsquare' function in the 'openbb'
+description: "Detailed information about using the 'rsquare' function in the 'openbb'"
   portfolio metric, which calculates the R2 Score between a portfolio and a selected
   benchmark. The page includes examples of usage.
 keywords:

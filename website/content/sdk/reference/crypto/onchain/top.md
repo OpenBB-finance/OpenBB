@@ -1,6 +1,6 @@
 ---
 title: top
-description: Documentation for the OpenBB project's top 50 crypto tokens function.
+description: "Documentation for the OpenBB project's top 50 crypto tokens function."
   This is implemented in Python and uses Docusaurus to organize and render the documentation.
   It covers the parameters required and the expected result, including the sort order
   and the type of data rendered.

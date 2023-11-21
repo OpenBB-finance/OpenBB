@@ -1,6 +1,6 @@
 ---
 title: skew
-description: The 'skew' documentation page explains how this concept can be utilized
+description: "The 'skew' documentation page explains how this concept can be utilized"
   to measure asymmetry or distortion of a symmetric distribution, also describing
   usage and parameters in Python. It provides insights into how skewness measures
   deviation from a normal distribution, depicting either a right or left shift. Comprehensive

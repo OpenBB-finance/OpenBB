@@ -1,6 +1,6 @@
 ---
 title: Forecast
-description: This documentation page describes the forecast module which provides programmatic access to state-of-the-art forecasting from Nixtla and u8darts.
+description: "This documentation page describes the forecast module which provides programmatic access to state-of-the-art forecasting from Nixtla and u8darts."
 keywords:
 - forecasting
 - prediction

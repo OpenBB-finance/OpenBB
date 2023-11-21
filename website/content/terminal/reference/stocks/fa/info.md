@@ -1,6 +1,6 @@
 ---
 title: info
-description: A comprehensive resource of detailed information about companies, including
+description: "A comprehensive resource of detailed information about companies, including"
   financial stats and profile data sourced from Yahoo Finance. Ideal for getting to
   know more about a company's performance, size, location, financial stats, and more.
 keywords:

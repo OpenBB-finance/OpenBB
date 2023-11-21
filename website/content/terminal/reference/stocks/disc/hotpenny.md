@@ -1,6 +1,6 @@
 ---
 title: hotpenny
-description: The hotpenny webpage provides a list of top penny stocks sourced from
+description: "The hotpenny webpage provides a list of top penny stocks sourced from"
   various websites. It displays price, volume, trade changes, and allows users to
   limit the number of stocks displayed.
 keywords:

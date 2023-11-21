@@ -1,6 +1,6 @@
 ---
 title: links
-description: 'This documentation page includes instructions on how to use two specific
+description: "'This documentation page includes instructions on how to use two specific"
   functions: ''links'' and ''links_chart'', part of OpenBB''s crypto asset due diligence
   utilities. These functions help users understand and demonstrate how to handle crypto
   asset links using Python within the OpenBB terminal.'

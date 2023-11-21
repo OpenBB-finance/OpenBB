@@ -1,6 +1,6 @@
 ---
 title: trending
-description: The 'Trending' page provides the latest news articles sourced from Seeking
+description: "The 'Trending' page provides the latest news articles sourced from Seeking"
   Alpha. Users can access articles by ID, limit the number of articles displayed,
   and filter by start date.
 keywords:

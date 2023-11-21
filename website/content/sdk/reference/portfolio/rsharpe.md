@@ -1,6 +1,6 @@
 ---
 title: rsharpe
-description: This page talks about the rsharpe function of the OpenBB Finance. The
+description: "This page talks about the rsharpe function of the OpenBB Finance. The"
   page describes two methods to get a rolling sharpe ratio and to display it. It includes
   the source code, parameter descriptions, and usage examples.
 keywords:

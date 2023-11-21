@@ -1,6 +1,6 @@
 ---
 title: cci
-description: This page provides information on the Commodity Channel Index (CCI) utility
+description: "This page provides information on the Commodity Channel Index (CCI) utility"
   as part of the OpenBB platform. It comprises details about the technical model,
   related parameters, expected returns, and source code linked to Github. Also includes
   instructions for plotting CCI Indicator.

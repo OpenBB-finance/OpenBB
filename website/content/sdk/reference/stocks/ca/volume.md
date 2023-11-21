@@ -1,6 +1,6 @@
 ---
 title: volume
-description: This documentation page details how to get and display stock volume using
+description: "This documentation page details how to get and display stock volume using"
   openbb.stocks.ca volume function. Includes Python codes and parameter descriptions
   for user guidance.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: ewf
-description: The documentation page discusses two functions - openbb.crypto.ov.ewf
+description: "The documentation page discusses two functions - openbb.crypto.ov.ewf"
   and openbb.crypto.ov.ewf_chart. The first function scrapes exchange withdrawal fees
   and returns a DataFrame with details on Exchange, Coins, and various statistics.
   The second function allows users to export this data into different formats. The

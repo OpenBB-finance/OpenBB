@@ -1,6 +1,6 @@
 ---
 title: cusum
-description: Learn about the Cumulative Sum Algorithm (CUSUM) used to detect abrupt
+description: "Learn about the Cumulative Sum Algorithm (CUSUM) used to detect abrupt"
   changes in data. Understand its usage, parameters, and visualize how it works.
 keywords:
 - cusum

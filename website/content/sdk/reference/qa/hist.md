@@ -1,6 +1,6 @@
 ---
 title: hist
-description: This page provides a detailed guide on the usage of the 'openbb.qa.hist'
+description: "This page provides a detailed guide on the usage of the 'openbb.qa.hist'"
   function from OpenBB. This function is utilized for plotting histograms of data,
   particularly from a Pandas DataFrame. It also includes parameters, returns, and
   examples for a better understanding.

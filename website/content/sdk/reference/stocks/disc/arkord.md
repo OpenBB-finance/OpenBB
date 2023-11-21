@@ -1,6 +1,6 @@
 ---
 title: arkord
-description: This page contains details about the arkord function, which returns ARK
+description: "This page contains details about the arkord function, which returns ARK"
   orders in a DataFrame. The function provides options to filter based on buys only,
   sells only, or by a specific fund. This page also lists the various columns in the
   returned DataFrame, which includes ticker, date, shares, weight, fund, and direction.

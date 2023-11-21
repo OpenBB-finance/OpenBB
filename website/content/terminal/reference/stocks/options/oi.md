@@ -1,6 +1,6 @@
 ---
 title: oi
-description: This page provides a detailed explanation on how to plot open interest
+description: "This page provides a detailed explanation on how to plot open interest"
   using various parameters such as min, max, calls, and puts. It also includes usage
   examples.
 keywords:

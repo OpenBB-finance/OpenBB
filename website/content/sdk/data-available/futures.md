@@ -1,6 +1,6 @@
 ---
 title: Futures
-description: Learn how to use the Futures module of the OpenBB SDK in a Python script
+description: "Learn how to use the Futures module of the OpenBB SDK in a Python script"
   or Jupyter Notebook. This guide includes descriptions of each function and examples
   of how to access futures forward curve data and chart, search available futures,
   and fetch and visualize historical data.

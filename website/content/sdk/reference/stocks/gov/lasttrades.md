@@ -1,6 +1,6 @@
 ---
 title: lasttrades
-description: This page provides documentation for the 'lasttrades' function which
+description: "This page provides documentation for the 'lasttrades' function which"
   fetches last government trading data. It includes parameters such as 'gov_type',
   'limit', and 'representative', and returns a pandas DataFrame.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides clear instructions on how to load a stock ticker for
+description: "This page provides clear instructions on how to load a stock ticker for"
   performing analysis, with special settings like loading an Indian ticker, defining
   the timeframe, setting intraday minutes, including pre/after market hours, and more.
   It also includes usage cases and available parameters.

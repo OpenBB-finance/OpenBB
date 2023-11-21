@@ -1,6 +1,6 @@
 ---
 title: relriskparity
-description: This page provides comprehensive details of the 'relriskparity' function
+description: "This page provides comprehensive details of the 'relriskparity' function"
   in OpenBB Terminal's portfolio optimization module. It contains a thorough explanation
   of parameters and return value, along with Python code examples demonstrating its
   usage.

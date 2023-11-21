@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: OpenBB is an open source investment research software aimed at analyzing
+description: "OpenBB is an open source investment research software aimed at analyzing"
   financial market data. It makes use of data science and machine learning to convert
   raw data into meaningful investment understanding.
 keywords:

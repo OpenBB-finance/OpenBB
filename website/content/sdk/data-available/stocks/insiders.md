@@ -1,6 +1,6 @@
 ---
 title: Insiders
-description: This page of our marketing website gives a detailed overview of how to
+description: "This page of our marketing website gives a detailed overview of how to"
   use the 'Insiders' module of the OpenBB Terminal. It teaches users how to access
   and utilize various functions of the module to gather information about insider
   trading activity, latest CEO/CFO purchases and sales, insider transactions based

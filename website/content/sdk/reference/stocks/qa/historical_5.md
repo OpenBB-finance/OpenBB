@@ -1,6 +1,6 @@
 ---
 title: historical_5
-description: Historical_5 function from OpenBB provides 5 year monthly historical
+description: "Historical_5 function from OpenBB provides 5 year monthly historical"
   performance for a given stock ticker symbol with dividends filtered. This page gives
   a comprehensive view of the function's parameters and returns.
 keywords:

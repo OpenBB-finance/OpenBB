@@ -1,6 +1,6 @@
 ---
 title: active
-description: This page provides documentation for the 'active' function of the OpenBB
+description: "This page provides documentation for the 'active' function of the OpenBB"
   Finance API. The function returns the most active stocks in descending order based
   on intraday trade volume.
 keywords:

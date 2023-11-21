@@ -1,6 +1,6 @@
 ---
 title: hcorr
-description: The page gives detailed guidelines on how to use the hcorr function in
+description: "The page gives detailed guidelines on how to use the hcorr function in"
   OpenBB Terminal to gather historical price correlation data. It further explains
   the process to create correlation heatmaps based on historical price comparison.
 keywords:

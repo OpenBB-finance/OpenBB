@@ -1,6 +1,6 @@
 ---
 title: eval
-description: This page provides information about the 'eval' function for creating
+description: "This page provides information about the 'eval' function for creating"
   custom data columns using mathematical expressions supported by pandas.eval(). It
   exemplifies case sensitivity and the use of queries on loaded datasets.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: sust
-description: This page provides information on how to get sustainability metrics for
+description: "This page provides information on how to get sustainability metrics for"
   a stock, using the OpenBB platform which relies on Yahoo Finance. It includes necessary
   parameters and return values.
 keywords:

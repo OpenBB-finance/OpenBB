@@ -1,6 +1,6 @@
 ---
 title: web
-description: This page offers information on how to find websites for a given Coin,
+description: "This page offers information on how to find websites for a given Coin,"
   including homepages, forums, and announcement sites. It also provides a guide on
   how to use the web command with no parameters.
 keywords:

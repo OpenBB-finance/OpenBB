@@ -1,6 +1,6 @@
 ---
 title: adx
-description: The page provides a detailed explanation of the ADX, a Welles Wilder
+description: "The page provides a detailed explanation of the ADX, a Welles Wilder"
   moving average of the Directional Movement Index (DX). It explains the ADX interpretation
   and its usage along with some relevant parameters.
 keywords:

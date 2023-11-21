@@ -1,6 +1,6 @@
 ---
 title: mktcap
-description: The page explains the 'mktcap' function of OpenBB Terminal's portfolio
+description: "The page explains the 'mktcap' function of OpenBB Terminal's portfolio"
   optimization module. It includes detailed parametric descriptions and examples showing
   how to use the function. The 'mktcap' function optimizes a specified portfolio according
   to market capitalization.

@@ -1,6 +1,6 @@
 ---
 title: search
-description: This docusaurus page provides detail on how to use the Search function
+description: "This docusaurus page provides detail on how to use the Search function"
   within the CoinPaprika API, including specific parameters such as limit, sort, and
   category.
 keywords:

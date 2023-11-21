@@ -1,6 +1,6 @@
 ---
 title: rolling
-description: The page provides details on the 'rolling' function, focusing on usage
+description: "The page provides details on the 'rolling' function, focusing on usage"
   with Python, its parameters, especially 'n_window' for window length, and its role
   in calculating rolling mean and standard deviation.
 keywords:

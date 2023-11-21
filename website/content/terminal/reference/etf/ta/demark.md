@@ -1,6 +1,6 @@
 ---
 title: demark
-description: Documentation for Demark Sequential Indicator, a technical indicator
+description: "Documentation for Demark Sequential Indicator, a technical indicator"
   in Python. Detailed usage and parameter information is available.
 keywords:
 - Demark Sequential Indicator

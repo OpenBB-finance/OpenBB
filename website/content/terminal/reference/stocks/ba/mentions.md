@@ -1,6 +1,6 @@
 ---
 title: mentions
-description: The page provides details on how to plot weekly bars of stock's interest
+description: "The page provides details on how to plot weekly bars of stock's interest"
   over time with a python script. It includes usage and parameters like start date.
 keywords:
 - stock mentions

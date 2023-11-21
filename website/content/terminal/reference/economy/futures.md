@@ -1,6 +1,6 @@
 ---
 title: futures
-description: This page provides information on futures/commodities from sources such
+description: "This page provides information on futures/commodities from sources such"
   as Wall St. Journal and FinViz. Users can retrieve a range of commodity futures
   (like energy, metals, meats, grains, softs) and sort the data in several ways.
 keywords:

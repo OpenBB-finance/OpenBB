@@ -1,6 +1,6 @@
 ---
 title: chart
-description: Extend your technical analysis with the OpenBB crypto chart function.
+description: "Extend your technical analysis with the OpenBB crypto chart function."
   This feature allows loading of cryptocurrency data, optional title configuration
   based on Coin and Currency, and control over plot scale (linear or log). Source
   code is available.

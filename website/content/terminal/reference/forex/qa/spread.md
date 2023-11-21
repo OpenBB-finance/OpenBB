@@ -1,6 +1,6 @@
 ---
 title: spread
-description: A documentation page detailing how to use the spread measurement tool.
+description: "A documentation page detailing how to use the spread measurement tool."
   The page includes parameters, usage, and visuals to guide the user.
 keywords:
 - spread measurement

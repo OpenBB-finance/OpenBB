@@ -1,6 +1,6 @@
 ---
 title: trending
-description: Learn how to obtain trending tickers from Stocktwits using the OpenBB
+description: "Learn how to obtain trending tickers from Stocktwits using the OpenBB"
   Terminal. The page provides clear python code and explanation of the returned dataframe.
   OpenBB Terminal is a powerful tool for financial data analysis.
 keywords:

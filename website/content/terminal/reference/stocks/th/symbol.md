@@ -1,6 +1,6 @@
 ---
 title: symbol
-description: The page offers insight into using the 'symbol' parameter in trading
+description: "The page offers insight into using the 'symbol' parameter in trading"
   commands. It serves as a guide to set the symbol for your trades using Python, detailing
   its usage and parameters.
 keywords:

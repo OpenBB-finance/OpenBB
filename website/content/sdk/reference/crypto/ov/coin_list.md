@@ -1,6 +1,6 @@
 ---
 title: coin_list
-description: The coin_list page is a documentation of the function that returns the
+description: "The coin_list page is a documentation of the function that returns the"
   list of all available coins on CoinPaprika. It includes source code and is part
   of the OpenBBTerminal project.
 keywords:

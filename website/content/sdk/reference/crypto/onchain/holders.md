@@ -1,6 +1,6 @@
 ---
 title: holders
-description: This documentation page provides insights on obtaining and displaying
+description: "This documentation page provides insights on obtaining and displaying"
   the top token holder information using Ethplorer. It explains the crypto-onchain
   methods used for data extraction and its process.
 keywords:

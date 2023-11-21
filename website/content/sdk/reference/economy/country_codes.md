@@ -1,6 +1,6 @@
 ---
 title: country_codes
-description: This is the Country Codes page for the Bigmac index in the OpenBBTerminal.
+description: "This is the Country Codes page for the Bigmac index in the OpenBBTerminal."
   It provides available country codes, specified as ISO-3 letter country codes, and
   requires no parameters.
 keywords:

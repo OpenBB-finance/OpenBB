@@ -1,6 +1,6 @@
 ---
 title: bw
-description: The page provides comprehensive information about the usage of Box and
+description: "The page provides comprehensive information about the usage of Box and"
   Whisker plot, also known as 'bw'. It covers how to generate bw plots, including
   a yearly bw plot, using Python. It includes a parameter table and several supporting
   visuals to guide users.

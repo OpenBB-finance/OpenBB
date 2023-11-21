@@ -1,6 +1,6 @@
 ---
 title: file
-description: This page provides detailed information on the functionality and usage
+description: "This page provides detailed information on the functionality and usage"
   of the 'Load portfolio optimization engine from file' method in the OpenBB Terminal
   application. Examples and parameters are discussed extensively to ensure user familiarity
   with the method.

@@ -1,6 +1,6 @@
 ---
 title: quantile
-description: This page provides documentation and source code for OpenBB's Quantile
+description: "This page provides documentation and source code for OpenBB's Quantile"
   function. It includes info about parameters, return types, and how to generate and
   plot rolling quantile data using Python.
 keywords:

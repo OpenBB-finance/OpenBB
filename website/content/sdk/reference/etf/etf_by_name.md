@@ -1,6 +1,6 @@
 ---
 title: etf_by_name
-description: A detailed documentation page that explains how to get ETF symbol and
+description: "A detailed documentation page that explains how to get ETF symbol and"
   name based on a string to search. The page includes a link to the source code and
   illustrates how the function 'etf_by_name' used in the StockAnalysis can be implemented
   to fetch ETF names and their corresponding symbols. This function returns a data

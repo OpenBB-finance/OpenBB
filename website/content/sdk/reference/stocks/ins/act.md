@@ -1,6 +1,6 @@
 ---
 title: act
-description: OpenBBTerminal offers user-friendly, Python-based tools to gauge insider
+description: "OpenBBTerminal offers user-friendly, Python-based tools to gauge insider"
   activity data for a given stock ticker from Business Insider. The available functions
   not only assemble the raw data but also provide you with an elaborate chart outlining
   past insider activities.

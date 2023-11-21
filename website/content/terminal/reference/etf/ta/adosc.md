@@ -1,6 +1,6 @@
 ---
 title: adosc
-description: Explore the Accumulation/Distribution Oscillator page, also known as
+description: "Explore the Accumulation/Distribution Oscillator page, also known as"
   the Chaikin Oscillator. This powerful momentum indicator analyzes the strength of
   price moves and the underlying buying and selling pressure in a given period. Learn
   how to use the indicator and understand its parameters like fast length and slow

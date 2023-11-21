@@ -1,6 +1,6 @@
 ---
 title: contracts
-description: This page provides technical documentation around functions related to
+description: "This page provides technical documentation around functions related to"
   cryptocurrency contract addresses. It includes information on how to use Python
   functions for obtaining and sorting contract addresses for any given blockchain
   platform using CoinPaprika as the data source.

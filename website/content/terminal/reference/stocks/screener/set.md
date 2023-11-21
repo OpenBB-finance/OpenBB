@@ -1,6 +1,6 @@
 ---
 title: set
-description: Page provides instructions and usage methods on how to set presets from
+description: "Page provides instructions and usage methods on how to set presets from"
   custom and default ones in Python. It includes a wide array of parameters for filtering
   presets.
 keywords:

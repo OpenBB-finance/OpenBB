@@ -1,6 +1,6 @@
 ---
 title: dpotc
-description: dpotc is a command that displays a barchart of dark pool (ATS) and OTC
+description: "dpotc is a command that displays a barchart of dark pool (ATS) and OTC"
   (Non ATS) data. With this command, you can visually interpret financial data efficiently.
 keywords:
 - dpotc

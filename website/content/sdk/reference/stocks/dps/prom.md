@@ -1,6 +1,6 @@
 ---
 title: prom
-description: 'This page provides a detailed explanation of two important functions
+description: "'This page provides a detailed explanation of two important functions"
   in FINRA ATS data analysis offered by our tool: ''prom'' and ''Chart''. ''prom''
   fetches and processes the most promising stocks based on linear regression while
   ''Chart'' aids in visualizing the dark pool data for improving trading decisions.'

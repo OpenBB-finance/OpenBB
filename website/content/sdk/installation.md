@@ -1,7 +1,7 @@
 ---
 title: Installation
 sidebar_position: 1
-description: Learn about the OpenBB SDK that provides programmatic access to all Terminal
+description: "Learn about the OpenBB SDK that provides programmatic access to all Terminal"
   functions, allowing users to build their own tools and applications on the existing
   architecture. Understand how it is part of the OpenBB Terminal and the installation
   process.

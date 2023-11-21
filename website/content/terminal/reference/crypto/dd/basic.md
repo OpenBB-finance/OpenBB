@@ -1,6 +1,6 @@
 ---
 title: basic
-description: The page provides extensive information on how to use the 'basic' function
+description: "The page provides extensive information on how to use the 'basic' function"
   in the cryptocurrency realm to extract key details of a coin such as its name, symbol,
   rank, type, description, platform, proof_type, tags, contract and parent. Contains
   usage instructions and examples.

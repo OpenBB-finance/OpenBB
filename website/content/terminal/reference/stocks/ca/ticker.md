@@ -1,6 +1,6 @@
 ---
 title: ticker
-description: This page provides detailed instructions on how to set and use the ticker
+description: "This page provides detailed instructions on how to set and use the ticker"
   function. It is invaluable for extracting similar tickers, helping users engage
   more with stocks.
 keywords:

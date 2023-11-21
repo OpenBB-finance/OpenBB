@@ -1,6 +1,6 @@
 ---
 title: view
-description: The page provides information on the 'view' function which allows one
+description: "The page provides information on the 'view' function which allows one"
   to view available presets under the presets folder. It includes the usage in Python
   and parameters that can be set, aiding in stock analysis.
 keywords:

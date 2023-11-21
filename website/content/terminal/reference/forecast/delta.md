@@ -1,6 +1,6 @@
 ---
 title: delta
-description: Documentation related to Delta, a function that adds percentage change
+description: "Documentation related to Delta, a function that adds percentage change"
   to a selected dataset column. The page gives an overview of the function usage,
   parameters and examples
 keywords:

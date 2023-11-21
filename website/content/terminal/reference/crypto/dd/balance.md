@@ -1,6 +1,6 @@
 ---
 title: balance
-description: This page provides a detailed guide on how to display balance using a
+description: "This page provides a detailed guide on how to display balance using a"
   Python script. It features usage instructions, parameter descriptions, and particularities
   with the 'vs' parameter representing the quote currency.
 keywords:

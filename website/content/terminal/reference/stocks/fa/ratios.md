@@ -1,6 +1,6 @@
 ---
 title: ratios
-description: A comprehensive guide on using the 'ratios' function. It offers an in-depth
+description: "A comprehensive guide on using the 'ratios' function. It offers an in-depth"
   analysis of a company's ratios over time, which includes financial metrics like
   Payout Ratio, Price-to-Book Ratio, Debt equity ratio, Dividend payout ratio and
   much more.

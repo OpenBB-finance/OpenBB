@@ -1,6 +1,6 @@
 ---
 title: newsletters
-description: This page provides an understanding of how to scrape all substack newsletters
+description: "This page provides an understanding of how to scrape all substack newsletters"
   related to DeFi from a list of urls, and how to print a table of these newsletters.
   Users can also learn how to limit the number of records displayed and export the
   data to different file formats.

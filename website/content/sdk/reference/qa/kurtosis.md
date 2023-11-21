@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: This documentation page provides detailed information about Kurtosis
+description: "This documentation page provides detailed information about Kurtosis"
   Indicator and how to plot rolling kurtosis with OpenBB-finance's tool. It includes
   source code links and parameters needed for these python functions.
 keywords:

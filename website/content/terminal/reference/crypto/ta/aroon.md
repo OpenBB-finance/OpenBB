@@ -1,6 +1,6 @@
 ---
 title: aroon
-description: The page introduces the aroon indicator which signifies the emergence
+description: "The page introduces the aroon indicator which signifies the emergence"
   of new trends. It explains how the indicator works, including its Up and Down indicators,
   its relationship with the highest high and lowest low within a certain period, and
   its role in identifying strong or weak trends.

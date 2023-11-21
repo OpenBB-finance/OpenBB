@@ -1,6 +1,6 @@
 ---
 title: atr
-description: The page provides details on how to calculate the Average True Range
+description: "The page provides details on how to calculate the Average True Range"
   using a specific stock ticker with the help of the Python package, OpenBB.
 keywords:
 - Average True Range

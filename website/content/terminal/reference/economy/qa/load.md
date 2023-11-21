@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides a guide on how to load a stock ticker for analysis.
+description: "This page provides a guide on how to load a stock ticker for analysis."
   It explains the parameters for loading data, including options for Indian tickers,
   intraday stock minutes, and custom file paths. Additionally, users can find information
   on how to load monthly and weekly data.

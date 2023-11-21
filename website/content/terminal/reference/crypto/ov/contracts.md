@@ -1,6 +1,6 @@
 ---
 title: contracts
-description: This page details how to effectively fetch all contract addresses for
+description: "This page details how to effectively fetch all contract addresses for"
   a specific blockchain platform with customizable parameters for limitations and
   sorting. Various platforms such as Ethereum and Bitcoin are discussed, along with
   illustration on detailed sets of commands.

@@ -1,6 +1,6 @@
 ---
 title: treasury_maturities
-description: This page covers the documentation of OpenBB finance's treasury_maturities
+description: "This page covers the documentation of OpenBB finance's treasury_maturities"
   function, providing details on the source code and its returns. This function returns
   a DataFrame containing the name of the financial instruments and a string containing
   all options.

@@ -1,6 +1,6 @@
 ---
 title: rsi
-description: Understanding the rsi strategy, which buys stock when it's less than
+description: "Understanding the rsi strategy, which buys stock when it's less than"
   a threshold and shorts when it exceeds a threshold. Learn the usage, parameters,
   and options involved in this strategy.
 keywords:

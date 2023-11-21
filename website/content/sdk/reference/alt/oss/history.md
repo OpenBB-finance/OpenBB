@@ -1,6 +1,6 @@
 ---
 title: history
-description: This documentation page provides detailed information about using the
+description: "This documentation page provides detailed information about using the"
   openbb software's history feature, with sections for its model and chart display.
   It illustrates how to retrieve repository star history, search for specific repositories,
   and plot repo summaries.

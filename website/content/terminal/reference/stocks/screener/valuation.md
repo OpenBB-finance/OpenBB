@@ -1,6 +1,6 @@
 ---
 title: valuation
-description: Marketing website page providing a tool to print valuation data of various
+description: "Marketing website page providing a tool to print valuation data of various"
   stocks based on a set of pre-defined filters, further offering various parametric
   controls to refine and customize the output.
 keywords:

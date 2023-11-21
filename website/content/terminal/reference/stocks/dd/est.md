@@ -1,6 +1,6 @@
 ---
 title: est
-description: Detailed guide on how to get yearly estimates and quarter earnings/revenues
+description: "Detailed guide on how to get yearly estimates and quarter earnings/revenues"
   for stocks using the 'est' command. It includes parameters' usage, examples and
   source of data.
 keywords:

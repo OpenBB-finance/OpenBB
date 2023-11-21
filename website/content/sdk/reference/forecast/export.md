@@ -1,6 +1,6 @@
 ---
 title: export
-description: Enhance your grasp of the openbb.forecast.export function from the OpenBBTerminal,
+description: "Enhance your grasp of the openbb.forecast.export function from the OpenBBTerminal,"
   which is employed to export forecasting data. This function takes no parameters
   and does not return anything. Chances to learn more about Python source code.
 keywords:

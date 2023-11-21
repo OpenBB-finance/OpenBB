@@ -1,6 +1,6 @@
 ---
 title: website
-description: This page provides documentation on how to fetch a company's website
+description: "This page provides documentation on how to fetch a company's website"
   from yfinance using a stock ticker symbol.
 keywords:
 - yfinance

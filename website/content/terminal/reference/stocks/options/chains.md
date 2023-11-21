@@ -1,6 +1,6 @@
 ---
 title: chains
-description: Detailed guide on how to display option chains with python usage. Documentation
+description: "Detailed guide on how to display option chains with python usage. Documentation"
   includes parameters for call options, put options, strike price, ask size, bid size,
   volume, open interest and others, along with their default values and options.
 keywords:

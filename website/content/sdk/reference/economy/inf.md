@@ -1,6 +1,6 @@
 ---
 title: inf
-description: 'This page discusses two main functions of the OpenBBTerminal: one for
+description: "'This page discusses two main functions of the OpenBBTerminal: one for"
   gathering US inflation data and the other for displaying this data in a chart. The
   model function retrieves historical inflation data from AlphaVantage and returns
   a DataFrame, while the chart function presents this data using a customizable interface.'

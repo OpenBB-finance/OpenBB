@@ -1,6 +1,6 @@
 ---
 title: events
-description: This is a docusaurus page dedicated to the events tool which displays
+description: "This is a docusaurus page dedicated to the events tool which displays"
   the most important events of cryptocurrency coins. It presents multiple functionalities
   such as sorting and limiting the amount of events displayed, with additional features
   like displaying urls for each event.

@@ -1,6 +1,6 @@
 ---
 title: news
-description: This documentation page provides detailed information on how to retrieve
+description: "This documentation page provides detailed information on how to retrieve"
   news articles using the OpenBBTerminal's function 'openbb.news'. The function allows
   users to specify search terms, sources, and sorting parameters. Examples of using
   the function are also provided.

@@ -1,6 +1,6 @@
 ---
 title: Discovery
-description: Documentation for the OpenBB SDK Disc module. The Disc module provides
+description: "Documentation for the OpenBB SDK Disc module. The Disc module provides"
   programmatic access for Python to navigate the OpenBB Terminal, examples of functions
   and modules aimed at stock trading operations.
 keywords:

@@ -1,7 +1,7 @@
 ---
 title: Customization
 sidebar_position: 4
-description: This documentation page details the functionality of the Settings Menu
+description: "This documentation page details the functionality of the Settings Menu"
   and the Feature Flags Menu in the OpenBB Terminal. It instructs users how to customize
   the Terminal, alter its behaviour, and manipulate various environment variables.
 keywords:

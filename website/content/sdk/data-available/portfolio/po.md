@@ -1,6 +1,6 @@
 ---
 title: Portfolio Optimization
-description: This page provides comprehensive instructions on Portfolio Optimization,
+description: "This page provides comprehensive instructions on Portfolio Optimization,"
   ranging from mean-variance optimization to risk parity models and hierarchical clustering
   models. Detailed Python script examples are provided to guide the user through the
   optimization process using methods like Risk Parity, applying Hierarchical Risk

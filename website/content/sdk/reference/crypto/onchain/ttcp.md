@@ -1,6 +1,6 @@
 ---
 title: ttcp
-description: The ttcp (Top Traded Crypto Pairs) page provides details about two backend
+description: "The ttcp (Top Traded Crypto Pairs) page provides details about two backend"
   functions that analyze trading data from decentralized exchanges like Uniswap. This
   page includes python source-codes and parameters for the functions, which help in
   viewing and analyzing the most traded crypto pairs within a chosen timeframe.

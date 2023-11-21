@@ -1,6 +1,6 @@
 ---
 title: valuation
-description: Learn how to view and understand group valuation data for different sectors,
+description: "Learn how to view and understand group valuation data for different sectors,"
   industries, or countries using various parameters. Find the exact metrics you need
   regarding Market Cap, P/E, P/S, P/B and more.
 keywords:

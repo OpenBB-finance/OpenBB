@@ -1,6 +1,6 @@
 ---
 title: indices
-description: This documentation page provides detailed information about how to use
+description: "This documentation page provides detailed information about how to use"
   the openbb.economy.indices() function to get the top US indices. The function returns
   a DataFrame containing the name, price, net change, and percent change.
 keywords:

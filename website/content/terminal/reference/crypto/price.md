@@ -1,6 +1,6 @@
 ---
 title: price
-description: This documentation page contains information on how to display the price
+description: "This documentation page contains information on how to display the price"
   and confidence interval of various crypto coins in real-time using Pyth. It features
   a table of ~100 available symbols for different coins. Use the provided command
   options to load data.

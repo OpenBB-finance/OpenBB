@@ -1,6 +1,6 @@
 ---
 title: heatmap
-description: This page describes how to use the heatmap tool which provides an interactive
+description: "This page describes how to use the heatmap tool which provides an interactive"
   treemap of the SP 500 from finviz. It includes usage examples and a detailed description
   of parameters.
 keywords:

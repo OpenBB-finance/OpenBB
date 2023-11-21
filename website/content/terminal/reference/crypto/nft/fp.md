@@ -1,6 +1,6 @@
 ---
 title: fp
-description: This content provides a comprehensive guide on utilizing the 'fp' command
+description: "This content provides a comprehensive guide on utilizing the 'fp' command"
   in retrieving the floor price of a specific NFT collection. Examples of collections
   include Bored Ape Yacht Club, CryptoPunks, and Cool Cats.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: infer
-description: The documentation guide on 'infer', a tool used for quick sentiment inference
+description: "The documentation guide on 'infer', a tool used for quick sentiment inference"
   from latest tweets that contain the ticker using vader sentiment analysis. It provides
   parameters to set the tweet limit and also includes examples of usage
 keywords:

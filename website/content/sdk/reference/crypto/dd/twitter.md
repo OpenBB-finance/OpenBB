@@ -1,6 +1,6 @@
 ---
 title: twitter
-description: Learn how to implement twitter functions for cryptocurrency through our
+description: "Learn how to implement twitter functions for cryptocurrency through our"
   OpenBB Terminal documentation. Access information such as code usage, parameters,
   return types etc.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: ex
-description: This page provides code documentation and examples for retrieving and
+description: "This page provides code documentation and examples for retrieving and"
   visualizing data about cryptocurrency exchanges for a given coin, using the CoinPaprika
   API. The OpenBBTerminal project developed by OpenBB-finance allows sorting the data
   and exports it for further analysis.

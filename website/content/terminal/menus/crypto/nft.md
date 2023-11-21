@@ -1,6 +1,6 @@
 ---
 title: Non Fungible Token (NFT)
-description: This page provides an introduction to the Non Fungible Token (NFT) sub-menu within the Crypto menu of the OpenBB Terminal.
+description: "This page provides an introduction to the Non Fungible Token (NFT) sub-menu within the Crypto menu of the OpenBB Terminal."
 keywords:
 - Non Fungible Token
 - NFT

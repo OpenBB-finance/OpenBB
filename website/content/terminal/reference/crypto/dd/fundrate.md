@@ -1,6 +1,6 @@
 ---
 title: fundrate
-description: The fundrate page discusses how to display the funding rate by exchange
+description: "The fundrate page discusses how to display the funding rate by exchange"
   for a certain asset using the fundrate command. It presents a detailed explanation
   of the command usage, source, and implies that no parameters are needed. This is
   ideal for those seeking in-depth information about coinglass's API reference.

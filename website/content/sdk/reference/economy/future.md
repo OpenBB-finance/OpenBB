@@ -1,6 +1,6 @@
 ---
 title: future
-description: This page provides detailed documentation on how to use OpenBB's 'future'
+description: "This page provides detailed documentation on how to use OpenBB's 'future'"
   function in Python script. It explains parameters and returns related to different
   financial instruments.
 keywords:

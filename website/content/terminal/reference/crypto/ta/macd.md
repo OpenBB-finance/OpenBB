@@ -1,6 +1,6 @@
 ---
 title: macd
-description: Explore the MACD page to understand the use and parameters of the Moving
+description: "Explore the MACD page to understand the use and parameters of the Moving"
   Average Convergence Divergence (MACD). Learn about the significance of high and
   low MACD values, buy and sell signals, and more.
 keywords:

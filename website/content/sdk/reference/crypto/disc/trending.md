@@ -1,6 +1,6 @@
 ---
 title: trending
-description: This page provides detailed information on trending coins. Users can
+description: "This page provides detailed information on trending coins. Users can"
   learn how to return and view a table of trending coins from CoinGecko using OpenBB's
   Python functions.
 keywords:

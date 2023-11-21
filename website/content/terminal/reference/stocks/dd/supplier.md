@@ -1,6 +1,6 @@
 ---
 title: supplier
-description: This page provides a list of suppliers from a ticker provided, sourced
+description: "This page provides a list of suppliers from a ticker provided, sourced"
   from CSIMarket. The 'supplier' command is highlighted in this page, including its
   usage and parameters.
 keywords:

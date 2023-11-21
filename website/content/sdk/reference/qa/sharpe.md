@@ -1,6 +1,6 @@
 ---
 title: sharpe
-description: Documentation page on the Sharpe Ratio - a financial measure calculated
+description: "Documentation page on the Sharpe Ratio - a financial measure calculated"
   in the OpenBB framework. Includes parameters, source code, and instructions for
   plotting the Sharpe ratio in a chart. Relevant for quantitative finance, data analysis,
   and Python programming.

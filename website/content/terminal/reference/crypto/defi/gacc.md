@@ -1,6 +1,6 @@
 ---
 title: gacc
-description: This page provides information on how to display the terra blockchain
+description: "This page provides information on how to display the terra blockchain"
   account growth history using the 'gacc' function. It includes usage instructions,
   parameters description, and an explanatory diagram.
 keywords:

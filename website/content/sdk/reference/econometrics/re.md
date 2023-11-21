@@ -1,6 +1,6 @@
 ---
 title: re
-description: This page provides a detailed look into the Random Effects Model developed
+description: "This page provides a detailed look into the Random Effects Model developed"
   by OpenBB. It covers the parameters involved such as regression variables and data
   sets, the return type, and a link is provided to access the source code, making
   it a valuable resource for any data scientist interested in econometrics.

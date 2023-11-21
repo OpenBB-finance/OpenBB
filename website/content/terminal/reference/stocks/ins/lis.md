@@ -1,6 +1,6 @@
 ---
 title: lis
-description: Understand the usage of 'lis' function that prints latest insider sales
+description: "Understand the usage of 'lis' function that prints latest insider sales"
   for stocks. You can limit the amount of datarows to be displayed. This comes from
   OpenInsider source and can help understand Insider trading data.
 keywords:

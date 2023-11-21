@@ -1,6 +1,6 @@
 ---
 title: shrs
-description: This page provides information on how to print Major, institutional and
+description: "This page provides information on how to print Major, institutional and"
   mutualfunds shareholders using the 'shrs' command in Python. The data source for
   this information is Yahoo Finance.
 keywords:

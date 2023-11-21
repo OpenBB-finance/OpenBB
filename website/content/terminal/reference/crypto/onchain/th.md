@@ -1,6 +1,6 @@
 ---
 title: th
-description: This page provides comprehensive documentation for the 'th' function
+description: "This page provides comprehensive documentation for the 'th' function"
   which displays information about token history. It explains the usage of the function,
   along with descriptions of parameters like limit, sortby, reverse and hash. Useful
   for anyone needing to navigate token history using Ethplorer.

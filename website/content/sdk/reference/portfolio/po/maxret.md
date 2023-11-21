@@ -1,6 +1,6 @@
 ---
 title: maxret
-description: This documentation page provides detailed information on the maxret function
+description: "This documentation page provides detailed information on the maxret function"
   of the OpenBB Terminal library. The function helps in optimizing maximum return
   weights for a given stock portfolio based on several parameters.
 keywords:

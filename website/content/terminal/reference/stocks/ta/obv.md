@@ -1,6 +1,6 @@
 ---
 title: obv
-description: Learn about On Balance Volume (OBV), a cumulative total of the up and
+description: "Learn about On Balance Volume (OBV), a cumulative total of the up and"
   down volume. Understand how to interpret OBV and its applications in the market
   trend analysis. No parameters required for this command.
 keywords:

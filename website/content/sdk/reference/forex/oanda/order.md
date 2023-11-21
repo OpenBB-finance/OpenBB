@@ -1,6 +1,6 @@
 ---
 title: order
-description: This page provides detailed documentation on how to create buy/sell trade
+description: "This page provides detailed documentation on how to create buy/sell trade"
   orders using OpenBB Terminal's 'forex.oanda' module. It includes source code, function
   definitions, parameters, and return information to successfully place orders.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: history
-description: Learn about the usage and parameters for accessing historical portfolio
+description: "Learn about the usage and parameters for accessing historical portfolio"
   information with spans ranging from a day to all accessible history and intervals
   from 5 minutes to a week.
 keywords:

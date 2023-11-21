@@ -1,6 +1,6 @@
 ---
 title: blop
-description: 'Documentation for ''blop'': a tool for displaying the latest officer
+description: "'Documentation for ''blop'': a tool for displaying the latest officer"
   purchases in the stock market. The documentation covers usage, parameters, and provides
   examples of insider data results including company and insider name, trade type,
   price, quantity, ownership changes, and value.'

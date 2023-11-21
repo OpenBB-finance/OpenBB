@@ -1,6 +1,6 @@
 ---
 title: skew
-description: The documentation page of the 'skew' attribute, which is a measure of
+description: "The documentation page of the 'skew' attribute, which is a measure of"
   the asymmetry or distortion of a symmetric distribution. It provides explanation
   of the concept, its usage in Python and parameters details.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: index
-description: This page provides detailed information on how to obtain indices data
+description: "This page provides detailed information on how to obtain indices data"
   and visualize it. The useful parameters and their respective descriptions are provided
   to ensure efficient data manipulation. Actual examples that illustrate the usage
   of the commands are included for better understanding.

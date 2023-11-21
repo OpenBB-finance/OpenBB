@@ -1,6 +1,6 @@
 ---
 title: spread
-description: This page illustrates the rolling spread measurement, its usage, and
+description: "This page illustrates the rolling spread measurement, its usage, and"
   the parameters involved in it. It comprehensively explains how to use 'spread' and
   the function of 'n_window' in it.
 keywords:

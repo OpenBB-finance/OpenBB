@@ -1,6 +1,6 @@
 ---
 title: balance
-description: The 'balance' documentation page provides comprehensive instructions
+description: "The 'balance' documentation page provides comprehensive instructions"
   for printing a balance sheet statement over time. The page explains expected fields,
   usage, parameters, and provides examples. It is a helpful resource for anyone looking
   to understand how to use the 'balance' function effectively.

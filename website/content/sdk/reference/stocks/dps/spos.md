@@ -1,6 +1,6 @@
 ---
 title: spos
-description: This documentation page provides a detailed guide on spos function under
+description: "This documentation page provides a detailed guide on spos function under"
   the OpenBB package. Learn how to get net short position and plot net short position
   with source codes and parameters clearly listed.
 keywords:

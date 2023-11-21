@@ -1,6 +1,6 @@
 ---
 title: tispw
-description: tispw - A command line tool to fetch and present top insider sales of
+description: "tispw - A command line tool to fetch and present top insider sales of"
   the week from OpenInsider. Parameters for usage include the limit of datarows to
   display. An important utility for those interested in stock market trends.
 keywords:

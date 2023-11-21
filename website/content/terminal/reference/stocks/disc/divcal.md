@@ -1,6 +1,6 @@
 ---
 title: divcal
-description: Guide to use divcal for acquiring dividend calendar for a selected date
+description: "Guide to use divcal for acquiring dividend calendar for a selected date"
   in the stock market. The parameters include date, sort, and reverse. The data includes
   Name, Symbol, Ex-Dividend date, Payment date, Record date, Dividend, and Annual
   Dividend.

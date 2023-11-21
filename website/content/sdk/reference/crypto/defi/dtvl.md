@@ -1,6 +1,6 @@
 ---
 title: dtvl
-description: This page of the documentation provides information about OpenBB's dtvl
+description: "This page of the documentation provides information about OpenBB's dtvl"
   model and view functions. The model function returns details about the historical
   Total Value Locked (TVL) of a specified DeFi protocol, while the view function allows
   for the plotting of TVL data across various decentralized applications (dApps).

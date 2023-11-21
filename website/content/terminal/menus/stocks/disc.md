@@ -1,6 +1,6 @@
 ---
 title: Discovery
-description: This documentation page is an introduction to the Discovery sub-menu, within Stocks, of the OpenBB Terminal. Functions in this menu include stock lists, calendars, trending moves and an S&P 500 heatmap.
+description: "This documentation page is an introduction to the Discovery sub-menu, within Stocks, of the OpenBB Terminal. Functions in this menu include stock lists, calendars, trending moves and an S&P 500 heatmap."
 keywords:
 - Stocks Discovery
 - following trends

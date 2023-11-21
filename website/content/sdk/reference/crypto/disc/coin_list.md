@@ -1,6 +1,6 @@
 ---
 title: coin_list
-description: Technical documentation on how to get a list of coins available on CoinGecko
+description: "Technical documentation on how to get a list of coins available on CoinGecko"
   using the OpenBBTerminal. It includes parameters and returns in form of a pd.DataFrame.
 keywords:
 - Coin List

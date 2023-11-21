@@ -1,6 +1,6 @@
 ---
 title: alloc
-description: The page serves as a documentation for 'alloc' - a python function that
+description: "The page serves as a documentation for 'alloc' - a python function that"
   helps users understand their portfolio's allocation to different assets or sectors
   compared to a benchmark. It includes detailed usage instructions, parameters, and
   examples of how to use the function.

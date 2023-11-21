@@ -1,6 +1,6 @@
 ---
 title: earnings
-description: This site provides an extensive guide to retrieving earnings data of
+description: "This site provides an extensive guide to retrieving earnings data of"
   any stock ticker using the OpenBB Terminal. The page includes detailed parameters
   descriptions and practical examples.
 keywords:

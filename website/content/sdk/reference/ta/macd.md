@@ -1,6 +1,6 @@
 ---
 title: macd
-description: This page provides a comprehensive guide to MACD (Moving Average Convergence
+description: "This page provides a comprehensive guide to MACD (Moving Average Convergence"
   Divergence) implementation in OpenBB terminal. It explains how to model and visualize
   the MACD signal using Python as well as the parameters involved.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: overview
-description: This page provides a command to generate an extensive overview of a company,
+description: "This page provides a command to generate an extensive overview of a company,"
   delivering important data from asset type and exchange to financial metrics by Alpha
   Vantage. This can be particularly useful for financial analysis and understanding
   the company's current standing in the market.

@@ -1,6 +1,6 @@
 ---
 title: last_price
-description: The page provides documentation for the 'last_price' API call in the
+description: "The page provides documentation for the 'last_price' API call in the"
   OpenBBTerminal project of OpenBB.finance. It details how to request for the last
   price of a specific stock option using the ticker symbol.
 keywords:

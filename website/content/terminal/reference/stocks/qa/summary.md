@@ -1,6 +1,6 @@
 ---
 title: summary
-description: Documentation for the 'summary' function on the marketing website. This
+description: "Documentation for the 'summary' function on the marketing website. This"
   feature provides detailed summary statistics on stocks, including parameters like
   open, high, low, close, adjclose, volume, returns, and more.
 keywords:

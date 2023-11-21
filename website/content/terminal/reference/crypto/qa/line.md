@@ -1,6 +1,6 @@
 ---
 title: line
-description: This page is a comprehensive guide on how to create line plots of selected
+description: "This page is a comprehensive guide on how to create line plots of selected"
   data, and how to highlight specific datetimes. It provides information about different
   parameters like log scale plotting, vertical line markers, and scatter markers.
 keywords:

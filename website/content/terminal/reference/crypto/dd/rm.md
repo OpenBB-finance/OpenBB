@@ -1,6 +1,6 @@
 ---
 title: rm
-description: A documentation page for the 'rm' command showcasing how to display an
+description: "A documentation page for the 'rm' command showcasing how to display an"
   asset's roadmap sourced from Messari. It contains sections on how to use this command,
   and parameters to modify data presentation.
 keywords:

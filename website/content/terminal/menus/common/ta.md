@@ -1,6 +1,6 @@
 ---
 title: Technical Analysis
-description: Learn how to use our comprehensive technical analysis tools to understand
+description: "Learn how to use our comprehensive technical analysis tools to understand"
   the trend patterns and market sentiment of various assets. Get insights on moving
   averages, oscillating signals, directional strength, price band volatility, volume
   analysis and even use custom indicators. Make better trading decisions with our

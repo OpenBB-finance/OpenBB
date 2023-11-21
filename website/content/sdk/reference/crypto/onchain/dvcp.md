@@ -1,6 +1,6 @@
 ---
 title: dvcp
-description: This documentation page contains information about dvcp, a function from
+description: "This documentation page contains information about dvcp, a function from"
   the OpenBB framework that provides data about the daily volume of a specific cryptocurrency
   pair. Both the data model and a chart view are presented. The documentation includes
   source code links, detailed information about parameters and returned data.

@@ -1,6 +1,6 @@
 ---
 title: sector
-description: A documentation page outlining how-to instructions for setting sectors
+description: "A documentation page outlining how-to instructions for setting sectors"
   in Python. It includes usage, parameters, and choices.
 keywords:
 - Python instructions

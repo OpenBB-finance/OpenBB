@@ -1,7 +1,7 @@
 ---
 title: API Keys
 sidebar_position: 2
-description: This documentation page describes how you can set your own API keys from each data vendor on OpenBB to leverage their datasets.
+description: "This documentation page describes how you can set your own API keys from each data vendor on OpenBB to leverage their datasets."
 keywords:
 - API keys
 - datasets

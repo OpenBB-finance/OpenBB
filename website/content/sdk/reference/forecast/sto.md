@@ -1,6 +1,6 @@
 ---
 title: sto
-description: Page about the Stochastic Oscillator (STO) function in the OpenBB library.
+description: "Page about the Stochastic Oscillator (STO) function in the OpenBB library."
   It includes information about calculating momentum indicators, source code, parameters,
   and what it returns.
 keywords:

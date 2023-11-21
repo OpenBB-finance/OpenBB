@@ -1,6 +1,6 @@
 ---
 title: sectors
-description: This documentation page offers details on how to retrieve all sectors
+description: "This documentation page offers details on how to retrieve all sectors"
   in Yahoo Finance data based on criteria such as country or industry. The source
   code and the parameters for the function are provided.
 keywords:

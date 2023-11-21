@@ -1,6 +1,6 @@
 ---
 title: asc
-description: Documentation for OpenBB's function to get the most aggressive small
+description: "Documentation for OpenBB's function to get the most aggressive small"
   cap stocks from Yahoo Finance with high earnings growth rates. Includes python code
   and parameters description.
 keywords:

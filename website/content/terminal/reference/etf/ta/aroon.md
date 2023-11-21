@@ -1,6 +1,6 @@
 ---
 title: aroon
-description: This page provides a comprehensive detail on 'Aroon' - an indicator that
+description: "This page provides a comprehensive detail on 'Aroon' - an indicator that"
   shows when a new trend is dawning in the market. It explains how to interpret upward
   and downward trends as well as crossovers.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: logout
-description: This page provides information about how to use the logout command in
+description: "This page provides information about how to use the logout command in"
   python. It includes the usage of this command and the details about its parameters.
 keywords:
 - logout

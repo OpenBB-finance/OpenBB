@@ -1,6 +1,6 @@
 ---
 title: ols
-description: This page explains how to perform an OLS regression on timeseries data
+description: "This page explains how to perform an OLS regression on timeseries data"
   using specific commands and parameters. It's useful for those working in data analytics
   or statistical modeling.
 keywords:

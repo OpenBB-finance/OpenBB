@@ -1,6 +1,6 @@
 ---
 title: whales
-description: A page that provides information on the use of the 'whales' feature to
+description: "A page that provides information on the use of the 'whales' feature to"
   display significant cryptocurrency transactions. It explains parameters for customization
   like minimum value, record limit, sort order, etc.
 keywords:

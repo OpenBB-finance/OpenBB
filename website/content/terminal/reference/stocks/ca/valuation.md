@@ -1,6 +1,6 @@
 ---
 title: valuation
-description: This documentation page explains the usage of the 'valuation' command
+description: "This documentation page explains the usage of the 'valuation' command"
   which prints screener data of similar companies. It includes examples and details
   about the parameters
 keywords:

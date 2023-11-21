@@ -1,6 +1,6 @@
 ---
 title: update
-description: The marketing website page 'update' is primarily focused on how to update
+description: "The marketing website page 'update' is primarily focused on how to update"
   orders by their ID and price. Learn the usage and understand the parameters in detail.
 keywords:
 - Order update

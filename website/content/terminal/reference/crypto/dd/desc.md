@@ -1,6 +1,6 @@
 ---
 title: desc
-description: Informative project description utility for numerous blockchain projects
+description: "Informative project description utility for numerous blockchain projects"
   with parameters such as 'project of interest'. The page informs about the metadata
   and application of the tool across different use cases.
 keywords:

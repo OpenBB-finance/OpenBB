@@ -1,6 +1,6 @@
 ---
 title: nco
-description: Supplement to the nested cluster optimization (NCO) portfolio building
+description: "Supplement to the nested cluster optimization (NCO) portfolio building"
   tool documentation. Offers comprehensive information on usage, parameters, and examples
   of how to use the nco tool to optimize your investment portfolio. The topics covered
   include codependence, covariance, risk measures, and cluster settings.

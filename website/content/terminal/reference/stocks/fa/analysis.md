@@ -1,6 +1,6 @@
 ---
 title: analysis
-description: This page provides guidance on how to perform an analysis of SEC filings
+description: "This page provides guidance on how to perform an analysis of SEC filings"
   using a specific NLP model through a python command. This command has no parameters.
 keywords:
 - analysis

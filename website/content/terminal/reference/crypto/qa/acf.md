@@ -1,6 +1,6 @@
 ---
 title: acf
-description: The page provides explanation and usage for acf- the Auto-Correlation
+description: "The page provides explanation and usage for acf- the Auto-Correlation"
   and Partial Auto-Correlation Functions for diff and diff diff crypto data. It includes
   parameters details and illustrative plot.
 keywords:

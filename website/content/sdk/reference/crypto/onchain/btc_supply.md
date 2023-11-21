@@ -1,6 +1,6 @@
 ---
 title: btc_supply
-description: This documentation page provides codes and guidelines on how to obtain
+description: "This documentation page provides codes and guidelines on how to obtain"
   information about the circulating supply of Bitcoin (BTC) through OpenBBTerminal's
   onchain modules. It details the function to use, parameters needed, and the expected
   returns.

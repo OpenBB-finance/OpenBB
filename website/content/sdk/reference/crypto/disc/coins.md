@@ -1,6 +1,6 @@
 ---
 title: coins
-description: This page documents the functions for retrieving and displaying cryptocurrency
+description: "This page documents the functions for retrieving and displaying cryptocurrency"
   coin data using the OpenBB Terminal. The main categories explained are 'model' and
   'view', each with descriptions of available parameters and returns.
 keywords:

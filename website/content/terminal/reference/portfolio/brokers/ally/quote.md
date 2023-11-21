@@ -1,6 +1,6 @@
 ---
 title: quote
-description: This page provides a guide on how to get stocks quotes using ticker symbols.
+description: "This page provides a guide on how to get stocks quotes using ticker symbols."
   It details usage, parameters like ticker and describes how to select multiple stocks
   to track at the same time.
 keywords:

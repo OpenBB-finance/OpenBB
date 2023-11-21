@@ -1,6 +1,6 @@
 ---
 title: atr
-description: This page details how to add Average True Range to a stock ticker dataset
+description: "This page details how to add Average True Range to a stock ticker dataset"
   using the `atr` command. It's a fantastic resource for individuals interested in
   forecasting and stock market analysis.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: orders
-description: The page explains how open orders can be listed. It provides information
+description: "The page explains how open orders can be listed. It provides information"
   on usage and parameters such as limit, sortby, and reverse.
 keywords:
 - orders

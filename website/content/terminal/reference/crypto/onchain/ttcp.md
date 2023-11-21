@@ -1,6 +1,6 @@
 ---
 title: ttcp
-description: This documentation page provides details on the usage of the ttcp tool
+description: "This documentation page provides details on the usage of the ttcp tool"
   used for displaying the most traded crypto pairs on a chosen decentralized exchange
   over a selected time period. It includes the description and options for each parameter.
 keywords:

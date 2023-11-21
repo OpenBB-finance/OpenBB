@@ -1,6 +1,6 @@
 ---
 title: quandl
-description: This documentation page describes how to set the Quandl Key in OpenBB
+description: "This documentation page describes how to set the Quandl Key in OpenBB"
   finance using Python. It provides parameters, return types, and code examples.
 keywords:
 - Quandl Key

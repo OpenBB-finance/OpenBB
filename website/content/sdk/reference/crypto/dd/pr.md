@@ -1,6 +1,6 @@
 ---
 title: pr
-description: The documentation explains how to leverage APIs for calculating and comparing
+description: "The documentation explains how to leverage APIs for calculating and comparing"
   potential returns of cryptocurrencies. It details requirements and parameters for
   two functions - fetching data for potential returns calculation and function to
   record these returns.

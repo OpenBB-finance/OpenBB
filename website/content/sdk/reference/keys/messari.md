@@ -1,6 +1,6 @@
 ---
 title: messari
-description: This page deals with details on setting the Messari key in the OpenBB
+description: "This page deals with details on setting the Messari key in the OpenBB"
   finance terminal. It highlights on parameters such as API key, the persist and show_output
   options and also provides an example of how to use the openbb.keys.messari function.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: show
-description: This page provides the 'show' command, used to display stock option price
+description: "This page provides the 'show' command, used to display stock option price"
   and it's estimated chance. It comes without parameters.
 keywords:
 - show command

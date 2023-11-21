@@ -1,6 +1,6 @@
 ---
 title: obv
-description: Learn about the On Balance Volume (OBV), a trading indicator that represents
+description: "Learn about the On Balance Volume (OBV), a trading indicator that represents"
   the cumulative total of up and down volumes. Find out how to use, interpret the
   OBV, understand market trends and use it in your trading analysis.
 keywords:

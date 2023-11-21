@@ -1,6 +1,6 @@
 ---
 title: treasury
-description: This page provides detailed information and instructions on how to obtain
+description: "This page provides detailed information and instructions on how to obtain"
   and plot any set of U.S. treasuries through different parameters including maturity,
   frequency and type. It provides flexibility with regards to date ranges.
 keywords:

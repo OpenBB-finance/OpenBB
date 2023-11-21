@@ -1,6 +1,6 @@
 ---
 title: search
-description: The 'search' documentation provides a detailed guide to using various
+description: "The 'search' documentation provides a detailed guide to using various"
   search commands on our platform. This includes usage, parameters, and term definitions
   for finding company tickers, filtering stocks based on country, sector, industry
   or specific exchange country.

@@ -1,6 +1,6 @@
 ---
 title: order
-description: How to create an order, set unit and price, and understanding of long
+description: "How to create an order, set unit and price, and understanding of long"
   and short position in order request. Also, guides on setting the price for a limit
   order.
 keywords:

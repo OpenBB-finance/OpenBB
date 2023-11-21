@@ -1,6 +1,6 @@
 ---
 title: bw
-description: Box and Whisker Plot (bw) page instructs users on the usage of bw in
+description: "Box and Whisker Plot (bw) page instructs users on the usage of bw in"
   Python, explains the parameters, and offers a view of a bw plot. Promotes understanding
   of data visualization.
 keywords:

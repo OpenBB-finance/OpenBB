@@ -1,6 +1,6 @@
 ---
 title: headlines
-description: This documentation page details how to implement sentiment analysis for
+description: "This documentation page details how to implement sentiment analysis for"
   financial asset symbols using FinBrain's API through the OpenBB Terminal's Python
   protocols. It explains the parameters and returns for two functions that handle
   model and chart views, showing raw table data and enabling exportation.

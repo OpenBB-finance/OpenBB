@@ -1,6 +1,6 @@
 ---
 title: regions
-description: Learn how to plot bars representing regions based on a stock's interest
+description: "Learn how to plot bars representing regions based on a stock's interest"
   using Python. This tutorial includes Python usage explanations, parameters details,
   and visualization examples.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: kc
-description: In-depth explanation and usage of the KC function for Keltner Channels;
+description: "In-depth explanation and usage of the KC function for Keltner Channels;"
   including parameters, and how to utilize it to determine trend direction through
   volatility-based bands.
 keywords:

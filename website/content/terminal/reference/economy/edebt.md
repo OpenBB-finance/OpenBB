@@ -1,6 +1,6 @@
 ---
 title: edebt
-description: The page provides the information about edebt, a tool that gives access
+description: "The page provides the information about edebt, a tool that gives access"
   to national debt statistics for various countries. The data is sourced from Wikipedia.
 keywords:
 - edebt

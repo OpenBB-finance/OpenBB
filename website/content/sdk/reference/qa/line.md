@@ -1,6 +1,6 @@
 ---
 title: line
-description: The page describes the 'line' function of the OpenBB library, used for
+description: "The page describes the 'line' function of the OpenBB library, used for"
   displaying line plots of data. It provides the source code link and details the
   parameters, usage, and examples of the function within the domain of quantitative
   analysis and data visualization using Python.

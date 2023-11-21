@@ -1,6 +1,6 @@
 ---
 title: analyst
-description: This page enables users to print analyst prices and ratings for a company
+description: "This page enables users to print analyst prices and ratings for a company"
   using a simple python command. Information such as 'date', 'analyst', 'category',
   'price', and 'rating' is revealed.
 keywords:

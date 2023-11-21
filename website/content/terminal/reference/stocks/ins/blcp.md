@@ -1,6 +1,6 @@
 ---
 title: blcp
-description: This page provides comprehensive instructions for using the 'blcp' feature
+description: "This page provides comprehensive instructions for using the 'blcp' feature"
   which displays the latest CEO/CFO purchases. It includes details on the usage, parameters,
   and real-time examples.
 keywords:

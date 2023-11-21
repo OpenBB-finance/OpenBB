@@ -1,6 +1,6 @@
 ---
 title: Fixed Income
-description: Learn how to use the Fixed Income module of the openbb Terminal Python
+description: "Learn how to use the Fixed Income module of the openbb Terminal Python"
   SDK for data related to fixed income assets, including central bank rates, government
   bonds, corporate bonds, spread data and more. Make effective use of the various
   functions available within this SDK, illustrated with detailed examples.

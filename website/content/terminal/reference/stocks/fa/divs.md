@@ -1,6 +1,6 @@
 ---
 title: divs
-description: This documentation page provides explanation about the usage, and parameters
+description: "This documentation page provides explanation about the usage, and parameters"
   of the 'divs' function in showing historical dividends of a company.
 keywords:
 - divs function

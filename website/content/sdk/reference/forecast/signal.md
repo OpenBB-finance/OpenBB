@@ -1,6 +1,6 @@
 ---
 title: signal
-description: This documentation page provides detailed insight on 'signal', a price
+description: "This documentation page provides detailed insight on 'signal', a price"
   signal based on short/long term price, with instructions on parameters to be entered
   and returns received.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: zlma
-description: This page provides an in-depth view of the zlma function, which is used
+description: "This page provides an in-depth view of the zlma function, which is used"
   to calculate zero-lagged exponential moving average (ZLEMA) for stocks. The page
   includes the source code and details of parameters and returns.
 keywords:

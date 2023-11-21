@@ -1,6 +1,6 @@
 ---
 title: riskparity
-description: This docusaurus page provides detailed information on how to build a
+description: "This docusaurus page provides detailed information on how to build a"
   risk parity portfolio using the risk budgeting approach. The user can make use of
   many available parameters and conditions to customize the portfolio and its conditions
   as per their requirements.

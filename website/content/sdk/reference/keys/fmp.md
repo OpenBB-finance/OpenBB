@@ -1,6 +1,6 @@
 ---
 title: fmp
-description: This page provides a guide for setting the Financial Modeling Prep API
+description: "This page provides a guide for setting the Financial Modeling Prep API"
   key using the OpenBB Terminal. It covers parameters to set the key, adjusting the
   persist and show_output options, and an example of usage.
 keywords:

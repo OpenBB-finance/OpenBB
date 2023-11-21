@@ -1,6 +1,6 @@
 ---
 title: degiro
-description: This page provides information on how to set the Degiro key using the
+description: "This page provides information on how to set the Degiro key using the"
   OpenBB terminal. You'll learn about parameters like username, password, and optional
   fields like secret, persist and show_output. It also includes code examples for
   better understanding.

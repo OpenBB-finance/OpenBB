@@ -1,6 +1,6 @@
 ---
 title: herc
-description: The page provides detailed documentation for the Hierarchical Equal Risk
+description: "The page provides detailed documentation for the Hierarchical Equal Risk"
   Contribution (HERC) method in the OpenBB Terminal's portfolio optimization module.
   The method is used for the optimized allocation of resources in a portfolio to minimize
   risk. The page includes a detailed explanation of input parameters, return types,

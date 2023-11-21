@@ -1,6 +1,6 @@
 ---
 title: sma
-description: This page provides information on Simple Moving Average (SMA), a tool
+description: "This page provides information on Simple Moving Average (SMA), a tool"
   for trend identification and data filtering. It details SMA's usage and parameters
   like n_length and n_offset.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: aprtoapy
-description: APR to APY conversion tool. Use aprtoapy tool to compute APY value from
+description: "APR to APY conversion tool. Use aprtoapy tool to compute APY value from"
   APR, defining the number of compounding periods per year.
 keywords:
 - aprtoapy

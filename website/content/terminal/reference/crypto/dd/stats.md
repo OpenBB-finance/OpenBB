@@ -1,6 +1,6 @@
 ---
 title: stats
-description: The 'stats' page provides 24 hour statistical data on cryptocurrencies
+description: "The 'stats' page provides 24 hour statistical data on cryptocurrencies"
   with options to view data in various quote currencies. It displays metrics such
   as open value, high, low, volume, and last known value.
 keywords:

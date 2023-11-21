@@ -1,6 +1,6 @@
 ---
 title: hold
-description: The document page provides instructions on how to use the 'hold' command
+description: "The document page provides instructions on how to use the 'hold' command"
   in Python, which requires no parameters.
 keywords:
 - hold command

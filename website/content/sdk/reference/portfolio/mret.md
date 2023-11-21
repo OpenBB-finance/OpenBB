@@ -1,6 +1,6 @@
 ---
 title: mret
-description: This page provides comprehensive guides and source codes on how to get
+description: "This page provides comprehensive guides and source codes on how to get"
   and display monthly returns using the functions 'mret' and 'mret_chart' respectively,
   both under openbb.portfolio of the OpenBB Terminal.
 keywords:

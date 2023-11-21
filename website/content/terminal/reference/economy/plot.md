@@ -1,6 +1,6 @@
 ---
 title: plot
-description: Learn how to plot data on two y-axes using the plot command in our tools.
+description: "Learn how to plot data on two y-axes using the plot command in our tools."
   The command allows you to plot different time series in one graph with data from
   the macro, fred, index, and treasury commands. Our guide also provides examples
   of usage and parameters to customize your plots.

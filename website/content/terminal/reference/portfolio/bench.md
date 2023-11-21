@@ -1,6 +1,6 @@
 ---
 title: bench
-description: This page provides a detailed guideline on how to load in benchmarks
+description: "This page provides a detailed guideline on how to load in benchmarks"
   for a portfolio based on the ticker. It elaborates the usage of the 'bench' command
   in python, its parameters, choices and gives practical examples of its application.
 keywords:

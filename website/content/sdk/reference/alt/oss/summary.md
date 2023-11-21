@@ -1,6 +1,6 @@
 ---
 title: summary
-description: This documentation page contains comprehensive information on OpenBB's
+description: "This documentation page contains comprehensive information on OpenBB's"
   repository summary and chart view options. You can retrieve a summary with OpenBB
   library and display it in a chart view. Includes source code links and detailed
   parameter descriptions for usage.

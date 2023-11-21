@@ -1,6 +1,6 @@
 ---
 title: histcont
-description: This page provides documentation on OpenBBTerminal's histcont function.
+description: "This page provides documentation on OpenBBTerminal's histcont function."
   The function allows users to get and visualize historical quarterly government contracts.
 keywords:
 - histcont function

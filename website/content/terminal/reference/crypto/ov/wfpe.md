@@ -1,6 +1,6 @@
 ---
 title: wfpe
-description: This wfpe documentation page covers the usage of wfpe command to check
+description: "This wfpe documentation page covers the usage of wfpe command to check"
   cryptocurrency withdrawal fees per exchange. It includes example outputs and parameters.
 keywords:
 - wfpe

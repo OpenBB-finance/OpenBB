@@ -1,6 +1,6 @@
 ---
 title: movers
-description: This documentation page provides information on how to get stock movers
+description: "This documentation page provides information on how to get stock movers"
   using Python command line. Detailed explanations for different parameters such as
   list_type, exchange, and limit are included.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: tft
-description: This Docusaurus page provides in-depth information on the use of Temporal
+description: "This Docusaurus page provides in-depth information on the use of Temporal"
   Fusion Transformer for forecasting purposes, as implemented through OpenBB finance.
   It includes details on the model's parameters, usage, and output, along with the
   source code and chart visualization capabilities. The page is of high relevance

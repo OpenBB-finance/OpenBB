@@ -1,6 +1,6 @@
 ---
 title: equal
-description: The page provides detailed information about the equally weighted portfolio
+description: "The page provides detailed information about the equally weighted portfolio"
   (a type of portfolio optimization) in OpenBB Finance with parameters, returns and
   python example codes.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: cdf
-description: This page provides detailed information about the 'cdf' function, a cumulative
+description: "This page provides detailed information about the 'cdf' function, a cumulative"
   distribution function. It includes usage, parameters, and examples.
 keywords:
 - cdf

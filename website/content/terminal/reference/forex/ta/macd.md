@@ -1,6 +1,6 @@
 ---
 title: macd
-description: This page describes the Moving Average Convergence Divergence (MACD)
+description: "This page describes the Moving Average Convergence Divergence (MACD)"
   tool used for trend changes in market conditions. It explains the concept, usage
   and different parameters. Information about how these parameters influence and indicate
   the onset of new trend direction, overbought or oversold conditions is also provided.

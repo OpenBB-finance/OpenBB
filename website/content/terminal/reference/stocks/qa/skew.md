@@ -1,6 +1,6 @@
 ---
 title: skew
-description: The skew page describes skewness as a measure of asymmetry or distortion
+description: "The skew page describes skewness as a measure of asymmetry or distortion"
   of a symmetric distribution, such as a normal distribution. Skewness measures the
   deviation of a random variable from a symmetric distribution. The page also details
   the usage and parameters of the 'skew' function.

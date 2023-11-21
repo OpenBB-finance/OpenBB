@@ -1,6 +1,6 @@
 ---
 title: spac
-description: A detailed documentation page on the SPAC function from OpenBB's financial
+description: "A detailed documentation page on the SPAC function from OpenBB's financial"
   analysis tool suite. Learn how to extract SPAC-related posts from top subreddits
   with OpenBB.
 keywords:

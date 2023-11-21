@@ -1,6 +1,6 @@
 ---
 title: hm
-description: This page provides a guide to use 'hm' tool in displaying cryptocurrencies
+description: "This page provides a guide to use 'hm' tool in displaying cryptocurrencies"
   heatmap with a daily percentage change. Utilize parameter options like 'limit' and
   'category' to customize the display.
 keywords:

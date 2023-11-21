@@ -1,6 +1,6 @@
 ---
 title: kurtosis
-description: This page offers comprehensive information on kurtosis - a measure of
+description: "This page offers comprehensive information on kurtosis - a measure of"
   the 'tailedness' of a probability distribution of a real-valued random variable.
   Learn about its different measures and how to estimate it from a sample. Try it
   out with our Python usage guide.

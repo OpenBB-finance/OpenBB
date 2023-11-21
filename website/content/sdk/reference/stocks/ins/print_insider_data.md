@@ -1,6 +1,6 @@
 ---
 title: print_insider_data
-description: Documentation page for OpenBB-finance's Print Insider Data feature. It
+description: "Documentation page for OpenBB-finance's Print Insider Data feature. It"
   includes details about the parameters involved, such as the type of insider data
   and the limit of data rows to display, as well as the option to export data in a
   specific format. The page provides source code links for further information.

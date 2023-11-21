@@ -1,6 +1,6 @@
 ---
 title: quote
-description: This documentation page provides information regarding the usage and
+description: "This documentation page provides information regarding the usage and"
   parameters of the 'quote' function in python which fetches the current exchange
   rate.
 keywords:

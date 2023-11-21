@@ -1,6 +1,6 @@
 ---
 title: collections
-description: This documentation page provides methods to get NFT collections, its
+description: "This documentation page provides methods to get NFT collections, its"
   source code and ways to visualize the data via charts. The content primarily revolves
   around usage, parameters, and the return type of the functions.
 keywords:

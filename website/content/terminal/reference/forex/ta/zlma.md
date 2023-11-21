@@ -1,6 +1,6 @@
 ---
 title: zlma
-description: The ZLMA (Zero Lag Exponential Moving Average) indicator page covers
+description: "The ZLMA (Zero Lag Exponential Moving Average) indicator page covers"
   the concept, usage, and parameters like n_length and n_offset. This indicator, developed
   by John Ehlers and Ric Way, is used for moving average calculation on de-lagged
   data. The page also provides a visual representation of the zlma method.

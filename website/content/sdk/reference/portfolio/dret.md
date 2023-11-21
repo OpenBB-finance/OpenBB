@@ -1,6 +1,6 @@
 ---
 title: dret
-description: Detailed documentation for 'dret' function of OpenBB Terminal, allows
+description: "Detailed documentation for 'dret' function of OpenBB Terminal, allows"
   calculation of daily returns and visualization of these returns through charts.
   This function manipulates and interprets portfolio data.
 keywords:

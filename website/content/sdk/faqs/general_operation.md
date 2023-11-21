@@ -1,7 +1,7 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: A page providing comprehensive tutorial and help information on enabling
+description: "A page providing comprehensive tutorial and help information on enabling"
   developer mode and resolving system-related issues on both Windows and MacOS for
   OpenBB's software.
 keywords:

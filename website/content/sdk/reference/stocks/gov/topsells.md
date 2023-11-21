@@ -1,6 +1,6 @@
 ---
 title: topsells
-description: Explore the topsells documentation page for detailed instructions on
+description: "Explore the topsells documentation page for detailed instructions on"
   how to use the openbb.stocks.gov.topsells function. This function is used to get
   top sell government trading data from quiverquant.com. It covers different types
   of government data including congress, senate, and house. The function allows for

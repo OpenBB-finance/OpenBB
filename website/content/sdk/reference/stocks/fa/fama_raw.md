@@ -1,6 +1,6 @@
 ---
 title: fama_raw
-description: The page provides detailed information on retrieving Fama French data
+description: "The page provides detailed information on retrieving Fama French data"
   through the openbb.stocks.fa.fama_raw() method in the OpenBB terminal. It serves
   as a resource for financial analysis and coding in Python involving DCF models.
 keywords:

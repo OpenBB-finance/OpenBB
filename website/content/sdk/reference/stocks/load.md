@@ -1,6 +1,6 @@
 ---
 title: load
-description: Learn how to use the load function within OpenBBTerminal's stocks module
+description: "Learn how to use the load function within OpenBBTerminal's stocks module"
   to retrieve and analyze data. Provide a symbol (ticker), define start and end dates,
   interval, choose whether to include pre/post-hours data and the data source. Options
   to retrieve weekly and monthly data are available. The gathered data is returned

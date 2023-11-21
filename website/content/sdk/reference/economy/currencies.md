@@ -1,6 +1,6 @@
 ---
 title: currencies
-description: This page provides information about accessing global currencies data
+description: "This page provides information about accessing global currencies data"
   through a Python function. The function returns a DataFrame with the name, price,
   net change, and percent change of multiple currencies.
 keywords:

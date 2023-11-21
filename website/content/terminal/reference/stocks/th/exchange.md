@@ -1,6 +1,6 @@
 ---
 title: exchange
-description: Documentation page for exchanging market information, including usage,
+description: "Documentation page for exchanging market information, including usage,"
   parameters and selectable choices.
 keywords:
 - Exchange

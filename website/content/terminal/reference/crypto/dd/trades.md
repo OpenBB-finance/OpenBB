@@ -1,6 +1,6 @@
 ---
 title: trades
-description: This page provides a comprehensive guide on how to get the latest trades
+description: "This page provides a comprehensive guide on how to get the latest trades"
   for a selected coin, demonstrating usage in Python. It explains the parameters required
   and supports a variety of exchanges, including Binance and Bitfinex.
 keywords:

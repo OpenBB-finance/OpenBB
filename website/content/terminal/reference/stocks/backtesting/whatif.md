@@ -1,6 +1,6 @@
 ---
 title: whatif
-description: Learn about the 'whatif' command line tool which provides a hypothetical
+description: "Learn about the 'whatif' command line tool which provides a hypothetical"
   scenario of having bought a certain number of shares on a specific date. This tool
   can be used for backward investment analysis and scenario planning.
 keywords:

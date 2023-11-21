@@ -1,6 +1,6 @@
 ---
 title: view
-description: This page provides instructions on how to view the available presets
+description: "This page provides instructions on how to view the available presets"
   in the preset folder using the view function. It also provides details about parameters
   such as preset names.
 keywords:

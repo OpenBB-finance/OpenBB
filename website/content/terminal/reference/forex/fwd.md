@@ -1,6 +1,6 @@
 ---
 title: fwd
-description: A documentation page for the 'fwd' command which provides forward rates
+description: "A documentation page for the 'fwd' command which provides forward rates"
   for a loaded pair. Its usage and parameters are explained.
 keywords:
 - fwd command

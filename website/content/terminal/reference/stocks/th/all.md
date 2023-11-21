@@ -1,6 +1,6 @@
 ---
 title: all
-description: This page provides insights on the 'all' exchange command, including
+description: "This page provides insights on the 'all' exchange command, including"
   its usage and parameters. This command displays all the exchanges available.
 keywords:
 - all exchange command

@@ -1,6 +1,6 @@
 ---
 title: tokens
-description: Detailed guidance on displaying trade-able tokens on Uniswap DEX including
+description: "Detailed guidance on displaying trade-able tokens on Uniswap DEX including"
   parameters, usage, and examples. Useful for those interested in DeFi and cryptocurrency
   trading.
 keywords:

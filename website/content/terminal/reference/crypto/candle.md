@@ -1,6 +1,6 @@
 ---
 title: candle
-description: This page provides documentation on using the 'candle' feature for displaying
+description: "This page provides documentation on using the 'candle' feature for displaying"
   charts for loaded coins in the chosen currency and date range. It includes usage
   instructions and details about parameters.
 keywords:

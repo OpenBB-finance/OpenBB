@@ -1,6 +1,6 @@
 ---
 title: upcoming
-description: This documentation page is related to the upcoming() function in OpenBB's
+description: "This documentation page is related to the upcoming() function in OpenBB's"
   stocks discovery module which returns a DataFrame containing upcoming earnings.
   The page includes source code, function parameters, and return types.
 keywords:

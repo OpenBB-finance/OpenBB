@@ -1,6 +1,6 @@
 ---
 title: overview
-description: 'A comprehensive guide to monitor different financial markets that includes
+description: "'A comprehensive guide to monitor different financial markets that includes"
   usage of command-line codes for the assessment of indices, US bonds, global bonds
   and currencies. US indices include examples of DJIA, S&P 500, Nasdaq Composite,
   and several others. The bond overview provides details about US 10 Year Treasury

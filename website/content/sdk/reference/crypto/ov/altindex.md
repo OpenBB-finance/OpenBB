@@ -1,6 +1,6 @@
 ---
 title: altindex
-description: Page featuring the altindex function of the OpenBB library, enabling
+description: "Page featuring the altindex function of the OpenBB library, enabling"
   the tracking of altcoin performance over various periods of time.
 keywords:
 - altindex

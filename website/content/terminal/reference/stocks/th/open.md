@@ -1,6 +1,6 @@
 ---
 title: open
-description: Learn about the command to show currently open exchanges with our detailed
+description: "Learn about the command to show currently open exchanges with our detailed"
   documentation. Understand its usage with no parameters.
 keywords:
 - Command

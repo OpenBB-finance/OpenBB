@@ -1,6 +1,6 @@
 ---
 title: historical
-description: 'This webpage provides comprehensive documentation about the ''historical''
+description: "'This webpage provides comprehensive documentation about the ''historical''"
   feature of OpenBB''s application: OpenBBTerminal. Users can view and access python
   codes, parameters, returning values for two main functionalities: viewing historical
   price of stocks and creating a chart for those stocks.'

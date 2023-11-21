@@ -1,7 +1,7 @@
 ---
 title: Portfolio
 sidebar_position: 0
-description: Docusaurus page focuses on the usage of the OpenBB Terminal Portfolio
+description: "Docusaurus page focuses on the usage of the OpenBB Terminal Portfolio"
   module, detailing its features and examples of use like portfolio performance benchmarking,
   risk metrics calculation or maximum drawdown calculation.
 keywords:

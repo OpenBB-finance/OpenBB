@@ -1,6 +1,6 @@
 ---
 title: basic
-description: This documentation page provides insights into how to use basic functions
+description: "This documentation page provides insights into how to use basic functions"
   of the OpenBB terminal for cryptocurrency tracking and analysis. It also provides
   source code links and parameters information for two of its functions - 'coinpaprika_model'
   and 'coinpaprika_view', dealing with basic information retrieval and chart generation

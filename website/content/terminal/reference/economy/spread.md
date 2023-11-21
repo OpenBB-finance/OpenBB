@@ -1,6 +1,6 @@
 ---
 title: spread
-description: 'Documentation page for ''spread'' software: a tool designed to generate
+description: "'Documentation page for ''spread'' software: a tool designed to generate"
   bond spread matrix. This tool is parametrizable, allowing users to customize its
   outputs.'
 keywords:

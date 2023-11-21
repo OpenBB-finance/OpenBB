@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides information about the 'load' feature designed to retrieve
+description: "This page provides information about the 'load' feature designed to retrieve"
   historical data. It details the usage and various parameters with their functions.
 keywords:
 - historical data

@@ -1,6 +1,6 @@
 ---
 title: ETF
-description: This guide introduces the ETF menu, in the OpenBB Terminal. The features provide methods for searching and comparing funds across the ETF universe.
+description: "This guide introduces the ETF menu, in the OpenBB Terminal. The features provide methods for searching and comparing funds across the ETF universe."
 keywords:
 - ETF
 - overview

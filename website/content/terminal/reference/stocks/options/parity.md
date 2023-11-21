@@ -1,6 +1,6 @@
 ---
 title: parity
-description: The parity page provides details about whether options are over or under
+description: "The parity page provides details about whether options are over or under"
   valued. It includes usage examples, parameters definition and their choices.
 keywords:
 - parity

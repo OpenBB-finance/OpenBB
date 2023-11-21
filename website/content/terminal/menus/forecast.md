@@ -1,6 +1,6 @@
 ---
 title: Forecast
-description: A comprehensive guide exploring the Forecast menu, a machine learning
+description: "A comprehensive guide exploring the Forecast menu, a machine learning"
   toolkit providing high-level, state-of-the-art, components.
   toolkit providing high-level components for quickly providing state-of-the-art results.
   Features include Data Loading, Data Exploration, Feature Engineering, Time Series

@@ -1,6 +1,6 @@
 ---
 title: corr
-description: The page provides information about the 'corr' function used to plot
+description: "The page provides information about the 'corr' function used to plot"
   correlation coefficients of a given dataset. It describes parameters, usage examples
   and visual representation for a TSLA dataset.
 keywords:

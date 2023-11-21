@@ -1,6 +1,6 @@
 ---
 title: unitroot
-description: This page provides comprehensive instructions and usage examples for
+description: "This page provides comprehensive instructions and usage examples for"
   the unitroot tool. Unitroot, used for unit root test and stationarity, offers multiple
   regression methods including c, ct, ctt, and nc.
 keywords:

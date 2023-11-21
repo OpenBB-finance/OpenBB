@@ -1,6 +1,6 @@
 ---
 title: glbonds
-description: Webpage on 'glbonds' function - a data scraping tool for global bonds
+description: "Webpage on 'glbonds' function - a data scraping tool for global bonds"
   information. It returns name, coupon rate, yield and change in yield.
 keywords:
 - glbonds

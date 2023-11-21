@@ -1,6 +1,6 @@
 ---
 title: topbuys
-description: This documentation page covers the top buy government trading on OpenBB
+description: "This documentation page covers the top buy government trading on OpenBB"
   Terminal, providing detailed information on relevant python functions and parameters.
   It features source code and explanations for different data types and optional parameters.
 keywords:

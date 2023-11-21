@@ -1,6 +1,6 @@
 ---
 title: categories
-description: Docusaurus page that provides details on top cryptocurrency categories
+description: "Docusaurus page that provides details on top cryptocurrency categories"
   by market capitalization. It includes categories such as stablecoins, defi, solana
   ecosystem, and polkadot ecosystem, among others. This page also provides ways to
   sort and display data.

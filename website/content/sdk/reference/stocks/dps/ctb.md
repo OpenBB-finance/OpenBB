@@ -1,6 +1,6 @@
 ---
 title: ctb
-description: The page provides information about the function that returns the cost
+description: "The page provides information about the function that returns the cost"
   to borrow of stocks using Interactive Broker. The source code of the function is
   available. No parameters are needed for the function.
 keywords:

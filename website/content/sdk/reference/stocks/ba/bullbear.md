@@ -1,6 +1,6 @@
 ---
 title: bullbear
-description: This page provides information on how to use OpenBB's bullbear function
+description: "This page provides information on how to use OpenBB's bullbear function"
   that fetches sentiment for a ticker from stocktwits. Detailed info about parameters
   and returns are included.
 keywords:

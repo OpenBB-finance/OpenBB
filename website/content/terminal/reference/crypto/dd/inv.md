@@ -1,6 +1,6 @@
 ---
 title: inv
-description: Documentation page for the 'inv' command - displaying asset's investors.
+description: "Documentation page for the 'inv' command - displaying asset's investors."
   This command runs without parameters and is a part of financial data analysis tools.
 keywords:
 - asset investors

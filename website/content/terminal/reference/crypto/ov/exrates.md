@@ -1,6 +1,6 @@
 ---
 title: exrates
-description: The 'exrates' page allows users to view crypto, fiats, and commodity
+description: "The 'exrates' page allows users to view crypto, fiats, and commodity"
   exchange rates from CoinGecko in Python. The page also explains how to limit, sort,
   or reverse data. Methods show examples and list of parameters as well.
 keywords:

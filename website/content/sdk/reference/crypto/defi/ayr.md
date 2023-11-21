@@ -1,6 +1,6 @@
 ---
 title: ayr
-description: This documentation page provides a detailed overview of the Anchor Yield
+description: "This documentation page provides a detailed overview of the Anchor Yield"
   Reserve's 30-day history. It provides the source code and usage for the `ayr` and
   `ayr_chart` functions from the `openbb.crypto.defi` namespace, including parameters
   and returns.

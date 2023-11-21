@@ -1,6 +1,6 @@
 ---
 title: adx
-description: Discover the purpose and usage of the ADX (Average Directional Index),
+description: "Discover the purpose and usage of the ADX (Average Directional Index),"
   a Welles Wilder style moving average of the Directional Movement Index. Learn to
   interpret the ADX values to determine the strength of a trend.
 keywords:

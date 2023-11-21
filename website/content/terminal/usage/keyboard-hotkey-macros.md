@@ -1,7 +1,7 @@
 ---
 title: Keyboard Hotkey Macros
 sidebar_position: 7
-description: Learn how to set hotkeys macros on a customizable keyboard for swift
+description: "Learn how to set hotkeys macros on a customizable keyboard for swift"
   and efficient investment research. Learn how to remap keys, assigning them custom
   macro commands, shortcuts, or key combinations using the VIA configurator for an
   enhanced experience, especially for OpenBB power users.

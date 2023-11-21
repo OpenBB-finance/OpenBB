@@ -1,6 +1,6 @@
 ---
 title: dividends
-description: This page provides documentation on how to access the dividend calendar
+description: "This page provides documentation on how to access the dividend calendar"
   for a given date using our OpenBB Terminal. The date represents the Ex-Dividend
   Date. Users are guided on how to use it and understand the returned DataFrame.
 keywords:

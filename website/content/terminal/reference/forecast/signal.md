@@ -1,6 +1,6 @@
 ---
 title: signal
-description: The documentation provides information about the 'Signal' function, which
+description: "The documentation provides information about the 'Signal' function, which"
   is used to add a price signal to a dataset based on closing price. The signal predicts
   if a short-term price will go up or down as compared to the long-term.
 keywords:

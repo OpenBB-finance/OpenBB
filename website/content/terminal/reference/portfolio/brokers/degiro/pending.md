@@ -1,6 +1,6 @@
 ---
 title: pending
-description: This page discusses the 'pending' concept, its usage in Python, and emphasizes
+description: "This page discusses the 'pending' concept, its usage in Python, and emphasizes"
   that the command does not require any parameters. It is a useful resource for those
   interested in understanding and applying this 'pending' operation.
 keywords:

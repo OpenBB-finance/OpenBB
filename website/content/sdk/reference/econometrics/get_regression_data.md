@@ -1,6 +1,6 @@
 ---
 title: get_regression_data
-description: The 'get_regression_data' page offers a detailed overview of OpenBB finance's
+description: "The 'get_regression_data' page offers a detailed overview of OpenBB finance's"
   function for regression data creation. It provides the source code link, describes
   the parameters like regression variables and type, and explains the returned results,
   such as the used dataset, dependent and independent variables, and the OLS model.

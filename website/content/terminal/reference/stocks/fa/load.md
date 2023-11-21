@@ -1,6 +1,6 @@
 ---
 title: load
-description: This page provides comprehensive instructions on how to load stock tickers
+description: "This page provides comprehensive instructions on how to load stock tickers"
   to perform analysis. It highlights how to load Indian market stocks with '.NS' and
   provides a link to the Yahoo finance available markets. The page features various
   parameters to tailor analysis including adjustments for start and end dates, interval

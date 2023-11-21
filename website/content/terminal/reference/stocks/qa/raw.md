@@ -1,6 +1,6 @@
 ---
 title: raw
-description: This page explains the 'raw' function related to financial data manipulation,
+description: "This page explains the 'raw' function related to financial data manipulation,"
   including its usage, parameters and some examples on how to use it in Python. It
   cover topics such as sorting raw data, displaying limit number of data points and
   reverse sorting.

@@ -1,6 +1,6 @@
 ---
 title: trades
-description: Documentation of 'trades' in OpenBB.finance. It includes various functions
+description: "Documentation of 'trades' in OpenBB.finance. It includes various functions"
   for obtaining and displaying trades for a coin in a given exchange. It covers both
   the model and view and provides detailed description of each parameter involved.
 keywords:

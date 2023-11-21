@@ -1,6 +1,6 @@
 ---
 title: tippw
-description: Learn how to use the tippw function to print the top insider purchases
+description: "Learn how to use the tippw function to print the top insider purchases"
   of the week. Discover parameters and example usages that can be customized according
   to your requirements.
 keywords:

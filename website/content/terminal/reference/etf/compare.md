@@ -1,6 +1,6 @@
 ---
 title: compare
-description: A documentation page for the 'compare' function used in StockAnalysis.
+description: "A documentation page for the 'compare' function used in StockAnalysis."
   The function allows users to compare selected ETF symbols to obtain various financial
   and trading data. Parameters, usage, and examples are provided.
 keywords:

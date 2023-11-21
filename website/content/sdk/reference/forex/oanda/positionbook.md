@@ -1,6 +1,6 @@
 ---
 title: positionbook
-description: Improve your understanding of the positionbook functionality on the OpenBBTerminal.
+description: "Improve your understanding of the positionbook functionality on the OpenBBTerminal."
   Discover how to request position book data and plot a position book for an instrument
   if Oanda provides one. Detailed source codes and parameter descriptions are provided
   to facilitate its usage.

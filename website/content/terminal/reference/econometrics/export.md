@@ -1,6 +1,6 @@
 ---
 title: export
-description: This documentation page guides you on how to use the 'export' command
+description: "This documentation page guides you on how to use the 'export' command"
   in Python for exporting a dataset to Excel or CSV. It provides detailed usage, parameters,
   and examples.
 keywords:

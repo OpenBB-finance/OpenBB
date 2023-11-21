@@ -1,6 +1,6 @@
 ---
 title: fr
-description: Our docusaurus page provides Python functions that return and display
+description: "Our docusaurus page provides Python functions that return and display"
   crypto coin fundraising data. It deals with launch summary, sales rounds, treasury
   accounts and metric value launch details. The page also showcases how to export
   the data to different file formats.

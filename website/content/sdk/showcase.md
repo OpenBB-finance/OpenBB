@@ -1,7 +1,7 @@
 ---
 title: Showcase
 sidebar_position: 6
-description: A showcase of projects built using OpenBB SDK, providing you with examples
+description: "A showcase of projects built using OpenBB SDK, providing you with examples"
   and real use cases of how our SDK has been used in different projects. Get in touch
   with us to list your project.
 keywords:

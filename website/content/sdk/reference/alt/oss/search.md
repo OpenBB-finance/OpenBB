@@ -1,6 +1,6 @@
 ---
 title: search
-description: Discover OpenBB's robust functionality to sort repos by stars or forks,
+description: "Discover OpenBB's robust functionality to sort repos by stars or forks,"
   with an additional category filter feature. The result is straightforwardly produced
   as a DataFrame. Source code available.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: atr
-description: Technical documentation of the 'atr' function or Average True Range used
+description: "Technical documentation of the 'atr' function or Average True Range used"
   for measuring volatility in financial markets, particularly those arising due to
   gaps or limit moves. The page highlights how to use the function using Python, its
   parameters, and different modes.

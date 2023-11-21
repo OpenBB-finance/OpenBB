@@ -1,6 +1,6 @@
 ---
 title: hist
-description: This page provides coding tutorials on how to get hour-level sentiment
+description: "This page provides coding tutorials on how to get hour-level sentiment"
   data for a chosen stock symbol and display the historical sentiment data of a ticker
   using OpenBB tools. It also includes source codes, parameters, and return information.
 keywords:

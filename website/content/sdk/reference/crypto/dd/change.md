@@ -1,6 +1,6 @@
 ---
 title: change
-description: This page provides detailed documentation on how to track the 30-day
+description: "This page provides detailed documentation on how to track the 30-day"
   change in the supply held in exchange wallets using our function 'openbb.crypto.dd.change'.
   It also includes steps on how to visualize these changes by plotting a chart using
   the function 'openbb.crypto.dd.change_chart'. The page contains explanations about

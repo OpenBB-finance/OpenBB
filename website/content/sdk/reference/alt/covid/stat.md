@@ -1,6 +1,6 @@
 ---
 title: stat
-description: This page provides a comprehensive guide on how to use two functions,
+description: "This page provides a comprehensive guide on how to use two functions,"
   stat and chart, in the OpenBBTerminal for COVID-19 data analysis. They are used
   for retrieving and visualising historical cases and deaths by country.
 keywords:

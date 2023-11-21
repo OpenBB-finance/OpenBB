@@ -1,6 +1,6 @@
 ---
 title: Stock Screener
-description: This comprehensive guide provides step-by-step instructions for using
+description: "This comprehensive guide provides step-by-step instructions for using"
   the Stock Screener tool, an efficient way to discover stocks and narrow down investment
   options. It includes details on various categories of stocks, detailed examples,
   and preset parameters for customization. This guide also includes information on

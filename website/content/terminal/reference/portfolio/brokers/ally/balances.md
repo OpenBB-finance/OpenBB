@@ -1,6 +1,6 @@
 ---
 title: balances
-description: Learn about the balances command and its usage in marketing accounting.
+description: "Learn about the balances command and its usage in marketing accounting."
   No parameters are involved in this command's application.
 keywords:
 - balances

@@ -1,6 +1,6 @@
 ---
 title: financial
-description: This page details the use of the financial function that displays filtered
+description: "This page details the use of the financial function that displays filtered"
   financial data of relevant companies. It details the various parameters including
   preset filters, data sorting instructions, stock limits and more.
 keywords:

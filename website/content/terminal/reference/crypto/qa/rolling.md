@@ -1,6 +1,6 @@
 ---
 title: rolling
-description: Learn the usage, parameters and practical details of the rolling function,
+description: "Learn the usage, parameters and practical details of the rolling function,"
   a vital Python tool for calculating the rolling mean and standard deviation.
 keywords:
 - Rolling function

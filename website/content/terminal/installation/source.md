@@ -1,7 +1,7 @@
 ---
 title: Source
 sidebar_position: 3
-description: Comprehensive guide to install the OpenBB Terminal and SDK from source.
+description: "Comprehensive guide to install the OpenBB Terminal and SDK from source."
   The guide covers the installation process for Windows, macOS, and Linux systems
   and covers various software installations including Miniconda, Git, Microsoft C++
   Build Tools, Rosetta2, LibOMP, VcXsrv, and GTK toolchains. Instructions for environment

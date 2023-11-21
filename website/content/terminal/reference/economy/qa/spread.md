@@ -1,6 +1,6 @@
 ---
 title: spread
-description: This page provides a detailed guide on the use of the 'spread' function
+description: "This page provides a detailed guide on the use of the 'spread' function"
   in Python, which shows rolling spread measurement. Furthermore, it also presents
   the parameters involved, their descriptions, and potential default values.
 keywords:

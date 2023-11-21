@@ -1,6 +1,6 @@
 ---
 title: prt
-description: The Potential Returns Tool page provides detailed usage and parameter
+description: "The Potential Returns Tool page provides detailed usage and parameter"
   information for the tool which helps users estimate returns from various cryptocurrencies
   if they reach a certain price or market cap. The tool utilizes data from CoinGecko.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: queries
-description: Learn how to get related queries from Google API using the `openbb.stocks.ba.queries`
+description: "Learn how to get related queries from Google API using the `openbb.stocks.ba.queries`"
   function in the OpenBB Terminal. This page includes parameters, return types, and
   source code.
 keywords:

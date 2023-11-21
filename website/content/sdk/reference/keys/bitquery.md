@@ -1,6 +1,6 @@
 ---
 title: bitquery
-description: This documentation page is dedicated to the Bitquery key setting process
+description: "This documentation page is dedicated to the Bitquery key setting process"
   in the OpenBB Terminal application. Learn how to set API keys, understand the use
   of environment variables, and follow practical examples using the Python language
   in a Jupyter Notebook environment.

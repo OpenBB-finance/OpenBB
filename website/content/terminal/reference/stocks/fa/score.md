@@ -1,6 +1,6 @@
 ---
 title: score
-description: This is a documentation for Score, a Python command for a value investing
+description: "This is a documentation for Score, a Python command for a value investing"
   tool based on insights by Warren Buffett, Joseph Piotroski, and Benjamin Graham.
   This command does not require any parameters.
 keywords:

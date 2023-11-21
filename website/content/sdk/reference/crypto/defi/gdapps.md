@@ -1,6 +1,6 @@
 ---
 title: gdapps
-description: This page presents features such as the displaying and plotting of top
+description: "This page presents features such as the displaying and plotting of top"
   dApps by TVL, which are part of the DeFi module of the openbb crypto module. Detailed
   guides on how to use these features with service parameters such as limit, export
   type, and others are included. Links to source code are also provided.

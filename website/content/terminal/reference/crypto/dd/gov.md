@@ -1,6 +1,6 @@
 ---
 title: gov
-description: This page provides information on the 'gov' command, enabling the display
+description: "This page provides information on the 'gov' command, enabling the display"
   of an asset's governance. The command is easy to use and requires no parameters.
 keywords:
 - gov

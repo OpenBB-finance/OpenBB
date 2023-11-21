@@ -1,6 +1,6 @@
 ---
 title: assets
-description: This tutorial page provides information about the 'assets' function in
+description: "This tutorial page provides information about the 'assets' function in"
   the OpenBB Terminal's Portfolio module, how to implement it and its parameters.
   The 'assets' function is used to display a portfolio's asset allocation as compared
   to the benchmark.

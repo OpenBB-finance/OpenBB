@@ -1,6 +1,6 @@
 ---
 title: maxdrawdown
-description: This page provides details on how to get the maximum drawdown ratio for
+description: "This page provides details on how to get the maximum drawdown ratio for"
   a selected portfolio and benchmark using the 'maxdrawdown' function in the OpenBB
   application. Learn how to effectively use and apply this feature in your portfolio
   management practice.

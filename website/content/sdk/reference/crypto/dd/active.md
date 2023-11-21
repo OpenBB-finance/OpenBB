@@ -1,6 +1,6 @@
 ---
 title: active
-description: Documentation for the activation and visualization of active addresses
+description: "Documentation for the activation and visualization of active addresses"
   of a certain cryptocurrency symbol. Explains how to both retrieve and chart data
   concerning active addresses within specific time frames.
 keywords:

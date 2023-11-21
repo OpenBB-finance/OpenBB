@@ -1,6 +1,6 @@
 ---
 title: adosc
-description: This page explains the Accumulation/Distribution Oscillator (adosc),
+description: "This page explains the Accumulation/Distribution Oscillator (adosc),"
   a momentum indicator in trading examining both the strength of price moves and underlying
   buying/selling pressure. It details usage, parameters, and potential market implications.
 keywords:

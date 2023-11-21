@@ -1,6 +1,6 @@
 ---
 title: lobbying
-description: This page provides details on corporate lobbying, including parameters
+description: "This page provides details on corporate lobbying, including parameters"
   for symbol and limit, and returns a dataframe with corporate lobbying data. It includes
   a link to the source code on GitHub.
 keywords:

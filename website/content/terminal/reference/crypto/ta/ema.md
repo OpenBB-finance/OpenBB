@@ -1,6 +1,6 @@
 ---
 title: ema
-description: Page providing details about the Exponential Moving Average (EMA), a
+description: "Page providing details about the Exponential Moving Average (EMA), a"
   crucial tool in technical analysis. Explains the comparison between EMA and Simple
   Moving Average, along with usage and parameters.
 keywords:

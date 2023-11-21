@@ -1,6 +1,6 @@
 ---
 title: list
-description: This page contains information on how to list the order history using
+description: "This page contains information on how to list the order history using"
   specific parameters such as order state and limit retrieval. It provides guidance
   on the usage and parameters to maximize functionality.
 keywords:

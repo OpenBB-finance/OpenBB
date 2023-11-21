@@ -1,6 +1,6 @@
 ---
 title: rpf
-description: This page provides information on the usage and parameters of the 'rpf'
+description: "This page provides information on the usage and parameters of the 'rpf'"
   function, a tool used for removing portfolios.
 keywords:
 - rpf

@@ -1,6 +1,6 @@
 ---
 title: spacc
-description: Spacc- a tool that presents a list of other users' SPACs announcements
+description: "Spacc- a tool that presents a list of other users' SPACs announcements"
   from the 'SPACs' subreddit. Options include setting the limit of posts retrieved
   and the sorting model- popular posts or recent posts.
 keywords:

@@ -1,6 +1,6 @@
 ---
 title: holders
-description: Detailed guide on how to display top ERC20 token holders using python,
+description: "Detailed guide on how to display top ERC20 token holders using python,"
   with the option of sorting the data in various ways.
 keywords:
 - ERC20 token holders

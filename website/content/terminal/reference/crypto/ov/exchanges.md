@@ -1,6 +1,6 @@
 ---
 title: exchanges
-description: A documentation page that details the usage of currency exchange parameters
+description: "A documentation page that details the usage of currency exchange parameters"
   in crypto trading. Provides details on how to sort and limit data based on various
   criteria, specifically for CoinPaprika and CoinGecko exchanges.
 keywords:

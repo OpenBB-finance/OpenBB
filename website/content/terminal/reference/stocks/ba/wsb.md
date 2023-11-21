@@ -1,6 +1,6 @@
 ---
 title: wsb
-description: This page serves as a guide on how to use the 'wsb' function, a tool
+description: "This page serves as a guide on how to use the 'wsb' function, a tool"
   which prints what the WSB gang are up to in Reddit's subreddit wallstreetbets. It
   includes parameters and examples.
 keywords:

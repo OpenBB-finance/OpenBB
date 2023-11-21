@@ -1,6 +1,6 @@
 ---
 title: chains
-description: This page provides comprehensive instructions on how to get option chain
+description: "This page provides comprehensive instructions on how to get option chain"
   for a stock using openbb.stocks.options API. It provides examples including how
   to retrieve data from 'Nasdaq' and fetch specific expiration dates.
 keywords:

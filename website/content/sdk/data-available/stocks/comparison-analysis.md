@@ -1,6 +1,6 @@
 ---
 title: Comparison Analysis
-description: Learn how to use the CA module of the OpenBB Terminal SDK for functionalities
+description: "Learn how to use the CA module of the OpenBB Terminal SDK for functionalities"
   like balance financials comparison, historical price correlation, sentiment analysis
   comparison and more using Python. Discover the list of similar companies, historical
   volume data comparison and more.

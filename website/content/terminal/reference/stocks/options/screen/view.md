@@ -1,6 +1,6 @@
 ---
 title: view
-description: This page provides guidance on using view feature that offers preset
+description: "This page provides guidance on using view feature that offers preset"
   options under the presets folder. The categories include template.ini, high_IV.ini,
   among others. Learn how to effectively use the view command in Python.
 keywords:

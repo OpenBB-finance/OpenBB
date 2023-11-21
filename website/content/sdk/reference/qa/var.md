@@ -1,6 +1,6 @@
 ---
 title: var
-description: This Docusaurus page contains Python source code for 'var/model' and
+description: "This Docusaurus page contains Python source code for 'var/model' and"
   'var chart' functions. Each section provides detailed explanations of parameters
   and returns, and links to the respective source code. The functions are a part of
   quantitative analysis of a specified stock dataframe.

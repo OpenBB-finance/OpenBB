@@ -1,6 +1,6 @@
 ---
 title: indexes
-description: The documentation page covers the retrieval and visualization of crypto
+description: "The documentation page covers the retrieval and visualization of crypto"
   indexes using the CoinGecko API in the OpenBB platform. It details parameters, source
   code, and return values for related methods.
 keywords:

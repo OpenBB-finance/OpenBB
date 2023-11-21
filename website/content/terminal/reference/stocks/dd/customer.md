@@ -1,6 +1,6 @@
 ---
 title: customer
-description: The 'customer' page provides a list of customers from a ticker source,
+description: "The 'customer' page provides a list of customers from a ticker source,"
   CSIMarket. It also includes the usage of the command and its parameters.
 keywords:
 - customer

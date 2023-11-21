@@ -1,6 +1,6 @@
 ---
 title: cpis
-description: cpis and cpis_chart functions are powerful tools in the OpenBBTerminal
+description: "cpis and cpis_chart functions are powerful tools in the OpenBBTerminal"
   that inform about the number of companies per industry in a specific sector and
   market cap, and visualise the data respectively.
 keywords:

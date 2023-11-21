@@ -1,6 +1,6 @@
 ---
 title: filter
-description: Optimize your open insider data using the filter function. This guide
+description: "Optimize your open insider data using the filter function. This guide"
   provides details on its usage, parameters, and examples, instructing users on how
   to limit data rows and configure hyperlinks to meet their needs. Learn how to navigate
   through stock market transactions, including sales and derivative transactions efficiently.
