@@ -91,7 +91,7 @@ def test_derivatives_futures_historical(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"provider": "cboe", "symbol": "VXM", "date": "2023-01-25"}),
+        ({"provider": "cboe", "symbol": "VX", "date": "2023-01-25"}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
