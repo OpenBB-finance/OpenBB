@@ -28,8 +28,8 @@ Included dependencies:
 - `pydocstyle`: A linter for Python docstrings to ensure they meet certain style requirements.
 - `black`: An uncompromising Python code formatter, ensuring consistent code style.
 - `bandit`: A tool designed to find common security issues in Python code.
-- `pre`-commit: Manages and maintains pre-commit hooks that run checks before each commit, ensuring code quality.
-- `tox`: A generic virtualenv management and test command line tool for running tests in isolated environments.
+- `pre-commit`: Manages and maintains pre-commit hooks that run checks before each commit, ensuring code quality.
+- `nox`: A generic virtualenv management and test command line tool for running tests in isolated environments.
 - `pytest`: A mature full-featured Python testing tool that helps in writing better programs.
 - `pytest-cov`: A plugin for pytest that measures code coverage during testing.
 - `ipykernel`: A package that provides the IPython kernel for Jupyter.
