@@ -4,7 +4,6 @@ import requests
 
 
 def main() -> bool:
-
     widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
 
     response = requests.get(widgets_json_url, timeout=10)
@@ -31,7 +30,7 @@ def main() -> bool:
             )
 
     # Create the category index file
-    text = f"""# Widgets Library
+    text = """# Widgets Library
 
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
