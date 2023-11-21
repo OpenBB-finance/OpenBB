@@ -125,7 +125,7 @@ def some_command(
 
 If your command only makes use of a standard model defined inside `openbb_core/provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
 
-This is an example how we do it for `equity.price.historical` which only depends on `EquityHistorical` model defined in `openbb-provider`:
+This is an example how we do it for `equity.price.historical` which only depends on `EquityHistorical` model defined in `openbb-core.provider.standard_models`:
 
 ```python
 @router.command(model="EquityHistorical")

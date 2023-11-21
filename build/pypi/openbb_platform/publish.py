@@ -10,7 +10,6 @@ CORE_PACKAGES = ["platform/provider", "platform/core"]
 EXTENSION_PACKAGES = ["extensions", "providers"]
 
 CMD = [sys.executable, "-m", "poetry"]
-CORE_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-provider=latest"]
 EXTENSION_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-core=latest"]
 VERSION_BUMP_CMD = ["version", "prerelease"]
 PUBLISH_CMD = ["publish", "--build"]
@@ -38,15 +37,6 @@ def parse_args():
         dest="dry_run",
     )
     return parser.parse_args()
-
-
-def update_core_dependencies(path: Path):
-    """Update the core dependencies"""
-    subprocess.run(
-        CMD + CORE_DEPENDENCIES_UPDATE_CMD,  # noqa: S603
-        cwd=path.parent,
-        check=True,
-    )
 
 
 def update_extension_dependencies(path: Path):
@@ -80,11 +70,6 @@ def publish(dry_run: bool = False, core: bool = False, extensions: bool = False)
         for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
             try:
                 # Update dependencies
-                if is_core:
-                    # if it's the provider package no need to update the dependencies
-                    if "provider" in str(path.parent):
-                        continue
-                    update_core_dependencies(path)
                 if is_extension:
                     update_extension_dependencies(path)
                 # Bump version
