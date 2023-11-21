@@ -1,6 +1,6 @@
 ---
 title: DevTools
-sidebar_position: 1
+sidebar_position: 2
 description: This page provides information about the `openbb-devtools` package, which includes a range of dependencies essential for robust and efficient software development on the OpenBB Platform.
 keywords:
 - DevTools
