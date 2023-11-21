@@ -4,12 +4,12 @@
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_polygon.utils.helpers import get_data_many, get_date_condition
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import BaseModel, Field, field_validator
 
 

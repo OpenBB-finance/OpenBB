@@ -20,7 +20,7 @@ from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 fred_provider = Provider(
     name="fred",

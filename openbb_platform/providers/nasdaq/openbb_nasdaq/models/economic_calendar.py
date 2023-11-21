@@ -9,8 +9,8 @@ from typing import Any, Dict, List, Optional, Set, Union
 
 import requests
 from openbb_nasdaq.utils.helpers import HEADERS, date_range, remove_html_tags
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.economic_calendar import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )

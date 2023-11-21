@@ -3,7 +3,7 @@
 from openbb_government_us.models.treasury_auctions import (
     GovernmentUSTreasuryAuctionsFetcher,
 )
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 government_us_provider = Provider(
     name="government_us",

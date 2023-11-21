@@ -57,7 +57,7 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 fmp_provider = Provider(
     name="fmp",

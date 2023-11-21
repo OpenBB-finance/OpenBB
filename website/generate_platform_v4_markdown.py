@@ -8,7 +8,7 @@ from typing import Any, Dict, List, TextIO, Tuple, Union
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
-from openbb_provider import standard_models
+from openbb_core.provider import standard_models
 from pydantic.fields import FieldInfo
 
 website_path = Path(__file__).parent.absolute()
@@ -448,7 +448,7 @@ def generate_implementation_details_markdown_section(data_model: str) -> str:
 
     file_name = find_data_model_implementation_file(data_model)
 
-    markdown += f"from openbb_provider.standard_models.{file_name} import (\n"
+    markdown += f"from openbb_core.provider.standard_models.{file_name} import (\n"
     markdown += f"{data_model}Data,\n{data_model}QueryParams,\n"
     markdown += ")\n```"
 

@@ -4,12 +4,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import requests
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.upcoming_release_days import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.upcoming_release_days import (
     UpcomingReleaseDaysData,
     UpcomingReleaseDaysQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, field_validator
 
 

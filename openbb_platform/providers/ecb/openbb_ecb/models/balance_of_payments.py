@@ -11,8 +11,8 @@ from openbb_ecb.utils.bps_series import (
     generate_bps_series_ids,
 )
 from openbb_ecb.utils.ecb_helpers import get_series_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.balance_of_payments import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.balance_of_payments import (
     BalanceOfPaymentsQueryParams,
     ECBCountry,
     ECBDirectInvestment,

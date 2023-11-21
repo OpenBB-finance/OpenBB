@@ -8,13 +8,13 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.data import StrictInt
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cash_flow import (
+from openbb_core.provider.abstract.data import StrictInt
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, model_validator
 
 

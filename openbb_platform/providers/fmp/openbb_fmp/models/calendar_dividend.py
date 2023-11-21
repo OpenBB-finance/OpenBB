@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_dividend import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_dividend import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )

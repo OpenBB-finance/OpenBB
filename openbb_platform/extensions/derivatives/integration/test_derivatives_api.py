@@ -2,7 +2,7 @@
 
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
 

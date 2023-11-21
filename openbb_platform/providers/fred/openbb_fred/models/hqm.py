@@ -9,8 +9,8 @@ from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_SERIES_CORPORATE_PAR,
     YIELD_CURVE_SERIES_CORPORATE_SPOT,
 )
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.hqm import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.hqm import (
     HighQualityMarketCorporateBondData,
     HighQualityMarketCorporateBondQueryParams,
 )

@@ -4,8 +4,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Union
 
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_filings import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_filings import (
     SEC_FORM_TYPES,
     CompanyFilingsData,
     CompanyFilingsQueryParams,

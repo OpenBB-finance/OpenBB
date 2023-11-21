@@ -6,8 +6,8 @@ from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_dividend import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_dividend import (
     DividendCalendarData,
     DividendCalendarQueryParams,
 )

@@ -17,7 +17,7 @@ from linearmodels.panel import (
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey  # type: ignore
 from statsmodels.stats.stattools import durbin_watson  # type: ignore

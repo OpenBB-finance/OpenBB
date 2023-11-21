@@ -6,9 +6,9 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many, get_data_one
-from openbb_provider.abstract.data import StrictInt
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.key_metrics import (
+from openbb_core.provider.abstract.data import StrictInt
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
