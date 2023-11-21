@@ -208,6 +208,19 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+## Hub Synchronization
+
+Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](my.openbb.co).  The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance.  To login, you can use the `login` method, either using your email and password:
+
+```python
+obb.account.login(email='my_email_here', password='my_password_here')
+```
+Or using your personal access token:
+
+```python
+obb.account.login(pat='my_pat_here')
+```
+
 ## Documentation
 
 The documentation and packages are kept in the `/website` folder, at the base of the repository.  Navigate there to install the dependencies and start the development server.
