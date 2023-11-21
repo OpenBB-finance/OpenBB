@@ -1,7 +1,7 @@
 """FMP Filings Model."""
 
 import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_fmp.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
@@ -10,7 +10,7 @@ from openbb_provider.standard_models.filings import (
     FilingsQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FMPFilingsQueryParams(FilingsQueryParams):
@@ -23,7 +23,7 @@ class FMPFilingsQueryParams(FilingsQueryParams):
         "end_date": "to",
     }
 
-    is_done: Optional[Literal["true", "false"]] = Field(
+    is_done: Optional[bool] = Field(
         default=None,
         description="Flag for whether or not the filing is done.",
     )
@@ -33,19 +33,22 @@ class FMPFilingsData(FilingsData):
     """FMP Filings Data."""
 
     __alias_dict__ = {
-        "timestamp": "date",
+        "accepted_date": "date",
         "symbol": "ticker",
         "url": "link",
     }
 
-    is_done: Optional[Literal["True", "False"]] = Field(
-        default=None, description="Whether or not the filing is done."
+    title: str = Field(
+        description="Title of the filing.",
     )
-
-    @field_validator("timestamp", mode="before")
-    def validate_timestamp(cls, v: Any) -> Any:  # pylint: disable=no-self-argument
-        """Validate the timestamp."""
-        return datetime.datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+    cik: str = Field(
+        description="CIK of the filing.",
+    )
+    is_done: Optional[bool] = Field(
+        default=None,
+        description="Whether or not the filing is done.",
+        alias="done",
+    )
 
 
 class FMPFilingsFetcher(
