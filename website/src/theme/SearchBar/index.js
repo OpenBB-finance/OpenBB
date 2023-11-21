@@ -95,7 +95,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       // Algolia results could contain URL's from other domains which cannot
       // be served through history and should navigate with window.location
       if (isRegexpStringMatch(externalUrlRegex, itemUrl)) {
-        window.location.href = itemUrl;
+        window?.location?.href = itemUrl;
       } else {
         history.push(itemUrl);
       }
@@ -163,7 +163,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         createPortal(
           <DocSearchModal
             onClose={onClose}
-            initialScrollY={window.scrollY}
+            initialScrollY={window?.scrollY}
             initialQuery={initialQuery}
             navigator={navigator}
             transformItems={transformItems}
