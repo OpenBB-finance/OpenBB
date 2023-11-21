@@ -16,6 +16,95 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Important classes
 
+### The `Data` class
+
+The OpenBB Standardized Data Model.
+
+The `Data` class is a flexible Pydantic model designed to accommodate various data structures
+for OpenBB's data processing pipeline as it's structured to support dynamic field definitions.
+
+The model leverages Pydantic's powerful validation features to ensure data integrity while
+providing the flexibility to handle extra fields that are not explicitly defined in the model's
+schema. This makes the `Data` class ideal for working with datasets that may have varying
+structures or come from heterogeneous sources.
+
+Key Features:
+
+- Dynamic field support: Can dynamically handle fields that are not pre-defined in the model,
+    allowing for great flexibility in dealing with different data shapes.
+- Alias handling: Utilizes an aliasing mechanism to maintain compatibility with different naming
+    conventions across various data formats.
+
+Usage:
+The `Data` class can be instantiated with keyword arguments corresponding to the fields of the
+expected data. It can also parse and validate data from JSON or other serializable formats, and
+convert them to a `Data` instance for easy manipulation and access.
+
+Example:
+
+```python
+# Direct instantiation
+data_record = Data(name="OpenBB", value=42)
+
+# Conversion from a dictionary
+data_dict = {"name": "OpenBB", "value": 42}
+data_record = Data(**data_dict)
+```
+
+The class is highly extensible and can be subclassed to create more specific models tailored to
+particular datasets or domains, while still benefiting from the base functionality provided by the
+`Data` class.
+
+### The `QueryParams` class
+
+The QueryParams class is a standardized model for handling query input parameters in the OpenBB platform. It extends the BaseModel from the Pydantic library, which provides runtime data validation and serialization.
+
+The class includes a dictionary, `__alias_dict__`, which can be used to map the original parameter names to aliases. This can be useful when dealing with different data providers that may use different naming conventions for similar parameters.
+
+The `__repr__` method provides a string representation of the QueryParams object, which includes the class name and a list of the model's parameters and their values.
+
+The model_config attribute is a ConfigDict instance that allows extra fields not defined in the model and populates the model by name.
+
+The model_dump method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
+
+### The `Fetcher` class
+
+The `Fetcher` class is an abstract base class designed to provide a structured way to fetch data from various providers. It uses generics to allow for flexibility in the types of queries, data, and return values it handles.
+
+The class defines a series of methods that must be implemented by any subclass: transform_query, extract_data, and transform_data. These methods represent the core steps of fetching data: transforming input parameters into a provider-specific query, extracting data from the provider using the query, and then transforming the provider-specific data into a desired format.
+
+The fetch_data method orchestrates these steps, taking in parameters and optional credentials, and returning the transformed data.
+
+The class also includes a test method for validating the functionality of a fetcher, performing assertions on each stage of the fetch process.
+
+Additionally, the `Fetcher` class uses a custom `classproperty` decorator to define class-level properties that return the types of the query parameters, return value, and data.
+
+The require_credentials class variable indicates whether credentials are needed to fetch data from the provider. This can be overridden by subclasses as needed.
+
+### The `OBBject` class
+
+The OBBject class is a generic class in the OpenBB platform that represents a standardized object for handling and manipulating data fetched from various providers. It extends the `Tagged` class and uses Python's generics to allow flexibility in the type of results it can handle.
+
+The class includes several fields such as results, provider, warnings, chart, and extra, which respectively represent the fetched data, the data provider, any warnings generated during data fetching, an optional chart object for visualizing the data, and a dictionary for any additional information.
+
+The class provides several methods for converting the fetched data into different formats, including `to_df` (or `to_dataframe`) for converting to a pandas DataFrame, `to_polars` for converting to a Polars DataFrame, `to_numpy` for converting to a numpy array, and `to_dict` for converting to a dictionary.
+
+The `to_chart` method allows for creating or updating a chart based on the fetched data, and the show method is used to display the chart.
+
+The class also includes a `__repr__` method for a human-readable representation of the object, and a model_parametrized_name method for returning the model name with its parameters.
+
+### The `Router` class
+
+The Router class in the OpenBB platform is responsible for managing and routing API requests. It uses the `APIRouter` from the FastAPI library to handle routing.
+
+The class includes a command method that allows for the registration of callable functions as API endpoints. This method takes care of setting up the API route, including defining the HTTP methods, response models, operation IDs, and other necessary parameters for the API endpoint.
+
+The `include_router` method allows for the inclusion of another router, effectively merging the routes from the included router into the current one.
+
+The `Router` class also interacts with the `SignatureInspector` class to validate and complete function signatures, ensuring that the functions registered as API endpoints have the correct parameters and return types.
+
+The `api_router` property provides access to the underlying APIRouter instance, allowing for direct interaction with the FastAPI routing system if needed.
+
 ## Import statements
 
 ```python
