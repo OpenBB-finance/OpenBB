@@ -1,6 +1,6 @@
 ---
 title: Expectations for Developers
-sidebar_position: 1
+sidebar_position: 2
 description: This guide outlines the expectations for developers contributing to the OpenBB Platform. It covers key areas such as use cases, documentation, code quality, testing, performance, and collaboration.
 keywords:
 - OpenBB Platform

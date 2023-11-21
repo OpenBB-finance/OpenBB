@@ -1,6 +1,6 @@
 ---
 title: Add a Data Point
-sidebar_position: 3
+sidebar_position: 4
 description: This guide provides detailed instructions on how to add a new data point to the OpenBB Platform. It covers the process of creating a new provider, defining query parameters and data output models, and building a Fetcher class.
 keywords:
 - OpenBB Platform
