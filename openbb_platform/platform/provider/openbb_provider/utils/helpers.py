@@ -5,19 +5,12 @@ import re
 import zlib
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import (
-    Awaitable,
-    Callable,
-    List,
-    Literal,
-    ParamSpec,
-    TypeVar,
-    Union,
-)
+from typing import Awaitable, Callable, List, Literal, TypeVar, Union
 
 import aiohttp
 import requests
 from anyio import start_blocking_portal
+from typing_extensions import ParamSpec
 
 T = TypeVar("T")
 P = ParamSpec("P")
