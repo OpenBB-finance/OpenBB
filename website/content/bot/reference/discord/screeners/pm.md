@@ -1,8 +1,8 @@
 ---
 title: pm
-description: "Our tool offers the ability to view the top pre-market gainers, losers,\
-  \ and most active. This page will guide you on how to use the pm command to have\
-  \ a better understanding of the market\u2019s movements before it officially opens."
+description: Our tool offers the ability to view the top pre-market gainers, losers,
+  and most active. This page will guide you on how to use the pm command to have
+  a better understanding of the market's movements before it officially opens.
 keywords:
 - Pre-Market Top Gainers
 - Pre-Market Top Losers
