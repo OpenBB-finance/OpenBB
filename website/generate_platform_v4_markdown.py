@@ -18,11 +18,15 @@ SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
     (website_path / "metadata/platform_v4_seo_metadata.json").read_text()
 )
 
-REFERENCE_IMPORT = """
-import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+REFERENCE_IMPORT_UL = """import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 """
+
+reference_import = (
+    'import ReferenceCard from "@site/src/components/General/NewReferenceCard";\n\n'
+)
+refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
 
 
 def get_docstring_meta(
@@ -186,10 +190,10 @@ def create_nested_menus_card(folder: Path, url: str, data_models: bool = False) 
     url = f"/platform/{path}/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
-        title="{folder.name.replace("_", " ").title()}"
-        description="{categories}"
-        url="{url}"
-    />\n"""
+    title="{folder.name.replace("_", " ").title()}"
+    description="{categories}"
+    url="{url}"
+/>\n"""
     return index_card
 
 
@@ -205,7 +209,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
     title="{cmd["title"].replace("_", " ").title()}"
     description="{description.split(".").pop(0).strip().replace(":", "").replace('"', "'")}"
     url="{url}"
-    chevron={{false}}
+    command
 />\n"""
     return cmd_cards
 
@@ -236,18 +240,24 @@ def write_reference_index(
     data_models : bool, optional
         Whether the folder is a data_models folder, by default False
     """
-    f.write(f"# {fname}\n{REFERENCE_IMPORT}")
-    for folder in path.glob("*"):
-        if folder.is_dir():
-            f.write(
-                create_nested_menus_card(folder, "/".join(rel_path.parts), data_models)
-            )
+    f.write(f"# {fname}\n\n{REFERENCE_IMPORT_UL if data_models else reference_import}")
+    sub_folders = [sub for sub in path.glob("*") if sub.is_dir()]
+
+    menus = []
+    for folder in sub_folders:
+        menus.append(
+            create_nested_menus_card(folder, "/".join(rel_path.parts), data_models)
+        )
+
+    if sub_folders and not data_models:
+        f.write(f"### Menus\n{refrence_ul_element}\n{''.join(menus)}</ul>\n")
 
     folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
-    if folder_cmd_cards:
-        f.write(create_cmd_cards(folder_cmd_cards, data_models))
 
-    f.write("</ul>\n")
+    if folder_cmd_cards:
+        if not data_models:
+            f.write(f"\n\n### Commands\n{refrence_ul_element}\n")
+        f.write(create_cmd_cards(folder_cmd_cards, data_models) + "</ul>\n")
 
 
 provider_interface = ProviderInterface()
@@ -715,10 +725,6 @@ def generate_platform_markdown() -> None:
 
 def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
     """Save SEO metadata"""
-    # regex = re.compile(
-    #     r"---\ntitle: (.*)\ndescription: (.*)\nkeywords:(.*)\n---\n\n\n<!-- markdownlint-disable MD012 MD031 MD033 -->",
-    #     re.MULTILINE | re.DOTALL,
-    # )
     regex = re.compile(
         r"---\ntitle: (.*)\ndescription: (.*)\nkeywords:(.*)\n---\n\nimport HeadTitle",
         re.MULTILINE | re.DOTALL,

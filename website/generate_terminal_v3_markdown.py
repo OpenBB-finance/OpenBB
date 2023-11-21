@@ -27,11 +27,12 @@ SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
     (website_path / "metadata/terminal_v3_seo_metadata.json").read_text()
 )
 
-reference_import = """
-import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+reference_import = (
+    'import ReferenceCard from "@site/src/components/General/NewReferenceCard";\n\n'
+)
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-"""
+refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
+
 
 USER_PATH = (
     f"{get_current_user().preferences.USER_DATA_DIRECTORY}",
@@ -229,9 +230,9 @@ def create_nested_menus_card(folder: Path, url: str) -> str:
     url = f"/terminal/reference/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
-        title="{folder.name.title()}"
-        description="{categories}"
-        url="{url}"
+    title="{folder.name.title()}"
+    description="{categories}"
+    url="{url}"
 />\n"""
     return index_card
 
@@ -246,7 +247,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
     title="{cmd["title"].title()}"
     description="{description.replace('"', "'")}"
     url="{url}"
-    command="true"
+    command
 />\n"""
     return cmd_cards
 
@@ -274,16 +275,26 @@ def write_reference_index(
     f : TextIO
         File to write to.
     """
-    f.write(f"# {fname}\n{reference_import}")
-    for folder in path.glob("*"):
-        if folder.is_dir():
-            f.write(create_nested_menus_card(folder, "/".join(rel_path.parts)))
+    f.write(f"# {fname}\n\n{reference_import}")
+    sub_folders = [sub for sub in path.glob("*") if sub.is_dir()]
+    menus = []
+
+    for folder in sub_folders:
+        menus.append(create_nested_menus_card(folder, "/".join(rel_path.parts)))
+
+    if menus:
+        f.write(f"### Menus\n{refrence_ul_element}\n{''.join(menus)}</ul>\n")
 
     folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
-    if folder_cmd_cards:
-        f.write(create_cmd_cards(folder_cmd_cards))
 
-    f.write("</ul>\n")
+    if folder_cmd_cards:
+        f.writelines(
+            [
+                f"\n\n### Commands\n{refrence_ul_element}\n",
+                create_cmd_cards(folder_cmd_cards),
+                "</ul>\n",
+            ]
+        )
 
 
 def main() -> bool:
