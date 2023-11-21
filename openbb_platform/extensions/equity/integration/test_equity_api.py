@@ -875,7 +875,7 @@ def test_equity_fundamental_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_search_financial_attributes(params, obb):
+def test_equity_fundamental_search_financial_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -904,7 +904,7 @@ def test_equity_fundamental_search_financial_attributes(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_financial_attributes(params, obb):
+def test_equity_fundamental_financial_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
