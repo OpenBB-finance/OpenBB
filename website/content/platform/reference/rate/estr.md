@@ -1,15 +1,15 @@
 ---
 title: estr
-description: "Learn about the euro short-term rate (\u20ACSTR), wholesale euro unsecured\
-  \ overnight borrowing costs, TARGET2 business day transactions, parameters for the\
-  \ Python obb.fixedincome.rate.estr method, and the data and returns provided."
+description: Learn about the euro short-term rate ($ACSTR), wholesale euro unsecured
+  overnight borrowing costs, TARGET2 business day transactions, parameters for the
+  Python obb.fixedincome.rate.estr method, and the data and returns provided.
 keywords:
 - euro short-term rate
-- "\u20ACSTR"
+- $ACSTR
 - wholesale euro unsecured overnight borrowing costs
 - TARGET2 business day
 - transactions
-- "arm\u2019s length"
+- arm's length
 - market rates
 - Python obb.fixedincome.rate.estr
 - parameters
