@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-charting"
-version = "1.0.0b0"
+version = "1.0.0b1"
 description = "Charting extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -17,7 +17,7 @@ svglib = "^1.5.1"
 aiohttp = "^3.8.4"
 nbformat = "^5.9.2"
 pandas-ta = "^0.3.14b"
-openbb-core = "^1.0.0b0"
+openbb-core = "^1.0.0b1"
 
 [build-system]
 requires = ["poetry-core"]
