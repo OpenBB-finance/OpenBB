@@ -6,6 +6,11 @@ on:
       - develop
     paths:
       - 'openbb_platform/**'
+  push:
+    branches:
+      - feature/fix-platform-test
+    paths:
+      - 'openbb_platform/**'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
