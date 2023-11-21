@@ -1,3 +1,4 @@
+---
 title: get_search_results
 description: All companies with searchStr in their name
 keywords:
