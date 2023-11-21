@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Provides information that relates to the CAPM model
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/factors_model.py#L80)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/factors_model.py#L79)]
 
-```python
+```python wordwrap
 openbb.stocks.qa.capm(symbol: str)
 ```
 
@@ -40,3 +40,4 @@ openbb.stocks.qa.capm(symbol: str)
 | ---- | ----------- |
 | Tuple[float, float] | The beta for a stock, The systematic risk for a stock |
 ---
+

@@ -20,7 +20,7 @@ Get portfolio transactions
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L68)]
 
-```python
+```python wordwrap
 openbb.portfolio.show(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -46,8 +46,9 @@ openbb.portfolio.show(portfolio_engine: portfolio_engine.PortfolioEngine)
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.show(p)
 ```
 
 ---
+

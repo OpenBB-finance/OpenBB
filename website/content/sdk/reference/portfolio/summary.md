@@ -23,9 +23,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get portfolio and benchmark returns summary
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L692)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L723)]
 
-```python
+```python wordwrap
 openbb.portfolio.summary(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", risk_free_rate: float = 0)
 ```
 
@@ -53,8 +53,9 @@ openbb.portfolio.summary(portfolio_engine: portfolio_engine.PortfolioEngine, win
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.summary(p)
 ```
 
 ---
+

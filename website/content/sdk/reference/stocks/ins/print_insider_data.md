@@ -28,10 +28,10 @@ import TabItem from '@theme/TabItem';
 
 Print insider data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_model.py#L1437)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_model.py#L1447)]
 
-```python
-openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
+```python wordwrap
+openbb.stocks.ins.print_insider_data(type_insider: str = "lcb")
 ```
 
 ---
@@ -41,7 +41,6 @@ openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | type_insider | str | Insider type of data. Available types can be accessed through get_insider_types(). | lcb | True |
-| limit | int | Limit of data rows to display | 10 | True |
 
 
 ---
@@ -53,15 +52,17 @@ openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
 | pd.DataFrame | Open insider filtered data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Print insider data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_view.py#L108)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_view.py#L109)]
 
-```python
-openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int = 10, export: str = "")
+```python wordwrap
+openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int = 10, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -72,6 +73,7 @@ openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int
 | ---- | ---- | ----------- | ------- | -------- |
 | type_insider | str | Insider type of data. Available types can be accessed through get_insider_types(). | lcb | True |
 | limit | int | Limit of data rows to display | 10 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export data format |  | True |
 
 
@@ -82,6 +84,8 @@ openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

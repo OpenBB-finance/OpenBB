@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Scrapes top coins withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L119)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.wf(limit: int = 100)
 ```
 
@@ -53,15 +53,17 @@ openbb.crypto.ov.wf(limit: int = 100)
 | pd.DataFrame | Coin, Lowest, Average, Median, Highest, Exchanges Compared |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Top coins withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L19)]
 
-```python
-openbb.crypto.ov.wf_chart(limit: int = 15, export: str = "")
+```python wordwrap
+openbb.crypto.ov.wf_chart(limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -81,6 +83,8 @@ openbb.crypto.ov.wf_chart(limit: int = 15, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

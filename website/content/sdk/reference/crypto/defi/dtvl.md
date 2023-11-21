@@ -32,9 +32,9 @@ import TabItem from '@theme/TabItem';
 
 Returns information about historical tvl of a defi protocol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L124)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L144)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.dtvl(protocol: str)
 ```
 
@@ -56,15 +56,17 @@ openbb.crypto.defi.dtvl(protocol: str)
 | pd.DataFrame | Historical tvl |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots historical TVL of different dApps
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L131)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L133)]
 
-```python
-openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.dtvl_chart(dapps: str, export: Optional[str] = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -73,9 +75,9 @@ openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: 
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| dapps | str | dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap |  | True |
+| dapps | str | dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap | None | False |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -85,6 +87,8 @@ openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

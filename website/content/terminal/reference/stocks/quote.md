@@ -17,20 +17,20 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks /quote - Reference | OpenBB Terminal Docs" />
 
-Current quote for stock ticker
+Current quote for the loaded stock ticker.
 
 ### Usage
 
-```python
-quote -t S_TICKER
+```python wordwrap
+quote [-t S_TICKER]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| s_ticker | stocks/QUOTE_ticker | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| s_ticker | -t  --ticker | Get a quote for a specific ticker, or comma-separated list of tickers. | AAPL | True | None |
 
 ---

@@ -15,6 +15,9 @@ keywords:
 - OmegaModel
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantitative /omega_ratio - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -23,37 +26,34 @@ import TabItem from '@theme/TabItem';
 
 Calculate the Omega Ratio.
 
-Parameters
-----------
-data : List[Data]
-Time series data.
-target : str
-Target column name.
-threshold_start : float, optional
-Start threshold, by default 0.0
-threshold_end : float, optional
-End threshold, by default 1.5
-
-Returns
--------
-OBBject[List[OmegaModel]]
-Omega ratios.
-
 ```python wordwrap
-
+obb.quantitative.omega_ratio(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str, threshold_start: float = 0.0, threshold_end: float = 1.5)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | Time series data. | None | False |
+| target | str | Target column name. | None | False |
+| threshold_start | float | Start threshold, by default 0.0 | 0.0 | True |
+| threshold_end | float | End threshold, by default 1.5 | 1.5 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+Omega ratios.
+```
 
 ---
 

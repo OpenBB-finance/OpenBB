@@ -18,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/score - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/score - Reference | OpenBB Terminal Docs" />
 
 In this view you can find different kind of scores for loaded coin. Those scores represents different rankings, sentiment metrics, some user stats and others. You will see CoinGecko scores, Developer Scores, Community Scores, Sentiment, Reddit scores and many others.
 
 ### Usage
 
-```python
+```python wordwrap
 score
 ```
 

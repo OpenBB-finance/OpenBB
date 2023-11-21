@@ -1,6 +1,6 @@
 ---
-title: Get the ETF holdings performance
-description: OpenBB Platform Data Model
+title: EtfHoldingsPerformance
+description: Get the ETF holdings performance
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

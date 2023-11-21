@@ -19,10 +19,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Search indices by keyword. [Source: FinanceDatabase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L725)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L733)]
 
-```python
-openbb.economy.search_index(keyword: list, limit: int = 10)
+```python wordwrap
+openbb.economy.search_index(keyword: list)
 ```
 
 ---
@@ -32,7 +32,6 @@ openbb.economy.search_index(keyword: list, limit: int = 10)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | keyword | list | The keyword you wish to search for. This can include spaces. | None | False |
-| limit | int | The amount of views you want to show, by default this is set to 10. | 10 | True |
 
 
 ---
@@ -43,3 +42,4 @@ openbb.economy.search_index(keyword: list, limit: int = 10)
 | ---- | ----------- |
 | pd.Dataframe | Dataframe with the available options. |
 ---
+

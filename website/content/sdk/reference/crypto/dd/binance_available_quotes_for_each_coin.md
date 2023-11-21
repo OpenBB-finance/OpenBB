@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L77)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L82)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.binance_available_quotes_for_each_coin()
 ```
 
@@ -40,3 +40,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | dict | All quote assets for given coin<br/>{'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...] |
 ---
+

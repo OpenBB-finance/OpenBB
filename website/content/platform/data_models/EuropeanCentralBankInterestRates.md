@@ -1,6 +1,6 @@
 ---
-title: European Central Bank Interest Rates
-description: OpenBB Platform Data Model
+title: EuropeanCentralBankInterestRates
+description: European Central Bank Interest Rates
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

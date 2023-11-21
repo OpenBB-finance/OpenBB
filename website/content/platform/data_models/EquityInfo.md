@@ -1,6 +1,6 @@
 ---
-title: Equity Info
-description: OpenBB Platform Data Model
+title: EquityInfo
+description: Equity Info
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -12,23 +12,24 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/fa/divs - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /fa/divs - Reference | OpenBB Terminal Docs" />
 
 Historical dividends for a company
 
 ### Usage
 
-```python
-divs [-l LIMIT] [-p]
+```python wordwrap
+divs [-t TICKER] [-l LIMIT] [-p]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of previous dividends to show | 16 | True | None |
-| plot | Plots changes in dividend over time | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | Ticker to analyze | None | True | None |
+| limit | -l  --limit | Number of previous dividends to show | 16 | True | None |
+| plot | -p  --plot | Plots changes in dividend over time | False | True | None |
 
 ---

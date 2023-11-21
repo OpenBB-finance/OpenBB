@@ -24,12 +24,12 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="model" label="Model" default>
 
-Get annual or quarterly Real GDP for US
+Gross domestic product (GDP) is the standard measure of the value added created
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L44)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/oecd_model.py#L475)]
 
-```python
-openbb.economy.gdp(interval: str = "q", start_year: int = 2010)
+```python wordwrap
+openbb.economy.gdp(countries: Optional[str] = "united_states", units: str = "USD", start_date: Any = "", end_date: Any = "")
 ```
 
 ---
@@ -38,8 +38,10 @@ openbb.economy.gdp(interval: str = "q", start_year: int = 2010)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| interval | str | Interval for GDP, by default "a" for annual, by default "q" | q | True |
-| start_year | int | Start year for plot, by default 2010 | 2010 | True |
+| countries | list | List of countries to get data for | united_states | True |
+| units | str | Units to get data in. Either 'USD' or 'USD_CAP'.<br/>Default is US dollars per capita. | USD | True |
+| start_date | str | Start date of data, in YYYY-MM-DD format |  | True |
+| end_date | str | End date of data, in YYYY-MM-DD format |  | True |
 
 
 ---
@@ -48,18 +50,20 @@ openbb.economy.gdp(interval: str = "q", start_year: int = 2010)
 
 | Type | Description |
 | ---- | ----------- |
-| pd.DataFrame | Dataframe of GDP |
+| pd.DataFrame | Dataframe with gdp data |
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
-Display US GDP from AlphaVantage
+Gross domestic product (GDP) is the standard measure of the value added created
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L88)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/oecd_view.py#L34)]
 
-```python
-openbb.economy.gdp_chart(interval: str = "q", start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.economy.gdp_chart(countries: Optional[str] = "united_states", units: str = "USD", start_date: str = "", end_date: str = "", raw: bool = False, export: str = "", sheet_name: str = "", external_axes: bool = False)
 ```
 
 ---
@@ -68,20 +72,26 @@ openbb.economy.gdp_chart(interval: str = "q", start_year: int = 2010, raw: bool 
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| interval | str | Interval for GDP.  Either "a" or "q", by default "q" | q | True |
-| start_year | int | Start year for plot, by default 2010 | 2010 | True |
-| raw | bool | Flag to show raw data, by default False | False | True |
-| export | str | Format to export data, by default "" |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| countries | list | List of countries to get data for | united_states | True |
+| units | str | Units to get data in. Either 'USD' or 'USD_CAP'.<br/>Default is US dollars per capita. | USD | True |
+| start_date | str | Start date of data, in YYYY-MM-DD format |  | True |
+| end_date | str | End date of data, in YYYY-MM-DD format |  | True |
+| raw | bool | Whether to display raw data in a table | False | True |
+| export | str | Format to export data |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. |  | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
 
 ## Returns
 
-This function does not return anything
-
+| Type | Description |
+| ---- | ----------- |
+| Union[OpenBBFigure, None] | OpenBBFigure object if external_axes is True, else None (opens plot in a window) |
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/degiro/lookup /brokers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /brokers/degiro/lookup - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python
+```python wordwrap
 lookup [-l LIMIT] [-o OFFSET] search_text
 ```
 
@@ -28,10 +28,10 @@ lookup [-l LIMIT] [-o OFFSET] search_text
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| search_text | Name of the company or a text. | None | False | None |
-| limit | Number of result expected (0 for unlimited). | 10 | True | None |
-| offset | To use an offset. | 0 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| search_text |  | Name of the company or a text. | None | False | None |
+| limit | -l  --limit | Number of result expected (0 for unlimited). | 10 | True | None |
+| offset | -o  --offset | To use an offset. | 0 | True | None |
 
 ---

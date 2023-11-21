@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Glassnode key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1780)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1673)]
 
-```python
+```python wordwrap
 openbb.keys.glassnode(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -50,3 +50,4 @@ openbb.keys.glassnode(key="example_key")
 ```
 
 ---
+

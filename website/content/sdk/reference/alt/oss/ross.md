@@ -30,7 +30,7 @@ Get startups from ROSS index [Source: https://runacap.com/].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_model.py#L104)]
 
-```python
+```python wordwrap
 openbb.alt.oss.ross()
 ```
 
@@ -49,15 +49,17 @@ This function does not take any parameters.
 | pd.DataFrame | list of startups |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots list of startups from ross index [Source: https://runacap.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_view.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_view.py#L21)]
 
-```python
-openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend: bool = False, show_chart: bool = False, show_growth: bool = True, chart_type: str = "stars", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend: bool = False, show_chart: bool = False, show_growth: bool = True, chart_type: str = "stars", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -73,7 +75,7 @@ openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend
 | show_growth | bool | Flag to show growth line chart | True | True |
 | chart_type | str | Chart type {stars,forks} | stars | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -83,6 +85,8 @@ openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

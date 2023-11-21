@@ -29,10 +29,10 @@ import TabItem from '@theme/TabItem';
 
 Plots MA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L23)]
 
-```python
-openbb.ta.ma(data: pd.Series, window: List[int] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.ma(data: pd.Series, window: Optional[List[int]] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -46,8 +46,9 @@ openbb.ta.ma(data: pd.Series, window: List[int] = None, offset: int = 0, ma_type
 | offset | int | Offset variable | 0 | True |
 | ma_type | str | Type of moving average.  Either "EMA" "ZLMA" or "SMA" | EMA | True |
 | symbol | str | Ticker |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -73,16 +74,18 @@ openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type 
 ```
 
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots MA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L23)]
 
-```python
-openbb.ta.ma_chart(data: pd.Series, window: List[int] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.ma_chart(data: pd.Series, window: Optional[List[int]] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -96,8 +99,9 @@ openbb.ta.ma_chart(data: pd.Series, window: List[int] = None, offset: int = 0, m
 | offset | int | Offset variable | 0 | True |
 | ma_type | str | Type of moving average.  Either "EMA" "ZLMA" or "SMA" | EMA | True |
 | symbol | str | Ticker |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -123,6 +127,8 @@ openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type 
 ```
 
 ---
+
+
 
 </TabItem>
 </Tabs>

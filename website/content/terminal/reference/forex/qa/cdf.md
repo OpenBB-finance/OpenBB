@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/qa/cdf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /qa/cdf - Reference | OpenBB Terminal Docs" />
 
 Cumulative distribution function
 
 ### Usage
 
-```python
+```python wordwrap
 cdf
 ```
 

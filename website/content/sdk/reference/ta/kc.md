@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Keltner Channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L88)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L101)]
 
-```python
+```python wordwrap
 openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: str = "ema", offset: int = 0)
 ```
 
@@ -53,15 +53,17 @@ openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: st
 | pd.DataFrame | Dataframe of rolling kc |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots Keltner Channels Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L194)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L129)]
 
-```python
-openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: str = "ema", offset: int = 0, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: str = "ema", offset: int = 0, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -76,8 +78,9 @@ openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamo
 | mamode | str | Type of filter | ema | True |
 | offset | int | Offset value | 0 | True |
 | symbol | str | Ticker symbol |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -87,6 +90,8 @@ openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamo
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

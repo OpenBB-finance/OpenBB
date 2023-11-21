@@ -19,10 +19,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get series notes. [Source: FRED]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L68)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L166)]
 
-```python
-openbb.economy.fred_notes(search_query: str, limit: int = -1)
+```python wordwrap
+openbb.economy.fred_notes(search_query: str)
 ```
 
 ---
@@ -32,7 +32,6 @@ openbb.economy.fred_notes(search_query: str, limit: int = -1)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | search_query | str | Text query to search on fred series notes database | None | False |
-| limit | int | Maximum number of series notes to display | -1 | True |
 
 
 ---
@@ -43,3 +42,4 @@ openbb.economy.fred_notes(search_query: str, limit: int = -1)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of matched series |
 ---
+

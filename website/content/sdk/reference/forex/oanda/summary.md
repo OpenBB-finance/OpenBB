@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Request Oanda account summary.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L82)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
 ```
 
@@ -53,14 +53,16 @@ openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Account summary data or False |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Print Oanda account summary.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L62)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L56)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.summary_chart(accountID: str)
 ```
 
@@ -80,6 +82,8 @@ openbb.forex.oanda.summary_chart(accountID: str)
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -14,6 +14,9 @@ keywords:
 - function
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantitative /quantile - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -22,37 +25,34 @@ import TabItem from '@theme/TabItem';
 
 Get Quantile.
 
-Parameters
-----------
-data : List[Data]
-Time series data.
-target : str
-Target column name.
-window : PositiveInt
-Window size.
-quantile_pct : NonNegativeFloat, optional
-Quantile percentage, by default 0.5
-
-Returns
--------
-OBBject[List[Data]]
-Quantile.
-
 ```python wordwrap
-
+obb.quantitative.quantile(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str, window: int, quantile_pct: float = 0.5)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | Time series data. | None | False |
+| target | str | Target column name. | None | False |
+| window | PositiveInt | Window size. | None | False |
+| quantile_pct | NonNegativeFloat | Quantile percentage, by default 0.5 | 0.5 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+Quantile.
+```
 
 ---
 

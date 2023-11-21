@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Get historical quarterly government contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L139)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L137)]
 
-```python
+```python wordwrap
 openbb.stocks.gov.histcont(symbol: str)
 ```
 
@@ -49,15 +49,17 @@ openbb.stocks.gov.histcont(symbol: str)
 | pd.DataFrame | Historical quarterly government contracts |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Show historical quarterly government contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L547)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L598)]
 
-```python
-openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -68,8 +70,9 @@ openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker symbol to get congress trading data from | None | False |
 | raw | bool | Flag to display raw data | False | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -79,6 +82,8 @@ openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

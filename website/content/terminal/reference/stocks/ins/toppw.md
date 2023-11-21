@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/toppw - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/toppw - Reference | OpenBB Terminal Docs" />
 
 Print top officer purchases of the week. [Source: OpenInsider]
 
 ### Usage
 
-```python
+```python wordwrap
 toppw [-l LIMIT]
 ```
 
@@ -30,9 +30,9 @@ toppw [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of datarows to display | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

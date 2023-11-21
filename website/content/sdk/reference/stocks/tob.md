@@ -24,7 +24,7 @@ Get top of book bid and ask for ticker on exchange [CBOE.com]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/cboe_model.py#L12)]
 
-```python
+```python wordwrap
 openbb.stocks.tob(symbol: str, exchange: str = "BZX")
 ```
 
@@ -46,3 +46,4 @@ openbb.stocks.tob(symbol: str, exchange: str = "BZX")
 | ---- | ----------- |
 | pd.DatatFrame | Dataframe of Bids |
 ---
+

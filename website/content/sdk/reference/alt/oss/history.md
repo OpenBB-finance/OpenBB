@@ -28,7 +28,7 @@ Get repository star history.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L88)]
 
-```python
+```python wordwrap
 openbb.alt.oss.history(repo: str)
 ```
 
@@ -50,15 +50,17 @@ openbb.alt.oss.history(repo: str)
 | pd.DataFrame | Dataframe with star history - Columns: Date, Stars |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots repo summary [Source: https://api.github.com].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L17)]
 
-```python
-openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.alt.oss.history_chart(repo: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -69,7 +71,7 @@ openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optiona
 | ---- | ---- | ----------- | ------- | -------- |
 | repo | str | Repository to display star history. Format: org/repo, e.g., openbb-finance/openbbterminal | None | False |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -79,6 +81,8 @@ openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optiona
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -1,6 +1,6 @@
 ---
-title: Institutional Ownership
-description: OpenBB Platform Data Model
+title: InstitutionalOwnership
+description: Institutional Ownership
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

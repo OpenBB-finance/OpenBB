@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ca/balance - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ca/balance - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly balance statement the company, and compares it against similar companies.
 
 ### Usage
 
-```python
+```python wordwrap
 balance [-q] [-t S_TIMEFRAME]
 ```
 
@@ -29,10 +29,10 @@ balance [-q] [-t S_TIMEFRAME]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| b_quarter | Quarter financial data flag. | False | True | None |
-| s_timeframe | Specify yearly/quarterly timeframe. Default is last. | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| b_quarter | -q  --quarter | Quarter financial data flag. | False | True | None |
+| s_timeframe | -t  --timeframe | Specify yearly/quarterly timeframe. Default is last. | None | True | None |
 
 
 ---

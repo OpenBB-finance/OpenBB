@@ -1,6 +1,6 @@
 ---
-title: Earnings Call Transcript
-description: OpenBB Platform Data Model
+title: EarningsCallTranscript
+description: Earnings Call Transcript
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

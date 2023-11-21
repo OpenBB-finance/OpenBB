@@ -1,6 +1,6 @@
 ---
-title: Fed Funds Rate Projections
-description: OpenBB Platform Data Model
+title: PROJECTIONS
+description: Fed Funds Rate Projections
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

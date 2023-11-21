@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/nft/stats - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /nft/stats - Reference | OpenBB Terminal Docs" />
 
 Display stats about an opensea nft collection. e.g. alien-frens [Source: https://opensea.io]
 
 ### Usage
 
-```python
+```python wordwrap
 info -s SLUG
 ```
 
@@ -33,9 +33,9 @@ info -s SLUG
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| slug | Opensea collection slug (e.g., mutant-ape-yacht-club) | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| slug | -s  --slug | Opensea collection slug (e.g., mutant-ape-yacht-club) | None | False | None |
 
 
 ---

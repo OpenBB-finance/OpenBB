@@ -18,10 +18,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots histogram of data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L82)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L73)]
 
-```python
-openbb.qa.hist(data: pd.DataFrame, target: str, symbol: str = "", bins: int = 15, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.qa.hist(data: pd.DataFrame, target: str, symbol: str = "", bins: int = 15, external_axes: bool = False)
 ```
 
 ---
@@ -34,7 +34,7 @@ openbb.qa.hist(data: pd.DataFrame, target: str, symbol: str = "", bins: int = 15
 | target | str | Data column to get histogram of the dataframe | None | False |
 | symbol | str | Name of dataset |  | True |
 | bins | int | Number of bins in histogram | 15 | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -54,3 +54,4 @@ openbb.qa.hist(data=df, target="Adj Close")
 ```
 
 ---
+

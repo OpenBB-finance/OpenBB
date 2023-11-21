@@ -20,7 +20,7 @@ Relative strength index
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L93)]
 
-```python
+```python wordwrap
 openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1)
 ```
 
@@ -45,15 +45,17 @@ openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots RSI Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L219)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L121)]
 
-```python
-openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, drift: int = 1, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, drift: int = 1, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -68,7 +70,7 @@ openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, dr
 | drift | int | Drift variable | 1 | True |
 | symbol | str | Stock ticker |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -78,6 +80,8 @@ openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, dr
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

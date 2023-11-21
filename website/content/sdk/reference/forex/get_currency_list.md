@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load AV currency codes from a local file.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/av_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/av_model.py#L18)]
 
-```python
+```python wordwrap
 openbb.forex.get_currency_list()
 ```
 
@@ -38,3 +38,4 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+

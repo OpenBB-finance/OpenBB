@@ -28,7 +28,7 @@ Get all FINRA data associated with a ticker
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L293)]
 
-```python
+```python wordwrap
 openbb.stocks.dps.dpotc(symbol: str)
 ```
 
@@ -50,15 +50,17 @@ openbb.stocks.dps.dpotc(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dark Pools (ATS) Data, OTC (Non-ATS) Data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L20)]
 
-```python
-openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -69,7 +71,7 @@ openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Opti
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker | None | False |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -79,6 +81,8 @@ openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Opti
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -22,9 +22,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Helper methods for querying graphql api. [Source: https://bitquery.io/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L158)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.query_graph(url: str, query: str)
 ```
 
@@ -46,3 +46,4 @@ openbb.crypto.onchain.query_graph(url: str, query: str)
 | ---- | ----------- |
 | dict | Dictionary with response data |
 ---
+

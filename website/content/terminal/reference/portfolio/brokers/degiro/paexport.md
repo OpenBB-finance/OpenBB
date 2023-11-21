@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/degiro/paexport /brokers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /brokers/degiro/paexport - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python
+```python wordwrap
 paexport -s START [-e END] [-c CURRENCY]
 ```
 
@@ -27,10 +27,10 @@ paexport -s START [-e END] [-c CURRENCY]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| start | Start date. | None | False | None |
-| end | End date. | datetime.now() | True | None |
-| currency | Used currency. | USD | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| start | -s  --start | Start date. | None | False | None |
+| end | -e  --end | End date. | datetime.now() | True | None |
+| currency | -c  --currency | Used currency. | USD | True | None |
 
 ---

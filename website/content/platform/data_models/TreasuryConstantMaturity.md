@@ -1,6 +1,6 @@
 ---
-title: Treasury Constant Maturity
-description: OpenBB Platform Data Model
+title: TreasuryConstantMaturity
+description: Treasury Constant Maturity
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

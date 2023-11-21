@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/liquidations - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/liquidations - Reference | OpenBB Terminal Docs" />
 
 Displays liquidations data for the loaded crypto asset [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 
 ### Usage
 
-```python
+```python wordwrap
 liquidations
 ```
 

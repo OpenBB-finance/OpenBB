@@ -36,7 +36,7 @@ Get info about token historical transactions. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L489)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.th(address: str, sortby: str = "timestamp", ascend: bool = False)
 ```
 
@@ -60,15 +60,17 @@ openbb.crypto.onchain.th(address: str, sortby: str = "timestamp", ascend: bool =
 | pd.DataFrame | DataFrame with token historical transactions. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display info about token history. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L276)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L308)]
 
-```python
-openbb.crypto.onchain.th_chart(address: str, limit: int = 10, sortby: str = "timestamp", ascend: bool = False, hash_: bool = False, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.th_chart(address: str, limit: int = 10, sortby: str = "timestamp", ascend: bool = False, hash_: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -92,6 +94,8 @@ openbb.crypto.onchain.th_chart(address: str, limit: int = 10, sortby: str = "tim
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -24,7 +24,7 @@ This command can plot any data on two y-axes obtained from the macro, fred, inde
 
 ### Usage
 
-```python
+```python wordwrap
 plot [--y1 YAXIS1] [--y2 YAXIS2]
 ```
 
@@ -32,10 +32,10 @@ plot [--y1 YAXIS1] [--y2 YAXIS2]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| yaxis1 | Select the data you wish to plot on the first y-axis. You can select multiple variables here. |  | True | None |
-| yaxis2 | Select the data you wish to plot on the second y-axis. You can select multiple variables here. |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| yaxis1 | --y1 | Select the data you wish to plot on the first y-axis. You can select multiple variables here. |  | True | None |
+| yaxis2 | --y2 | Select the data you wish to plot on the second y-axis. You can select multiple variables here. |  | True | None |
 
 ![Figure_1](https://user-images.githubusercontent.com/46355364/158633367-783d54eb-79ab-443f-af99-8a9ecadf5949.png)
 

@@ -19,23 +19,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/defi/dtvl - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /defi/dtvl - Reference | OpenBB Terminal Docs" />
 
 Displays historical TVL of different dApps. [Source: https://docs.llama.fi/api]
 
 ### Usage
 
-```python
-dtvl -d DAPPS
+```python wordwrap
+dtvl -d {anchor,sushiswap,pancakeswap}
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| dapps | dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| dapps | -d  --dapps | dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap | None | False | anchor, sushiswap, pancakeswap |
 
 
 ---

@@ -19,7 +19,7 @@ Get company managers from Business Insider
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/business_insider_model.py#L19)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.mgmt(symbol: str)
 ```
 
@@ -40,3 +40,4 @@ openbb.stocks.fa.mgmt(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of managers |
 ---
+

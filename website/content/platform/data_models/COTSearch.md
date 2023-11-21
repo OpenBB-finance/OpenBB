@@ -1,6 +1,6 @@
 ---
-title: Curated Commitment of Traders Reports
-description: OpenBB Platform Data Model
+title: COTSearch
+description: Curated Commitment of Traders Reports
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

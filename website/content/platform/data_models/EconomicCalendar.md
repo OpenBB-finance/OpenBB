@@ -1,6 +1,6 @@
 ---
-title: Economic Calendar
-description: OpenBB Platform Data Model
+title: EconomicCalendar
+description: Economic Calendar
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

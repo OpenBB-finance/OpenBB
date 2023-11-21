@@ -28,7 +28,7 @@ Converts apr into apy
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_model.py#L19)]
 
-```python
+```python wordwrap
 openbb.crypto.tools.apy(apr: float, compounding_times: int)
 ```
 
@@ -51,15 +51,17 @@ openbb.crypto.tools.apy(apr: float, compounding_times: int)
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays APY value converted from APR
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L17)]
 
-```python
-openbb.crypto.tools.apy_chart(apr: float, compounding_times: int, narrative: bool = False, export: str = "")
+```python wordwrap
+openbb.crypto.tools.apy_chart(apr: float, compounding_times: int, narrative: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -81,6 +83,8 @@ openbb.crypto.tools.apy_chart(apr: float, compounding_times: int, narrative: boo
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

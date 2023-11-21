@@ -29,7 +29,7 @@ Stochastic oscillator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L126)]
 
-```python
+```python wordwrap
 openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3)
 ```
 
@@ -54,15 +54,17 @@ openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3,
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots stochastic oscillator signal
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L307)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L175)]
 
-```python
-openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -77,7 +79,7 @@ openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: in
 | slowkperiod | int | Slow k period | 3 | True |
 | symbol | str | Stock ticker symbol |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -87,6 +89,8 @@ openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: in
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

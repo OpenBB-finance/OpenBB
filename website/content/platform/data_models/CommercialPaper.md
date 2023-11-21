@@ -1,6 +1,6 @@
 ---
-title: Commercial Paper
-description: OpenBB Platform Data Model
+title: CommercialPaper
+description: Commercial Paper
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

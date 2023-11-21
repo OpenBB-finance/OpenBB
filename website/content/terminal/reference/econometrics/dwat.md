@@ -31,7 +31,7 @@ Show autocorrelation tests from Durbin-Watson. Needs OLS to be run in advance wi
 
 ### Usage
 
-```python
+```python wordwrap
 dwat [-p]
 ```
 
@@ -39,9 +39,9 @@ dwat [-p]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| plot | Plot the residuals | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| plot | -p  --plot | Plot the residuals | False | True | None |
 
 
 ---

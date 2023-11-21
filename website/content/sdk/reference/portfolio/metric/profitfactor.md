@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get profit factor
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1612)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1654)]
 
-```python
+```python wordwrap
 openbb.portfolio.metric.profitfactor(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -47,7 +47,7 @@ openbb.portfolio.metric.profitfactor(portfolio_engine: portfolio_engine.Portfoli
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.metric.profitfactor(p)
 ```
 
@@ -55,3 +55,4 @@ output = openbb.portfolio.metric.profitfactor(p)
 During some time periods there were no losing trades. Thus some values could not be calculated.
 ```
 ---
+

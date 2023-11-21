@@ -1,6 +1,6 @@
 ---
-title: Select Treasury Bill
-description: OpenBB Platform Data Model
+title: SelectedTreasuryBill
+description: Select Treasury Bill
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

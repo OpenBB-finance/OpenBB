@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/perf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /perf - Reference | OpenBB Terminal Docs" />
 
 Shows performance of each trade and total performance of the portfolio versus the benchmark.
 
 ### Usage
 
-```python
+```python wordwrap
 performance [-t]
 ```
 
@@ -29,9 +29,9 @@ performance [-t]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| show_trades | Whether to show performance on all trades in comparison to the benchmark. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| show_trades | -t  --show_trades | Whether to show performance on all trades in comparison to the benchmark. | False | True | None |
 
 
 ---

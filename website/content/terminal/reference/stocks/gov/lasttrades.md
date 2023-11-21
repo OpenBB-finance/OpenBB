@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/gov/lasttrades - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /gov/lasttrades - Reference | OpenBB Terminal Docs" />
 
 Last government trades. [Source: www.quiverquant.com]
 
 ### Usage
 
-```python
+```python wordwrap
 lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESENTATIVE]
 ```
 
@@ -31,11 +31,11 @@ lasttrades [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_DAYS] [-r REPRESEN
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| gov |  | congress | True | congress, senate, house |
-| past_transactions_days | Past transaction days | 5 | True | None |
-| representative | Representative |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| gov | -g  --govtype |  | congress | True | congress, senate, house |
+| past_transactions_days | -p  --past_transactions_days | Past transaction days | 5 | True | None |
+| representative | -r  --representative | Representative |  | True | None |
 
 
 ---

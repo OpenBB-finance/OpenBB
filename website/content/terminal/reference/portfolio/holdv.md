@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/holdv - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /holdv - Reference | OpenBB Terminal Docs" />
 
 Display holdings of assets (absolute value)
 
 ### Usage
 
-```python
+```python wordwrap
 holdv [-u]
 ```
 
@@ -30,8 +30,8 @@ holdv [-u]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| unstack | Sum all assets value over time | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| unstack | -u  --unstack | Sum all assets value over time | False | True | None |
 
 ---

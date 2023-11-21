@@ -33,7 +33,7 @@ Get all most important ticker related information for given coin id [Source: Coi
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L290)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.ps(symbol: str = "BTC", quotes: str = "USD")
 ```
 
@@ -56,15 +56,17 @@ openbb.crypto.dd.ps(symbol: str = "BTC", quotes: str = "USD")
 | pd.DataFrame | Most important ticker related information<br/>Columns: Metric, Value |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing ticker information for single coin [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L287)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L307)]
 
-```python
-openbb.crypto.dd.ps_chart(from_symbol: str = "BTC", to_symbol: str = "USD", export: str = "")
+```python wordwrap
+openbb.crypto.dd.ps_chart(from_symbol: str = "BTC", to_symbol: str = "USD", export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -75,6 +77,7 @@ openbb.crypto.dd.ps_chart(from_symbol: str = "BTC", to_symbol: str = "USD", expo
 | ---- | ---- | ----------- | ------- | -------- |
 | from_symbol | str | Cryptocurrency symbol (e.g. BTC) | BTC | True |
 | to_symbol | str | Quoted currency | USD | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx |  | True |
 
 
@@ -85,6 +88,8 @@ openbb.crypto.dd.ps_chart(from_symbol: str = "BTC", to_symbol: str = "USD", expo
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

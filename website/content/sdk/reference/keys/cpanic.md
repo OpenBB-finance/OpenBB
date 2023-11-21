@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Cpanic key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1924)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1823)]
 
-```python
+```python wordwrap
 openbb.keys.cpanic(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -51,3 +51,4 @@ openbb.keys.cpanic(key="example_key")
 ```
 
 ---
+

@@ -17,25 +17,25 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/qa/raw - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /qa/raw - Reference | OpenBB Terminal Docs" />
 
 Print raw data to console
 
 ### Usage
 
-```python
-raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret}]
+```python wordwrap
+raw [-l LIMIT] [-r] [-s {open,high,low,close,adjclose,volume,returns,logret}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number to show | 20 | True | None |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
-| sortby | The column to sort by | None | True | open, high, low, close, adjclose, volume, date_id, oc_high, oc_low, returns, logret |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Number to show | 20 | True | None |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| sortby | -s  --sortby | The column to sort by | None | True | open, high, low, close, adjclose, volume, returns, logret |
 
 
 ---

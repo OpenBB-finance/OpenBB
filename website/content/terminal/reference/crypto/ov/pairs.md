@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/ov/pairs - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /ov/pairs - Reference | OpenBB Terminal Docs" />
 
 Shows available trading pairs on Coinbase
 
 ### Usage
 
-```python
+```python wordwrap
 pairs [-l LIMIT] [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}] [-r]
 ```
 
@@ -30,11 +30,11 @@ pairs [-l LIMIT] [-s {id,display_name,base_currency,quote_currency,base_min_size
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | display N number of pairs =10 | 15 | True | None |
-| sortby | Sort by given column. Default: id | id | True | id, display_name, base_currency, quote_currency, base_min_size, base_max_size, min_market_funds, max_market_funds |
-| reverse | Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | display N number of pairs =10 | 15 | True | None |
+| sortby | -s  --sortby | Sort by given column. Default: id | id | True | id, display_name, base_currency, quote_currency, base_min_size, base_max_size, min_market_funds, max_market_funds |
+| reverse | -r  --reverse | Data is sorted in ascending order by default. Reverse flag will sort it in an descending way. Only works when raw data is displayed. | False | True | None |
 
 
 ---

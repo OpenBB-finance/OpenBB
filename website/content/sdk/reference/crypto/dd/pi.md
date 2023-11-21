@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin product info
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L353)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L360)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.pi(symbol: str)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.dd.pi(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame] | Metric, Value with project and technology details,<br/>Coin public repos,<br/>Coin audits,<br/>Coin known exploits/vulns |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing project info
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L470)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L468)]
 
-```python
-openbb.crypto.dd.pi_chart(symbol: str, export: str = "")
+```python wordwrap
+openbb.crypto.dd.pi_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.crypto.dd.pi_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

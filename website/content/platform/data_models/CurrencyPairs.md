@@ -1,6 +1,6 @@
 ---
-title: Currency Search
-description: OpenBB Platform Data Model
+title: CurrencyPairs
+description: Currency Search
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -43,7 +43,7 @@ CurrencyPairsQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | provider | Literal['fmp', 'intrinio', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | symbol | str | Symbol of the pair to search. | None | True |
-| date | date | A specific date to get data for. | 2023-11-12 | True |
+| date | date | A specific date to get data for. | 2023-11-21 | True |
 | search | str | Search for terms within the ticker and/or company name. |  | True |
 | active | bool | Specify if the tickers returned should be actively traded on the queried date. | True | True |
 | order | Literal['asc', 'desc'] | Order data by ascending or descending. | asc | True |

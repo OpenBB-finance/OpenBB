@@ -21,6 +21,9 @@ keywords:
 - examples
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /donchian - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -34,27 +37,6 @@ formed by upper and lower bands around a midrange or median band. The upper band
 marks the highest price of a security over N periods while the lower band
 marks the lowest price of a security over N periods. The area
 between the upper and lower bands represents the Donchian Channel.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-index : str, optional
-Index column name to use with `data`, by default "date".
-lower_length : PositiveInt, optional
-Number of periods for the lower band, by default 20.
-upper_length : PositiveInt, optional
-Number of periods for the upper band, by default 20.
-offset : int, optional
-Offset of the Donchian Channel, by default 0.
-
-Returns
--------
-OBBject[List[Data]]
-The calculated data.
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -66,13 +48,27 @@ donchian_data = obb.technical.donchian(data=stock_data.results,lower_length=20,u
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| index | str | Index column name to use with `data`, by default "date". | date | True |
+| lower_length | PositiveInt | Number of periods for the lower band, by default 20. | 20 | True |
+| upper_length | PositiveInt | Number of periods for the upper band, by default 20. | 20 | True |
+| offset | int | Offset of the Donchian Channel, by default 0. | 0 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The calculated data.
+```
 
 ---
 

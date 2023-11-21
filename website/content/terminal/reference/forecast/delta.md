@@ -20,18 +20,18 @@ Add %Change (Delta) to dataset based on specific column.
 
 ### Usage
 
-```python
-delta [-d {}] [-c TARGET_COLUMN]
+```python wordwrap
+delta [-d {AAPL}] [-c TARGET_COLUMN]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| target_dataset | The name of the dataset you want to select | None | True | None |
-| target_column | The name of the specific column you want to use | close | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
+| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
 
 
 ---

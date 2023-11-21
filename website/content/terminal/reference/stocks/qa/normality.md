@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/qa/normality - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /qa/normality - Reference | OpenBB Terminal Docs" />
 
 Normality tests
 
 ### Usage
 
-```python
+```python wordwrap
 normality
 ```
 

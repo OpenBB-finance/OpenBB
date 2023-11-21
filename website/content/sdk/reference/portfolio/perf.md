@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get portfolio performance vs the benchmark
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1640)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1682)]
 
-```python
+```python wordwrap
 openbb.portfolio.perf(portfolio_engine: portfolio_engine.PortfolioEngine, show_all_trades: bool = False)
 ```
 
@@ -48,8 +48,9 @@ openbb.portfolio.perf(portfolio_engine: portfolio_engine.PortfolioEngine, show_a
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.perf(p)
 ```
 
 ---
+

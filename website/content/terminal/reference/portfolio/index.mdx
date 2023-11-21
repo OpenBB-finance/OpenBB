@@ -1,127 +1,148 @@
-# portfolio
+# Portfolio
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-
 <ReferenceCard
         title="Brokers"
-        description="balances, history, holdings, movers, quote, account, deposits, history, orders, cancel, companynews, create, hold, lastnews, login, logout, lookup, paexport, pending, topnews, update, history, holdings"
-        url="portfolio/brokers"
-    />
+        description="account, deposits, history, orders, cancel, companynews, create, lastnews, login, logout, lookup, paexport,..."
+        url="/terminal/reference/portfolio/brokers"
+/>
 <ReferenceCard
         title="Po"
-        description="blacklitterman, dividend, ef, equal, file, herc, hrp, load, maxdecorr, maxdiv, maxret, maxsharpe, maxutil, minrisk, mktcap, nco, plot, property, relriskparity, riskparity, rpf, show, arg, load, save, set"
-        url="portfolio/po"
-    />
-<ReferenceCard
-        title="Portfolio_analysis"
-        description="group, load, view"
-        url="portfolio/portfolio_analysis"
-    />
-<ReferenceCard
-    title="alloc"
-    description="The page serves as a documentation for 'alloc' - a python function that"
-    url="portfolio/alloc"
+        description="blacklitterman, ef, equal, file, herc, hrp, load, maxdecorr, maxdiv, maxret, maxsharpe, maxutil, minrisk, mktcap,..."
+        url="/terminal/reference/portfolio/po"
 />
 <ReferenceCard
-    title="attrib"
-    description="The page provides detailed information on how to use the 'attrib' command"
-    url="portfolio/attrib"
+    title="Alloc"
+    description="Show your allocation to each asset or sector compared to the benchmark."
+    url="/terminal/reference/portfolio/alloc"
+    command="true"
 />
 <ReferenceCard
-    title="bench"
-    description="This page provides a detailed guideline on how to load in benchmarks"
-    url="portfolio/bench"
+    title="Attrib"
+    description="Displays sector attribution of the portfolio compared to the S&P 500"
+    url="/terminal/reference/portfolio/attrib"
+    command="true"
 />
 <ReferenceCard
-    title="distr"
-    description="This page provides information on how to compute the distribution of"
-    url="portfolio/distr"
+    title="Bench"
+    description="Load in a benchmark from a selected list or set your own based on the ticker."
+    url="/terminal/reference/portfolio/bench"
+    command="true"
 />
 <ReferenceCard
-    title="dret"
-    description="The dret page is about getting daily returns for specific periods. Users"
-    url="portfolio/dret"
+    title="Distr"
+    description="Compute distribution of daily returns"
+    url="/terminal/reference/portfolio/distr"
+    command="true"
 />
 <ReferenceCard
-    title="es"
-    description="This documentation page provides guidance on how to use the Expected"
-    url="portfolio/es"
+    title="Dret"
+    description="Daily returns"
+    url="/terminal/reference/portfolio/dret"
+    command="true"
 />
 <ReferenceCard
-    title="holdp"
-    description="A guide on how to use the holdp function to display holdings of assets"
-    url="portfolio/holdp"
+    title="Es"
+    description="Provides Expected Shortfall (short: ES) of the selected portfolio."
+    url="/terminal/reference/portfolio/es"
+    command="true"
 />
 <ReferenceCard
-    title="holdv"
-    description="The page provides detailed information on the usage, the required and"
-    url="portfolio/holdv"
+    title="Holdp"
+    description="Display holdings of assets (in percentage)"
+    url="/terminal/reference/portfolio/holdp"
+    command="true"
 />
 <ReferenceCard
-    title="load"
-    description="The 'load' function allows users to load their portfolio transactions"
-    url="portfolio/load"
+    title="Holdv"
+    description="Display holdings of assets (absolute value)"
+    url="/terminal/reference/portfolio/holdv"
+    command="true"
 />
 <ReferenceCard
-    title="maxdd"
-    description="This page provides a detailed guideline on how to use 'maxdd' command"
-    url="portfolio/maxdd"
+    title="Load"
+    description="Load your portfolio transactions."
+    url="/terminal/reference/portfolio/load"
+    command="true"
 />
 <ReferenceCard
-    title="metric"
-    description="This page provides detailed instructions on how to display a chosen metric"
-    url="portfolio/metric"
+    title="Maxdd"
+    description="Show portfolio maximum drawdown"
+    url="/terminal/reference/portfolio/maxdd"
+    command="true"
 />
 <ReferenceCard
-    title="mret"
-    description="This page is about the mret tool that helps to calculate monthly returns."
-    url="portfolio/mret"
+    title="Metric"
+    description="Display metric of choice for different periods"
+    url="/terminal/reference/portfolio/metric"
+    command="true"
 />
 <ReferenceCard
-    title="om"
-    description="A documentation page providing information about the om function that"
-    url="portfolio/om"
+    title="Mret"
+    description="Monthly returns"
+    url="/terminal/reference/portfolio/mret"
+    command="true"
 />
 <ReferenceCard
-    title="perf"
-    description="The 'perf' function displays the performance metrics of both individual"
-    url="portfolio/perf"
+    title="Om"
+    description="Provides omega ratio of the selected portfolio."
+    url="/terminal/reference/portfolio/om"
+    command="true"
 />
 <ReferenceCard
-    title="rbeta"
-    description="This page provides a detailed guide on the use of the 'rbeta' function"
-    url="portfolio/rbeta"
+    title="Perf"
+    description="Shows performance of each trade and total performance of the portfolio versus the benchmark."
+    url="/terminal/reference/portfolio/perf"
+    command="true"
 />
 <ReferenceCard
-    title="rsharpe"
-    description="The page provides comprehensive instructions on how to use the 'rsharpe'"
-    url="portfolio/rsharpe"
+    title="Rbeta"
+    description="Show rolling beta portfolio vs benchmark"
+    url="/terminal/reference/portfolio/rbeta"
+    command="true"
 />
 <ReferenceCard
-    title="rvol"
-    description="Rvol page shows the rolling volatility portfolio versus benchmark. It"
-    url="portfolio/rvol"
+    title="Rsharpe"
+    description="Show rolling sharpe portfolio vs benchmark"
+    url="/terminal/reference/portfolio/rsharpe"
+    command="true"
 />
 <ReferenceCard
-    title="show"
-    description="This documentation page describes the 'show' command, which presents"
-    url="portfolio/show"
+    title="Rsort"
+    description="Show rolling sortino portfolio vs benchmark"
+    url="/terminal/reference/portfolio/rsort"
+    command="true"
 />
 <ReferenceCard
-    title="summary"
-    description="The page provides a detailed guide on how to display a summary of portfolio"
-    url="portfolio/summary"
+    title="Rvol"
+    description="Show rolling volatility portfolio vs benchmark"
+    url="/terminal/reference/portfolio/rvol"
+    command="true"
 />
 <ReferenceCard
-    title="var"
-    description="Learn how to calculate the Value at Risk (VaR) of your portfolio using"
-    url="portfolio/var"
+    title="Show"
+    description="Show transactions table"
+    url="/terminal/reference/portfolio/show"
+    command="true"
 />
 <ReferenceCard
-    title="yret"
-    description="This page provides a guide on how to use the command 'yret' for determining"
-    url="portfolio/yret"
+    title="Summary"
+    description="Display summary of portfolio vs benchmark"
+    url="/terminal/reference/portfolio/summary"
+    command="true"
+/>
+<ReferenceCard
+    title="Var"
+    description="Provides value at risk (short: VaR) of the selected portfolio."
+    url="/terminal/reference/portfolio/var"
+    command="true"
+/>
+<ReferenceCard
+    title="Yret"
+    description="End of the year returns"
+    url="/terminal/reference/portfolio/yret"
+    command="true"
 />
 </ul>

@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/ov/global - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /ov/global - Reference | OpenBB Terminal Docs" />
 
 Shows global statistics about Crypto Market
 
 ### Usage
 
-```python
+```python wordwrap
 global [--pie]
 ```
 
@@ -29,9 +29,9 @@ global [--pie]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| pie | Flag to show pie chart with market cap distribution. Works only with CoinGecko source | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| pie | --pie | Flag to show pie chart with market cap distribution. Works only with CoinGecko source | False | True | None |
 
 
 ---

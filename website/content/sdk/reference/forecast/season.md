@@ -20,10 +20,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plot seasonality from a dataset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L111)]
 
-```python
-openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: str = "", m: Optional[int] = None, max_lag: int = 24, alpha: float = 0.05, external_axes: Optional[List[axes]] = None)
+```python wordwrap
+openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: str = "", sheet_name: Optional[str] = None, m: Optional[int] = None, max_lag: int = 24, alpha: float = 0.05, external_axes: bool = False)
 ```
 
 ---
@@ -34,11 +34,12 @@ openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: 
 | ---- | ---- | ----------- | ------- | -------- |
 | data | pd.DataFrame | The dataframe to plot | None | False |
 | column | str | The column of the dataframe to analyze | close | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export image |  | True |
 | m | Optional[int] | Optionally, a time lag to highlight on the plot. Default is none. | None | True |
 | max_lag | int | The maximal lag order to consider. Default is 24. | 24 | True |
 | alpha | float | The confidence interval to display. Default is 0.05. | 0.05 | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -48,3 +49,4 @@ openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: 
 This function does not return anything
 
 ---
+

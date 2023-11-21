@@ -1,6 +1,6 @@
 ---
-title: US Yield Curve
-description: OpenBB Platform Data Model
+title: USYieldCurve
+description: US Yield Curve
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

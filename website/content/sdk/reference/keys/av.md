@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Alpha Vantage key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L289)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L269)]
 
-```python
+```python wordwrap
 openbb.keys.av(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -52,3 +52,4 @@ openbb.keys.av(key="example_key")
 ```
 
 ---
+

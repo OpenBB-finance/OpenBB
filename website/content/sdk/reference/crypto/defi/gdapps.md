@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Display top dApps (in terms of TVL) grouped by chain.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L149)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L169)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.gdapps(limit: int = 50)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.defi.gdapps(limit: int = 50)
 | pd.DataFrame | Information about DeFi protocols grouped by chain |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots top dApps (in terms of TVL) grouped by chain.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L25)]
 
-```python
-openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -71,7 +73,7 @@ openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", external_axes
 | ---- | ---- | ----------- | ------- | -------- |
 | num | int | Number of top dApps to display | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -81,6 +83,8 @@ openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", external_axes
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

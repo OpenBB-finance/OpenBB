@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/disc/ulc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /disc/ulc - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 potentially undervalued large cap stocks. [Source: Yahoo Finance]
 
 ### Usage
 
-```python
+```python wordwrap
 ulc [-l LIMIT]
 ```
 
@@ -31,9 +31,9 @@ ulc [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of stocks to display. | 5 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of stocks to display. | 5 | True | None |
 
 
 ---

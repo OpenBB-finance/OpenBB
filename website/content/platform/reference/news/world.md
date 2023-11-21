@@ -59,13 +59,16 @@ keywords:
 - dict
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news /world - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Global News. Global news data.
+World News. Global news data.
 
 ```python wordwrap
 obb.news.world(limit: int = 20, provider: Literal[str] = benzinga)
@@ -81,7 +84,7 @@ obb.news.world(limit: int = 20, provider: Literal[str] = benzinga)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
-| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 </TabItem>
 
 <TabItem value='benzinga' label='benzinga'>
@@ -89,7 +92,7 @@ obb.news.world(limit: int = 20, provider: Literal[str] = benzinga)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
-| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | display | Literal['headline', 'abstract', 'full'] | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). | full | True |
 | date | str | Date of the news to retrieve. | None | True |
 | start_date | str | Start date of the news to retrieve. | None | True |
@@ -111,11 +114,20 @@ obb.news.world(limit: int = 20, provider: Literal[str] = benzinga)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
-| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | filter | Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag'] | Filter by type of news. | latest | True |
 | source | str | Filter by a specific publisher. Only valid when filter is set to source. | bloomberg | True |
 | tag | str | Tag, topic, to filter articles by. Only valid when filter is set to tag. | None | True |
 | term | str | Search term to filter articles by. This overrides all other filters. | None | True |
+</TabItem>
+
+<TabItem value='tiingo' label='tiingo'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| limit | int | The number of data entries to return. Here its the no. of articles to return. | 20 | True |
+| provider | Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| source | str | A comma-separated list of the domains requested. | None | True |
 </TabItem>
 
 </Tabs>
@@ -126,10 +138,10 @@ obb.news.world(limit: int = 20, provider: Literal[str] = benzinga)
 
 ```python wordwrap
 OBBject
-    results : List[GlobalNews]
+    results : List[WorldNews]
         Serializable results.
 
-    provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio']]
+    provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo']]
         Provider name.
 
     warnings : Optional[List[Warning_]]
@@ -173,7 +185,7 @@ OBBject
 | channels | str | Channels associated with the news. |
 | stocks | str | Stocks associated with the news. |
 | tags | str | Tags associated with the news. |
-| updated | datetime | None |
+| updated | datetime | Updated date of the news. |
 </TabItem>
 
 <TabItem value='biztoc' label='biztoc'>
@@ -214,6 +226,22 @@ OBBject
 | url | str | URL of the news. |
 | id | str | Article ID. |
 | company | Dict[str, Any] | Company details related to the news article. |
+</TabItem>
+
+<TabItem value='tiingo' label='tiingo'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | datetime | The date of the data. Here it is the published date of the news. |
+| title | str | Title of the news. |
+| images | List[Dict[str, str]] | Images associated with the news. |
+| text | str | Text/body of the news. |
+| url | str | URL of the news. |
+| symbols | str | Ticker tagged in the fetched news. |
+| article_id | int | Unique ID of the news article. |
+| site | str | Name of the news source. |
+| tags | str | Tags associated with the news article. |
+| crawl_date | datetime | Date the news article was crawled. |
 </TabItem>
 
 </Tabs>

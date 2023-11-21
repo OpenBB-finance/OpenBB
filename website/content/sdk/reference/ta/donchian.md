@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate Donchian Channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L66)]
 
-```python
+```python wordwrap
 openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int = 20)
 ```
 
@@ -52,15 +52,17 @@ openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int
 | pd.DataFrame | Dataframe of upper and lower channels |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots donchian channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L112)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L78)]
 
-```python
-openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int = 20, lower_length: int = 20, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int = 20, lower_length: int = 20, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -74,7 +76,7 @@ openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int
 | upper_length | int | Length of window to calculate upper channel | 20 | True |
 | lower_length | int | Length of window to calculate lower channel | 20 | True |
 | export | str | Format of export file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,6 +86,8 @@ openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

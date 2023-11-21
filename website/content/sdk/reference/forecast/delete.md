@@ -13,11 +13,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="forecast.delete - Reference | OpenBB SDK Docs" />
 
-None
+Delete a column from a dataframe
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L466)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L470)]
 
-```python
+```python wordwrap
 openbb.forecast.delete(data: pd.DataFrame, column: str)
 ```
 
@@ -25,12 +25,18 @@ openbb.forecast.delete(data: pd.DataFrame, column: str)
 
 ## Parameters
 
-This function does not take any parameters.
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | pd.DataFrame | The dataframe to delete a column from | None | False |
+| column | str | The column to delete | None | False |
+
 
 ---
 
 ## Returns
 
-This function does not return anything
-
+| Type | Description |
+| ---- | ----------- |
+| None |  |
 ---
+

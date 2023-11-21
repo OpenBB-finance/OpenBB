@@ -23,7 +23,7 @@ Get PortfolioEngine object
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L27)]
 
-```python
+```python wordwrap
 openbb.portfolio.load(transactions_file_path: str, benchmark_symbol: str = "SPY", full_shares: bool = False, risk_free_rate: float = 0)
 ```
 
@@ -52,7 +52,8 @@ openbb.portfolio.load(transactions_file_path: str, benchmark_symbol: str = "SPY"
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 ```
 
 ---
+

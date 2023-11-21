@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Find similar tickers to a given symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/sdk_helpers.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/sdk_helpers.py#L14)]
 
-```python
+```python wordwrap
 openbb.stocks.ca.similar(symbol: str, source: Any = "Finviz")
 ```
 
@@ -53,7 +53,7 @@ To get similar tickers to AAPL from Finviz:
 
 ```python
 from openbb_terminal.sdk import openbb
-similar_tickers = openbb.stocks.ca.similar("AAPL)
+similar_tickers = openbb.stocks.ca.similar("AAPL")
 ```
 
 
@@ -64,3 +64,4 @@ similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")
 ```
 
 ---
+

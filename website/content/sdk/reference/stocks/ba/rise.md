@@ -19,7 +19,7 @@ Get top rising related queries with this stock's query [Source: google].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/google_model.py#L106)]
 
-```python
+```python wordwrap
 openbb.stocks.ba.rise(symbol: str, limit: int = 10)
 ```
 
@@ -41,3 +41,4 @@ openbb.stocks.ba.rise(symbol: str, limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing rising related queries |
 ---
+

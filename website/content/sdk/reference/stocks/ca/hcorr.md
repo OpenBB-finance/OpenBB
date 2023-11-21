@@ -23,10 +23,10 @@ import TabItem from '@theme/TabItem';
 
 Get historical price correlation. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L98)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L116)]
 
-```python
-openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a")
+```python wordwrap
+openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, candle_type: str = "a")
 ```
 
 ---
@@ -37,6 +37,7 @@ openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, can
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
 | start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| end | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to today | None | True |
 | candle_type | str | OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close | a | True |
 
 
@@ -49,15 +50,17 @@ openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, can
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe with correlation matrix, Dataframe with historical prices for all comparison stocks |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Correlation heatmap based on historical price comparison
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L154)]
 
-```python
-openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a", display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = "")
+```python wordwrap
+openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, candle_type: str = "a", display_full_matrix: bool = False, raw: bool = False, external_axes: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -68,10 +71,11 @@ openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = Non
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
 | start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| end_date | Optional[str] | End date (e.g., 2023-01-01) | None | True |
 | candle_type | str | OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close | a | True |
 | display_full_matrix | bool | Optionally display all values in the matrix, rather than masking off half, by default False | False | True |
 | raw | bool | Whether to display raw data | False | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 | export | str | Format to export correlation prices, by default "" |  | True |
 
 
@@ -82,6 +86,8 @@ openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = Non
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

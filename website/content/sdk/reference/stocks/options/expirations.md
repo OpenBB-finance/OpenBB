@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get Option Chain Expirations
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L69)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L128)]
 
-```python
+```python wordwrap
 openbb.stocks.options.expirations(symbol: str, source: str = "Nasdaq")
 ```
 
@@ -33,7 +33,7 @@ openbb.stocks.options.expirations(symbol: str, source: str = "Nasdaq")
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Symbol to get chain for | None | False |
-| source | str | Source to get data from, by default "Nasdaq" | Nasdaq | True |
+| source | str | Source to get data from, by default "Nasdaq". Can be Intrinio, Tradier, Nasdaq, or YahooFinance | Nasdaq | True |
 
 
 ---
@@ -53,3 +53,4 @@ SPX_expirations = openbb.stocks.options.expirations("SPX", source = "Tradier")
 ```
 
 ---
+

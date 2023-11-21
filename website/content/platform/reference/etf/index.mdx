@@ -1,60 +1,65 @@
 # etf
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard
-    title="countries"
-    description="ETF Country weighting."
+        title="Discovery"
+        description="active, gainers, losers"
+        url="/platform/reference/etf/discovery"
+    />
+<ReferenceCard
+    title="Countries"
+    description="ETF Country weighting"
     url="/platform/reference/etf/countries"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="historical"
-    description="ETF Historical Market Price."
+    title="Historical"
+    description="ETF Historical Market Price"
     url="/platform/reference/etf/historical"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="holdings"
-    description="Get the holdings for an individual ETF."
+    title="Holdings"
+    description="Get the holdings for an individual ETF"
     url="/platform/reference/etf/holdings"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="holdings_date"
-    description="Get the holdings filing date for an individual ETF."
+    title="Holdings Date"
+    description="Get the holdings filing date for an individual ETF"
     url="/platform/reference/etf/holdings_date"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="holdings_performance"
-    description="Get the ETF holdings performance."
+    title="Holdings Performance"
+    description="Get the ETF holdings performance"
     url="/platform/reference/etf/holdings_performance"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="info"
-    description="ETF Information Overview."
+    title="Info"
+    description="ETF Information Overview"
     url="/platform/reference/etf/info"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="price_performance"
-    description="Price performance as a return, over different periods."
+    title="Price Performance"
+    description="Price performance as a return, over different periods"
     url="/platform/reference/etf/price_performance"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="search"
-    description="Search for ETFs. An empty query returns the full list of ETFs from the provider."
+    title="Search"
+    description="Search for ETFs"
     url="/platform/reference/etf/search"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="sectors"
-    description="ETF Sector weighting."
+    title="Sectors"
+    description="ETF Sector weighting"
     url="/platform/reference/etf/sectors"
-    command="true"
+    chevron={false}
 />
 </ul>

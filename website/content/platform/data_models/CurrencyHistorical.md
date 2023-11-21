@@ -1,6 +1,6 @@
 ---
-title: Currency Historical Price
-description: OpenBB Platform Data Model
+title: CurrencyHistorical
+description: Currency Historical Price
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -37,7 +37,7 @@ CurrencyHistoricalQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -47,7 +47,7 @@ CurrencyHistoricalQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | interval | Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'] | Data granularity. | 1day | True |
 </TabItem>
 
@@ -58,12 +58,23 @@ CurrencyHistoricalQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | multiplier | int | Multiplier of the timespan. | 1 | True |
 | timespan | Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'] | Timespan of the data. | day | True |
 | sort | Literal['asc', 'desc'] | Sort order of the data. | desc | True |
 | limit | int | The number of data entries to return. | 49999 | True |
 | adjusted | bool | Whether the data is adjusted. | True | True |
+</TabItem>
+
+<TabItem value='tiingo' label='tiingo'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
+| provider | Literal['fmp', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| interval | Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'] | Data granularity. | 1day | True |
 </TabItem>
 
 <TabItem value='yfinance' label='yfinance'>
@@ -73,7 +84,7 @@ CurrencyHistoricalQueryParams,
 | symbol | Union[str, List[str]] | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
-| provider | Literal['fmp', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | interval | Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'] | Data granularity. | 1d | True |
 | period | Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'] | Time period of the data to return. | max | True |
 </TabItem>

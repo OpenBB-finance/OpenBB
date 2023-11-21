@@ -18,7 +18,9 @@ keywords:
 - etf performance chart
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<HeadTitle title="etf /holdings_performance - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

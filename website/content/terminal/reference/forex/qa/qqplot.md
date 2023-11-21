@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/qa/qqplot - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /qa/qqplot - Reference | OpenBB Terminal Docs" />
 
 Display QQ plot vs normal quantiles
 
 ### Usage
 
-```python
+```python wordwrap
 qqplot
 ```
 

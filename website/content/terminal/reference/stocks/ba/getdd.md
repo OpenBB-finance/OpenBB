@@ -21,13 +21,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ba/getdd - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ba/getdd - Reference | OpenBB Terminal Docs" />
 
 Print top stock's due diligence from other users. [Source: Reddit]
 
 ### Usage
 
-```python
+```python wordwrap
 getdd [-l LIMIT] [-d DAYS] [-a]
 ```
 
@@ -35,11 +35,11 @@ getdd [-l LIMIT] [-d DAYS] [-a]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | limit of posts to retrieve. | 5 | True | None |
-| days | number of prior days to look for. | 3 | True | None |
-| all | search through all flairs (apart from Yolo and Meme), otherwise we focus on specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | limit of posts to retrieve. | 5 | True | None |
+| days | -d  --days | number of prior days to look for. | 3 | True | None |
+| all | -a  --all | search through all flairs (apart from Yolo and Meme), otherwise we focus on specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart | False | True | None |
 
 
 ---

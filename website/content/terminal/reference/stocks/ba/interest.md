@@ -25,24 +25,24 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ba/interest - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ba/interest - Reference | OpenBB Terminal Docs" />
 
 Plot interest over time of words/sentences versus stock price. [Source: Google]
 
 ### Usage
 
-```python
-interest [-s START] [-w WORDS]
+```python wordwrap
+interest [-s START] [-w WORDS [WORDS ...]]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| start | starting date (format YYYY-MM-DD) of interest | 2020-11-23 | True | None |
-| words | Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| start | -s  --start | starting date (format YYYY-MM-DD) of interest | 2021-11-19 | True | None |
+| words | -w  --words | Select multiple sentences/words separated by commas. E.g. COVID,WW3,NFT | None | True | None |
 
 ![interest](https://user-images.githubusercontent.com/25267873/157575723-23c55e4e-9e87-4647-b8fa-8ed9643f471f.png)
 

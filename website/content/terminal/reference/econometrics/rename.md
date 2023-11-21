@@ -22,7 +22,7 @@ The column you want to rename from a dataset.
 
 ### Usage
 
-```python
+```python wordwrap
 rename [-d {}] -o OLDCOL -n NEWCOL
 ```
 
@@ -30,11 +30,11 @@ rename [-d {}] -o OLDCOL -n NEWCOL
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| dataset | Dataset that will get a column renamed | None | True | None |
-| oldcol | Old column from dataset to be renamed | None | False | None |
-| newcol | New column from dataset to be renamed | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| dataset | -d  --dataset | Dataset that will get a column renamed | None | True | None |
+| oldcol | -o  --oldcol | Old column from dataset to be renamed | None | False | None |
+| newcol | -n  --newcol | New column from dataset to be renamed | None | False | None |
 
 
 ---
@@ -48,7 +48,7 @@ rename [-d {}] -o OLDCOL -n NEWCOL
 
 2022 May 31, 04:58 (🦋) /econometrics/ $ show wp
 
-                                      Dataset wp | Showing 10 of 4360 rows
+                                      Dataset wp | Showing 10 of 4360 rows                                       
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ date    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

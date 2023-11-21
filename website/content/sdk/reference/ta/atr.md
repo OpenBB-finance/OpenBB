@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Average True Range
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L132)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L145)]
 
-```python
+```python wordwrap
 openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset: int = 0)
 ```
 
@@ -53,15 +53,17 @@ openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset:
 | pd.DataFrame | Dataframe of atr |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots ATR
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L289)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L189)]
 
-```python
-openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamode: str = "sma", offset: int = 0, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamode: str = "sma", offset: int = 0, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -74,7 +76,7 @@ openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamo
 | symbol | str | Ticker symbol |  | True |
 | window | int | Length of window to calculate upper channel | 14 | True |
 | export | str | Format of export file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,6 +86,8 @@ openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamo
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -21,7 +21,7 @@ Plot data based on the index
 
 ### Usage
 
-```python
+```python wordwrap
 plot [-v VALUES]
 ```
 
@@ -29,9 +29,9 @@ plot [-v VALUES]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| values | Dataset.column values to be displayed in a plot | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| values | -v  --values | Dataset.column values to be displayed in a plot | None | True | None |
 
 
 ---
@@ -46,7 +46,7 @@ Successfully updated 'us_macro' index to be 'year'
 
 2022 Jun 01, 06:46 (🦋) /econometrics/ $ show us_macro
 
-                                               Dataset us_macro | Showing 10 of 203 rows
+                                               Dataset us_macro | Showing 10 of 203 rows                                               
 ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
 ┃        ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi   ┃ m1     ┃ tbilrate ┃ unemp ┃ pop    ┃ infl  ┃ realint ┃
 ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩

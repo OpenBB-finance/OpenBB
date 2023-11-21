@@ -27,7 +27,7 @@ Standard Deviation and Variance
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L41)]
 
-```python
+```python wordwrap
 openbb.qa.spread(data: pd.DataFrame, window: int = 14)
 ```
 
@@ -50,15 +50,17 @@ openbb.qa.spread(data: pd.DataFrame, window: int = 14)
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling standard deviation,<br/>Dataframe of rolling variance |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots rolling spread
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L126)]
 
-```python
-openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -72,8 +74,9 @@ openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window
 | target | str | Column in data to look at | None | False |
 | symbol | str | Stock ticker |  | True |
 | window | int | Length of window | 14 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -83,6 +86,8 @@ openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

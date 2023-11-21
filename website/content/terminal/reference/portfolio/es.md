@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/es - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /es - Reference | OpenBB Terminal Docs" />
 
 Provides Expected Shortfall (short: ES) of the selected portfolio.
 
 ### Usage
 
-```python
+```python wordwrap
 es [-m] [-d DIST] [-p PERCENTILE]
 ```
 
@@ -30,11 +30,11 @@ es [-m] [-d DIST] [-p PERCENTILE]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| use_mean | If one should use the mean of the portfolios return | True | True | None |
-| distribution | Distribution used for the calculations | normal | True | laplace, student_t, logistic, normal |
-| percentile | Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall | 99.9 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| use_mean | -m  --mean | If one should use the mean of the portfolios return | True | True | None |
+| distribution | -d  --dist | Distribution used for the calculations | normal | True | laplace, student_t, logistic, normal |
+| percentile | -p  --percentile | Percentile used for ES calculations, for example input 99.9 equals a 99.9 Percent Expected Shortfall | 99.9 | True | None |
 
 
 ---

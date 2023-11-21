@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/gov/topsells - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /gov/topsells - Reference | OpenBB Terminal Docs" />
 
 Top sells for government trading. [Source: www.quiverquant.com]
 
 ### Usage
 
-```python
+```python wordwrap
 topsells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [--raw]
 ```
 
@@ -31,12 +31,12 @@ topsells [-g {congress,senate,house}] [-p PAST_TRANSACTIONS_MONTHS] [-l LIMIT] [
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| gov |  | congress | True | congress, senate, house |
-| past_transactions_months | Past transaction months | 6 | True | None |
-| limit | Limit of top tickers to display | 10 | True | None |
-| raw | Print raw data. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| gov | -g  --govtype |  | congress | True | congress, senate, house |
+| past_transactions_months | -p  --past_transactions_months | Past transaction months | 6 | True | None |
+| limit | -l  --limit | Limit of top tickers to display | 10 | True | None |
+| raw | --raw | Print raw data. | False | True | None |
 
 ![topsells](https://user-images.githubusercontent.com/46355364/154266942-4ee9c83a-39be-4aab-8a06-01b6850f5bd9.png)
 

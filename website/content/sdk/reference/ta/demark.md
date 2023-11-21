@@ -29,7 +29,7 @@ Get the integer value for demark sequential indicator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L257)]
 
-```python
+```python wordwrap
 openbb.ta.demark(values: pd.Series)
 ```
 
@@ -61,15 +61,17 @@ openbb.ta.demark(df["Close"])
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot demark sequential indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L644)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L390)]
 
-```python
-openbb.ta.demark_chart(data: pd.DataFrame, symbol: str = "", min_to_show: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.demark_chart(data: pd.DataFrame, symbol: str = "", min_to_show: int = 5, export: str = "", sheet_name: Optional[str] = "", external_axes: bool = False)
 ```
 
 ---
@@ -82,7 +84,7 @@ openbb.ta.demark_chart(data: pd.DataFrame, symbol: str = "", min_to_show: int = 
 | symbol | str | Symbol that the data corresponds to |  | True |
 | min_to_show | int | Minimum value to show | 5 | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -102,6 +104,8 @@ openbb.ta.demark_chart(df)
 ```
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/stats - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/stats - Reference | OpenBB Terminal Docs" />
 
 Open insider filtered data using selected ticker. [Source: OpenInsider]
 
 ### Usage
 
-```python
+```python wordwrap
 stats [-l LIMIT] [-u]
 ```
 
@@ -34,9 +34,9 @@ stats [-l LIMIT] [-u]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of datarows to display | 10 | True | None |
-| urls | Flag to show hyperlinks | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
+| urls | -u  --urls | Flag to show hyperlinks | False | True | None |
 
 ---

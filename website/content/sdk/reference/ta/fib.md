@@ -28,8 +28,8 @@ Calculate Fibonacci levels
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_model.py#L17)]
 
-```python
-openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None)
+```python wordwrap
+openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Optional[Any] = None, end_date: Optional[Any] = None)
 ```
 
 ---
@@ -53,15 +53,17 @@ openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_
 | pd.DataFrame | Dataframe of fib levels |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots Calculated fibonacci retracement levels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_view.py#L24)]
 
-```python
-openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[str] = None, end_date: Optional[str] = None, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[str] = None, end_date: Optional[str] = None, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -75,8 +77,9 @@ openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[s
 | start_date | Optional[str, None] | User picked date for starting retracement | None | True |
 | end_date | Optional[str, None] | User picked date for ending retracement | None | True |
 | symbol | str | Ticker symbol |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -86,6 +89,18 @@ openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[s
 This function does not return anything
 
 ---
+
+## Examples
+
+```python
+from openbb_terminal.sdk import openbb
+df = openbb.stocks.load(symbol="aapl")
+openbb.ta.fib_chart(data=df)
+```
+
+---
+
+
 
 </TabItem>
 </Tabs>

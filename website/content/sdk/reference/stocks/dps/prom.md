@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L214)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L217)]
 
-```python
+```python wordwrap
 openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
 ```
 
@@ -52,15 +52,17 @@ openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
 | Tuple[pd.DataFrame, Dict] | Dark Pools (ATS) Data, Tickers from Dark Pools with better regression slope |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L188)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L212)]
 
-```python
-openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str = "T1", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str = "T1", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -73,7 +75,7 @@ openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str
 | limit | int | Number of tickers to display from most promising with<br/>better linear regression slope | 10 | True |
 | tier | str | Tier to process data from: T1, T2 or OTCE | T1 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -83,6 +85,8 @@ openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

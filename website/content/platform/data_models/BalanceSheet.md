@@ -1,6 +1,6 @@
 ---
-title: Balance Sheet
-description: OpenBB Platform Data Model
+title: BalanceSheet
+description: Balance Sheet
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

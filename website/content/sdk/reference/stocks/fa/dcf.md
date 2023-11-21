@@ -24,9 +24,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get stocks dcf from FMP
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L173)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L208)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.dcf(symbol: str, limit: int = 5, quarterly: bool = False)
 ```
 
@@ -49,3 +49,4 @@ openbb.stocks.fa.dcf(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of dcf data |
 ---
+

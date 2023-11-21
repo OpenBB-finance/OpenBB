@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/distr - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /distr - Reference | OpenBB Terminal Docs" />
 
 Compute distribution of daily returns
 
 ### Usage
 
-```python
+```python wordwrap
 distr [-p PERIOD]
 ```
 
@@ -33,8 +33,8 @@ distr [-p PERIOD]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| period | The file to be loaded | all | True | mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| period | -p  --period | The file to be loaded | all | True | mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all |
 
 ---

@@ -10,21 +10,22 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/fa/analysis - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /fa/analysis - Reference | OpenBB Terminal Docs" />
 
 Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
 ### Usage
 
-```python
-analysis
+```python wordwrap
+analysis [-t TICKER]
 ```
 
 ---
 
 ## Parameters
 
-This command has no parameters
-
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | Ticker to analyze | None | True | None |
 
 ---

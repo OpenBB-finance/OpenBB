@@ -23,13 +23,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/lit - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/lit - Reference | OpenBB Terminal Docs" />
 
 Print latest insider trading. [Source: OpenInsider]
 
 ### Usage
 
-```python
+```python wordwrap
 lit [-l LIMIT]
 ```
 
@@ -37,9 +37,9 @@ lit [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of datarows to display | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

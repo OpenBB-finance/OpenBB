@@ -1,20 +1,9 @@
 ---
 title: index
-description: This page provides documentation for the OpenBB Terminal SDK functions
-  for fetching and visualizing economic indices data from Yahoo Finance. It provides
-  Python code examples and explains parameters and returns in detail.
+description: Get data on selected indices over time [Source Yahoo Finance]
 keywords:
-- Docusaurus documentation
-- OpenBB Terminal SDK
-- Economy indices
-- Yahoo Finance data
-- Data visualization
-- Python code examples
-- Data intervals
-- Data start and end dates
-- Adjusted Close
-- Cumulative returns on index
-- Export data
+- economy
+- index
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -29,10 +18,10 @@ import TabItem from '@theme/TabItem';
 
 Get data on selected indices over time [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L672)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L681)]
 
-```python
-openbb.economy.index(indices: list, interval: str = "1d", start_date: int = None, end_date: int = None, column: str = "Adj Close", returns: bool = False)
+```python wordwrap
+openbb.economy.index(indices: list, interval: str = "1d", start_date: Optional[int] = None, end_date: Optional[int] = None, column: str = "Adj Close", returns: bool = False)
 ```
 
 ---
@@ -68,15 +57,17 @@ openbb.economy.index(["^GSPC", "sp400"])
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Load (and show) the selected indices over time [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_view.py#L30)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_view.py#L25)]
 
-```python
-openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int = None, end_date: int = None, column: str = "Adj Close", returns: bool = False, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")
+```python wordwrap
+openbb.economy.index_chart(indices: Union[list, pd.DataFrame], interval: str = "1d", start_date: Optional[int] = None, end_date: Optional[int] = None, column: str = "Adj Close", returns: bool = False, raw: bool = False, external_axes: bool = False, export: str = "", sheet_name: Optional[str] = None, limit: int = 10)
 ```
 
 ---
@@ -85,14 +76,14 @@ openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int 
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| indices | list | A list of indices you wish to load (and plot).<br/>Available indices can be accessed through economy.available_indices(). | None | False |
+| indices | Union[list, pd.DataFrame] | A list of indices to load in, or a DataFrame with indices as columns (to plot)<br/>Available indices can be accessed through economy.available_indices(). | None | False |
 | interval | str | Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo<br/>Intraday data cannot extend last 60 days | 1d | True |
 | start_date | str | The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | None | True |
 | end_date | str | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 | column | str | Which column to load in, by default this is the Adjusted Close. | Adj Close | True |
 | returns | bool | Flag to show cumulative returns on index | False | True |
 | raw | bool | Whether to display the raw output. | False | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file |  | True |
 
 
@@ -104,6 +95,8 @@ openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int 
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
+
+
 
 </TabItem>
 </Tabs>

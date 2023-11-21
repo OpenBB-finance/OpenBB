@@ -1,6 +1,6 @@
 ---
-title: Get the most-recent filings submitted to the SEC
-description: OpenBB Platform Data Model
+title: DiscoveryFilings
+description: Get the most-recent filings submitted to the SEC
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

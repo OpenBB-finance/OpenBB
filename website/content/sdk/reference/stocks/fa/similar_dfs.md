@@ -23,9 +23,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get dataframes for similar companies
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L468)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L478)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool = False)
 ```
 
@@ -36,7 +36,7 @@ openbb.stocks.fa.similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filte
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | The ticker symbol to create a dataframe for | None | False |
-| into | Dict[str,Any] | The dictionary produced from the yfinance.info function | None | True |
+| into | Dict[str,Any] | The dictionary based on info collected from fd.Equities() | None | True |
 | n | int | The number of similar companies to produce | None | False |
 | no_filter | bool | True means that we do not filter based on market cap | False | True |
 
@@ -49,3 +49,4 @@ openbb.stocks.fa.similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filte
 | ---- | ----------- |
 | List[str, pd.DataFrame] | A list of similar companies |
 ---
+

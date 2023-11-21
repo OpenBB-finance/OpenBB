@@ -1,6 +1,6 @@
 ---
-title: Fuzzy search for Industry Titles, Reporting Office, and SIC Codes
-description: OpenBB Platform Data Model
+title: SicSearch
+description: Fuzzy search for Industry Titles, Reporting Office, and SIC Codes
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

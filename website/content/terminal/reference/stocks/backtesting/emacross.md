@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/backtesting/emacross - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /backtesting/emacross - Reference | OpenBB Terminal Docs" />
 
 Cross between a long and a short Exponential Moving Average.
 
 ### Usage
 
-```python
+```python wordwrap
 emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
 ```
 
@@ -31,12 +31,12 @@ emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| long | Long EMA period | 50 | True | None |
-| short | Short EMA period | 20 | True | None |
-| spy | Flag to add spy hold comparison | False | True | None |
-| no_bench | Flag to not show buy and hold comparison | False | True | None |
-| shortable | Flag that disables the short sell | True | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| long | -l  --long | Long EMA period | 50 | True | None |
+| short | -s  --short | Short EMA period | 20 | True | None |
+| spy | --spy | Flag to add spy hold comparison | False | True | None |
+| no_bench | --no_bench | Flag to not show buy and hold comparison | False | True | None |
+| shortable | --no_short | Flag that disables the short sell | True | True | None |
 
 ---

@@ -22,24 +22,25 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/disc/dapps - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /disc/dapps - Reference | OpenBB Terminal Docs" />
 
-Shows top decentralized applications [Source: https://dappradar.com/] Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]} to sort by column
+Shows available decentralized applications [Source: https://dappradar.com/] Accepts --chain argument to filter by blockchain --page argument to show a specific page. Default: 1 --limit argument to limit the number of records per page. Default: 15
 
 ### Usage
 
-```python
-dapps [-l LIMIT] [-s SORTBY [SORTBY ...]]
+```python wordwrap
+dapps [-c CHAIN] [-p PAGE] [-l LIMIT]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of records to display | 15 | True | None |
-| sortby | Sort by given column. Default: Daily Volume [$] | Daily Volume [$] | True | Name, Category, Protocols, Daily Users, Daily Volume [$] |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| chain | -c  --chain | Filter by blockchain | None | True | None |
+| page | -p  --page | Page number | 1 | True | None |
+| limit | -l  --limit | Number of records to display per page | 15 | True | None |
 
 
 ---

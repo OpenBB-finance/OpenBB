@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ... [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L379)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L376)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.platforms()
 ```
 
@@ -52,15 +52,17 @@ This function does not take any parameters.
 | pd.DataFrame | index, platform_id |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L324)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L343)]
 
-```python
-openbb.crypto.ov.platforms_chart(export: str)
+```python wordwrap
+openbb.crypto.ov.platforms_chart(export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -69,7 +71,7 @@ openbb.crypto.ov.platforms_chart(export: str)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| export | str | Export dataframe data to csv,json,xlsx file | None | False |
+| export | str | Export dataframe data to csv,json,xlsx file |  | True |
 
 
 ---
@@ -79,6 +81,8 @@ openbb.crypto.ov.platforms_chart(export: str)
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

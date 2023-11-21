@@ -1,6 +1,6 @@
 ---
-title: Futures Historical Price
-description: OpenBB Platform Data Model
+title: FuturesHistorical
+description: Futures Historical Price
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

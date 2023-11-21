@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get information ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1379)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1421)]
 
-```python
+```python wordwrap
 openbb.portfolio.metric.information(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -45,8 +45,9 @@ openbb.portfolio.metric.information(portfolio_engine: portfolio_engine.Portfolio
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.metric.information(p)
 ```
 
 ---
+

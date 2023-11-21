@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/options/hist - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /options/hist - Reference | OpenBB Terminal Docs" />
 
 Gets historical quotes for given option chain
 
 ### Usage
 
-```python
+```python wordwrap
 hist -s STRIKE [-p] [-c CHAIN_ID]
 ```
 
@@ -29,11 +29,11 @@ hist -s STRIKE [-p] [-c CHAIN_ID]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| strike | Strike price to look at | None | False | None |
-| put | Flag for showing put option | False | True | None |
-| chain_id | OCC option symbol | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| strike | -s  --strike | Strike price to look at | None | False | None |
+| put | -p  --put | Flag for showing put option | False | True | None |
+| chain_id | -c  --chain | Option symbol | None | True | None |
 
 
 ---

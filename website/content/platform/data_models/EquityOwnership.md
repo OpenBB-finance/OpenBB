@@ -1,6 +1,6 @@
 ---
-title: Equity Ownership
-description: OpenBB Platform Data Model
+title: EquityOwnership
+description: Equity Ownership
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

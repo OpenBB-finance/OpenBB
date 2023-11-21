@@ -1,7 +1,6 @@
 ---
-title: The RSS feed provides links to litigation releases concerning civil lawsuits brought
-    by the Commission in federal court
-description: OpenBB Platform Data Model
+title: RssLitigation
+description: The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

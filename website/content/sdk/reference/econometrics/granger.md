@@ -23,9 +23,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate granger tests
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L210)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L225)]
 
-```python
+```python wordwrap
 openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3)
 ```
 
@@ -46,18 +46,20 @@ openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.
 
 | Type | Description |
 | ---- | ----------- |
-| dict | Dictionary containing results of Granger test |
+| pd.DataFrame | Dataframe containing results of Granger test |
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Show granger tests
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L247)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L408)]
 
-```python
-openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3, confidence_level: float = 0.05, export: str = "")
+```python wordwrap
+openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3, confidence_level: float = 0.05, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_serie
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

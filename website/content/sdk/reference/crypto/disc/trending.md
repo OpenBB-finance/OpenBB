@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Returns trending coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L317)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L335)]
 
-```python
+```python wordwrap
 openbb.crypto.disc.trending()
 ```
 
@@ -45,15 +45,17 @@ This function does not take any parameters.
 | pd.DataFrame | Trending Coins |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing trending coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L192)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L208)]
 
-```python
-openbb.crypto.disc.trending_chart(export: str = "")
+```python wordwrap
+openbb.crypto.disc.trending_chart(export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -72,6 +74,8 @@ openbb.crypto.disc.trending_chart(export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

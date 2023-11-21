@@ -1,6 +1,6 @@
 ---
-title: Look up filings to the SEC by ticker symbol or CIK
-description: OpenBB Platform Data Model
+title: Filings
+description: Look up filings to the SEC by ticker symbol or CIK
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

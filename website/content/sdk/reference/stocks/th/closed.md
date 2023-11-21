@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get closed exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L76)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L73)]
 
-```python
+```python wordwrap
 openbb.stocks.th.closed()
 ```
 
@@ -45,14 +45,16 @@ This function does not take any parameters.
 | pd.DataFrame | Currently closed exchanges |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display closed exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L64)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L65)]
 
-```python
+```python wordwrap
 openbb.stocks.th.closed_chart()
 ```
 
@@ -69,6 +71,8 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -1,6 +1,6 @@
 ---
-title: Historical Market Indices
-description: OpenBB Platform Data Model
+title: MarketIndices
+description: Historical Market Indices
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

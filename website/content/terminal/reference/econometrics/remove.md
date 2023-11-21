@@ -18,7 +18,7 @@ Remove a dataset from the loaded dataset list
 
 ### Usage
 
-```python
+```python wordwrap
 remove [-n {}]
 ```
 
@@ -26,9 +26,9 @@ remove [-n {}]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| name | The name of the dataset you want to remove | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| name | -n  --name | The name of the dataset you want to remove | None | True | None |
 
 
 ---

@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Corporate lobbying details
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L531)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L532)]
 
-```python
+```python wordwrap
 openbb.stocks.gov.lobbying(symbol: str, limit: int = 10)
 ```
 
@@ -45,3 +45,4 @@ openbb.stocks.gov.lobbying(symbol: str, limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with corporate lobbying data |
 ---
+

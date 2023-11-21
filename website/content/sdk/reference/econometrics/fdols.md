@@ -21,7 +21,7 @@ First differencing is an alternative to using fixed effects when there might be 
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L399)]
 
-```python
+```python wordwrap
 openbb.econometrics.fdols(Y: pd.DataFrame, X: pd.DataFrame)
 ```
 
@@ -43,3 +43,4 @@ openbb.econometrics.fdols(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>First Difference OLS model |
 ---
+

@@ -18,24 +18,24 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/disc/upcoming - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /disc/upcoming - Reference | OpenBB Terminal Docs" />
 
 Upcoming earnings release dates. [Source: Seeking Alpha]
 
 ### Usage
 
-```python
-upcoming [-l LIMIT] [-p N_PAGES]
+```python wordwrap
+upcoming [-l LIMIT] [-s START_DATE]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of upcoming earnings release dates to display. | 1 | True | None |
-| n_pages | Number of pages to read upcoming earnings from in Seeking Alpha website. | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of upcoming earnings release dates to look ahead. | 5 | True | None |
+| start_date | -s  --start | Start date of data, in YYYY-MM-DD format. Defaults to today. | 2023-11-21 | True | None |
 
 
 ---

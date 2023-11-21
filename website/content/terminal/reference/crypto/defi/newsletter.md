@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/defi/newsletter - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /defi/newsletter - Reference | OpenBB Terminal Docs" />
 
 Display DeFi related substack newsletters. [Source: substack.com]
 
 ### Usage
 
-```python
+```python wordwrap
 newsletter [-l LIMIT]
 ```
 
@@ -29,9 +29,9 @@ newsletter [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of records to display | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Number of records to display | 10 | True | None |
 
 
 ---

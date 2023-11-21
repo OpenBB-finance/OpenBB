@@ -1,6 +1,6 @@
 ---
-title: Spot Rates
-description: OpenBB Platform Data Model
+title: SpotRate
+description: Spot Rates
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -10,6 +10,9 @@ keywords:
 - investment strategy
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantitative /capm - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -19,7 +22,7 @@ import TabItem from '@theme/TabItem';
 Get Capital Asset Pricing Model.
 
 ```python wordwrap
-
+obb.quantitative.capm()
 ```
 
 ---

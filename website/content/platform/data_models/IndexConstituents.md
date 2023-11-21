@@ -1,6 +1,6 @@
 ---
-title: Index Constituents
-description: OpenBB Platform Data Model
+title: IndexConstituents
+description: Index Constituents
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

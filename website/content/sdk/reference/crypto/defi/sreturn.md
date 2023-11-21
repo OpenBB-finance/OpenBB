@@ -20,9 +20,9 @@ import TabItem from '@theme/TabItem';
 
 Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L312)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L310)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.sreturn(limit: int = 200)
 ```
 
@@ -44,15 +44,17 @@ openbb.crypto.defi.sreturn(limit: int = 200)
 | pd.DataFrame | historical staking returns |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L254)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L262)]
 
-```python
-openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -63,7 +65,7 @@ openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axe
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | Number of records to display | 90 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -73,6 +75,8 @@ openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axe
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

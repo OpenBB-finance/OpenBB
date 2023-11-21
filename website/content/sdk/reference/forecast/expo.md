@@ -25,10 +25,10 @@ import TabItem from '@theme/TabItem';
 
 Performs Probabilistic Exponential Smoothing forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/expo_model.py#L34)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/expo_model.py#L33)]
 
-```python
-openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5)
+```python wordwrap
+openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, metric: str = "mape")
 ```
 
 ---
@@ -46,6 +46,7 @@ openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | n_predict | int | Number of days to forecast | 5 | True |
 | start_window | float | Size of sliding window from start of timeseries and onwards | 0.85 | True |
 | forecast_horizon | int | Number of days to forecast when backtesting and retraining historical | 5 | True |
+| metric | str | Metric to use for backtesting. Defaults to MAPE. | mape | True |
 
 
 ---
@@ -57,6 +58,8 @@ openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit Prob. Expo model object. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -64,8 +67,8 @@ Display Probabilistic Exponential Smoothing forecast
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/expo_view.py#L20)]
 
-```python
-openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)
+```python wordwrap
+openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", sheet_name: Optional[str] = None, residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, metric: str = "mape", external_axes: bool = False)
 ```
 
 ---
@@ -75,7 +78,7 @@ openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | data | Union[pd.Series, np.array] | Data to forecast | None | False |
-| dataset_name str | None | The name of the ticker to be predicted | None | True |
+| dataset_name | str | The name of the ticker to be predicted |  | True |
 | target_column | Optional[str]: | Target column to forecast. Defaults to "close". | close | True |
 | trend | str | Trend component.  One of [N, A, M]<br/>Defaults to ADDITIVE. | A | True |
 | seasonal | str | Seasonal component.  One of [N, A, M]<br/>Defaults to ADDITIVE. | A | True |
@@ -84,13 +87,16 @@ openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 | n_predict | int | Number of days to forecast | 5 | True |
 | start_window | float | Size of sliding window from start of timeseries and onwards | 0.85 | True |
 | forecast_horizon | int | Number of days to forecast when backtesting and retraining historical | 5 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
 | residuals | bool | Whether to show residuals for the model. Defaults to False. | False | True |
 | forecast_only | bool | Whether to only show dates in the forecasting range. Defaults to False. | False | True |
 | start_date | Optional[datetime] | The starting date to perform analysis, data before this is trimmed. Defaults to None. | None | True |
 | end_date | Optional[datetime] | The ending date to perform analysis, data after this is trimmed. Defaults to None. | None | True |
 | naive | bool | Whether to show the naive baseline. This just assumes the closing price will be the same<br/>as the previous day's closing price. Defaults to False. | False | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| export_pred_raw | bool | Whether to export the raw predicted values. Defaults to False. | False | True |
+| metric | str | The metric to use when backtesting. Defaults to "mape". | mape | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -100,6 +106,8 @@ openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

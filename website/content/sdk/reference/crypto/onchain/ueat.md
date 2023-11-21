@@ -23,9 +23,9 @@ import TabItem from '@theme/TabItem';
 
 Get number of unique ethereum addresses which made a transaction in given time interval.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L584)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L586)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.ueat(interval: str = "day", limit: int = 90, sortby: str = "tradeAmount", ascend: bool = True)
 ```
 
@@ -50,15 +50,17 @@ openbb.crypto.onchain.ueat(interval: str = "day", limit: int = 90, sortby: str =
 | pd.DataFrame | Unique ethereum addresses which made a transaction |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing number of unique ethereum addresses which made a transaction in given time interval
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L225)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L236)]
 
-```python
-openbb.crypto.onchain.ueat_chart(interval: str = "days", limit: int = 10, sortby: str = "date", ascend: bool = True, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.ueat_chart(interval: str = "days", limit: int = 10, sortby: str = "date", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -82,6 +84,8 @@ openbb.crypto.onchain.ueat_chart(interval: str = "days", limit: int = 10, sortby
 | ---- | ----------- |
 | pd.DataFrame | Number of unique ethereum addresses which made a transaction in given time interval |
 ---
+
+
 
 </TabItem>
 </Tabs>

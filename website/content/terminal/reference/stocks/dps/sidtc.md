@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/dps/sidtc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /dps/sidtc - Reference | OpenBB Terminal Docs" />
 
 Print short interest and days to cover. [Source: Stockgrid]
 
 ### Usage
 
-```python
+```python wordwrap
 sidtc [-l LIMIT] [-s {float,dtc,si}]
 ```
 
@@ -29,10 +29,10 @@ sidtc [-l LIMIT] [-s {float,dtc,si}]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of tickers to display. | 10 | True | None |
-| sort_field | Field for which to sort by, where 'float': Float Short %%, 'dtc': Days to Cover, 'si': Short Interest | float | True | float, dtc, si |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of tickers to display. | 10 | True | None |
+| sort_field | -s  --sort | Field for which to sort by, where 'float': Float Short %%, 'dtc': Days to Cover, 'si': Short Interest | float | True | float, dtc, si |
 
 
 ---

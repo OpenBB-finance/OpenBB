@@ -29,20 +29,20 @@ Find similar coin by name, symbol, or id. If you don't remember exact name or id
 
 ### Usage
 
-```python
-find -c COIN [-k {id,symbol,name}] [-l LIMIT] [-s SKIP]
+```python wordwrap
+find [-c COIN] [-k {id,symbol,name}] [-l LIMIT] [-s SKIP]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| coin | Symbol Name or Id of Coin | None | False | None |
-| key | Specify by which column you would like to search: symbol, name, id | symbol | True | id, symbol, name |
-| limit | Number of records to display | 10 | True | None |
-| skip | Skip n of records | 0 | True | range(1, 300) |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| coin | -c  --coin | Symbol Name or Id of Coin | None | True | None |
+| key | -k  --key | Specify by which column you would like to search: symbol, name, id | symbol | True | id, symbol, name |
+| limit | -l  --limit | Number of records to display | 10 | True | None |
+| skip | -s  --skip | Skip n of records | 0 | True | range(1, 300) |
 
 
 ---

@@ -19,18 +19,18 @@ Add price signal to dataset based on closing price. 1 if the signal is that shor
 
 ### Usage
 
-```python
-signal [-d {}] [-c TARGET_COLUMN]
+```python wordwrap
+signal [-d {AAPL}] [-c TARGET_COLUMN]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| target_dataset | The name of the dataset you want to select | None | True | None |
-| target_column | The name of the specific column you want to use | close | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
+| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
 
 
 ---

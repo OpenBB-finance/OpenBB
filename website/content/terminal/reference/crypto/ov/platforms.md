@@ -21,13 +21,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/ov/platforms - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /ov/platforms - Reference | OpenBB Terminal Docs" />
 
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
 
 ### Usage
 
-```python
+```python wordwrap
 platforms
 ```
 

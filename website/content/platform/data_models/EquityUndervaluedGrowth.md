@@ -1,6 +1,6 @@
 ---
-title: Get undervalued growth Equities
-description: OpenBB Platform Data Model
+title: EquityUndervaluedGrowth
+description: Get undervalued growth Equities
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get daily volume for given pair [Source: https://graphql.bitquery.io/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L400)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L402)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.dvcp(limit: int = 100, symbol: str = "UNI", to_symbol: str = "USDT", sortby: str = "date", ascend: bool = True)
 ```
 
@@ -55,15 +55,17 @@ openbb.crypto.onchain.dvcp(limit: int = 100, symbol: str = "UNI", to_symbol: str
 | pd.DataFrame | Daily volume for given pair |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing daily volume for given pair
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L87)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L90)]
 
-```python
-openbb.crypto.onchain.dvcp_chart(symbol: str = "WBTC", to_symbol: str = "USDT", limit: int = 20, sortby: str = "date", ascend: bool = True, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.dvcp_chart(symbol: str = "WBTC", to_symbol: str = "USDT", limit: int = 20, sortby: str = "date", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -88,6 +90,8 @@ openbb.crypto.onchain.dvcp_chart(symbol: str = "WBTC", to_symbol: str = "USDT", 
 | ---- | ----------- |
 | pd.DataFrame | Token volume on different decentralized exchanges |
 ---
+
+
 
 </TabItem>
 </Tabs>

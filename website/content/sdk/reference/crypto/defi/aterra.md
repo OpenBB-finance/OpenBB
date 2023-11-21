@@ -29,7 +29,7 @@ Returns historical data of an asset in a certain terra address
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_model.py#L19)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.aterra(asset: str = "ust", address: str = "terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8")
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.defi.aterra(asset: str = "ust", address: str = "terra1tmnqgvg567yp
 | pd.DataFrame | historical data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots the 30-day history of specified asset in terra address
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L18)]
 
-```python
-openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -72,7 +74,7 @@ openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str 
 | asset | str | Terra asset {ust,luna,sdt} |  | True |
 | address | str | Terra address. Valid terra addresses start with 'terra' |  | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -82,6 +84,8 @@ openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="economy/qa/summary - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /qa/summary - Reference | OpenBB Terminal Docs" />
 
 Summary statistics
 
 ### Usage
 
-```python
+```python wordwrap
 summary
 ```
 

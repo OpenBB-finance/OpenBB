@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L102)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L103)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.hold(endpoint: str = "bitcoin")
 ```
 
@@ -55,15 +55,17 @@ openbb.crypto.ov.hold(endpoint: str = "bitcoin")
 | List[Union[str, pd.DataFrame]] | - str:              Overall statistics<br/>- pd.DataFrame: Companies holding crypto |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L202)]
 
-```python
-openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "", limit: int = 15)
+```python wordwrap
+openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "", sheet_name: Optional[str] = None, limit: int = 15)
 ```
 
 ---
@@ -74,6 +76,7 @@ openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Cryptocurrency: ethereum or bitcoin | None | False |
 | show_bar | bool | Whether to show a bar graph for the data | False | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx |  | True |
 | limit | int | The number of rows to show | 15 | True |
 
@@ -85,6 +88,8 @@ openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -1,0 +1,41 @@
+# forex
+
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+        title="Oanda"
+        description="calendar, cancel, candles, close, listorders, openpositions, opentrades, order, orderbook, pending, positionbook,..."
+        url="/sdk/reference/forex/oanda"
+    />
+<ReferenceCard
+    title="Candle"
+    description="Show candle plot for fx data."
+    url="/sdk/reference/forex/candle"
+    chevron={false}
+/>
+<ReferenceCard
+    title="Fwd"
+    description="Gets forward rates from fxempire"
+    url="/sdk/reference/forex/fwd"
+    chevron={false}
+/>
+<ReferenceCard
+    title="Get Currency List"
+    description="Load AV currency codes from a local file."
+    url="/sdk/reference/forex/get_currency_list"
+    chevron={false}
+/>
+<ReferenceCard
+    title="Load"
+    description="Load forex for two given symbols."
+    url="/sdk/reference/forex/load"
+    chevron={false}
+/>
+<ReferenceCard
+    title="Quote"
+    description="Get forex quote."
+    url="/sdk/reference/forex/quote"
+    chevron={false}
+/>
+</ul>

@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Polygon key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L481)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L476)]
 
-```python
+```python wordwrap
 openbb.keys.polygon(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -52,3 +52,4 @@ openbb.keys.polygon(key="example_key")
 ```
 
 ---
+

@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Request price for a forex pair.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L36)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L44)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.price(accountID: str = "REPLACE_ME", instrument: Optional[str] = None)
 ```
 
@@ -52,14 +52,16 @@ openbb.forex.oanda.price(accountID: str = "REPLACE_ME", instrument: Optional[str
 | Union[Dict[str, str], bool] | The currency pair price or False |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 View price for loaded currency pair.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L40)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L34)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.price_chart(account: str, instrument: Optional[str] = "")
 ```
 
@@ -80,6 +82,8 @@ openbb.forex.oanda.price_chart(account: str, instrument: Optional[str] = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

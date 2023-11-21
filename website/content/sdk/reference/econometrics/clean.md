@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Clean up NaNs from the dataset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L65)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L83)]
 
-```python
+```python wordwrap
 openbb.econometrics.clean(dataset: pd.DataFrame, fill: str = "", drop: str = "", limit: Optional[int] = None)
 ```
 
@@ -46,3 +46,4 @@ openbb.econometrics.clean(dataset: pd.DataFrame, fill: str = "", drop: str = "",
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with cleaned up data |
 ---
+

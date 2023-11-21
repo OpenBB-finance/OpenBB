@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/po/rpf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /po/rpf - Reference | OpenBB Terminal Docs" />
 
 Remove one of the portfolios
 
 ### Usage
 
-```python
+```python wordwrap
 rpf [-pf PORTFOLIOS]
 ```
 
@@ -26,8 +26,8 @@ rpf [-pf PORTFOLIOS]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| portfolios | portfolios to be removed from the saved portfolios |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| portfolios | -pf  --portfolios | portfolios to be removed from the saved portfolios |  | True | None |
 
 ---

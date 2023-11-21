@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Get rolling volatility
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L521)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L550)]
 
-```python
+```python wordwrap
 openbb.portfolio.rvol(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "1y")
 ```
 
@@ -57,21 +57,23 @@ openbb.portfolio.rvol(portfolio_engine: portfolio_engine.PortfolioEngine, window
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.rvol(p)
 ```
 
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display rolling volatility
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L876)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L965)]
 
-```python
-openbb.portfolio.rvol_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "1y", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.portfolio.rvol_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "1y", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -82,8 +84,9 @@ openbb.portfolio.rvol_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio | PortfolioEngine | PortfolioEngine object | None | True |
 | interval | str | interval for window to consider | None | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export to file |  | True |
-| external_axes | Optional[List[plt.Axes]] | Optional axes to display plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -93,6 +96,8 @@ openbb.portfolio.rvol_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

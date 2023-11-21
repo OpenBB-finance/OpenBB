@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/active - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/active - Reference | OpenBB Terminal Docs" />
 
 Display active blockchain addresses over time [Source: https://glassnode.org]
 
 ### Usage
 
-```python
+```python wordwrap
 active [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
 ```
 
@@ -29,11 +29,11 @@ active [-i {24h,1w,1month}] [-s SINCE] [-u UNTIL]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| interval | Frequency interval. Default: 24h | 24h | True | 24h, 1w, 1month |
-| since | Initial date. Default: 1 year ago | 2021-11-25 | True | None |
-| until | Final date. Default: Today | 2022-11-25 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| interval | -i  --interval | Frequency interval. Default: 24h | 24h | True | 24h, 1w, 1month |
+| since | -s  --since | Initial date. Default: 1 year ago | 2022-11-21 | True | None |
+| until | -u  --until | Final date. Default: Today | 2023-11-21 | True | None |
 
 ![active](https://user-images.githubusercontent.com/46355364/154058739-e30fed47-c86f-4aef-a699-1bc69180c607.png)
 

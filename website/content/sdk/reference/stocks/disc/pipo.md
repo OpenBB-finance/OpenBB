@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Past IPOs dates. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L75)]
 
-```python
+```python wordwrap
 openbb.stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = None)
 ```
 
@@ -43,3 +43,4 @@ openbb.stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = No
 | ---- | ----------- |
 | pd.DataFrame | Get dataframe with past IPOs |
 ---
+

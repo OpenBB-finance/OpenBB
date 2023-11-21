@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get Option Chain For A Stock.  No greek data is returned
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L32)]
 
-```python
+```python wordwrap
 openbb.stocks.options.chains(symbol: str, source: str = "Nasdaq", expiration: Optional[str] = None)
 ```
 
@@ -31,7 +31,7 @@ openbb.stocks.options.chains(symbol: str, source: str = "Nasdaq", expiration: Op
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Symbol to get chain for | None | False |
-| source | str | Source to get data from, by default "Nasdaq" | Nasdaq | True |
+| source | str | Source to get data from, by default "Nasdaq". Can be YahooFinance, Tradier, Nasdaq, or Intrinio. | Nasdaq | True |
 | expiration | Union[str, None] | Date to get chain for.  By default returns all dates | None | True |
 
 
@@ -59,3 +59,4 @@ aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", 
 ```
 
 ---
+

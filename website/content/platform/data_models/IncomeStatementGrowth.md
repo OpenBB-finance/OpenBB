@@ -1,6 +1,6 @@
 ---
-title: Income Statement Growth
-description: OpenBB Platform Data Model
+title: IncomeStatementGrowth
+description: Income Statement Growth
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

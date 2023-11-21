@@ -17,23 +17,24 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ca/volume - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ca/volume - Reference | OpenBB Terminal Docs" />
 
 Historical volume comparison between similar companies.
 
 ### Usage
 
-```python
-volume [-s START]
+```python wordwrap
+volume [-s START] [-e END]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| start | The starting date (format YYYY-MM-DD) of the stock | 2021-11-24 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| start | -s  --start | The starting date (format YYYY-MM-DD) of the stock | 2022-11-20 | True | None |
+| end | -e  --end | The end date (format YYYY-MM-DD) of the stocks | 2023-11-21 | True | None |
 
 ![volume](https://user-images.githubusercontent.com/46355364/154074657-72976b1a-fc27-4917-8d43-95f5b54da32e.png)
 

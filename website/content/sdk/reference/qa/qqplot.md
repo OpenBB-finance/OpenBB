@@ -20,10 +20,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots QQ plot for data against normal quantiles
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L462)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L400)]
 
-```python
-openbb.qa.qqplot(data: pd.DataFrame, target: str, symbol: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.qa.qqplot(data: pd.DataFrame, target: str, symbol: str = "", external_axes: bool = False)
 ```
 
 ---
@@ -35,7 +35,7 @@ openbb.qa.qqplot(data: pd.DataFrame, target: str, symbol: str = "", external_axe
 | data | pd.DataFrame | Dataframe | None | False |
 | target | str | Column in data to look at | None | False |
 | symbol | str | Stock ticker |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -55,3 +55,4 @@ openbb.qa.qqplot(data=df, target="Adj Close")
 ```
 
 ---
+

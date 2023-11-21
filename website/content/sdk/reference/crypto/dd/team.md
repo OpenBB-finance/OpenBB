@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin team
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L419)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L426)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.team(symbol: str)
 ```
 
@@ -51,15 +51,17 @@ openbb.crypto.dd.team(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Individuals,<br/>Organizations |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing coin team
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L556)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L561)]
 
-```python
-openbb.crypto.dd.team_chart(symbol: str, export: str = "")
+```python wordwrap
+openbb.crypto.dd.team_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -79,6 +81,8 @@ openbb.crypto.dd.team_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

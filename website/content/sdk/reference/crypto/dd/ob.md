@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Returns orderbook for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L46)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L83)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.ob(exchange: str, symbol: str, to_symbol: str)
 ```
 
@@ -55,15 +55,17 @@ openbb.crypto.dd.ob(exchange: str, symbol: str, to_symbol: str)
 | Dict[str, Any] | With bids and asks |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots order book for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L21)]
 
-```python
-openbb.crypto.dd.ob_chart(exchange: str, symbol: str, to_symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.dd.ob_chart(exchange: str, symbol: str, to_symbol: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -85,6 +87,8 @@ openbb.crypto.dd.ob_chart(exchange: str, symbol: str, to_symbol: str, export: st
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

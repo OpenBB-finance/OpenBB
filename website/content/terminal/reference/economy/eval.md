@@ -23,7 +23,7 @@ Create custom data column from loaded datasets. Can be mathematical expressions 
 
 ### Usage
 
-```python
+```python wordwrap
 eval [-q QUERY [QUERY ...]]
 ```
 
@@ -31,8 +31,8 @@ eval [-q QUERY [QUERY ...]]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| query | Query to evaluate on loaded datasets | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| query | -q  --query | Query to evaluate on loaded datasets | None | True | None |
 
 ---

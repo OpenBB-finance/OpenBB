@@ -21,7 +21,7 @@ Helper methods that gets token decimals number. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L176)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.token_decimals(address: str)
 ```
 
@@ -42,3 +42,4 @@ openbb.crypto.onchain.token_decimals(address: str)
 | ---- | ----------- |
 | Optional[int] | Number of decimals for given token. |
 ---
+

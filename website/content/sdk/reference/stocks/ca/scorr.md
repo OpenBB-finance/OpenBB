@@ -33,7 +33,7 @@ Get correlation sentiments across similar companies. [Source: FinBrain].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_model.py#L125)]
 
-```python
+```python wordwrap
 openbb.stocks.ca.scorr(similar: List[str])
 ```
 
@@ -55,15 +55,17 @@ openbb.stocks.ca.scorr(similar: List[str])
 | Tuple[pd.DataFrame,pd.DataFrame] | Contains sentiment analysis from several tickers |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L115)]
 
-```python
-openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -75,7 +77,7 @@ openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str 
 | similar | List[str] | Similar companies to compare income with.<br/>Comparable companies can be accessed through<br/>finviz_peers(), finnhub_peers() or polygon_peers(). | None | False |
 | raw | bool | Output raw values, by default False | False | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -85,6 +87,8 @@ openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

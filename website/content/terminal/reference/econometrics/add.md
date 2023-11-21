@@ -18,7 +18,7 @@ Add columns to your dataframe with the option to use formulas. E.g. newdatasetco
 
 ### Usage
 
-```python
+```python wordwrap
 add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c CRITERIAORDATASETCOL
 ```
 
@@ -26,12 +26,12 @@ add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c 
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| newdatasetcol | New dataset column to be added with format: dataset.column | None | False | None |
-| basedatasetcol | Base dataset column to be used as base with format: dataset.column | None | False | None |
-| sign | Sign to be applied to the base dataset column | None | False | div, mul, add, sub, mod, pow, , , =, =, == |
-| criteriaordatasetcol | Either dataset column to be applied on top of base dataset or criteria | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| newdatasetcol | -n  --newdatasetcol | New dataset column to be added with format: dataset.column | None | False | None |
+| basedatasetcol | -b  --basedatasetcol | Base dataset column to be used as base with format: dataset.column | None | False | None |
+| sign | -s  --sign | Sign to be applied to the base dataset column | None | False | div, mul, add, sub, mod, pow, , , =, =, == |
+| criteriaordatasetcol | -c  --criteriaordatasetcol | Either dataset column to be applied on top of base dataset or criteria | None | False | None |
 
 
 ---
@@ -45,7 +45,7 @@ add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c 
 
 2022 May 31, 04:49 (🦋) /econometrics/ $ show wp
 
-                                        Dataset wp | Showing 10 of 4360 rows
+                                        Dataset wp | Showing 10 of 4360 rows                                         
 ┏━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr ┃ year ┃ black ┃ exper ┃ hisp ┃ hours ┃ married ┃ educ ┃ union ┃ lwage ┃ expersq ┃ occupation ┃ after_1990 ┃
 ┡━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -74,7 +74,7 @@ add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c 
 
 2022 May 31, 04:50 (🦋) /econometrics/ $ show wp
 
-                                               Dataset wp | Showing 10 of 4360 rows
+                                               Dataset wp | Showing 10 of 4360 rows                                               
 ┏━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr ┃ year ┃ black ┃ exper ┃ hisp ┃ hours ┃ married ┃ educ ┃ union ┃ lwage ┃ expersq ┃ occupation ┃ after_1990 ┃ after_1985 ┃
 ┡━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩

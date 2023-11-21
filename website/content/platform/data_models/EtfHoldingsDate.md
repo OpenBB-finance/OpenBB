@@ -1,6 +1,6 @@
 ---
-title: Get the holdings filing date for an individual ETF
-description: OpenBB Platform Data Model
+title: EtfHoldingsDate
+description: Get the holdings filing date for an individual ETF
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -1,6 +1,6 @@
 ---
-title: Cryptocurrency Search
-description: OpenBB Platform Data Model
+title: CryptoSearch
+description: Cryptocurrency Search
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/gov/lastcontracts - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /gov/lastcontracts - Reference | OpenBB Terminal Docs" />
 
 Last government contracts. [Source: www.quiverquant.com]
 
 ### Usage
 
-```python
+```python wordwrap
 lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s]
 ```
 
@@ -30,11 +30,11 @@ lastcontracts [-p PAST_TRANSACTION_DAYS] [-l LIMIT] [-s]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| past_transaction_days | Past transaction days | 2 | True | None |
-| limit | Limit of contracts to display | 20 | True | None |
-| sum | Flag to show total amount of contracts. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| past_transaction_days | -p  --past_transaction_days | Past transaction days | 2 | True | None |
+| limit | -l  --limit | Limit of contracts to display | 20 | True | None |
+| sum | -s  --sum | Flag to show total amount of contracts. | False | True | None |
 
 
 ---

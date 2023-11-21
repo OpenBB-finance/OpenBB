@@ -1,6 +1,6 @@
 ---
-title: Get reported Short Volume and Days to Cover data
-description: OpenBB Platform Data Model
+title: EquityShortInterest
+description: Get reported Short Volume and Days to Cover data
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

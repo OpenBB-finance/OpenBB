@@ -25,10 +25,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load portfolio optimization engine
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L61)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L39)]
 
-```python
-openbb.portfolio.po.load(symbols: List[str] = None, symbols_file_path: str = None, parameters_file_path: str = None)
+```python wordwrap
+openbb.portfolio.po.load(symbols_categories: Optional[Dict[str, Dict[str, str]]] = None, symbols_file_path: Optional[str] = None, parameters_file_path: Optional[str] = None)
 ```
 
 ---
@@ -37,7 +37,7 @@ openbb.portfolio.po.load(symbols: List[str] = None, symbols_file_path: str = Non
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbols | List[str] | List of symbols, by default None | None | True |
+| symbols_categories | Dict[str, Dict[str, str]] = None | Categories, by default None | None | True |
 | symbols_file_path | str | Symbols file full path, by default None | None | True |
 | parameters_file_path | str | Parameters file full path, by default None | None | True |
 
@@ -55,14 +55,37 @@ openbb.portfolio.po.load(symbols: List[str] = None, symbols_file_path: str = Non
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
+d = {
+```
+
+```
+"SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+        }
+```
+```python
+p = openbb.portfolio.po.load(symbols_categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
+p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 ```
 
 ---
+

@@ -25,19 +25,20 @@ latest news of the company
 
 ### Usage
 
-```python
-news [-d N_START_DATE] [-o] [-s SOURCES]
+```python wordwrap
+news [-t TICKER] [-d N_START_DATE] [-o] [-s SOURCES]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| n_start_date | The starting date (format YYYY-MM-DD) to search articles from | datetime.now() - timedelta(days=365) | True | None |
-| n_oldest | Show oldest articles first | True | True | None |
-| sources | Show news only from the sources specified (e.g bloomberg,reuters) |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | Ticker to get data for | None | True | None |
+| n_start_date | -d  --date | The starting date (format YYYY-MM-DD) to search articles from | datetime.now() - timedelta(days=365) | True | None |
+| n_oldest | -o  --oldest | Show oldest articles first | True | True | None |
+| sources | -s  --sources | Show news only from the sources specified (e.g bloomberg,reuters) |  | True | None |
 
 
 ---

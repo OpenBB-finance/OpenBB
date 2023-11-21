@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/parameters/save /po - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /po/parameters/save - Reference | OpenBB Terminal Docs" />
 
 Save portfolio risk parameters (ini or xlsx)
 
 ### Usage
 
-```python
+```python wordwrap
 save -f FILE
 ```
 
@@ -26,8 +26,8 @@ save -f FILE
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| file | Filename to be saved | None | False | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| file | -f  --file | Filename to be saved | None | False | None |
 
 ---

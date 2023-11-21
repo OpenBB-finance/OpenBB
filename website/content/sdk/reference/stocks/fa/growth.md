@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get financial statement growth
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L505)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L580)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.growth(symbol: str, limit: int = 5, quarterly: bool = False)
 ```
 
@@ -43,3 +43,4 @@ openbb.stocks.fa.growth(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of financial statement growth |
 ---
+

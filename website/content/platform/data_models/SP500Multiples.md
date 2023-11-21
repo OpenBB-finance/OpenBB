@@ -1,6 +1,6 @@
 ---
-title: S&P 500 Multiples
-description: OpenBB Platform Data Model
+title: SP500Multiples
+description: S&P 500 Multiples
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

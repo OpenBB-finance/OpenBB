@@ -1,6 +1,6 @@
 ---
-title: Equity Peers
-description: OpenBB Platform Data Model
+title: EquityPeers
+description: Equity Peers
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

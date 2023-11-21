@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get global crypto market data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/sdk_helpers.py#L11)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/sdk_helpers.py#L12)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.globe(source: str = "CoinGecko")
 ```
 
@@ -45,14 +45,15 @@ openbb.crypto.ov.globe(source: str = "CoinGecko")
 
 ```python
 from openbb_terminal.sdk import openbb
-global_market_data = openbb.crypto.ov.globals()
+global_market_data = openbb.crypto.ov.globe()
 ```
 
 ```
 To get data from CoinPaprika, use the source parameter:
 ```
 ```python
-global_market_data = openbb.crypto.ov.globals(source="coinpaprika")
+global_market_data = openbb.crypto.ov.globe(source="coinpaprika")
 ```
 
 ---
+

@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/oanda/list - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /oanda/list - Reference | OpenBB Terminal Docs" />
 
 List order history
 
 ### Usage
 
-```python
+```python wordwrap
 list [-s STATE] [-l LIMIT]
 ```
 
@@ -27,9 +27,9 @@ list [-s STATE] [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| state | List orders that have a specific state. | ALL | True | None |
-| limit | Limit the number of orders to retrieve. | 20 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| state | -s  --state | List orders that have a specific state. | ALL | True | None |
+| limit | -l  --limit | Limit the number of orders to retrieve. | 20 | True | None |
 
 ---

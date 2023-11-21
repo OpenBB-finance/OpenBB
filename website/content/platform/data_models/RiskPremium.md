@@ -1,6 +1,6 @@
 ---
-title: Historical Market Risk Premium
-description: OpenBB Platform Data Model
+title: RiskPremium
+description: Historical Market Risk Premium
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

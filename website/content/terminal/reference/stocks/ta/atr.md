@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ta/atr - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ta/atr - Reference | OpenBB Terminal Docs" />
 
 Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
 
 ### Usage
 
-```python
+```python wordwrap
 atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
 ```
 
@@ -34,10 +34,10 @@ atr [-l N_LENGTH] [-m {ema,sma,wma,hma,zlma}] [-o N_OFFSET]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| n_length | Window length | 14 | True | None |
-| s_mamode | mamode | ema | True | ema, sma, wma, hma, zlma |
-| n_offset | offset | 0 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| n_length | -l  --length | Window length | 14 | True | None |
+| s_mamode | -m  --mamode | mamode | ema | True | ema, sma, wma, hma, zlma |
+| n_offset | -o  --offset | offset | 0 | True | None |
 
 ---

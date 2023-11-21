@@ -23,10 +23,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Optimize minimum risk weights
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L402)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L421)]
 
-```python
-openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)
+```python wordwrap
+openbb.portfolio.po.minrisk(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, kwargs: Any)
 ```
 
 ---
@@ -36,7 +36,6 @@ openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.P
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio_engine | PoEngine | Portfolio optimization engine, by default None<br/>Use `portfolio.po.load` to load a portfolio engine | None | True |
-| symbols | List[str] | List of symbols, by default None | None | True |
 | interval | str | Interval to get data, by default '3y' | None | True |
 | start_date | str | If not using interval, start date string (YYYY-MM-DD), by default "" | None | True |
 | end_date | str | If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default "" | None | True |
@@ -72,18 +71,32 @@ openbb.portfolio.po.minrisk(portfolio_engine: portfolio_optimization.po_engine.P
 
 ```python
 from openbb_terminal.sdk import openbb
-openbb.portfolio.po.minrisk(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
 ```
 
 ```
-(        value
-     AAPL  0.25044
-     MSFT  0.49509
-     AMZN  0.25447,
-     {'Return': 0.2248615963428331,
-      'Volatility': 0.32736590080425004,
-      'Sharpe ratio': 0.6868815468880802})
+"SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+        }
 ```
+```python
+p = openbb.portfolio.po.load(symbols_categories=d)
+weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
+```
+
 ```python
 from openbb_terminal.sdk import openbb
 p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -91,3 +104,4 @@ weights, performance = openbb.portfolio.po.minrisk(portfolio_engine=p)
 ```
 
 ---
+

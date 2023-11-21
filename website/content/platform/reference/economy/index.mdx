@@ -1,24 +1,35 @@
 # economy
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard
-    title="calendar"
-    description="Economic Calendar."
+        title="Gdp"
+        description="forecast, nominal, real"
+        url="/platform/reference/economy/gdp"
+    />
+<ReferenceCard
+    title="Balance Of Payments"
+    description="Balance of Payments Reports"
+    url="/platform/reference/economy/balance_of_payments"
+    chevron={false}
+/>
+<ReferenceCard
+    title="Calendar"
+    description="Economic Calendar"
     url="/platform/reference/economy/calendar"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="cpi"
-    description="Consumer Price Index (CPI) Data."
+    title="Cpi"
+    description="Consumer Price Index (CPI) Data"
     url="/platform/reference/economy/cpi"
-    command="true"
+    chevron={false}
 />
 <ReferenceCard
-    title="risk_premium"
-    description="Historical Market Risk Premium."
+    title="Risk Premium"
+    description="Historical Market Risk Premium"
     url="/platform/reference/economy/risk_premium"
-    command="true"
+    chevron={false}
 />
 </ul>

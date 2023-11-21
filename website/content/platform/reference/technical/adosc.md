@@ -23,6 +23,9 @@ keywords:
 - examples
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /adosc - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -39,24 +42,6 @@ underlying buying and selling pressure during a given time period. The oscillato
 reading above zero indicates net buying pressure, while one below zero registers
 net selling pressure. Divergence between the indicator and pure price moves are
 the most common signals from the indicator, and often flag market turning points.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-fast : PositiveInt, optional
-Number of periods to be used for the fast calculation, by default 3.
-slow : PositiveInt, optional
-Number of periods to be used for the slow calculation, by default 10.
-offset : int, optional
-Offset to be used for the calculation, by default 0.
-
-Returns
--------
-OBBject[List[Data]]
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -68,13 +53,26 @@ adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offse
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| fast | PositiveInt | Number of periods to be used for the fast calculation, by default 3. | 3 | True |
+| slow | PositiveInt | Number of periods to be used for the slow calculation, by default 10. | 10 | True |
+| offset | int | Offset to be used for the calculation, by default 0. | 0 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+
+```
 
 ---
 

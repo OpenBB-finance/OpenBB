@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/yret - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /yret - Reference | OpenBB Terminal Docs" />
 
 End of the year returns
 
 ### Usage
 
-```python
+```python wordwrap
 yret [-p PERIOD]
 ```
 
@@ -27,8 +27,8 @@ yret [-p PERIOD]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| period | Period to select start end of the year returns | all | True | 3y, 5y, 10y, all |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| period | -p  --period | Period to select start end of the year returns | all | True | 3y, 5y, 10y, all |
 
 ---

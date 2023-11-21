@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Returns trades for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L70)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L107)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str)
 ```
 
@@ -54,15 +54,17 @@ openbb.crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str)
 | pd.DataFrame | trades for a coin in a given exchange |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing trades for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L63)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L67)]
 
-```python
-openbb.crypto.dd.trades_chart(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = "")
+```python wordwrap
+openbb.crypto.dd.trades_chart(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -85,6 +87,8 @@ openbb.crypto.dd.trades_chart(exchange: str, symbol: str, to_symbol: str, limit:
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

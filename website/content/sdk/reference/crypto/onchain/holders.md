@@ -28,7 +28,7 @@ Get info about top token holders. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L305)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.holders(address: str, sortby: str = "balance", ascend: bool = True)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.onchain.holders(address: str, sortby: str = "balance", ascend: boo
 | pd.DataFrame | DataFrame with list of top token holders. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display info about top ERC20 token holders. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L114)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L123)]
 
-```python
-openbb.crypto.onchain.holders_chart(address: str, limit: int = 10, sortby: str = "balance", ascend: bool = True, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.holders_chart(address: str, limit: int = 10, sortby: str = "balance", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -83,6 +85,8 @@ openbb.crypto.onchain.holders_chart(address: str, limit: int = 10, sortby: str =
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

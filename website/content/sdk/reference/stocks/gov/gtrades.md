@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Government trading for specific ticker [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L416)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L418)]
 
-```python
+```python wordwrap
 openbb.stocks.gov.gtrades(symbol: str, gov_type: str = "congress", past_transactions_months: int = 6)
 ```
 
@@ -55,15 +55,17 @@ openbb.stocks.gov.gtrades(symbol: str, gov_type: str = "congress", past_transact
 | pd.DataFrame | DataFrame of tickers government trading |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Government trading for specific ticker [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L331)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L350)]
 
-```python
-openbb.stocks.gov.gtrades_chart(symbol: str, gov_type: str = "congress", past_transactions_months: int = 6, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.gov.gtrades_chart(symbol: str, gov_type: str = "congress", past_transactions_months: int = 6, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -76,8 +78,9 @@ openbb.stocks.gov.gtrades_chart(symbol: str, gov_type: str = "congress", past_tr
 | gov_type | str | Type of government data between: congress, senate and house | congress | True |
 | past_transactions_months | int | Number of months to get transactions for | 6 | True |
 | raw | bool | Show raw output of trades | False | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -87,6 +90,8 @@ openbb.stocks.gov.gtrades_chart(symbol: str, gov_type: str = "congress", past_tr
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

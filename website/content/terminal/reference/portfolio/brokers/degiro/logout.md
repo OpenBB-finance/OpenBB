@@ -10,13 +10,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/degiro/logout /brokers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /brokers/degiro/logout - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python
+```python wordwrap
 logout
 ```
 

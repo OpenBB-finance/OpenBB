@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get short interest and days to cover. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L76)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L73)]
 
-```python
+```python wordwrap
 openbb.stocks.dps.sidtc(sortby: str = "float")
 ```
 
@@ -41,3 +41,4 @@ openbb.stocks.dps.sidtc(sortby: str = "float")
 | ---- | ----------- |
 | pd.DataFrame | Short interest and days to cover data |
 ---
+

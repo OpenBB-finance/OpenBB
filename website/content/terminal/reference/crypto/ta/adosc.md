@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/ta/adosc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /ta/adosc - Reference | OpenBB Terminal Docs" />
 
 Accumulation/Distribution Oscillator, also known as the Chaikin Oscillator is essentially a momentum indicator, but of the Accumulation-Distribution line rather than merely price. It looks at both the strength of price moves and the underlying buying and selling pressure during a given time period. The oscillator reading above zero indicates net buying pressure, while one below zero registers net selling pressure. Divergence between the indicator and pure price moves are the most common signals from the indicator, and often flag market turning points.
 
 ### Usage
 
-```python
+```python wordwrap
 adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
 ```
 
@@ -31,11 +31,11 @@ adosc [--open] [--fast N_LENGTH_FAST] [--slow N_LENGTH_SLOW]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| b_use_open | uses open value of stock | False | True | None |
-| n_length_fast | fast length | 3 | True | range(1, 100) |
-| n_length_slow | slow length | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| b_use_open | --open | uses open value of stock | False | True | None |
+| n_length_fast | --fast | fast length | 3 | True | range(1, 100) |
+| n_length_slow | --slow | slow length | 10 | True | None |
 
 ![adosc](https://user-images.githubusercontent.com/46355364/154309482-31c027ab-e80f-4145-9c63-392a74cf69c7.png)
 

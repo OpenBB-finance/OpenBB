@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get last messages for a given ticker [Source: stocktwits].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L52)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L50)]
 
-```python
+```python wordwrap
 openbb.stocks.ba.messages(symbol: str, limit: int = 30)
 ```
 
@@ -41,3 +41,4 @@ openbb.stocks.ba.messages(symbol: str, limit: int = 30)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of messages |
 ---
+

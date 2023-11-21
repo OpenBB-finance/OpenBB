@@ -23,26 +23,27 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/fa/cash - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /fa/cash - Reference | OpenBB Terminal Docs" />
 
 Prints a complete cash flow statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Accounts payables, Accounts receivables, Acquisitions net, Capital expenditure, Cash at beginning of period, Cash at end of period, Change in working capital, Common stock issued, Common stock repurchased, Debt repayment, Deferred income tax, Depreciation and amortization, Dividends paid, Effect of forex changes on cash, Filling date, Final link, Free cash flow, Inventory, Investments in property plant and equipment, Link, Net cash provided by operating activities, Net cash used for investing activities, Net cash used provided by financing activities, Net change in cash, Net income, Operating cash flow, Other financing activities, Other investing activities, Other non cash items, Other working capital, Period, Purchases of investments, Sales maturities of investments, Stock based compensation. [Source: Alpha Vantage]
 
 ### Usage
 
-```python
-cash [-l LIMIT] [-q] [-r] [-p column]
+```python wordwrap
+cash [-t TICKER] [-l LIMIT] [-q] [-r] [-p column]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of latest years/quarters. | 5 | True | None |
-| b_quarter | Quarter fundamental data flag. | False | True | None |
-| ratios | Shows percentage change of values. | False | True | None |
-| plot | Rows to plot. (-1 represents invalid data) | None | True | net_income, depreciation_&_amortisation, deferred_income_taxes, stock-based_compensation, change_in working_capital, accounts_receivable, inventory, accounts_payable, other_working_capital, other_non-cash_items, net_cash_provided_by_operating_activities, investments_in_property_plant_and_equipment, acquisitions_net, purchases_of_investments, sales/maturities_of_investments, other_investing_activities, net_cash_used_for_investing_activities, debt_repayment, common_stock_issued, common_stock_repurchased, dividends_paid, other_financing_activities, net_cash_used_provided_by_(used_for)_financing_activities, net_change_in_cash, cash_at_beginning_of_period, cash_at_end_of_period, operating_cash_flow, capital_expenditure, free_cash_flow |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | Ticker to analyze | None | True | None |
+| limit | -l  --limit | Number of latest years/quarters. | 5 | True | None |
+| b_quarter | -q  --quarter | Quarter fundamental data flag. | False | True | None |
+| ratios | -r  --ratios | Shows percentage change of values. | False | True | None |
+| plot | -p  --plot | Rows to plot. (-1 represents invalid data) | None | True | operating_cash_flow, payments_for_operating_activities, proceeds_from_operating_activities, change_in_operating_liabilities, change_in_operating_assets, depreciation_depletion_and_amortization, capital_expenditure, change_in_receivables, inventory, profit_loss, cash_flow_from_investment, cash_flow_from_financing, proceeds_from_repayments_of_short_term_debt, common_stock_repurchased, payments_for_repurchase_of_equity, payments_for_repurchase_of_preferred_stock, dividends_paid, dividend_payout_common_stock, dividend_payout_preferred_stock, common_stock_issued, proceeds_from_issuance_of_long_term_debt_and_capital_securities_net, proceeds_from_issuance_of_preferred_stock, proceeds_from_repurchase_of_equity, proceeds_from_sale_of_treasury_stock, net_change_in_cash, change_in_exchange_rate, net_income, depreciation_&_amortisation, net_cash_flow_from_financing_activities_continuing, net_cash_flow_from_investing_activities_continuing, net_cash_flow_continuing, net_cash_provided_by_operating_activities, deferred_income_taxes, stock_based_compensation, change_in_working_capital, accounts_payable, other_working_capital, investments_in_property,_plant_and_equipment, acquisitions_net, purchases_of_investments, sales_maturities_of_investments, other_investing_activities, debt_repayment, other_financing_activities, cash_at_beginning_of_period, cash_at_end_of_period, free_cash_flow, other_non_cash_items |
 
 
 ---

@@ -34,39 +34,40 @@ Perform BRNN forecast (Vanilla RNN, LSTM, GRU): https://unit8co.github.io/darts/
 
 ### Usage
 
-```python
-brnn [--n-rnn-layers N_RNN_LAYERS] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--model-type MODEL_TYPE] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [--export-pred-raw]
+```python wordwrap
+brnn [--n-rnn-layers N_RNN_LAYERS] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--model-type MODEL_TYPE] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| n_rnn_layers | Number of layers in the RNN module. | 1 | True | None |
-| past_covariates | Past covariates(columns/features) in same dataset. Comma separated. | None | True | None |
-| all_past_covariates | Adds all rows as past covariates except for date and the target column. | False | True | None |
-| naive | Show the naive baseline for a model. | False | True | None |
-| target_dataset | The name of the dataset you want to select | None | True | None |
-| target_column | The name of the specific column you want to use | close | True | None |
-| n_days | prediction days. | 5 | True | None |
-| train_split | Start point for rolling training and forecast window. 0.0-1.0 | 0.85 | True | None |
-| input_chunk_length | Number of past time steps for forecasting module at prediction time. | 14 | True | None |
-| output_chunk_length | The length of the forecast of the model. | 5 | True | None |
-| force_reset | If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). | True | True | None |
-| save_checkpoints | Whether to automatically save the untrained model and checkpoints. | True | True | None |
-| model_save_name | Name of the model to save. | brnn_model | True | None |
-| n_epochs | Number of epochs over which to train the model. | 300 | True | None |
-| model_type | Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU") | LSTM | True | None |
-| dropout | Fraction of neurons affected by Dropout, from 0 to 1. | 0 | True | None |
-| batch_size | Number of time series (input and output) used in each training pass | 32 | True | None |
-| s_end_date | The end date (format YYYY-MM-DD) to select for testing | None | True | None |
-| s_start_date | The start date (format YYYY-MM-DD) to select for testing | None | True | None |
-| learning_rate | Learning rate during training. | 0.001 | True | None |
-| residuals | Show the residuals for the model. | False | True | None |
-| forecast_only | Do not plot the historical data without forecasts. | False | True | None |
-| export_pred_raw | Export predictions to a csv file. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| n_rnn_layers | --n-rnn-layers | Number of layers in the RNN module. | 1 | True | None |
+| past_covariates | --past-covariates | Past covariates(columns/features) in same dataset. Comma separated. | None | True | None |
+| all_past_covariates | --all-past-covariates | Adds all rows as past covariates except for date and the target column. | False | True | None |
+| naive | --naive | Show the naive baseline for a model. | False | True | None |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
+| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
+| n_days | -n  --n-days | prediction days. | 5 | True | None |
+| train_split | -t  --train-split | Start point for rolling training and forecast window. 0.0-1.0 | 0.85 | True | None |
+| input_chunk_length | -i  --input-chunk-length | Number of past time steps for forecasting module at prediction time. | 14 | True | None |
+| output_chunk_length | -o  --output-chunk-length | The length of the forecast of the model. | 5 | True | None |
+| force_reset | --force-reset | If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). | True | True | None |
+| save_checkpoints | --save-checkpoints | Whether to automatically save the untrained model and checkpoints. | True | True | None |
+| model_save_name | --model-save-name | Name of the model to save. | brnn_model | True | None |
+| n_epochs | --n-epochs | Number of epochs over which to train the model. | 300 | True | None |
+| model_type | --model-type | Enter a string specifying the RNN module type ("RNN", "LSTM" or "GRU") | LSTM | True | None |
+| dropout | --dropout | Fraction of neurons affected by Dropout, from 0 to 1. | 0 | True | None |
+| batch_size | --batch-size | Number of time series (input and output) used in each training pass | 32 | True | None |
+| s_end_date | --end | The end date (format YYYY-MM-DD) to select for testing | None | True | None |
+| s_start_date | --start | The start date (format YYYY-MM-DD) to select for testing | None | True | None |
+| learning_rate | --learning-rate | Learning rate during training. | 0.001 | True | None |
+| residuals | --residuals | Show the residuals for the model. | False | True | None |
+| forecast_only | --forecast-only | Do not plot the historical data without forecasts. | False | True | None |
+| export_pred_raw | --export-pred-raw | Export predictions to a csv file. | False | True | None |
+| metric | --metric | Calculate precision based on a specific metric (rmse, mse, mape) | mape | True | rmse, mse, mape, smape |
 
 
 ---

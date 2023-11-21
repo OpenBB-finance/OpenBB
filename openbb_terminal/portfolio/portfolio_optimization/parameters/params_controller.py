@@ -41,6 +41,7 @@ class ParametersController(BaseController):
     ]
     CHOICES_PARAMS = ["freq", "threshold", "method", "alpha", "maxnan"]
     CHOICES_COMMANDS += CHOICES_PARAMS
+    CHOICES_GENERATION = True
 
     PATH = "/portfolio/po/params/"
 

@@ -1,7 +1,14 @@
 ---
 title: available
-description: OpenBB Platform Function
+description: Available Indices
+keywords:
+- index
+- available
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="index /available - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

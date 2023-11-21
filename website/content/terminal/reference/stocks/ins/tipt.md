@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/tipt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/tipt - Reference | OpenBB Terminal Docs" />
 
 Print top insider purchases of the day. [Source: OpenInsider]
 
 ### Usage
 
-```python
+```python wordwrap
 tipt [-l LIMIT]
 ```
 
@@ -33,9 +33,9 @@ tipt [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of datarows to display | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

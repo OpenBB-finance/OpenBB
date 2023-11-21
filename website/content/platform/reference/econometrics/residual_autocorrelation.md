@@ -10,7 +10,9 @@ keywords:
 - function returns
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<HeadTitle title="econometrics /residual_autocorrelation - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -19,37 +21,34 @@ import TabItem from '@theme/TabItem';
 
 Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
-Parameters
-----------
-data: List[Data]
-Input dataset.
-y_column: str
-Target column.
-x_columns: str
-List of columns to use as exogenous variables.
-lags: PositiveInt
-Number of lags to use in the test.
-
-Returns
--------
-OBBject[Data]
-OBBject with the results being the score from the test.
-
 ```python wordwrap
-
+obb.econometrics.residual_autocorrelation(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], y_column: str, x_columns: List[str], lags: int = 1)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | Input dataset. | None | False |
+| y_column | str | Target column. | None | False |
+| x_columns | List[str] | List of columns to use as exogenous variables. | None | False |
+| lags | PositiveInt | Number of lags to use in the test. | 1 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+OBBject with the results being the score from the test.
+```
 
 ---
 

@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L105)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L103)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.sinfo(address: str = "")
 ```
 
@@ -53,15 +53,17 @@ openbb.crypto.defi.sinfo(address: str = "")
 | Tuple[pd.DataFrame, str] | luna delegations and summary report for given address |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L23)]
 
-```python
-openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str = "")
+```python wordwrap
+openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -82,6 +84,8 @@ openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str =
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

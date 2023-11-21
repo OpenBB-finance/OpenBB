@@ -17,25 +17,26 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/load - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /load - Reference | OpenBB Terminal Docs" />
 
 Load your portfolio transactions.
 
 ### Usage
 
-```python
-load -f FILE [-n NAME] [-r RISK_FREE_RATE]
+```python wordwrap
+load [-f FILE] [-n NAME] [-r RISK_FREE_RATE] [-e]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| file | The file to be loaded | None | False | Public_Equity_Orderbook.xlsx, Public_Equity_Orderbook_No_Categorization.xlsx, bitcoin.csv, example.csv, market.csv |
-| name | The name that you wish to give to your portfolio | None | True | None |
-| risk_free_rate | Set the risk free rate. | 0 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| file | -f  --file | The file to be loaded | None | True | File in `EXPORTS` or `CUSTOM_IMPORTS` directories (e.g: `file_name.xlsx, file_name.csv`) |
+| name | -n  --name | The name that you wish to give to your portfolio | None | True | None |
+| risk_free_rate | -r  --rfr | Set the risk free rate. | 0 | True | None |
+| example | -e  --example | Run an example holdings file to understand how the portfolio menu can be used. | False | True | None |
 
 
 ---

@@ -1,6 +1,6 @@
 ---
-title: Get the most active ETFs
-description: OpenBB Platform Data Model
+title: ETFActive
+description: Get the most active ETFs
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -23,7 +23,7 @@ Get prices for given coin. [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_model.py#L222)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.coin_market_chart(symbol: str = "", vs_currency: str = "usd", days: int = 30, kwargs: Any)
 ```
 
@@ -46,3 +46,4 @@ openbb.crypto.dd.coin_market_chart(symbol: str = "", vs_currency: str = "usd", d
 | ---- | ----------- |
 | pd.DataFrame | Prices for given coin<br/>Columns: time, price, currency |
 ---
+

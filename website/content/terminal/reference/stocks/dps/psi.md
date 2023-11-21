@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/dps/psi - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /dps/psi - Reference | OpenBB Terminal Docs" />
 
 Shows price vs short interest volume. [Source: Quandl/Stockgrid]
 
 ### Usage
 
-```python
+```python wordwrap
 psi [--nyse]
 ```
 
@@ -29,9 +29,9 @@ psi [--nyse]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| b_nyse | Data from NYSE flag. Otherwise comes from NASDAQ. Only works for Quandl. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| b_nyse | --nyse | Data from NYSE flag. Otherwise comes from NASDAQ. Only works for Quandl. | False | True | None |
 
 ![Figure_2](https://user-images.githubusercontent.com/46355364/154076731-e1f5ad9c-71c7-4c56-93b1-613985057951.png)
 

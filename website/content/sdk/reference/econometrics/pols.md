@@ -24,7 +24,7 @@ PooledOLS is just plain OLS that understands that various panel data structures.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L239)]
 
-```python
+```python wordwrap
 openbb.econometrics.pols(Y: pd.DataFrame, X: pd.DataFrame)
 ```
 
@@ -46,3 +46,4 @@ openbb.econometrics.pols(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>PooledOLS model |
 ---
+

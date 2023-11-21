@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get all exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L98)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L95)]
 
-```python
+```python wordwrap
 openbb.stocks.th.all()
 ```
 
@@ -48,14 +48,16 @@ This function does not take any parameters.
 | pd.DataFrame | All available exchanges |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display all exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L84)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L86)]
 
-```python
+```python wordwrap
 openbb.stocks.th.all_chart()
 ```
 
@@ -72,6 +74,8 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

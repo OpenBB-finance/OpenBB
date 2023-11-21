@@ -27,9 +27,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Perform seasonal decomposition
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L46)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L47)]
 
-```python
+```python wordwrap
 openbb.qa.decompose(data: pd.DataFrame, multiplicative: bool = False)
 ```
 
@@ -51,3 +51,4 @@ openbb.qa.decompose(data: pd.DataFrame, multiplicative: bool = False)
 | ---- | ----------- |
 | Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame] | DecomposeResult class from statsmodels (observed, seasonal, trend, residual, and weights),<br/>Filtered cycle DataFrame,<br/>Filtered trend DataFrame |
 ---
+

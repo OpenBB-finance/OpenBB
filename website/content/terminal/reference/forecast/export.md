@@ -22,18 +22,19 @@ Export dataset to Excel
 
 ### Usage
 
-```python
-export [-t {xlsx,csv}] [-d {}]
+```python wordwrap
+export [-t {xlsx,csv}] [--sheet-name SHEET_NAME] [-d {AAPL}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| type | The file type you wish to export to | xlsx | True | xlsx, csv |
-| target_dataset | The name of the dataset you want to select | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| type | -t  --type | The file type you wish to export to | xlsx | True | xlsx, csv |
+| sheet_name | --sheet-name | The name of the sheet to export to when type is XLSX. |  | True | None |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
 
 
 ---

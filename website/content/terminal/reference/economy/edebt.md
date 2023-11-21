@@ -18,7 +18,7 @@ National debt statistics for various countries. [Source: Wikipedia]
 
 ### Usage
 
-```python
+```python wordwrap
 edebt
 ```
 

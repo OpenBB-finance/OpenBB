@@ -21,7 +21,7 @@ Get repository stats.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L21)]
 
-```python
+```python wordwrap
 openbb.alt.oss.github_data(url: str, kwargs: Any)
 ```
 
@@ -43,3 +43,4 @@ openbb.alt.oss.github_data(url: str, kwargs: Any)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with data |
 ---
+

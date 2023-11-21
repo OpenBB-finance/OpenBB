@@ -1,6 +1,6 @@
 ---
-title: ETF Information Overview
-description: OpenBB Platform Data Model
+title: EtfInfo
+description: ETF Information Overview
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

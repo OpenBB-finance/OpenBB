@@ -26,13 +26,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/options/plot - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /options/plot - Reference | OpenBB Terminal Docs" />
 
 Shows a plot for the given x and y variables
 
 ### Usage
 
-```python
+```python wordwrap
 plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c {smile}]
 ```
 
@@ -40,12 +40,12 @@ plot [-p] [-x {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-y {ltd,s,lp,b,a,c,pc,v,oi,iv}] [-c 
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| put | Shows puts instead of calls | False | True | None |
-| x | ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility | s | True | ltd, s, lp, b, a, c, pc, v, oi, iv |
-| y | ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility | iv | True | ltd, s, lp, b, a, c, pc, v, oi, iv |
-| custom | Choose from already created graphs | None | True | smile |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| put | -p  --put | Shows puts instead of calls | False | True | None |
+| x | -x  --x_axis | ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility | s | True | ltd, s, lp, b, a, c, pc, v, oi, iv |
+| y | -y  --y_axis | ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,c- change, pc- percent change, v- volume, oi- open interest, iv- implied volatility | iv | True | ltd, s, lp, b, a, c, pc, v, oi, iv |
+| custom | -c  --custom | Choose from already created graphs | None | True | smile |
 
 
 ---

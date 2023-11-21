@@ -27,6 +27,9 @@ keywords:
 - examples
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /macd - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -45,27 +48,6 @@ MACD is at extreme high or low values. When the MACD line crosses above the
 signal line a buy signal is generated. When the MACD crosses below the signal line a
 sell signal is generated. To confirm the signal, the MACD should be above zero for a buy,
 and below zero for a sell.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-target : str
-Target column name.
-fast : int, optional
-Number of periods for the fast EMA, by default 12.
-slow : int, optional
-Number of periods for the slow EMA, by default 26.
-signal : int, optional
-Number of periods for the signal EMA, by default 9.
-
-Returns
--------
-OBBject[List[Data]]
-The calculated data.
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -77,13 +59,27 @@ macd_data = obb.technical.macd(data=stock_data.results,target="close",fast=12,sl
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| target | str | Target column name. | close | True |
+| fast | int | Number of periods for the fast EMA, by default 12. | 12 | True |
+| slow | int | Number of periods for the slow EMA, by default 26. | 26 | True |
+| signal | int | Number of periods for the signal EMA, by default 9. | 9 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The calculated data.
+```
 
 ---
 

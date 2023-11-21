@@ -25,9 +25,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Returns a high short interest DataFrame
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/shortinterest_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/shortinterest_model.py#L17)]
 
-```python
+```python wordwrap
 openbb.stocks.dps.hsi()
 ```
 
@@ -45,3 +45,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | DataFrame | High short interest Dataframe with the following columns:<br/>Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry |
 ---
+

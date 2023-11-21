@@ -14,7 +14,9 @@ keywords:
 - results
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<HeadTitle title="econometrics /causality - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -23,37 +25,34 @@ import TabItem from '@theme/TabItem';
 
 Perform Granger causality test to determine if X "causes" y.
 
-Parameters
-----------
-data: List[Data]
-Input dataset.
-y_column: str
-Target column.
-x_column: str
-Columns to use as exogenous variables.
-lag: PositiveInt
-Number of lags to use in the test.
-
-Returns
--------
-OBBject[Data]
-OBBject with the results being the score from the test.
-
 ```python wordwrap
-
+obb.econometrics.causality(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], y_column: str, x_column: str, lag: int = 3)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | Input dataset. | None | False |
+| y_column | str | Target column. | None | False |
+| x_column | str | Columns to use as exogenous variables. | None | False |
+| lag | PositiveInt | Number of lags to use in the test. | 3 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+OBBject with the results being the score from the test.
+```
 
 ---
 

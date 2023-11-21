@@ -1,6 +1,6 @@
 ---
-title: Consumer Price Index (CPI) Data
-description: OpenBB Platform Data Model
+title: ConsumerPriceIndex
+description: Consumer Price Index (CPI) Data
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

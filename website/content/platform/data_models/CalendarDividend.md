@@ -1,6 +1,6 @@
 ---
-title: Upcoming and Historical Dividend Calendar
-description: OpenBB Platform Data Model
+title: CalendarDividend
+description: Upcoming and Historical Dividend Calendar
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

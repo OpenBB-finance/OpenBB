@@ -19,17 +19,17 @@ The column you want to delete from a dataset.
 
 ### Usage
 
-```python
-delete [--delete {}]
+```python wordwrap
+delete [--delete {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| delete | The columns you want to delete from a dataset. Use format: dataset.column or multiple with dataset.column,datasetb.column2 | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| delete | --delete | The columns you want to delete from a dataset. Use format: dataset.column or multiple with dataset.column,datasetb.column2 | None | True | AAPL.date, AAPL.open, AAPL.high, AAPL.low, AAPL.close, AAPL.adj_close, AAPL.volume, AAPL.dividends, AAPL.stock_splits |
 
 
 ---

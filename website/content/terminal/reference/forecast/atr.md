@@ -24,21 +24,21 @@ Add Average True Range to dataset of specific stock ticker.
 
 ### Usage
 
-```python
-atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {}] [-c TARGET_COLUMN]
+```python wordwrap
+atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {AAPL}] [-c TARGET_COLUMN]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| close_col | Close column name to use for Average True Range. | close | True | None |
-| high_col | High column name to use for Average True Range. | high | True | None |
-| low_col | Low column name to use for Average True Range. | low | True | None |
-| target_dataset | The name of the dataset you want to select | None | True | None |
-| target_column | The name of the specific column you want to use | close | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| close_col | --close-col | Close column name to use for Average True Range. | close | True | None |
+| high_col | --high-col | High column name to use for Average True Range. | high | True | None |
+| low_col | --low-col | Low column name to use for Average True Range. | low | True | None |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
+| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
 
 
 ---

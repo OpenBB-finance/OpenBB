@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/atl - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/atl - Reference | OpenBB Terminal Docs" />
 
 All time low data for loaded coin
 
 ### Usage
 
-```python
+```python wordwrap
 atl [--vs {usd,btc}]
 ```
 
@@ -33,9 +33,9 @@ atl [--vs {usd,btc}]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| vs | currency | usd | True | usd, btc |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| vs | --vs | currency | usd | True | usd, btc |
 
 
 ---

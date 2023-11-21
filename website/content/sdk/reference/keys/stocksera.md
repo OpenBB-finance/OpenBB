@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Stocksera key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L2545)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L2411)]
 
-```python
+```python wordwrap
 openbb.keys.stocksera(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -50,3 +50,4 @@ openbb.keys.stocksera(key="example_key")
 ```
 
 ---
+

@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ba/trending - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ba/trending - Reference | OpenBB Terminal Docs" />
 
 Stocks trending. [Source: Stocktwits]
 
 ### Usage
 
-```python
+```python wordwrap
 trending
 ```
 

@@ -1,42 +1,45 @@
-# forex
+# Forex
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-
 <ReferenceCard
         title="Oanda"
-        description="calendar, cancel, candles, closetrade, from, list, order, orderbook, pending, positionbook, positions, price, summary, to, trades"
-        url="forex/oanda"
-    />
+        description="calendar, cancel, candles, closetrade, from, list, order, orderbook, pending, positionbook, positions, price,..."
+        url="/terminal/reference/forex/oanda"
+/>
 <ReferenceCard
         title="Qa"
-        description="acf, bw, cdf, cusum, decompose, hist, kurtosis, line, load, normality, pick, qqplot, quantile, raw, rolling, skew, spread, summary, unitroot"
-        url="forex/qa"
-    />
+        description="acf, bw, cdf, cusum, decompose, hist, kurtosis, line, load, normality, pick, qqplot, quantile, raw, rolling,..."
+        url="/terminal/reference/forex/qa"
+/>
 <ReferenceCard
         title="Ta"
         description="ad, adx, aroon, bbands, cci, cg, donchian, ema, fib, fisher, load, macd, obv, rsi, sma, stoch, zlma"
-        url="forex/ta"
-    />
-<ReferenceCard
-    title="candle"
-    description="This documentation is for the 'candle' function used to show loaded fx"
-    url="forex/candle"
+        url="/terminal/reference/forex/ta"
 />
 <ReferenceCard
-    title="fwd"
-    description="A documentation page for the 'fwd' command which provides forward rates"
-    url="forex/fwd"
+    title="Candle"
+    description="Show candle for loaded fx data"
+    url="/terminal/reference/forex/candle"
+    command="true"
 />
 <ReferenceCard
-    title="load"
-    description="This page documents how to load historical exchange rate data from Alpha"
-    url="forex/load"
+    title="Fwd"
+    description="Get forward rates for loaded pair."
+    url="/terminal/reference/forex/fwd"
+    command="true"
 />
 <ReferenceCard
-    title="quote"
-    description="This documentation page provides information regarding the usage and"
-    url="forex/quote"
+    title="Load"
+    description="Load historical exchange rate data.Available data sources are Alpha Advantage and YahooFinanceBy default main..."
+    url="/terminal/reference/forex/load"
+    command="true"
+/>
+<ReferenceCard
+    title="Quote"
+    description="Get current exchange rate quote"
+    url="/terminal/reference/forex/quote"
+    command="true"
 />
 </ul>

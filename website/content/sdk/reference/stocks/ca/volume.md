@@ -29,10 +29,10 @@ import TabItem from '@theme/TabItem';
 
 Get stock volume. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L134)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L155)]
 
-```python
-openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
+```python wordwrap
+openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
 ---
@@ -43,6 +43,7 @@ openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
 | start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| end_date | Optional[str] | End date (e.g., 2023-01-01). None defaults to today | None | True |
 
 
 ---
@@ -54,15 +55,17 @@ openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 | pd.DataFrame | Dataframe with volume for stock |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display stock volume. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L107)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L104)]
 
-```python
-openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -73,8 +76,9 @@ openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = No
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of similar tickers.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
 | start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 1 year back | None | True |
+| end_date | Optional[str] | End date (e.g., 2023-01-01). Defaults to today | None | True |
 | export | str | Format to export historical prices, by default "" |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,6 +88,8 @@ openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = No
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Request information on open positions.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L378)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L387)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.openpositions(accountID: str = "REPLACE_ME")
 ```
 
@@ -47,14 +47,16 @@ This function does not return anything
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Get information about open positions.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L216)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L210)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.openpositions_chart(accountID: str)
 ```
 
@@ -74,6 +76,8 @@ openbb.forex.oanda.openpositions_chart(accountID: str)
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

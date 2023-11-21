@@ -12,6 +12,9 @@ keywords:
 - python
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="quantitative /sharpe_ratio - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -20,37 +23,34 @@ import TabItem from '@theme/TabItem';
 
 Get Sharpe Ratio.
 
-Parameters
-----------
-data : List[Data]
-Time series data.
-target : str
-Target column name.
-rfr : float, optional
-Risk-free rate, by default 0.0
-window : PositiveInt, optional
-Window size, by default 252
-
-Returns
--------
-OBBject[List[Data]]
-Sharpe ratio.
-
 ```python wordwrap
-
+obb.quantitative.sharpe_ratio(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str, rfr: float = 0.0, window: int = 252)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | Time series data. | None | False |
+| target | str | Target column name. | None | False |
+| rfr | float | Risk-free rate, by default 0.0 | 0.0 | True |
+| window | PositiveInt | Window size, by default 252 | 252 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+Sharpe ratio.
+```
 
 ---
 

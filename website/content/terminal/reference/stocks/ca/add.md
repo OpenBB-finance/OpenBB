@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ca/add - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ca/add - Reference | OpenBB Terminal Docs" />
 
 Add similar tickers to compare with.
 
 ### Usage
 
-```python
+```python wordwrap
 add [-s L_SIMILAR]
 ```
 
@@ -25,8 +25,8 @@ add [-s L_SIMILAR]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| l_similar | Tickers to add to similar list |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| l_similar | -s  --similar | Tickers to add to similar list |  | True | None |
 
 ---

@@ -18,21 +18,21 @@ Add in Stochastic Oscillator %K and %D
 
 ### Usage
 
-```python
-sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {}] [--period PERIOD]
+```python wordwrap
+sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {AAPL}] [--period PERIOD]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| close_col | Close column name to use for Stochastic Oscillator | close | True | None |
-| high_col | High column name to use for Stochastic Oscillator | high | True | None |
-| low_col | Low column name to use for Stochastic Oscillator | low | True | None |
-| target_dataset | The name of the dataset you want to select | None | True | None |
-| period | The period to use | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| close_col | --close-col | Close column name to use for Stochastic Oscillator | close | True | None |
+| high_col | --high-col | High column name to use for Stochastic Oscillator | high | True | None |
+| low_col | --low-col | Low column name to use for Stochastic Oscillator | low | True | None |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
+| period | --period | The period to use | 10 | True | None |
 
 
 ---

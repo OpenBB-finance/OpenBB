@@ -1,6 +1,6 @@
 ---
-title: Historical Analyst Estimates
-description: OpenBB Platform Data Model
+title: AnalystEstimates
+description: Historical Analyst Estimates
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

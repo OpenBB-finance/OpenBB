@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets the top 10 retail stocks per day
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/nasdaq_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/nasdaq_model.py#L21)]
 
-```python
+```python wordwrap
 openbb.stocks.disc.rtat()
 ```
 
@@ -38,3 +38,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of tickers |
 ---
+

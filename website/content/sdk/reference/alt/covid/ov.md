@@ -27,10 +27,10 @@ import TabItem from '@theme/TabItem';
 
 Get historical cases and deaths by country.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L105)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L90)]
 
-```python
-openbb.alt.covid.ov(country: str, limit: int = 100)
+```python wordwrap
+openbb.alt.covid.ov(country: str)
 ```
 
 ---
@@ -40,7 +40,6 @@ openbb.alt.covid.ov(country: str, limit: int = 100)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | country | str | Country to get data for | None | False |
-| limit | int | Number of raw data to show | 100 | True |
 
 
 ---
@@ -52,15 +51,17 @@ openbb.alt.covid.ov(country: str, limit: int = 100)
 | pd.DataFrame | Dataframe of historical cases and deaths |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing historical cases and deaths by country.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L131)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L156)]
 
-```python
-openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, export: str = "", plot: bool = True)
+```python wordwrap
+openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, export: str = "", sheet_name: Optional[str] = None, plot: bool = True, external_axes: bool = False)
 ```
 
 ---
@@ -72,8 +73,10 @@ openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, expo
 | country | str | Country to get data for | None | False |
 | raw | bool | Flag to display raw data | False | True |
 | limit | int | Number of raw data to show | 10 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
 | plot | bool | Flag to display historical plot | True | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -83,6 +86,8 @@ openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, expo
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

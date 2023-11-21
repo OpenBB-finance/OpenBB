@@ -16,10 +16,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Returns a DataFrame with upcoming earnings
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L41)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L45)]
 
-```python
-openbb.stocks.disc.upcoming(limit: int = 10)
+```python wordwrap
+openbb.stocks.disc.upcoming(limit: int = 5, start_date: datetime.date = 2023-11-21)
 ```
 
 ---
@@ -28,7 +28,8 @@ openbb.stocks.disc.upcoming(limit: int = 10)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| limit | int | Number of pages | 10 | True |
+| limit | int | Number of days to look ahead | 5 | True |
+| start_date | date | Date to start from. Defaults to today | 2023-11-21 | True |
 
 
 ---
@@ -39,3 +40,4 @@ openbb.stocks.disc.upcoming(limit: int = 10)
 | ---- | ----------- |
 | DataFrame | Upcoming earnings DataFrame |
 ---
+

@@ -22,9 +22,9 @@ import TabItem from '@theme/TabItem';
 
 Request cancellation of a pending order.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L346)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L355)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.cancel(orderID: str, accountID: str = "REPLACE_ME")
 ```
 
@@ -46,14 +46,16 @@ This function does not return anything
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Cancel a Pending Order.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L197)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L191)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.cancel_chart(accountID: str, orderID: str = "")
 ```
 
@@ -74,6 +76,8 @@ openbb.forex.oanda.cancel_chart(accountID: str, orderID: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

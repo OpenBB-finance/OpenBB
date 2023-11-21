@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Makes api request for last price
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/tradier_model.py#L275)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/tradier_model.py#L319)]
 
-```python
+```python wordwrap
 openbb.stocks.options.last_price(symbol: str)
 ```
 
@@ -42,3 +42,4 @@ openbb.stocks.options.last_price(symbol: str)
 | ---- | ----------- |
 |  | Last price |
 ---
+

@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get currently set API keys.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L241)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L207)]
 
-```python
+```python wordwrap
 openbb.keys.mykeys(show: bool = False)
 ```
 
@@ -57,3 +57,4 @@ Key
 COINGLASS_KEY  *******
 ```
 ---
+

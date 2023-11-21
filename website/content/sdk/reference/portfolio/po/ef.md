@@ -27,10 +27,10 @@ import TabItem from '@theme/TabItem';
 
 Get Efficient Frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1193)]
 
-```python
-openbb.portfolio.po.ef(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)
+```python wordwrap
+openbb.portfolio.po.ef(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, kwargs: Any)
 ```
 
 ---
@@ -40,7 +40,6 @@ openbb.portfolio.po.ef(portfolio_engine: portfolio_optimization.po_engine.PoEngi
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio_engine | PoEngine | Portfolio optimization engine, by default None<br/>Use `portfolio.po.load` to load a portfolio engine | None | True |
-| symbols | List[str] | List of symbols, by default None | None | True |
 | interval | str | Interval to get data, by default '3y' | None | True |
 | start_date | str | If not using interval, start date string (YYYY-MM-DD), by default "" | None | True |
 | end_date | str | If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default "" | None | True |
@@ -71,7 +70,30 @@ openbb.portfolio.po.ef(portfolio_engine: portfolio_optimization.po_engine.PoEngi
 
 ```python
 from openbb_terminal.sdk import openbb
-frontier = openbb.portfolio.po.ef(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
+```
+
+```
+"SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+        }
+```
+```python
+p = openbb.portfolio.po.load(symbols_categories=d)
+weights, performance = openbb.portfolio.po.ef(portfolio_engine=p)
 ```
 
 ```python
@@ -82,15 +104,17 @@ frontier = openbb.portfolio.po.ef(portfolio_engine=p)
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L41)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L46)]
 
-```python
-openbb.portfolio.po.ef_chart(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)
+```python wordwrap
+openbb.portfolio.po.ef_chart(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, kwargs: Any)
 ```
 
 ---
@@ -100,7 +124,6 @@ openbb.portfolio.po.ef_chart(portfolio_engine: portfolio_optimization.po_engine.
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio_engine | PoEngine | Portfolio optimization engine, by default None<br/>Use `portfolio.po.load` to load a portfolio engine | None | True |
-| symbols | List[str] | List of symbols, by default None | None | True |
 | interval | str | Interval to get data, by default '3y' | None | True |
 | start_date | str | If not using interval, start date string (YYYY-MM-DD), by default "" | None | True |
 | end_date | str | If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default "" | None | True |
@@ -130,16 +153,41 @@ This function does not return anything
 
 ```python
 from openbb_terminal.sdk import openbb
-frontier = openbb.portfolio.po.ef_chart(symbols=["AAPL", "MSFT", "AMZN"])
+d = {
+```
+
+```
+"SECTOR": {
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+        }
+```
+```python
+p = openbb.portfolio.po.load(symbols_categories=d)
+openbb.portfolio.po.ef_chart(portfolio_engine=p)
 ```
 
 ```python
 from openbb_terminal.sdk import openbb
 p = openbb.portfolio.po.load(symbols_file_path="openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
-frontier = openbb.portfolio.po.ef_chart(portfolio_engine=p)
+openbb.portfolio.po.ef_chart(portfolio_engine=p)
 ```
 
 ---
+
+
 
 </TabItem>
 </Tabs>

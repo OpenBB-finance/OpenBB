@@ -26,7 +26,7 @@ Futures/Commodities from Wall St. Journal and FinViz.
 
 ### Usage
 
-```python
+```python wordwrap
 futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClose}] [-r]
 ```
 
@@ -34,11 +34,11 @@ futures [-c {energy,metals,meats,grains,softs}] [-s {ticker,last,change,prevClos
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| commodity | Obtain commodity futures from FinViz |  | True | energy, metals, meats, grains, softs |
-| sortby |  | ticker | True | ticker, last, change, prevClose |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| commodity | -c  --commodity | Obtain commodity futures from FinViz |  | True | energy, metals, meats, grains, softs |
+| sortby | -s  --sortby |  | ticker | True | ticker, last, change, prevClose |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
 
 
 ---

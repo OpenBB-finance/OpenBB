@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/th/symbol - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /th/symbol - Reference | OpenBB Terminal Docs" />
 
 Select the symbol you wish to trade
 
 ### Usage
 
-```python
+```python wordwrap
 symbol [-n SYMBOL]
 ```
 
@@ -29,8 +29,8 @@ symbol [-n SYMBOL]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| symbol | Symbol | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| symbol | -n  --name | Symbol | None | True | None |
 
 ---

@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alt/covid/cases - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt /covid/cases - Reference | OpenBB Terminal Docs" />
 
 Show historical cases for country.
 
 ### Usage
 
-```python
+```python wordwrap
 cases
 ```
 

@@ -24,7 +24,7 @@ This function creates a DataFrame with the required regression data as
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L112)]
 
-```python
+```python wordwrap
 openbb.econometrics.get_regression_data(regression_variables: List[tuple], data: Dict[str, pd.DataFrame], regression_type: str = "")
 ```
 
@@ -47,3 +47,4 @@ openbb.econometrics.get_regression_data(regression_variables: List[tuple], data:
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any]] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>OLS model. |
 ---
+

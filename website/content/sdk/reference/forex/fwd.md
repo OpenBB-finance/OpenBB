@@ -25,7 +25,7 @@ Gets forward rates from fxempire
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/fxempire_model.py#L14)]
 
-```python
+```python wordwrap
 openbb.forex.fwd(to_symbol: str = "USD", from_symbol: str = "EUR")
 ```
 
@@ -47,3 +47,4 @@ openbb.forex.fwd(to_symbol: str = "USD", from_symbol: str = "EUR")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing forward rates |
 ---
+

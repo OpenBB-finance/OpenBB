@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Screener Overview.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finviz_compare_model.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finviz_compare_model.py#L55)]
 
-```python
+```python wordwrap
 openbb.stocks.ca.screener(similar: List[str], data_type: str = "overview")
 ```
 
@@ -43,3 +43,4 @@ openbb.stocks.ca.screener(similar: List[str], data_type: str = "overview")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with overview, valuation, financial, ownership, performance or technical |
 ---
+

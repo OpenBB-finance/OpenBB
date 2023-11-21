@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Request creation of buy/sell trade order.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L270)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L278)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.order(price: int = 0, units: int = 0, instrument: Optional[str] = None, accountID: str = "REPLACE_ME")
 ```
 
@@ -55,14 +55,16 @@ openbb.forex.oanda.order(price: int = 0, units: int = 0, instrument: Optional[st
 | Union[pd.DataFrame, bool] | Orders data or False |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Create a buy/sell order.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L174)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L168)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.order_chart(accountID: str, instrument: str = "", price: int = 0, units: int = 0)
 ```
 
@@ -85,6 +87,8 @@ openbb.forex.oanda.order_chart(accountID: str, instrument: str = "", price: int 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -20,7 +20,7 @@ Load benchmark into portfolio
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L93)]
 
-```python
+```python wordwrap
 openbb.portfolio.bench(portfolio_engine: portfolio_engine.PortfolioEngine, symbol: str, full_shares: bool = False)
 ```
 
@@ -39,16 +39,18 @@ openbb.portfolio.bench(portfolio_engine: portfolio_engine.PortfolioEngine, symbo
 
 ## Returns
 
-This function does not return anything
-
+| Type | Description |
+| ---- | ----------- |
+| bool | True if successful, False otherwise |
 ---
 
 ## Examples
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.bench(p, symbol="SPY")
 ```
 
 ---
+

@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/oanda/calendar - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /oanda/calendar - Reference | OpenBB Terminal Docs" />
 
 Show Calendar Data
 
 ### Usage
 
-```python
+```python wordwrap
 calendar [-d DAYS]
 ```
 
@@ -29,8 +29,8 @@ calendar [-d DAYS]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| days | The number of days to search for, up to 30 forward or backward use negative numbers to search back. | 7 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| days | -d  --days | The number of days to search for, up to 30 forward or backward use negative numbers to search back. | 7 | True | None |
 
 ---

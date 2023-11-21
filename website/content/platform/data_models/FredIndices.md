@@ -1,6 +1,6 @@
 ---
-title: Historical Fred Indices
-description: OpenBB Platform Data Model
+title: FredIndices
+description: Historical Fred Indices
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

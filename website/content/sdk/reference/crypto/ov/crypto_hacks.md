@@ -26,7 +26,7 @@ Get major crypto-related hacks
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L93)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.crypto_hacks(sortby: str = "Platform", ascend: bool = False)
 ```
 
@@ -49,15 +49,17 @@ openbb.crypto.ov.crypto_hacks(sortby: str = "Platform", ascend: bool = False)
 | pd.DataFrame | Hacks with columns {Platform,Date,Amount [$],Audited,Slug,URL} |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display list of major crypto-related hacks. If slug is passed
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_view.py#L19)]
 
-```python
-openbb.crypto.ov.crypto_hacks_chart(limit: int = 15, sortby: str = "Platform", ascend: bool = False, slug: str = "polyntwork-rekt", export: str = "")
+```python wordwrap
+openbb.crypto.ov.crypto_hacks_chart(limit: int = 15, sortby: str = "Platform", ascend: bool = False, slug: str = "polyntwork-rekt", export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.crypto.ov.crypto_hacks_chart(limit: int = 15, sortby: str = "Platform", a
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

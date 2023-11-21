@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 A momentum oscillator, which measures the percentage change between the current
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L279)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L285)]
 
-```python
+```python wordwrap
 openbb.forecast.roc(dataset: pd.DataFrame, target_column: str = "close", period: int = 10)
 ```
 
@@ -42,3 +42,4 @@ openbb.forecast.roc(dataset: pd.DataFrame, target_column: str = "close", period:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added ROC column |
 ---
+

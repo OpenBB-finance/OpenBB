@@ -32,7 +32,7 @@ Skewness Indicator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L103)]
 
-```python
+```python wordwrap
 openbb.qa.skew(data: pd.DataFrame, window: int = 14)
 ```
 
@@ -55,15 +55,17 @@ openbb.qa.skew(data: pd.DataFrame, window: int = 14)
 | pd.DataFrame | Dataframe of rolling skew |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots rolling skew
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L341)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L313)]
 
-```python
-openbb.qa.skew_chart(symbol: str, data: pd.DataFrame, target: str, window: int = 14, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.qa.skew_chart(symbol: str, data: pd.DataFrame, target: str, window: int = 14, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -76,8 +78,9 @@ openbb.qa.skew_chart(symbol: str, data: pd.DataFrame, target: str, window: int =
 | data | pd.DataFrame | Dataframe | None | False |
 | target | str | Column in data to look at | None | False |
 | window | int | Length of window | 14 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -87,6 +90,8 @@ openbb.qa.skew_chart(symbol: str, data: pd.DataFrame, target: str, window: int =
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

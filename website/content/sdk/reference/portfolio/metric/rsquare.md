@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get R2 Score for portfolio and benchmark selected
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L947)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L989)]
 
-```python
+```python wordwrap
 openbb.portfolio.metric.rsquare(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -46,8 +46,9 @@ openbb.portfolio.metric.rsquare(portfolio_engine: portfolio_engine.PortfolioEngi
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.metric.rsquare(p)
 ```
 
 ---
+

@@ -17,12 +17,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks.options.dte - Reference | OpenBB SDK Docs" />
 
-Gets days to expiration from yfinance option date
+Returns a new column containing the DTE as an integer, including 0.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L365)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/op_helpers.py#L598)]
 
-```python
-openbb.stocks.options.dte(date_value: str)
+```python wordwrap
+openbb.stocks.options.dte(chain: pd.DataFrame)
 ```
 
 ---
@@ -38,3 +38,4 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+

@@ -1,6 +1,6 @@
 ---
-title: Get the top ETF gainers
-description: OpenBB Platform Data Model
+title: ETFGainers
+description: Get the top ETF gainers
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

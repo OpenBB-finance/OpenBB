@@ -19,7 +19,7 @@ Search futures. [Source: YahooFinance]
 
 ### Usage
 
-```python
+```python wordwrap
 search [-e {NYB,CMX,CME,CBT,NYM}] [-c {metals,agriculture,index,hydrocarbon,bonds,currency}] [-d DESCRIPTION [DESCRIPTION ...]]
 ```
 
@@ -27,10 +27,10 @@ search [-e {NYB,CMX,CME,CBT,NYM}] [-c {metals,agriculture,index,hydrocarbon,bond
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| exchange | Select the exchange where the future exists |  | True | NYB, CMX, CME, CBT, NYM |
-| category | Select the category where the future exists |  | True | metals, agriculture, index, hydrocarbon, bonds, currency |
-| description | Select the description future you are interested in |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| exchange | -e  --exchange | Select the exchange where the future exists |  | True | NYB, CMX, CME, CBT, NYM |
+| category | -c  --category | Select the category where the future exists |  | True | metals, agriculture, index, hydrocarbon, bonds, currency |
+| description | -d  --description | Select the description future you are interested in |  | True | None |
 
 ---

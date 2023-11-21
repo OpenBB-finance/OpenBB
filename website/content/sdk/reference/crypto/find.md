@@ -24,9 +24,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Find similar coin by coin name,symbol or id.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/crypto_models.py#L9)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/crypto_models.py#L10)]
 
-```python
+```python wordwrap
 openbb.crypto.find(query: str, source: str = "CoinGecko", key: str = "symbol", limit: int = 10)
 ```
 
@@ -59,3 +59,4 @@ openbb.crypto.find("polka", "CoinGecko", "name", 25)
 ```
 
 ---
+

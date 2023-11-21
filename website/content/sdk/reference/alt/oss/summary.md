@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Get repository summary.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L179)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L177)]
 
-```python
+```python wordwrap
 openbb.alt.oss.summary(repo: str)
 ```
 
@@ -49,15 +49,17 @@ openbb.alt.oss.summary(repo: str)
 | pd.DataFrame | Dataframe with repo summary - Columns: Metric, Value |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing repo summary [Source: https://api.github.com].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L123)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L112)]
 
-```python
-openbb.alt.oss.summary_chart(repo: str, export: str = "")
+```python wordwrap
+openbb.alt.oss.summary_chart(repo: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -77,6 +79,8 @@ openbb.alt.oss.summary_chart(repo: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

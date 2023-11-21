@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Request position book data for plotting.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L190)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str = "REPLACE_ME")
 ```
 
@@ -53,15 +53,17 @@ openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str
 | Union[pd.DataFrame, bool] | Position book data or False |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot a position book for an instrument if Oanda provides one.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L116)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L110)]
 
-```python
-openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", external_axes: bool = False)
 ```
 
 ---
@@ -72,7 +74,7 @@ openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", exte
 | ---- | ---- | ----------- | ------- | -------- |
 | accountID | str | Oanda user account ID | None | False |
 | instrument | str | The loaded currency pair |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -82,6 +84,8 @@ openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", exte
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

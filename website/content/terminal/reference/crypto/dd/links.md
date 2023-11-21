@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/links - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/links - Reference | OpenBB Terminal Docs" />
 
 Display asset's links [Source: https://messari.io]
 
 ### Usage
 
-```python
+```python wordwrap
 links
 ```
 

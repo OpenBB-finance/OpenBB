@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get open exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L54)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L51)]
 
-```python
+```python wordwrap
 openbb.stocks.th.open()
 ```
 
@@ -45,6 +45,8 @@ This function does not take any parameters.
 | pd.DataFrame | Currently open exchanges |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -52,7 +54,7 @@ Display open exchanges.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L44)]
 
-```python
+```python wordwrap
 openbb.stocks.th.open_chart()
 ```
 
@@ -69,6 +71,8 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

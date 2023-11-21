@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Performs Automatic ETS forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/autoets_model.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/autoets_model.py#L26)]
 
-```python
+```python wordwrap
 openbb.forecast.autoets(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5)
 ```
 
@@ -56,15 +56,17 @@ openbb.forecast.autoets(data: Union[pd.Series, pd.DataFrame], target_column: str
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit ETS model object. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display Automatic ETS (Error, Trend, Sesonality) Model
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/autoets_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/autoets_view.py#L19)]
 
-```python
-openbb.forecast.autoets_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)
+```python wordwrap
+openbb.forecast.autoets_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", sheet_name: Optional[str] = None, residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: bool = False)
 ```
 
 ---
@@ -80,13 +82,14 @@ openbb.forecast.autoets_chart(data: Union[pd.DataFrame, pd.Series], target_colum
 | n_predict | int | Number of days to forecast | 5 | True |
 | start_window | float | Size of sliding window from start of timeseries and onwards | 0.85 | True |
 | forecast_horizon | int | Number of days to forecast when backtesting and retraining historical | 5 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
 | residuals | bool | Whether to show residuals for the model. Defaults to False. | False | True |
 | forecast_only | bool | Whether to only show dates in the forecasting range. Defaults to False. | False | True |
 | start_date | Optional[datetime] | The starting date to perform analysis, data before this is trimmed. Defaults to None. | None | True |
 | end_date | Optional[datetime] | The ending date to perform analysis, data after this is trimmed. Defaults to None. | None | True |
 | naive | bool | Whether to show the naive baseline. This just assumes the closing price will be the same<br/>as the previous day's closing price. Defaults to False. | False | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -96,6 +99,8 @@ openbb.forecast.autoets_chart(data: Union[pd.DataFrame, pd.Series], target_colum
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -28,7 +28,7 @@ Returns available messari timeseries
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L34)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.get_mt(only_free: bool = True)
 ```
 
@@ -50,15 +50,17 @@ openbb.crypto.dd.get_mt(only_free: bool = True)
 | pd.DataFrame | available timeseries |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing messari timeseries list
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L49)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L43)]
 
-```python
-openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool = True, export: str = "")
+```python wordwrap
+openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool = True, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

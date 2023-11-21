@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get key ratios
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L463)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L531)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.ratios(symbol: str, limit: int = 5, quarterly: bool = False)
 ```
 
@@ -43,3 +43,4 @@ openbb.stocks.fa.ratios(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key ratios |
 ---
+

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/qa/rolling - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /qa/rolling - Reference | OpenBB Terminal Docs" />
 
 Rolling mean and std deviation
 
 ### Usage
 
-```python
+```python wordwrap
 rolling [-w N_WINDOW]
 ```
 
@@ -28,9 +28,9 @@ rolling [-w N_WINDOW]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| n_window | Window length | 14 | True | range(5, 100) |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| n_window | -w  --window | Window length | 14 | True | range(5, 100) |
 
 ![rolling](https://user-images.githubusercontent.com/46355364/154308175-bb244d55-a6e0-4d6e-80f4-b3937dcd8ed4.png)
 

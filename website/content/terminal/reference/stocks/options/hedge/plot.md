@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/hedge/plot /options - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /options/hedge/plot - Reference | OpenBB Terminal Docs" />
 
 This function plots option payoff diagrams
 
 ### Usage
 
-```python
+```python wordwrap
 plot
 ```
 

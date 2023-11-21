@@ -33,6 +33,9 @@ keywords:
 - yfinance data
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="news /company - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -56,7 +59,7 @@ obb.news.company(symbols: str, limit: int = 20, provider: Literal[str] = benzing
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 </TabItem>
 
 <TabItem value='benzinga' label='benzinga'>
@@ -65,7 +68,7 @@ obb.news.company(symbols: str, limit: int = 20, provider: Literal[str] = benzing
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | display | Literal['headline', 'abstract', 'full'] | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). | full | True |
 | date | str | Date of the news to retrieve. | None | True |
 | start_date | str | Start date of the news to retrieve. | None | True |
@@ -88,7 +91,7 @@ obb.news.company(symbols: str, limit: int = 20, provider: Literal[str] = benzing
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | page | int | Page number of the results. Use in combination with limit. | 0 | True |
 </TabItem>
 
@@ -98,9 +101,19 @@ obb.news.company(symbols: str, limit: int = 20, provider: Literal[str] = benzing
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | published_utc | str | Date query to fetch articles. Supports operators <, <=, >, >= | None | True |
 | order | Literal['asc', 'desc'] | Sort order of the articles. | desc | True |
+</TabItem>
+
+<TabItem value='tiingo' label='tiingo'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbols | str |  Here it is a separated list of symbols. |  | False |
+| limit | int | The number of data entries to return. | 20 | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| source | str | A comma-separated list of the domains requested. | None | True |
 </TabItem>
 
 </Tabs>
@@ -114,7 +127,7 @@ OBBject
     results : List[CompanyNews]
         Serializable results.
 
-    provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance']]
+    provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
         Provider name.
 
     warnings : Optional[List[Warning_]]
@@ -206,7 +219,7 @@ OBBject
 | tickers | List[str] | Tickers covered in the article. |
 </TabItem>
 
-<TabItem value='ultima' label='ultima'>
+<TabItem value='tiingo' label='tiingo'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -215,9 +228,11 @@ OBBject
 | image | str | Image URL of the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
-| publisher | str | Publisher of the news. |
-| ticker | str | Ticker associated with the news. |
-| riskCategory | str | Risk category of the news. |
+| symbols | str | Ticker tagged in the fetched news. |
+| article_id | int | Unique ID of the news article. |
+| site | str | Name of the news source. |
+| tags | str | Tags associated with the news article. |
+| crawl_date | datetime | Date the news article was crawled. |
 </TabItem>
 
 <TabItem value='yfinance' label='yfinance'>

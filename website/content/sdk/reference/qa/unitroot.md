@@ -23,9 +23,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for unit roots
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L136)]
 
-```python
+```python wordwrap
 openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c")
 ```
 
@@ -49,15 +49,17 @@ openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing unit root test calculations
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L839)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L782)]
 
-```python
-openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c", kpss_reg: str = "c", export: str = "")
+```python wordwrap
+openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c", kpss_reg: str = "c", export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c",
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

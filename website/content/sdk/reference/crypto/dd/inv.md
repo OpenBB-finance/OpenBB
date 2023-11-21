@@ -32,9 +32,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin investors
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L494)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L501)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.inv(symbol: str)
 ```
 
@@ -56,15 +56,17 @@ openbb.crypto.dd.inv(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Individuals,<br/>Organizations |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing coin investors
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L510)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L511)]
 
-```python
-openbb.crypto.dd.inv_chart(symbol: str, export: str = "")
+```python wordwrap
+openbb.crypto.dd.inv_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -84,6 +86,8 @@ openbb.crypto.dd.inv_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

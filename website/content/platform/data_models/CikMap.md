@@ -1,6 +1,6 @@
 ---
-title: Get the CIK number corresponding to a ticker symbol
-description: OpenBB Platform Data Model
+title: CikMap
+description: Get the CIK number corresponding to a ticker symbol
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

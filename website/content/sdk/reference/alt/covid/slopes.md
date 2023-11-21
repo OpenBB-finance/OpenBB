@@ -24,10 +24,10 @@ import TabItem from '@theme/TabItem';
 
 Load cases and find slope over period.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L173)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L152)]
 
-```python
-openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False)
+```python wordwrap
+openbb.alt.covid.slopes(days_back: int = 30, threshold: int = 10000, ascend: bool = False)
 ```
 
 ---
@@ -37,7 +37,6 @@ openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 1
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | days_back | int | Number of historical days to consider | 30 | True |
-| limit | int | Number of rows to show | 50 | True |
 | threshold | int | Threshold for total number of cases | 10000 | True |
 | ascend | bool | Flag to sort in ascending order | False | True |
 
@@ -51,15 +50,17 @@ openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 1
 | pd.DataFrame | Dataframe containing slopes |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing countries with the highest case slopes.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L220)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L281)]
 
-```python
-openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: int = 10000, ascend: bool = False, export: str = "")
+```python wordwrap
+openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: int = 10000, ascend: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -82,6 +83,8 @@ openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: i
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

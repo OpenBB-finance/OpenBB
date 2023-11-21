@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L35)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L57)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = False, description: bool = False, drop_chain: bool = True)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = Fal
 | pd.DataFrame | Information about DeFi protocols |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L94)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L88)]
 
-```python
-openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = False, description: bool = False, export: str = "")
+```python wordwrap
+openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = False, description: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -69,8 +71,8 @@ openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = Fal
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| limit | int | Number of records to display | 20 | True |
 | sortby | str | Key by which to sort data | None | False |
+| limit | int | Number of records to display | 20 | True |
 | ascend | bool | Flag to sort data descending | False | True |
 | description | bool | Flag to display description of protocol | False | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
@@ -83,6 +85,8 @@ openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = Fal
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

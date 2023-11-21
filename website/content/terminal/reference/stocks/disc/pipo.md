@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/disc/pipo - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /disc/pipo - Reference | OpenBB Terminal Docs" />
 
 Past IPOs dates. [Source: https://finnhub.io]
 
 ### Usage
 
-```python
+```python wordwrap
 pipo [-d DAYS] [-s START] [-l LIMIT]
 ```
 
@@ -29,11 +29,11 @@ pipo [-d DAYS] [-s START] [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| days | Number of past days to look for IPOs. | 5 | True | None |
-| start | The starting date (format YYYY-MM-DD) to look for IPOs. When set, start date will override --days argument | None | True | None |
-| limit | Limit number of IPOs to display. | 20 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| days | -d  --days | Number of past days to look for IPOs. | 5 | True | None |
+| start | -s  --start | The starting date (format YYYY-MM-DD) to look for IPOs. When set, start date will override --days argument | None | True | None |
+| limit | -l  --limit | Limit number of IPOs to display. | 20 | True | None |
 
 
 ---

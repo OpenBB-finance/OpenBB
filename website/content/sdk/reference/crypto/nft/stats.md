@@ -28,7 +28,7 @@ Get stats of a nft collection [Source: opensea.io]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/opensea_model.py#L17)]
 
-```python
+```python wordwrap
 openbb.crypto.nft.stats(slug: str)
 ```
 
@@ -50,6 +50,8 @@ openbb.crypto.nft.stats(slug: str)
 | pd.DataFrame | collection stats |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -57,8 +59,8 @@ Prints table showing collection stats. [Source: opensea.io]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/opensea_view.py#L15)]
 
-```python
-openbb.crypto.nft.stats_chart(slug: str, export: str)
+```python wordwrap
+openbb.crypto.nft.stats_chart(slug: str, export: str, sheet_name: str)
 ```
 
 ---
@@ -78,6 +80,8 @@ openbb.crypto.nft.stats_chart(slug: str, export: str)
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

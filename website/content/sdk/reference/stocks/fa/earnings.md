@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get earnings data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L203)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L241)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.earnings(symbol: str, source: str = "YahooFinance", quarterly: bool = False)
 ```
 
@@ -30,7 +30,7 @@ openbb.stocks.fa.earnings(symbol: str, source: str = "YahooFinance", quarterly: 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker | None | False |
-| source | str | Source to use, by default "AlphaVantage" | YahooFinance | True |
+| source | str | Source to use, by default "AlphaVantage"<br/>Sources: YahooFinance, AlphaVantage | YahooFinance | True |
 | quarterly | bool | Flag to get quarterly data (AlphaVantage only), by default False. | False | True |
 
 
@@ -47,14 +47,15 @@ openbb.stocks.fa.earnings(symbol: str, source: str = "YahooFinance", quarterly: 
 
 ```python
 from openbb_terminal.sdk import openbb
-aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance)
+aapl_earnings = openbb.stocks.fa.earnings("AAPL", source ="YahooFinance")
 ```
 
 ```
 To obtain quarterly earnings, use the quarterly flag with AlphaVantage
 ```
 ```python
-aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage, quarterly=True)
+aapl_earnings = openbb.stocks.fa.metrics("earnings", source ="AlphaVantage", quarterly=True)
 ```
 
 ---
+

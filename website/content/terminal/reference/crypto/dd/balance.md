@@ -14,22 +14,22 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/balance - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/balance - Reference | OpenBB Terminal Docs" />
 
 Display balance
 
 ### Usage
 
-```python
-balance [--vs VS]
+```python wordwrap
+balance [--vs {}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| vs | Quote currency (what to view coin vs) | USDT | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| vs | --vs | Quote currency (what to view coin vs) | USDT | True | None |
 
 ---

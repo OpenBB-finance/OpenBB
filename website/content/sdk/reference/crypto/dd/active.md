@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Returns active addresses of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L311)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L310)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2010-01-01", end_date: Optional[str] = None)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2
 | pd.DataFrame | active addresses over time |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots active addresses of a certain symbol over time
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L24)]
 
-```python
-openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, interval: str = "24h", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, interval: str = "24h", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -74,7 +76,7 @@ openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_d
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | interval | str | Interval frequency (possible values are: 24h, 1w, 1month) | 24h | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,6 +86,8 @@ openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_d
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

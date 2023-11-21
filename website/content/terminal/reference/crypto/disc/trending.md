@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/disc/trending - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /disc/trending - Reference | OpenBB Terminal Docs" />
 
 Discover trending coins (Top-7) on CoinGecko in the last 24 hours
 
 ### Usage
 
-```python
+```python wordwrap
 trending
 ```
 

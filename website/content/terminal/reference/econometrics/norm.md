@@ -20,7 +20,7 @@ Test whether the used data is normally distributed.
 
 ### Usage
 
-```python
+```python wordwrap
 norm -v {} [-p]
 ```
 
@@ -28,10 +28,10 @@ norm -v {} [-p]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| column | The dataset.column you want to test normality for | None | False | None |
-| plot | Whether you wish to plot a histogram to visually depict normality | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| column | -v  --value | The dataset.column you want to test normality for | None | False | None |
+| plot | -p  --plot | Whether you wish to plot a histogram to visually depict normality | False | True | None |
 
 ![histogram_adj_close_tsla](https://user-images.githubusercontent.com/46355364/155514663-90cb210a-002a-49fe-b7d3-29d9f2aeb5ac.png)
 

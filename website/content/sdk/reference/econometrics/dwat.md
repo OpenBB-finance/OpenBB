@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for Durbin Watson autocorrelation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L486)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L489)]
 
-```python
+```python wordwrap
 openbb.econometrics.dwat(model: statsmodels.regression.linear_model.RegressionResultsWrapper)
 ```
 
@@ -63,6 +63,8 @@ durbin_watson_value = openbb.econometrics.dwat(model)
 ```
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +72,8 @@ Show Durbin-Watson autocorrelation tests
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L81)]
 
-```python
-openbb.econometrics.dwat_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, dependent_variable: pd.Series, plot: bool = True, export: str = "", external_axes: Optional[List[axes]] = None)
+```python wordwrap
+openbb.econometrics.dwat_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, dependent_variable: pd.Series, plot: bool = True, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -84,7 +86,7 @@ openbb.econometrics.dwat_chart(model: statsmodels.regression.linear_model.Regres
 | dependent_variable | pd.Series | The dependent variable for plotting | None | False |
 | plot | bool | Whether to plot the residuals | True | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -94,6 +96,8 @@ openbb.econometrics.dwat_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

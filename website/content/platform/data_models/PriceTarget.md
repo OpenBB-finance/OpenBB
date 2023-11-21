@@ -1,6 +1,6 @@
 ---
-title: Price Target
-description: OpenBB Platform Data Model
+title: PriceTarget
+description: Price Target
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -1,6 +1,6 @@
 ---
-title: Ameribor
-description: OpenBB Platform Data Model
+title: AMERIBOR
+description: Ameribor
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -20,7 +20,7 @@ Get coin by id [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L427)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.coin(symbol: str = "eth-ethereum")
 ```
 
@@ -41,3 +41,4 @@ openbb.crypto.dd.coin(symbol: str = "eth-ethereum")
 | ---- | ----------- |
 | dict | Coin response |
 ---
+

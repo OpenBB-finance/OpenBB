@@ -30,9 +30,9 @@ import TabItem from '@theme/TabItem';
 
 Returns 30d change of the supply held in exchange wallets of a certain symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L555)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L553)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.change(symbol: str, exchange: str = "binance", start_date: str = "2010-01-01", end_date: Optional[str] = None)
 ```
 
@@ -57,15 +57,17 @@ openbb.crypto.dd.change(symbol: str, exchange: str = "binance", start_date: str 
 | pd.DataFrame | supply change in exchange wallets of a certain symbol over time |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots 30d change of the supply held in exchange wallets.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L157)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L135)]
 
-```python
-openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -79,7 +81,7 @@ openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date
 | start_date | str | Initial date, format YYYY-MM-DD | 2010-01-01 | True |
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -89,6 +91,8 @@ openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

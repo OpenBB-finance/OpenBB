@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Request the orders list from Oanda.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L225)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L233)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.listorders(order_state: str = "PENDING", order_count: int = 0, accountID: str = "REPLACE_ME")
 ```
 
@@ -50,14 +50,16 @@ This function does not return anything
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 List order history.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L153)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L147)]
 
-```python
+```python wordwrap
 openbb.forex.oanda.listorders_chart(accountID: str, order_state: str = "PENDING", order_count: int = 0)
 ```
 
@@ -79,6 +81,8 @@ openbb.forex.oanda.listorders_chart(accountID: str, order_state: str = "PENDING"
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

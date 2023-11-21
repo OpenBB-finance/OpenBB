@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 A price signal based on short/long term price.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L374)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L378)]
 
-```python
+```python wordwrap
 openbb.forecast.signal(dataset: pd.DataFrame, target_column: str = "close")
 ```
 
@@ -43,3 +43,4 @@ openbb.forecast.signal(dataset: pd.DataFrame, target_column: str = "close")
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added signal column |
 ---
+

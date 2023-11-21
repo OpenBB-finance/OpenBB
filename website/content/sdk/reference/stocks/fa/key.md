@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get key metrics from overview
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/av_model.py#L101)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/av_model.py#L80)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.key(symbol: str)
 ```
 
@@ -41,3 +41,4 @@ openbb.stocks.fa.key(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key metrics |
 ---
+

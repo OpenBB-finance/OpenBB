@@ -30,9 +30,9 @@ import TabItem from '@theme/TabItem';
 
 Returns anchor protocol earnings data of a certain terra address
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_model.py#L19)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.anchor_data(address: str = "")
 ```
 
@@ -54,15 +54,17 @@ openbb.crypto.defi.anchor_data(address: str = "")
 | Tuple[pd.DataFrame, pd.DataFrame, str] | - pd.DataFrame: Earnings over time in UST<br/>- pd.DataFrame: History of transactions<br/>- str:              Overall statistics |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots anchor protocol earnings data of a certain terra address
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_view.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_view.py#L18)]
 
-```python
-openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_transactions: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", sheet_name: Optional[str] = None, show_transactions: bool = False, external_axes: bool = False)
 ```
 
 ---
@@ -75,7 +77,7 @@ openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_t
 | address | str | Terra address. Valid terra addresses start with 'terra' |  | True |
 | show_transactions | bool | Flag to show history of transactions in Anchor protocol for address. Default False | False | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -85,6 +87,8 @@ openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_t
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

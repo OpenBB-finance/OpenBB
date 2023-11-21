@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for autocorrelation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L525)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L528)]
 
-```python
+```python wordwrap
 openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
 ```
 
@@ -51,15 +51,17 @@ openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
 | pd.DataFrame | Test results from the Breusch-Godfrey Test |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Show Breusch-Godfrey autocorrelation test
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L141)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L155)]
 
-```python
-openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3, export: str = "")
+```python wordwrap
+openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

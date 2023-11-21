@@ -18,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="economy/qa/raw - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy /qa/raw - Reference | OpenBB Terminal Docs" />
 
 Print raw data to console
 
 ### Usage
 
-```python
+```python wordwrap
 raw [-l LIMIT] [-r] [-s SORTBY]
 ```
 
@@ -32,11 +32,11 @@ raw [-l LIMIT] [-r] [-s SORTBY]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number to show | 20 | True | None |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
-| sortby | The column to sort by | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Number to show | 20 | True | None |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| sortby | -s  --sortby | The column to sort by | None | True | None |
 
 
 ---

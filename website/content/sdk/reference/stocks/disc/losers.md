@@ -23,7 +23,7 @@ Get top losers. [Source: Yahoo Finance]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L35)]
 
-```python
+```python wordwrap
 openbb.stocks.disc.losers()
 ```
 
@@ -41,3 +41,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Stock Losers |
 ---
+

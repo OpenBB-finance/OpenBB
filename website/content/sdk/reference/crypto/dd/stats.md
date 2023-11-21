@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get 24 hr stats for the product. Volume is in base currency units.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L202)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L207)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.stats(symbol: str)
 ```
 
@@ -51,15 +51,17 @@ openbb.crypto.dd.stats(symbol: str)
 | pd.DataFrame | 24h stats for chosen trading pair |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing 24 hr stats for the product. Volume is in base currency units.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L99)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L128)]
 
-```python
-openbb.crypto.dd.stats_chart(symbol: str, export: str = "")
+```python wordwrap
+openbb.crypto.dd.stats_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -79,6 +81,8 @@ openbb.crypto.dd.stats_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

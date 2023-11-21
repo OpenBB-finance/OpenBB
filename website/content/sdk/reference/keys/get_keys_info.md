@@ -24,9 +24,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get info on available APIs to use in set_keys.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L177)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L184)]
 
-```python
+```python wordwrap
 openbb.keys.get_keys_info()
 ```
 
@@ -44,3 +44,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, List[str]] | Dictionary of expected API keys and arguments |
 ---
+

@@ -23,23 +23,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/stats - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/stats - Reference | OpenBB Terminal Docs" />
 
 Display coin stats
 
 ### Usage
 
-```python
-stats [--vs {USD,USDC,USDT,EUR,USD,GBP}]
+```python wordwrap
+stats [--vs {USDC,GBP,USD,EUR,USDT}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| vs | Quote currency (what to view coin vs) | USDT | True | USD, USDC, USDT, EUR, USD, GBP |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| vs | --vs | Quote currency (what to view coin vs) | USDT | True | USDC, GBP, USD, EUR, USDT |
 
 
 ---

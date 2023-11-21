@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get forex quote.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/sdk_helpers.py#L9)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/sdk_helpers.py#L10)]
 
-```python
+```python wordwrap
 openbb.forex.quote(symbol: str, source: str = "YahooFinance")
 ```
 
@@ -59,3 +59,4 @@ EUR_USD= openbb.forex.quote("EUR/USD", source="AlphaVantage")
 ```
 
 ---
+

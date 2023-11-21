@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for unit roots
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L168)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L184)]
 
-```python
+```python wordwrap
 openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c")
 ```
 
@@ -50,15 +50,17 @@ openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str =
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Determine the normality of a timeseries.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L197)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L282)]
 
-```python
-openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str = "", fuller_reg: str = "c", kpss_reg: str = "c", export: str = "")
+```python wordwrap
+openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str = "", fuller_reg: str = "c", kpss_reg: str = "c", export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -72,6 +74,7 @@ openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str =
 | column | str | Name of the column |  | True |
 | fuller_reg | str | Type of regression of ADF test. Choose c, ct, ctt, or nc | c | True |
 | kpss_reg | str | Type of regression for KPSS test. Choose c or ct | c | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data. |  | True |
 
 
@@ -82,6 +85,8 @@ openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

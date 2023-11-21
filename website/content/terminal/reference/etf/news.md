@@ -21,7 +21,7 @@ Prints latest news about ETF, including date, title and web link. [Source: News 
 
 ### Usage
 
-```python
+```python wordwrap
 news [-l LIMIT] [-d N_START_DATE] [-o] [-s SOURCES]
 ```
 
@@ -29,11 +29,11 @@ news [-l LIMIT] [-d N_START_DATE] [-o] [-s SOURCES]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of latest news being printed. | 5 | True | None |
-| n_start_date | The starting date (format YYYY-MM-DD) to search articles from | datetime.now() - timedelta(days=365) | True | None |
-| n_oldest | Show oldest articles first | True | True | None |
-| sources | Show news only from the sources specified (e.g bbc yahoo.com) |  | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of latest news being printed. | 5 | True | None |
+| n_start_date | -d  --date | The starting date (format YYYY-MM-DD) to search articles from | datetime.now() - timedelta(days=365) | True | None |
+| n_oldest | -o  --oldest | Show oldest articles first | True | True | None |
+| sources | -s  --sources | Show news only from the sources specified (e.g bbc yahoo.com) |  | True | None |
 
 ---

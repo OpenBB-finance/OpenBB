@@ -1,6 +1,6 @@
 ---
-title: Index Search
-description: OpenBB Platform Data Model
+title: IndexSearch
+description: Index Search
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

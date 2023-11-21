@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Ethplorer key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1987)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1892)]
 
-```python
+```python wordwrap
 openbb.keys.ethplorer(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -53,3 +53,4 @@ openbb.keys.ethplorer(key="example_key")
 ```
 
 ---
+

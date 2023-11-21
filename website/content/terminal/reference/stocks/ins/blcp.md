@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/blcp - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/blcp - Reference | OpenBB Terminal Docs" />
 
 Print latest CEO/CFO purchases 25k. [Source: OpenInsider]
 
 ### Usage
 
-```python
+```python wordwrap
 blcp [-l LIMIT]
 ```
 
@@ -29,9 +29,9 @@ blcp [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of datarows to display | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

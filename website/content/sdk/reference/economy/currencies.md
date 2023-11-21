@@ -20,7 +20,7 @@ Scrape data for global currencies
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/wsj_model.py#L242)]
 
-```python
+```python wordwrap
 openbb.economy.currencies()
 ```
 
@@ -38,3 +38,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, price, net change and percent change |
 ---
+

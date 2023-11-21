@@ -14,22 +14,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/fa/shrs - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /fa/shrs - Reference | OpenBB Terminal Docs" />
 
 Print Major, institutional and mutualfunds shareholders. [Source: Yahoo Finance]
 
 ### Usage
 
-```python
-shrs [--holder {major,institutional,mutualfund}]
+```python wordwrap
+shrs [-t TICKER] [--holder {major,institutional,mutualfund}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| holder | Table of holders to get | institutional | True | major, institutional, mutualfund |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | Ticker to analyze | None | True | None |
+| holder | --holder | Table of holders to get | institutional | True | major, institutional, mutualfund |
 
 ---

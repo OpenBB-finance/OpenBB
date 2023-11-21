@@ -25,6 +25,9 @@ keywords:
 - stock data
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /clenow - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -32,25 +35,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 Clenow Volatility Adjusted Momentum.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-index : str, optional
-Index column name to use with `data`, by default "date".
-target : str, optional
-Target column name, by default "close".
-period : PositiveInt, optional
-Number of periods for the momentum, by default 90.
-
-Returns
--------
-OBBject[List[Data]]
-The calculated data.
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -62,13 +46,26 @@ clenow_data = obb.technical.clenow(data=stock_data.results,period=90)
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| index | str | Index column name to use with `data`, by default "date". | date | True |
+| target | str | Target column name, by default "close". | close | True |
+| period | PositiveInt | Number of periods for the momentum, by default 90. | 90 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The calculated data.
+```
 
 ---
 

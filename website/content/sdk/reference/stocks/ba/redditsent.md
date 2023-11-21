@@ -22,11 +22,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks.ba.redditsent - Reference | OpenBB SDK Docs" />
 
-Finds posts related to a specific search term in Reddit.
+Find posts related to a specific search term in Reddit.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L864)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L428)]
 
-```python
+```python wordwrap
 openbb.stocks.ba.redditsent(symbol: str, limit: int = 100, sortby: str = "relevance", time_frame: str = "week", full_search: bool = True, subreddits: str = "all")
 ```
 
@@ -52,3 +52,4 @@ openbb.stocks.ba.redditsent(symbol: str, limit: int = 100, sortby: str = "releva
 | ---- | ----------- |
 |  | Dataframe of submissions related to the search term,<br/>List of polarity scores,<br/>Average polarity score. |
 ---
+

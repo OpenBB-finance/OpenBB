@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Returns correlation for a given df
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L521)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L538)]
 
-```python
+```python wordwrap
 openbb.forecast.corr(data: pd.DataFrame)
 ```
 
@@ -49,15 +49,17 @@ openbb.forecast.corr(data: pd.DataFrame)
 | pd.DataFrame | The df with the new data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot correlation coefficients for dataset features
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L170)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L166)]
 
-```python
-openbb.forecast.corr_chart(dataset: pd.DataFrame, export: str = "", external_axes: Optional[List[axes]] = None)
+```python wordwrap
+openbb.forecast.corr_chart(dataset: pd.DataFrame, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -67,8 +69,9 @@ openbb.forecast.corr_chart(dataset: pd.DataFrame, export: str = "", external_axe
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | dataset | pd.DataFrame | The dataset fore calculating correlation coefficients | None | False |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export image |  | True |
-| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -78,6 +81,8 @@ openbb.forecast.corr_chart(dataset: pd.DataFrame, export: str = "", external_axe
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

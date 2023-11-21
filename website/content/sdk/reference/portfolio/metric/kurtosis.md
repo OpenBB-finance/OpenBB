@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get kurtosis for portfolio and benchmark selected
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1032)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1074)]
 
-```python
+```python wordwrap
 openbb.portfolio.metric.kurtosis(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -47,8 +47,9 @@ openbb.portfolio.metric.kurtosis(portfolio_engine: portfolio_engine.PortfolioEng
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.metric.kurtosis(p)
 ```
 
 ---
+

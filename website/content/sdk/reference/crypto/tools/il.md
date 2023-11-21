@@ -29,7 +29,7 @@ Calculates Impermanent Loss in a custom liquidity pool
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_model.py#L57)]
 
-```python
+```python wordwrap
 openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: float, initial_pool_value: float)
 ```
 
@@ -54,15 +54,17 @@ openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: f
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays Impermanent Loss in a custom liquidity pool
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L56)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L63)]
 
-```python
-openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion: int, initial_pool_value: int, narrative: bool = False, export: str = "")
+```python wordwrap
+openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion: int, initial_pool_value: int, narrative: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -86,6 +88,8 @@ openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion:
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

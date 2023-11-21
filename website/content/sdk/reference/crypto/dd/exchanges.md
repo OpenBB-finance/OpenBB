@@ -14,9 +14,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Helper method to get all the exchanges supported by ccxt
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L10)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L12)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.exchanges()
 ```
 
@@ -34,3 +34,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | list of all the exchanges supported by ccxt |
 ---
+

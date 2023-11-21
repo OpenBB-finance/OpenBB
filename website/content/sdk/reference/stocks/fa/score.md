@@ -19,10 +19,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets value score from fmp
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L26)]
 
-```python
-openbb.stocks.fa.score(symbol: str)
+```python wordwrap
+openbb.stocks.fa.score(symbol: str, years: int)
 ```
 
 ---
@@ -32,6 +32,7 @@ openbb.stocks.fa.score(symbol: str)
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker symbol | None | False |
+| years | int | The amount of years to use to calculate the score | None | False |
 
 
 ---
@@ -42,3 +43,4 @@ openbb.stocks.fa.score(symbol: str)
 | ---- | ----------- |
 | np.number | Value score |
 ---
+

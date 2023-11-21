@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Get rolling sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L564)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L595)]
 
-```python
+```python wordwrap
 openbb.portfolio.rsharpe(portfolio_engine: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y")
 ```
 
@@ -55,21 +55,23 @@ openbb.portfolio.rsharpe(portfolio_engine: pd.DataFrame, risk_free_rate: float =
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.rsharpe(p)
 ```
 
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display rolling sharpe
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L932)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1026)]
 
-```python
-openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngine, risk_free_rate: float = 0, window: str = "1y", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngine, risk_free_rate: float = 0, window: str = "1y", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -81,8 +83,9 @@ openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngin
 | portfolio | PortfolioEngine | PortfolioEngine object | None | True |
 | risk_free_rate | float | Value to use for risk free rate in sharpe/other calculations | 0 | True |
 | window | str | interval for window to consider | 1y | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export to file |  | True |
-| external_axes | Optional[List[plt.Axes]] | Optional axes to display plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -92,6 +95,8 @@ openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngin
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

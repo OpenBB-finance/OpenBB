@@ -21,11 +21,11 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="model" label="Model" default>
 
-Get info for a given ticker
+Scrape barchart for options info
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L329)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/barchart_model.py#L16)]
 
-```python
+```python wordwrap
 openbb.stocks.options.info(symbol: str)
 ```
 
@@ -35,7 +35,7 @@ openbb.stocks.options.info(symbol: str)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | str | The ticker symbol to get the price for | None | False |
+| symbol | str | Stock ticker symbol | None | False |
 
 
 ---
@@ -44,18 +44,20 @@ openbb.stocks.options.info(symbol: str)
 
 | Type | Description |
 | ---- | ----------- |
-| float | The info for a given ticker |
+| pd.DataFrame | Dataframe of options information |
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Scrapes Barchart.com for the options information
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/barchart_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/barchart_view.py#L16)]
 
-```python
-openbb.stocks.options.info_chart(symbol: str, export: str = "")
+```python wordwrap
+openbb.stocks.options.info_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -65,6 +67,7 @@ openbb.stocks.options.info_chart(symbol: str, export: str = "")
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker symbol to get options info for | None | False |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format of export file |  | True |
 
 
@@ -75,6 +78,8 @@ openbb.stocks.options.info_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

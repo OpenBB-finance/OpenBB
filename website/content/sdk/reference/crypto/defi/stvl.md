@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Returns historical values of the total sum of TVLs from all listed protocols.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L170)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L190)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.stvl()
 ```
 
@@ -50,15 +50,17 @@ This function does not take any parameters.
 | pd.DataFrame | Historical values of total sum of Total Value Locked from all listed protocols. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots historical values of the total sum of TVLs from all listed protocols.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L188)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L186)]
 
-```python
-openbb.crypto.defi.stvl_chart(limit: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.stvl_chart(limit: int = 5, export: Optional[str] = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -69,7 +71,7 @@ openbb.crypto.defi.stvl_chart(limit: int = 5, export: str = "", external_axes: O
 | ---- | ---- | ----------- | ------- | -------- |
 | limit | int | Number of records to display, by default 5 | 5 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -79,6 +81,8 @@ openbb.crypto.defi.stvl_chart(limit: int = 5, export: str = "", external_axes: O
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

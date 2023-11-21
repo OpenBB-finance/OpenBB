@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get the omega series
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L639)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L634)]
 
-```python
+```python wordwrap
 openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5)
 ```
 
@@ -55,15 +55,17 @@ openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: f
 | pd.DataFrame | omega series |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots the omega ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1214)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1171)]
 
-```python
-openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5)
+```python wordwrap
+openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5, external_axes: bool = False)
 ```
 
 ---
@@ -75,6 +77,7 @@ openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_
 | data | pd.DataFrame | stock dataframe | None | False |
 | threshold_start | float | annualized target return threshold start of plotted threshold range | 0 | True |
 | threshold_end | float | annualized target return threshold end of plotted threshold range | 1.5 | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,6 +87,8 @@ openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

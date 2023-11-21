@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get list of trades on Decentralized Exchanges monthly aggregated.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L333)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L335)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.dex_trades_monthly(trade_amount_currency: str = "USD", limit: int = 90, ascend: bool = True)
 ```
 
@@ -45,3 +45,4 @@ openbb.crypto.onchain.dex_trades_monthly(trade_amount_currency: str = "USD", lim
 | ---- | ----------- |
 | pd.DataFrame | Trades on Decentralized Exchanges monthly aggregated |
 ---
+

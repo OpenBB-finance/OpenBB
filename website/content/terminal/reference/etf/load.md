@@ -23,7 +23,7 @@ Load ETF ticker to perform analysis on.
 
 ### Usage
 
-```python
+```python wordwrap
 load -t TICKER [-s START] [-e END] [-l LIMIT]
 ```
 
@@ -31,12 +31,12 @@ load -t TICKER [-s START] [-e END] [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| ticker | ETF ticker | None | False | None |
-| start | The starting date (format YYYY-MM-DD) of the ETF | 2021-11-24 | True | None |
-| end | The ending date (format YYYY-MM-DD) of the ETF | 2022-11-25 | True | None |
-| limit | Limit of holdings to display | 5 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ticker | -t  --ticker | ETF ticker | None | False | None |
+| start | -s  --start | The starting date (format YYYY-MM-DD) of the ETF | 2022-11-20 | True | None |
+| end | -e  --end | The ending date (format YYYY-MM-DD) of the ETF | 2023-11-21 | True | None |
+| limit | -l  --limit | Limit of holdings to display | 5 | True | None |
 
 
 ---

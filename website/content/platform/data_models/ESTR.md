@@ -1,6 +1,6 @@
 ---
-title: Euro Short-Term Rate
-description: OpenBB Platform Data Model
+title: ESTR
+description: Euro Short-Term Rate
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

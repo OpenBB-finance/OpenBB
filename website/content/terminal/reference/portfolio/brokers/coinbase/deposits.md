@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/coinbase/deposits /brokers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /brokers/coinbase/deposits - Reference | OpenBB Terminal Docs" />
 
 Display a list of deposits for your account.
 
 ### Usage
 
-```python
+```python wordwrap
 deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [-r]
 ```
 
@@ -29,11 +29,11 @@ deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [-r
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| type | Deposit type. Either: internal_deposits (transfer between portfolios) or deposit | deposit | True | internal_deposit, deposit |
-| limit | Limit parameter. | 20 | True | None |
-| sortby | Sort by given column. Default: created_at | created_at | True | created_at, amount |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| type | -t  --type | Deposit type. Either: internal_deposits (transfer between portfolios) or deposit | deposit | True | internal_deposit, deposit |
+| limit | -l  --limit | Limit parameter. | 20 | True | None |
+| sortby | -s  --sort | Sort by given column. Default: created_at | created_at | True | created_at, amount |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
 
 ---

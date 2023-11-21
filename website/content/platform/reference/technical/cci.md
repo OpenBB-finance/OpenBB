@@ -21,6 +21,9 @@ keywords:
 - CCI data
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /cci - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -35,37 +38,34 @@ range indicate overbought or oversold conditions. You can also look for price
 divergence in the CCI. If the price is making new highs, and the CCI is not,
 then a price correction is likely.
 
-Parameters
-----------
-data : List[Data]
-The data to use for the CCI calculation.
-index : str, optional
-Index column name to use with `data`, by default "date".
-length : PositiveInt, optional
-The length of the CCI, by default 14.
-scalar : PositiveFloat, optional
-The scalar of the CCI, by default 0.015.
-
-Returns
--------
-OBBject[List[Data]]
-The CCI data.
-
 ```python wordwrap
-
+obb.technical.cci(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], index: str = date, length: int = 14, scalar: float = 0.015)
 ```
 
 ---
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | The data to use for the CCI calculation. | None | False |
+| index | str | Index column name to use with `data`, by default "date". | date | True |
+| length | PositiveInt | The length of the CCI, by default 14. | 14 | True |
+| scalar | PositiveFloat | The scalar of the CCI, by default 0.015. | 0.015 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The CCI data.
+```
 
 ---
 

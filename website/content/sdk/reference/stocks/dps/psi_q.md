@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Plots the short interest of a stock. This corresponds to the
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_model.py#L19)]
 
-```python
+```python wordwrap
 openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
 ```
 
@@ -53,15 +53,17 @@ openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
 | pd.DataFrame | short interest volume data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot the short interest of a stock. This corresponds to the
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_view.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_view.py#L86)]
 
-```python
-openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -75,7 +77,7 @@ openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, 
 | limit | int | Number of past days to show short interest | 10 | True |
 | raw | bool | Flag to print raw data instead | False | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -85,6 +87,8 @@ openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, 
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

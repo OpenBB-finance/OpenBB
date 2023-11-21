@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import shutil
 import traceback
@@ -10,16 +9,23 @@ from typing import Dict, List, TextIO, Union
 
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.rich_config import console
 from website.controller_doc_classes import (
     ControllerDoc,
     LoadControllersDoc,
+    console,
     sub_names_full as subnames,
 )
 
 set_system_variable("TEST_MODE", True)
 set_system_variable("LOG_COLLECT", False)
 website_path = Path(__file__).parent.absolute()
+CONTENT_PATH: Path = website_path / "content/terminal/reference"
+EXAMPLES_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
+    (website_path / "metadata/terminal_v3_examples.json").read_text()
+)
+SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
+    (website_path / "metadata/terminal_v3_seo_metadata.json").read_text()
+)
 
 reference_import = """
 import ReferenceCard from "@site/src/components/General/NewReferenceCard";
@@ -55,32 +61,15 @@ def existing_markdown_file_examples(
         if sub in ["ba", "ta", "qa"]:
             trail.remove(trailmap.split(".")[0])
 
-    examples_path = (
-        f"old_content/terminal/{'/'.join(trail)}/{cmd_dict['cmd_name']}/_index.md"
-    )
-    examples_dict: Dict[str, Union[str, List[str]]] = {}
+    trail.append(cmd_dict["cmd_name"])
 
-    if os.path.exists(website_path / examples_path):
-        with open(website_path / examples_path, encoding="utf-8") as f:
-            content = f.read()
-
-            examples: str = ""
-            if "Example:" in content:
-                example_split = content.split("Example:")[1].split("```")
-                if example_split and len(example_split) > 1:
-                    examples = f"{example_split[1].strip()}"
-
-            examples_dict["example"] = examples
-            images = [
-                x for x in content.split("\n") if x.startswith("!") and "TODO" not in x
-            ]
-            examples_dict["images"] = images
-
-    return examples_dict
+    return EXAMPLES_META.get(".".join(trail), {})
 
 
 # pylint: disable=isinstance-second-argument-not-valid-type
-def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
+def process_cmd_parsers(
+    ctrl: ControllerDoc, ctrl_trailmap: str
+) -> List[Dict[str, str]]:
     """Process command parsers from ControllerDoc"""
 
     commands = []
@@ -145,12 +134,32 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
             # We do this to fix multiline docstrings for the markdown
             desc = " ".join(desc.split()).replace(*USER_PATH)
 
+        cmd_name = cmd.replace("call_", "")
         param = {
-            "cmd_name": cmd.replace("call_", ""),
+            "cmd_name": cmd_name,
             "actions": actions,
             "usage": " ".join(parser.format_usage().split()).replace("usage: ", ""),
             "description": desc if desc else "",
         }
+
+        default_desc = (desc or " .").split(".").pop(0).strip().replace(":", "")
+        header = f"title: {cmd_name}\ndescription: {default_desc}\nkeywords:\n- {ctrl_trailmap}\n- {cmd_name}"
+        key = f"{ctrl_trailmap}.{cmd_name}"
+
+        if cmd_meta := SEO_META.get(key, None):
+            keywords = "\n- ".join(cmd_meta["keywords"])
+            header = f"title: {cmd_meta['title']}\ndescription: {cmd_meta['description']}\nkeywords:\n- {keywords}"
+
+        title = key.split(".")
+        title[0] += " "
+
+        param[
+            "header"
+        ] = f"""---\n{header}\n---\n
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="{'/'.join(title)} - Reference | OpenBB Terminal Docs" />\n\n"""
+
         commands.append(param)
 
     return commands  # type: ignore
@@ -176,22 +185,14 @@ def generate_markdown(
     if not cmd_meta:
         raise ValueError("No command metadata found")
 
-    markdown = f"""---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
-title: {cmd_meta["cmd_name"]}
-description: OpenBB Terminal Function
----\n\n"""
-
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
-    markdown += f"# {cmd_meta['cmd_name']}\n\n{cmd_meta['description']}\n\n"
+    markdown = f"{cmd_meta['description']}\n\n"
     markdown += f"### Usage\n\n```python wordwrap\n{cmd_meta['usage']}\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
     if cmd_meta["actions"]:
         markdown += (
             "| Name | Parameter | Description | Default | Optional | Choices |\n"
-        )
-        markdown += (
             "| ---- | --------- | ----------- | ------- | -------- | ------- |\n"
         )
 
@@ -221,14 +222,14 @@ description: OpenBB Terminal Function
 def create_nested_menus_card(folder: Path, url: str) -> str:
     sub_categories = [
         sub.stem
-        for sub in folder.glob("**/**/*.md*")
+        for sub in folder.rglob("**/**/*.md*")
         if sub.is_file() and sub.stem != "index"
     ]
     categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
     url = f"/terminal/reference/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
-        title="{folder.name}"
+        title="{folder.name.title()}"
         description="{categories}"
         url="{url}"
 />\n"""
@@ -242,7 +243,7 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]]) -> str:
         description = shorten(cmd["description"], width=116, placeholder="...")
 
         cmd_cards += f"""<ReferenceCard
-    title="{cmd["title"]}"
+    title="{cmd["title"].title()}"
     description="{description.replace('"', "'")}"
     url="{url}"
     command="true"
@@ -298,10 +299,10 @@ def main() -> bool:
     console.print(
         "[bright_yellow]Generating markdown files... Don't ignore any errors now[/bright_yellow]"
     )
-    content_path: Path = website_path / "content/terminal/reference"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
+    global_cmds = {"askobb": False, "hold": False, "about": False}
 
-    for file in content_path.glob("*"):
+    for file in CONTENT_PATH.glob("*"):
         if file.is_file():
             file.unlink()
         else:
@@ -310,18 +311,25 @@ def main() -> bool:
     for ctrl_trailmap in ctrls:
         try:
             ctrl = load_ctrls.get_controller_doc(ctrl_trailmap)
-            ctrl_cmds = process_cmd_parsers(ctrl)
+            ctrl_cmds = process_cmd_parsers(ctrl, ctrl_trailmap)
 
             for cmd in ctrl_cmds:
+                trail = ctrl_trailmap.split(".")
+                if (created := global_cmds.get(cmd["cmd_name"], None)) is not None:
+                    if created:
+                        continue
+                    global_cmds[cmd["cmd_name"]] = True
+                    trail = []
+
                 examples = existing_markdown_file_examples(ctrl_trailmap, cmd)
-                markdown = generate_markdown(cmd, examples)
+
+                markdown = cmd["header"] + generate_markdown(cmd, examples)
 
                 if cmd["cmd_name"] == "index":
                     cmd["cmd_name"] = "index_cmd"
 
-                trail = ctrl_trailmap.split(".")
+                filepath = CONTENT_PATH / f"{'/'.join(trail + [cmd['cmd_name']])}.md"
 
-                filepath = content_path / f"{'/'.join(trail)}/{cmd['cmd_name']}.md"
                 reference_cards.setdefault(filepath.parent, []).append(
                     dict(
                         title=cmd["cmd_name"],
@@ -344,40 +352,72 @@ def main() -> bool:
     reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
 
     # Generate root "_category_.json" file
-    with open(content_path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
+    with open(CONTENT_PATH / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
         f.write(json.dumps({"label": "Reference", "position": 4}, indent=2))
 
     # Generate root "index.md" file
-    with open(content_path / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore
+    with open(CONTENT_PATH / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore
         fname = "OpenBB Terminal Features"
-        rel_path = content_path.relative_to(content_path)
-        write_reference_index(reference_cards, fname, content_path, rel_path, f)
+        rel_path = CONTENT_PATH.relative_to(CONTENT_PATH)
+        write_reference_index(reference_cards, fname, CONTENT_PATH, rel_path, f)
 
-    def gen_category_json(fname: str, path: Path):
+    def gen_category_json(fname: str, path: Path, position: int = 1):
         """Generate category json"""
         fname = subnames[fname.lower()] if fname.lower() in subnames else fname.title()
         with open(path / "_category_.json", "w", **wopen_kwargs) as f:  # type: ignore
-            f.write(json.dumps({"label": fname}, indent=2))
+            f.write(json.dumps({"label": fname, "position": position}, indent=2))
 
         with open(path / "index.mdx", "w", **wopen_kwargs) as f:  # type: ignore
-            rel_path = path.relative_to(content_path)
+            rel_path = path.relative_to(CONTENT_PATH)
             write_reference_index(reference_cards, fname, path, rel_path, f)
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
+        position = 1
         for folder in nested_path.iterdir():
             if folder.is_dir():
-                gen_category_json(folder.name, folder)
+                gen_category_json(folder.name, folder, position)
                 gen_category_recursive(folder)  # pylint: disable=cell-var-from-loop
+                position += 1
 
     # Generate modules/sub category json and index files
-    gen_category_recursive(content_path)
+    gen_category_recursive(CONTENT_PATH)
 
     console.print(
         "[green]Markdown files generated, check the website/content/terminal/reference/ folder[/green]"
     )
 
     return True
+
+
+def save_metadata() -> Dict[str, Dict[str, Union[str, List[str]]]]:
+    """Save SEO metadata to json file."""
+
+    regex = re.compile(
+        r"---\ntitle: (.*)\ndescription: (.*)\nkeywords:(.*)\n---\n\nimport HeadTitle",
+        re.MULTILINE | re.DOTALL,
+    )
+
+    metadata = {}
+    for file in CONTENT_PATH.rglob("*/**/*.md"):
+        context = file.read_text(encoding="utf-8")
+        match = regex.search(context)
+        if match:
+            title, description, keywords = match.groups()
+            key = file.relative_to(CONTENT_PATH).as_posix().removesuffix(".md")
+            metadata[key.replace("/", ".")] = {
+                "title": title,
+                "description": description,
+                "keywords": [
+                    keyword.strip() for keyword in keywords.split("\n- ") if keyword
+                ],
+            }
+
+    filepath = website_path / "metadata/sdk_v3_seo_metadata.json"
+    with open(filepath, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(metadata, f, indent=2)
+
+    return metadata
 
 
 if __name__ == "__main__":

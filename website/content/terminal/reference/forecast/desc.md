@@ -21,17 +21,17 @@ Show descriptive statistics of a dataset
 
 ### Usage
 
-```python
-desc [-d {}]
+```python wordwrap
+desc [-d {AAPL}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| target_dataset | The name of the dataset you want to select | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
 
 
 ---

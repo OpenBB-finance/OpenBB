@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L25)]
 
-```python
+```python wordwrap
 openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str = "")
 ```
 
@@ -52,15 +52,17 @@ openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str
 | Dict[Union[str, Any], pd.DataFrame] | A dictionary with a DataFrame for each option. With dataset_name set, only shows one<br/>options table. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot custom data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L24)]
 
-```python
-openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_name: str = None, export: str = "")
+```python wordwrap
+openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_name: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -71,6 +73,7 @@ openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_nam
 | ---- | ---- | ----------- | ------- | -------- |
 | datasets | dict | The loaded in datasets | None | False |
 | dataset_name | str | The name of the dataset you wish to show options for | None | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export image |  | True |
 
 
@@ -81,6 +84,8 @@ openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_nam
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

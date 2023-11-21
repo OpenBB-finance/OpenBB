@@ -18,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/rm - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/rm - Reference | OpenBB Terminal Docs" />
 
 Display asset's roadmap [Source: https://messari.io]
 
 ### Usage
 
-```python
+```python wordwrap
 rm [-r]
 ```
 
@@ -32,8 +32,8 @@ rm [-r]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
 
 ---

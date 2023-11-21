@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L130)]
 
-```python
+```python wordwrap
 openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Symbol", ascend: bool = False)
 ```
 
@@ -56,15 +56,17 @@ openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Sy
 | pd.DataFrame | N coins |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing top coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L35)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L33)]
 
-```python
-openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "Symbol", export: str = "", ascend: bool = False)
+```python wordwrap
+openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "Symbol", export: str = "", sheet_name: Optional[str] = None, ascend: bool = False)
 ```
 
 ---
@@ -87,6 +89,8 @@ openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "S
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

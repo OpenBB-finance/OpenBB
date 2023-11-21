@@ -26,7 +26,7 @@ Get last insider activity for a given stock ticker. [Source: Finviz]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/finviz_model.py#L16)]
 
-```python
+```python wordwrap
 openbb.stocks.ins.lins(symbol: str)
 ```
 
@@ -48,15 +48,17 @@ openbb.stocks.ins.lins(symbol: str)
 | pd.DataFrame | Latest insider trading activity |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display insider activity for a given stock ticker. [Source: Finviz]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/finviz_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/finviz_view.py#L16)]
 
-```python
-openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "")
+```python wordwrap
+openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -77,6 +79,8 @@ openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "")
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

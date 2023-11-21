@@ -22,19 +22,20 @@ Load dataset (from previous export, custom imports or StatsModels).
 
 ### Usage
 
-```python
-load [-f FILE] [-a ALIAS] [-e]
+```python wordwrap
+load [-f FILE] [-a ALIAS] [-e] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| file | File to load data in (can be custom import, may have been exported before or can be from Statsmodels) | None | True | None |
-| alias | Alias name to give to the dataset | None | True | None |
-| examples | Use this argument to show examples of Statsmodels to load in. See: https://www.statsmodels.org/devel/datasets/index.html | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| file | -f  --file | File to load data in (can be custom import, may have been exported before or can be from Statsmodels) | None | True | None |
+| alias | -a  --alias | Alias name to give to the dataset | None | True | None |
+| examples | -e  --examples | Use this argument to show examples of Statsmodels to load in. See: https://www.statsmodels.org/devel/datasets/index.html | False | True | None |
+| sheet_name | --sheet-name | Name of excel sheet to save data to. Only valid for .xlsx files. | None | True | None |
 
 
 ---

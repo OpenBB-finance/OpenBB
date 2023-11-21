@@ -21,7 +21,7 @@ Show co-integration between two timeseries
 
 ### Usage
 
-```python
+```python wordwrap
 coint -t TS [-p] [-s SIGNIFICANT]
 ```
 
@@ -29,11 +29,11 @@ coint -t TS [-p] [-s SIGNIFICANT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| ts | The time series you wish to test co-integration on. E.g. historical.open,historical2.close. | None | False | None |
-| plot | Plot Z-Values | False | True | None |
-| significant | Show only companies that have p-values lower than this percentage | 0 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| ts | -t  --time_series | The time series you wish to test co-integration on. E.g. historical.open,historical2.close. | None | False | None |
+| plot | -p  --plot | Plot Z-Values | False | True | None |
+| significant | -s  --significant | Show only companies that have p-values lower than this percentage | 0 | True | None |
 
 
 ---

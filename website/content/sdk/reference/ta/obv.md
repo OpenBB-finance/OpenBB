@@ -27,7 +27,7 @@ On Balance Volume
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L90)]
 
-```python
+```python wordwrap
 openbb.ta.obv(data: pd.DataFrame)
 ```
 
@@ -49,15 +49,17 @@ openbb.ta.obv(data: pd.DataFrame)
 | pd.DataFrame | Dataframe with technical indicator |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots OBV technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L249)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L114)]
 
-```python
-openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -68,8 +70,9 @@ openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", exte
 | ---- | ---- | ----------- | ------- | -------- |
 | data | pd.DataFrame | Dataframe of ohlc prices | None | False |
 | symbol | str | Ticker |  | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data as |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -79,6 +82,8 @@ openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", exte
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

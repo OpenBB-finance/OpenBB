@@ -29,7 +29,7 @@ Get info about tokens on you ethereum blockchain balance. Eth balance, balance o
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L196)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.balance(address: str, sortby: str = "index", ascend: bool = False)
 ```
 
@@ -53,15 +53,17 @@ openbb.crypto.onchain.balance(address: str, sortby: str = "index", ascend: bool 
 | pd.DataFrame | DataFrame with list of tokens and their balances. |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L22)]
 
-```python
-openbb.crypto.onchain.balance_chart(address: str, limit: int = 15, sortby: str = "index", ascend: bool = False, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.balance_chart(address: str, limit: int = 15, sortby: str = "index", ascend: bool = False, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -84,6 +86,8 @@ openbb.crypto.onchain.balance_chart(address: str, limit: int = 15, sortby: str =
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

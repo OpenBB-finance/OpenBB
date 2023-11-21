@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L266)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L264)]
 
-```python
+```python wordwrap
 openbb.crypto.onchain.lt(trade_amount_currency: str = "USD", limit: int = 90, sortby: str = "tradeAmount", ascend: bool = True)
 ```
 
@@ -56,15 +56,17 @@ openbb.crypto.onchain.lt(trade_amount_currency: str = "USD", limit: int = 90, so
 | pd.DataFrame | Trades on Decentralized Exchanges aggregated by DEX |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L22)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L21)]
 
-```python
-openbb.crypto.onchain.lt_chart(trade_amount_currency: str = "USD", kind: str = "dex", limit: int = 20, days: int = 90, sortby: str = "tradeAmount", ascend: bool = True, export: str = "")
+```python wordwrap
+openbb.crypto.onchain.lt_chart(trade_amount_currency: str = "USD", kind: str = "dex", limit: int = 20, days: int = 90, sortby: str = "tradeAmount", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -89,6 +91,8 @@ openbb.crypto.onchain.lt_chart(trade_amount_currency: str = "USD", kind: str = "
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

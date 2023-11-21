@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/dps/shorted - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /dps/shorted - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top ticker most shorted. [Source: Yahoo Finance]
 
 ### Usage
 
-```python
+```python wordwrap
 shorted [-l LIMIT]
 ```
 
@@ -31,9 +31,9 @@ shorted [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of the most shorted stocks to retrieve. | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of the most shorted stocks to retrieve. | 10 | True | None |
 
 
 ---

@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get supply history of the Terra ecosystem
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_model.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_model.py#L15)]
 
-```python
+```python wordwrap
 openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", days: int = 30)
 ```
 
@@ -52,15 +52,17 @@ openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", da
 | pd.DataFrame | Dataframe of supply history data |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots and prints table showing Luna circulating supply stats
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_view.py#L20)]
 
-```python
-openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_type: str = "lunaSupplyChallengeStats", limit: int = 5, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", sheet_name: Optional[str] = None, supply_type: str = "lunaSupplyChallengeStats", limit: int = 5, external_axes: bool = False)
 ```
 
 ---
@@ -71,9 +73,10 @@ openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_ty
 | ---- | ---- | ----------- | ------- | -------- |
 | days | int | Number of days | 30 | True |
 | supply_type | str | Supply type to unpack json | lunaSupplyChallengeStats | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export type |  | True |
 | limit | int | Number of results display on the terminal<br/>Default: 5 | 5 | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -83,6 +86,8 @@ openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_ty
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

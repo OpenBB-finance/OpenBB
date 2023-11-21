@@ -18,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ins/lins - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ins/lins - Reference | OpenBB Terminal Docs" />
 
 Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
 
 ### Usage
 
-```python
+```python wordwrap
 lins [-l LIMIT]
 ```
 
@@ -32,9 +32,9 @@ lins [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Limit of latest inside traders. | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Limit of latest inside traders. | 10 | True | None |
 
 
 ---

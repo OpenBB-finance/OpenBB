@@ -13,6 +13,9 @@ keywords:
 - openbb obb package
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /vwap - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -23,27 +26,6 @@ The Volume Weighted Average Price.
 
 Measures the average typical price by volume.
 It is typically used with intraday charts to identify general direction.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-index : str, optional
-Index column name to use with `data`, by default "date".
-anchor : str, optional
-Anchor period to use for the calculation, by default "D".
-See Timeseries Offset Aliases below for additional options:
-https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
-offset : int, optional
-Offset from the current period, by default 0.
-
-Returns
--------
-OBBject[List[Data]]
-The calculated data.
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -55,13 +37,28 @@ vwap_data = obb.technical.vwap(data=stock_data.results,anchor="D",offset=0)
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| index | str | Index column name to use with `data`, by default "date". | date | True |
+| anchor | str | Anchor period to use for the calculation, by default "D".
+See Timeseries Offset Aliases below for additional options:
+https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases | D | True |
+| offset | int | Offset from the current period, by default 0. | 0 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The calculated data.
+```
 
 ---
 

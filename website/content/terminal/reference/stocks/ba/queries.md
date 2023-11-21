@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/ba/queries - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /ba/queries - Reference | OpenBB Terminal Docs" />
 
 Print top related queries with this stock's query. [Source: Google]
 
 ### Usage
 
-```python
+```python wordwrap
 queries [-l LIMIT]
 ```
 
@@ -34,9 +34,9 @@ queries [-l LIMIT]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | limit of top related queries to print. | 10 | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | limit of top related queries to print. | 10 | True | None |
 
 
 ---

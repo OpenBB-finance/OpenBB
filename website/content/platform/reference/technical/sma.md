@@ -19,6 +19,9 @@ keywords:
 - offset parameter
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="technical /sma - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -34,27 +37,6 @@ previous n values. In a Simple Moving Average, each value in the time period car
 equal weight, and values outside of the time period are not included in the average.
 This makes it less responsive to recent changes in the data, which can be useful for
 filtering out those changes.
-
-Parameters
-----------
-data : List[Data]
-List of data to be used for the calculation.
-target : str
-Target column name.
-index : str, optional
-Index column name to use with `data`, by default "date".
-length : int, optional
-Number of periods to be used for the calculation, by default 50.
-offset : int, optional
-Offset from the current period, by default 0.
-
-Returns
--------
-OBBject[List[Data]]
-The calculated data.
-
-Examples
---------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -66,13 +48,27 @@ sma_data = obb.technical.sma(data=stock_data.results,target="close",length=50,of
 
 ## Parameters
 
-This function does not take standardized parameters.
+<Tabs>
+<TabItem value="standard" label="Standard">
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| data | List[Data] | List of data to be used for the calculation. | None | False |
+| target | str | Target column name. | close | True |
+| index | str | Index column name to use with `data`, by default "date". | date | True |
+| length | int | Number of periods to be used for the calculation, by default 50. | 50 | True |
+| offset | int | Offset from the current period, by default 0. | 0 | True |
+</TabItem>
+
+</Tabs>
 
 ---
 
 ## Returns
 
-This function does not return a standardized model
+```python wordwrap
+The calculated data.
+```
 
 ---
 

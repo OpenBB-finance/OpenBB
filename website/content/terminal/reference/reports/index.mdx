@@ -1,12 +1,18 @@
-# reports
+# Reports
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-
 <ReferenceCard
-    title="run"
-    description="Learn how to effectively run a notebook from a specific location using"
-    url="reports/run"
+    title="Exe"
+    description="Run a notebook from a url that contains the ipynb contents"
+    url="/terminal/reference/reports/exe"
+    command="true"
+/>
+<ReferenceCard
+    title="Run"
+    description="Run a notebook from this folder: '`USER_DATA_DIRECTORY`\reports\custom reports'."
+    url="/terminal/reference/reports/run"
+    command="true"
 />
 </ul>

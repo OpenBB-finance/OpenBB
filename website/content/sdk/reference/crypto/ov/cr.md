@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Returns crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_model.py#L267)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_model.py#L266)]
 
-```python
+```python wordwrap
 openbb.crypto.ov.cr(rate_type: str = "borrow")
 ```
 
@@ -49,15 +49,17 @@ openbb.crypto.ov.cr(rate_type: str = "borrow")
 | pd.DataFrame | crypto interest rates per platform |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_view.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_view.py#L18)]
 
-```python
-openbb.crypto.ov.cr_chart(symbols: str, platforms: str, rate_type: str = "borrow", limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.crypto.ov.cr_chart(symbols: str, platforms: str, rate_type: str = "borrow", limit: int = 10, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -80,6 +82,8 @@ openbb.crypto.ov.cr_chart(symbols: str, platforms: str, rate_type: str = "borrow
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

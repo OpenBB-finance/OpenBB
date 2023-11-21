@@ -1,6 +1,6 @@
 ---
-title: Interest on Reserve Balances
-description: OpenBB Platform Data Model
+title: IORB
+description: Interest on Reserve Balances
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

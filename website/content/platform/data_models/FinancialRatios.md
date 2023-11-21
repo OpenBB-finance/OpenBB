@@ -1,6 +1,6 @@
 ---
-title: Extensive set of ratios over time
-description: OpenBB Platform Data Model
+title: FinancialRatios
+description: Extensive set of ratios over time
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -14,9 +14,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Calculate the Average True Range of a variable based on a a specific stock ticker.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L349)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L355)]
 
-```python
+```python wordwrap
 openbb.forecast.atr(dataset: pd.DataFrame, close_column: str = "close", high_column: str = "high", low_column: str = "low")
 ```
 
@@ -33,3 +33,4 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
+

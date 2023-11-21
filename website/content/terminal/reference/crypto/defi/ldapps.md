@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/defi/ldapps - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /defi/ldapps - Reference | OpenBB Terminal Docs" />
 
 Display information about listed dApps on DeFi Llama. [Source: https://docs.llama.fi/api]
 
 ### Usage
 
-```python
+```python wordwrap
 ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [-r] [--desc]
 ```
 
@@ -34,12 +34,12 @@ ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of records to display | 10 | True | None |
-| sortby | Sort by given column. Default: tvl | tvl | True | tvl, symbol, category, chains, change_1h, change_1d, change_7d, name |
-| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
-| description | Flag to display description of protocol | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| limit | -l  --limit | Number of records to display | 10 | True | None |
+| sortby | -s  --sort | Sort by given column. Default: tvl | tvl | True | tvl, symbol, category, chains, change_1h, change_1d, change_7d, name |
+| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| description | --desc | Flag to display description of protocol | False | True | None |
 
 
 ---

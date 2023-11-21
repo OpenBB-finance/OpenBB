@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Get holdings of assets (absolute value)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L140)]
 
-```python
+```python wordwrap
 openbb.portfolio.holdv(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -56,21 +56,23 @@ openbb.portfolio.holdv(portfolio_engine: portfolio_engine.PortfolioEngine)
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
 output = openbb.portfolio.holdv(p)
 ```
 
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display holdings of assets (absolute value)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L713)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L820)]
 
-```python
-openbb.portfolio.holdv_chart(portfolio_engine: portfolio_engine.PortfolioEngine, unstack: bool = False, raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)
+```python wordwrap
+openbb.portfolio.holdv_chart(portfolio_engine: portfolio_engine.PortfolioEngine, unstack: bool = False, raw: bool = False, limit: int = 10, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -83,8 +85,9 @@ openbb.portfolio.holdv_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 | unstack | bool | Individual assets over time | False | True |
 | raw | bool | To display raw data | False | True |
 | limit | int | Number of past market days to display holdings | 10 | True |
+| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export plot |  | True |
-| external_axes | plt.Axes | Optional axes to display plot on | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -94,6 +97,8 @@ openbb.portfolio.holdv_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

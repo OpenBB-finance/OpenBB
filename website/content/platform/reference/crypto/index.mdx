@@ -1,12 +1,17 @@
 # crypto
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard
-    title="search"
-    description="Cryptocurrency Search. Search available cryptocurrency pairs."
+        title="Price"
+        description="historical"
+        url="/platform/reference/crypto/price"
+    />
+<ReferenceCard
+    title="Search"
+    description="Cryptocurrency Search"
     url="/platform/reference/crypto/search"
-    command="true"
+    chevron={false}
 />
 </ul>

@@ -1,6 +1,6 @@
 ---
-title: Company News
-description: OpenBB Platform Data Model
+title: CompanyNews
+description: Company News
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -36,7 +36,7 @@ CompanyNewsQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 </TabItem>
 
 <TabItem value='benzinga' label='benzinga'>
@@ -45,7 +45,7 @@ CompanyNewsQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | display | Literal['headline', 'abstract', 'full'] | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). | full | True |
 | date | str | Date of the news to retrieve. | None | True |
 | start_date | str | Start date of the news to retrieve. | None | True |
@@ -68,7 +68,7 @@ CompanyNewsQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | page | int | Page number of the results. Use in combination with limit. | 0 | True |
 </TabItem>
 
@@ -78,9 +78,19 @@ CompanyNewsQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | str |  Here it is a separated list of symbols. |  | False |
 | limit | int | The number of data entries to return. | 20 | True |
-| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'ultima', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
 | published_utc | str | Date query to fetch articles. Supports operators <, <=, >, >= | None | True |
 | order | Literal['asc', 'desc'] | Sort order of the articles. | desc | True |
+</TabItem>
+
+<TabItem value='tiingo' label='tiingo'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbols | str |  Here it is a separated list of symbols. |  | False |
+| limit | int | The number of data entries to return. | 20 | True |
+| provider | Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'benzinga' if there is no default. | benzinga | True |
+| source | str | A comma-separated list of the domains requested. | None | True |
 </TabItem>
 
 </Tabs>
@@ -162,7 +172,7 @@ CompanyNewsQueryParams,
 | tickers | List[str] | Tickers covered in the article. |
 </TabItem>
 
-<TabItem value='ultima' label='ultima'>
+<TabItem value='tiingo' label='tiingo'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -171,9 +181,11 @@ CompanyNewsQueryParams,
 | image | str | Image URL of the news. |
 | text | str | Text/body of the news. |
 | url | str | URL of the news. |
-| publisher | str | Publisher of the news. |
-| ticker | str | Ticker associated with the news. |
-| riskCategory | str | Risk category of the news. |
+| symbols | str | Ticker tagged in the fetched news. |
+| article_id | int | Unique ID of the news article. |
+| site | str | Name of the news source. |
+| tags | str | Tags associated with the news article. |
+| crawl_date | datetime | Date the news article was crawled. |
 </TabItem>
 
 <TabItem value='yfinance' label='yfinance'>

@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks/options/greeks - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks /options/greeks - Reference | OpenBB Terminal Docs" />
 
 The greeks for a given option.
 
 ### Usage
 
-```python
+```python wordwrap
 greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a]
 ```
 
@@ -25,14 +25,14 @@ greeks [-d DIVIDEND] [-r RISK_FREE] [-p] [-m MIN] [-M MAX] [-a]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| dividend | The dividend continuous rate | 0 | True | None |
-| risk_free | The risk free rate | None | True | None |
-| put | Whether the option is a put. | False | True | None |
-| min | Minimum strike price to show. | None | True | None |
-| max | Maximum strike price to show. | None | True | None |
-| all | Whether to show all greeks. | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| dividend | -d  --div | The dividend continuous rate | 0 | True | None |
+| risk_free | -r  --risk-free | The risk free rate | None | True | None |
+| put | -p  --put | Whether the option is a put. | False | True | None |
+| min | -m  --min | Minimum strike price to show. | None | True | None |
+| max | -M  --max | Maximum strike price to show. | None | True | None |
+| all | -a  --all | Whether to show all greeks. | False | True | None |
 
 
 ---

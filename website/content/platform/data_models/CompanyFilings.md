@@ -1,6 +1,6 @@
 ---
-title: Company Filings
-description: OpenBB Platform Data Model
+title: CompanyFilings
+description: Company Filings
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto/dd/ath - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto /dd/ath - Reference | OpenBB Terminal Docs" />
 
 All time high data for loaded coin
 
 ### Usage
 
-```python
+```python wordwrap
 ath [--vs {usd,btc}]
 ```
 
@@ -28,9 +28,9 @@ ath [--vs {usd,btc}]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| vs | currency | usd | True | usd, btc |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| vs | --vs | currency | usd | True | usd, btc |
 
 
 ---

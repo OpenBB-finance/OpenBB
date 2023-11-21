@@ -1,6 +1,6 @@
 ---
-title: Historical Dividends
-description: OpenBB Platform Data Model
+title: HistoricalDividends
+description: Historical Dividends
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

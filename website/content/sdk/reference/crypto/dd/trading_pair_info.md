@@ -24,7 +24,7 @@ Get information about chosen trading pair. [Source: Coinbase]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L48)]
 
-```python
+```python wordwrap
 openbb.crypto.dd.trading_pair_info(symbol: str)
 ```
 
@@ -45,3 +45,4 @@ openbb.crypto.dd.trading_pair_info(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Basic information about given trading pair |
 ---
+

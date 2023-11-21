@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/qa/normality - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /qa/normality - Reference | OpenBB Terminal Docs" />
 
 Normality tests
 
 ### Usage
 
-```python
+```python wordwrap
 normality
 ```
 

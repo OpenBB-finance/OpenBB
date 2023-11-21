@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex/qa/decompose - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex /qa/decompose - Reference | OpenBB Terminal Docs" />
 
 Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
 
 ### Usage
 
-```python
+```python wordwrap
 decompose [-m]
 ```
 
@@ -30,9 +30,9 @@ decompose [-m]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| multiplicative | decompose using multiplicative model instead of additive | False | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| multiplicative | -m  --multiplicative | decompose using multiplicative model instead of additive | False | True | None |
 
 
 ---

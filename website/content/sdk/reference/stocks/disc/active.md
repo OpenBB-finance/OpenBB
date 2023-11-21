@@ -24,7 +24,7 @@ Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo 
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L97)]
 
-```python
+```python wordwrap
 openbb.stocks.disc.active()
 ```
 
@@ -42,3 +42,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most active stocks |
 ---
+

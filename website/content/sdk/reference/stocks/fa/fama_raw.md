@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get Fama French data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L240)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L238)]
 
-```python
+```python wordwrap
 openbb.stocks.fa.fama_raw()
 ```
 
@@ -40,3 +40,4 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Fama French data |
 ---
+

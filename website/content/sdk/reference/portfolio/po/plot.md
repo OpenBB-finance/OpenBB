@@ -34,10 +34,10 @@ import TabItem from '@theme/TabItem';
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L252)]
 
-```python
-openbb.portfolio.po.plot(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, chart_type: str = "pie", kwargs: Any)
+```python wordwrap
+openbb.portfolio.po.plot(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, chart_type: str = "pie", kwargs: Any)
 ```
 
 ---
@@ -62,36 +62,35 @@ This function does not return anything
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
 d = {
 ```
 
 ```
 "SECTOR": {
-            "AAPL": "INFORMATION TECHNOLOGY",
-            "MSFT": "INFORMATION TECHNOLOGY",
-            "AMZN": "CONSUMER DISCRETIONARY",
-        },
-        "CURRENT_INVESTED_AMOUNT": {
-            "AAPL": "100000.0",
-            "MSFT": "200000.0",
-            "AMZN": "300000.0",
-        },
-        "CURRENCY": {
-            "AAPL": "USD",
-            "MSFT": "USD",
-            "AMZN": "USD",
-        },
-    }
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+        }
 ```
 ```python
-p.set_categories_dict(categories=d)
+p = openbb.portfolio.po.load(symbols_categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 p.get_available_categories()
 ```
 
 ```
-['SECTOR']
+['SECTOR', 'CURRENCY']
 ```
 ```python
 openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
@@ -113,7 +112,6 @@ p.get_available_categories()
  'SECTOR',
  'INDUSTRY',
  'COUNTRY',
- 'CURRENT_INVESTED_AMOUNT',
  'CURRENCY']
 ```
 ```python
@@ -125,16 +123,18 @@ openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type=
 ```
 
 ---
+
+
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L252)]
 
-```python
-openbb.portfolio.po.plot_chart(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, chart_type: str = "pie", kwargs: Any)
+```python wordwrap
+openbb.portfolio.po.plot_chart(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, chart_type: str = "pie", kwargs: Any)
 ```
 
 ---
@@ -159,36 +159,35 @@ This function does not return anything
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.po.load(symbols=["AAPL", "MSFT", "AMZN"])
 d = {
 ```
 
 ```
 "SECTOR": {
-            "AAPL": "INFORMATION TECHNOLOGY",
-            "MSFT": "INFORMATION TECHNOLOGY",
-            "AMZN": "CONSUMER DISCRETIONARY",
-        },
-        "CURRENT_INVESTED_AMOUNT": {
-            "AAPL": "100000.0",
-            "MSFT": "200000.0",
-            "AMZN": "300000.0",
-        },
-        "CURRENCY": {
-            "AAPL": "USD",
-            "MSFT": "USD",
-            "AMZN": "USD",
-        },
-    }
+                "AAPL": "INFORMATION TECHNOLOGY",
+                "MSFT": "INFORMATION TECHNOLOGY",
+                "AMZN": "CONSUMER DISCRETIONARY",
+            },
+            "CURRENT_INVESTED_AMOUNT": {
+                "AAPL": "100000.0",
+                "MSFT": "200000.0",
+                "AMZN": "300000.0",
+            },
+            "CURRENCY": {
+                "AAPL": "USD",
+                "MSFT": "USD",
+                "AMZN": "USD",
+            },
+        }
 ```
 ```python
-p.set_categories_dict(categories=d)
+p = openbb.portfolio.po.load(symbols_categories=d)
 weights, performance = openbb.portfolio.po.equal(portfolio_engine=p)
 p.get_available_categories()
 ```
 
 ```
-['SECTOR']
+['SECTOR', 'CURRENCY']
 ```
 ```python
 openbb.portfolio.po.plot(portfolio_engine=p, category="SECTOR", chart_type="pie")
@@ -210,7 +209,6 @@ p.get_available_categories()
  'SECTOR',
  'INDUSTRY',
  'COUNTRY',
- 'CURRENT_INVESTED_AMOUNT',
  'CURRENCY']
 ```
 ```python
@@ -222,6 +220,8 @@ openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type=
 ```
 
 ---
+
+
 
 </TabItem>
 </Tabs>

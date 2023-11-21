@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio/degiro/login /brokers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio /brokers/degiro/login - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python
+```python wordwrap
 login [-otp ONE_TIME_PASSWORD]
 ```
 
@@ -26,8 +26,8 @@ login [-otp ONE_TIME_PASSWORD]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| one_time_password | One-time-password for 2FA. | None | True | None |
+| Name | Parameter | Description | Default | Optional | Choices |
+| ---- | --------- | ----------- | ------- | -------- | ------- |
+| one_time_password | -otp  --one-time-password | One-time-password for 2FA. | None | True | None |
 
 ---

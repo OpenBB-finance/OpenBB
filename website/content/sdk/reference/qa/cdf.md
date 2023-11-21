@@ -16,10 +16,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots Cumulative Distribution Function
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L141)]
 
-```python
-openbb.qa.cdf(data: pd.DataFrame, target: str, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.qa.cdf(data: pd.DataFrame, target: str, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -32,7 +32,7 @@ openbb.qa.cdf(data: pd.DataFrame, target: str, symbol: str = "", export: str = "
 | target | str | Data column | None | False |
 | symbol | str | Name of dataset |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -52,3 +52,4 @@ openbb.qa.cdf(data=df, target="Adj Close")
 ```
 
 ---
+

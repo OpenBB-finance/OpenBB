@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Future IPOs dates. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L115)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L116)]
 
-```python
+```python wordwrap
 openbb.stocks.disc.fipo(num_days_ahead: int = 5, end_date: Optional[str] = None)
 ```
 
@@ -42,3 +42,4 @@ openbb.stocks.disc.fipo(num_days_ahead: int = 5, end_date: Optional[str] = None)
 | ---- | ----------- |
 | pd.DataFrame | Get dataframe with future IPOs |
 ---
+

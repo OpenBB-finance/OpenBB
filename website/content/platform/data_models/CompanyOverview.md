@@ -1,6 +1,6 @@
 ---
-title: Company Overview
-description: OpenBB Platform Data Model
+title: CompanyOverview
+description: Company Overview
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -1,6 +1,6 @@
 ---
-title: Moody Corporate Bond Index
-description: OpenBB Platform Data Model
+title: MoodyCorporateBondIndex
+description: Moody Corporate Bond Index
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get nft collections [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L25)]
 
-```python
+```python wordwrap
 openbb.crypto.nft.collections()
 ```
 
@@ -45,15 +45,17 @@ This function does not take any parameters.
 | pd.DataFrame | nft collections |
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display NFT collections. [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L21)]
 
-```python
-openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = False, limit: int = 5, export: str = "")
+```python wordwrap
+openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = False, limit: int = 5, export: str = "", sheet_name: Optional[str] = None)
 ```
 
 ---
@@ -74,6 +76,8 @@ openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = Fa
 This function does not return anything
 
 ---
+
+
 
 </TabItem>
 </Tabs>

@@ -28,7 +28,7 @@ Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L207)]
 
-```python
+```python wordwrap
 openbb.ta.clenow(values: pd.Series, window: int = 90)
 ```
 
@@ -61,15 +61,17 @@ openbb.ta.clenow(df["Close"])
 
 ---
 
+
+
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table and plots clenow momentum
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L570)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L320)]
 
-```python
-openbb.ta.clenow_chart(data: pd.Series, symbol: str = "", window: int = 90, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+```python wordwrap
+openbb.ta.clenow_chart(data: pd.Series, symbol: str = "", window: int = 90, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
 ```
 
 ---
@@ -82,7 +84,7 @@ openbb.ta.clenow_chart(data: pd.Series, symbol: str = "", window: int = 90, expo
 | symbol | str | Symbol that the data corresponds to |  | True |
 | window | int | Length of window | 90 | True |
 | export | str | Format to export data |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
+| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -102,6 +104,8 @@ openbb.ta.clenow_chart(df["Close"])
 ```
 
 ---
+
+
 
 </TabItem>
 </Tabs>

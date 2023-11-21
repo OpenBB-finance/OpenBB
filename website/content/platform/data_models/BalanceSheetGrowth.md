@@ -1,6 +1,6 @@
 ---
-title: Balance Sheet Statement Growth
-description: OpenBB Platform Data Model
+title: BalanceSheetGrowth
+description: Balance Sheet Statement Growth
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
