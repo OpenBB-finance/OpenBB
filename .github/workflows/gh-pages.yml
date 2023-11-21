@@ -6,9 +6,11 @@ on:
       - main
       - release/*
   pull_request:
-    types: [closed]
-    branches:
-      - develop
+    pull_request:
+      types: [opened, synchronize, reopened]
+      branches:
+        - develop
+        - 'docs/*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -64,7 +66,13 @@ jobs:
           source $VENV
           pip uninstall Brotli -y
           pytest tests/website --autodoc
-          python website/generate_sdk_markdown.py && python website/generate_terminal_markdown.py
+          python website/generate_sdk_v3_markdown.py
+          python website/generate_terminal_v3_markdown.py
+          pip install -U poetry
+          python openbb_platform/dev_install.py -e all
+          pip uninstall nbmake -y
+          python website/generate_platform_v4_markdown.py
+          python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3

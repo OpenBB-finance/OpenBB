@@ -1,10 +1,10 @@
 ---
 title: Government
-description: "The page provides comprehensive information about the Government module\u2014\
-  that offers programmatic access to OpenBB Terminal functions. It includes details\
-  \ about commands available, how to use them with Python, and examples. It serves\
-  \ as a vital resource for those interested in examining US government data related\
-  \ to publicly traded companies."
+description: The page provides comprehensive information about the Government module
+  that offers programmatic access to OpenBB Terminal functions. It includes details
+  about commands available, how to use them with Python, and examples. It serves
+  as a vital resource for those interested in examining US government data related
+  to publicly traded companies.
 keywords:
 - Government module
 - programmatic access
