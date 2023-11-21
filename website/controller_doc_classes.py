@@ -279,6 +279,7 @@ class ControllerDoc:
         self.image_exportable: Dict[str, bool] = {}
         self.ignore = [
             "call_help",
+            "call_new",
             "call_exit",
             "call_clear",
             "call_cls",
