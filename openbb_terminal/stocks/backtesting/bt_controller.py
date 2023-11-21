@@ -43,6 +43,7 @@ def no_data_message():
 class BacktestingController(StockBaseController):
     """Backtesting Controller class"""
 
+    CHOICES_MENUS = ["extism"]
     CHOICES_COMMANDS = ["load", "ema", "emacross", "rsi", "whatif"]
     PATH = "/stocks/bt/"
     CHOICES_GENERATION = True
@@ -73,6 +74,8 @@ class BacktestingController(StockBaseController):
         mt.add_cmd("ema", self.ticker)
         mt.add_cmd("emacross", self.ticker)
         mt.add_cmd("rsi", self.ticker)
+        mt.add_raw("\n")
+        mt.add_menu("extism")
         console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
     def custom_reset(self):
@@ -80,6 +83,15 @@ class BacktestingController(StockBaseController):
         if self.ticker:
             return ["stocks", f"load {self.ticker}", "bt"]
         return []
+
+    @log_start_end(log=logger)
+    def call_extism(self, _):
+        """Process bt command."""
+        from openbb_terminal.stocks.backtesting.extism_plugins import extism_controller
+
+        self.queue = self.load_class(
+            extism_controller.ExtismController, self.ticker, self.stock, self.queue
+        )
 
     @log_start_end(log=logger)
     def call_whatif(self, other_args: List[str]):
