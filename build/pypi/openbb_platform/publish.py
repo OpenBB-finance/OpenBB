@@ -64,7 +64,6 @@ def publish(dry_run: bool = False, core: bool = False, extensions: bool = False)
         package_paths.extend(EXTENSION_PACKAGES)
 
     for sub_path in package_paths:
-        is_core = sub_path in CORE_PACKAGES
         is_extension = sub_path in EXTENSION_PACKAGES
 
         for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
