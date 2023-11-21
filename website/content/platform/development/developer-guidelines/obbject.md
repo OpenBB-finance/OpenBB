@@ -92,3 +92,8 @@ Returns numpy arrays of the results.  Note that this loses the column names, so 
 #### to_polars()
 
 Growing in popularity, polars is a blazingly fast dataframe library.  This method will return a polars dataframe.  Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
+
+
+---
+
+More information can be found on the [OpenBB Core Readme](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/core/README.md)
