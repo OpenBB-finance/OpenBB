@@ -9,7 +9,7 @@ This folder is a collection of example notebooks that demonstrate some of the wa
 This notebook provides an introduction to discovering, finding, and searching ticker symbols.
 
 - Search
-- Find company and non-listed company filings.
+- Find company and institutional filings.
 - Screen stocks by region and metrics.
 
 ### loadHistoricalPriceData
